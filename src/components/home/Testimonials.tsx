@@ -11,6 +11,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import quote from '@/assets/icons/quote.webp';
+import userImage from "@/assets/home/testimonial1.webp"
 
 export const Testimonials = () => {
   const testimonials = [
@@ -18,41 +19,49 @@ export const Testimonials = () => {
       text: 'Ensis has delivered exceptional quality Panchkarma equipment for our center. Their customization and support are outstanding.',
       name: 'Dr. Anand Sharma',
       role: 'Ayurveda Physician',
+      imgurl:userImage
     },
     {
       text: "The spa setup by Ensis has elevated our resort's wellness experience to a whole new level.",
       name: 'Neha Malhotra',
       role: 'Wellness Resort Owner',
+      imgurl:userImage
     },
     {
       text: 'Excellent workmanship, premium finishing and on-time delivery. Highly recommended!',
       name: 'Arjun Menon',
       role: 'Spa Consultant',
+      imgurl:userImage
     },
     {
       text: 'Their steam chambers and massage tables are of outstanding quality. Our clients love them.',
       name: 'Priya Nair',
       role: 'Wellness Center Director',
+      imgurl:userImage
     },
         {
       text: 'Ensis has delivered exceptional quality Panchkarma equipment for our center. Their customization and support are outstanding.',
       name: 'Dr. Anand Sharma',
       role: 'Ayurveda Physician',
+      imgurl:userImage
     },
     {
       text: "The spa setup by Ensis has elevated our resort's wellness experience to a whole new level.",
       name: 'Neha Malhotra',
       role: 'Wellness Resort Owner',
+      imgurl:userImage
     },
     {
       text: 'Excellent workmanship, premium finishing and on-time delivery. Highly recommended!',
       name: 'Arjun Menon',
       role: 'Spa Consultant',
+      imgurl:userImage
     },
     {
       text: 'Their steam chambers and massage tables are of outstanding quality. Our clients love them.',
       name: 'Priya Nair',
       role: 'Wellness Center Director',
+      imgurl:userImage
     },
   ];
 
@@ -105,7 +114,7 @@ export const Testimonials = () => {
                   </p>
 
                   <div className="mt-6 flex items-center gap-3">
-                    <div className="size-11 rounded-full bg-[#263016]" />
+                    <div className="size-11 rounded-full bg-cover bg-center" style={{backgroundImage:`url(${userImage.src})`}} />
 
                     <div>
                       <h4 className="text-sm font-semibold text-[#1f261b]">

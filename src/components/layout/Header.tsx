@@ -10,13 +10,13 @@ import logoImg from '@/assets/logo.png';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const navLink = "inline-flex h-20 items-center border-b-2 border-transparent pt-0.5 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
+  const navLink = "inline-flex items-center border-b-2 border-transparent pt-0.5 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
   const mobileLink = "border-b border-[#e8e0d3] py-4 text-[12px] font-bold tracking-wide text-[#1f261b]";
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm">
       <div className="bg-[#263016] text-white">
-        <Container className="flex min-h-8 items-center justify-between gap-4 text-[11px] font-medium py-2!">
+        <Container className="flex min-h-8 items-center justify-between gap-4 text-[11px] font-medium py-0!">
           <div className="hidden items-center gap-6 md:flex">
             <span className="flex items-center gap-2"><Globe size={13} /> Exporting Worldwide</span>
             <span className="flex items-center gap-2"><Award size={13} /> ISO 9001:2015 Certified</span>
@@ -37,13 +37,13 @@ export const Header = () => {
       </div>
 
       <div className="border-b border-[#e8e0d3] bg-white">
-        <Container className="flex min-h-20 items-center justify-between gap-6 py-2!">
+        <Container className="flex items-center justify-between gap-6 py-2!">
           <Link href="/" className="shrink-0">
             <Image src={logoImg} alt="ENSIS Logo" className="h-[52px] w-auto object-contain" priority />
           </Link>
 
           <nav className="hidden flex-1 justify-center xl:flex">
-            <ul className="flex h-20 items-center gap-6">
+            <ul className="flex items-center gap-6">
               <li><Link href="/" className={navLink}>HOME</Link></li>
               <li><Link href="/about" className={navLink}>ABOUT US</Link></li>
               <li>

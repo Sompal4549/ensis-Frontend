@@ -12,8 +12,8 @@ export const Footer = () => {
   const linkClass = "transition-colors hover:text-white";
 
   return (
-    <footer className="bg-[#171c11] pt-10 text-white">
-      <Container>
+    <footer className="bg-[#171c11] pt-2 text-white">
+      <Container className='pt-2!'>
         <div className="grid gap-8 border-b border-white/10 pb-10 md:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_0.9fr_0.9fr_1.2fr]">
           <div>
             <Image src={logoImg} alt="ENSIS Logo" className="h-[54px] w-auto object-contain brightness-125" />
@@ -87,7 +87,7 @@ export const Footer = () => {
                 </Link>
               </li>
             </ul>
-            <Link href="https://wa.me/917208097050" className="mt-5 inline-flex bg-[#5e7a37] px-5 py-3 text-[11px] font-bold tracking-wide text-white transition-colors hover:bg-[#4e662f]" target="_blank" rel="noopener noreferrer">
+            <Link href="https://wa.me/+919654900525" className="mt-5 inline-flex bg-[#5e7a37] px-5 py-3 text-[11px] font-bold tracking-wide text-white transition-colors hover:bg-[#4e662f]" target="_blank" rel="noopener noreferrer">
               WHATSAPP CHAT
             </Link>
           </div>

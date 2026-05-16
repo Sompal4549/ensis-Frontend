@@ -59,9 +59,9 @@ export const BlogInsights = () => {
         </div>
       </Container>
       
-      <div className="relative overflow-hidden bg-[#1f261b] py-8 text-white">
+      <div className="relative overflow-hidden bg-[#1f261b] py-4 text-white">
         <Image src={img7} alt="" fill style={{ objectFit: 'cover' }} className="opacity-25" />
-        <Container className="relative z-10 flex flex-col justify-between gap-5 md:flex-row md:items-center">
+        <Container className="relative z-10 flex flex-col justify-center gap-20 md:flex-row md:items-center">
           <div>
             <h2 className="font-serif text-3xl leading-tight">Ready to Build Your Dream Wellness Space?</h2>
             <p className="mt-2 text-sm text-[#e5dccf]">Connect with our experts for personalized consultation and premium solutions.</p>
