@@ -303,7 +303,7 @@ const SocialSidebar = () => {
                 rel="noopener noreferrer"
                 className="social-button"
                 style={{ borderColor: social.color }}
-                onClick={() => analyticsApi.logClick(`Social: ${social.label}`)}
+               
               >
                 <div className="icon-wrapper">
                   <Icon className="w-3.5 h-3.5 lg:w-[18px] lg:h-[18px]" style={{ color: social.color }} />
