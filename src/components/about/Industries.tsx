@@ -1,42 +1,60 @@
 import { Container } from "../ui/Container";
+import ayurveda from "@/assets/about/ayurveda.webp"
+import wellness from "@/assets/about/wellness.webp"
+import luxury from "@/assets/about/luxury.webp"
+import panchkarma from "@/assets/about/panchkarma.webp"
+import yoga from "@/assets/about/focus.webp"
+import wellness_clinic from "@/assets/about/wellness_clinics.webp"
+import hotels from "@/assets/about/experts.webp"
+import naturopathy from "@/assets/about/naturopathy.webp"
+import Image from "next/image";
 
 type IndustryItem = {
   title: string;
   icon: string;
+  image?: any;
 };
 
 const industries: IndustryItem[] = [
   {
     title: "Ayurveda Hospitals",
     icon: "✚",
+    image:ayurveda,
   },
   {
     title: "Wellness Resorts",
     icon: "♨",
+    image:wellness,
   },
   {
     title: "Luxury Spas",
     icon: "❀",
+    image:luxury,
   },
   {
     title: "Panchkarma Centers",
     icon: "☸",
+    image:panchkarma,
   },
   {
     title: "Yoga Retreats",
     icon: "🧘",
+    image:yoga,
   },
   {
     title: "Wellness Clinics",
     icon: "⌂",
+    image:wellness_clinic,
   },
   {
     title: "Hotels & Retreats",
     icon: "🏛",
+    image:hotels,
   },
   {
     title: "Naturopathy Centers",
     icon: "✿",
+    image:naturopathy,
   },
 ];
 
@@ -68,7 +86,7 @@ export default function IndustriesWeServe() {
             >
               {/* Icon */}
               <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full border border-[#e7d7c2] bg-[#fbf8f4] text-[24px] text-[#b78a56] transition-all duration-300 group-hover:scale-105">
-                {industry.icon}
+                <Image src={industry.image} alt={industry.title} className="h-8 w-8 object-contain" />
               </div>
 
               {/* Title */}

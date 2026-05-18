@@ -1,6 +1,12 @@
 import Image from "next/image";
 import { Container } from "../ui/Container";
 import abouteEnsis from "@/assets/home/about_ensis.webp";
+import experience from "@/assets/about/experience.webp"
+import projects from "@/assets/about/projects.webp"
+import happy_clients from "@/assets/about/happy_clients.webp"
+import states from "@/assets/about/states.webp"
+import experts from "@/assets/about/experts.webp"
+
 
 export default function AboutEnsisSection() {
   const features = [
@@ -17,26 +23,31 @@ export default function AboutEnsisSection() {
       value: '20+',
       label: 'Years of Experience',
       icon: '◎',
+      image:experience
     },
     {
       value: '1000+',
       label: 'Projects Completed',
       icon: '⬡',
+      image:projects
     },
     {
       value: '200+',
       label: 'Happy Clients',
       icon: '✿',
+      image:happy_clients
     },
     {
       value: '28',
       label: 'States Served',
       icon: '❋',
+      image:states
     },
     {
       value: '50+',
       label: 'Expert Professionals',
       icon: '✺',
+      image:experts
     },
   ];
 
@@ -115,7 +126,11 @@ export default function AboutEnsisSection() {
               key={index}
               className="flex flex-col items-center justify-center px-4 py-2 text-center"
             >
-              <div className="mb-2 text-2xl text-[#cba25f]">{item.icon}</div>
+              <div className="mb-2 text-2xl text-[#cba25f]">
+                <Image
+                  src={item.image}
+                  alt={item.label} width={50} height={50} />
+              </div>
 
               <h3 className="text-3xl font-semibold text-white">
                 {item.value}

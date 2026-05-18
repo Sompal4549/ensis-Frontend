@@ -112,7 +112,7 @@ const TurnkeyProcess: React.FC = () => {
             <h2 className="text-[#2d2a28] text-[18px] md:text-[28px] font-bold font-serif uppercase tracking-[0.4px] mb-6">
               OUR TURNKEY PROCESS
             </h2>
-
+            
             <div className="flex items-start justify-between gap-2 md:gap-4 relative">
               {steps.map((step, index) => (
                 <React.Fragment key={step.id}>
