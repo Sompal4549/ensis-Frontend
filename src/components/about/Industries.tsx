@@ -4,7 +4,7 @@ import wellness from "@/assets/about/wellness.webp"
 import luxury from "@/assets/about/luxury.webp"
 import panchkarma from "@/assets/about/panchkarma.webp"
 import yoga from "@/assets/about/focus.webp"
-import wellness_clinic from "@/assets/about/wellness_clinics.webp"
+import wellness_clinic from "@/assets/about/wellness.webp"
 import hotels from "@/assets/about/experts.webp"
 import naturopathy from "@/assets/about/naturopathy.webp"
 import Image from "next/image";
