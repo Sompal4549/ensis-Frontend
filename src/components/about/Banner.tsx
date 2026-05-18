@@ -8,59 +8,67 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import aboutHeroImage from "@/assets/home/home_banner2.webp";
+import { Container } from "../ui/Container";
 
 const AboutHero: React.FC = () => {
   return (
     <section className="w-full bg-[#e9dfd3] overflow-hidden relative">
       <Image src={aboutHeroImage} alt="About Us" className="w-full h-full object-cover absolute top-0 bottom-0 right-0 left-0" />
-    <div className="max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 min-h-[620px] z-10">
-          <div className="absolute inset-0 pointer-events-none backdrop-blur-[1px] z-20 w-[80%]"
-  style={{
-    background: `
+      <Container className=" grid grid-cols-1 lg:grid-cols-2 min-h-[620px] z-10">
+        <div className="absolute inset-0 pointer-events-none  z-20 w-[100%] block lg:hidden"
+          style={{
+            background: `
+      linear-gradient(
+        180deg,
+        rgba(250,247,242,0.0) 0%,
+        rgba(250,247,242,0.12) 24%,
+        rgba(250,247,242,0.80) 52%,
+        rgba(250,247,242,0.80) 62%,
+        rgba(250,247,242,1) 100%
+      )
+    `,
+          }} />
+ <div className="absolute inset-0 pointer-events-none backdrop-blur-[1px] z-20 w-[80%] lg:block hidden"
+          style={{
+            background: `
       linear-gradient(
         90deg,
         rgba(250,247,242,0.97) 0%,
         rgba(250,247,242,0.92) 24%,
-        rgba(250,247,242,0.60) 42%,
+        rgba(250,247,242,0.60) 52%,
         rgba(250,247,242,0.20) 62%,
         rgba(250,247,242,0.00) 100%
       )
     `,
-  }} />
+          }} />
 
-        
         {/* LEFT CONTENT */}
-        <div className="relative flex items-center px-6 sm:px-10 lg:px-16 py-16 z-30">
-          
-          {/* White Blur Overlay */}
-
-          {/* Blur Towards Right */}
-
+        <div className="relative flex items-end md:items-center py-10 z-30 lg:top-0 bottom-0">
           {/* Content */}
-          <div className="relative max-w-[560px]">
-            
+          <div className="relative max-w-[560px] ">
+
             {/* Small Heading */}
-            <p className="uppercase tracking-[2px] text-[11px] font-semibold text-[#7b6d5d] mb-5">
+            <p className="uppercase tracking-[2px] text-[11px] font-semibold text-[#7b6d5d] mb-3">
               Premium Ayurvedic Equipment & Wellness Solutions
             </p>
 
             {/* Main Heading */}
-            <h1 className="text-[42px] sm:text-[54px] leading-[1.05] font-serif text-[#173128] font-medium">
+            <h1 className="text-[42px] sm:text-[42px] leading-[1.05] font-serif text-[#173128] font-medium">
               Crafted for Wellness.
               <br />
               <span className="text-[#b58a48]">Built for Life.</span>
             </h1>
 
             {/* Description */}
-            <p className="mt-7 text-[15px] leading-[28px] text-[#5d5449] max-w-[520px]">
+            <p className="mt-3 text-[15px] leading-[22px] text-[#5d5449] max-w-[520px]">
               At ENSIS, we combine ancient Ayurvedic wisdom with modern
               craftsmanship to create authentic wellness environments that
               heal, rejuvenate and inspire.
             </p>
 
             {/* Features */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-12">
-              
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-4">
+
               <div className="flex flex-col items-center text-center relative">
                 <Leaf
                   size={26}
@@ -116,14 +124,14 @@ const AboutHero: React.FC = () => {
             </div>
 
             {/* Buttons */}
-            <div className="flex flex-wrap gap-4 mt-12">
-              
-              <button className="bg-[#173128] hover:bg-[#0f241d] transition-all text-white text-[13px] font-medium px-7 py-4 rounded-md flex items-center gap-2">
+            <div className="flex gap-4 mt-6">
+
+              <button className="bg-[#173128] hover:bg-[#0f241d] transition-all text-white text-[13px] font-medium lg:px-7 py-4 px-3  rounded-md flex items-center gap-0">
                 EXPLORE PRODUCTS
                 <ArrowRight size={15} />
               </button>
 
-              <button className="border border-[#bcae9f] bg-white/70 hover:bg-white transition-all text-[#2f2b27] text-[13px] font-medium px-7 py-4 rounded-md flex items-center gap-2">
+              <button className="border border-[#bcae9f] bg-white/70 hover:bg-white transition-all text-[#2f2b27] text-[13px] font-medium  lg:px-7 py-4 px-3 rounded-md flex items-center gap-0">
                 START YOUR PROJECT
                 <ArrowRight size={15} />
               </button>
@@ -132,10 +140,8 @@ const AboutHero: React.FC = () => {
         </div>
 
         {/* RIGHT IMAGE SECTION */}
-        <div className="relative min-h-[500px] lg:min-h-full">
+        <div className="relative lg:min-h-full lg:block hidden">
 
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/20" />
 
           {/* Experience Badge */}
           <div className="absolute top-14 right-14 w-[135px] h-[135px] rounded-full border-[3px] border-[#c7a567] bg-[#113228] text-white flex flex-col items-center justify-center shadow-2xl">
@@ -147,7 +153,7 @@ const AboutHero: React.FC = () => {
             </p>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };
