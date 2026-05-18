@@ -18,7 +18,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Header />
-        <main className="pt-28">{children}</main>
+        <main className="pt-26">{children}</main>
         <Footer />
         <SocialSidebar/>
       </body>

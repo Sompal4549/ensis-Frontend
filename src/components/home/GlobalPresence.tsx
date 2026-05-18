@@ -3,6 +3,7 @@ import { Container } from '../ui/Container';
 import { MapPin } from 'lucide-react';
 import Image from 'next/image';
 import globe from "@/assets/icons/globe.webp"
+import SubHeading from './SubHeading';
 
 export const GlobalPresence = () => {
   const stats = [
@@ -17,7 +18,7 @@ export const GlobalPresence = () => {
       <Container>
         <div className="grid items-center gap-8 lg:grid-cols-[0.6fr_1.2fr_1fr]">
           <div>
-            <span className="text-[11px] font-bold tracking-widest text-[#8d6a3a]">GLOBAL PRESENCE</span>
+            <SubHeading className=' text-[#8d6a3a]' text='GLOBAL PRESENCE' />
             <h2 className="mt-2 font-serif text-3xl leading-tight text-[#1f261b]">Trusted by Wellness<br />Professionals Worldwide</h2>
             <p className="mt-3 text-sm leading-6 text-[#5f5a50]">
               Exporting to 25+ countries and growing stronger every day

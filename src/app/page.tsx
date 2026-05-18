@@ -6,6 +6,7 @@ import { ManufacturingAndProjects } from "@/components/home/ManufacturingAndProj
 import { GlobalPresence } from "@/components/home/GlobalPresence";
 import { Testimonials } from "@/components/home/Testimonials";
 import { BlogInsights } from "@/components/home/BlogInsights";
+import WellnessRoomSetups from "@/components/home/WellnessRoomSetups";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Features />
       <ProductsGrid />
       <TurnkeySolutions />
+      <WellnessRoomSetups/>
       <ManufacturingAndProjects />
       <GlobalPresence />
       <Testimonials />

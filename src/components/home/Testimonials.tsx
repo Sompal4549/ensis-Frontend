@@ -12,6 +12,7 @@ import 'swiper/css/pagination';
 
 import quote from '@/assets/icons/quote.webp';
 import userImage from "@/assets/home/testimonial1.webp"
+import SubHeading from './SubHeading';
 
 export const Testimonials = () => {
   const testimonials = [
@@ -19,59 +20,56 @@ export const Testimonials = () => {
       text: 'Ensis has delivered exceptional quality Panchkarma equipment for our center. Their customization and support are outstanding.',
       name: 'Dr. Anand Sharma',
       role: 'Ayurveda Physician',
-      imgurl:userImage
+      imgurl: userImage
     },
     {
       text: "The spa setup by Ensis has elevated our resort's wellness experience to a whole new level.",
       name: 'Neha Malhotra',
       role: 'Wellness Resort Owner',
-      imgurl:userImage
+      imgurl: userImage
     },
     {
       text: 'Excellent workmanship, premium finishing and on-time delivery. Highly recommended!',
       name: 'Arjun Menon',
       role: 'Spa Consultant',
-      imgurl:userImage
+      imgurl: userImage
     },
     {
       text: 'Their steam chambers and massage tables are of outstanding quality. Our clients love them.',
       name: 'Priya Nair',
       role: 'Wellness Center Director',
-      imgurl:userImage
+      imgurl: userImage
     },
-        {
+    {
       text: 'Ensis has delivered exceptional quality Panchkarma equipment for our center. Their customization and support are outstanding.',
       name: 'Dr. Anand Sharma',
       role: 'Ayurveda Physician',
-      imgurl:userImage
+      imgurl: userImage
     },
     {
       text: "The spa setup by Ensis has elevated our resort's wellness experience to a whole new level.",
       name: 'Neha Malhotra',
       role: 'Wellness Resort Owner',
-      imgurl:userImage
+      imgurl: userImage
     },
     {
       text: 'Excellent workmanship, premium finishing and on-time delivery. Highly recommended!',
       name: 'Arjun Menon',
       role: 'Spa Consultant',
-      imgurl:userImage
+      imgurl: userImage
     },
     {
       text: 'Their steam chambers and massage tables are of outstanding quality. Our clients love them.',
       name: 'Priya Nair',
       role: 'Wellness Center Director',
-      imgurl:userImage
+      imgurl: userImage
     },
   ];
 
   return (
     <section className="bg-[#fbf8f2]">
       <Container>
-        <span className="text-[11px] font-bold tracking-[0.2em] text-[#8d6a3a]">
-          WHAT OUR CLIENTS SAY
-        </span>
-
+        <SubHeading className=' text-[#8d6a3a]' text='WHAT OUR CLIENTS SAY' />
         <div className="mt-8">
           <Swiper
             modules={[Autoplay, Pagination]}
@@ -100,7 +98,7 @@ export const Testimonials = () => {
             {testimonials.map((item, index) => (
               <SwiperSlide key={index}>
                 <div className="h-full border border-[#e1d7c9] bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-                  
+
                   <Image
                     height={28}
                     width={28}
@@ -114,7 +112,7 @@ export const Testimonials = () => {
                   </p>
 
                   <div className="mt-6 flex items-center gap-3">
-                    <div className="size-11 rounded-full bg-cover bg-center" style={{backgroundImage:`url(${userImage.src})`}} />
+                    <div className="size-11 rounded-full bg-cover bg-center" style={{ backgroundImage: `url(${userImage.src})` }} />
 
                     <div>
                       <h4 className="text-sm font-semibold text-[#1f261b]">

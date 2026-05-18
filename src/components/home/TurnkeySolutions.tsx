@@ -2,22 +2,29 @@ import React from 'react';
 import { ArrowRight, Building, Home, Activity, Cross, Ruler } from 'lucide-react';
 import { Container } from '../ui/Container';
 import img15 from '@/assets/home/img-15.webp';
-import god from '@/assets/icons/god.webp';
+import god from '@/assets/icons/ihouse.webp';
+import resort from '@/assets/icons/resort.webp';
+import wellness from '@/assets/icons/wellness.webp';
+import ayurveda from '@/assets/icons/ayurveda.webp';
+import interior from '@/assets/icons/interior.webp';
+
+
 import info from "@/assets/icons/info.png"
 import tf3 from "@/assets/icons/tf3.png"
 import info1 from "@/assets/icons/info1.png"
 import info2 from "@/assets/icons/info2.webp"
 import Image from 'next/image';
+import SubHeading from './SubHeading';
 
 
 
 export const TurnkeySolutions = () => {
   const solutions = [
     { imgUrl:god, title: "Panchkarma Clinic Setup" },
-    { imgUrl:info, title: "Resort & Spa Setup" },
-    { imgUrl:tf3, title: "Wellness Retreat Design" },
-    { imgUrl:info1, title: "Ayurveda Hospital Equipment" },
-    { imgUrl:info1, title: "Interior & Equipment Integration" }
+    { imgUrl:resort, title: "Resort & Spa Setup" },
+    { imgUrl:wellness, title: "Wellness Retreat Design" },
+    { imgUrl:ayurveda, title: "Ayurveda Hospital Equipment" },
+    { imgUrl:interior, title: "Interior & Equipment Integration" }
   ];
 
   return (
@@ -25,7 +32,7 @@ export const TurnkeySolutions = () => {
       <Container className="">
         <div className="grid gap-10 lg:grid-cols-[0.9fr_1.6fr] lg:items-center md:w-[85%]">
           <div className="border-r-0 border-[#d6b67c]/30 pr-0 lg:border-r lg:pr-12">
-            <span className="text-[11px] font-bold tracking-widest text-[#d5ad6a]">TURNKEY WELLNESS SOLUTIONS</span>
+          <SubHeading className=' text-[#d5ad6a]' text='TURNKEY WELLNESS SOLUTIONS' />
             <h2 className="mt-2 font-serif text-3xl leading-tight md:text-4xl">From Concept to<br />Complete Wellness Setup</h2>
             <p className="mt-4 max-w-[420px] text-sm leading-6 text-[#ddd6ca]">
               We provide end-to-end solutions for Panchkarma Clinics, Resorts, Hospitals & Wellness Centers.

@@ -12,6 +12,7 @@ import img7 from '@/assets/home/img-7.webp';
 import img8 from '@/assets/home/img-8.webp';
 import img9 from '@/assets/home/img-9.webp';
 import img10 from '@/assets/home/img-10.webp';
+import SubHeading from './SubHeading';
 
 export const ProductsGrid = () => {
   const products = [
@@ -30,7 +31,7 @@ export const ProductsGrid = () => {
       <Container>
         <div className="mb-6 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <span className="text-[11px] font-bold tracking-widest text-[#8d6a3a]">OUR PRODUCTS</span>
+            <SubHeading text={'OUR PRODUCTS'} className='text-[#8d6a3a]'/>
             <h2 className="mt-2 font-serif text-3xl leading-tight text-[#1f261b] md:text-4xl">Premium Wellness Equipment</h2>
             <p className="mt-3 max-w-[380px] text-sm leading-6 text-[#5f5a50]">
               Wide range of Ayurvedic, Spa & Wellness equipment crafted for modern wellness spaces.

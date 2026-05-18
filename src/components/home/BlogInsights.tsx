@@ -9,6 +9,7 @@ import img3 from '@/assets/home/img-3.webp';
 import img4 from '@/assets/home/img-4.webp';
 import img5 from '@/assets/home/img-5.webp';
 import img6 from '@/assets/home/img-6.webp';
+import SubHeading from './SubHeading';
 
 export const BlogInsights = () => {
   const blogs = [
@@ -38,7 +39,7 @@ export const BlogInsights = () => {
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
               <div className="grid gap-6 md:grid-cols-[0.45fr_1fr] md:items-start">
           <div>
-            <span className="text-[11px] font-bold tracking-widest text-[#8d6a3a]">FROM THE BLOG</span>
+            <SubHeading className=' text-[#8d6a3a]' text='FROM THE BLOG' />
             <h2 className="mt-2 font-serif text-3xl leading-tight text-[#1f261b] md:text-4xl">Insights & Wellness Knowledge</h2>
             <Link href="/blog" className="mt-6 inline-flex items-center gap-2 border border-[#d7cbbd] bg-white px-6 py-3 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6]">
               VIEW ALL BLOGS <ArrowRight size={16} />

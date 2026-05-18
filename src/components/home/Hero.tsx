@@ -1,88 +1,249 @@
 import React from 'react';
-import { MessageCircle } from 'lucide-react';
-import { Container } from '../ui/Container';
-import { Carousel } from '../ui/Carousel';
-import img8 from '@/assets/home/img-8.webp';
-import img2 from '@/assets/home/img-2.webp';
-
+import Link from 'next/link';
 import Image from 'next/image';
 
+import {
+  ArrowRight,
+  ShieldCheck,
+  Leaf,
+  Wrench,
+  Globe,
+} from 'lucide-react';
+
+import { Container } from '../ui/Container';
+import { Carousel } from '../ui/Carousel';
+
+import rooted from '@/assets/home/rooted_tradition.webp';
+import tradition from '@/assets/home/tradition.webp';
+import wellness_spaces from '@/assets/home/wellness_spaces.webp';
+import wooden_steam from '@/assets/home/wooden_steam.webp';
+import arrow from "@/assets/icons/arrow.png"
+
+
 export const Hero = () => {
-  const slides = [
-    (
-      <div className="relative min-h-[420px] overflow-hidden md:min-h-[520px]" key="1">
-        <Image src={img8} alt="Hero Background 1" fill priority style={{ objectFit: 'cover' }} quality={90} />
-        <div
-  className="absolute inset-0 pointer-events-none backdrop-blur-[1px]"
-  style={{
-    background: `
-      linear-gradient(
-        90deg,
-        rgba(250,247,242,0.97) 0%,
-        rgba(250,247,242,0.92) 24%,
-        rgba(250,247,242,0.70) 42%,
-        rgba(250,247,242,0.28) 58%,
-        rgba(250,247,242,0.00) 100%
-      )
-    `,
-    clipPath: "polygon(0 0, 64% 0, 50% 100%, 0 100%)",
-  }}
-/>
-        <Container className="relative z-10 flex min-h-[420px] items-center md:min-h-[520px]">
-          <div className="max-w-[650px] py-16">
-            <h1 className="font-serif text-[42px] leading-[1.05] text-[#171813] md:text-[68px]">Crafting Premium<br /><span className='text-[#525a2f]'>Panchkarma &<br />Wellness</span> Spaces</h1>
-            <p className="mt-6 max-w-[430px] text-sm leading-7 text-[#1f261b] md:text-base">
-              Manufacturers of Ayurvedic, Spa & Wellness Equipment for Clinics, Resorts, Hospitals & Global Wellness Centers.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <button className="bg-[#3c4827] px-7 py-4 text-[11px] font-bold tracking-wide text-white shadow-sm transition-colors hover:bg-[#263016]">EXPLORE PRODUCTS</button>
-              <button className="border border-[#b7ab99] bg-white/80 px-7 py-4 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-white">REQUEST CATALOGUE</button>
-              <button className="inline-flex items-center gap-2 border border-[#b7ab99] bg-white px-7 py-4 text-[11px] font-bold tracking-wide text-[#31512f] transition-colors hover:bg-[#f7f2e9]">
-                <MessageCircle size={16} /> WHATSAPP CONSULTATION
-              </button>
-            </div>
-          </div>
-        </Container>
-      </div>
-    ),
-    (
-      <div className="relative min-h-[420px] overflow-hidden md:min-h-[520px]" key="2">
-        <Image src={img2} alt="Hero Background 2" fill style={{ objectFit: 'cover' }} quality={90} />
-      <div
-  className="absolute inset-0 pointer-events-none backdrop-blur-[1px]"
-  style={{
-    background: `
-      linear-gradient(
-        90deg,
-        rgba(250,247,242,0.97) 0%,
-        rgba(250,247,242,0.92) 24%,
-        rgba(250,247,242,0.70) 42%,
-        rgba(250,247,242,0.28) 58%,
-        rgba(250,247,242,0.00) 100%
-      )
-    `,
-    clipPath: "polygon(0 0, 64% 0, 50% 100%, 0 100%)",
-  }}
-/>
-        <Container className="relative z-10 flex min-h-[420px] items-center md:min-h-[520px]">
-          <div className="max-w-[620px] py-16">
-            <h1 className="font-serif text-[42px] leading-[1.05] text-[#171813] md:text-[68px]">Elevate Your<br />Spa Experience</h1>
-            <p className="mt-6 max-w-[430px] text-sm  leading-7 text-[#1f261b] md:text-base">
-              Discover our range of handcrafted, authentic massage tables and steam chambers for ultimate relaxation.
-            </p>
-            <div className="mt-8 flex flex-wrap gap-4">
-              <button className="bg-[#3c4827] px-7 py-4 text-[11px] font-bold tracking-wide text-white shadow-sm transition-colors hover:bg-[#263016]">VIEW COLLECTION</button>
-            </div>
-          </div>
-        </Container>
-      </div>
-    )
+  const heroSlides = [
+    {
+      id: 1,
+      image: rooted,
+      title: (
+        <>
+          Rooted in Tradition
+          <br />
+          <span className="font-light italic text-[#c79b59]">
+            Crafted for Healing
+          </span>
+        </>
+      ),
+      description:
+        'Authentic Panchakarma. Timeless wellness',
+      primaryBtn: 'EXPLORE COLLECTION',
+      secondaryBtn: 'BOOK CONSULTATION',
+    },
+
+    {
+      id: 2,
+      image: wellness_spaces,
+      title: (
+        <>
+          Wellness Spaces
+          <br />
+          <span className="font-light italic text-[#c79b59]">
+            That Heal
+          </span>
+        </>
+      ),
+       description:
+        'Authentic Panchakarma. Timeless Healing',
+      primaryBtn: 'VIEW PRODUCTS',
+      secondaryBtn: 'START PROJECT',
+    },
+    {
+      id: 3,
+      image: wooden_steam,
+      title: (
+        <>
+          Wooden Steam
+          <br />
+          <span className="font-light italic text-[#c79b59]">
+            Bath
+          </span>
+        </>
+      ),
+      description:
+        'Authentic Panchakarma. Timeless Healing',
+      primaryBtn: 'DISCOVER MORE',
+      secondaryBtn: 'SCHEDULE DEMO',
+    },
+     {
+      id: 4,
+      image: tradition,
+      title: (
+        <>
+          Tradition. Therapy.
+          <br />
+          <span className="font-light italic text-[#c79b59]">
+            Transformation
+          </span>
+        </>
+      ),
+      description:
+        'Authentic Panchakarma. Timeless Healing',
+      primaryBtn: 'DISCOVER MORE',
+      secondaryBtn: 'SCHEDULE DEMO',
+    }
   ];
 
   return (
-    <section className="bg-[#faf7f2]">
+    <section className="bg-[#f7f2ea] ">
       <Carousel autoplayDelay={6000}>
-        {slides}
+        {heroSlides.map((slide) => (
+          <div
+            key={slide.id}
+            className="relative overflow-hidden pb-16"
+          >
+            {/* Background Image */}
+            <div className="absolute inset-0">
+              <Image
+                src={slide.image}
+                alt=""
+                fill
+                priority
+                quality={95}
+                className="object-cover"
+              />
+            </div>
+
+            {/* Soft Overlay */}
+
+            {/* Decorative Light */}
+            <div className="absolute left-0 top-0 h-[280px] w-[280px] bg-[#d8c19d]/20 blur-3xl" />
+
+            {/* Content */}
+            <Container className="relative z-10">
+              <div className="flex min-h-[500px] items-center">
+
+                <div className="max-w-[700px] pt-10">
+                  {/* Main Heading */}
+                  <h1 className="mt-6 font-serif text-[40px] leading-[0.96] tracking-[-0.03em] text-[#1f261b] lg:text-[52px]">
+                    {slide.title}
+                  </h1>
+
+                  {/* Divider */}
+                  <div className="flex w-full py-4">
+                    <Image src={arrow} alt='arrow' width={300} height={10} />
+                  </div>
+
+                  {/* Categories */}
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] font-medium tracking-[0.16em] text-[#313628]">
+                    <span>PANCHKARMA EQUIPMENT</span>
+                  </div>
+
+                  {/* Description */}
+                  {/* <p className="mt-7 max-w-[560px] text-[15px] leading-8 text-[#4f5449]">
+                    {slide.description}
+                  </p> */}
+
+                  {/* CTA Buttons */}
+                  <div className="mt-6 flex flex-wrap gap-5">
+
+                    <Link
+                      href="/products"
+                      className="inline-flex h-[58px] items-center justify-center gap-3 rounded-[2px] bg-[#2f4420] px-8 text-[12px] font-semibold tracking-[0.16em] text-white transition-all duration-300 hover:bg-[#1f2d14] rounded-md"
+                    >
+                      <span className='text-white'>
+                        {slide.primaryBtn}
+                      </span>
+                      <ArrowRight size={17} className='text-white' />
+                    </Link>
+
+                    {/* <Link
+                      href="/contact"
+                      className="inline-flex h-[58px] items-center justify-center border border-[#ceb489] bg-white/60 px-8 text-[12px] font-semibold tracking-[0.16em] text-[#9e7740] backdrop-blur-sm transition-all duration-300 hover:bg-white rounded-md"
+                    >
+                      {slide.secondaryBtn}
+                    </Link> */}
+
+                  </div>
+
+                  {/* Features */}
+                  {/* <div className="mt-6 flex flex-wrap gap-y-6 border-t border-[#dccfbf] pt-7">
+
+                    <div className="flex items-center gap-3 pr-8">
+                      <Leaf
+                        size={24}
+                        className="text-[#b89157]"
+                      />
+
+                      <div>
+                        <p className="text-[13px] font-semibold tracking-[0.08em] text-[#27311f]">
+                          AYURVEDA
+                        </p>
+
+                        <p className="text-[13px] text-[#4d5247]">
+                          Expertise
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 border-l border-[#d8cab7] px-8">
+                      <ShieldCheck
+                        size={24}
+                        className="text-[#b89157]"
+                      />
+
+                      <div>
+                        <p className="text-[13px] font-semibold tracking-[0.08em] text-[#27311f]">
+                          PREMIUM
+                        </p>
+
+                        <p className="text-[13px] text-[#4d5247]">
+                          Quality
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 border-l border-[#d8cab7] px-8">
+                      <Wrench
+                        size={24}
+                        className="text-[#b89157]"
+                      />
+
+                      <div>
+                        <p className="text-[13px] font-semibold tracking-[0.08em] text-[#27311f]">
+                          CUSTOM
+                        </p>
+
+                        <p className="text-[13px] text-[#4d5247]">
+                          Solutions
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-3 border-l border-[#d8cab7] pl-8">
+                      <Globe
+                        size={24}
+                        className="text-[#b89157]"
+                      />
+
+                      <div>
+                        <p className="text-[13px] font-semibold tracking-[0.08em] text-[#27311f]">
+                          PAN INDIA
+                        </p>
+
+                        <p className="text-[13px] text-[#4d5247]">
+                          Installation
+                        </p>
+                      </div>
+                    </div>
+
+                  </div> */}
+
+                </div>
+
+              </div>
+            </Container>
+          </div>
+        ))}
       </Carousel>
     </section>
   );
