@@ -4,10 +4,6 @@ import Image from 'next/image';
 
 import {
   ArrowRight,
-  ShieldCheck,
-  Leaf,
-  Wrench,
-  Globe,
 } from 'lucide-react';
 
 import { Container } from '../ui/Container';
