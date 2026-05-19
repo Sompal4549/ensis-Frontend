@@ -32,8 +32,8 @@ export const Features = () => {
   ];
 
   return (
-    <section className=" relative z-10 -top-16">
-      <div className='container mx-auto px-6 md:px-10 max-w-[1200px] py-4 md:py-6 border-y border-[#e5dccf] bg-[#f3eee6] rounded-xl'>
+    <section className="absolute z-10 -bottom-16 left-1/2 -translate-x-1/2 transform container mx-auto  max-w-300 ">
+      <div className=' border-y border-[#e5dccf] bg-[#f3eee6] rounded-xl py-4 md:py-6 px-6 md:px-10'>
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {features.map((feature, index) => (
             <div key={index} className="flex items-start gap-5 ">

@@ -1,4 +1,5 @@
 import { Container } from "../ui/Container";
+import AboutTitle from "./AboutTitle";
 
 export default function OurProductsSection() {
   const products = [
@@ -44,22 +45,10 @@ export default function OurProductsSection() {
     <section className="w-full bg-[#f7f2ec]">
       <Container>
         {/* Header */}
-        <div className="mb-4 flex items-center justify-between">
-          <div className="flex-1 border-t border-[#d9cec0]" />
-
-          <div className="px-6 text-center">
-            <p className="text-[12px] md:text-sm font-semibold tracking-[0.2em] text-[#4f4338] uppercase">
-              Our Products
-            </p>
-
-            <div className="mt-1 flex justify-center">
-              <div className="h-[2px] w-10 bg-[#b59363] rounded-full" />
-            </div>
-          </div>
-
-          <div className="flex-1 border-t border-[#d9cec0]" />
-        </div>
-
+        
+     <AboutTitle
+              title="Our Products"
+            />
         {/* Top Link */}
         <div className="mb-5 flex justify-end">
           <button className="group flex items-center gap-2 text-[13px] font-medium text-[#8a6b47] transition-colors hover:text-[#6b5134]">

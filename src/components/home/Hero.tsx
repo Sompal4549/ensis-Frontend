@@ -18,6 +18,7 @@ import tradition from '@/assets/home/tradition.webp';
 import wellness_spaces from '@/assets/home/wellness_spaces.webp';
 import wooden_steam from '@/assets/home/wooden_steam.webp';
 import arrow from "@/assets/icons/arrow.png"
+import { Features } from './Features';
 
 
 export const Hero = () => {
@@ -94,12 +95,12 @@ export const Hero = () => {
   ];
 
   return (
-    <section className="bg-[#f7f2ea] ">
+    <section className="bg-[#f7f2ea] relative z-20 mb-16">
       <Carousel autoplayDelay={6000}>
         {heroSlides.map((slide) => (
           <div
             key={slide.id}
-            className="relative overflow-hidden pb-16"
+            className="relative pb-16"
           >
             {/* Background Image */}
             <div className="absolute inset-0">
@@ -242,6 +243,8 @@ export const Hero = () => {
 
               </div>
             </Container>
+      <Features />
+
           </div>
         ))}
       </Carousel>

@@ -73,9 +73,19 @@ export default function AboutEnsisSection() {
 
           {/* Middle Content */}
           <div className="flex flex-col justify-center px-6 py-8 md:px-8 lg:px-10">
-            <h2 className="mb-5 text-2xl font-bold tracking-wide text-[#2d2b28] uppercase">
-              About Ensis
-            </h2>
+            
+        <h2
+          className="
+            text-[#2d2b28]
+            text-[28px]
+            font-semibold
+            tracking-[2px]
+            uppercase
+            font-serif
+          "
+        >
+          About ENSIS
+        </h2>
               <div className="h-[3px] w-25 bg-red-500 mb-5 rounded-full"></div>
 
             <div className="space-y-4 text-sm leading-7 text-[#5a534d] md:text-[15px]">

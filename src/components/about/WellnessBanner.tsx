@@ -20,7 +20,11 @@ export default function WellnessBanner() {
         <div className="relative z-10 grid min-h-[220px] grid-cols-1 items-center gap-8 px-6 md:grid-cols-2 md:px-0 lg:px-0">
           {/* Left Side */}
           <div className="max-w-xl">
-            <h2 className="text-xl font-semibold leading-tight tracking-wide text-[#f5efe6] md:text-3xl">
+            <h2 className="    text-[28px]
+            font-semibold
+            tracking-[2px]
+            uppercase
+            font-serif text-[#f5efe6]">
               LET’S BUILD YOUR
               <br />
               WELLNESS SPACE

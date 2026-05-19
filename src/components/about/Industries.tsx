@@ -4,10 +4,11 @@ import wellness from "@/assets/about/wellness.webp"
 import luxury from "@/assets/about/luxury.webp"
 import panchkarma from "@/assets/about/panchkarma.webp"
 import yoga from "@/assets/about/focus.webp"
-import wellness_clinic from "@/assets/about/wellness.webp"
+import wellness_clinic from "@/assets/about/wellness_clinics.webp"
 import hotels from "@/assets/about/experts.webp"
 import naturopathy from "@/assets/about/naturopathy.webp"
 import Image from "next/image";
+import AboutTitle from "./AboutTitle";
 
 type IndustryItem = {
   title: string;
@@ -63,7 +64,7 @@ export default function IndustriesWeServe() {
     <section className="w-full bg-[#f8f5f1] py-10 px-4 md:px-8">
       <Container>
         {/* Heading */}
-        <div className="mb-8 flex items-center justify-center gap-4">
+        {/* <div className="mb-8 flex items-center justify-center gap-4">
           <div className="h-px flex-1 bg-[#e5ddd2]" />
 
           <div className="flex flex-col items-center">
@@ -75,8 +76,8 @@ export default function IndustriesWeServe() {
           </div>
 
           <div className="h-px flex-1 bg-[#e5ddd2]" />
-        </div>
-
+        </div> */}
+<AboutTitle title="Industries We Serve" />
         {/* Cards */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8">
           {industries.map((industry, index) => (

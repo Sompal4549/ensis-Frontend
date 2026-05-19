@@ -27,7 +27,7 @@ export const ProductsGrid = () => {
   ];
 
   return (
-    <section className="bg-[#fbf8f2]">
+    <section className="bg-[#fbf8f2] relative z-10">
       <Container>
         <div className="mb-6 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>

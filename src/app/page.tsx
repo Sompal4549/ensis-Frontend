@@ -12,7 +12,6 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Features />
       <ProductsGrid />
       <TurnkeySolutions />
       <WellnessRoomSetups/>

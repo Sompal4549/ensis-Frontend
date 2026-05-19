@@ -15,8 +15,8 @@ export const Carousel: React.FC<CarouselProps> = ({ children, autoplayDelay = 50
   ]);
 
   return (
-    <div className="relative w-full overflow-hidden">
-      <div className="overflow-hidden" ref={emblaRef}>
+    <div className="relative w-full">
+      <div className="" ref={emblaRef}>
         <div className="flex">
           {children.map((child, index) => (
             <div className="min-w-0 shrink-0 grow-0 basis-full" key={index}>

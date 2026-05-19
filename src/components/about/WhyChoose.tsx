@@ -1,5 +1,8 @@
 import React from "react";
 import { Container } from "../ui/Container";
+import AboutTitle from "./AboutTitle";
+import Image from "next/image";
+import authentic from "@/assets/about/focus.webp";
 
 type Feature = {
   id: number;
@@ -21,20 +24,7 @@ const features: Feature[] = [
     description:
       "Designs rooted in ancient Ayurvedic principles for effective therapies.",
     icon: (
-      <IconWrapper>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.7"
-          className="w-9 h-9"
-        >
-          <circle cx="12" cy="6" r="2" />
-          <circle cx="6" cy="16" r="2" />
-          <circle cx="18" cy="16" r="2" />
-          <path d="M12 8v4M8 16h8M8 14l4-2 4 2" />
-        </svg>
-      </IconWrapper>
+      <Image src={authentic} alt="Authentic & Ayurvedic" width={100} height={100}  />
     ),
   },
   {
@@ -145,19 +135,7 @@ const WhyChooseEnsis: React.FC = () => {
   return (
     <section className="w-full bg-[#f8f5f1] text-[#2e2b28]">
       <Container>
-        <div className="flex items-center justify-center gap-3.5 mb-1">
-          <div className="w-[70px] h-px bg-[#d9cfc5]" />
-
-          <h2 className="text-[24px] md:text-[32px] leading-none font-bold tracking-[0.5px] text-[#2d2a28] font-serif">
-            WHY CHOOSE ENSIS?
-          </h2>
-
-          <div className="w-[70px] h-px bg-[#d9cfc5]" />
-        </div>
-
-        <div className="text-center text-[#bda88f] text-sm mb-2.5">
-          ❦
-        </div>
+        <AboutTitle title="Why Choose Ensis?" />
 
         <p className="text-center text-sm text-[#5e5a55] mb-[30px] max-w-3xl mx-auto">
           We don&apos;t just sell products, we create complete wellness
@@ -168,7 +146,7 @@ const WhyChooseEnsis: React.FC = () => {
           {features.map((feature) => (
             <div
               key={feature.id}
-              className="bg-[#f3ede7] rounded-xl px-[18px] py-7 min-h-[220px] text-center border border-[rgba(194,174,153,0.15)] transition-transform duration-200 hover:-translate-y-[2px]"
+              className="bg-[#f3ede7] rounded-xl px-[18px] py-7 min-h-[220px] text-center border border-[rgba(194,174,153,0.15)] transition-transform duration-200 hover:-translate-y-[2px] flex items-center justify-center flex-col"
             >
               {feature.icon}
 
