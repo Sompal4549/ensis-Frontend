@@ -3,7 +3,7 @@ import { Container } from "../ui/Container";
 import trunkry from "@/assets/about/trunkry.webp"
 import Image from "next/image";
 import design from "@/assets/icons/design_and_visualization.webp";
-import manufacturing from "@/assets/icons/manufacturing.webp";
+import manufacturing from "@/assets/about/manufacturing.png";
 import installation from "@/assets/icons/instalation_and_execution.webp";
 import after_sales_support from "@/assets/icons/after_sales_support.webp";
 
@@ -42,16 +42,7 @@ const steps: ProcessStep[] = [
     id: 3,
     title: "MANUFACTURING & PRODUCTION",
     icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        className="w-8 h-8"
-      >
-        <path d="M12 3l7 4v10l-7 4-7-4V7l7-4z" />
-        <path d="M12 7v10M7 9.5l10 5" />
-      </svg>
+      <Image src={manufacturing} alt="Manufacturing & Production" width={24} height={24} className="text-[#b79a7a] mb-3 object-cover" />
     ),
   },
   {
