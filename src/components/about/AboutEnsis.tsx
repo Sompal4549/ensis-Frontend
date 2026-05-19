@@ -1,11 +1,11 @@
 import Image from "next/image";
 import { Container } from "../ui/Container";
 import abouteEnsis from "@/assets/home/about_ensis.webp";
-import experience from "@/assets/about/experience.webp"
-import projects from "@/assets/about/projects.webp"
-import happy_clients from "@/assets/icons/happy_clients.webp"
-import states from "@/assets/icons/states.webp"
-import experts from "@/assets/icons/experts.webp"
+import experience from "@/assets/images/experience.webp"
+import projects from "@/assets/images/projects.webp"
+import happy_clients from "@/assets/images/happy_clients.webp"
+import states from "@/assets/images/states_served.webp"
+import experts from "@/assets/images/professionals.webp"
 
 
 export default function AboutEnsisSection() {
