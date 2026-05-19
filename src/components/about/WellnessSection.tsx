@@ -116,7 +116,7 @@ const WellnessSection: React.FC = () => {
 
                 <div className="w-20 h-[1px] bg-[#d5bc94] mx-auto mb-3" />
 
-                <button className="group flex items-center justify-center gap-1 mx-auto text-[#1f2b24] text-[12px] uppercase tracking-wide font-semibold">
+                <button className="group flex items-center justify-center gap-1 mx-auto text-[#1f2b24] text-[10px] uppercase tracking-wide font-semibold">
                   View Products
                   <ChevronRight
                     size={16}

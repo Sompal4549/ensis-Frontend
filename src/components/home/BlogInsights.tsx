@@ -64,10 +64,10 @@ export const BlogInsights = () => {
         <Image src={img7} alt="" fill style={{ objectFit: 'cover' }} className="opacity-25" />
         <Container className="relative z-10 flex flex-col justify-center gap-20 md:flex-row md:items-center">
           <div>
-            <h2 className="font-serif text-3xl leading-tight">Ready to Build Your Dream Wellness Space?</h2>
+            <h2 className="font-serif text-2xl leading-tight">Ready to Build Your Dream Wellness Space?</h2>
             <p className="mt-2 text-sm text-[#e5dccf]">Connect with our experts for personalized consultation and premium solutions.</p>
           </div>
-          <button className="w-fit bg-[#d0a965] px-7 py-3 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#ead0a0]">CONTACT US TODAY</button>
+          <button className="w-fit bg-[#d0a965] px-7 py-3 text-sm font-bold tracking-wide text-white transition-colors hover:bg-[#ead0a0] rounded-md">CONTACT US TODAY</button>
         </Container>
       </div>
     </section>
