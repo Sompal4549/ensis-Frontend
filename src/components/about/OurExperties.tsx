@@ -6,6 +6,7 @@ import wellnessImage from "@/assets/home/wellness_interiors.webp";
 import steamImage from "@/assets/home/steam_sauna.webp";
 import turnkeyImage from "@/assets/home/trunkey_projects.webp";
 import Image from "next/image";
+import AboutTitle from "./AboutTitle";
 
 const expertiseData = [
     {
@@ -43,11 +44,7 @@ const ExpertiseSection: React.FC = () => {
         <section >
             <Container>
                 {/* Heading */}
-                <div className="flex justify-center mb-8">
-                    <span className="text-[12px] md:text-sm font-semibold tracking-[1.5px] text-[#3b3b3b] uppercase">
-                        Our Expertise
-                    </span>
-                </div>
+              <AboutTitle title="Our Expertise" />
 
                 {/* Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
