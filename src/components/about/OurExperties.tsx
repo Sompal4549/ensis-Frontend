@@ -4,7 +4,7 @@ import { Container } from "../ui/Container";
 import panchkarmaImage from "@/assets/home/panchkarma_2.webp";
 import wellnessImage from "@/assets/home/wellness_interiors.webp";
 import steamImage from "@/assets/home/steam_sauna.webp";
-import turnkeyImage from "@/assets/home/shirodha.webp";
+import turnkeyImage from "@/assets/home/trunkey_projects.webp";
 import Image from "next/image";
 
 const expertiseData = [
