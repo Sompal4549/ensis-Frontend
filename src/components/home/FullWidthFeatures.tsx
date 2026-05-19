@@ -1,19 +1,26 @@
 import React from "react";
 import { Leaf } from "lucide-react";
 import { Container } from "../ui/Container";
-
+import authentic_ayurveda from "@/assets/home/authentic_ayurveda_icon.webp";
+import holistic_wellbeing from "@/assets/home/holistic_wellbeing.webp";
+import timeless_care from "@/assets/home/timeless_care.webp";
+import Image from "next/image";
+import flower from "@/assets/about/lotus.webp";
 const features = [
   {
     title: "Authentic Ayurveda",
     subtitle: "Rooted in ancient wisdom",
+    img: authentic_ayurveda
   },
   {
     title: "Holistic Well-being",
     subtitle: "For mind, body & soul",
+    img: holistic_wellbeing
   },
   {
     title: "Timeless Care",
     subtitle: "Lasting transformation",
+    img:  timeless_care,
   },
 ];
 
@@ -30,11 +37,7 @@ export default function FullWidthFeatures() {
               >
                 {/* Icon */}
                 <div className="flex items-center justify-center w-12 h-12 shrink-0">
-                  <Leaf
-                    size={22}
-                    className="text-[#d4a85c]"
-                    strokeWidth={1.7}
-                  />
+               <Image src={item.img} alt={item.title} width={28} height={28} className="w-full h-full object-contain"/>
                 </div>
 
                 {/* Text */}
@@ -55,11 +58,7 @@ export default function FullWidthFeatures() {
               </span>
 
               <div className="flex items-center justify-center w-7 h-7">
-                <Leaf
-                  size={14}
-                  className="text-[#d4a85c]"
-                  strokeWidth={2}
-                />
+              <Image src={flower} alt="flower" width={28} height={28} className="w-full h-full object-cover" />
               </div>
             </button>
           </div>

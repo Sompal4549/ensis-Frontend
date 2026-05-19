@@ -2,7 +2,12 @@ import React from "react";
 import { Container } from "../ui/Container";
 import AboutTitle from "./AboutTitle";
 import Image from "next/image";
-import authentic from "@/assets/about/focus.webp";
+import authentic from "@/assets/icons/authentic_focus.webp";
+import on_time_delivery from "@/assets/icons/on_time_delivery.webp";
+import after_sales_support from "@/assets/icons/after_sales_support.webp";
+import custom_solutions from "@/assets/icons/custom_solutions.webp";
+import premium_quality from "@/assets/icons/premium_quality.webp";
+import trunky_wellness_experts from "@/assets/icons/trunky_wellness_experts.webp";
 
 type Feature = {
   id: number;
@@ -24,7 +29,9 @@ const features: Feature[] = [
     description:
       "Designs rooted in ancient Ayurvedic principles for effective therapies.",
     icon: (
-      <Image src={authentic} alt="Authentic & Ayurvedic" width={100} height={100}  />
+       <IconWrapper>
+      <Image src={authentic} alt="Authentic & Ayurvedic" width={24} height={24}  />
+      </IconWrapper>
     ),
   },
   {
@@ -34,16 +41,7 @@ const features: Feature[] = [
       "Using the finest wood, metals and accessories built to last.",
     icon: (
       <IconWrapper>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.7"
-          className="w-9 h-9"
-        >
-          <path d="M12 3l2 2.5 3.2-.5.7 3 2.6 1.8-1.6 2.8 1.6 2.8-2.6 1.8-.7 3-3.2-.5L12 21l-2-2.5-3.2.5-.7-3L3.5 14l1.6-2.8L3.5 8.4 6.1 6.6l.7-3 3.2.5L12 3z" />
-          <circle cx="12" cy="12" r="3.5" />
-        </svg>
+       <Image src={premium_quality} alt="Premium Quality" width={24} height={24}  />
       </IconWrapper>
     ),
   },
@@ -54,16 +52,8 @@ const features: Feature[] = [
       "Tailor-made equipment and interiors to fit your exact requirements.",
     icon: (
       <IconWrapper>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.7"
-          className="w-9 h-9"
-        >
-          <path d="M12 3l2 2.5 3.2-.5.7 3 2.6 1.8-1.6 2.8 1.6 2.8-2.6 1.8-.7 3-3.2-.5L12 21l-2-2.5-3.2.5-.7-3L3.5 14l1.6-2.8L3.5 8.4 6.1 6.6l.7-3 3.2.5L12 3z" />
-          <path d="M10 9h4v6h-4z" />
-        </svg>
+      <Image src={custom_solutions} alt="Authentic & Ayurvedic" width={24} height={24}  />
+    
       </IconWrapper>
     ),
   },
@@ -74,17 +64,8 @@ const features: Feature[] = [
       "From concept to handover, we handle everything under one roof.",
     icon: (
       <IconWrapper>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.7"
-          className="w-9 h-9"
-        >
-          <path d="M8 4h3l5 5v3l-4 4H8a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3z" />
-          <circle cx="10" cy="8" r="1.5" />
-          <circle cx="14" cy="14" r="1.5" />
-        </svg>
+      <Image src={trunky_wellness_experts} alt="Authentic & Ayurvedic" width={24} height={24}  />
+     
       </IconWrapper>
     ),
   },
@@ -95,17 +76,7 @@ const features: Feature[] = [
       "Timely execution with professional installation support.",
     icon: (
       <IconWrapper>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.7"
-          className="w-9 h-9"
-        >
-          <path d="M12 4v8" />
-          <path d="M8 9l4 4 4-4" />
-          <path d="M4 16c1.5 0 2.5 1 4 1s2.5-1 4-1 2.5 1 4 1 2.5-1 4-1" />
-        </svg>
+      <Image src={on_time_delivery} alt="On-Time Delivery" width={24} height={24}  />
       </IconWrapper>
     ),
   },
@@ -116,16 +87,7 @@ const features: Feature[] = [
       "Reliable support for maintenance and long term relationships.",
     icon: (
       <IconWrapper>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.7"
-          className="w-9 h-9"
-        >
-          <path d="M12 3l6 2v5c0 4.5-2.5 7-6 9-3.5-2-6-4.5-6-9V5l6-2z" />
-          <path d="M9.5 12l2 2 3-4" />
-        </svg>
+      <Image src={after_sales_support} alt="After Sales Support" width={24} height={24}  />
       </IconWrapper>
     ),
   },
@@ -137,7 +99,7 @@ const WhyChooseEnsis: React.FC = () => {
       <Container>
         <AboutTitle title="Why Choose Ensis?" />
 
-        <p className="text-center text-sm text-[#5e5a55] mb-[30px] max-w-3xl mx-auto">
+        <p className="text-center text-sm text-[#5e5a55] mb-[20px] max-w-3xl mx-auto">
           We don&apos;t just sell products, we create complete wellness
           experiences.
         </p>
@@ -150,7 +112,7 @@ const WhyChooseEnsis: React.FC = () => {
             >
               {feature.icon}
 
-              <h3 className="mb-3 text-[16px] font-extrabold leading-[1.5] tracking-[0.4px] text-[#2d2a28]">
+              <h3 className="mb-3 text-[14px] font-semibold tracking-[0.4px] text-[#2d2a28]">
                 {feature.title}
               </h3>
 

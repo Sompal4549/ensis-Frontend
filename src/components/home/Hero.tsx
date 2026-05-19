@@ -9,10 +9,10 @@ import {
 import { Container } from '../ui/Container';
 import { Carousel } from '../ui/Carousel';
 
-import rooted from '@/assets/home/rooted_tradition.webp';
-import tradition from '@/assets/home/tradition.webp';
+import rooted from '@/assets/home/rooted_tradition_3.webp';
+import tradition from '@/assets/home/tradition_1.webp';
 import wellness_spaces from '@/assets/home/wellness_spaces.webp';
-import wooden_steam from '@/assets/home/wooden_steam.webp';
+import wooden_steam from '@/assets/home/wooden.webp';
 import arrow from "@/assets/icons/arrow.png"
 import { Features } from './Features';
 
@@ -119,7 +119,7 @@ export const Hero = () => {
             <Container className="relative z-10">
               <div className="flex min-h-[500px] items-center">
 
-                <div className="max-w-[700px] pt-10">
+                <div className="max-w-[700px] pt-10 pl-15">
                   {/* Main Heading */}
                   <h1 className="mt-6 font-serif text-[40px] leading-[0.96] tracking-[-0.03em] text-[#1f261b] lg:text-[52px]">
                     {slide.title}
@@ -131,8 +131,8 @@ export const Hero = () => {
                   </div>
 
                   {/* Categories */}
-                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] font-medium tracking-[0.16em] text-[#313628]">
-                    <span>PANCHKARMA EQUIPMENT</span>
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] font-semibold tracking-[0.16em] text-[#313628]">
+                    <span className='font-semibold'>PANCHKARMA EQUIPMENT</span>
                   </div>
 
                   {/* Description */}
@@ -239,11 +239,11 @@ export const Hero = () => {
 
               </div>
             </Container>
-      <Features />
 
           </div>
         ))}
       </Carousel>
+        <Features />
     </section>
   );
 };

@@ -1,5 +1,12 @@
 import { Container } from "../ui/Container";
 import AboutTitle from "./AboutTitle";
+import img12 from "@/assets/home/img-12.webp"
+import panchkarma_2 from "@/assets/home/panchkarma_2.webp"
+import steam from "@/assets/home/steam.webp"
+import wellness_assosries from "@/assets/home/wellness_assossories.webp"
+import wellness_furniture from "@/assets/home/wellness_furniture.webp"
+import wellnessInteriors from "@/assets/home/wellness_interiors.webp"
+import Image from "next/image";
 
 export default function OurProductsSection() {
   const products = [
@@ -7,37 +14,34 @@ export default function OurProductsSection() {
       title: 'PANCHKARMA',
       subtitle: 'EQUIPMENT',
       image:
-        'https://images.unsplash.com/photo-1513694203232-719a280e022f?q=80&w=1200&auto=format&fit=crop',
+        panchkarma_2,
     },
     {
       title: 'SHIRODHARA',
       subtitle: 'EQUIPMENT',
-      image:
-        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop',
+      image: img12,
     },
     {
       title: 'STEAM & SAUNA',
       subtitle: 'SOLUTIONS',
-      image:
-        'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+      image: steam,
     },
     {
       title: 'WELLNESS',
       subtitle: 'FURNITURE',
-      image:
-        'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+      image: wellness_furniture,
     },
     {
       title: 'WELLNESS',
       subtitle: 'ACCESSORIES',
       image:
-        'https://images.unsplash.com/photo-1515377905703-c4788e51af15?q=80&w=1200&auto=format&fit=crop',
+        wellness_assosries,
     },
     {
       title: 'WELLNESS',
       subtitle: 'INTERIORS',
       image:
-        'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+        wellnessInteriors,
     },
   ];
 
@@ -45,10 +49,10 @@ export default function OurProductsSection() {
     <section className="w-full bg-[#f7f2ec]">
       <Container>
         {/* Header */}
-        
-     <AboutTitle
-              title="Our Products"
-            />
+
+        <AboutTitle
+          title="Our Products"
+        />
         {/* Top Link */}
         <div className="mb-5 flex justify-end">
           <button className="group flex items-center gap-2 text-[13px] font-medium text-[#8a6b47] transition-colors hover:text-[#6b5134]">
@@ -68,7 +72,9 @@ export default function OurProductsSection() {
             >
               {/* Image */}
               <div className="relative aspect-[1/1] overflow-hidden bg-[#eee]">
-                <img
+                <Image
+                  width={250}
+                  height={350}
                   src={product.image}
                   alt={product.title}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"

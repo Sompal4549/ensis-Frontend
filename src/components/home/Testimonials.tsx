@@ -13,6 +13,7 @@ import 'swiper/css/pagination';
 import quote from '@/assets/icons/quote.webp';
 import userImage from "@/assets/home/testimonial1.webp"
 import SubHeading from './SubHeading';
+import { FaStar } from 'react-icons/fa';
 
 export const Testimonials = () => {
   const testimonials = [
@@ -104,13 +105,19 @@ export const Testimonials = () => {
                     width={28}
                     alt="quote"
                     src={quote}
-                    className="mb-5"
+                    className="mb-2"
                   />
 
                   <p className="min-h-[110px] text-[14px] leading-7 text-[#3f3a32]">
                     {item.text}
                   </p>
-
+<div className='flex text-orange-400 items-center gap-2 my-2'>
+<FaStar/>
+<FaStar/>
+<FaStar/>
+<FaStar/>
+<FaStar/>
+</div>
                   <div className="mt-6 flex items-center gap-3">
                     <div className="size-11 rounded-full bg-cover bg-center" style={{ backgroundImage: `url(${userImage.src})` }} />
 
@@ -123,6 +130,7 @@ export const Testimonials = () => {
                         {item.role}
                       </span>
                     </div>
+                    
                   </div>
                 </div>
               </SwiperSlide>

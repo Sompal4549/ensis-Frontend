@@ -2,6 +2,10 @@ import React from "react";
 import { Container } from "../ui/Container";
 import trunkry from "@/assets/about/trunkry.webp"
 import Image from "next/image";
+import design from "@/assets/icons/design_and_visualization.webp";
+import manufacturing from "@/assets/icons/manufacturing.webp";
+import installation from "@/assets/icons/instalation_and_execution.webp";
+import after_sales_support from "@/assets/icons/after_sales_support.webp";
 
 type ProcessStep = {
   id: number;
@@ -31,16 +35,7 @@ const steps: ProcessStep[] = [
     id: 2,
     title: "DESIGN & 3D VISUALIZATION",
     icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        className="w-8 h-8"
-      >
-        <circle cx="12" cy="8" r="3" />
-        <path d="M5 19c1.5-3 4-5 7-5s5.5 2 7 5" />
-      </svg>
+      <Image src={design} alt="Design & Visualization" width={24} height={24} className="text-[#b79a7a] mb-3" />
     ),
   },
   {
@@ -63,33 +58,14 @@ const steps: ProcessStep[] = [
     id: 4,
     title: "INSTALLATION & EXECUTION",
     icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        className="w-8 h-8"
-      >
-        <path d="M5 18l5-5" />
-        <path d="M14 5l5 5" />
-        <path d="M8 21l-5-5 11-11 5 5-11 11z" />
-      </svg>
+       <Image src={installation} alt="Installation & Execution" width={24} height={24} className="text-[#b79a7a] mb-3" />
     ),
   },
   {
     id: 5,
     title: "HANDOVER & SUPPORT",
     icon: (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.7"
-        className="w-8 h-8"
-      >
-        <path d="M12 3l7 3v5c0 5-3 8-7 10-4-2-7-5-7-10V6l7-3z" />
-        <path d="M9 12l2 2 4-4" />
-      </svg>
+      <Image src={after_sales_support} alt="After Sales Support" width={24} height={24} className="text-[#b79a7a] mb-3" />
     ),
   },
 ];
@@ -109,7 +85,7 @@ const TurnkeyProcess: React.FC = () => {
         <div className="relative flex flex-col lg:flex-row items-stretch min-h-[200px]">
           {/* LEFT SIDE */}
           <div className="w-full lg:w-[58%] px-6 md:px-10 py-4 flex flex-col justify-center relative z-10">
-            <h2 className="text-[#2d2a28] text-[18px] md:text-[28px] font-bold font-serif uppercase tracking-[0.4px] mb-6">
+            <h2 className="text-[#2d2a28] text-[18px] md:text-[24px] font-semibold font-serif uppercase tracking-[0.4px] mb-6">
               OUR TURNKEY PROCESS
             </h2>
             

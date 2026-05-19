@@ -1,11 +1,11 @@
 import { Container } from "../ui/Container";
 import ayurveda from "@/assets/about/ayurveda.webp"
-import wellness from "@/assets/about/wellness.webp"
+import wellness from "@/assets/icons/luxury_spas.webp"
 import luxury from "@/assets/about/luxury.webp"
 import panchkarma from "@/assets/about/panchkarma.webp"
-import yoga from "@/assets/about/focus.webp"
+import yoga from "@/assets/icons/authentic_focus.webp"
 import wellness_clinic from "@/assets/about/wellness_clinics.webp"
-import hotels from "@/assets/about/experts.webp"
+import hotels from "@/assets/icons/hotels_and_retreats.webp"
 import naturopathy from "@/assets/about/naturopathy.webp"
 import Image from "next/image";
 import AboutTitle from "./AboutTitle";
@@ -86,8 +86,8 @@ export default function IndustriesWeServe() {
               className="group flex flex-col items-center justify-center rounded-md border border-[#e7dfd5] bg-white px-3 py-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
             >
               {/* Icon */}
-              <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-full border border-[#e7d7c2] bg-[#fbf8f4] text-[24px] text-[#b78a56] transition-all duration-300 group-hover:scale-105">
-                <Image src={industry.image} alt={industry.title} className="h-8 w-8 object-contain" />
+              <div className="mb-3 flex h-14 w-14 items-center justify-center bg-[#fbf8f4] text-[24px] text-[#b78a56] transition-all duration-300 group-hover:scale-105">
+                <Image src={industry.image} alt={industry.title} className="h-20 w-20 object-contain" width={80} height={80} />
               </div>
 
               {/* Title */}

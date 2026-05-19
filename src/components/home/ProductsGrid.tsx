@@ -7,23 +7,25 @@ import { Container } from '../ui/Container';
 import img3 from '@/assets/home/img-3.webp';
 import img4 from '@/assets/home/img-4.webp';
 import img5 from '@/assets/home/img-5.webp';
+import img14 from '@/assets/home/img-14.webp';
+import img16 from '@/assets/home/img-16.webp';
+import img12 from '@/assets/home/img-12.webp';
 import img6 from '@/assets/home/img-6.webp';
-import img7 from '@/assets/home/img-7.webp';
-import img8 from '@/assets/home/img-8.webp';
-import img9 from '@/assets/home/img-9.webp';
 import img10 from '@/assets/home/img-10.webp';
+import img13 from '@/assets/home/img-13.webp';
+
 import SubHeading from './SubHeading';
 
 export const ProductsGrid = () => {
   const products = [
-    { id: 'panchkarma-beds', title: 'Panchkarma Beds', image: img3 },
-    { id: 'steam-chambers', title: 'Steam Chambers', image: img4 },
-    { id: 'spa-massage-tables', title: 'Spa Massage Tables', image: img5 },
-    { id: 'sauna-systems', title: 'Sauna Systems', image: img6 },
-    { id: 'bronze-accessories', title: 'Bronze Accessories', image: img7 },
-    { id: 'spa-furniture', title: 'Spa Furniture', image: img8 },
-    { id: 'steam-generators', title: 'Steam Generators', image: img9 },
-    { id: 'yoga-wellness', title: 'Yoga & Wellness', image: img10 },
+    { id: 'panchkarma-beds', title: 'Panchkarma Beds', image: img12 },
+    { id: 'steam-chambers', title: 'Steam Chambers', image: img16 },
+    { id: 'spa-massage-tables', title: 'Spa Massage Tables', image: img13 },
+    { id: 'sauna-systems', title: 'Sauna Systems', image: img4 },
+    { id: 'bronze-accessories', title: 'Bronze Accessories', image: img5 },
+    { id: 'spa-furniture', title: 'Spa Furniture', image: img6 },
+    { id: 'steam-generators', title: 'Steam Generators', image: img14 },
+    { id: 'yoga-wellness', title: 'Yoga & Wellness', image: img3 },
   ];
 
   return (

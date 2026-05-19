@@ -9,6 +9,10 @@ import {
 import Image from "next/image";
 import aboutHeroImage from "@/assets/home/home_banner2.webp";
 import { Container } from "../ui/Container";
+import authentic_ayurveda from "@/assets/icons/authentic_ayurveda.webp";
+import premium_quality from "@/assets/icons/premium_quality.webp"
+import custom_solutions from "@/assets/icons/custom_solutions.webp"
+import timely_delivery from "@/assets/icons/timely_delivery.webp"
 
 const AboutHero: React.FC = () => {
   return (
@@ -70,11 +74,7 @@ const AboutHero: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-4">
 
               <div className="flex flex-col items-center text-center relative">
-                <Leaf
-                  size={26}
-                  strokeWidth={1.5}
-                  className="text-[#b58a48] mb-3"
-                />
+                <Image src={authentic_ayurveda} alt="Authentic Ayurveda" width={26} height={26} className="text-[#b58a48] mb-3" />
                 <p className="text-[11px] leading-[17px] text-[#4e463d]">
                   Authentic Ayurveda Focused Design
                 </p>
@@ -84,11 +84,7 @@ const AboutHero: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center text-center relative">
-                <ShieldCheck
-                  size={26}
-                  strokeWidth={1.5}
-                  className="text-[#b58a48] mb-3"
-                />
+                 <Image src={premium_quality} alt="Authentic Ayurveda" width={26} height={26} className="text-[#b58a48] mb-3" />
                 <p className="text-[11px] leading-[17px] text-[#4e463d]">
                   Premium Quality Products
                 </p>
@@ -98,11 +94,8 @@ const AboutHero: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center text-center relative">
-                <Settings2
-                  size={26}
-                  strokeWidth={1.5}
-                  className="text-[#b58a48] mb-3"
-                />
+                <Image src={custom_solutions} alt="Authentic Ayurveda" width={26} height={26} className="text-[#b58a48] mb-3" />
+               
                 <p className="text-[11px] leading-[17px] text-[#4e463d]">
                   Custom Solutions for Every Need
                 </p>
@@ -112,11 +105,7 @@ const AboutHero: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center text-center">
-                <Truck
-                  size={26}
-                  strokeWidth={1.5}
-                  className="text-[#b58a48] mb-3"
-                />
+               <Image src={timely_delivery} alt="Authentic Ayurveda" width={26} height={26} className="text-[#b58a48] mb-3" />
                 <p className="text-[11px] leading-[17px] text-[#4e463d]">
                   Timely Delivery & Installation Support
                 </p>

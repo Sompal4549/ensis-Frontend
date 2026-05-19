@@ -1,6 +1,9 @@
 import Image from "next/image";
 import wellness from "@/assets/about/wellness.webp"
 import { Container } from "../ui/Container";
+import { Download } from "lucide-react";
+import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
+import { FaArrowRightLong } from "react-icons/fa6";
 export default function WellnessBanner() {
   return (
     <section className="w-full relative">
@@ -12,7 +15,7 @@ export default function WellnessBanner() {
             fill
           />
         </div>
-      <Container className="relative mx-auto overflow-hidden rounded-md">
+      <Container className="relative mx-auto overflow-hidden rounded-md py-4!">
         {/* Background Image */}
       
 
@@ -20,7 +23,7 @@ export default function WellnessBanner() {
         <div className="relative z-10 grid min-h-[220px] grid-cols-1 items-center gap-8 px-6 md:grid-cols-2 md:px-0 lg:px-0">
           {/* Left Side */}
           <div className="max-w-xl">
-            <h2 className="    text-[28px]
+            <h2 className="    text-[24px]
             font-semibold
             tracking-[2px]
             uppercase
@@ -30,7 +33,7 @@ export default function WellnessBanner() {
               WELLNESS SPACE
             </h2>
 
-            <p className="mt-3 max-w-lg text-sm leading-7 text-[#ddd1c1] md:text-[15px]">
+            <p className="mt-3 max-w-lg text-sm text-[#ddd1c1] md:text-[15px]">
               Whether you are planning a wellness center, spa, resort or
               Ayurveda hospital, our experts are here to bring your vision to
               life.
@@ -38,12 +41,12 @@ export default function WellnessBanner() {
 
             {/* Buttons */}
             <div className="mt-3 flex flex-wrap gap-4">
-              <button className="rounded-md border border-[#c7a36d] bg-[#c7a36d] px-5 py-3 text-sm font-semibold tracking-wide text-[#1f160f] transition-all duration-300 hover:bg-[#d7b37d]">
-                BOOK A CONSULTATION →
+              <button className="rounded-md border border-[#c7a36d] bg-[#ecb460] px-5 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-[#d7b37d] flex items-center gap-2">
+                BOOK A CONSULTATION <FaArrowRightLong/>
               </button>
 
-              <button className="rounded-md border border-[#9d8a6b] bg-transparent px-5 py-3 text-sm font-semibold tracking-wide text-[#f2e8da] transition-all duration-300 hover:bg-white/10">
-                DOWNLOAD CATALOGUE ↓
+              <button className="rounded-md border border-[#9d8a6b] bg-transparent px-5 py-3 text-sm font-semibold tracking-wide text-[#f2e8da] transition-all duration-300 hover:bg-white/10 flex items-center gap-2">
+                DOWNLOAD CATALOGUE <Download />
               </button>
             </div>
           </div>

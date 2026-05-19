@@ -10,27 +10,32 @@ import Image from "next/image";
 import flower from "@/assets/about/lotus.webp"
 import { Container } from "../ui/Container";
 import welcome from "@/assets/about/welcome_to_ensis.webp"
+import table from "@/assets/home/table.webp";
+import shirodhara_eqipment from "@/assets/icons/shirodhara_eqipment.webp";
+import steam_sauna from "@/assets/icons/steam_sauna_icon.webp";
+import wellness_assossries from "@/assets/home/wellness_assossries_icon.webp";
+
 const services = [
   {
-    icon: Bed,
+    image: table,
     title: "PANCHAKARMA TABLES",
     description:
       "Experience authentic therapies with comfort and precision.",
   },
   {
-    icon: FlaskConical,
+    image: shirodhara_eqipment,
     title: "SHIRODHARA EQUIPMENTS",
     description:
       "Precision-crafted for deep relaxation and mental clarity.",
   },
   {
-    icon: Bath,
+    image: steam_sauna,
     title: "STEAM & SAUNA",
     description:
       "Detoxify. Rejuvenate. Restore balance naturally.",
   },
   {
-    icon: Flower2,
+    image: wellness_assossries,
     title: "WELLNESS ACCESSORIES",
     description:
       "Thoughtful additions for a complete wellness journey.",
@@ -93,7 +98,7 @@ const WellnessSection: React.FC = () => {
         {/* Right Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3">
           {services.map((service, index) => {
-            const Icon = service.icon;
+            
 
             return (
               <div
@@ -101,8 +106,8 @@ const WellnessSection: React.FC = () => {
                 className="bg-[#f8f2ea] border border-[#e6d8c5] rounded-2xl px-4 py-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 flex-col justify-between items-stretch flex"
               >
                 {/* Icon Circle */}
-                <div className="w-20 h-20 mx-auto rounded-full border border-2 border-[#c9a870] flex items-center justify-center mb-6">
-                  <Icon size={34} className="text-[#b78942]" strokeWidth={1.5} />
+                <div className="w-16 h-16 p-4 mx-auto rounded-full border border-[2.5px] border-[#c9a870] flex items-center justify-center mb-6">
+                  <Image src={service.image} alt={service.title} width={30} height={30} className="w-full h-full object-contain"/>
                 </div>
 
                 <h3 className="text-[#203027] text-[14px] font-medium tracking-wide">

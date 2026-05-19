@@ -5,9 +5,9 @@ import Image from 'next/image';
 import { Container } from '../ui/Container';
 import img7 from '@/assets/home/img-7.webp';
 
-import img3 from '@/assets/home/img-3.webp';
-import img4 from '@/assets/home/img-4.webp';
-import img5 from '@/assets/home/img-5.webp';
+import panchkarma_2 from '@/assets/home/panchkarma_2.webp';
+import img10 from '@/assets/home/img-10.webp';
+import img16 from '@/assets/home/img-16.webp';
 import img6 from '@/assets/home/img-6.webp';
 import SubHeading from './SubHeading';
 
@@ -15,39 +15,39 @@ export const BlogInsights = () => {
   const blogs = [
     {
       title: "Panchkarma Room Design Guide: Everything You Need to Know",
-      image: img3
+      image: panchkarma_2
     },
     {
       title: "How to Choose the Right Spa Equipment for Your Business",
-      image: img4
+      image: img6
     },
     {
       title: "Steam Chamber Benefits for Detox & Relaxation Therapy",
-      image: img5
+      image: img16
     },
     {
       title: "Top 7 Ayurveda Wellness Trends in 2024",
-      image: img6
+      image: img10
     }
   ];
 
   return (
     <section className="bg-[#fbf8f2]">
       <Container>
-    
+
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
-              <div className="grid gap-6 md:grid-cols-[0.45fr_1fr] md:items-start">
-          <div>
-            <SubHeading className=' text-[#8d6a3a]' text='FROM THE BLOG' />
-            <h2 className="mt-2 font-serif text-3xl leading-tight text-[#1f261b] md:text-4xl">Insights & Wellness Knowledge</h2>
-            <Link href="/blog" className="mt-6 inline-flex items-center gap-2 border border-[#d7cbbd] bg-white px-6 py-3 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6]">
-              VIEW ALL BLOGS <ArrowRight size={16} />
-            </Link>
+          <div className="grid gap-6  md:items-start">
+            <div>
+              <SubHeading className=' text-[#8d6a3a]' text='FROM THE BLOG' />
+              <h2 className="mt-2 font-serif text-xl leading-tight text-[#1f261b] md:text-2xl">Insights & Wellness Knowledge</h2>
+              <Link href="/blog" className="mt-6 inline-flex items-center gap-2 border border-[#d7cbbd] bg-white px-6 py-3 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6]">
+                VIEW ALL BLOGS <ArrowRight size={16} />
+              </Link>
+            </div>
           </div>
-        </div>
           {blogs.map((blog, index) => (
-            <Link href={`/blog/${index}`} key={index} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1">
+            <Link href={`/blog/${index}`} key={index} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-lg">
               <div className="relative aspect-[1.55/1] overflow-hidden bg-[#e5dccf]">
                 <Image src={blog.image} alt={blog.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" />
               </div>
@@ -59,7 +59,7 @@ export const BlogInsights = () => {
           ))}
         </div>
       </Container>
-      
+
       <div className="relative overflow-hidden bg-[#1f261b] py-4 text-white">
         <Image src={img7} alt="" fill style={{ objectFit: 'cover' }} className="opacity-25" />
         <Container className="relative z-10 flex flex-col justify-center gap-20 md:flex-row md:items-center">

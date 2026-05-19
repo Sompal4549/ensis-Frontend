@@ -8,8 +8,8 @@ import img11 from '@/assets/home/img-11.webp';
 import img12 from '@/assets/home/img-12.webp';
 import img13 from '@/assets/home/img-13.webp';
 import img14 from '@/assets/home/img-14.webp';
-import img15 from '@/assets/home/img-15.webp';
-import img16 from '@/assets/home/img-16.webp';
+import img15 from '@/assets/home/img-7.webp';
+import img16 from '@/assets/home/img-1.webp';
 import SubHeading from './SubHeading';
 
 export const ManufacturingAndProjects = () => {

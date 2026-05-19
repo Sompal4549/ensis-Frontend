@@ -1,11 +1,11 @@
 import React from 'react';
 import { Factory, Settings, Award, Layers } from 'lucide-react';
 import { Container } from '../ui/Container';
-import inhouse from "@/assets/icons/in_house.webp"
+import inhouse from "@/assets/icons/in_house_manufacture.webp"
 import info2 from "@/assets/icons/customized.webp"
 import trunkey from "@/assets/icons/trunkey.webp"
 import Image from 'next/image';
-import exportIcon from "@/assets/icons/export.webp"
+import exportIcon from "@/assets/icons/export_quality.webp"
 
 export const Features = () => {
   const features = [
@@ -37,8 +37,8 @@ export const Features = () => {
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
           {features.map((feature, index) => (
             <div key={index} className="flex items-start gap-5 ">
-              <div className="mt-1 shrink-0 text-[#a17d4a] rounded-full w-15 h-15">
-                <Image src={feature.imgurl} alt={feature.title} width={70} height={50} className='rounded-full object-contain object-center' />
+              <div className="mt-1 shrink-0 text-[#a17d4a] rounded-full w-15 h-15 p-2 bg-white flex items-center justify-center">
+                <Image src={feature.imgurl} alt={feature.title} width={70} height={50} className='rounded-full object-contain object-center object-contain' />
               </div>
               <div>
                 <h3 className="text-sm font-bold text-[#1f261b]">{feature.title}</h3>

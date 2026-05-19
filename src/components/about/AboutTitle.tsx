@@ -11,7 +11,7 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
   className
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center bg-[#f7f2ea] mb-3">
+    <div className="flex flex-col items-center justify-center bg-[#f7f2ea] ">
       {/* Top Line + Title + Top Line */}
       <div className="flex items-center gap-4">
         <div className="w-15 h-[1px] bg-[#d8cec0]" />
@@ -19,7 +19,7 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
         <h2
             className={`
               text-[#4a4036]
-              text-[28px]
+              text-[24px]
               font-semibold
               tracking-[2px]
               uppercase
@@ -33,7 +33,7 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
       </div>
 
       {/* Decorative Image */}
-      <Image width={50} height={50}
+      <Image width={50} height={25}
         src={lotus}
         alt="decoration"
         className="object-contain opacity-90"

@@ -3,31 +3,34 @@ import React, { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Container } from "../ui/Container";
 import SubHeading from "./SubHeading";
+import panchkarma from "@/assets/home/panchkarma.webp"
+import shirodha from "@/assets/home/steam.webp"
+import steam from "@/assets/home/panchkarma.webp"
+import consultaion from "@/assets/home/consultation.webp"
+import Image from "next/image";
+
 type RoomCard = {
   title: string;
-  image: string;
+  image: any;
 };
 
 const roomData: RoomCard[] = [
   {
     title: "Panchkarma Suite Setup",
-    image:
-      "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=1200&auto=format&fit=crop",
+    image:panchkarma,
   },
   {
     title: "Shirodhara Room Setup",
-    image:
-      "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=1200&auto=format&fit=crop",
+    image:shirodha,
   },
   {
     title: "Steam Therapy Room Setup",
     image:
-      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
+      steam,
   },
   {
     title: "Consultation Room Setup",
-    image:
-      "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop",
+    image:consultaion,
   },
 ];
 
@@ -35,7 +38,7 @@ const WellnessRoomSetups: React.FC = () => {
   const [hovered, setHovered] = useState<number | null>(null);
 
   return (
-    <section className="w-full bg-[#e3dbd0]">
+    <section className="w-full">
       <Container className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-8 items-start">
 
         {/* Left Content */}
@@ -74,15 +77,13 @@ const WellnessRoomSetups: React.FC = () => {
               className="relative overflow-hidden rounded-2xl h-[300px] cursor-pointer group"
             >
               {/* Image */}
-              <img
+              <Image width={250} height={500}
                 src={room.image}
                 alt={room.title}
                 className={`w-full h-full object-cover transition-transform duration-500 ${hovered === index ? "scale-105" : "scale-100"
                   }`}
               />
 
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
 
               {/* Content */}
               <div className="absolute bottom-0 left-0 w-full p-5 flex items-end justify-between">
