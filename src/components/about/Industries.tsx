@@ -61,7 +61,7 @@ const industries: IndustryItem[] = [
 
 export default function IndustriesWeServe() {
   return (
-    <section className="w-full bg-[#f8f5f1] py-10 px-4 md:px-8">
+    <section className="w-full bg-[#f8f5f1] px-4 md:px-8">
       <Container>
         {/* Heading */}
         {/* <div className="mb-8 flex items-center justify-center gap-4">
