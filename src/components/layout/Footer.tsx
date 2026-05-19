@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Phone, Mail } from 'lucide-react';
-import { FaFacebook, FaInstagram, FaYoutube, FaLinkedin } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaYoutube, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import { Container } from '../ui/Container';
 import logoImg from '@/assets/logo.png';
 
@@ -88,7 +88,7 @@ export const Footer = () => {
               </li>
             </ul>
             <Link href="https://wa.me/+919654900525" className="mt-5 inline-flex bg-[#5e7a37] px-5 py-3 text-[11px] font-bold tracking-wide text-white transition-colors hover:bg-[#4e662f]" target="_blank" rel="noopener noreferrer">
-              WHATSAPP CHAT
+              WHATSAPP CHAT <FaWhatsapp size={14} className="ml-2" />
             </Link>
           </div>
         </div>
