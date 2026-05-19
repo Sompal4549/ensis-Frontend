@@ -30,7 +30,7 @@ const features: Feature[] = [
       "Designs rooted in ancient Ayurvedic principles for effective therapies.",
     icon: (
        <IconWrapper>
-      <Image src={authentic} alt="Authentic & Ayurvedic" width={24} height={24}  />
+      <Image src={authentic} alt="Authentic & Ayurvedic" width={34} height={34}  />
       </IconWrapper>
     ),
   },
@@ -41,7 +41,7 @@ const features: Feature[] = [
       "Using the finest wood, metals and accessories built to last.",
     icon: (
       <IconWrapper>
-       <Image src={premium_quality} alt="Premium Quality" width={24} height={24}  />
+       <Image src={premium_quality} alt="Premium Quality" width={34} height={34}  />
       </IconWrapper>
     ),
   },
@@ -52,7 +52,7 @@ const features: Feature[] = [
       "Tailor-made equipment and interiors to fit your exact requirements.",
     icon: (
       <IconWrapper>
-      <Image src={custom_solutions} alt="Authentic & Ayurvedic" width={24} height={24}  />
+      <Image src={custom_solutions} alt="Authentic & Ayurvedic" width={34} height={34}  />
     
       </IconWrapper>
     ),
@@ -64,7 +64,7 @@ const features: Feature[] = [
       "From concept to handover, we handle everything under one roof.",
     icon: (
       <IconWrapper>
-      <Image src={trunky_wellness_experts} alt="Authentic & Ayurvedic" width={24} height={24}  />
+      <Image src={trunky_wellness_experts} alt="Authentic & Ayurvedic" width={34} height={34}  />
      
       </IconWrapper>
     ),
@@ -76,7 +76,7 @@ const features: Feature[] = [
       "Timely execution with professional installation support.",
     icon: (
       <IconWrapper>
-      <Image src={on_time_delivery} alt="On-Time Delivery" width={24} height={24}  />
+      <Image src={on_time_delivery} alt="On-Time Delivery" width={34} height={34}  />
       </IconWrapper>
     ),
   },
@@ -87,7 +87,7 @@ const features: Feature[] = [
       "Reliable support for maintenance and long term relationships.",
     icon: (
       <IconWrapper>
-      <Image src={after_sales_support} alt="After Sales Support" width={24} height={24}  />
+      <Image src={after_sales_support} alt="After Sales Support" width={34} height={34}  />
       </IconWrapper>
     ),
   },
