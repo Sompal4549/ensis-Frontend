@@ -1,10 +1,10 @@
 import { Container } from "../ui/Container";
-import ayurveda from "@/assets/about/ayurveda.webp"
+import ayurveda from "@/assets/icons/ayurvedic_hospitals.webp";
 import wellness from "@/assets/icons/luxury_spas.webp"
 import luxury from "@/assets/about/luxury.webp"
 import panchkarma from "@/assets/about/panchkarma.webp"
 import yoga from "@/assets/icons/authentic_focus.webp"
-import wellness_clinic from "@/assets/about/wellness_clinics.webp"
+import wellness_clinic from "@/assets/home/wellness_clicnics.png"
 import hotels from "@/assets/icons/hotels_and_retreats.webp"
 import naturopathy from "@/assets/about/naturopathy.webp"
 import Image from "next/image";
