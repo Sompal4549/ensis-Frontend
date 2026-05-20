@@ -10,8 +10,8 @@ import { Container } from '../ui/Container';
 import { Carousel } from '../ui/Carousel';
 
 import rooted from '@/assets/home/rooted_tradition_3.webp';
-import tradition from '@/assets/home/tradition_1.webp';
-import wellness_spaces from '@/assets/home/wellness_spaces.webp';
+import tradition from '@/assets/home/tradition3.webp';
+import wellness_spaces from '@/assets/home/wellness_spaces2.webp';
 import wooden_steam from '@/assets/home/wooden.webp';
 import arrow from "@/assets/icons/arrow.png"
 import { Features } from './Features';
