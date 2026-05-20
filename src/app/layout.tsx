@@ -3,6 +3,7 @@ import "./globals.css";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import SocialSidebar from "@/components/layout/SocialSidebar";
+import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
 
 export const metadata: Metadata = {
   title: "Ensis - Premium Panchkarma & Wellness Spaces",
@@ -21,6 +22,7 @@ export default function RootLayout({
         <main className="pt-26">{children}</main>
         <Footer />
         <SocialSidebar/>
+        <WhatsAppFloat/>
       </body>
     </html>
   );

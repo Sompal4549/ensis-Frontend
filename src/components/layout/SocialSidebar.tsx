@@ -6,11 +6,11 @@ import { FaFacebook, FaInstagram,FaTwitter,FaLinkedin, FaYoutube } from "react-i
 const SocialSidebar = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [socialLinks, setSocialLinks] = useState({
-    facebook: "https://www.facebook.com/namogangewellness.event",
-    instagram: "https://instagram.com",
-    twitter: "https://twitter.com",
-    youtube: "https://youtube.com",
-    linkedin: "https://linkedin.com",
+    facebook: "https://www.facebook.com/EnsisPanchkarmaSpaSolutions",
+    instagram: "https://www.instagram.com/solutionensis/",
+    twitter: "https://x.com/Ensis9",
+    youtube: "https://www.youtube.com/channel/UCbREPw5Nyi0DqpByPdaS-3w",
+    linkedin: "https://www.linkedin.com/company/ensis-panchkarma-and-spa-solutions/",
   });
 
   // Trigger animations after mount

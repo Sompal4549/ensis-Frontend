@@ -117,7 +117,7 @@ export const Hero = () => {
 
             {/* Content */}
             <Container className="relative z-10">
-              <div className="flex min-h-[500px] items-center">
+              <div className="flex min-h-[450px] items-center">
 
                 <div className="max-w-[700px] pt-10 pl-15">
                   {/* Main Heading */}
