@@ -24,6 +24,7 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
               tracking-[2px]
               uppercase
               font-serif
+              text-center
              ${className || ''}`}
         >
           {title}
