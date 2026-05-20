@@ -259,6 +259,7 @@ const ContactSection = () => {
                   />
                 </div>
 
+                {/* Mobile Input with OTP Button */}
                 <div className="relative w-full">
                   <Phone
                     className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c8a45d]"
@@ -272,13 +273,21 @@ const ContactSection = () => {
                     value={formData.mobile}
                     onChange={handleChange}
                     placeholder="Mobile Number"
-                    className="w-full h-16 rounded-2xl border border-[#ece7de] bg-[#fff] pl-14 pr-5 text-[15px] outline-none focus:border-[#c8a45d] transition-all"
+                    className="w-full h-16 rounded-2xl border border-[#ece7de] bg-[#fff] pl-14 pr-32 text-[15px] outline-none focus:border-[#c8a45d] transition-all"
                   />
+
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 h-10 px-4 rounded-xl bg-[#c8a45d] text-[#183b17] font-semibold text-xs hover:opacity-90 transition-all"
+                  >
+                    Send OTP
+                  </button>
                 </div>
               </div>
 
               {/* Row 2 */}
               <div className="flex items-center gap-4">
+                {/* Email Input with OTP Button */}
                 <div className="relative w-full">
                   <Mail
                     className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c8a45d]"
@@ -292,8 +301,15 @@ const ContactSection = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="Email Address"
-                    className="w-full h-16 rounded-2xl border border-[#ece7de] bg-[#fff] pl-14 pr-5 text-[15px] outline-none focus:border-[#c8a45d] transition-all"
+                    className="w-full h-16 rounded-2xl border border-[#ece7de] bg-[#fff] pl-14 pr-32 text-[15px] outline-none focus:border-[#c8a45d] transition-all"
                   />
+
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 h-10 px-4 rounded-xl bg-[#c8a45d] text-[#183b17] font-semibold text-xs hover:opacity-90 transition-all"
+                  >
+                    Send OTP
+                  </button>
                 </div>
 
                 <div className="relative w-full">
@@ -340,8 +356,8 @@ const ContactSection = () => {
                 type="submit"
                 disabled={!isFormValid}
                 className={`w-full h-16 rounded-2xl text-white text-lg font-medium flex items-center justify-center gap-3 transition-all duration-300 ${isFormValid
-                  ? "bg-gradient-to-r from-[#183b17] to-[#2f5a21] hover:opacity-95 cursor-pointer"
-                  : "bg-gray-500 cursor-not-allowed opacity-70"
+                    ? "bg-gradient-to-r from-[#183b17] to-[#2f5a21] hover:opacity-95 cursor-pointer"
+                    : "bg-gray-500 cursor-not-allowed opacity-70"
                   }`}
               >
                 <Send size={18} />
