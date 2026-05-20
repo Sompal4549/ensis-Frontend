@@ -1,5 +1,9 @@
-const BASE_API_URL = ((window.location.hostname === "localhost" ? "http://localhost:5000/api" : "/api")).replace(/\/$/, "");
+const BASE_API_URL = (
+  process.env.NODE_ENV === "development" ? "http://localhost:5000/api" : "/api"
+).replace(/\/$/, "");
+
 export const API_URL = BASE_API_URL.endsWith("/api") ? BASE_API_URL : `${BASE_API_URL}/api`;
+
 export const verifyApi = {
     sendEmailOtp: async (email: string, profile: string = 'SPEAKER') => {
         const response = await fetch(`${API_URL}/verify/send-email-otp`, {
