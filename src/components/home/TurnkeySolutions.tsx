@@ -41,9 +41,9 @@ export const TurnkeySolutions = () => {
               BOOK DESIGN CONSULTATION <ArrowRight size={16} />
             </button>
           </div>
-          <div className="grid gap-5 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="grid gap-5 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
             {solutions.map((solution, index) => (
-              <div key={index} className="text-center">
+              <div key={index} className="text-center items-center text-center sm:flex-row sm:items-center">
                 <div className="mx-auto mb-3 flex size-14 items-center justify-center text-[#d5ad6a]">
                   <Image src={solution.imgUrl} alt={solution.title} width={250} height={150} />
                 </div>

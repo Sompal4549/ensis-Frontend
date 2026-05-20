@@ -119,7 +119,7 @@ export const Hero = () => {
             <Container className="relative z-10">
               <div className="flex min-h-[450px] items-center">
 
-                <div className="max-w-[700px] pt-10 pl-15">
+                <div className="max-w-[700px] pt-10 sm:pl-10 lg:pl-15">
                   {/* Main Heading */}
                   <h1 className="mt-6 font-serif text-[40px] leading-[0.96] tracking-[-0.03em] text-[#1f261b] lg:text-[52px]">
                     {slide.title}
