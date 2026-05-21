@@ -1,6 +1,7 @@
-import ContactHero from '@/components/contact/ContactHero'
-import ContactSection from '@/components/contact/ContactSection'
-import SupportHighlights from '@/components/contact/SupportHightlights'
+import dynamic from 'next/dynamic'
+const ContactHero = dynamic(() => import('@/components/contact/ContactHero').then((mod) => mod.default));
+const ContactSection = dynamic(() => import('@/components/contact/ContactSection').then((mod) => mod.default));
+const SupportHighlights = dynamic(() => import('@/components/contact/SupportHightlights').then((mod) => mod.default));
 import React from 'react'
 
 const Page = () => {

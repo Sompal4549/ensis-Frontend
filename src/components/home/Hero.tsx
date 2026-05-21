@@ -15,10 +15,20 @@ import wellness_spaces from '@/assets/home/wellness_spaces2.webp';
 import wooden_steam from '@/assets/home/wooden.webp';
 import arrow from "@/assets/icons/arrow.png"
 import { Features } from './Features';
+import { getComponentContent, getImageUrl } from '@/app/lib/api';
 
+type HeroSlide = {
+  id?: number;
+  image: any;
+  title: React.ReactNode;
+  highlight?: string;
+  description: string;
+  primaryBtn: string;
+  secondaryBtn?: string;
+};
 
-export const Hero = () => {
-  const heroSlides = [
+export const Hero = async () => {
+  const fallbackSlides: HeroSlide[] = [
     {
       id: 1,
       image: rooted,
@@ -89,25 +99,31 @@ export const Hero = () => {
       secondaryBtn: 'SCHEDULE DEMO',
     }
   ];
+  const content = await getComponentContent<{ slides: HeroSlide[] }>("home.hero", { slides: fallbackSlides });
+  const heroSlides = content.slides?.length ? content.slides : fallbackSlides;
 
   return (
     <section className="bg-[#f7f2ea] relative z-20 mb-16">
       <Carousel autoplayDelay={6000}>
         {heroSlides.map((slide) => (
           <div
-            key={slide.id}
+            key={slide.id || `${slide.title}-${slide.primaryBtn}`}
             className="relative pb-16"
           >
             {/* Background Image */}
             <div className="absolute inset-0">
-              <Image
-                src={slide.image}
-                alt=""
-                fill
-                priority
-                quality={95}
-                className="object-cover"
-              />
+              {typeof slide.image === "string" && slide.image ? (
+                <Image src={getImageUrl(slide.image)} alt="" fill className="object-cover" />
+              ) : (
+                <Image
+                  src={slide.image}
+                  alt=""
+                  fill
+                  priority
+                  quality={95}
+                  className="object-cover"
+                />
+              )}
             </div>
 
             {/* Soft Overlay */}
@@ -122,7 +138,19 @@ export const Hero = () => {
                 <div className="max-w-[700px] pt-10 sm:pl-10 lg:pl-15">
                   {/* Main Heading */}
                   <h1 className="mt-6 font-serif text-[40px] leading-[0.96] tracking-[-0.03em] text-[#1f261b] lg:text-[52px]">
-                    {slide.title}
+                    {typeof slide.title === "string" ? (
+                      <>
+                        {slide.title}
+                        {slide.highlight && (
+                          <>
+                            <br />
+                            <span className="font-light italic text-[#c79b59]">{slide.highlight}</span>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      slide.title
+                    )}
                   </h1>
 
                   {/* Divider */}

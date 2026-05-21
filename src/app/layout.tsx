@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import SocialSidebar from "@/components/layout/SocialSidebar";
-import WhatsAppFloat from "@/components/ui/WhatsAppFloat";
+const Header = dynamic(() => import("@/components/layout/Header").then((mod) => mod.Header));
+const Footer = dynamic(() => import("@/components/layout/Footer").then((mod) => mod.Footer));
+const SocialSidebar = dynamic(() => import("@/components/layout/SocialSidebar").then((mod) => mod.default));
+const WhatsAppFloat = dynamic(() => import("@/components/ui/WhatsAppFloat").then((mod) => mod.default));
 
 export const metadata: Metadata = {
   title: "Ensis - Premium Panchkarma & Wellness Spaces",

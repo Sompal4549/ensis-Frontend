@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -12,6 +13,9 @@ import {
   Menu,
   ChevronDown,
   X,
+  LogIn,
+  ShieldCheck,
+  LogOut,
 } from "lucide-react";
 import {
   FaFacebook,
@@ -19,11 +23,30 @@ import {
   FaYoutube,
   FaLinkedin,
 } from "react-icons/fa";
-import { Container } from "../ui/Container";
+const Container = dynamic(() => import("../ui/Container").then((mod) => mod.Container));
 import logoImg from "@/assets/logo.png";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [user, setUser] = useState<{ name?: string; email?: string } | null>(null);
+  const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001";
+
+  useEffect(() => {
+    const stored = typeof window !== "undefined" ? localStorage.getItem("ensis_user") : null;
+    if (!stored) return;
+    try {
+      setUser(JSON.parse(stored));
+    } catch {
+      setUser(null);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("ensis_user_token");
+    localStorage.removeItem("ensis_user");
+    setUser(null);
+    window.location.href = "/";
+  };
 
   const navLink =
     "inline-flex items-center border-b-2 border-transparent pt-0.5 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
@@ -37,10 +60,10 @@ export const Header = () => {
     { label: "About Us", href: "/about" },
     { label: "Furniture & Equipment", href: "/products", hasDropdown: true },
     { label: "Turnkey Solutions", href: "/turnkey" },
-    { label: "Consultancy", href: "/projects" },
-    { label: "Projects And Clients", href: "/manufacturing" },
-    { label: "Blog", href: "/certifications" },
-    { label: "Enquiry", href: "/blog" },
+    { label: "Consultancy", href: "/consultancy" },
+    { label: "Projects And Clients", href: "/projects-and-clients" },
+    { label: "Blog", href: "/blog" },
+    { label: "Enquiry", href: "/enquiry" },
     { label: "Contact Us", href: "/contact" },
   ];
 
@@ -70,7 +93,7 @@ export const Header = () => {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm">
-      <div className="bg-[#263016] text-white">
+      <div className="bg-[#263016] text-white py-1">
         <Container className="flex min-h-8 items-center justify-between gap-4 text-[11px] font-medium py-0!">
           <div className="hidden items-center gap-6 md:flex">
             <span className="flex items-center gap-2">
@@ -87,23 +110,46 @@ export const Header = () => {
               <Factory size={13} />
               Manufactured in India
             </span>
-          </div>
-
-          <div className="flex w-full items-center justify-between gap-4 md:w-auto md:justify-end">
-            <a href="tel:+919654900525" className="flex items-center gap-2">
+                <Link href="tel:+919654900525" className="flex items-center gap-2">
               <Phone size={13} />
               +91 9654900525
-            </a>
+            </Link>
 
-            <a
+            <Link
               href="mailto:info@ensis.in"
               className="hidden items-center gap-2 sm:flex"
             >
               <Mail size={13} />
               info@ensis.in
-            </a>
+            </Link>
+          </div>
 
-            <div className="hidden items-center gap-3 md:flex">
+          <div className="flex w-full items-center justify-between gap-4 md:w-auto md:justify-end">
+            {!user && (
+              <Link
+                href="/login"
+                className="hidden items-center gap-2 rounded-md px-2 py-2 text-[10px] font-bold uppercase tracking-wide text-white transition-colors bg-amber-300 hover:bg-yellow-500 sm:inline-flex"
+              ><div className="text-white uppercase flex items-center gap-1">
+
+                <LogIn size={14} />
+                User Login
+                </div>
+              </Link>
+            )}
+
+            <Link
+              href={adminUrl}
+              className="hidden items-center gap-2 rounded-md px-2 py-2 text-[10px] font-bold uppercase tracking-wide text-white transition-colors bg-red-900 hover:bg-red-700 lg:inline-flex"
+              target="_blank"
+            ><div className="text-white uppercase flex items-center gap-1">
+
+              <ShieldCheck size={14} />
+              Admin Login
+              </div>
+            </Link>
+        
+
+            {/* <div className="hidden items-center gap-3 md:flex">
               {socialLinks.map((item, index) => (
                 <Link
                   key={index}
@@ -113,7 +159,15 @@ export const Header = () => {
                   {item.icon}
                 </Link>
               ))}
-            </div>
+            </div> */}
+            {user && (
+              <div className="hidden items-center gap-2 rounded-md bg-amber-300 px-2 py-2 text-[10px] font-bold uppercase tracking-wide text-white sm:inline-flex">
+                <LogOut size={14} />
+                <button type="button" onClick={handleLogout} className="text-[10px] underline text-white">
+                  Logout
+                </button>
+              </div>
+            )} 
           </div>
         </Container>
       </div>
@@ -188,7 +242,7 @@ export const Header = () => {
 
       {/* Mobile Menu */}
       <aside
-        className={`fixed right-0 top-0 z-50 h-screen w-1/2 min-w-[190px] max-w-[320px] bg-[#fbf8f2] shadow-2xl transition-transform duration-300 ease-out xl:hidden ${
+        className={`fixed right-0 top-0 z-50 h-screen w-[60%] min-w-[190px] max-w-[320px] bg-[#fbf8f2] shadow-2xl transition-transform duration-300 ease-out xl:hidden ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
         aria-hidden={!isMenuOpen}
@@ -235,6 +289,42 @@ export const Header = () => {
           >
             <span className="text-white uppercase">E-Brochure</span>
           </Link>
+          <div className="flex justify-between gap-2 mt-2">
+            {user ? (
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="items-center gap-2 rounded-md px-1 py-2 text-[10px] font-bold uppercase tracking-wide text-white bg-yellow-300 inline-flex flex-1"
+              >
+                <div className="text-white uppercase flex gap-1 items-center">
+                  <LogIn size={14} />
+                  Logout
+                </div>
+              </button>
+            ) : (
+              <Link
+                href="/login"
+                className="items-center gap-2 rounded-md px-1 py-2 text-[10px] font-bold uppercase tracking-wide text-white transition-colors hover:bg-bg-yellow-500 bg-yellow-300 inline-flex flex-1"
+              >
+                <div className="text-white uppercase flex gap-1 items-center">
+
+                  <LogIn size={14} />
+                  User Login
+                  </div>
+              </Link>
+            )}
+
+            <Link
+              href={adminUrl}
+              className="items-center gap-2 rounded-md  px-1 py-2 text-[10px] font-bold uppercase tracking-wide text-white transition-colors hover:bg-bg-red-900 bg-red-700 inline-flex flex-1"
+              target="_blank"
+            ><div className="text-white uppercase flex gap-1 items-center">
+
+              <ShieldCheck size={14} />
+              Admin Login
+              </div>
+            </Link>
+            </div>
         </nav>
       </aside>
     </header>

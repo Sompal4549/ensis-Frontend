@@ -1,14 +1,15 @@
-import { Hero } from "@/components/home/Hero";
-import { Features } from "@/components/home/Features";
-import { ProductsGrid } from "@/components/home/ProductsGrid";
-import { TurnkeySolutions } from "@/components/home/TurnkeySolutions";
-import { ManufacturingAndProjects } from "@/components/home/ManufacturingAndProjects";
-import { GlobalPresence } from "@/components/home/GlobalPresence";
-import { Testimonials } from "@/components/home/Testimonials";
-import { BlogInsights } from "@/components/home/BlogInsights";
-import WellnessRoomSetups from "@/components/home/WellnessRoomSetups";
-import WellnessSection from "@/components/about/WellnessSection";
-import FullWidthFeatures from "@/components/home/FullWidthFeatures";
+import dynamic from "next/dynamic";
+const Hero = dynamic(() => import("@/components/home/Hero").then((mod) => mod.Hero));
+const Features = dynamic(() => import("@/components/home/Features").then((mod) => mod.Features));
+const ProductsGrid = dynamic(() => import("@/components/home/ProductsGrid").then((mod) => mod.ProductsGrid));
+const TurnkeySolutions = dynamic(() => import("@/components/home/TurnkeySolutions").then((mod) => mod.TurnkeySolutions));
+const ManufacturingAndProjects = dynamic(() => import("@/components/home/ManufacturingAndProjects").then((mod) => mod.ManufacturingAndProjects));
+const GlobalPresence = dynamic(() => import("@/components/home/GlobalPresence").then((mod) => mod.GlobalPresence));
+const Testimonials = dynamic(() => import("@/components/home/Testimonials").then((mod) => mod.Testimonials));
+const BlogInsights = dynamic(() => import("@/components/home/BlogInsights").then((mod) => mod.BlogInsights));
+const WellnessRoomSetups = dynamic(() => import("@/components/home/WellnessRoomSetups").then((mod) => mod.default));
+const WellnessSection = dynamic(() => import("@/components/about/WellnessSection").then((mod) => mod.default));
+const FullWidthFeatures = dynamic(() => import("@/components/home/FullWidthFeatures").then((mod) => mod.default));
 
 export default function Home() {
   return (

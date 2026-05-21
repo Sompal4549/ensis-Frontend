@@ -11,13 +11,13 @@ import img14 from '@/assets/home/img-14.webp';
 import img16 from '@/assets/home/img-16.webp';
 import img12 from '@/assets/home/img-12.webp';
 import img6 from '@/assets/home/img-6.webp';
-import img10 from '@/assets/home/img-10.webp';
 import img13 from '@/assets/home/img-13.webp';
 
 import SubHeading from './SubHeading';
+import { getImageUrl, productApi, type Product } from '@/app/lib/api';
 
-export const ProductsGrid = () => {
-  const products = [
+export const ProductsGrid = async () => {
+  const fallbackProducts = [
     { id: 'panchkarma-beds', title: 'Panchkarma Beds', image: img12 },
     { id: 'steam-chambers', title: 'Steam Chambers', image: img16 },
     { id: 'spa-massage-tables', title: 'Spa Massage Tables', image: img13 },
@@ -27,6 +27,16 @@ export const ProductsGrid = () => {
     { id: 'steam-generators', title: 'Steam Generators', image: img14 },
     { id: 'yoga-wellness', title: 'Yoga & Wellness', image: img3 },
   ];
+  let apiProducts: Product[] = [];
+
+  try {
+    const result = await productApi.list(8);
+    apiProducts = result.products;
+  } catch {
+    apiProducts = [];
+  }
+
+  const products = apiProducts.length ? apiProducts : fallbackProducts;
 
   return (
     <section className="bg-[#fbf8f2] relative z-10">
@@ -45,17 +55,30 @@ export const ProductsGrid = () => {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((product) => (
-            <Link href={`/products/${product.id}`} key={product.id} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1">
+          {products.map((product) => {
+            const productId = '_id' in product ? product.slug || product._id : product.id;
+            const imageUrl = '_id' in product ? getImageUrl(product.images?.[0]) : '';
+
+            return (
+            <Link href={`/products/${productId}`} key={productId} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1">
               <div className="relative aspect-[1.75/1] overflow-hidden bg-[#e5dccf] rounded-tl-xl rounded-tr-xl">
-                <Image src={product.image} alt={product.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+                {'_id' in product && imageUrl ? (
+                  <Image src={imageUrl} alt={product.title} fill className="object-cover" />
+                ) : (
+                  <Image src={img12} alt={product.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
+                )}
               </div>
               <div className="p-5">
                 <h3 className="text-base font-bold text-[#1f261b]">{product.title}</h3>
+                {'_id' in product && (
+                  <p className="mt-2 text-sm font-semibold text-[#334022]">
+                    {product.price ? `₹${product.price.toLocaleString('en-IN')}` : 'Ask for Price'}
+                  </p>
+                )}
                 <span className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-[#7c6a53]">Explore Now <ArrowRight size={14} /></span>
               </div>
             </Link>
-          ))}
+          )})}
         </div>
       </Container>
     </section>
