@@ -38,12 +38,12 @@ export default function BlogHeroSection() {
             </div>
 
             {/* Subtitle */}
-            <h2 className="mt-8 font-serif text-[24px] italic leading-relaxed text-[#a7652a] sm:text-[30px]">
+            <h2 className="mt-4 font-serif text-[24px] italic leading-relaxed text-[#a7652a] sm:text-[30px]">
               Insights. Wisdom. Wellness.
             </h2>
 
             {/* Description */}
-            <p className="mt-6 max-w-[420px] text-[17px] leading-9 text-[#2d2d2d]">
+            <p className="mt-4 max-w-[420px] text-[17px]  text-[#2d2d2d]">
               Curated perspectives on spa, wellness,
               <br className="hidden sm:block" />
               and timeless healing traditions.

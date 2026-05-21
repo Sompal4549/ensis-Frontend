@@ -31,7 +31,7 @@ const SupportSection = () => {
               We're Here to Support Your Wellness Journey
             </h2>
 
-            <p className="text-[#4e4336] mt-2 text-sm leading-7">
+            <p className="text-[#4e4336] mt-2 text-sm">
               Have questions or need expert guidance?
               <br />
               Our team is here to help.
