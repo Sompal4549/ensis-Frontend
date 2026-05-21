@@ -96,7 +96,7 @@ export const Header = () => {
       <div className="bg-[#263016] text-white py-1">
         <Container className="flex min-h-8 items-center justify-between gap-4 text-[11px] font-medium py-0!">
           <div className="hidden items-center gap-6 md:flex">
-            <span className="flex items-center gap-2">
+            {/* <span className="flex items-center gap-2">
               <Globe size={13} />
               Exporting Worldwide
             </span>
@@ -104,7 +104,7 @@ export const Header = () => {
             <span className="flex items-center gap-2">
               <Award size={13} />
               ISO 9001:2015 Certified
-            </span>
+            </span> */}
 
             <span className="flex items-center gap-2">
               <Factory size={13} />

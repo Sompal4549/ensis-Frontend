@@ -37,7 +37,7 @@ const SupportSection = () => {
               Our team is here to help.
             </p>
 
-            <button className="mt-6 bg-[#31451f] hover:bg-[#253617] transition-colors text-[#f6eddc] px-6 py-3 rounded-lg text-sm shadow-lg">
+            <button className="mt-3 bg-[#31451f] hover:bg-[#253617] transition-colors text-[#f6eddc] px-6 py-3 rounded-lg text-sm shadow-lg">
               Contact Our Experts
             </button>
           </div>

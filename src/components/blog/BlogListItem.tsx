@@ -38,7 +38,7 @@ export default function BlogListItem({
           {title}
         </h3>
 
-        <button className="mt-5 flex items-center gap-2 text-sm font-medium text-[#b36c2c] transition hover:gap-3">
+        <button className="mt-3 flex items-center gap-2 text-sm font-medium text-[#b36c2c] transition hover:gap-3">
           Read More
           <ArrowRight size={15} />
         </button>

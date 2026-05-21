@@ -58,7 +58,7 @@ export const productApi = {
 
 export const verifyApi = {
     sendEmailOtp: async (email: string, profile: string = 'SPEAKER') => {
-        const response = await fetch(`${API_URL}/verify/send-email-otp`, {
+        const response = await fetch(`${API_URL}/auth/email-otp/verify`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, profile })

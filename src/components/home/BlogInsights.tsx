@@ -53,7 +53,7 @@ export const BlogInsights = () => {
               </div>
               <div className="p-5">
                 <h3 className="min-h-[54px] text-base font-bold leading-6 text-[#1f261b]">{blog.title}</h3>
-                <span className="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-[#7c6a53]">Read More <ArrowRight size={14} /></span>
+                <span className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-[#7c6a53]">Read More <ArrowRight size={14} /></span>
               </div>
             </Link>
           ))}
