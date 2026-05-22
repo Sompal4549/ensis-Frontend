@@ -4,7 +4,7 @@ import { Container } from "../ui/Container";
 const SupportSection = () => {
   return (
     <Container>
-    <div className="relative overflow-hidden rounded-2xl border border-[#e4d5c2] bg-gradient-to-r from-[#f6eddc] via-[#f1dfc7] to-[#d8b078] min-h-[220px] flex flex-col lg:flex-row">
+    <div className="relative overflow-hidden rounded-2xl border border-[#e4d5c2] bg-gradient-to-r from-[#f6eddc] via-[#f1dfc7] to-[#d8b078]  flex flex-col lg:flex-row">
       {/* Left Content */}
       <div className="relative z-10 p-3 md:p-4 flex flex-col justify-center max-w-[420px]">
         <div className="flex items-start gap-5">
@@ -37,7 +37,7 @@ const SupportSection = () => {
               Our team is here to help.
             </p>
 
-            <button className="mt-3 bg-[#31451f] hover:bg-[#253617] transition-colors text-[#f6eddc] px-6 py-3 rounded-lg text-sm shadow-lg">
+            <button className="mt-3 bg-[#31451f] hover:bg-[#253617] transition-colors text-[#f6eddc] px-4 py-2 rounded-lg text-sm shadow-lg">
               Contact Our Experts
             </button>
           </div>

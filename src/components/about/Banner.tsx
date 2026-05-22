@@ -7,7 +7,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import Image from "next/image";
-import aboutHeroImage from "@/assets/home/home_banner2.webp";
+import aboutHeroImage from "@/assets/bg/bg5.webp";
 import { Container } from "../ui/Container";
 import authentic_ayurveda from "@/assets/icons/authentic_ayurveda.webp";
 import premium_quality from "@/assets/icons/premium_quality.webp"
@@ -19,7 +19,7 @@ const AboutHero: React.FC = () => {
     <section className="w-full bg-[#e9dfd3] overflow-hidden relative">
       <Image src={aboutHeroImage} alt="About Us" className="w-full h-full object-cover absolute top-0 bottom-0 right-0 left-0" priority />
       <Container className=" grid grid-cols-1 lg:grid-cols-2 min-h-[90dvh] max-h-[650px] z-10">
-        <div className="absolute inset-0 pointer-events-none  z-20 w-[100%] block lg:hidden"
+        {/* <div className="absolute inset-0 pointer-events-none  z-20 w-[100%] block lg:hidden"
           style={{
             background: `
       linear-gradient(
@@ -31,9 +31,9 @@ const AboutHero: React.FC = () => {
         rgba(250,247,242,1) 100%
       )
     `,
-          }} />
+          }} /> */}
           {/* Gradient Overlay for Desktop */}
- <div className="absolute inset-0 pointer-events-none backdrop-blur-[1px] z-20 w-[60%] lg:block hidden"
+ {/* <div className="absolute inset-0 pointer-events-none backdrop-blur-[1px] z-20 w-[60%] lg:block hidden"
           style={{
             background: `
       linear-gradient(
@@ -44,7 +44,7 @@ const AboutHero: React.FC = () => {
         rgba(250,247,242,0.00) 100%
       )
     `,
-          }} />
+          }} /> */}
 
         {/* LEFT CONTENT */}
         <div className="relative flex items-end md:items-center py-10 z-30 lg:top-0 bottom-0">

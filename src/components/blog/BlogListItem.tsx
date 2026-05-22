@@ -18,7 +18,7 @@ export default function BlogListItem({
 }: Props) {
   return (
     <div className="flex flex-col gap-5 border-b border-[#e7d9cb] pb-3 sm:flex-row">
-      <div className="relative h-[200px] w-full overflow-hidden rounded-2xl sm:w-[300px]">
+      <div className="relative h-37.5 w-full overflow-hidden rounded-2xl sm:w-[300px]">
         <Image
           src={image}
           alt={title}
@@ -28,13 +28,13 @@ export default function BlogListItem({
       </div>
 
       <div className="flex-1">
-        <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-[#9d7f62]">
+        <div className="flex flex-wrap items-center gap-3 text-sm text-[#9d7f62]">
           <span>{date}</span>
           <span>•</span>
           <span>{category}</span>
         </div>
 
-        <h3 className="max-w-[700px] font-serif text-xl leading-snug text-[#2b241f]">
+        <h3 className="max-w-[700px] font-serif text-xl leading-snug text-[#2b241f] font-semibold">
           {title}
         </h3>
 

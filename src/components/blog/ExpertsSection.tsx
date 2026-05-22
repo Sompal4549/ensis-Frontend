@@ -58,16 +58,16 @@ export default function ExpertsSection() {
             </div>
 
             <div className="flex-1">
-              <p className="text-[15px] leading-7 text-[#3d3129]">
+              <p className="text-xs text-[#3d3129]">
                 "{expert.quote}"
               </p>
 
-              <div className="mt-2">
+              <div className="mt-1">
                 <h4 className="font-medium text-[#2b241f]">
                   {expert.name}
                 </h4>
 
-                <p className="text-sm text-[#8f735d]">
+                <p className="text-xs text-[#8f735d]">
                   {expert.role}
                 </p>
               </div>

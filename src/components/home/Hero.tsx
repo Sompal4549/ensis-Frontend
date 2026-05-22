@@ -9,7 +9,7 @@ import {
 import { Container } from '../ui/Container';
 import { Carousel } from '../ui/Carousel';
 
-import rooted from '@/assets/home/rooted_tradition_3.webp';
+import rooted from '@/assets/bg/bg3.webp';
 import tradition from '@/assets/bg/bg4.webp';
 import wellness_spaces from '@/assets/bg/bg2.webp';
 import wooden_steam from '@/assets/home/wooden.webp';

@@ -9,7 +9,6 @@ export default function BlogSidebar() {
     <div className="space-y-3">
       <ExpertsSection />
       <PopularPosts />
-      <NewsletterCard />
     </div>
   );
 }

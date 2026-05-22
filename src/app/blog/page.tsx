@@ -3,6 +3,7 @@ const BlogSection = dynamic(() => import('@/components/blog/BlogSection').then((
 const BlogHeroSection = dynamic(() => import('@/components/blog/HeroSection').then((mod) => mod.default));
 const SupportSection = dynamic(() => import('@/components/blog/SupportSection').then((mod) => mod.default));
 const WellnessResources = dynamic(() => import('@/components/blog/WellnessResource').then((mod) => mod.default));
+import NewsletterCard from '@/components/blog/NewsletterCard';
 import React from 'react'
 
 const Blog = () => {
@@ -11,6 +12,8 @@ const Blog = () => {
         <BlogHeroSection/>
         <BlogSection/>
         <WellnessResources/>
+      <NewsletterCard />
+
         <SupportSection/>
     </div>
   )

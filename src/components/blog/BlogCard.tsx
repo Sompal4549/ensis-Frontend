@@ -11,7 +11,7 @@ interface Props {
 export default function BlogCard({ title, image }: Props) {
   return (
     <div className="overflow-hidden rounded-2xl border border-[#e7d7c7] bg-[#f8f3ed] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-      <div className="relative h-[180px] overflow-hidden">
+      <div className="relative h-[150px] overflow-hidden">
         <Image
           src={image}
           alt={title}
@@ -20,12 +20,12 @@ export default function BlogCard({ title, image }: Props) {
         />
       </div>
 
-      <div className="p-5">
-        <h3 className="font-serif text-[18px] leading-snug text-[#2d241d]">
+      <div className="p-2">
+        <h3 className="font-serif text-sm font-semibold leading-snug text-[#2d241d]">
           {title}
         </h3>
 
-        <button className="mt-3 flex items-center gap-2 text-sm font-medium text-[#b36c2c] transition hover:gap-3">
+        <button className="mt-2 flex items-center gap-2 text-xs font-medium text-[#b36c2c] transition hover:gap-3">
           Read More
           <ArrowRight size={15} />
         </button>
