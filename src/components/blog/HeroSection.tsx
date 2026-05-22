@@ -12,7 +12,7 @@ export default function BlogHeroSection() {
             alt="Spa wellness"
             fill
             priority
-            className="object-cover object-center absolute inset-0 z-10"
+            className="object-fill object-center absolute inset-0 z-10"
           />
   <Container className="grid min-h-[90dvh] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-20 items-center">
         {/* Left Content */}

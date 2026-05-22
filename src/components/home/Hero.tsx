@@ -12,7 +12,7 @@ import { Carousel } from '../ui/Carousel';
 import rooted from '@/assets/bg/bg3.webp';
 import tradition from '@/assets/bg/bg4.webp';
 import wellness_spaces from '@/assets/bg/bg2.webp';
-import wooden_steam from '@/assets/home/wooden.webp';
+import wooden_steam from '@/assets/bg/bg1.webp';;
 import arrow from "@/assets/icons/arrow.png"
 import { Features } from './Features';
 import { getComponentContent, getImageUrl } from '@/app/lib/api';
@@ -116,7 +116,7 @@ export const Hero = async () => {
             {/* Background Image */}
             <div className="absolute inset-0">
               {typeof slide.image === "string" && slide.image ? (
-                <Image src={getImageUrl(slide.image)} alt="" fill className="object-cover" />
+                <Image src={getImageUrl(slide.image)} alt="" fill className="object-fill" />
               ) : (
                 <Image
                   src={slide.image}
@@ -124,7 +124,7 @@ export const Hero = async () => {
                   fill
                   priority
                   quality={95}
-                  className="object-cover"
+                  className="object-fill"
                 />
               )}
             </div>
