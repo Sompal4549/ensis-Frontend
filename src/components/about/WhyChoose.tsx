@@ -99,7 +99,7 @@ const WhyChooseEnsis: React.FC = () => {
       <Container>
         <AboutTitle title="Why Choose Ensis?" />
 
-        <p className="text-center text-sm text-[#5e5a55] mb-[20px] max-w-3xl mx-auto">
+        <p className="text-center text-sm text-[#5e5a55] mb-[20px] max-w-3xl mx-auto font-semibold">
           We don&apos;t just sell products, we create complete wellness
           experiences.
         </p>
@@ -112,9 +112,9 @@ const WhyChooseEnsis: React.FC = () => {
             >
               {feature.icon}
 
-              <h3 className="mb-3 text-[14px] font-semibold tracking-[0.4px] text-[#2d2a28]">
+              <b className="mb-3 text-[14px] font-bold tracking-[0.4px] text-[#2d2a28]">
                 {feature.title}
-              </h3>
+              </b>
 
               <p className="text-[14px] leading-[1.8] text-[#605a54]">
                 {feature.description}

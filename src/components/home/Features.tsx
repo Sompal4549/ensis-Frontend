@@ -41,29 +41,58 @@ export const Features = async () => {
   const features = content.features?.length ? content.features : fallbackFeatures;
 
   return (
-   <section className="static lg:absolute lg:z-10 lg:-bottom-16 lg:left-1/2 lg:-translate-x-1/2 container mx-auto max-w-300">
-      <div className=' border-y border-[#e5dccf] bg-[#f3eee6] rounded-xl py-4 md:py-6 px-6 md:px-10'>
+   <Container className="static lg:absolute lg:z-10 lg:-bottom-0 lg:left-1/2 lg:-translate-x-1/2 py-0!">
+      <div className=' border-y border-[#e5dccf] bg-[#f3eee6] rounded-xl py-3 px-3'>
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-          {features.map((feature, index) => {
-            const fallbackIcon = fallbackFeatures[index % fallbackFeatures.length].imgurl;
-            const icon = feature.imgurl || fallbackIcon;
-            return (
-            <div key={index} className="flex items-start gap-5 ">
-              <div className="mt-1 shrink-0 text-[#a17d4a] rounded-full w-15 h-15 p-2 bg-white flex items-center justify-center">
-                {typeof icon === "string" ? (
-                  <Image src={getImageUrl(icon)} alt={feature.title} width={70} height={50} className="rounded-full object-contain object-center" />
-                ) : (
-                  <Image src={icon} alt={feature.title} width={70} height={50} className='rounded-full object-contain object-center' />
-                )}
-              </div>
-              <div>
-                <h3 className="text-sm font-bold text-[#1f261b]">{feature.title}</h3>
-                <p className="mt-2 max-w-[220px] text-xs leading-5 text-[#5f5a50]">{feature.desc}</p>
-              </div>
-            </div>
-          )})}
+         {features.map((feature, index) => {
+  const fallbackIcon =
+    fallbackFeatures[index % fallbackFeatures.length].imgurl;
+
+  const icon = feature.imgurl || fallbackIcon;
+
+  return (
+    <div
+      key={index}
+      className={`flex items-start gap-4 pr-6 ${
+        index !== features.length - 1
+          ? "border-r border-[#d6c2a0]"
+          : ""
+      }`}
+    >
+      <div className="mt-1 shrink-0 text-[#a17d4a] rounded-full w-14 h-14 p-2 bg-white flex items-center justify-center border-2 border-[#c8a45d]">
+        {typeof icon === "string" ? (
+          <Image
+            src={getImageUrl(icon)}
+            alt={feature.title}
+            width={70}
+            height={50}
+            className="rounded-full object-contain object-center"
+          />
+        ) : (
+          <Image
+            src={icon}
+            alt={feature.title}
+            width={70}
+            height={50}
+            className="rounded-full object-contain object-center"
+          />
+        )}
+      </div>
+
+      <div>
+        <p className="text-xs font-semibold text-[#0f2518]">
+          {feature.title}
+        </p>
+
+        <p className="mt-1 text-xs leading-4 text-[#0f2518] font-medium ">
+          {feature.desc}
+        </p>
+      </div>
+    </div>
+  );
+})}
         </div>
       </div>
-    </section>
+    </Container>
   );
 };

@@ -47,7 +47,25 @@ const config: Config = {
         lg: "0.75rem",
       },
       fontFamily: {
-        serif: "serif",
+        sans: [
+          'var(--font-montserrat)',
+          "ui-sans-serif",
+          "system-ui",
+          "-apple-system",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica",
+          "Arial",
+          "Noto Sans",
+          "sans-serif",
+        ],
+        serif: [
+          'var(--font-cormorant)',
+          "ui-serif",
+          "Georgia",
+          "Times New Roman",
+          "serif",
+        ],
         "geist-sans": "var(--font-geist-sans)",
       },
       backgroundImage: {

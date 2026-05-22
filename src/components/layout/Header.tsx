@@ -28,6 +28,7 @@ import logoImg from "@/assets/logo.png";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState<{ name?: string; email?: string } | null>(null);
   const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001";
 
@@ -39,6 +40,19 @@ export const Header = () => {
     } catch {
       setUser(null);
     }
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const handleLogout = () => {
@@ -92,8 +106,8 @@ export const Header = () => {
   ];
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm">
-      <div className="bg-[#263016] text-white py-1">
+    <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}>
+      <div className={`bg-[#263016] text-white py-1`}> 
         <Container className="flex min-h-8 items-center justify-between gap-4 text-[11px] font-medium py-0!">
           <div className="hidden items-center gap-6 md:flex">
             {/* <span className="flex items-center gap-2">
@@ -172,7 +186,12 @@ export const Header = () => {
         </Container>
       </div>
 
-      <div className="border-b border-[#e8e0d3] bg-white">
+<div
+  className={`${isScrolled ? "border-[#e8e0d3] bg-white" : "border-transparent"}`}
+  style={!isScrolled ? {
+    background: "linear-gradient(to bottom, rgba(245, 230, 200, 0.95) 0%, rgba(245, 230, 200, 0) 100%)"
+  } : {}}
+>
         <Container className="flex items-center justify-between gap-6 py-2!">
           <Link href="/" className="shrink-0">
             <Image
@@ -212,7 +231,7 @@ export const Header = () => {
           <div className="flex items-center gap-3">
             <Link
               href="https://ensis.in/pdf/e-broucher.pdf"
-              className="hidden bg-[#6f542f] px-5 py-3 text-[11px] font-bold tracking-wide text-white transition-colors hover:bg-[#4c381f] sm:inline-flex rounded-md"
+              className="hidden bg-[#6f542f] px-5 py-2 text-[11px] font-bold tracking-wide text-white transition-colors hover:bg-[#4c381f] sm:inline-flex rounded-md"
               target="_blank"
             >
               <span className="text-white uppercase">E-Brochure</span>
@@ -283,7 +302,7 @@ export const Header = () => {
 
           <Link
             href="https://ensis.in/pdf/e-broucher.pdf"
-            className="mt-5 bg-[#6f542f] px-4 py-3 text-center text-[11px] font-bold tracking-wide text-white rounded-md"
+            className="mt-5 bg-[#6f542f] px-4 py-2 text-center text-[11px] font-bold tracking-wide text-white rounded-md"
             onClick={() => setIsMenuOpen(false)}
             target="_blank"
           >

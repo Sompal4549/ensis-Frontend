@@ -70,8 +70,8 @@ export const Testimonials = () => {
   return (
     <section className="bg-[#fbf8f2]">
       <Container>
-        <SubHeading className=' text-[#8d6a3a]' text='WHAT OUR CLIENTS SAY' />
-        <div className="mt-8">
+        <SubHeading className='text-black' text='WHAT OUR CLIENTS SAY' />
+        <div className="mt-2">
           <Swiper
             modules={[Autoplay, Pagination]}
             spaceBetween={20}
@@ -94,43 +94,43 @@ export const Testimonials = () => {
                 slidesPerView: 4,
               },
             }}
-            className="testimonial-swiper !pb-14"
+            className="testimonial-swiper !pb-8"
           >
             {testimonials.map((item, index) => (
               <SwiperSlide key={index}>
-                <div className="h-full border border-[#e1d7c9] bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
+                <div className="h-full border border-[#e1d7c9] bg-white p-3 rounded-md shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative">
 
                   <Image
                     height={28}
                     width={28}
                     alt="quote"
                     src={quote}
-                    className="mb-2"
+                    //  className="absolute top-4 left-4"
                   />
 
-                  <p className="min-h-[110px] text-[14px] leading-7 text-[#3f3a32]">
-                    {item.text}
-                  </p>
-<div className='flex text-orange-400 items-center gap-2 my-2'>
-<FaStar/>
-<FaStar/>
-<FaStar/>
-<FaStar/>
-<FaStar/>
-</div>
-                  <div className="mt-6 flex items-center gap-3">
+               <p className="mb-2 text-xs text-[#3f3a32] pl-6 line-clamp-3">
+  {item.text}
+</p>
+                  <div className='flex text-orange-400 items-center gap-2 my-2 pl-6'>
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar />
+                  </div>
+                  <div className="flex items-center gap-3">
                     <div className="size-11 rounded-full bg-cover bg-center" style={{ backgroundImage: `url(${userImage.src})` }} />
 
-                    <div>
-                      <h4 className="text-sm font-semibold text-[#1f261b]">
+                    <div className="py-1">
+                      <p className="text-xs font-bold text-[#1f261b] leading-5">
                         {item.name}
-                      </h4>
+                      </p>
 
-                      <span className="text-xs text-[#6f675d]">
+                      <span className="text-xs text-[#6f675d] leading-4">
                         {item.role}
                       </span>
                     </div>
-                    
+
                   </div>
                 </div>
               </SwiperSlide>

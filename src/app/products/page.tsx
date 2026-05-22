@@ -20,8 +20,8 @@ export default async function ProductsPage() {
     <main className="bg-[#fbf8f2] py-10 md:py-14">
       <Container>
         <div className="mb-8">
-          <span className="text-[11px] font-bold tracking-widest text-[#8d6a3a]">OUR PRODUCTS</span>
-          <h1 className="mt-2 font-serif text-4xl text-[#1f261b]">Premium Wellness Equipment</h1>
+          <span className="text-[11px] font-bold tracking-widest text-[#b87f33]">OUR PRODUCTS</span>
+          <h1 className="mt-2 font-serif text-4xl text-[#0f2518] font-semibold">Premium Wellness Equipment</h1>
         </div>
 
         {products.length ? (

@@ -35,28 +35,28 @@ const steps: ProcessStep[] = [
     id: 2,
     title: "DESIGN & 3D VISUALIZATION",
     icon: (
-      <Image src={design} alt="Design & Visualization" width={24} height={24} className="text-[#b79a7a] mb-3" />
+      <Image src={design} alt="Design & Visualization" width={35} height={35} className="text-[#b79a7a] mb-3" />
     ),
   },
   {
     id: 3,
     title: "MANUFACTURING & PRODUCTION",
     icon: (
-      <Image src={manufacturing} alt="Manufacturing & Production" width={24} height={24} className="text-[#b79a7a] mb-3 object-cover" />
+      <Image src={manufacturing} alt="Manufacturing & Production" width={35} height={35} className="text-[#b79a7a] mb-3 object-cover" />
     ),
   },
   {
     id: 4,
     title: "INSTALLATION & EXECUTION",
     icon: (
-       <Image src={installation} alt="Installation & Execution" width={24} height={24} className="text-[#b79a7a] mb-3" />
+       <Image src={installation} alt="Installation & Execution" width={35} height={35} className="text-[#b79a7a] mb-3" />
     ),
   },
   {
     id: 5,
     title: "HANDOVER & SUPPORT",
     icon: (
-      <Image src={after_sales_support} alt="After Sales Support" width={24} height={24} className="text-[#b79a7a] mb-3" />
+      <Image src={after_sales_support} alt="After Sales Support" width={35} height={35} className="text-[#b79a7a] mb-3" />
     ),
   },
 ];
@@ -76,7 +76,7 @@ const TurnkeyProcess: React.FC = () => {
         <div className="relative flex flex-col lg:flex-row items-stretch min-h-[200px]">
           {/* LEFT SIDE */}
           <div className="w-full lg:w-[58%] px-6 md:px-10 py-4 flex flex-col justify-center relative z-10">
-            <h2 className="text-[#2d2a28] text-[18px] md:text-[24px] font-semibold font-serif uppercase tracking-[0.4px] mb-6">
+            <h2 className="text-[#2d2a28] text-[18px] md:text-[24px] font-bold font-serif uppercase tracking-[0.4px] mb-6">
               OUR TURNKEY PROCESS
             </h2>
             

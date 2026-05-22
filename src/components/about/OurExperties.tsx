@@ -47,7 +47,7 @@ const ExpertiseSection: React.FC = () => {
               <AboutTitle title="Our Expertise" />
 
                 {/* Cards */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-2">
                     {expertiseData.map((item, index) => (
                         <div
                             key={index}

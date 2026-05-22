@@ -53,9 +53,7 @@ export default function AboutEnsisSection() {
 
   return (
     <section className="w-full bg-[#f7f3ee]">
-      <Container>
-
-        <Container className="overflow-hidden rounded-2xl border border-[#e2d8cb] bg-white shadow-sm px-0! py-0!">
+        <Container className="overflow-hidden rounded-2xl bg-gray shadow-sm px-0! py-0!">
           {/* Top Content */}
           <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr_0.9fr]">
             {/* Left Image */}
@@ -78,7 +76,7 @@ export default function AboutEnsisSection() {
                 className="
             text-[#2d2b28]
             text-[28px]
-            font-semibold
+            font-bold
             tracking-[2px]
             uppercase
             font-serif
@@ -86,12 +84,12 @@ export default function AboutEnsisSection() {
               >
                 About ENSIS
               </h2>
-              <div className="h-[3px] w-25 bg-red-500 mb-5 rounded-full"></div>
+              <div className="h-[1px] w-25 bg-[#ca8e42] mb-5 rounded-full"></div>
 
-              <div className="space-y-4 text-sm leading-7 text-[#5a534d] md:text-[15px]">
+              <div className="space-y-4 text-xs text-[#5a534d] md:text-[15px]">
                 <p>
-                  ENSIS is the wellness division of Design House India Pvt.
-                  Ltd., a trusted name in turnkey interiors and manufacturing
+                  ENSIS is the wellness division of <b>Design House India Pvt.
+                  Ltd.</b>, a trusted name in turnkey interiors and manufacturing
                   since 2003.
                 </p>
 
@@ -112,13 +110,13 @@ export default function AboutEnsisSection() {
 
             {/* Right Features */}
             <div className="flex items-center border-t border-[#eee7de] px-6 py-2 lg:border-l lg:border-t-0 lg:px-8">
-              <div className="w-full space-y-5">
+              <div className="w-full space-y-6">
                 {features.map((feature, index) => (
                   <div
                     key={index}
                     className="flex items-start gap-4 text-sm font-medium text-[#3d3a36] md:text-[15px]"
                   >
-                    <div className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-[#123f2d] text-xs text-[#d8b06a] shadow-sm">
+                    <div className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-[#123f2d] text-xs text-white shadow-sm">
                       ✓
                     </div>
 
@@ -130,7 +128,7 @@ export default function AboutEnsisSection() {
           </div>
 
           {/* Bottom Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-5 bg-[#0d3828] rounded-2xl overflow-hidden border border-[#295240]">
+        <div className="grid grid-cols-2 md:grid-cols-5 bg-[#0d3828] rounded-bl-2xl rounded-br-2xl overflow-hidden border border-[#295240]">
   {stats.map((item, index) => (
     <div
       key={index}
@@ -156,9 +154,9 @@ export default function AboutEnsisSection() {
 
       {/* Content */}
       <div className="min-w-0">
-        <h3 className="text-2xl md:text-3xl font-semibold text-white leading-none">
+        <p className="text-2xl md:text-3xl font-medium text-white leading-none">
           {item.value}
-        </h3>
+        </p>
 
         <p className="mt-1 text-xs md:text-sm leading-snug text-[#d8d2ca]">
           {item.label}
@@ -168,8 +166,6 @@ export default function AboutEnsisSection() {
   ))}
 </div>
         </Container>
-      </Container>
-
     </section>
   );
 }

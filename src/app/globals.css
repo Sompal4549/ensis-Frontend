@@ -24,7 +24,16 @@ body {
   margin: 0;
   background: var(--color-background);
   color: var(--color-text-main);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
+}
+
+/* Use a consistent serif font-family for all headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
+}
+
+strong {
+  font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
 }
 
 * {

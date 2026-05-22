@@ -39,21 +39,21 @@ export const BlogInsights = () => {
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
           <div className="grid gap-6  md:items-start">
             <div>
-              <SubHeading className=' text-[#8d6a3a]' text='FROM THE BLOG' />
-              <h2 className="mt-2 font-serif text-xl leading-tight text-[#1f261b] md:text-2xl">Insights & Wellness Knowledge</h2>
-              <Link href="/blog" className="mt-6 inline-flex items-center gap-2 border border-[#d7cbbd] bg-white px-6 py-3 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6]">
+              <SubHeading className=' text-black' text='FROM THE BLOG' />
+              <h2 className="mt-2 font-serif text-xl leading-tight text-[#1f261b] md:text-2xl font-semibold">Insights & Wellness Knowledge</h2>
+              <Link href="/blog" className="mt-6 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6]">
                 VIEW ALL BLOGS <ArrowRight size={16} />
               </Link>
             </div>
           </div>
           {blogs.map((blog, index) => (
             <Link href={`/blog/${index}`} key={index} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-lg">
-              <div className="relative aspect-[1.55/1] overflow-hidden bg-[#e5dccf]">
+              <div className="relative aspect-[2.3/1] overflow-hidden bg-[#e5dccf]">
                 <Image src={blog.image} alt={blog.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" />
               </div>
-              <div className="p-5">
-                <h3 className="min-h-[54px] text-base font-bold leading-6 text-[#1f261b]">{blog.title}</h3>
-                <span className="mt-3 inline-flex items-center gap-2 text-xs font-semibold text-[#7c6a53]">Read More <ArrowRight size={14} /></span>
+              <div className="p-4 flex flex-col justify-between h-30">
+                <h3 className="text-lg font-bold text-[#1f261b] leading-[120%]">{blog.title}</h3>
+                <p className="mt-3 flex items-center gap-2 text-xs font-semibold text-[#7c6a53]">Read More <ArrowRight size={14} /></p>
               </div>
             </Link>
           ))}
@@ -64,10 +64,10 @@ export const BlogInsights = () => {
         <Image src={img7} alt="" fill style={{ objectFit: 'cover' }} className="opacity-25" />
         <Container className="relative z-10 flex flex-col justify-center gap-20 md:flex-row md:items-center">
           <div>
-            <h2 className="font-serif text-2xl leading-tight">Ready to Build Your Dream Wellness Space?</h2>
+            <h2 className="font-serif text-2xl leading-tight font-semibold">Ready to Build Your Dream Wellness Space?</h2>
             <p className="mt-2 text-sm text-[#e5dccf]">Connect with our experts for personalized consultation and premium solutions.</p>
           </div>
-          <button className="w-fit bg-[#d0a965] px-7 py-3 text-sm font-bold tracking-wide text-white transition-colors hover:bg-[#ead0a0] rounded-md">CONTACT US TODAY</button>
+          <button className="w-fit bg-[#d0a965] px-5 py-2 text-sm font-bold tracking-wide text-white transition-colors hover:bg-[#ead0a0] rounded-md">CONTACT US TODAY</button>
         </Container>
       </div>
     </section>

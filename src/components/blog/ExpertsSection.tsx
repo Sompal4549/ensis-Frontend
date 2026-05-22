@@ -39,7 +39,9 @@ export default function ExpertsSection() {
         <SectionTitle title="Voice of Experts" />
 
         <div className="gap-2 flex items-center">
-         View All <ArrowRight size={16} />
+          <button className="inline-flex items-center gap-2 px-1 py-1 text-sm text-[#8a6b47] transition-colors hover:text-[#6b5134]">
+            View All <ArrowRight size={16} />
+          </button>
         </div>
       </div>
 

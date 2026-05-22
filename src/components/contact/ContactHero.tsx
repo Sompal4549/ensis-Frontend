@@ -19,7 +19,7 @@ const ContactHero: React.FC = () => {
   return (
     <section className="w-full bg-[#e9dfd3] overflow-hidden relative">
       <Image src={aboutHeroImage} alt="About Us" className="w-full h-full object-cover absolute top-0 bottom-0 right-0 left-0" priority />
-      <Container className=" grid grid-cols-1 lg:grid-cols-2 min-h-[550px] z-10">
+      <Container className="grid min-h-[90dvh] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-20 items-center">
         <div className="absolute inset-0 pointer-events-none  z-20 w-[100%] block lg:hidden"
           style={{
             background: `
@@ -58,10 +58,10 @@ const ContactHero: React.FC = () => {
             </p>
 
             {/* Main Heading */}
-            <h1 className="text-[42px] sm:text-[42px] leading-[1.05] font-serif text-[#173128] font-medium">
+            <h1 className="text-[42px] sm:text-[42px] leading-[1.05] font-serif text-[#173128] font-semibold">
               Contact Us
               <br />
-              <span className="text-[#b58a48] capitalize">We're here to help you Heal.</span>
+              <span className="text-[#b58a48] capitalize font-semibold">We're here to help you Heal.</span>
             </h1>
 
             {/* Description */}
@@ -79,7 +79,7 @@ const ContactHero: React.FC = () => {
 
               <div className="flex flex-col items-center text-center relative">
                 <Image src={authentic_ayurveda} alt="Authentic Ayurveda" width={26} height={26} className="text-[#b58a48] mb-3" />
-                <p className="text-[11px] leading-[17px] text-[#4e463d]">
+                <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
                   Authentic Ayurveda Focused Design
                 </p>
 
@@ -89,7 +89,7 @@ const ContactHero: React.FC = () => {
 
               <div className="flex flex-col items-center text-center relative">
                  <Image src={premium_quality} alt="Authentic Ayurveda" width={26} height={26} className="text-[#b58a48] mb-3" />
-                <p className="text-[11px] leading-[17px] text-[#4e463d]">
+                <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
                   Premium Quality Products
                 </p>
 
@@ -100,7 +100,7 @@ const ContactHero: React.FC = () => {
               <div className="flex flex-col items-center text-center relative">
                 <Image src={custom_solutions} alt="Authentic Ayurveda" width={26} height={26} className="text-[#b58a48] mb-3" />
                
-                <p className="text-[11px] leading-[17px] text-[#4e463d]">
+                <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
                   Custom Solutions for Every Need
                 </p>
 
@@ -110,7 +110,7 @@ const ContactHero: React.FC = () => {
 
               <div className="flex flex-col items-center text-center">
                <Image src={timely_delivery} alt="Authentic Ayurveda" width={26} height={26} className="text-[#b58a48] mb-3" />
-                <p className="text-[11px] leading-[17px] text-[#4e463d]">
+                <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
                   Timely Delivery & Installation Support
                 </p>
               </div>

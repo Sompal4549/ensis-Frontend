@@ -18,7 +18,7 @@ const AboutHero: React.FC = () => {
   return (
     <section className="w-full bg-[#e9dfd3] overflow-hidden relative">
       <Image src={aboutHeroImage} alt="About Us" className="w-full h-full object-cover absolute top-0 bottom-0 right-0 left-0" priority />
-      <Container className=" grid grid-cols-1 lg:grid-cols-2 min-h-[550px] z-10">
+      <Container className=" grid grid-cols-1 lg:grid-cols-2 min-h-[90dvh] max-h-[650px] z-10">
         <div className="absolute inset-0 pointer-events-none  z-20 w-[100%] block lg:hidden"
           style={{
             background: `
@@ -32,15 +32,15 @@ const AboutHero: React.FC = () => {
       )
     `,
           }} />
- <div className="absolute inset-0 pointer-events-none backdrop-blur-[1px] z-20 w-[80%] lg:block hidden"
+          {/* Gradient Overlay for Desktop */}
+ <div className="absolute inset-0 pointer-events-none backdrop-blur-[1px] z-20 w-[60%] lg:block hidden"
           style={{
             background: `
       linear-gradient(
         90deg,
         rgba(250,247,242,0.97) 0%,
-        rgba(250,247,242,0.92) 24%,
-        rgba(250,247,242,0.60) 52%,
-        rgba(250,247,242,0.20) 62%,
+        rgba(250,247,242,0.92) 64%,
+        rgba(250,247,242,0.10) 82%,
         rgba(250,247,242,0.00) 100%
       )
     `,
@@ -57,25 +57,25 @@ const AboutHero: React.FC = () => {
             </p>
 
             {/* Main Heading */}
-            <h1 className="text-[42px] sm:text-[42px] leading-[1.05] font-serif text-[#173128] font-medium">
+            <h1 className="text-[42px] sm:text-[42px] leading-[1.05] font-serif text-[#173128] font-semibold">
               Crafted for Wellness.
               <br />
-              <span className="text-[#b58a48]">Built for Life.</span>
+              <span className="text-[#b58a48] font-semibold">Built for Life.</span>
             </h1>
 
             {/* Description */}
-            <p className="mt-3 text-[15px] leading-[22px] text-[#5d5449] max-w-[520px]">
+            <p className="mt-3 text-xs leading-[22px] font-semibold text-[#5d5449] max-w-[450px]">
               At ENSIS, we combine ancient Ayurvedic wisdom with modern
               craftsmanship to create authentic wellness environments that
               heal, rejuvenate and inspire.
             </p>
 
             {/* Features */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
 
               <div className="flex flex-col items-center text-center relative">
-                <Image src={authentic_ayurveda} alt="Authentic Ayurveda" width={26} height={26} className="text-[#b58a48] mb-3" />
-                <p className="text-[11px] leading-[17px] text-[#4e463d]">
+                <Image src={authentic_ayurveda} alt="Authentic Ayurveda" width={20} height={20} className="text-[#b58a48] mb-3" />
+                <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
                   Authentic Ayurveda Focused Design
                 </p>
 
@@ -84,8 +84,8 @@ const AboutHero: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center text-center relative">
-                 <Image src={premium_quality} alt="Authentic Ayurveda" width={26} height={26} className="text-[#b58a48] mb-3" />
-                <p className="text-[11px] leading-[17px] text-[#4e463d]">
+                 <Image src={premium_quality} alt="Authentic Ayurveda" width={20} height={20} className="text-[#b58a48] mb-3" />
+                <p className="text-[11px] text-[#4e463d] font-semibold">
                   Premium Quality Products
                 </p>
 
@@ -94,9 +94,9 @@ const AboutHero: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center text-center relative">
-                <Image src={custom_solutions} alt="Authentic Ayurveda" width={26} height={26} className="text-[#b58a48] mb-3" />
+                <Image src={custom_solutions} alt="Authentic Ayurveda" width={20} height={20} className="text-[#b58a48] mb-3" />
                
-                <p className="text-[11px] leading-[17px] text-[#4e463d]">
+                <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
                   Custom Solutions for Every Need
                 </p>
 
@@ -105,8 +105,8 @@ const AboutHero: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center text-center">
-               <Image src={timely_delivery} alt="Authentic Ayurveda" width={26} height={26} className="text-[#b58a48] mb-3" />
-                <p className="text-[11px] leading-[17px] text-[#4e463d]">
+               <Image src={timely_delivery} alt="Authentic Ayurveda" width={20} height={20} className="text-[#b58a48] mb-3" />
+                <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
                   Timely Delivery & Installation Support
                 </p>
               </div>
@@ -115,12 +115,12 @@ const AboutHero: React.FC = () => {
             {/* Buttons */}
             <div className="flex gap-4 mt-6">
 
-              <button className="bg-[#173128] hover:bg-[#0f241d] transition-all text-white text-[13px] font-medium lg:px-7 py-4 px-3  rounded-md flex items-center gap-0">
+              <button className="bg-[#173128] hover:bg-[#0f241d] transition-all text-white text-xs font-medium py-2 px-5  rounded-md flex items-center gap-2">
                 EXPLORE PRODUCTS
-                <ArrowRight size={15} />
+                <ArrowRight size={15} className="text-[#ca8e42]" />
               </button>
 
-              <button className="border border-[#bcae9f] bg-white/70 hover:bg-white transition-all text-[#2f2b27] text-[13px] font-medium  lg:px-7 py-4 px-3 rounded-md flex items-center gap-0">
+              <button className="border border-[#bcae9f] bg-white/70 hover:bg-white transition-all text-[#2f2b27] text-xs font-medium py-2 px-5 rounded-md flex items-center gap-2">
                 START YOUR PROJECT
                 <ArrowRight size={15} />
               </button>

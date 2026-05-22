@@ -14,7 +14,7 @@ export default function BlogHeroSection() {
             priority
             className="object-cover object-center absolute inset-0 z-10"
           />
-      <Container className="grid min-h-[420px] grid-cols-1 lg:grid-cols-2 relative z-20">
+  <Container className="grid min-h-[90dvh] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-20 items-center">
         {/* Left Content */}
         <div className="sm:py-8 lg:py-14">
           <div className="max-w-[480px]">

@@ -47,21 +47,21 @@ const WellnessRoomSetups: React.FC = () => {
 
           </SubHeading>
 
-          <h2 className="text-[#1f1b16] text-4xl md:text-3xl leading-tight font-serif mb-3">
+          <h2 className="text-[#0f2518] text-4xl md:text-3xl font-semibold mb-3">
             Complete Room
             <br />
             Setups
           </h2>
 
-          <p className="text-[#6e665d] text-[15px] leading-7 max-w-[300px] mb-3">
+          <p className="text-[#0f2518] text-xs max-w-[300px] mb-3">
             Thoughtfully designed, perfectly crafted wellness rooms that
             reflect the essence of Ayurveda and modern luxury.
           </p>
 
           <button
-            className="group relative overflow-hidden bg-[#5f5b45] hover:bg-[#3f3c2d] transition-all duration-300 text-white px-6 py-4 rounded-md w-fit flex items-center gap-3"
+            className="group relative overflow-hidden bg-[#0f2518] hover:bg-[#0f2518] transition-all duration-300 text-white px-4 py-3 rounded-md w-fit flex items-center gap-3"
           >
-            <span className="relative z-10 text-sm tracking-wide font-medium">
+            <span className="relative z-10 text-xs tracking-wide font-medium">
               EXPLORE ROOM SETUPS
             </span>
           </button>
@@ -74,7 +74,7 @@ const WellnessRoomSetups: React.FC = () => {
               key={index}
               onMouseEnter={() => setHovered(index)}
               onMouseLeave={() => setHovered(null)}
-              className="relative overflow-hidden rounded-2xl h-[300px] cursor-pointer group"
+              className="relative overflow-hidden rounded-2xl h-[100%] cursor-pointer group"
             >
               {/* Image */}
               <Image width={250} height={500}
@@ -87,14 +87,14 @@ const WellnessRoomSetups: React.FC = () => {
 
               {/* Content */}
               <div className="absolute bottom-0 left-0 w-full p-5 flex items-end justify-between">
-                <h3 className="text-white text-xl leading-snug font-medium max-w-[180px]">
+                <h3 className="text-white text-md font-semibold max-w-45 leading-5">
                   {room.title}
                 </h3>
 
                 <button
-                  className={`min-w-[46px] h-[46px] rounded-full border border-white/40 flex items-center justify-center backdrop-blur-md transition-all duration-300 ${hovered === index
+                  className={`min-w-[36px] h-[36px] rounded-full border border-white/40 flex items-center justify-center backdrop-blur-md transition-all duration-300 ${hovered === index
                       ? "bg-white text-black"
-                      : "bg-white/10 text-white"
+                      : "text-white"
                     }`}
                 >
                   <ArrowRight

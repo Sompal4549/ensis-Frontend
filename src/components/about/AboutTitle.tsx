@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import lotus from "@/assets/about/lotus.webp";
+import lotus from "@/assets/about/lotus.png";
 type SectionHeadingProps = {
   title: string;
   className?: string;
@@ -20,7 +20,7 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
             className={`
               text-[#4a4036]
               text-[24px]
-              font-semibold
+              font-bold
               tracking-[2px]
               uppercase
               font-serif

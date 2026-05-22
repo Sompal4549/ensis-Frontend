@@ -16,25 +16,25 @@ export const ManufacturingAndProjects = () => {
   return (
     <section className="border-b border-[#e7ddd1] bg-[#fbf8f2]">
       <Container>
-        <div className="grid gap-14 lg:grid-cols-2 lg:gap-12">
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10 items-stretch">
 
           {/* LEFT SIDE */}
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] h-full">
 
             {/* Content */}
             <div className="flex flex-col justify-center">
-              <SubHeading className=' text-[#8d6a3a]' text='MANUFACTURING EXCELLENCE' />
-              <h2 className="mt-3 font-serif text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
+              <SubHeading className=' text-black font-normal' text='MANUFACTURING EXCELLENCE' />
+              <h2 className="mt-2 font-serif text-[26px] font-bold leading-[1.08] text-[#1f261b] lg:text-[28px]">
                 Crafted with Precision,
                 <br />
                 Delivered Worldwide
               </h2>
 
-              <p className="mt-3 text-[14px] text-[#5f5a50]">
+              <p className="mt-2 text-xs text-[#5f5a50]">
                 Our advanced manufacturing facility combines traditional craftsmanship with modern technology to deliver world-class wellness equipment.
               </p>
 
-              <ul className="mt-3 space-y-4">
+              <ul className="mt-6 space-y-2">
                 {[
                   'Premium Quality Raw Materials',
                   'Skilled Artisans & Modern Machinery',
@@ -64,10 +64,10 @@ export const ManufacturingAndProjects = () => {
             </div>
 
             {/* Manufacturing Images */}
-            <div className="grid grid-cols-2 gap-2 self-start h-full">
+            <div className="grid grid-cols-2 gap-1 self-start h-[100%]">
 
               {/* Top Large */}
-              <div className="relative col-span-2 h-[220px] sm:h-[260px] overflow-hidden rounded-xl">
+              <div className="relative col-span-2 h-[100%] overflow-hidden rounded-xl">
                 <Image
                   src={img11}
                   alt=""
@@ -77,7 +77,7 @@ export const ManufacturingAndProjects = () => {
               </div>
 
               {/* Bottom Left */}
-              <div className="relative h-[170px] sm:h-[210px] overflow-hidden rounded-xl">
+              <div className="relative h-[100%] overflow-hidden rounded-xl">
                 <Image
                   src={img12}
                   alt=""
@@ -87,7 +87,7 @@ export const ManufacturingAndProjects = () => {
               </div>
 
               {/* Bottom Right */}
-              <div className="relative h-[170px] sm:h-[210px] overflow-hidden rounded-xl">
+              <div className="relative h-[100%] overflow-hidden rounded-xl">
                 <Image
                   src={img13}
                   alt=""
@@ -100,28 +100,28 @@ export const ManufacturingAndProjects = () => {
           </div>
 
           {/* RIGHT SIDE */}
-          <div className="border-[#e7ddd1] lg:border-l lg:pl-12">
-            <SubHeading className=' text-[#8d6a3a]' text='OUR PROJECTS' />
-            <h2 className="mt-3 font-serif text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
+          <div className="border-[#e7ddd1] lg:border-l lg:pl-12 h">
+            <SubHeading className=' text-black font-normal' text='OUR PROJECTS' />
+            <h2 className="mt-2 font-serif text-[26px] font-bold leading-[1.08] text-[#1f261b] lg:text-[28px]">
               Creating Wellness
               <br />
               Spaces Worldwide
             </h2>
 
-            <p className="mt-5 max-w-[420px] text-[14px] leading-7 text-[#5f5a50]">
+            <p className="mt-2 max-w-[320px] text-xs text-[#5f5a50]">
               Proud to be a trusted partner for 500+ wellness projects across the globe.
             </p>
 
             <Link
               href="/projects"
-              className="mt-8 inline-flex w-fit items-center gap-3 border border-[#d9ccbd] bg-white px-5 py-3 text-[11px] font-semibold tracking-[0.14em] text-[#1f261b] transition-all duration-300 hover:bg-[#f3eee6]"
+              className="mt-3 inline-flex w-fit items-center gap-3 border border-[#d9ccbd] bg-white px-3 py-2 text-[11px] font-semibold tracking-[0.14em] text-[#1f261b] transition-all duration-300 hover:bg-[#f3eee6]"
             >
               VIEW ALL PROJECTS
               <ArrowRight size={15} />
             </Link>
 
             {/* Project Grid */}
-            <div className="mt-8">
+            <div className="mt-2">
               <div className="grid h-[200px] grid-cols-3 grid-rows-[1fr_1fr] gap-2">
 
                 {/* Left Tall */}

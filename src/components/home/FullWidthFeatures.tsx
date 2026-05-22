@@ -5,7 +5,8 @@ import authentic_ayurveda from "@/assets/home/authentic_ayurveda_icon.webp";
 import holistic_wellbeing from "@/assets/home/holistic_wellbeing.webp";
 import timeless_care from "@/assets/home/timeless_care.webp";
 import Image from "next/image";
-import flower from "@/assets/about/lotus.webp";
+import flower from "@/assets/about/lotus.png";
+import LotusButton from "../button/LotusButton";
 const features = [
   {
     title: "Authentic Ayurveda",
@@ -48,33 +49,19 @@ export default function FullWidthFeatures() {
 
       {/* Text */}
       <div className="min-w-0">
-        <h3 className="text-[#f5e7c8] text-sm md:text-base font-medium leading-tight font-serif">
+        <h3 className="text-[#f5e7c8] text-base  font-semibold leading-tight font-serif">
           {item.title}
         </h3>
 
-        <p className="text-[#d2c3a1] text-sm mt-1 leading-snug">
+        <p className="text-[#d2c3a1] text-xs mt-1 leading-snug">
           {item.subtitle}
         </p>
       </div>
     </div>
   ))}
 
-  <div className="w-full lg:w-auto flex justify-center lg:justify-end">
-    <button className="group flex items-center gap-3 border border-[#c89b4f] text-[#f5e7c8] px-7 py-2 rounded-xl hover:bg-[#16361f] transition-all duration-300">
-      <span className="text-sm md:text-base tracking-wide font-medium uppercase">
-        Get In Touch
-      </span>
-
-      <div className="flex items-center justify-center w-7 h-7">
-        <Image
-          src={flower}
-          alt="flower"
-          width={28}
-          height={28}
-          className="w-full h-full object-cover"
-        />
-      </div>
-    </button>
+  <div className="w-full lg:w-auto flex justify-center lg:justify-end font-semibold">
+    <LotusButton href="/contact" text="Get In Touch"/>
   </div>
 </div>
 

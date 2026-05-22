@@ -79,24 +79,24 @@ export default function IndustriesWeServe() {
         </div> */}
 <AboutTitle title="Industries We Serve" />
         {/* Cards */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8">
-          {industries.map((industry, index) => (
-            <div
-              key={index}
-              className="group flex flex-col items-center justify-center rounded-md border border-[#e7dfd5] bg-white px-3 py-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
-            >
-              {/* Icon */}
-              <div className="mb-3 flex h-14 w-14 items-center justify-center bg-[#fbf8f4] text-[24px] text-[#b78a56] transition-all duration-300 group-hover:scale-105">
-                <Image src={industry.image} alt={industry.title} className="h-20 w-20 object-contain" width={80} height={80} />
-              </div>
+        <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 mt-2 divide-x divide-[#e7dfd5]">
+  {industries.map((industry, index) => (
+    <div
+      key={index}
+      className="group flex flex-col items-center justify-center px-3 py-4 text-center transition-all duration-300 hover:bg-[#fbf8f4]"
+    >
+      {/* Icon */}
+      <div className="mb-2 flex items-center justify-center text-[#b78a56] transition-all duration-300 group-hover:scale-105">
+        <Image src={industry.image} alt={industry.title} className="h-15 w-15 object-contain" width={60} height={60} />
+      </div>
 
-              {/* Title */}
-              <p className="text-[11px] md:text-[12px] font-semibold leading-5 tracking-wide text-[#403831]">
-                {industry.title}
-              </p>
-            </div>
-          ))}
-        </div>
+      {/* Title */}
+      <p className="text-[11px] font-medium leading-4 tracking-wide text-[#403831]">
+        {industry.title}
+      </p>
+    </div>
+  ))}
+</div>
       </Container>
     </section>
   );
