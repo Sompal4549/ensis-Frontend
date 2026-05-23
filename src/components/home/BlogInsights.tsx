@@ -67,7 +67,7 @@ export const BlogInsights = () => {
             <h2 className="font-serif text-2xl leading-tight font-semibold">Ready to Build Your Dream Wellness Space?</h2>
             <p className="mt-2 text-sm text-[#e5dccf]">Connect with our experts for personalized consultation and premium solutions.</p>
           </div>
-          <button className="w-fit bg-[#d0a965] px-5 py-2 text-sm font-bold tracking-wide text-white transition-colors hover:bg-[#ead0a0] rounded-md">CONTACT US TODAY</button>
+          <Link href="/contact" className="w-fit bg-[#d0a965] px-5 py-2 text-sm font-bold tracking-wide text-white transition-colors hover:bg-[#ead0a0] rounded-md">CONTACT US TODAY</Link>
         </Container>
       </div>
     </section>

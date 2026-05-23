@@ -668,7 +668,7 @@ icons:[
               }}
             >
               {/* Main Heading */}
-              <h1 className={`mt-4 md:mt-6 font-serif text-[28px] sm:text-[36px] leading-[0.96] tracking-[-0.02em] text-[#0e3d21] font-medium lg:text-[58px] ${slide.isCenter && "text-center"}`}>
+              <h1 className={`mt-4 md:mt-6 font-serif text-[28px] sm:text-[36px] leading-[0.96] tracking-[-0.02em] text-[#0e3d21] font-medium lg:text-[62px] ${slide.isCenter && "text-center"}`}>
                 {typeof slide.title === "string" ? (
                   <>
                     {slide.title}
