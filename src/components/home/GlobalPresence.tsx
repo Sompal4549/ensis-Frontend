@@ -24,7 +24,7 @@ export const GlobalPresence = async () => {
   return (
     <section className="bg-[#f3eee6]">
       <Container>
-        <div className="grid items-center gap-8 lg:grid-cols-[0.6fr_1.2fr_1fr]">
+        <div className="grid items-center gap-8 lg:grid-cols-[0.8fr_1.2fr_1fr] py-2">
           <div>
             <SubHeading className=' text-black' text={content.eyebrow} />
             <h2 className="mt-2 whitespace-pre-line font-serif text-3xl leading-[100%] text-[#1f261b] font-semibold">{content.heading}</h2>

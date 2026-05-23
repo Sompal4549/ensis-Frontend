@@ -58,7 +58,7 @@ const ContactHero: React.FC = () => {
             </p>
 
             {/* Main Heading */}
-            <h1 className="text-[42px] sm:text-[42px] leading-[1.05] font-serif text-[#173128] font-semibold">
+            <h1 className="text-[24px] lg:text-[62px] leading-[1.05] font-serif text-[#173128] font-semibold">
               Contact Us
               <br />
               <span className="text-[#b58a48] capitalize font-semibold">We're here to help you Heal.</span>

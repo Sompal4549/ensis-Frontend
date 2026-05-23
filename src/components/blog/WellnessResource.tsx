@@ -13,7 +13,7 @@ const Card = ({ title, description, linkText, image, icon }: CardProps) => {
     <div className="relative overflow-hidden rounded-2xl border border-[#e4d5c2] bg-gradient-to-br from-[#f7efe5] to-[#f2e5d5] p-5 min-h-[150px] flex justify-between items-start group">
       {/* Content */}
       <div className="relative z-10 max-w-[55%]">
-        <h3 className="text-[#2f2318] text-[20px] leading-tight font-serif">
+        <h3 className="text-[#2f2318] text-[20px] leading-tight font-semibold">
           {title}
         </h3>
 
