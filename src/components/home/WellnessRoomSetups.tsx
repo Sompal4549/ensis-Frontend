@@ -8,6 +8,7 @@ import shirodha from "@/assets/home/steam.webp"
 import steam from "@/assets/home/panchkarma.webp"
 import consultaion from "@/assets/home/consultation.webp"
 import Image from "next/image";
+import BookButton from "../ui/BookButton";
 
 type RoomCard = {
   title: string;
@@ -17,11 +18,11 @@ type RoomCard = {
 const roomData: RoomCard[] = [
   {
     title: "Panchkarma Suite Setup",
-    image:panchkarma,
+    image: panchkarma,
   },
   {
     title: "Shirodhara Room Setup",
-    image:shirodha,
+    image: shirodha,
   },
   {
     title: "Steam Therapy Room Setup",
@@ -30,7 +31,7 @@ const roomData: RoomCard[] = [
   },
   {
     title: "Consultation Room Setup",
-    image:consultaion,
+    image: consultaion,
   },
 ];
 
@@ -52,21 +53,14 @@ const WellnessRoomSetups: React.FC = () => {
             <br />
             Setups
           </h2>
-
-          <p className="text-[#0f2518] text-xs max-w-[300px] mb-3">
-            Thoughtfully designed, perfectly crafted wellness rooms that
-            reflect the essence of Ayurveda and modern luxury.
-          </p>
-
-          <button
-            className="group relative overflow-hidden bg-[#0f2518] hover:bg-[#0f2518] transition-all duration-300 text-white px-4 py-3 rounded-md w-fit flex items-center gap-3"
-          >
-            <span className="relative z-10 text-xs tracking-wide font-medium">
-              EXPLORE ROOM SETUPS
-            </span>
-          </button>
+            <p className="text-[#0f2518] text-xs  mb-3">
+              Thoughtfully designed, perfectly crafted wellness rooms that
+              reflect the essence of Ayurveda and modern luxury.
+            </p>
+          <div className="max-w-[220px]">
+            <BookButton text="EXPLORE ROOM SETUPS" path="/products" />
+          </div>
         </div>
-
         {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
           {roomData.map((room, index) => (
@@ -93,8 +87,8 @@ const WellnessRoomSetups: React.FC = () => {
 
                 <button
                   className={`min-w-[36px] h-[36px] rounded-full border border-white/40 flex items-center justify-center backdrop-blur-md transition-all duration-300 ${hovered === index
-                      ? "bg-white text-black"
-                      : "text-white"
+                    ? "bg-white text-black"
+                    : "text-white"
                     }`}
                 >
                   <ArrowRight

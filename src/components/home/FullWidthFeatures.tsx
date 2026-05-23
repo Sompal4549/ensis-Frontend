@@ -7,6 +7,8 @@ import timeless_care from "@/assets/home/timeless_care.webp";
 import Image from "next/image";
 import flower from "@/assets/about/lotus.png";
 import LotusButton from "../button/LotusButton";
+import BookButton from "../ui/BookButton";
+import GreenButton from "../ui/GreenButton";
 const features = [
   {
     title: "Authentic Ayurveda",
@@ -61,7 +63,7 @@ export default function FullWidthFeatures() {
   ))}
 
   <div className="w-full lg:w-auto flex justify-center lg:justify-end font-semibold">
-    <LotusButton href="/contact" text="Get In Touch"/>
+    <GreenButton text="Get In Touch" path="/contact" />
   </div>
 </div>
 

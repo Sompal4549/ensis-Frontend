@@ -25,6 +25,7 @@ import {
 } from "react-icons/fa";
 const Container = dynamic(() => import("../ui/Container").then((mod) => mod.Container));
 import logoImg from "@/assets/logo.png";
+import GreenButton from "../ui/GreenButton";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -72,7 +73,7 @@ export const Header = () => {
   const navLinks = [
     { label: "Home", href: "/" },
     { label: "About Us", href: "/about" },
-    { label: "Furniture & Equipment", href: "/products", hasDropdown: true },
+    { label: "Products", href: "/products", hasDropdown: true },
     { label: "Turnkey Solutions", href: "/turnkey" },
     { label: "Consultancy", href: "/consultancy" },
     { label: "Projects And Clients", href: "/projects-and-clients" },
@@ -227,14 +228,7 @@ export const Header = () => {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Link
-              href="https://ensis.in/pdf/e-broucher.pdf"
-              className="hidden bg-[#6f542f] px-5 py-2 text-[11px] font-semibold tracking-wide text-white transition-colors hover:bg-[#4c381f] sm:inline-flex rounded-md"
-              target="_blank"
-            >
-              <span className="text-white uppercase">E-Brochure</span>
-            </Link>
-
+              <GreenButton text={<span className="uppercase">E-Brochure</span>} path={"https://ensis.in/pdf/e-broucher.pdf"} />
             <button
               className="inline-flex size-10 items-center justify-center border border-[#d8cbb9] text-[#263016] xl:hidden"
               aria-label="Open menu"

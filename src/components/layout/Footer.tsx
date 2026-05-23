@@ -5,6 +5,7 @@ import { MapPin, Phone, Mail } from 'lucide-react';
 import { FaFacebook, FaInstagram, FaYoutube, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import { Container } from '../ui/Container';
 import logoImg from '@/assets/logo.png';
+import BookButton from '../ui/BookButton';
 
 export const Footer = () => {
   const heading = "mb-5 text-[11px] font-bold tracking-widest text-[#d0a965]";
@@ -87,9 +88,9 @@ export const Footer = () => {
                 </Link>
               </li>
             </ul>
-            <Link href="https://wa.me/+919654900525" className="mt-5 inline-flex bg-[#5e7a37] px-5 py-2 text-[11px] font-bold tracking-wide text-white transition-colors hover:bg-[#4e662f] rounded-md" target="_blank" rel="noopener noreferrer">
-              WHATSAPP CHAT <FaWhatsapp size={14} className="ml-2" />
-            </Link>
+            <div className='max-w-[200px] mt-3'>
+            <BookButton path="https://wa.me/+919654900525" text="WHATSAPP CHAT" rightIcon={<FaWhatsapp size={14} className="ml-2" />} />
+            </div>
           </div>
         </div>
 

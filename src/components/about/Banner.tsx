@@ -13,6 +13,8 @@ import authentic_ayurveda from "@/assets/icons/authentic_ayurveda.webp";
 import premium_quality from "@/assets/icons/premium_quality.webp"
 import custom_solutions from "@/assets/icons/custom_solutions.webp"
 import timely_delivery from "@/assets/icons/timely_delivery.webp"
+import BookButton from "../ui/BookButton";
+import GreenButton from "../ui/GreenButton";
 
 const AboutHero: React.FC = () => {
   return (
@@ -114,16 +116,9 @@ const AboutHero: React.FC = () => {
 
             {/* Buttons */}
             <div className="flex gap-4 mt-6">
+              <BookButton text="EXPLORE PRODUCTS" path="/products" rightIcon={<ArrowRight size={15} className="text-white" />} />
+              <GreenButton text="START YOUR PROJECT" path="/contact" rightIcon={<ArrowRight size={15} />} />
 
-              <button className="bg-[#173128] hover:bg-[#0f241d] transition-all text-white text-xs font-medium py-2 px-5  rounded-md flex items-center gap-2">
-                EXPLORE PRODUCTS
-                <ArrowRight size={15} className="text-[#ca8e42]" />
-              </button>
-
-              <button className="border border-[#173128] bg-white/70 hover:bg-white transition-all text-[#173128] text-xs font-medium py-2 px-5 rounded-md flex items-center gap-2">
-                START YOUR PROJECT
-                <ArrowRight size={15} />
-              </button>
             </div>
           </div>
         </div>

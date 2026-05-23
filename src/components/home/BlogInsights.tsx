@@ -10,6 +10,8 @@ import img10 from '@/assets/home/img-10.webp';
 import img16 from '@/assets/home/img-16.webp';
 import img6 from '@/assets/home/img-6.webp';
 import SubHeading from './SubHeading';
+import BookButton from '../ui/BookButton';
+import GreenButton from '../ui/GreenButton';
 
 export const BlogInsights = () => {
   const blogs = [
@@ -67,7 +69,7 @@ export const BlogInsights = () => {
             <h2 className="font-serif text-2xl leading-tight font-semibold">Ready to Build Your Dream Wellness Space?</h2>
             <p className="mt-2 text-sm text-[#e5dccf]">Connect with our experts for personalized consultation and premium solutions.</p>
           </div>
-          <Link href="/contact" className="w-fit bg-[#d0a965] px-5 py-2 text-sm font-bold tracking-wide text-white transition-colors hover:bg-[#ead0a0] rounded-md">CONTACT US TODAY</Link>
+          <GreenButton path="/contact" text="CONTACT US TODAY"/>
         </Container>
       </div>
     </section>
