@@ -61,8 +61,25 @@ export const Hero = async () => {
       showLutus: true,
       isCenter: false,
       listdesc:[],
-      buttons: [
-        <LotusButton key="primary" text="EXPLORE COLLECTION" href="/contact" />
+     buttons: [
+        <Link
+                      href={'/contact'}
+                      className="inline-flex items-center justify-center gap-3 border-3 border-[#0f2518] bg-[#0f2518] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-white transition-all duration-300 hover:bg-[#1f2d14] rounded-md"
+                    >
+                      <span className="text-white">
+                        Explore Collections
+                      </span>
+
+                     <FaArrowRightLong className='text-white font-normal' />
+                    </Link>,
+                     <Link
+                      href={'/contact'}
+                      className="inline-flex items-center justify-center gap-3 border-3 border-[#c8a45d] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-[#c8a45d] transition-all duration-300 hover rounded-md"
+                    >
+                      <span className="text-[#c8a45d] font-semibold">
+                        Book Consultation
+                      </span>
+                    </Link>
       ],
 icons:[
   <div className="flex items-center self-stretch">
@@ -192,7 +209,7 @@ icons:[
       buttons: [
         <Link
                       href={'/contact'}
-                      className="inline-flex items-center justify-center gap-3 bg-[#0f2518] px-6 py-2 text-[12px] font-normal tracking-[1.5px] text-white transition-all duration-300 hover:bg-[#1f2d14] rounded-md"
+                      className="inline-flex items-center justify-center gap-3 border-3 border-[#0f2518] bg-[#0f2518] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-white transition-all duration-300 hover:bg-[#1f2d14] rounded-md"
                     >
                       <span className="text-white">
                         Explore Collections
@@ -202,7 +219,7 @@ icons:[
                     </Link>,
                      <Link
                       href={'/contact'}
-                      className="inline-flex items-center justify-center gap-3 border-3 border-[#c8a45d] px-6 py-2 text-[12px] font-normal tracking-[1.5px] text-[#c8a45d] transition-all duration-300 hover rounded-md"
+                      className="inline-flex items-center justify-center gap-3 border-3 border-[#c8a45d] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-[#c8a45d] transition-all duration-300 hover rounded-md"
                     >
                       <span className="text-[#c8a45d] font-semibold">
                         Book Consultation
@@ -334,6 +351,26 @@ icons:[
       primaryBtn: 'DISCOVER MORE',
       secondaryBtn: 'SCHEDULE DEMO',
       listdesc:[],
+       buttons: [
+        <Link
+                      href={'/contact'}
+                      className="inline-flex items-center justify-center gap-3 border-3 border-[#0f2518] bg-[#0f2518] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-white transition-all duration-300 hover:bg-[#1f2d14] rounded-md"
+                    >
+                      <span className="text-white">
+                        Explore Collections
+                      </span>
+
+                     <FaArrowRightLong className='text-white font-normal' />
+                    </Link>,
+                     <Link
+                      href={'/contact'}
+                      className="inline-flex items-center justify-center gap-3 border-3 border-[#c8a45d] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-[#c8a45d] transition-all duration-300 hover rounded-md"
+                    >
+                      <span className="text-[#c8a45d] font-semibold">
+                        Book Consultation
+                      </span>
+                    </Link>
+      ],
       showLutus:false,
 icons:[
   <div className="flex items-center justify-center px-2 md:px-5 self-stretch">
@@ -569,19 +606,20 @@ icons:[
  buttons: [
         <Link
                       href={'/contact'}
-                      className="inline-flex items-center justify-center gap-3 bg-[#0f2518] px-4 py-2 text-[12px] font-normal text-white transition-all duration-300 hover:bg-[#1f2d14] rounded-md max-w-65"
+                      className="inline-flex items-center justify-center gap-3 border-3 border-[#0f2518] bg-[#0f2518] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-white transition-all duration-300 hover:bg-[#1f2d14] rounded-md"
                     >
-                      <span className="text-white uppercase text-center">
-                        Built for Healing Designed for Wellness
+                      <span className="text-white">
+                        Explore Collections
                       </span>
 
+                     <FaArrowRightLong className='text-white font-normal' />
                     </Link>,
                      <Link
                       href={'/contact'}
-                      className="inline-flex items-center justify-center gap-3 border-3 border-[#c8a45d] px-4 py-2 text-[12px] font-normal text-[#c8a45d] transition-all duration-300 hover rounded-md max-w-60"
+                      className="inline-flex items-center justify-center gap-3 border-3 border-[#c8a45d] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-[#c8a45d] transition-all duration-300 hover rounded-md"
                     >
-                      <span className="text-[#0f2518] font-semibold uppercase text-center">
-                        Discover the Panchkarma Collection
+                      <span className="text-[#c8a45d] font-semibold">
+                        Book Consultation
                       </span>
                     </Link>
       ],

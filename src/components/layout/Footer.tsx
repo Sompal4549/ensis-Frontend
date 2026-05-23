@@ -87,7 +87,7 @@ export const Footer = () => {
                 </Link>
               </li>
             </ul>
-            <Link href="https://wa.me/+919654900525" className="mt-5 inline-flex bg-[#5e7a37] px-5 py-3 text-[11px] font-bold tracking-wide text-white transition-colors hover:bg-[#4e662f]" target="_blank" rel="noopener noreferrer">
+            <Link href="https://wa.me/+919654900525" className="mt-5 inline-flex bg-[#5e7a37] px-5 py-3 text-[11px] font-bold tracking-wide text-white transition-colors hover:bg-[#4e662f] rounded-md" target="_blank" rel="noopener noreferrer">
               WHATSAPP CHAT <FaWhatsapp size={14} className="ml-2" />
             </Link>
           </div>

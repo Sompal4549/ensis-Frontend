@@ -41,7 +41,7 @@ export const BlogInsights = () => {
             <div>
               <SubHeading className=' text-black' text='FROM THE BLOG' />
               <h2 className="mt-2 font-serif text-xl leading-tight text-[#1f261b] md:text-2xl font-semibold">Insights & Wellness Knowledge</h2>
-              <Link href="/blog" className="mt-6 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6]">
+              <Link href="/blog" className="mt-6 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6] rounded-md">
                 VIEW ALL BLOGS <ArrowRight size={16} />
               </Link>
             </div>

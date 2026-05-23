@@ -209,7 +209,7 @@ export const Header = () => {
                     href={item.href}
                     className={`${navLink} ${
                       item.hasDropdown ? "gap-1" : ""
-                    } uppercase`}
+                    } uppercase font-semibold`}
                   >
                     {item.label}
 
@@ -229,7 +229,7 @@ export const Header = () => {
           <div className="flex items-center gap-3">
             <Link
               href="https://ensis.in/pdf/e-broucher.pdf"
-              className="hidden bg-[#6f542f] px-5 py-2 text-[11px] font-bold tracking-wide text-white transition-colors hover:bg-[#4c381f] sm:inline-flex rounded-md"
+              className="hidden bg-[#6f542f] px-5 py-2 text-[11px] font-semibold tracking-wide text-white transition-colors hover:bg-[#4c381f] sm:inline-flex rounded-md"
               target="_blank"
             >
               <span className="text-white uppercase">E-Brochure</span>

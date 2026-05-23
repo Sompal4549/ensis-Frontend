@@ -56,7 +56,7 @@ export const ManufacturingAndProjects = () => {
 
               <Link
                 href="/manufacturing"
-                className="mt-8 inline-flex w-fit items-center gap-3 border border-[#d9ccbd] bg-white px-5 py-3 text-[11px] font-semibold tracking-[0.14em] text-[#1f261b] transition-all duration-300 hover:bg-[#f3eee6]"
+                className="mt-8 inline-flex w-fit items-center gap-3 border border-[#d9ccbd] bg-white px-5 py-3 text-[11px] font-semibold tracking-[0.14em] text-[#1f261b] transition-all duration-300 hover:bg-[#f3eee6] rounded-md"
               >
                 OUR MANUFACTURING
                 <ArrowRight size={15} />
@@ -114,7 +114,7 @@ export const ManufacturingAndProjects = () => {
 
             <Link
               href="/projects"
-              className="mt-3 inline-flex w-fit items-center gap-3 border border-[#d9ccbd] bg-white px-3 py-2 text-[11px] font-semibold tracking-[0.14em] text-[#1f261b] transition-all duration-300 hover:bg-[#f3eee6]"
+              className="mt-3 inline-flex w-fit items-center gap-3 border border-[#d9ccbd] bg-white px-3 py-2 text-[11px] font-semibold tracking-[0.14em] text-[#1f261b] transition-all duration-300 hover:bg-[#f3eee6] rounded-md"
             >
               VIEW ALL PROJECTS
               <ArrowRight size={15} />

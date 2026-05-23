@@ -42,11 +42,11 @@ export default function WellnessBanner() {
 
             {/* Buttons */}
             <div className="mt-3 flex flex-wrap gap-4">
-  <button className="rounded-md border border-[#c7a36d] bg-[#ecb460] px-3 py-3 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-[#d7b37d] flex items-center gap-2">
+  <button className="rounded-md border border-[#c7a36d] bg-[#ecb460] px-3 py-2 text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-[#d7b37d] flex items-center gap-2">
     <Phone className="text-white" size={16} /> BOOK A CONSULTATION <FaArrowRightLong />
   </button>
 
-  <button className="rounded-md border border-[#9d8a6b] bg-transparent px-3 py-3 text-sm font-semibold tracking-wide text-[#f2e8da] transition-all duration-300 hover:bg-white/10 flex items-center gap-2">
+  <button className="rounded-md border border-[#9d8a6b] bg-transparent px-3 py-2 text-sm font-semibold tracking-wide text-[#f2e8da] transition-all duration-300 hover:bg-white/10 flex items-center gap-2">
    <GrCatalogOption size={16} className="text-[#ca8e42]" /> DOWNLOAD CATALOGUE <Download size={16} />
   </button>
 </div>

@@ -46,7 +46,7 @@ export const ProductsGrid = async () => {
         <div className="mb-6 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <SubHeading text={'OUR PRODUCTS'} className='text-[#8d6a3a]'/>
-            <h2 className=" font-serif text-3xl leading-tight text-[#0f2518] md:text-4xl font-semibold">Premium Wellness Equipment</h2>
+            <h2 className=" font-serif text-3xl leading-tight text-[#0f2518] md:text-3xl font-semibold">Premium Wellness Equipment</h2>
             <p className="max-w-[380px] text-xs leading-4.5 text-[#0f2518]">
               Wide range of Ayurvedic, Spa & Wellness equipment crafted
               <br/> for modern wellness spaces.
