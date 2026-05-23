@@ -3,6 +3,8 @@
 import Image from "next/image";
 import blogHero from "@/assets/blog/blog.webp"; // replace with your image
 import { Container } from "../ui/Container";
+import blog_decoration from "@/assets/icons/blog_decoration_1.png"
+
 
 export default function BlogHeroSection() {
   return (
@@ -14,27 +16,21 @@ export default function BlogHeroSection() {
             priority
             className="object-fill object-center absolute inset-0 z-10"
           />
-  <Container className="grid min-h-[90dvh] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-20 items-center">
+  <Container className="grid min-h-[80dvh] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-20 items-center">
         {/* Left Content */}
         <div className="sm:py-8 lg:py-14">
-          <div className="max-w-[480px]">
-            {/* Decorative Line */}
-            <div className="mb-6 h-px w-28 bg-[#d6b27a]" />
+          <div className="max-w-[480px] flex flex-col items-center justify-center">
 
             {/* Heading */}
-            <h1 className="font-serif text-[52px] leading-none text-[#1f3b1f] sm:text-[68px] lg:text-[82px]">
+            <h1 className="font-serif text-[52px] leading-none text-[#1f3b1f] sm:text-[68px] lg:text-[82px] text-center">
               Blog
             </h1>
 
             {/* Small Ornament */}
             <div className="mt-5 flex items-center gap-3">
-              <div className="h-px w-16 bg-[#c89b5a]" />
               <div className="flex gap-[3px]">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#c89b5a]" />
-                <span className="h-1.5 w-1.5 rounded-full bg-[#c89b5a]" />
-                <span className="h-1.5 w-1.5 rounded-full bg-[#c89b5a]" />
+          <Image alt="blog decoration" src={blog_decoration} height={25} width={320} />
               </div>
-              <div className="h-px w-16 bg-[#c89b5a]" />
             </div>
 
             {/* Subtitle */}

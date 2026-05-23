@@ -18,7 +18,7 @@ const AboutHero: React.FC = () => {
   return (
     <section className="w-full bg-[#e9dfd3] overflow-hidden relative">
       <Image src={aboutHeroImage} alt="About Us" className="w-full h-full object-fill absolute top-0 bottom-0 right-0 left-0" priority />
-      <Container className=" grid grid-cols-1 lg:grid-cols-2 min-h-[90dvh] max-h-[650px] z-10">
+      <Container className=" grid grid-cols-1 lg:grid-cols-2 min-h-[85dvh] max-h-[650px] z-10">
         {/* <div className="absolute inset-0 pointer-events-none  z-20 w-[100%] block lg:hidden"
           style={{
             background: `
@@ -64,7 +64,7 @@ const AboutHero: React.FC = () => {
             </h1>
 
             {/* Description */}
-            <p className="mt-3 text-xs leading-[22px] font-semibold text-[#5d5449] max-w-[450px]">
+            <p className="mt-3 text-xs leading-[22px] font-semibold text-[#5d5449] max-w-[400px]">
               At ENSIS, we combine ancient Ayurvedic wisdom with modern
               craftsmanship to create authentic wellness environments that
               heal, rejuvenate and inspire.
@@ -74,7 +74,7 @@ const AboutHero: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
 
               <div className="flex flex-col items-center text-center relative">
-                <Image src={authentic_ayurveda} alt="Authentic Ayurveda" width={20} height={20} className="text-[#b58a48] mb-3" />
+                <Image src={authentic_ayurveda} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" />
                 <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
                   Authentic Ayurveda Focused Design
                 </p>
@@ -84,7 +84,7 @@ const AboutHero: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center text-center relative">
-                 <Image src={premium_quality} alt="Authentic Ayurveda" width={20} height={20} className="text-[#b58a48] mb-3" />
+                 <Image src={premium_quality} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" />
                 <p className="text-[11px] text-[#4e463d] font-semibold">
                   Premium Quality Products
                 </p>
@@ -94,7 +94,7 @@ const AboutHero: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center text-center relative">
-                <Image src={custom_solutions} alt="Authentic Ayurveda" width={20} height={20} className="text-[#b58a48] mb-3" />
+                <Image src={custom_solutions} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" />
                
                 <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
                   Custom Solutions for Every Need
@@ -105,7 +105,7 @@ const AboutHero: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center text-center">
-               <Image src={timely_delivery} alt="Authentic Ayurveda" width={20} height={20} className="text-[#b58a48] mb-3" />
+               <Image src={timely_delivery} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" />
                 <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
                   Timely Delivery & Installation Support
                 </p>
@@ -120,7 +120,7 @@ const AboutHero: React.FC = () => {
                 <ArrowRight size={15} className="text-[#ca8e42]" />
               </button>
 
-              <button className="border border-[#bcae9f] bg-white/70 hover:bg-white transition-all text-[#2f2b27] text-xs font-medium py-2 px-5 rounded-md flex items-center gap-2">
+              <button className="border border-[#173128] bg-white/70 hover:bg-white transition-all text-[#173128] text-xs font-medium py-2 px-5 rounded-md flex items-center gap-2">
                 START YOUR PROJECT
                 <ArrowRight size={15} />
               </button>
@@ -133,9 +133,9 @@ const AboutHero: React.FC = () => {
 
 
           {/* Experience Badge */}
-          <div className="absolute top-14 right-14 w-[135px] h-[135px] rounded-full border-[3px] border-[#c7a567] bg-[#113228] text-white flex flex-col items-center justify-center shadow-2xl">
-            <h3 className="text-[38px] leading-none font-serif">20+</h3>
-            <p className="text-[11px] tracking-[1.5px] text-center mt-2 leading-[16px] uppercase">
+          <div className="absolute top-14 right-14 w-[125px] h-[125px] rounded-full border-[3px] border-[#c7a567] bg-[#113228] text-white flex flex-col items-center justify-center shadow-2xl">
+            <h3 className="text-[42px] leading-none font-serif">20<span className="text-[28px]">+</span></h3>
+            <p className="text-[11px] font-semibold text-center mt-2 uppercase">
               Years of
               <br />
               Excellence

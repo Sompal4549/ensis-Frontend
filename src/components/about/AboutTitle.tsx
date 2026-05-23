@@ -20,7 +20,7 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
             className={`
               text-[#4a4036]
               text-[24px]
-              font-bold
+              font-extrabold
               tracking-[2px]
               uppercase
               font-serif
@@ -34,7 +34,7 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
       </div>
 
       {/* Decorative Image */}
-      <Image width={50} height={25}
+      <Image width={35} height={20}
         src={lotus}
         alt="decoration"
         className="object-contain opacity-90"

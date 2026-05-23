@@ -19,7 +19,7 @@ const ContactHero: React.FC = () => {
   return (
     <section className="w-full bg-[#e9dfd3] overflow-hidden relative">
       <Image src={aboutHeroImage} alt="About Us" className="w-full h-full object-cover absolute top-0 bottom-0 right-0 left-0" priority />
-      <Container className="grid min-h-[90dvh] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-20 items-center">
+      <Container className="grid min-h-[80dvh] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-20 items-center">
         <div className="absolute inset-0 pointer-events-none  z-20 w-[100%] block lg:hidden"
           style={{
             background: `

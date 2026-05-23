@@ -18,6 +18,11 @@ import { Features } from './Features';
 import { getComponentContent, getImageUrl } from '@/app/lib/api';
 import lotus from "@/assets/about/lotus.png"
 import LotusButton from '../button/LotusButton';
+import { FaArrowRightLong } from 'react-icons/fa6';
+import premium_craftmanship from "@/assets/icons/premium_craftmanship.webp"
+import ayurvedic_wisdom from "@/assets/icons/ayurvedic_wisdom.webp"
+import durable from "@/assets/icons/durable.webp"
+import wellness_focused from "@/assets/icons/wellness_focused.webp"
 
 
 type HeroSlide = {
@@ -25,9 +30,14 @@ type HeroSlide = {
   image: any;
   title: React.ReactNode;
   highlight?: string;
-  description: string;
+  description?: string;
   primaryBtn: string;
   secondaryBtn?: string;
+  showLutus?: boolean;
+  listdesc?: string[];
+  isCenter?: boolean;
+  buttons?: React.ReactNode[];
+  icons?: React.ReactNode[];
 };
 
 export const Hero = async () => {
@@ -48,11 +58,124 @@ export const Hero = async () => {
         'Authentic Panchakarma. Timeless wellness',
       primaryBtn: 'EXPLORE COLLECTION',
       secondaryBtn: 'BOOK CONSULTATION',
+      showLutus: true,
+      isCenter: false,
+      listdesc:[],
+      buttons: [
+        <LotusButton key="primary" text="EXPLORE COLLECTION" href="/contact" />
+      ],
+icons:[
+  <div className="flex items-center self-stretch">
+    <>
+      <div className="flex flex-col items-center gap-2 pr-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={ayurvedic_wisdom} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Natural
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Wood
+          </span>
+        </div>
+      </div>
+      <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
+    </>
+
+    <>
+      <div className="flex flex-col items-center gap-2 px-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={premium_craftmanship} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Deep
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Detox
+          </span>
+        </div>
+      </div>
+      <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
+    </>
+
+    <>
+      <div className="flex flex-col items-center gap-2 px-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={durable} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Premium
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Quality
+          </span>
+        </div>
+      </div>
+      <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
+    </>
+
+    <>
+      <div className="flex flex-col items-center gap-2 px-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={wellness_focused} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Wellness
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Focused
+          </span>
+        </div>
+      </div>
+    </>
+  </div>,
+]
     },
 
     {
       id: 2,
       image: wellness_spaces,
+      isCenter:false,
       title: (
         <>
           Wellness Spaces
@@ -62,27 +185,262 @@ export const Hero = async () => {
           </span>
         </>
       ),
-      description:
-        'Authentic Panchakarma. Timeless Healing',
+      showLutus:false,
+      listdesc:["Panchkarma Equipment", "Wellness Interiors", "Trunkey Solutions"],
       primaryBtn: 'VIEW PRODUCTS',
       secondaryBtn: 'START PROJECT',
+      buttons: [
+        <Link
+                      href={'/contact'}
+                      className="inline-flex items-center justify-center gap-3 bg-[#0f2518] px-6 py-2 text-[12px] font-normal tracking-[1.5px] text-white transition-all duration-300 hover:bg-[#1f2d14] rounded-md"
+                    >
+                      <span className="text-white">
+                        Explore Collections
+                      </span>
+
+                     <FaArrowRightLong className='text-white font-normal' />
+                    </Link>,
+                     <Link
+                      href={'/contact'}
+                      className="inline-flex items-center justify-center gap-3 border-3 border-[#c8a45d] px-6 py-2 text-[12px] font-normal tracking-[1.5px] text-[#c8a45d] transition-all duration-300 hover rounded-md"
+                    >
+                      <span className="text-[#c8a45d] font-semibold">
+                        Book Consultation
+                      </span>
+                    </Link>
+      ],
+ icons:[
+  <div className="flex items-center self-stretch">
+    <>
+      <div className="flex flex-col items-center gap-2 pr-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={ayurvedic_wisdom} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Natural
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Wood
+          </span>
+        </div>
+      </div>
+      <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
+    </>
+
+    <>
+      <div className="flex flex-col items-center gap-2 px-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={premium_craftmanship} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Deep
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Detox
+          </span>
+        </div>
+      </div>
+      <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
+    </>
+
+    <>
+      <div className="flex flex-col items-center gap-2 px-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={durable} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Premium
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Quality
+          </span>
+        </div>
+      </div>
+      <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
+    </>
+
+    <>
+      <div className="flex flex-col items-center gap-2 px-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={wellness_focused} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Wellness
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Focused
+          </span>
+        </div>
+      </div>
+    </>
+  </div>,
+]
     },
     {
       id: 3,
       image: wooden_steam,
+      isCenter:true,
       title: (
         <>
-          Wooden Steam
+          Wooden 
           <br />
           <span className="font-medium italic text-[#a9742a]">
-            Bath
+           Steam Bath
           </span>
         </>
       ),
       description:
-        'Authentic Panchakarma. Timeless Healing',
+        'Detoxify. Rejuvenate. Restore',
       primaryBtn: 'DISCOVER MORE',
       secondaryBtn: 'SCHEDULE DEMO',
+      listdesc:[],
+      showLutus:false,
+icons:[
+  <div className="flex items-center justify-center px-5 self-stretch">
+    <>
+      <div className="flex flex-col items-center gap-2 pr-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={ayurvedic_wisdom} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Natural
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Wood
+          </span>
+        </div>
+      </div>
+      <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
+    </>
+
+    <>
+      <div className="flex flex-col items-center gap-2 px-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={premium_craftmanship} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Deep
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Detox
+          </span>
+        </div>
+      </div>
+      <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
+    </>
+
+    <>
+      <div className="flex flex-col items-center gap-2 px-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={durable} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Premium
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Quality
+          </span>
+        </div>
+      </div>
+      <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
+    </>
+
+    <>
+      <div className="flex flex-col items-center gap-2 px-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={wellness_focused} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Wellness
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Focused
+          </span>
+        </div>
+      </div>
+    </>
+  </div>,
+]
     },
     {
       id: 4,
@@ -100,6 +458,133 @@ export const Hero = async () => {
         'Authentic Panchakarma. Timeless Healing',
       primaryBtn: 'DISCOVER MORE',
       secondaryBtn: 'SCHEDULE DEMO',
+       listdesc:[],
+      showLutus:false,
+ icons:[
+  <div className="flex items-center self-stretch">
+    <>
+      <div className="flex flex-col items-center gap-2 pr-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={ayurvedic_wisdom} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Natural
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Wood
+          </span>
+        </div>
+      </div>
+      <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
+    </>
+
+    <>
+      <div className="flex flex-col items-center gap-2 px-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={premium_craftmanship} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Deep
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Detox
+          </span>
+        </div>
+      </div>
+      <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
+    </>
+
+    <>
+      <div className="flex flex-col items-center gap-2 px-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={durable} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Premium
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Quality
+          </span>
+        </div>
+      </div>
+      <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
+    </>
+
+    <>
+      <div className="flex flex-col items-center gap-2 px-6">
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center"
+          style={{ border: "2px solid #b89060" }}
+        >
+          <Image src={wellness_focused} alt="deep detox" width={28} height={28} className="object-contain" />
+        </div>
+        <div className="flex flex-col items-center">
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Wellness
+          </span>
+          <span
+            className="text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
+            style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            Focused
+          </span>
+        </div>
+      </div>
+    </>
+  </div>,
+],
+ buttons: [
+        <Link
+                      href={'/contact'}
+                      className="inline-flex items-center justify-center gap-3 bg-[#0f2518] px-6 py-2 text-[12px] font-normal tracking-[1.5px] text-white transition-all duration-300 hover:bg-[#1f2d14] rounded-md max-w-68"
+                    >
+                      <span className="text-white uppercase text-center">
+                        Built for Healing Designed for Wellness
+                      </span>
+
+                    </Link>,
+                     <Link
+                      href={'/contact'}
+                      className="inline-flex items-center justify-center gap-3 border-3 border-[#c8a45d] px-6 py-2 text-[12px] font-normal tracking-[1.5px] text-[#c8a45d] transition-all duration-300 hover rounded-md max-w-68"
+                    >
+                      <span className="text-[#0f2518] font-semibold uppercase text-center">
+                        Discover the Panchkarma Collection
+                      </span>
+                    </Link>
+      ],
     }
   ];
   const content = await getComponentContent<{ slides: HeroSlide[] }>("home.hero", { slides: fallbackSlides });
@@ -138,21 +623,21 @@ export const Hero = async () => {
             <Container className="relative z-10">
               <div className="flex min-h-[82dvh] max-h-[650px] items-center">
 
-<div
-  className="max-w-[700px] pt-10"
-  style={{
-    background: "linear-gradient(90deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.05) 100%)",
-  }}
->
+                <div
+                  className={`max-w-[700px] pt-10 ${slide.isCenter&& "flex flex-col items-center justify-center"}`}
+                  style={{
+                    background: "linear-gradient(90deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.05) 100%)",
+                  }}
+                >
                   {/* Main Heading */}
-                  <h1 className="mt-6 font-serif text-[40px] leading-[0.96] tracking-[-0.03em] text-[#0e3d21] font-semibold lg:text-[52px] ">
+                  <h1 className={`mt-6 font-serif text-[40px] leading-[0.96] tracking-[-0.02em] text-[#0e3d21] font-medium lg:text-[62px] ${slide.isCenter&& "text-center"}`}>
                     {typeof slide.title === "string" ? (
                       <>
                         {slide.title}
                         {slide.highlight && (
                           <>
                             <br />
-                            <span className="font-semibold italic text-[#c07d19]">{slide.highlight}</span>
+                            <span className="font-medium italic text-[#c07d19] mt-2">{slide.highlight}</span>
                           </>
                         )}
                       </>
@@ -162,16 +647,29 @@ export const Hero = async () => {
                   </h1>
 
                   {/* Divider */}
-                  <div className="flex w-full py-2">
+                  <div className={`flex w-full py-2 ${slide.isCenter && "flex flex-col items-center justify-center"}`}>
                     <Image src={arrow} alt='arrow' width={350} height={10} />
                   </div>
 
                   {/* Categories */}
-                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] font-semibold tracking-[0.16em] text-[#313628]">
-                    <span className='font-semibold'>PANCHKARMA EQUIPMENT</span>
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold  text-[#313628]">
+                    <span className='font-semibold'>{slide.description}</span>
+                  </div>
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-2 text-[12px] font-semibold  text-[#313628]">
+                    {slide.listdesc && slide.listdesc.map((item, i) => (
+          <>
+            <span key={item} className="nav-item">{item}</span>
+            {slide.listdesc && i < slide.listdesc.length - 1 && (
+              <span key={`div-${i}`} className="nav-divider">|</span>
+            )}
+          </>
+        ))}
+                  </div>
+                    <div className="mt-6 flex flex-wrap gap-5">
+                    {slide.icons}
                   </div>
                   <div className="mt-6 flex flex-wrap gap-5">
-                    <LotusButton text={slide.primaryBtn} href={slide.primaryBtn} />
+                    {slide.buttons?.map((button) => button)}
                   </div>
                 </div>
               </div>

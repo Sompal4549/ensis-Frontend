@@ -187,17 +187,15 @@ export const Header = () => {
       </div>
 
 <div
-  className={`${isScrolled ? "border-[#e8e0d3] bg-white" : "border-transparent"}`}
-  style={!isScrolled ? {
-    background: "linear-gradient(to bottom, rgba(245, 230, 200, 0.95) 0%, rgba(245, 230, 200, 0) 100%)"
-  } : {}}
+  className={`bg-white`}
+
 >
         <Container className="flex items-center justify-between gap-6 py-2!">
           <Link href="/" className="shrink-0">
             <Image
               src={logoImg}
               alt="ENSIS Logo"
-              className="h-[52px] w-auto object-contain"
+              className="h-[32px] w-auto object-contain"
               priority
             />
           </Link>

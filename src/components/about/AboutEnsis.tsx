@@ -53,7 +53,7 @@ export default function AboutEnsisSection() {
 
   return (
     <section className="w-full bg-[#f7f3ee]">
-        <Container className="overflow-hidden rounded-2xl bg-gray shadow-sm px-0! py-0!">
+        <Container className="overflow-hidden rounded-2xl bg-gray">
           {/* Top Content */}
           <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr_0.9fr]">
             {/* Left Image */}
@@ -63,7 +63,7 @@ export default function AboutEnsisSection() {
                 height={320}
                 src={abouteEnsis}
                 alt="Workshop"
-                className="h-full w-full object-cover"
+                className="h-full w-full object-cover rounded-tl-xl rounded-tr-xl"
               />
 
               <div className="absolute inset-0 bg-black/10" />
