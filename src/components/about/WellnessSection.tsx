@@ -73,7 +73,7 @@ const WellnessSection: React.FC = () => {
               </div>
             </div>
 
-            <h2 className="text-[#0f2518] text-[28px] leading-[1.2] max-w-[420px] font-bold">
+            <h2 className="text-[#0f2518] text-[24px] leading-[1.2] max-w-[450px] font-semibold">
               Where Tradition Meets Transformative Wellness.
             </h2>
 

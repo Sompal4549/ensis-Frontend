@@ -29,11 +29,11 @@ body {
 
 /* Use a consistent serif font-family for all headings */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
 
 strong {
-  font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
 
 * {

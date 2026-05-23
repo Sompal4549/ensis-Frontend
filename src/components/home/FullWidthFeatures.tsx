@@ -37,12 +37,12 @@ export default function FullWidthFeatures() {
       className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left gap-4 min-w-0"
     >
       {/* Icon */}
-      <div className="flex items-center justify-center w-12 h-12 shrink-0">
+      <div className="flex items-center justify-center w-10 h-10 shrink-0">
         <Image
           src={item.img}
           alt={item.title}
-          width={28}
-          height={28}
+          width={20}
+          height={20}
           className="w-full h-full object-contain"
         />
       </div>
