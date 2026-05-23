@@ -1,5 +1,6 @@
 // components/blog/sidebar/NewsletterCard.tsx
 
+import BookButton from "../ui/BookButton";
 import { Container } from "../ui/Container";
 
 export default function NewsletterCard() {
@@ -26,9 +27,9 @@ export default function NewsletterCard() {
             placeholder="Enter your email"
             className="rounded-lg border border-[#d9c5b1] bg-white text-sm outline-none w-[50%] px-3 py-2"
           />
-          <button className="shrink-0 rounded-lg bg-[#274217] px-3 py-2 text-sm font-medium text-white sm:w-auto w-[50%]">
-            Subscribe
-          </button>
+          <div className="shrink-0 sm:w-auto w-[50%]">
+          <BookButton text="Subscribe" />
+          </div>
         </div>
 
       </div>

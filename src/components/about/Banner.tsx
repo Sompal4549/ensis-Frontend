@@ -117,7 +117,7 @@ const AboutHero: React.FC = () => {
             {/* Buttons */}
             <div className="flex gap-4 mt-6">
               <BookButton text="EXPLORE PRODUCTS" path="/products" rightIcon={<ArrowRight size={15} className="text-white" />} />
-              <GreenButton text="START YOUR PROJECT" path="/contact" rightIcon={<ArrowRight size={15} />} />
+              <GreenButton text="START YOUR PROJECT" path="/contact" rightIcon={<ArrowRight size={15} className="text-[#050A1A]" />} />
 
             </div>
           </div>

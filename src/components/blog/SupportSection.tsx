@@ -1,6 +1,7 @@
 import Image from "next/image";
 import suppport from "@/assets/blog/support.webp"
 import { Container } from "../ui/Container";
+import BookButton from "../ui/BookButton";
 const SupportSection = () => {
   return (
     <Container>
@@ -36,10 +37,9 @@ const SupportSection = () => {
               <br />
               Our team is here to help.
             </p>
-
-            <button className="mt-3 bg-[#31451f] hover:bg-[#253617] transition-colors text-[#f6eddc] px-4 py-2 rounded-lg text-sm shadow-lg">
-              Contact Our Experts
-            </button>
+            <div className="mt-2 w-45">
+            <BookButton text="Contact Our Experts" path="/contact" />
+            </div>
           </div>
         </div>
       </div>

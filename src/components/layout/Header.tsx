@@ -26,6 +26,7 @@ import {
 const Container = dynamic(() => import("../ui/Container").then((mod) => mod.Container));
 import logoImg from "@/assets/logo.png";
 import GreenButton from "../ui/GreenButton";
+import BookButton from "../ui/BookButton";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -108,7 +109,7 @@ export const Header = () => {
 
   return (
     <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}>
-      <div className={`bg-[#263016] text-white py-1`}> 
+      <div className={`bg-[#263016] text-white py-1`}>
         <Container className="flex min-h-8 items-center justify-between gap-4 text-[11px] font-medium py-0!">
           <div className="hidden items-center gap-6 md:flex">
             {/* <span className="flex items-center gap-2">
@@ -125,7 +126,7 @@ export const Header = () => {
               <Factory size={13} />
               Manufactured in India
             </span>
-                <Link href="tel:+919654900525" className="flex items-center gap-2">
+            <Link href="tel:+919654900525" className="flex items-center gap-2">
               <Phone size={13} />
               +91 9654900525
             </Link>
@@ -141,28 +142,9 @@ export const Header = () => {
 
           <div className="flex w-full items-center justify-between gap-4 md:w-auto md:justify-end">
             {!user && (
-              <Link
-                href="/login"
-                className="hidden items-center gap-2 rounded-md px-2 py-2 text-[10px] font-bold uppercase tracking-wide text-white transition-colors bg-amber-300 hover:bg-yellow-500 sm:inline-flex"
-              ><div className="text-white uppercase flex items-center gap-1">
-
-                <LogIn size={14} />
-                User Login
-                </div>
-              </Link>
+              <GreenButton  path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
             )}
-
-            <Link
-              href={adminUrl}
-              className="hidden items-center gap-2 rounded-md px-2 py-2 text-[10px] font-bold uppercase tracking-wide text-white transition-colors bg-red-900 hover:bg-red-700 lg:inline-flex"
-              target="_blank"
-            ><div className="text-white uppercase flex items-center gap-1">
-
-              <ShieldCheck size={14} />
-              Admin Login
-              </div>
-            </Link>
-        
+            <BookButton text="Admin Login" path={adminUrl} leftIcon={<ShieldCheck size={14} className="text-white" />} />
 
             {/* <div className="hidden items-center gap-3 md:flex">
               {socialLinks.map((item, index) => (
@@ -176,21 +158,16 @@ export const Header = () => {
               ))}
             </div> */}
             {user && (
-              <div className="hidden items-center gap-2 rounded-md bg-amber-300 px-2 py-2 text-[10px] font-bold uppercase tracking-wide text-white sm:inline-flex">
-                <LogOut size={14} />
-                <button type="button" onClick={handleLogout} className="text-[10px] underline text-white">
-                  Logout
-                </button>
-              </div>
-            )} 
+            <GreenButton text="Logout" onClick={handleLogout} leftIcon={<LogOut size={14} className="text-[#050A1A]" />} />
+            )}
           </div>
         </Container>
       </div>
 
-<div
-  className={`bg-white`}
+      <div
+        className={`bg-white`}
 
->
+      >
         <Container className="flex items-center justify-between gap-6 py-2!">
           <Link href="/" className="shrink-0">
             <Image
@@ -208,9 +185,8 @@ export const Header = () => {
                 <li key={index}>
                   <Link
                     href={item.href}
-                    className={`${navLink} ${
-                      item.hasDropdown ? "gap-1" : ""
-                    } uppercase font-semibold`}
+                    className={`${navLink} ${item.hasDropdown ? "gap-1" : ""
+                      } uppercase font-semibold`}
                   >
                     {item.label}
 
@@ -228,7 +204,7 @@ export const Header = () => {
           </nav>
 
           <div className="flex items-center gap-3">
-              <GreenButton text={<span className="uppercase">E-Brochure</span>} path={"https://ensis.in/pdf/e-broucher.pdf"} />
+            <GreenButton text={<span className="uppercase  text-[#050A1A]">E-Brochure</span>} path={"https://ensis.in/pdf/e-broucher.pdf"} />
             <button
               className="inline-flex size-10 items-center justify-center border border-[#d8cbb9] text-[#263016] xl:hidden"
               aria-label="Open menu"
@@ -243,19 +219,17 @@ export const Header = () => {
 
       {/* Overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-black/30 transition-opacity xl:hidden ${
-          isMenuOpen
+        className={`fixed inset-0 z-40 bg-black/30 transition-opacity xl:hidden ${isMenuOpen
             ? "opacity-100"
             : "pointer-events-none opacity-0"
-        }`}
+          }`}
         onClick={() => setIsMenuOpen(false)}
       />
 
       {/* Mobile Menu */}
       <aside
-        className={`fixed right-0 top-0 z-50 h-screen w-[60%] min-w-[190px] max-w-[320px] bg-[#fbf8f2] shadow-2xl transition-transform duration-300 ease-out xl:hidden ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed right-0 top-0 z-50 h-screen w-[60%] min-w-[190px] max-w-[320px] bg-[#fbf8f2] shadow-2xl transition-transform duration-300 ease-out xl:hidden ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
         aria-hidden={!isMenuOpen}
       >
         <div className="flex h-20 items-center justify-between border-b border-[#e8e0d3] px-4">
@@ -279,11 +253,10 @@ export const Header = () => {
             <Link
               key={index}
               href={item.href}
-              className={`${mobileLink} ${
-                item.hasDropdown
+              className={`${mobileLink} ${item.hasDropdown
                   ? "flex items-center justify-betwee uppercasen"
                   : ""
-              }`}
+                }`}
               onClick={() => setIsMenuOpen(false)}
             >
               {item.label}
@@ -291,51 +264,18 @@ export const Header = () => {
               {item.hasDropdown && <ChevronDown size={14} />}
             </Link>
           ))}
-
-          <Link
-            href="https://ensis.in/pdf/e-broucher.pdf"
-            className="mt-5 bg-[#6f542f] px-4 py-2 text-center text-[11px] font-bold tracking-wide text-white rounded-md"
-            onClick={() => setIsMenuOpen(false)}
-            target="_blank"
-          >
-            <span className="text-white uppercase">E-Brochure</span>
-          </Link>
+          <GreenButton text={<span className="uppercase text-[#050A1A]">E-Brochure</span>} path={"https://ensis.in/pdf/e-broucher.pdf"} />
           <div className="flex justify-between gap-2 mt-2">
             {user ? (
-              <button
-                type="button"
-                onClick={handleLogout}
-                className="items-center gap-2 rounded-md px-1 py-2 text-[10px] font-bold uppercase tracking-wide text-white bg-yellow-300 inline-flex flex-1"
-              >
-                <div className="text-white uppercase flex gap-1 items-center">
-                  <LogIn size={14} />
-                  Logout
-                </div>
-              </button>
+             <GreenButton text="Logout" onClick={handleLogout} leftIcon={<LogOut size={14} className="text-[#050A1A]" />} />
             ) : (
-              <Link
-                href="/login"
-                className="items-center gap-2 rounded-md px-1 py-2 text-[10px] font-bold uppercase tracking-wide text-white transition-colors hover:bg-bg-yellow-500 bg-yellow-300 inline-flex flex-1"
-              >
-                <div className="text-white uppercase flex gap-1 items-center">
-
-                  <LogIn size={14} />
-                  User Login
-                  </div>
-              </Link>
+             
+              <GreenButton  path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
             )}
-
-            <Link
-              href={adminUrl}
-              className="items-center gap-2 rounded-md  px-1 py-2 text-[10px] font-bold uppercase tracking-wide text-white transition-colors hover:bg-bg-red-900 bg-red-700 inline-flex flex-1"
-              target="_blank"
-            ><div className="text-white uppercase flex gap-1 items-center">
-
-              <ShieldCheck size={14} />
-              Admin Login
-              </div>
-            </Link>
-            </div>
+            
+            <BookButton text="Admin Login" path={adminUrl} leftIcon={<ShieldCheck size={14} className="text-white" />} />
+            
+          </div>
         </nav>
       </aside>
     </header>

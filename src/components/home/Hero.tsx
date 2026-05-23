@@ -86,25 +86,9 @@ export const Hero = async () => {
       listdesc: ["Panchkarma Equipment", "Wellness Interiors", "Trunkey Solutions"],
       primaryBtn: 'VIEW PRODUCTS',
       secondaryBtn: 'START PROJECT',
-      buttons: [
-        <Link
-          href={'/contact'}
-          className="inline-flex items-center justify-center gap-3 border-3 border-[#0f2518] bg-[#0f2518] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-white transition-all duration-300 hover:bg-[#1f2d14] rounded-md"
-        >
-          <span className="text-white">
-            Explore Collections
-          </span>
-
-          <FaArrowRightLong className='text-white font-normal' />
-        </Link>,
-        <Link
-          href={'/contact'}
-          className="inline-flex items-center justify-center gap-3 border-3 border-[#c8a45d] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-[#c8a45d] transition-all duration-300 hover rounded-md"
-        >
-          <span className="text-[#c8a45d] font-semibold">
-            Book Consultation
-          </span>
-        </Link>
+       buttons: [
+       <BookButton text="Explore Collections" />,
+        <GreenButton text="Book Consultation"  path={'/contact'} />
       ],
 
     },
@@ -126,25 +110,9 @@ export const Hero = async () => {
       primaryBtn: 'DISCOVER MORE',
       secondaryBtn: 'SCHEDULE DEMO',
       listdesc: [],
-      buttons: [
-        <Link
-          href={'/contact'}
-          className="inline-flex items-center justify-center gap-3 border-3 border-[#0f2518] bg-[#0f2518] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-white transition-all duration-300 hover:bg-[#1f2d14] rounded-md"
-        >
-          <span className="text-white">
-            Explore Collections
-          </span>
-
-          <FaArrowRightLong className='text-white font-normal' />
-        </Link>,
-        <Link
-          href={'/contact'}
-          className="inline-flex items-center justify-center gap-3 border-3 border-[#c8a45d] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-[#c8a45d] transition-all duration-300 hover rounded-md"
-        >
-          <span className="text-[#c8a45d] font-semibold">
-            Book Consultation
-          </span>
-        </Link>
+       buttons: [
+       <BookButton text="Explore Collections" />,
+        <GreenButton text="Book Consultation"  path={'/contact'} />
       ],
       showLutus: false,
 
@@ -168,25 +136,9 @@ export const Hero = async () => {
       listdesc: [],
       showLutus: false,
 
-      buttons: [
-        <Link
-          href={'/contact'}
-          className="inline-flex items-center justify-center gap-3 border-3 border-[#0f2518] bg-[#0f2518] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-white transition-all duration-300 hover:bg-[#1f2d14] rounded-md"
-        >
-          <span className="text-white">
-            Explore Collections
-          </span>
-
-          <FaArrowRightLong className='text-white font-normal' />
-        </Link>,
-        <Link
-          href={'/contact'}
-          className="inline-flex items-center justify-center gap-3 border-3 border-[#c8a45d] px-4 py-2 text-[12px] font-normal tracking-[1.5px] text-[#c8a45d] transition-all duration-300 hover rounded-md"
-        >
-          <span className="text-[#c8a45d] font-semibold">
-            Book Consultation
-          </span>
-        </Link>
+       buttons: [
+       <BookButton text="Explore Collections" />,
+        <GreenButton text="Book Consultation"  path={'/contact'} />
       ],
     }
   ];
