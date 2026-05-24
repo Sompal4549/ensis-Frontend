@@ -64,39 +64,52 @@ const slides = [
 // ─── Individual slide ─────────────────────────────────────────────────────────
 function SlideContent({ slide }: { slide: (typeof slides)[0] }) {
   return (
-    <div
-      className="ws-banner ws-grain relative w-full overflow-hidden bg-[#f5efe6] h-[82dvh]"
-    >
+    <div className="ws-banner ws-grain relative h-[82dvh] w-full overflow-hidden bg-[#f5efe6]">
+      
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <Image
           src={slide.image}
           alt={slide.titleHighlight}
-          className="w-full h-full object-cover md:object-fill object-center"
+          fill
+          className="object-cover md:object-fill object-center"
           loading="eager"
         />
       </div>
-      {/* Text content */}
-      <div className="relative z-10 h-full flex flex-col justify-center px-5 sm:px-10 md:px-16 lg:px-20 max-w-[680px]">
-        {/* Heading */}
-        <h1 className="ws-title text-[2.3rem] sm:text-[3rem] md:text-[3.5rem] lg:text-[3.9rem] leading-[1.04] font-[500] text-[#1a1a1a] mb-3 sm:mb-4">
-          {slide.title}
-          <br />
-          <em className="not-italic font-medium" style={{ color: slide.accent }}>
-            {slide.titleHighlight}
-          </em>
-        </h1>
 
-        {/* Description */}
-        <p className="text-[13px] sm:text-[14px] md:text-[15px] text-[#5a5040] leading-relaxed max-w-[400px] mb-6 sm:mb-8 font-semibold">
-          {slide.description}
-        </p>
+      {/* Content wrapper */}
+      <div className="relative z-10 h-full w-full">
+        <Container className=" flex h-full w-full items-center">
+          
+          {/* Text content */}
+          <div className="max-w-[680px]">
+            
+            {/* Heading */}
+            <h1 className="ws-title mb-3 text-[2.3rem] font-[500] leading-[1.04] text-[#1a1a1a] sm:mb-4 sm:text-[3rem] md:text-[3.5rem] lg:text-[3.9rem]">
+              {slide.title}
+              <br />
 
-        {/* CTAs */}
-        <div className="flex flex-wrap gap-3 sm:gap-4">
-          <BookButton text={slide.cta1} />
-         <GreenButton text={slide.cta2} />
-        </div>
+              <em
+                className="not-italic font-medium"
+                style={{ color: slide.accent }}
+              >
+                {slide.titleHighlight}
+              </em>
+            </h1>
+
+            {/* Description */}
+            <p className="mb-6 max-w-[400px] text-[13px] font-semibold leading-relaxed text-[#5a5040] sm:mb-8 sm:text-[14px] md:text-[15px]">
+              {slide.description}
+            </p>
+
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-3 sm:gap-4">
+              <BookButton text={slide.cta1} />
+              <GreenButton text={slide.cta2} />
+            </div>
+
+          </div>
+        </Container>
       </div>
     </div>
   );

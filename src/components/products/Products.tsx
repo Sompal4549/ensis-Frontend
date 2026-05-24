@@ -16,7 +16,9 @@ import { allProducts, categories, idealFor, materials, PAGE_SIZE } from "@/const
 import ProductCard, { Checkbox } from "./ProductCard";
 import BookButton from "../ui/BookButton";
 import Image from "next/image";
-
+import AboutTitle from "../about/AboutTitle";
+import SubHeading from "../home/SubHeading";
+import lotus from "@/assets/about/lotus.png";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 export const fmt = (n: number) => "₹" + n.toLocaleString("en-IN");
@@ -241,10 +243,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
 
               {/* Selected Category Title */}
               <div className="mb-5">
-                <p className="text-[11px] uppercase tracking-[0.22em] text-[#c8a45d] font-[700] mb-2">
-                  Wellness Collection
-                </p>
-
+                  <SubHeading text=" Wellness Collection" className=' text-[#d5ad6a]' />
                 <h2 className="text-lg text-center font-semibold text-[#1a1a1a] leading-none">
                   {selectedCategory}
                 </h2>
@@ -363,51 +362,18 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
     
     {/* Lotus icon */}
     <div className="flex justify-center mb-1">
-      <svg width="32" height="32" viewBox="0 0 44 44" fill="none">
-        <ellipse
-          cx="22"
-          cy="30"
-          rx="4"
-          ry="12"
-          stroke="#c8a45d"
-          strokeWidth="1.4"
-        />
-        <ellipse
-          cx="22"
-          cy="30"
-          rx="4"
-          ry="12"
-          stroke="#c8a45d"
-          strokeWidth="1.4"
-          transform="rotate(45 22 30)"
-        />
-        <ellipse
-          cx="22"
-          cy="30"
-          rx="4"
-          ry="12"
-          stroke="#c8a45d"
-          strokeWidth="1.4"
-          transform="rotate(90 22 30)"
-        />
-        <ellipse
-          cx="22"
-          cy="30"
-          rx="4"
-          ry="12"
-          stroke="#c8a45d"
-          strokeWidth="1.4"
-          transform="rotate(135 22 30)"
-        />
-        <circle cx="22" cy="22" r="3" fill="#c8a45d" />
-      </svg>
+      <Image width={35} height={20}
+        src={lotus}
+        alt="decoration"
+        className="object-contain opacity-90"
+      />
     </div>
 
     <h3 className="text-xl font-[700] text-center text-[#1a1a1a] mb-1.5">
       Enquire Now
     </h3>
 
-    <p className="text-xs text-[#7a6a55] text-center leading-relaxed mb-4">
+    <p className="text-xs text-[#7a6a55] text-center leading-relaxed mb-2">
       Tell us about your requirements and our wellness experts
       will contact you.
     </p>

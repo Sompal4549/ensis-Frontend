@@ -6,6 +6,10 @@ import GreenButton from "../ui/GreenButton";
 import BookButton from "../ui/BookButton";
 import Image from "next/image";
 import whyChooseBg from "@/assets/products/whyChooseBg.png"
+import ayurvedic from "@/assets/icons/panchkarma_centers.webp"
+import customized from "@/assets/icons/customized.webp";
+import global from "@/assets/products/global_shippning.png"
+import premium_quality from "@/assets/icons/premium_quality.webp"
 
 const features = [
   "Authentic Ayurvedic Design",
@@ -17,42 +21,19 @@ const features = [
 
 const stats = [
   {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
-        <path d="M14 3C14 3 7 8 7 14.5C7 18.09 10.13 21 14 21C17.87 21 21 18.09 21 14.5C21 8 14 3 14 3Z" stroke="#c8a45d" strokeWidth="1.5" strokeLinejoin="round"/>
-        <path d="M10 21.5C10 23.43 11.79 25 14 25C16.21 25 18 23.43 18 21.5" stroke="#c8a45d" strokeWidth="1.5" strokeLinecap="round"/>
-      </svg>
-    ),
+    icon: customized,
     label: "Custom\nManufacturing",
   },
   {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
-        <circle cx="14" cy="14" r="9" stroke="#c8a45d" strokeWidth="1.5"/>
-        <path d="M10 14l3 3 5-5" stroke="#c8a45d" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    ),
+    icon: premium_quality,
     label: "Premium\nQuality",
   },
   {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
-        <ellipse cx="14" cy="19" rx="5" ry="7" stroke="#c8a45d" strokeWidth="1.5"/>
-        <ellipse cx="14" cy="19" rx="5" ry="7" stroke="#c8a45d" strokeWidth="1.5" transform="rotate(60 14 19)"/>
-        <ellipse cx="14" cy="19" rx="5" ry="7" stroke="#c8a45d" strokeWidth="1.5" transform="rotate(120 14 19)"/>
-        <circle cx="14" cy="12" r="2" fill="#c8a45d"/>
-      </svg>
-    ),
+    icon: ayurvedic,
     label: "Ayurvedic\nExpertise",
   },
   {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
-        <circle cx="14" cy="14" r="9" stroke="#c8a45d" strokeWidth="1.5"/>
-        <path d="M14 5C14 5 9 8.5 9 14C9 16.5 11 18.5 14 19C17 18.5 19 16.5 19 14C19 8.5 14 5 14 5Z" stroke="#c8a45d" strokeWidth="1.5" strokeLinejoin="round"/>
-        <path d="M5 14h18" stroke="#c8a45d" strokeWidth="1.5" strokeLinecap="round"/>
-      </svg>
-    ),
+    icon: global,
     label: "Global\nSupport",
   },
 ];
@@ -61,7 +42,7 @@ export default function WhyChoose() {
   return (
     <section className="wca-body w-full bg-[#f5efe6]">
       <Container>
-        <div className="flex flex-col md:flex-row min-h-[200px] rounded-xl relative">
+        <div className="flex flex-col md:flex-row min-h-[200px] rounded-xl relative overflow-hidden rounded-[28px]">
 <Image src={whyChooseBg}  fill alt="why choose bg" className="object-center object-cover z-0" />
           {/* ── LEFT PANEL ── */}
           <div className="relative bg-[#183b17] flex flex-col justify-between p-5 sm:p-7 md:p-8 
@@ -121,17 +102,17 @@ export default function WhyChoose() {
             <div className="grid grid-cols-4 gap-2 mb-4">
               {stats.map((s) => (
                 <div key={s.label} className="flex flex-col items-center gap-1 text-center">
-                  <div className="flex items-center justify-center w-6 h-6">
-                    {s.icon}
+                  <div className="flex items-center justify-center w-8 h-8">
+                    <Image src={s.icon} alt={s.label} width={30} height={30} className="object-fill object-center" />
                   </div>
-                  <span className="text-[8px] sm:text-[9px] text-[#5a5040] font-[500] leading-tight whitespace-pre-line">
+                  <span className="text-xs whitespace-pre-line">
                     {s.label}
                   </span>
                 </div>
               ))}
             </div>
 
-          <div className="w-50">
+          <div className="w-46">
             <BookButton text="Book a Consultation" rightIcon={<ArrowRight size={11} className="text-white" />} />
             </div>
           </div>

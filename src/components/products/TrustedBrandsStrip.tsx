@@ -2,37 +2,45 @@
 
 import React from "react";
 import { Container } from "../ui/Container";
+import SubHeading from "../home/SubHeading";
+import ananda from "@/assets/products/ananda_image.png"
+import six_senses from "@/assets/products/six_senses.png"
+import taj from "@/assets/products/taj.png"
+import kama from "@/assets/products/kama.png"
+import the_leela from "@/assets/products/the_leela.png"
+import jw_marriott from "@/assets/products/jw_marriott.png"
+import Image from "next/image";
 
 const brands = [
   {
     name: "ANANDA",
     subtitle: "Spa & Resorts",
-    logo: "◉",
+    logo: six_senses,
   },
   {
     name: "SIX SENSES",
     subtitle: "Hotels • Resorts • Spas",
-    logo: "● ● ●",
+    logo: six_senses,
   },
   {
     name: "TAJ",
     subtitle: "Hotels • Palaces • Resorts • Safaris",
-    logo: "✦",
+    logo: kama,
   },
   {
     name: "KAMA",
     subtitle: "AYURVEDA",
-    logo: "✧",
+    logo: kama,
   },
   {
     name: "THE LEELA",
     subtitle: "Palaces • Hotels • Resorts",
-    logo: "ℒ",
+    logo: jw_marriott,
   },
   {
     name: "JW MARRIOTT",
     subtitle: "Hotels & Resorts",
-    logo: "⬢",
+    logo: jw_marriott,
   },
 ];
 
@@ -44,11 +52,8 @@ export default function TrustedBrandsStrip() {
 
           {/* Heading */}
           <div className="flex items-center justify-center mb-3.5">
-            <div className="h-px w-8 sm:w-12 bg-[#d8c2a3]" />
-            <p className="px-3 text-[9px] sm:text-[10px] tracking-[0.22em] font-semibold text-[#b2854f] text-center uppercase whitespace-nowrap">
-              Trusted By Leading Wellness Centers Worldwide
-            </p>
-            <div className="h-px w-8 sm:w-12 bg-[#d8c2a3]" />
+        
+             <SubHeading text="Trusted By Leading Wellness Centers Worldwide" className=' text-[#d5ad6a] text-center' />
           </div>
 
           {/* Brands — flex with vertical dividers */}
@@ -58,15 +63,9 @@ export default function TrustedBrandsStrip() {
                 key={index}
                 className="flex flex-col items-center justify-center text-center px-4 sm:px-6 py-2 xl:py-0 w-1/2 md:w-1/3 xl:w-auto xl:flex-1"
               >
-                <div className="text-[#a67945] text-base sm:text-lg mb-1.5 opacity-90">
-                  {brand.logo}
+                <div className="text-[#a67945] text-base sm:text-lg mb-1.5 opacity-90 ">
+                  <Image src={brand.logo} alt={brand.name} width={100} height={100} className="object-cover object-center max-h-25 max-w-25" />
                 </div>
-                <h3 className="text-[#3b2b1d] text-[11px] sm:text-[12px] tracking-[0.15em] font-semibold">
-                  {brand.name}
-                </h3>
-                <p className="mt-0.5 text-[8px] sm:text-[9px] tracking-[0.13em] uppercase text-[#8d7b68] leading-relaxed">
-                  {brand.subtitle}
-                </p>
               </div>
             ))}
           </div>
