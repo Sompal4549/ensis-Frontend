@@ -34,7 +34,7 @@ const SupportHighlights = () => {
   return (
     <section className="w-full">
       <Container>
-        <div className="border border-[#ece7df] rounded-[26px] px-6 md:px-10 py-2 shadow-[0_8px_30px_rgba(0,0,0,0.03)] bg-white">
+        <div className="border border-[#ece7df] rounded-[26px] px-4 py-2 shadow-[0_8px_30px_rgba(0,0,0,0.03)] bg-white">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             {features.map((item, index) => {
               const Icon = item.icon;
@@ -42,7 +42,7 @@ const SupportHighlights = () => {
               return (
                 <div
                   key={index}
-                  className={`flex items-center gap-5 px-4 py-4 ${
+                  className={`flex items-center gap-5 px-2 py-2 ${
                     index !== features.length - 1
                       ? "lg:border-r md:border-r border-[#ddd7ce]"
                       : ""
@@ -63,7 +63,7 @@ const SupportHighlights = () => {
                       {item.title}
                     </p>
 
-                    <p className="text-[#2f2f2f] text-sm md:text-[15px] font-medium leading-6">
+                    <p className="text-[#2f2f2f] text-xs font-medium leading-6">
                       {item.description}
                     </p>
                   </div>

@@ -263,11 +263,11 @@ const ContactSection = () => {
                 </div>
 
                 <div>
-                  <h3 className="text-[#20351f] text-base font-semibold mb-2">
+                  <h3 className="text-[#20351f] text-sm font-semibold mb-2">
                     Address
                   </h3>
 
-                  <p className="text-[#555] text-[15px]">
+                  <p className="text-[#555] text-xs">
                     <span className="text-[#20351f]">
                       12/29, Site-II, Loni Road, Industrial Area,Mohan Nagar -
                       201007, Ghaziabad, Uttar Pradesh, India
@@ -288,11 +288,11 @@ const ContactSection = () => {
                 </div>
 
                 <div>
-                  <h3 className="text-[#20351f] text-base font-semibold mb-2">
+                  <h3 className="text-[#20351f] text-sm font-semibold mb-2">
                     Call Us
                   </h3>
 
-                  <p className="text-[#555] text-[15px]">
+                  <p className="text-[#555] text-xs">
                     <Link href="tel:+919654900525">
                       <span className="text-[#20351f]">
                         +91-9654900525
@@ -320,7 +320,7 @@ const ContactSection = () => {
                 </div>
 
                 <div>
-                  <h3 className="text-[#20351f] text-base font-semibold mb-2">
+                  <h3 className="text-[#20351f] text-sm font-semibold mb-2">
                     Email
                   </h3>
 
@@ -350,11 +350,11 @@ const ContactSection = () => {
                 </div>
 
                 <div>
-                  <h3 className="text-[#20351f] text-base font-semibold mb-2">
+                  <h3 className="text-[#20351f] text-sm font-semibold mb-2">
                     Business Hours
                   </h3>
 
-                  <p className="text-[#555] text-[15px]">
+                  <p className="text-[#555] text-xs">
                     <span className=" text-[#20351f]">
                       Mon – Sat: 9:00 AM – 6:00 PM
                     </span>
@@ -378,7 +378,7 @@ const ContactSection = () => {
                 </div>
 
                 <div>
-                  <h3 className="text-[#20351f] text-base font-semibold mb-2">
+                  <h3 className="text-[#20351f] text-sm font-semibold mb-2">
                     Social
                   </h3>
 
@@ -437,35 +437,33 @@ const ContactSection = () => {
               <div className="w-16 h-[2px] bg-[#d4b06a] mx-auto mb-2" />
             </div>
 
-            <form className="space-y-4">
+            <form className="space-y-3">
               {/* Row 1 */}
-              <div className="flex flex-col md:flex-row items-stretch gap-4">
+              <div className="flex flex-col md:flex-row items-stretch gap-3">
                 {/* Full Name */}
                 <div className="relative w-full">
                   <User
-                    className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c8a45d]"
-                    size={20}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]"
+                    size={16}
                     strokeWidth={1.8}
                   />
-
                   <input
                     type="text"
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleChange}
                     placeholder="Full Name"
-                    className="w-full h-14 md:h-16 rounded-2xl border border-[#ece7de] bg-[#fff] pl-14 pr-5 text-sm md:text-[15px] outline-none focus:border-[#c8a45d] transition-all"
+                    className="w-full h-11 md:h-12 rounded-xl border border-[#ece7de] bg-[#fff] pl-10 pr-4 text-xs md:text-sm outline-none focus:border-[#c8a45d] transition-all"
                   />
                 </div>
 
                 {/* Mobile */}
                 <div className="relative w-full">
                   <Phone
-                    className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c8a45d]"
-                    size={20}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]"
+                    size={16}
                     strokeWidth={1.8}
                   />
-
                   <input
                     type="text"
                     name="mobile"
@@ -473,33 +471,21 @@ const ContactSection = () => {
                     onChange={handleChange}
                     disabled={mobileVerified}
                     placeholder="Mobile Number"
-                    className={`w-full h-14 md:h-16 rounded-2xl border border-[#ece7de] bg-[#fff] pl-14 pr-28 md:pr-32 text-sm md:text-[15px] outline-none focus:border-[#c8a45d] transition-all ${mobileVerified ? "border-green-500 bg-green-50" : ""
-                      }`}
+                    className={`w-full h-11 md:h-12 rounded-xl border border-[#ece7de] bg-[#fff] pl-10 pr-24 text-xs md:text-sm outline-none focus:border-[#c8a45d] transition-all ${mobileVerified ? "border-green-500 bg-green-50" : ""}`}
                   />
-
                   {!mobileVerified ? (
                     <button
                       type="button"
                       onClick={sendMobileOtp}
-                      disabled={
-                        sendingMobileOtp ||
-                        mobileTimer > 0 ||
-                        !formData.mobile
-                      }
-                      className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 h-9 md:h-10 px-3 md:px-4 rounded-xl bg-[#c8a45d] text-[#183b17] font-semibold text-[10px] md:text-xs hover:opacity-90 transition-all disabled:opacity-50"
+                      disabled={sendingMobileOtp || mobileTimer > 0 || !formData.mobile}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 h-7 px-3 rounded-lg bg-[#c8a45d] text-[#183b17] font-semibold text-[10px] hover:opacity-90 transition-all disabled:opacity-50"
                     >
-                      {sendingMobileOtp
-                        ? "..."
-                        : mobileTimer > 0
-                          ? `${mobileTimer}s`
-                          : mobileOtpSent
-                            ? "Resend"
-                            : "Send OTP"}
+                      {sendingMobileOtp ? "..." : mobileTimer > 0 ? `${mobileTimer}s` : mobileOtpSent ? "Resend" : "Send OTP"}
                     </button>
                   ) : (
                     <CheckCircle2
-                      className="absolute right-5 top-1/2 -translate-y-1/2 text-green-500"
-                      size={22}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500"
+                      size={18}
                     />
                   )}
                 </div>
@@ -507,21 +493,20 @@ const ContactSection = () => {
 
               {/* Mobile OTP */}
               {mobileOtpSent && !mobileVerified && (
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="text"
                     value={mobileOtp}
                     onChange={(e) => setMobileOtp(e.target.value)}
                     placeholder="Enter Mobile OTP"
                     maxLength={6}
-                    className="w-full h-12 md:h-14 rounded-2xl border border-[#ece7de] bg-[#fff] px-5 text-sm md:text-[15px] outline-none focus:border-[#c8a45d]"
+                    className="w-full h-10 md:h-11 rounded-xl border border-[#ece7de] bg-[#fff] px-4 text-xs md:text-sm outline-none focus:border-[#c8a45d]"
                   />
-
                   <button
                     type="button"
                     onClick={verifyMobileOtp}
                     disabled={verifyingMobile || !mobileOtp}
-                    className="w-full sm:min-w-[120px] sm:w-auto h-12 md:h-14 rounded-2xl bg-[#183b17] text-white font-semibold text-sm"
+                    className="w-full sm:min-w-[100px] sm:w-auto h-10 md:h-11 rounded-xl bg-[#183b17] text-white font-semibold text-xs"
                   >
                     {verifyingMobile ? "..." : "Verify"}
                   </button>
@@ -529,15 +514,14 @@ const ContactSection = () => {
               )}
 
               {/* Row 2 */}
-              <div className="flex flex-col md:flex-row items-stretch gap-4">
+              <div className="flex flex-col md:flex-row items-stretch gap-3">
                 {/* Email */}
                 <div className="relative w-full">
                   <Mail
-                    className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c8a45d]"
-                    size={20}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]"
+                    size={16}
                     strokeWidth={1.8}
                   />
-
                   <input
                     type="email"
                     name="email"
@@ -545,33 +529,21 @@ const ContactSection = () => {
                     onChange={handleChange}
                     disabled={emailVerified}
                     placeholder="Email Address"
-                    className={`w-full h-14 md:h-16 rounded-2xl border border-[#ece7de] bg-[#fff] pl-14 pr-28 md:pr-32 text-sm md:text-[15px] outline-none focus:border-[#c8a45d] transition-all ${emailVerified ? "border-green-500 bg-green-50" : ""
-                      }`}
+                    className={`w-full h-11 md:h-12 rounded-xl border border-[#ece7de] bg-[#fff] pl-10 pr-24 text-xs md:text-sm outline-none focus:border-[#c8a45d] transition-all ${emailVerified ? "border-green-500 bg-green-50" : ""}`}
                   />
-
                   {!emailVerified ? (
                     <button
                       type="button"
                       onClick={sendEmailOtp}
-                      disabled={
-                        sendingEmailOtp ||
-                        emailTimer > 0 ||
-                        !formData.email
-                      }
-                      className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2 h-9 md:h-10 px-3 md:px-4 rounded-xl bg-[#c8a45d] text-[#183b17] font-semibold text-[10px] md:text-xs hover:opacity-90 transition-all disabled:opacity-50"
+                      disabled={sendingEmailOtp || emailTimer > 0 || !formData.email}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 h-7 px-3 rounded-lg bg-[#c8a45d] text-[#183b17] font-semibold text-[10px] hover:opacity-90 transition-all disabled:opacity-50"
                     >
-                      {sendingEmailOtp
-                        ? "..."
-                        : emailTimer > 0
-                          ? `${emailTimer}s`
-                          : emailOtpSent
-                            ? "Resend"
-                            : "Send OTP"}
+                      {sendingEmailOtp ? "..." : emailTimer > 0 ? `${emailTimer}s` : emailOtpSent ? "Resend" : "Send OTP"}
                     </button>
                   ) : (
                     <CheckCircle2
-                      className="absolute right-5 top-1/2 -translate-y-1/2 text-green-500"
-                      size={22}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500"
+                      size={18}
                     />
                   )}
                 </div>
@@ -579,16 +551,15 @@ const ContactSection = () => {
                 {/* Product */}
                 <div className="relative w-full">
                   <Package
-                    className="absolute left-5 top-1/2 -translate-y-1/2 text-[#c8a45d]"
-                    size={20}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]"
+                    size={16}
                     strokeWidth={1.8}
                   />
-
                   <select
                     name="productType"
                     value={formData.productType}
                     onChange={handleChange}
-                    className="w-full h-14 md:h-16 rounded-2xl border border-[#ece7de] bg-[#fff] pl-14 pr-5 text-sm md:text-[15px] outline-none focus:border-[#c8a45d] transition-all appearance-none text-[#777]"
+                    className="w-full h-11 md:h-12 rounded-xl border border-[#ece7de] bg-[#fff] pl-10 pr-4 text-xs md:text-sm outline-none focus:border-[#c8a45d] transition-all appearance-none text-[#777]"
                   >
                     <option value="">Select Product Type</option>
                     <option>Panchkarma Equipment</option>
@@ -600,21 +571,20 @@ const ContactSection = () => {
 
               {/* Email OTP */}
               {emailOtpSent && !emailVerified && (
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex flex-col sm:flex-row gap-2">
                   <input
                     type="text"
                     value={emailOtp}
                     onChange={(e) => setEmailOtp(e.target.value)}
                     placeholder="Enter Email OTP"
                     maxLength={6}
-                    className="w-full h-12 md:h-14 rounded-2xl border border-[#ece7de] bg-[#fff] px-5 text-sm md:text-[15px] outline-none focus:border-[#c8a45d]"
+                    className="w-full h-10 md:h-11 rounded-xl border border-[#ece7de] bg-[#fff] px-4 text-xs md:text-sm outline-none focus:border-[#c8a45d]"
                   />
-
                   <button
                     type="button"
                     onClick={verifyEmailOtp}
                     disabled={verifyingEmail || !emailOtp}
-                    className="w-full sm:min-w-[120px] sm:w-auto h-12 md:h-14 rounded-2xl bg-[#183b17] text-white font-semibold text-sm"
+                    className="w-full sm:min-w-[100px] sm:w-auto h-10 md:h-11 rounded-xl bg-[#183b17] text-white font-semibold text-xs"
                   >
                     {verifyingEmail ? "..." : "Verify"}
                   </button>
@@ -624,18 +594,17 @@ const ContactSection = () => {
               {/* Textarea */}
               <div className="relative">
                 <PencilLine
-                  className="absolute left-5 top-5 md:top-6 text-[#c8a45d]"
-                  size={20}
+                  className="absolute left-4 top-4 text-[#c8a45d]"
+                  size={16}
                   strokeWidth={1.8}
                 />
-
                 <textarea
-                  rows={5}
+                  rows={4}
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   placeholder="Tell us more about yourself"
-                  className="w-full rounded-2xl border border-[#ece7de] bg-[#fff] pl-14 pr-5 py-4 md:py-5 text-sm md:text-[15px] outline-none focus:border-[#c8a45d] transition-all resize-none"
+                  className="w-full rounded-xl border border-[#ece7de] bg-[#fff] pl-10 pr-4 py-3 text-xs md:text-sm outline-none focus:border-[#c8a45d] transition-all resize-none"
                 />
               </div>
 
@@ -643,22 +612,21 @@ const ContactSection = () => {
               <button
                 type="submit"
                 disabled={!isFormValid}
-                className={`w-full h-14 md:h-16 rounded-2xl text-white text-base md:text-lg font-medium flex items-center justify-center gap-3 transition-all duration-300 ${isFormValid
+                className={`w-auto px-4 mx-auto py-2 rounded-xl text-white text-xs md:text-base font-medium flex items-center justify-center gap-2 transition-all duration-300 ${isFormValid
                     ? "bg-gradient-to-r from-[#183b17] to-[#2f5a21] hover:opacity-95 cursor-pointer"
                     : "bg-gray-500 cursor-not-allowed opacity-70"
                   }`}
               >
-                <Send size={18} />
+                <Send size={15} />
                 Send Message
               </button>
 
-              <div className="flex items-center justify-center gap-2 pt-2 text-center">
-                <div className="w-6 h-6 rounded-full border border-[#e8d7b3] flex items-center justify-center shrink-0">
-                  <span className="text-[#c8a45d] text-xs">✓</span>
+              <div className="flex items-center justify-center gap-2 pt-1 text-center">
+                <div className="w-5 h-5 rounded-full border border-[#e8d7b3] flex items-center justify-center shrink-0">
+                  <span className="text-[#c8a45d] text-[10px]">✓</span>
                 </div>
-
-                <p className="text-xs md:text-sm text-[#7a7a7a]">
-                  We’ll get back to you as soon as possible.
+                <p className="text-[11px] md:text-xs text-[#7a7a7a]">
+                  We'll get back to you as soon as possible.
                 </p>
               </div>
             </form>

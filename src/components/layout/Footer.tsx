@@ -88,7 +88,7 @@ export const Footer = () => {
                 </Link>
               </li>
             </ul>
-            <div className='max-w-[200px] mt-3'>
+            <div className='max-w-[180px] mt-3'>
             <BookButton path="https://wa.me/+919654900525" text="WHATSAPP CHAT" rightIcon={<FaWhatsapp size={14} className="ml-2" />} />
             </div>
           </div>
