@@ -45,21 +45,21 @@ export default function ProductCard({ product }: { product: Product }) {
         />
       </button> */}
 
-      <div className="p-2.5 sm:p-3">
-        <p
+      <div className="p-2.5 sm:p-3 h-[90px] flex flex-col justify-between">
+        {/* <p
           className="text-[8px] sm:text-[9px] font-[600] tracking-[0.14em] mb-1 uppercase"
           style={{ color: "#c8a45d" }}
         >
           {product.category}
-        </p>
+        </p> */}
 
         <Link href={`/products/${product.slug}`} className="block">
-          <h3 className="ws-body text-[12px] sm:text-[13px] font-[500] text-[#1a1a1a] leading-[1.35] mb-2 line-clamp-2">
+          <h3 className="ws-body text-[12px] sm:text-[13px] font-[500] text-[#1a1a1a] leading-[1.35] mb-1 line-clamp-2">
             {product.name}
           </h3>
         </Link>
 
-        <div className="flex items-center justify-between">
+        <div className="mt-auto">
           <span className="text-sm font-[600] text-[#1a1a1a]">
             {fmt(product.price)}
           </span>

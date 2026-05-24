@@ -236,7 +236,7 @@ export const Header = () => {
               >
                 <Heart size={18} />
                 {likedCount > 0 && (
-                  <span className="absolute -right-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-[#c8a45d] px-1 text-[10px] font-bold text-white">
+                  <span className="absolute -right-1 -top-0.75 flex h-5 w-5 items-center justify-center rounded-full bg-[#c8a45d] text-[10px] font-bold text-white">
                     {likedCount}
                   </span>
                 )}
@@ -335,7 +335,7 @@ export const Header = () => {
                 </span>
               )}
             </Link>
-            <GreenButton text={<span className="uppercase  text-[#050A1A]">E-Brochure</span>} path={"https://ensis.in/pdf/e-broucher.pdf"} />
+            <BookButton text="E-Brochure" path={"https://ensis.in/pdf/e-broucher.pdf"} />
             <button
               className="inline-flex size-10 items-center justify-center border border-[#d8cbb9] text-[#263016] xl:hidden"
               aria-label="Open menu"

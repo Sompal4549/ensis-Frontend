@@ -82,7 +82,7 @@ function SlideContent({ slide }: { slide: (typeof slides)[0] }) {
         <Container className=" flex h-full w-full items-center">
           
           {/* Text content */}
-          <div className="max-w-[680px]">
+          <div className="max-w-[680px] bg-white/20">
             
             {/* Heading */}
             <h1 className="ws-title mb-3 text-[2.3rem] font-[500] leading-[1.04] text-[#1a1a1a] sm:mb-4 sm:text-[3rem] md:text-[3.5rem] lg:text-[3.9rem]">

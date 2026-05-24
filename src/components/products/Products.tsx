@@ -16,7 +16,6 @@ import { allProducts, categories, idealFor, materials, PAGE_SIZE } from "@/const
 import ProductCard, { Checkbox } from "./ProductCard";
 import BookButton from "../ui/BookButton";
 import Image from "next/image";
-import AboutTitle from "../about/AboutTitle";
 import SubHeading from "../home/SubHeading";
 import lotus from "@/assets/about/lotus.png";
 
@@ -369,7 +368,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
       />
     </div>
 
-    <h3 className="text-xl font-[700] text-center text-[#1a1a1a] mb-1.5">
+    <h3 className="text-xl font-semibold text-center text-[#1a1a1a] mb-1.5">
       Enquire Now
     </h3>
 
