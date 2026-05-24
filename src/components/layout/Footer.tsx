@@ -72,7 +72,7 @@ export const Footer = () => {
             <ul className="space-y-4 text-sm leading-6 text-[#cfc7ba]">
               <li className="flex gap-3">
                 <MapPin size={16} className="mt-1 shrink-0 text-[#d0a965]" />
-                <span>Plot No. 62, Sector 8, IMT Manesar,<br />Gurugram, Haryana - 122050, India</span>
+                <span>Address: 12/29, Site-II, Loni Road, Industrial Area,<br/> Mohan Nagar - 201007, India, Uttar Pradesh, India</span>
               </li>
               <li className="flex gap-3">
                 <Link href="tel:++919654900525" className='flex gap-3'>
