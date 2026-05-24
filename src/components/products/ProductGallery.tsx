@@ -27,7 +27,7 @@ export default function ProductGallery({
 
   return (
     <div>
-      <div className="relative flex aspect-[1.2/1] items-center justify-center overflow-hidden rounded-[8px] border border-[#dedede] bg-white">
+      <div className="relative flex aspect-[1.5/1] items-center justify-center overflow-hidden rounded-[8px] border border-[#dedede] bg-white">
         <Image
           src={activeImage}
           alt={title}

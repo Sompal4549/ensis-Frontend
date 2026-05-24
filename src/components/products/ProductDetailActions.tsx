@@ -17,7 +17,7 @@ export default function ProductDetailActions({
       <button
         type="button"
         onClick={() => addToCart(product)}
-        className={`inline-flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-xs font-bold uppercase tracking-wide text-white transition-colors ${
+        className={`inline-flex items-center justify-center gap-2 rounded-md px-2 py-2 text-xs font-bold uppercase tracking-wide text-white transition-colors ${
           added ? "bg-[#8d6a3a]" : "bg-[#263016] hover:bg-[#101010]"
         }`}
       >
@@ -28,7 +28,7 @@ export default function ProductDetailActions({
       <button
         type="button"
         onClick={() => toggleLike(product)}
-        className={`inline-flex items-center justify-center gap-2 rounded-md border px-4 py-2.5 text-xs font-bold uppercase tracking-wide transition-colors ${
+        className={`inline-flex items-center justify-center gap-2 rounded-md border px-2 py-2 text-xs font-bold uppercase tracking-wide transition-colors ${
           liked
             ? "border-red-500 bg-red-50 text-red-600"
             : "border-[#d8cbb9] bg-white text-[#263016] hover:bg-[#fbf8f2]"

@@ -112,7 +112,7 @@ function InfoPanel({
       open={defaultOpen}
       className="group rounded-[12px] border border-[#e5ded5] bg-[#f8f8f8] px-2 py-2"
     >
-      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-[#001b10] marker:hidden md:text-lg">
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-[#001b10] marker:hidden md:text-md">
         <span>{title}</span>
         <ArrowUpRight
           size={20}
@@ -123,7 +123,7 @@ function InfoPanel({
           className="hidden shrink-0 transition-transform group-open:block"
         />
       </summary>
-      <div className="mt-4 border-t border-[#e4ded6] pt-4 text-sm leading-6 text-[#777d84]">
+      <div className="mt-2 border-t border-[#e4ded6] pt-4 text-xs text-[#777d84]">
         {children}
       </div>
     </details>
@@ -181,9 +181,7 @@ export default async function ProductPage({
             <h2 className="text-xl font-semibold leading-tight text-[#001b10] md:text-2xl">
               {product.title}
             </h2>
-            <p className="mt-3 text-sm font-semibold text-[#001b10]">
-              Product Code {product.code}
-            </p>
+           
             <ProductDetailActions product={shopProduct} />
 
             <div className="mt-5 space-y-4">
