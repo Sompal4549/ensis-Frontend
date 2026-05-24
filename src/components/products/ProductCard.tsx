@@ -4,7 +4,7 @@ import { fmt } from "./Products";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { useShop, type ShopProduct } from "@/context/ShopContext";
-import type {Product} from "@/app/constants"
+import type {Product} from "@/constants"
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addToCart, isInCart, isLiked, toggleLike } = useShop();

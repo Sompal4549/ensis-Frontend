@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
@@ -33,9 +33,11 @@ import { useShop } from "@/context/ShopContext";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [wishlistOpen, setWishlistOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState<{ name?: string; email?: string } | null>(null);
-  const { cartCount, likedCount } = useShop();
+  const { addToCart, cartCount, likedCount, likedItems, toggleLike } = useShop();
+  const wishlistRef = useRef<HTMLDivElement | null>(null);
   const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001";
 
   useEffect(() => {
@@ -58,6 +60,23 @@ export const Header = () => {
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        wishlistRef.current &&
+        !wishlistRef.current.contains(event.target as Node)
+      ) {
+        setWishlistOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -207,18 +226,103 @@ export const Header = () => {
           </nav>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link
-              href="/products"
-              aria-label="Liked products"
-              className="relative hidden size-10 items-center justify-center rounded-full border border-[#d8cbb9] text-[#263016] transition-colors hover:bg-[#fbf8f2] sm:inline-flex"
-            >
-              <Heart size={18} />
-              {likedCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-[#c8a45d] px-1 text-[10px] font-bold text-white">
-                  {likedCount}
-                </span>
+            <div ref={wishlistRef} className="relative hidden sm:block">
+              <button
+                type="button"
+                aria-label="Open wishlist"
+                aria-expanded={wishlistOpen}
+                onClick={() => setWishlistOpen((open) => !open)}
+                className="relative inline-flex size-10 items-center justify-center rounded-full border border-[#d8cbb9] text-[#263016] transition-colors hover:bg-[#fbf8f2]"
+              >
+                <Heart size={18} />
+                {likedCount > 0 && (
+                  <span className="absolute -right-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-[#c8a45d] px-1 text-[10px] font-bold text-white">
+                    {likedCount}
+                  </span>
+                )}
+              </button>
+
+              {wishlistOpen && (
+                <div className="absolute right-0 top-12 z-50 w-[340px] overflow-hidden rounded-md border border-[#e2d8ca] bg-white shadow-[0_18px_45px_rgba(0,0,0,0.14)]">
+                  <div className="flex items-center justify-between border-b border-[#eee6dc] px-4 py-3">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#263016]">
+                      Wishlist
+                    </p>
+                    <span className="rounded-full bg-[#fbf8f2] px-2 py-1 text-[10px] font-bold text-[#8d6a3a]">
+                      {likedCount}
+                    </span>
+                  </div>
+
+                  {likedItems.length > 0 ? (
+                    <div className="max-h-[380px] overflow-y-auto">
+                      {likedItems.map((item) => (
+                        <div
+                          key={item.id}
+                          className="grid grid-cols-[64px_1fr] gap-3 border-b border-[#f0e8df] px-4 py-3 last:border-b-0"
+                        >
+                          <Link
+                            href={`/products/${item.slug}`}
+                            onClick={() => setWishlistOpen(false)}
+                            className="relative block aspect-square overflow-hidden bg-[#f8f3ec]"
+                          >
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              sizes="64px"
+                              className="object-cover"
+                            />
+                          </Link>
+
+                          <div className="min-w-0">
+                            <Link
+                              href={`/products/${item.slug}`}
+                              onClick={() => setWishlistOpen(false)}
+                              className="line-clamp-2 text-[12px] font-bold leading-snug text-[#1f261b] hover:text-[#8d6a3a]"
+                            >
+                              {item.name}
+                            </Link>
+                            <p className="mt-1 text-[11px] font-semibold text-[#8d6a3a]">
+                              {"\u20b9"}
+                              {item.price.toLocaleString("en-IN")}
+                            </p>
+
+                            <div className="mt-3 flex items-center gap-2">
+                              <button
+                                type="button"
+                                onClick={() => addToCart(item)}
+                                className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-sm bg-[#263016] px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#101010]"
+                              >
+                                <ShoppingCart size={12} />
+                                Add to Cart
+                              </button>
+                              <button
+                                type="button"
+                                aria-label={`Remove ${item.name} from wishlist`}
+                                onClick={() => toggleLike(item)}
+                                className="inline-flex size-8 items-center justify-center rounded-sm border border-[#e2d8ca] text-[#6f675d] transition-colors hover:bg-[#fbf8f2] hover:text-[#1f261b]"
+                              >
+                                <X size={14} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="px-5 py-8 text-center">
+                      <Heart size={28} className="mx-auto mb-3 text-[#c8a45d]" />
+                      <p className="text-sm font-bold text-[#1f261b]">
+                        No wishlist items
+                      </p>
+                      <p className="mt-2 text-xs leading-5 text-[#6f675d]">
+                        Tap the heart on products you want to save here.
+                      </p>
+                    </div>
+                  )}
+                </div>
               )}
-            </Link>
+            </div>
             <Link
               href="/cart"
               aria-label="Shopping cart"
@@ -226,7 +330,7 @@ export const Header = () => {
             >
               <ShoppingCart size={18} />
               {cartCount > 0 && (
-                <span className="absolute -right-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-[#263016] px-1 text-[10px] font-bold text-white">
+                <span className="absolute -right-1 -top-0.75 flex h-5 w-5 items-center justify-center rounded-full bg-[#263016] text-[10px] font-bold text-white">
                   {cartCount}
                 </span>
               )}

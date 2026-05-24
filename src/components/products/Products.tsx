@@ -12,7 +12,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import Link from "next/link";
-import { allProducts, categories, idealFor, materials, PAGE_SIZE } from "@/app/constants";
+import { allProducts, categories, idealFor, materials, PAGE_SIZE } from "@/constants";
 import ProductCard, { Checkbox } from "./ProductCard";
 import BookButton from "../ui/BookButton";
 import Image from "next/image";
