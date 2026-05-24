@@ -15,7 +15,7 @@ import userImage from "@/assets/home/testimonial1.webp"
 import SubHeading from './SubHeading';
 import { FaStar } from 'react-icons/fa';
 
-export const Testimonials = () => {
+export const Testimonials = ({title}:{title?:React.ReactNode}) => {
   const testimonials = [
     {
       text: 'Ensis has delivered exceptional quality Panchkarma equipment for our center. Their customization and support are outstanding.',
@@ -70,7 +70,7 @@ export const Testimonials = () => {
   return (
     <section className="bg-[#fbf8f2]">
       <Container>
-        <SubHeading className='text-black' text='WHAT OUR CLIENTS SAY' />
+        {title|| <SubHeading className='text-black' text='WHAT OUR CLIENTS SAY' />}
         <div className="mt-2">
           <Swiper
             modules={[Autoplay, Pagination]}

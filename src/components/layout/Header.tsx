@@ -16,6 +16,8 @@ import {
   LogIn,
   ShieldCheck,
   LogOut,
+  Heart,
+  ShoppingCart,
 } from "lucide-react";
 import {
   FaFacebook,
@@ -27,11 +29,13 @@ const Container = dynamic(() => import("../ui/Container").then((mod) => mod.Cont
 import logoImg from "@/assets/logo.png";
 import GreenButton from "../ui/GreenButton";
 import BookButton from "../ui/BookButton";
+import { useShop } from "@/context/ShopContext";
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [user, setUser] = useState<{ name?: string; email?: string } | null>(null);
+  const { cartCount, likedCount } = useShop();
   const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001";
 
   useEffect(() => {
@@ -142,9 +146,8 @@ export const Header = () => {
 
           <div className="flex w-full items-center justify-between gap-4 md:w-auto md:justify-end">
             {!user && (
-              <GreenButton  path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
+              <GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
             )}
-            <BookButton text="Admin Login" path={adminUrl} leftIcon={<ShieldCheck size={14} className="text-white" />} />
 
             {/* <div className="hidden items-center gap-3 md:flex">
               {socialLinks.map((item, index) => (
@@ -157,9 +160,9 @@ export const Header = () => {
                 </Link>
               ))}
             </div> */}
-            {user && (
+            {/* {user && (
             <GreenButton text="Logout" onClick={handleLogout} leftIcon={<LogOut size={14} className="text-[#050A1A]" />} />
-            )}
+            )} */}
           </div>
         </Container>
       </div>
@@ -203,7 +206,31 @@ export const Header = () => {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link
+              href="/products"
+              aria-label="Liked products"
+              className="relative hidden size-10 items-center justify-center rounded-full border border-[#d8cbb9] text-[#263016] transition-colors hover:bg-[#fbf8f2] sm:inline-flex"
+            >
+              <Heart size={18} />
+              {likedCount > 0 && (
+                <span className="absolute -right-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-[#c8a45d] px-1 text-[10px] font-bold text-white">
+                  {likedCount}
+                </span>
+              )}
+            </Link>
+            <Link
+              href="/cart"
+              aria-label="Shopping cart"
+              className="relative inline-flex size-10 items-center justify-center rounded-full border border-[#d8cbb9] text-[#263016] transition-colors hover:bg-[#fbf8f2]"
+            >
+              <ShoppingCart size={18} />
+              {cartCount > 0 && (
+                <span className="absolute -right-1 -top-1 flex min-w-5 items-center justify-center rounded-full bg-[#263016] px-1 text-[10px] font-bold text-white">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
             <GreenButton text={<span className="uppercase  text-[#050A1A]">E-Brochure</span>} path={"https://ensis.in/pdf/e-broucher.pdf"} />
             <button
               className="inline-flex size-10 items-center justify-center border border-[#d8cbb9] text-[#263016] xl:hidden"
@@ -220,8 +247,8 @@ export const Header = () => {
       {/* Overlay */}
       <div
         className={`fixed inset-0 z-40 bg-black/30 transition-opacity xl:hidden ${isMenuOpen
-            ? "opacity-100"
-            : "pointer-events-none opacity-0"
+          ? "opacity-100"
+          : "pointer-events-none opacity-0"
           }`}
         onClick={() => setIsMenuOpen(false)}
       />
@@ -254,8 +281,8 @@ export const Header = () => {
               key={index}
               href={item.href}
               className={`${mobileLink} ${item.hasDropdown
-                  ? "flex items-center justify-betwee uppercasen"
-                  : ""
+                ? "flex items-center justify-betwee uppercasen"
+                : ""
                 }`}
               onClick={() => setIsMenuOpen(false)}
             >
@@ -264,17 +291,21 @@ export const Header = () => {
               {item.hasDropdown && <ChevronDown size={14} />}
             </Link>
           ))}
+          <Link
+            href="/cart"
+            className={`${mobileLink} flex items-center justify-between`}
+            onClick={() => setIsMenuOpen(false)}
+          >
+            <span>Cart</span>
+            <span className="rounded-full bg-[#263016] px-2 py-0.5 text-[10px] font-bold text-white">
+              {cartCount}
+            </span>
+          </Link>
           <GreenButton text={<span className="uppercase text-[#050A1A]">E-Brochure</span>} path={"https://ensis.in/pdf/e-broucher.pdf"} />
           <div className="flex justify-between gap-2 mt-2">
-            {user ? (
-             <GreenButton text="Logout" onClick={handleLogout} leftIcon={<LogOut size={14} className="text-[#050A1A]" />} />
-            ) : (
-             
-              <GreenButton  path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
-            )}
-            
-            <BookButton text="Admin Login" path={adminUrl} leftIcon={<ShieldCheck size={14} className="text-white" />} />
-            
+            {!user &&
+              (<GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
+              )}
           </div>
         </nav>
       </aside>

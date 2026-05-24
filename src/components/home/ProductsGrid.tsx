@@ -59,12 +59,12 @@ export const ProductsGrid = async () => {
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {products.map((product) => {
-            const productId = '_id' in product ? product.slug || product._id : product.id;
+            const productId = (('slug' in product && product.slug) ? product.slug : ('_id' in product ? (product._id as string) : product.id)) || Math.random().toString();
             // const imageUrl = '_id' in product ? getImageUrl(product.images?.[0]) : '';
             const imageUrl = typeof product.image === 'string' ? getImageUrl(product.image) : product.image;
 
             return (
-            <Link href={`/products/${productId}`} key={productId} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-xl">
+            <Link href={`/products/${productId}`} key={productId.toString()} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-xl">
               <div className="relative aspect-[2/1] overflow-hidden bg-[#e5dccf] rounded-tl-xl rounded-tr-xl">
                 {/* {'_id' in product && imageUrl ? (
                   <Image src={imageUrl} alt={product.title} fill className="object-cover" />

@@ -12,7 +12,7 @@ import { Carousel } from '../ui/Carousel';
 import rooted from '@/assets/bg/bg3.webp';
 import tradition from '@/assets/bg/bg4.webp';
 import wellness_spaces from '@/assets/bg/bg2.webp';
-import wooden_steam from '@/assets/bg/bg1.webp';;
+import wooden_steam from '@/assets/bg/bg1.webp';
 import arrow from "@/assets/icons/arrow.png"
 import { Features } from './Features';
 import { getComponentContent, getImageUrl } from '@/app/lib/api';

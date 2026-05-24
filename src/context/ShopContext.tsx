@@ -1,0 +1,185 @@
+"use client";
+
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
+
+export interface ShopProduct {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  price: number;
+  image: string;
+}
+
+export interface CartItem extends ShopProduct {
+  quantity: number;
+}
+
+interface ShopContextValue {
+  cartItems: CartItem[];
+  likedItems: ShopProduct[];
+  cartCount: number;
+  likedCount: number;
+  subtotal: number;
+  addToCart: (product: ShopProduct) => void;
+  removeFromCart: (productId: string) => void;
+  increaseQuantity: (productId: string) => void;
+  decreaseQuantity: (productId: string) => void;
+  clearCart: () => void;
+  toggleLike: (product: ShopProduct) => void;
+  isLiked: (productId: string) => boolean;
+  isInCart: (productId: string) => boolean;
+}
+
+const CART_STORAGE_KEY = "ensis_cart";
+const LIKES_STORAGE_KEY = "ensis_liked_products";
+
+const ShopContext = createContext<ShopContextValue | undefined>(undefined);
+
+function readStoredItems<T>(key: string, fallback: T): T {
+  if (typeof window === "undefined") return fallback;
+
+  try {
+    const stored = window.localStorage.getItem(key);
+    return stored ? (JSON.parse(stored) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+export function ShopProvider({ children }: { children: ReactNode }) {
+  const [cartItems, setCartItems] = useState<CartItem[]>(() =>
+    readStoredItems<CartItem[]>(CART_STORAGE_KEY, [])
+  );
+  const [likedItems, setLikedItems] = useState<ShopProduct[]>(() =>
+    readStoredItems<ShopProduct[]>(LIKES_STORAGE_KEY, [])
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cartItems));
+  }, [cartItems]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem(LIKES_STORAGE_KEY, JSON.stringify(likedItems));
+  }, [likedItems]);
+
+  const addToCart = useCallback((product: ShopProduct) => {
+    setCartItems((items) => {
+      const existing = items.find((item) => item.id === product.id);
+
+      if (existing) {
+        return items.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
+
+      return [...items, { ...product, quantity: 1 }];
+    });
+  }, []);
+
+  const removeFromCart = useCallback((productId: string) => {
+    setCartItems((items) => items.filter((item) => item.id !== productId));
+  }, []);
+
+  const increaseQuantity = useCallback((productId: string) => {
+    setCartItems((items) =>
+      items.map((item) =>
+        item.id === productId
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      )
+    );
+  }, []);
+
+  const decreaseQuantity = useCallback((productId: string) => {
+    setCartItems((items) =>
+      items
+        .map((item) =>
+          item.id === productId
+            ? { ...item, quantity: Math.max(0, item.quantity - 1) }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  }, []);
+
+  const clearCart = useCallback(() => {
+    setCartItems([]);
+  }, []);
+
+  const toggleLike = useCallback((product: ShopProduct) => {
+    setLikedItems((items) => {
+      const exists = items.some((item) => item.id === product.id);
+      return exists
+        ? items.filter((item) => item.id !== product.id)
+        : [...items, product];
+    });
+  }, []);
+
+  const isLiked = useCallback(
+    (productId: string) => likedItems.some((item) => item.id === productId),
+    [likedItems]
+  );
+
+  const isInCart = useCallback(
+    (productId: string) => cartItems.some((item) => item.id === productId),
+    [cartItems]
+  );
+
+  const value = useMemo(
+    () => ({
+      cartItems,
+      likedItems,
+      cartCount: cartItems.reduce((total, item) => total + item.quantity, 0),
+      likedCount: likedItems.length,
+      subtotal: cartItems.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      ),
+      addToCart,
+      removeFromCart,
+      increaseQuantity,
+      decreaseQuantity,
+      clearCart,
+      toggleLike,
+      isLiked,
+      isInCart,
+    }),
+    [
+      cartItems,
+      likedItems,
+      addToCart,
+      removeFromCart,
+      increaseQuantity,
+      decreaseQuantity,
+      clearCart,
+      toggleLike,
+      isLiked,
+      isInCart,
+    ]
+  );
+
+  return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
+}
+
+export function useShop() {
+  const context = useContext(ShopContext);
+
+  if (!context) {
+    throw new Error("useShop must be used within ShopProvider");
+  }
+
+  return context;
+}
