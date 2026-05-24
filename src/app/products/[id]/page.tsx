@@ -1,108 +1,215 @@
-import React from 'react';
-import dynamic from 'next/dynamic';
-import Image from 'next/image';
-const Container = dynamic(() => import('@/components/ui/Container').then((mod) => mod.Container));
-import { ShoppingCart, ShieldCheck, Truck, ArrowLeft } from 'lucide-react';
-import Link from 'next/link';
-import { getImageUrl, productApi } from '@/app/lib/api';
+import { type StaticImageData } from "next/image";
+import Link from "next/link";
+import { ArrowDownRight, ArrowLeft, ArrowUpRight } from "lucide-react";
+import { Container } from "@/components/ui/Container";
+import { allProducts, type Product } from "@/constants";
+import { getImageUrl, productApi } from "@/app/lib/api";
+import ProductGallery from "@/components/products/ProductGallery";
+import ProductDetailActions from "@/components/products/ProductDetailActions";
 
-export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const resolvedParams = await params;
-  const productId = resolvedParams.id;
-  const fallbackTitle = productId.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-  let product = null;
+type ApiProduct = {
+  title?: string;
+  name?: string;
+  price?: number;
+  discountPrice?: number;
+  description?: string;
+  images?: string[];
+};
 
-  try {
-    product = await productApi.detail(productId);
-  } catch {
-    product = null;
+type ProductView = {
+  id: string;
+  title: string;
+  code: string;
+  price?: number;
+  category: string;
+  description: string;
+  dimension: string;
+  customization: string;
+  images: Array<string | StaticImageData>;
+  slug: string;
+};
+
+function titleFromSlug(slug: string) {
+  return slug
+    .replace(/[_-]+/g, " ")
+    .split(" ")
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+function codeFromId(id: string | number) {
+  return `Ens - ${id.toString().padStart(3, "0")}`;
+}
+
+function getLocalProduct(slug: string): Product | undefined {
+  return allProducts.find((product) => product.slug === slug);
+}
+
+function buildLocalView(product: Product): ProductView {
+  const productIndex = allProducts.findIndex((item) => item.id === product.id);
+  const galleryImages = Array.from({ length: 4 }, (_, index) => {
+    const imageProduct =
+      allProducts[(productIndex + index + allProducts.length) % allProducts.length];
+    return imageProduct?.image || product.image;
+  });
+
+  return {
+    id: product.id.toString(),
+    title: product.name,
+    code: codeFromId(product.id),
+    price: product.price,
+    category: product.category,
+    description: `${product.name} is crafted for professional wellness spaces with durable materials, refined finishing, and practical day-to-day usability.`,
+    dimension: '7 ft 10 inch x W 2 ft 10 inch x H 2 ft 10 inch',
+    customization:
+      "Available in custom dimensions, polish tones, wood finish, and upholstery options to suit your wellness space.",
+    images: galleryImages,
+    slug: product.slug,
+  };
+}
+
+function buildApiView(slug: string, product: ApiProduct | null): ProductView {
+  const title = product?.title || product?.name || titleFromSlug(slug);
+  const apiImages =
+    product?.images?.map(getImageUrl).filter((image): image is string =>
+      Boolean(image)
+    ) || [];
+
+  return {
+    id: slug,
+    title,
+    code: codeFromId("002"),
+    price: product?.discountPrice || product?.price,
+    category: "PREMIUM EQUIPMENT",
+    description:
+      product?.description ||
+      `${title} is designed for modern Ayurveda, spa, and wellness facilities with reliable construction and a premium finish.`,
+    dimension: '7 ft 10 inch x W 2 ft 10 inch x H 2 ft 10 inch',
+    customization:
+      "Available in custom dimensions, polish tones, wood finish, and upholstery options to suit your wellness space.",
+    images: apiImages,
+    slug,
+  };
+}
+
+function getImageSource(image: string | StaticImageData | undefined) {
+  if (!image) return "/next.svg";
+  return typeof image === "string" ? image : image.src;
+}
+
+function InfoPanel({
+  title,
+  children,
+  defaultOpen = false,
+}: {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) {
+  return (
+    <details
+      open={defaultOpen}
+      className="group rounded-[12px] border border-[#e5ded5] bg-[#f8f8f8] px-2 py-2"
+    >
+      <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-[#001b10] marker:hidden md:text-lg">
+        <span>{title}</span>
+        <ArrowUpRight
+          size={20}
+          className="shrink-0 transition-transform group-open:hidden"
+        />
+        <ArrowDownRight
+          size={20}
+          className="hidden shrink-0 transition-transform group-open:block"
+        />
+      </summary>
+      <div className="mt-4 border-t border-[#e4ded6] pt-4 text-sm leading-6 text-[#777d84]">
+        {children}
+      </div>
+    </details>
+  );
+}
+
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const localProduct = getLocalProduct(id);
+  let apiProduct: ApiProduct | null = null;
+
+  if (!localProduct) {
+    try {
+      apiProduct = await productApi.detail(id);
+    } catch {
+      apiProduct = null;
+    }
   }
 
-  const title = product?.title || fallbackTitle;
-  const images = product?.images?.map(getImageUrl).filter(Boolean) || [];
-  const price = product?.discountPrice || product?.price;
+  const product = localProduct
+    ? buildLocalView(localProduct)
+    : buildApiView(id, apiProduct);
+  const gallery =
+    product.images.length > 0
+      ? product.images
+      : ["/next.svg", "/next.svg", "/next.svg", "/next.svg"];
+  const shopProduct = {
+    id: product.id,
+    slug: product.slug,
+    name: product.title,
+    category: product.category,
+    price: product.price || 0,
+    image: getImageSource(gallery[0]),
+  };
 
   return (
-    <div className="bg-[#fbf8f2] py-10 md:py-14">
+    <div className="min-h-screen bg-white py-6 md:py-8">
       <Container>
-        <div className="mb-8 flex flex-wrap items-center gap-3 text-sm text-[#6f675d]">
-          <Link href="/" className="inline-flex items-center gap-2 font-semibold text-[#334022] hover:text-[#8d6a3a]">
-            <ArrowLeft size={16} /> Back to Home
-          </Link>
-          <span>/</span>
-          <Link href="/products" className="hover:text-[#8d6a3a]">Products</Link>
-          <span>/</span>
-          <span className="text-[#1f261b]">{title}</span>
-        </div>
+        <Link
+          href="/products"
+          className="mb-5 inline-flex items-center gap-2 text-xs font-semibold text-[#001b10] transition-colors hover:text-[#8d6a3a]"
+        >
+          <ArrowLeft size={14} />
+          Back to products
+        </Link>
 
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.05fr]">
-          <div>
-            <div className="relative flex aspect-[1.15/1] items-center justify-center overflow-hidden bg-[#c3a682]">
-              {images[0] ? (
-                <Image src={images[0]} alt={title} fill className="object-cover" />
-              ) : (
-                <span className="font-serif text-3xl text-white/90">{title} Image</span>
-              )}
-            </div>
-            <div className="mt-4 grid grid-cols-3 gap-4">
-              {[0, 1, 2].map((index) => (
-                <div key={index} className="relative aspect-[1.25/1] overflow-hidden bg-[#b59a77]">
-                  {images[index] && <Image src={images[index]} alt={`${title} ${index + 1}`} fill className="object-cover" />}
-                </div>
-              ))}
-            </div>
-          </div>
+        <section className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:gap-10 xl:gap-12">
+          <ProductGallery images={gallery.slice(0, 4)} title={product.title} />
 
           <div>
-            <span className="text-[11px] font-bold tracking-widest text-[#8d6a3a]">PREMIUM EQUIPMENT</span>
-            <h1 className="mt-3 font-serif text-4xl leading-tight text-[#1f261b] md:text-5xl">{title}</h1>
-            <p className="mt-4 text-xl font-bold text-[#334022]">{price ? `₹${price.toLocaleString('en-IN')}` : 'Ask for Price'}</p>
-            
-            <p className="mt-5 max-w-[640px] text-base leading-8 text-[#5f5a50]">
-              {product?.description || `Experience the pinnacle of wellness with our handcrafted ${title}. Designed specifically for modern spas and Panchkarma clinics, this premium equipment combines traditional ergonomic principles with contemporary aesthetics.`}
+            <h2 className="text-xl font-semibold leading-tight text-[#001b10] md:text-2xl">
+              {product.title}
+            </h2>
+            <p className="mt-3 text-sm font-semibold text-[#001b10]">
+              Product Code {product.code}
             </p>
+            <ProductDetailActions product={shopProduct} />
 
-            <div className="mt-7 grid gap-4 sm:grid-cols-2">
-              <div className="flex items-center gap-3 border border-[#e1d7c9] bg-white p-4 text-sm font-semibold text-[#1f261b]">
-                <ShieldCheck size={20} className="text-[#8d6a3a]" />
-                <span>10 Year Warranty on Structure</span>
-              </div>
-              <div className="flex items-center gap-3 border border-[#e1d7c9] bg-white p-4 text-sm font-semibold text-[#1f261b]">
-                <Truck size={20} className="text-[#8d6a3a]" />
-                <span>Worldwide Insured Shipping</span>
-              </div>
-            </div>
+            <div className="mt-5 space-y-4">
+              <InfoPanel title="Product Information">
+                <p>{product.description}</p>
+                <div className="mt-3 grid gap-1.5 text-xs font-semibold text-[#4d555b] md:text-sm">
+                  <p>Category: {product.category}</p>
+                  <p>
+                    Price:{" "}
+                    {product.price
+                      ? `\u20b9${product.price.toLocaleString("en-IN")}`
+                      : "Ask for Price"}
+                  </p>
+                </div>
+              </InfoPanel>
 
-            <div className="mt-7 flex flex-wrap gap-4">
-              <button className="inline-flex items-center gap-3 bg-[#334022] px-7 py-4 text-[11px] font-bold tracking-wide text-white hover:bg-[#263016]">
-                <ShoppingCart size={18} /> INQUIRE TO BUY
-              </button>
-              <button className="border border-[#d7cbbd] bg-white px-7 py-4 text-[11px] font-bold tracking-wide text-[#1f261b] hover:bg-[#f3eee6]">
-                REQUEST CATALOGUE
-              </button>
-            </div>
-            
-            <div className="mt-8 border border-[#e1d7c9] bg-white">
-              <div className="flex border-b border-[#e1d7c9] text-sm font-bold">
-                <span className="bg-[#334022] px-5 py-4 text-white">Description</span>
-                <span className="px-5 py-4 text-[#6f675d]">Specifications</span>
-                <span className="px-5 py-4 text-[#6f675d]">Shipping</span>
-              </div>
-              <div className="p-6 text-sm leading-7 text-[#5f5a50]">
-                <p>
-                  {product?.description || `Our ${title} is manufactured in our state-of-the-art facility adhering to strict ISO 9001:2015 quality standards.`}
-                  We offer extensive customization options including dimensions, wood finishes, and upholstery colors to perfectly match your wellness center&apos;s interior design.
-                </p>
-                <ul className="mt-5 grid gap-2 text-[#3f3a32]">
-                  <li><strong>Material:</strong> Premium Teak Wood / Medicinal Woods</li>
-                  <li><strong>Finish:</strong> Non-toxic, oil-resistant PU coating</li>
-                  <li><strong>Dimensions:</strong> Customizable (Standard: 84&quot; L x 36&quot; W x 30&quot; H)</li>
-                  <li><strong>Weight Capacity:</strong> 400 lbs (180 kg)</li>
-                </ul>
-              </div>
+              <InfoPanel title="Dimensions" defaultOpen>
+                <p>{product.dimension} Centimeter</p>
+              </InfoPanel>
+
+              <InfoPanel title="customization Option">
+                <p>{product.customization}</p>
+              </InfoPanel>
             </div>
           </div>
-        </div>
+        </section>
       </Container>
     </div>
   );

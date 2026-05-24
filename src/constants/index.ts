@@ -17,7 +17,7 @@ import panchkarma from "@/assets/icons/panchkarma.webp";
 import spa from "@/assets/icons/luxury_spas.webp";
 import ayurvedic from "@/assets/icons/authentic_ayurveda.webp";
 import steam from "@/assets/icons/steam_sauna_icon.webp";
-import interior from "@/assets/icons/interior.webp";
+import interior from "@/assets/icons/ihouse.webp";
 import wellness_assossries_icon from "@/assets/home/wellness_assossries_icon.webp"
 import table from "@/assets/home/table.webp";
 import shirodhara_eqipment from "@/assets/icons/shirodhara_eqipment.webp";

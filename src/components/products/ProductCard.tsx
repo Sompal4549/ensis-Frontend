@@ -31,7 +31,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
       </Link>
 
-      <button
+      {/* <button
         type="button"
         aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
         onClick={() => toggleLike(shopProduct)}
@@ -43,7 +43,7 @@ export default function ProductCard({ product }: { product: Product }) {
             wished ? "fill-red-500 text-red-500" : "text-[#9a8870]"
           }
         />
-      </button>
+      </button> */}
 
       <div className="p-2.5 sm:p-3">
         <p
@@ -64,7 +64,7 @@ export default function ProductCard({ product }: { product: Product }) {
             {fmt(product.price)}
           </span>
 
-          <button
+          {/* <button
             type="button"
             aria-label={added ? "Add one more to cart" : "Add to cart"}
             onClick={() => addToCart(shopProduct)}
@@ -80,7 +80,7 @@ export default function ProductCard({ product }: { product: Product }) {
                   : "text-[#c8a45d] group-hover/cart:text-white"
               }`}
             />
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
