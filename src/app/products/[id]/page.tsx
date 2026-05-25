@@ -20,12 +20,14 @@ import {
   Truck,
   Wrench,
 } from "lucide-react";
+import product_detail from "@/assets/products/product-detail.webp"
 import { Container } from "@/components/ui/Container";
 import { allProducts, type Product } from "@/constants";
 import { getImageUrl, productApi } from "@/app/lib/api";
 import ProductGallery from "@/components/products/ProductGallery";
 import ProductDetailActions from "@/components/products/ProductDetailActions";
 import YouMightCarousel from "@/components/ui/YouMightCarousel";
+import CartAndDetailHeroBanner from "@/components/products/ProductDetailBanner";
 
 type ApiProduct = {
   title?: string;
@@ -113,7 +115,7 @@ function buildApiView(slug: string, product: ApiProduct | null): ProductView {
   };
 }
 
-function getImageSource(image: string | StaticImageData | undefined) {
+export function getImageSource(image: string | StaticImageData | undefined) {
   if (!image) return "/next.svg";
   return typeof image === "string" ? image : image.src;
 }
@@ -273,6 +275,7 @@ export default async function ProductPage({
 
   return (
     <div className="min-h-screen bg-[#fbfaf7]">
+      <CartAndDetailHeroBanner imageSrc={getImageSource(product_detail)} imageAlt="Therapy Table" />
       <Container>
         <Link
           href="/products"
@@ -496,11 +499,11 @@ export default async function ProductPage({
           <h2 className="text-2xl font-semibold text-[#1a1a1a]">
             You May Also Like
           </h2>
-        <div className="mt-2">
-              <YouMightCarousel>
-            {suggestions.map((item) => (
-              <RelatedProductCard key={item.id} product={item} />
-            ))}
+          <div className="mt-2">
+            <YouMightCarousel>
+              {suggestions.map((item) => (
+                <RelatedProductCard key={item.id} product={item} />
+              ))}
             </YouMightCarousel>
           </div>
         </section>

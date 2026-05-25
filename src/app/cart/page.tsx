@@ -26,7 +26,8 @@ import { Container } from "@/components/ui/Container";
 import { allProducts, type Product } from "@/constants";
 import { formatCurrency } from "@/utils";
 import YouMightCarousel from "@/components/ui/YouMightCarousel";
-
+import CartAndDetailHeroBanner from "@/components/products/ProductDetailBanner";
+import product_cart from "@/assets/products/cart.webp"
 function imageSource(image: string | StaticImageData) {
   return typeof image === "string" ? image : image.src;
 }
@@ -222,19 +223,18 @@ export default function CartPage() {
   const suggestions = allProducts
     .filter((product) => !cartItems.some((item) => item.slug === product.slug))
     .slice(0, 5);
-
   return (
     <div className="min-h-screen bg-[#fbfaf7] text-[#101010]">
       <div className="bg-[#596555] px-4 py-2 text-center text-xs font-bold uppercase tracking-wide text-white">
         <Truck size={15} className="mr-2 inline-block" />
         Free shipping on orders above {formatCurrency(freeShippingAt)}
       </div>
-
+<CartAndDetailHeroBanner imageSrc={product_cart.src} imageAlt="Therapy Table" />
       <Container>
         <div className="">
-          <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
+          <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="text-xl font-semibold leading-tight text-[#1a1a1a] md:text-2xl">
+              <h2 className="text-xl font-semibold leading-tight md:text-2xl">
                 Your Cart {hasItems ? `(${cartCount})` : ""}
               </h2>
               {/* <p className="text-xs text-[#4f574d]">
@@ -298,7 +298,7 @@ export default function CartPage() {
           {hasItems ? (
             <div className="mt-2 grid gap-8 lg:grid-cols-[1fr_360px] lg:items-start xl:grid-cols-[1fr_400px]">
               <section className="overflow-hidden rounded-lg border border-[#eee5d8] bg-white shadow-[0_8px_24px_rgba(49,59,48,0.04)]">
-                <div className="hidden grid-cols-[1fr_110px_150px_110px_34px] px-5 py-4 text-xs font-bold text-[#4f574d] md:grid">
+                <div className="hidden grid-cols-[1fr_110px_150px_110px_34px] px-5 py-4 text-xs font-bold md:grid">
                   <span>Product</span>
                   <span>Price</span>
                   <span>Quantity</span>
@@ -317,17 +317,17 @@ export default function CartPage() {
                     <label className="relative flex-1">
                       <Tag
                         size={16}
-                        className="absolute left-3 top-1/2 -translate-y-1/2 text-[#7d8378]"
+                        className="absolute left-3 top-1/2 -translate-y-1/2 "
                       />
                       <input
                         type="text"
                         placeholder="Enter promo code"
-                        className="h-8 w-full rounded-md border border-[#e5ded5] bg-white pl-10 pr-3 text-sm outline-none transition-colors placeholder:text-[#9ca197] focus:border-[#313b30]"
+                        className="h-8 w-full rounded-md border border-[#e5ded5] bg-white pl-10 pr-3 text-sm outline-none transition-colors placeholder:text-black focus:border-[#313b30]"
                       />
                     </label>
                     <button
                       type="button"
-                      className="h-8 rounded-md border border-[#313b30] px-5 text-xs font-bold text-[#313b30] transition-colors hover:bg-[#313b30] hover:text-white"
+                      className="h-8 rounded-md border border-[#313b30] px-5 text-xs font-bold transition-colors hover:bg-[#313b30] hover:text-white"
                     >
                       Apply
                     </button>
@@ -344,7 +344,7 @@ export default function CartPage() {
 
               <aside className="space-y-5 lg:sticky lg:top-24">
                 <section className="rounded-lg border border-[#eee5d8] bg-white p-4 shadow-[0_8px_24px_rgba(49,59,48,0.04)]">
-                  <h2 className="text-xl font-semibold text-[#1a1a1a]">
+                  <h2 className="text-xl font-semibold">
                     Order Summary
                   </h2>
                   <div className="mt-2 space-y-2 text-xs">
@@ -352,7 +352,7 @@ export default function CartPage() {
                       <span className="">
                         Subtotal ({cartCount} items)
                       </span>
-                      <span className="font-semibold text-[#1a1a1a]">
+                      <span className="font-semibold">
                         {formatCurrency(subtotal)}
                       </span>
                     </div>
@@ -378,10 +378,10 @@ export default function CartPage() {
 
                   <div className="mt-2 border-t border-[#eee5d8] pt-5">
                     <div className="flex items-center justify-between gap-4">
-                      <span className="text-lg font-semibold text-[#1a1a1a]">
+                      <span className="text-lg font-semibold ">
                         Total
                       </span>
-                      <span className="text-2xl font-semibold text-[#1a1a1a]">
+                      <span className="text-2xl font-semibold">
                         {formatCurrency(total)}
                       </span>
                     </div>
@@ -392,25 +392,19 @@ export default function CartPage() {
                   </div>
 
                   <Link
-                    href="/contact"
-                    className="mt-2 h-8 w-full flex items-center justify-center gap-2 rounded-md bg-[#313b30] text-base font-semibold text-white transition-colors hover:bg-[#172015]"
-                  ><div className="text-white flex gap-2 items-center justify-center">
-
+                    href="/checkout"
+                    className="mt-4 h-12 w-full flex items-center justify-center gap-2 rounded-xl bg-[#313b30] text-base font-semibold text-white transition-colors hover:bg-[#172015]"
+                  >
+                    <div className="text-white flex gap-2 items-center justify-center">
                       <LockKeyhole size={16} />
                       Proceed to Checkout
                     </div>
                   </Link>
-                  <button
-                    type="button"
-                    className="mt-2 flex h-8 w-full items-center justify-center rounded-md bg-[#f4bb26] text-base font-black text-[#17356a] transition-colors hover:bg-[#e6ad18]"
-                  >
-                    PayPal
-                  </button>
 
                   <p className="mt-2 text-center text-[11px]">
                     Guaranteed safe and secure checkout
                   </p>
-                  <div className="mt-3 grid grid-cols-5 gap-2 text-center text-[10px] font-bold text-[#4f574d]">
+                  <div className="mt-3 grid grid-cols-5 gap-2 text-center text-[10px] font-bold">
                     {["VISA", "MC", "AMEX", "Apple", "GPay"].map((item) => (
                       <span
                         key={item}
@@ -489,7 +483,7 @@ export default function CartPage() {
           </div>
 
           <section className="mt-2">
-            <h2 className="text-2xl font-semibold text-[#1a1a1a]">
+            <h2 className="text-2xl font-semibold ">
               You May Also Like
             </h2>
             <div className="mt-2">
