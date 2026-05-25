@@ -97,7 +97,7 @@ export function Checkbox({ label }: { label: string }) {
         className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
           checked
             ? "bg-[#183b17] border-[#183b17]"
-            : "border-[#c8b89a] bg-white"
+            : "bg-white"
         }`}
       >
         {checked && (
@@ -113,7 +113,7 @@ export function Checkbox({ label }: { label: string }) {
         )}
       </div>
 
-      <span className="text-[12px] text-[#5a5040] group-hover:text-[#1a1a1a] transition-colors">
+      <span className="text-[12px] font-medium group-hover:text-[#1a1a1a] transition-colors">
         {label}
       </span>
     </label>

@@ -17,6 +17,7 @@ import Image from 'next/image';
 import SubHeading from './SubHeading';
 import { getComponentContent, getImageUrl } from '@/app/lib/api';
 import { BiChat } from 'react-icons/bi';
+import GreenButton from '../ui/GreenButton';
 
 export const TurnkeySolutions = async () => {
   const fallback = {
@@ -47,9 +48,9 @@ export const TurnkeySolutions = async () => {
               <p className="mt-2 max-w-[420px] text-xs leading-5 text-[#ddd6ca]">
                 {content.description}
               </p>
-              <button className="mt-4 inline-flex items-center gap-3 border border-white px-3 py-3 text-[11px] font-semibold tracking-wide text-white transition-colors hover:bg-white/10 rounded-md">
-                <MessageCircle size={16} /> {content.buttonText} <ArrowRight size={16} />
-              </button>
+              <div className='mt-2 w-65'>
+              <GreenButton text={content.buttonText} leftIcon={<MessageCircle className="text-[#050A1A]" size={16}/>} rightIcon={<ArrowRight className="text-[#050A1A]" size={16}/>} path="tel:+919654900525" />
+              </div>
             </div>
          <div className="py-8 self-stretch hidden lg:flex items-stretch px-6">
   <div className="w-px bg-white/40 h-full" />

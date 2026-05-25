@@ -86,7 +86,7 @@ export default function AboutEnsisSection() {
               </h2>
               <div className="h-[1px] w-25 bg-[#ca8e42] mb-5 rounded-full"></div>
 
-              <div className="space-y-4 text-xs text-[#5a534d] md:text-[15px]">
+              <div className="space-y-4 text-xs font-medium md:text-[15px]">
                 <p>
                   ENSIS is the wellness division of <b>Design House India Pvt.
                   Ltd.</b>, a trusted name in turnkey interiors and manufacturing

@@ -63,7 +63,7 @@ const SupportHighlights = () => {
                       {item.title}
                     </p>
 
-                    <p className="text-[#2f2f2f] text-xs font-medium leading-6">
+                    <p className="text-[#2f2f2f] text-xs font-semibold leading-6">
                       {item.description}
                     </p>
                   </div>

@@ -112,11 +112,11 @@ const WhyChooseEnsis: React.FC = () => {
             >
               {feature.icon}
 
-              <b className="mb-3 text-[14px] font-bold tracking-[0.4px] text-[#2d2a28]">
+              <b className="mb-3 text-[14px] font-semibold tracking-[0.4px]">
                 {feature.title}
               </b>
 
-              <p className="text-[14px] leading-[1.8] text-[#605a54]">
+              <p className="text-[14px] leading-[1.8] font-medium">
                 {feature.description}
               </p>
             </div>

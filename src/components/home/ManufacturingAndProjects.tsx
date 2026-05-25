@@ -11,6 +11,7 @@ import img14 from '@/assets/home/img-14.webp';
 import img15 from '@/assets/home/img-7.webp';
 import img16 from '@/assets/home/img-1.webp';
 import SubHeading from './SubHeading';
+import BookButton from '../ui/BookButton';
 
 export const ManufacturingAndProjects = () => {
   return (
@@ -24,7 +25,7 @@ export const ManufacturingAndProjects = () => {
             {/* Content */}
             <div className="flex flex-col justify-center">
               <SubHeading className=' text-black font-normal' text='MANUFACTURING EXCELLENCE' />
-              <h2 className="mt-2 font-serif text-[26px] font-bold leading-[1.08] text-[#1f261b] lg:text-[28px]">
+              <h2 className="mt-2 font-serif text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
                 Crafted with Precision,
                 <br />
                 Delivered Worldwide
@@ -53,14 +54,9 @@ export const ManufacturingAndProjects = () => {
                   </li>
                 ))}
               </ul>
-
-              <Link
-                href="/manufacturing"
-                className="mt-8 inline-flex w-fit items-center gap-3 border border-[#d9ccbd] bg-white px-5 py-3 text-[11px] font-semibold tracking-[0.14em] text-[#1f261b] transition-all duration-300 hover:bg-[#f3eee6] rounded-md"
-              >
-                OUR MANUFACTURING
-                <ArrowRight size={15} />
-              </Link>
+              <div className="w-50 mt-2">
+                <BookButton text="OUR MANUFACTURING" path="/manufacturing" />
+              </div>
             </div>
 
             {/* Manufacturing Images */}
@@ -102,7 +98,7 @@ export const ManufacturingAndProjects = () => {
           {/* RIGHT SIDE */}
           <div className="border-[#e7ddd1] lg:border-l lg:pl-12 h">
             <SubHeading className=' text-black font-normal' text='OUR PROJECTS' />
-            <h2 className="mt-2 font-serif text-[26px] font-bold leading-[1.08] text-[#1f261b] lg:text-[28px]">
+            <h2 className="mt-2 font-serif text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
               Creating Wellness
               <br />
               Spaces Worldwide
@@ -111,18 +107,14 @@ export const ManufacturingAndProjects = () => {
             <p className="mt-2 max-w-[320px] text-xs text-[#5f5a50]">
               Proud to be a trusted partner for 500+ wellness projects across the globe.
             </p>
+            <div className="w-50 mt-2">
 
-            <Link
-              href="/projects"
-              className="mt-3 inline-flex w-fit items-center gap-3 border border-[#d9ccbd] bg-white px-3 py-2 text-[11px] font-semibold tracking-[0.14em] text-[#1f261b] transition-all duration-300 hover:bg-[#f3eee6] rounded-md"
-            >
-              VIEW ALL PROJECTS
-              <ArrowRight size={15} />
-            </Link>
+              <BookButton text="VIEW ALL PROJECTS" path="/projects" />
+            </div>
 
             {/* Project Grid */}
             <div className="mt-2">
-              <div className="grid h-[200px] grid-cols-3 grid-rows-[1fr_1fr] gap-2">
+              <div className="grid h-50 grid-cols-3 grid-rows-[1fr_1fr] gap-2">
 
                 {/* Left Tall */}
                 <div className="relative row-span-2 h-full overflow-hidden rounded-xl">

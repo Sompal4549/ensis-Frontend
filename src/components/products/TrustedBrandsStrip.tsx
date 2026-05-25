@@ -53,7 +53,7 @@ export default function TrustedBrandsStrip() {
           {/* Heading */}
           <div className="flex items-center justify-center mb-3.5">
         
-             <SubHeading text="Trusted By Leading Wellness Centers Worldwide" className=' text-[#d5ad6a] text-center' />
+             <SubHeading text="Trusted By Leading Wellness Centers Worldwide" className=' text-[#a9742a] text-center' />
           </div>
 
           {/* Brands — flex with vertical dividers */}

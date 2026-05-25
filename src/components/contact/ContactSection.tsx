@@ -246,7 +246,7 @@ const ContactSection = () => {
 
               <div className="w-16 h-[2px] bg-[#d4b06a] mx-auto mb-2" />
 
-              <p className="text-[#6f6f6f] text-sm max-w-md mx-auto">
+              <p className="text-sm max-w-md mx-auto font-semibold">
                 Have a question or need assistance? We’re here to help you on
                 your wellness journey.
               </p>
@@ -267,7 +267,7 @@ const ContactSection = () => {
                     Address
                   </h3>
 
-                  <p className="text-[#555] text-xs">
+                  <p className="font-medium text-xs">
                     <span className="text-[#20351f]">
                       12/29, Site-II, Loni Road, Industrial Area,Mohan Nagar -
                       201007, Ghaziabad, Uttar Pradesh, India
@@ -292,7 +292,7 @@ const ContactSection = () => {
                     Call Us
                   </h3>
 
-                  <p className="text-[#555] text-xs">
+                  <p className="font-medium text-xs">
                     <Link href="tel:+919654900525">
                       <span className="text-[#20351f]">
                         +91-9654900525
@@ -324,7 +324,7 @@ const ContactSection = () => {
                     Email
                   </h3>
 
-                  <p className="text-[#555] text-[15px]">
+                  <p className="font-medium text-[15px]">
                     <Link href="mailto:info@ensis.in">
                       <span className="text-[#20351f]">
                         info@ensis.in
@@ -354,7 +354,7 @@ const ContactSection = () => {
                     Business Hours
                   </h3>
 
-                  <p className="text-[#555] text-xs">
+                  <p className="font-medium text-xs">
                     <span className=" text-[#20351f]">
                       Mon – Sat: 9:00 AM – 6:00 PM
                     </span>
@@ -437,199 +437,234 @@ const ContactSection = () => {
               <div className="w-16 h-[2px] bg-[#d4b06a] mx-auto mb-2" />
             </div>
 
-            <form className="space-y-3">
-              {/* Row 1 */}
-              <div className="flex flex-col md:flex-row items-stretch gap-3">
-                {/* Full Name */}
-                <div className="relative w-full">
-                  <User
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]"
-                    size={16}
-                    strokeWidth={1.8}
-                  />
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    placeholder="Full Name"
-                    className="w-full h-11 md:h-12 rounded-xl border border-[#ece7de] bg-[#fff] pl-10 pr-4 text-xs md:text-sm outline-none focus:border-[#c8a45d] transition-all"
-                  />
-                </div>
+       <form className="space-y-3">
+  {/* Row 1 */}
+  <div className="flex flex-col md:flex-row items-stretch gap-3">
+    {/* Full Name */}
+    <div className="relative w-full">
+      <User
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c8a45d]"
+        size={14}
+        strokeWidth={1.8}
+      />
+      <input
+        type="text"
+        name="fullName"
+        value={formData.fullName}
+        onChange={handleChange}
+        placeholder="Full Name"
+        className="w-full h-9 md:h-10 rounded-lg border border-[#183b17] pl-9 pr-4 text-[11px] md:text-sm text-black placeholder:text-[#666] outline-none focus:border-[#c8a45d] transition-all"
+      />
+    </div>
 
-                {/* Mobile */}
-                <div className="relative w-full">
-                  <Phone
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]"
-                    size={16}
-                    strokeWidth={1.8}
-                  />
-                  <input
-                    type="text"
-                    name="mobile"
-                    value={formData.mobile}
-                    onChange={handleChange}
-                    disabled={mobileVerified}
-                    placeholder="Mobile Number"
-                    className={`w-full h-11 md:h-12 rounded-xl border border-[#ece7de] bg-[#fff] pl-10 pr-24 text-xs md:text-sm outline-none focus:border-[#c8a45d] transition-all ${mobileVerified ? "border-green-500 bg-green-50" : ""}`}
-                  />
-                  {!mobileVerified ? (
-                    <button
-                      type="button"
-                      onClick={sendMobileOtp}
-                      disabled={sendingMobileOtp || mobileTimer > 0 || !formData.mobile}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 h-7 px-3 rounded-lg bg-[#c8a45d] text-[#183b17] font-semibold text-[10px] hover:opacity-90 transition-all disabled:opacity-50"
-                    >
-                      {sendingMobileOtp ? "..." : mobileTimer > 0 ? `${mobileTimer}s` : mobileOtpSent ? "Resend" : "Send OTP"}
-                    </button>
-                  ) : (
-                    <CheckCircle2
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500"
-                      size={18}
-                    />
-                  )}
-                </div>
-              </div>
+    {/* Mobile */}
+    <div className="relative w-full">
+      <Phone
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c8a45d]"
+        size={14}
+        strokeWidth={1.8}
+      />
 
-              {/* Mobile OTP */}
-              {mobileOtpSent && !mobileVerified && (
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <input
-                    type="text"
-                    value={mobileOtp}
-                    onChange={(e) => setMobileOtp(e.target.value)}
-                    placeholder="Enter Mobile OTP"
-                    maxLength={6}
-                    className="w-full h-10 md:h-11 rounded-xl border border-[#ece7de] bg-[#fff] px-4 text-xs md:text-sm outline-none focus:border-[#c8a45d]"
-                  />
-                  <button
-                    type="button"
-                    onClick={verifyMobileOtp}
-                    disabled={verifyingMobile || !mobileOtp}
-                    className="w-full sm:min-w-[100px] sm:w-auto h-10 md:h-11 rounded-xl bg-[#183b17] text-white font-semibold text-xs"
-                  >
-                    {verifyingMobile ? "..." : "Verify"}
-                  </button>
-                </div>
-              )}
+      <input
+        type="text"
+        name="mobile"
+        value={formData.mobile}
+        onChange={handleChange}
+        disabled={mobileVerified}
+        placeholder="Mobile Number"
+        className={`w-full h-9 md:h-10 rounded-lg border border-[#183b17] bg-[#fff] pl-9 pr-24 text-[11px] md:text-sm text-black placeholder:text-[#666] outline-none focus:border-[#c8a45d] transition-all ${
+          mobileVerified ? "border-green-500 bg-green-50" : ""
+        }`}
+      />
 
-              {/* Row 2 */}
-              <div className="flex flex-col md:flex-row items-stretch gap-3">
-                {/* Email */}
-                <div className="relative w-full">
-                  <Mail
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]"
-                    size={16}
-                    strokeWidth={1.8}
-                  />
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    disabled={emailVerified}
-                    placeholder="Email Address"
-                    className={`w-full h-11 md:h-12 rounded-xl border border-[#ece7de] bg-[#fff] pl-10 pr-24 text-xs md:text-sm outline-none focus:border-[#c8a45d] transition-all ${emailVerified ? "border-green-500 bg-green-50" : ""}`}
-                  />
-                  {!emailVerified ? (
-                    <button
-                      type="button"
-                      onClick={sendEmailOtp}
-                      disabled={sendingEmailOtp || emailTimer > 0 || !formData.email}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 h-7 px-3 rounded-lg bg-[#c8a45d] text-[#183b17] font-semibold text-[10px] hover:opacity-90 transition-all disabled:opacity-50"
-                    >
-                      {sendingEmailOtp ? "..." : emailTimer > 0 ? `${emailTimer}s` : emailOtpSent ? "Resend" : "Send OTP"}
-                    </button>
-                  ) : (
-                    <CheckCircle2
-                      className="absolute right-4 top-1/2 -translate-y-1/2 text-green-500"
-                      size={18}
-                    />
-                  )}
-                </div>
+      {!mobileVerified ? (
+        <button
+          type="button"
+          onClick={sendMobileOtp}
+          disabled={
+            sendingMobileOtp ||
+            mobileTimer > 0 ||
+            !formData.mobile
+          }
+          className="absolute right-2 top-1/2 -translate-y-1/2 h-6 px-2.5 rounded-md bg-[#c8a45d] text-[#183b17] font-semibold text-[9px] hover:opacity-90 transition-all disabled:opacity-50"
+        >
+          {sendingMobileOtp
+            ? "..."
+            : mobileTimer > 0
+            ? `${mobileTimer}s`
+            : mobileOtpSent
+            ? "Resend"
+            : "Send OTP"}
+        </button>
+      ) : (
+        <CheckCircle2
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500"
+          size={16}
+        />
+      )}
+    </div>
+  </div>
 
-                {/* Product */}
-                <div className="relative w-full">
-                  <Package
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]"
-                    size={16}
-                    strokeWidth={1.8}
-                  />
-                  <select
-                    name="productType"
-                    value={formData.productType}
-                    onChange={handleChange}
-                    className="w-full h-11 md:h-12 rounded-xl border border-[#ece7de] bg-[#fff] pl-10 pr-4 text-xs md:text-sm outline-none focus:border-[#c8a45d] transition-all appearance-none text-[#777]"
-                  >
-                    <option value="">Select Product Type</option>
-                    <option>Panchkarma Equipment</option>
-                    <option>Wellness Interiors</option>
-                    <option>Custom Solutions</option>
-                  </select>
-                </div>
-              </div>
+  {/* Mobile OTP */}
+  {mobileOtpSent && !mobileVerified && (
+    <div className="flex flex-col sm:flex-row gap-2">
+      <input
+        type="text"
+        value={mobileOtp}
+        onChange={(e) => setMobileOtp(e.target.value)}
+        placeholder="Enter Mobile OTP"
+        maxLength={6}
+        className="w-full h-9 md:h-10 rounded-lg border border-[#183b17] px-4 text-[11px] md:text-sm text-black placeholder:text-[#666] outline-none focus:border-[#c8a45d]"
+      />
 
-              {/* Email OTP */}
-              {emailOtpSent && !emailVerified && (
-                <div className="flex flex-col sm:flex-row gap-2">
-                  <input
-                    type="text"
-                    value={emailOtp}
-                    onChange={(e) => setEmailOtp(e.target.value)}
-                    placeholder="Enter Email OTP"
-                    maxLength={6}
-                    className="w-full h-10 md:h-11 rounded-xl border border-[#ece7de] bg-[#fff] px-4 text-xs md:text-sm outline-none focus:border-[#c8a45d]"
-                  />
-                  <button
-                    type="button"
-                    onClick={verifyEmailOtp}
-                    disabled={verifyingEmail || !emailOtp}
-                    className="w-full sm:min-w-[100px] sm:w-auto h-10 md:h-11 rounded-xl bg-[#183b17] text-white font-semibold text-xs"
-                  >
-                    {verifyingEmail ? "..." : "Verify"}
-                  </button>
-                </div>
-              )}
+      <button
+        type="button"
+        onClick={verifyMobileOtp}
+        disabled={verifyingMobile || !mobileOtp}
+        className="w-full sm:min-w-[90px] sm:w-auto h-9 md:h-10 rounded-lg bg-[#183b17] text-white font-semibold text-[11px]"
+      >
+        {verifyingMobile ? "..." : "Verify"}
+      </button>
+    </div>
+  )}
 
-              {/* Textarea */}
-              <div className="relative">
-                <PencilLine
-                  className="absolute left-4 top-4 text-[#c8a45d]"
-                  size={16}
-                  strokeWidth={1.8}
-                />
-                <textarea
-                  rows={4}
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Tell us more about yourself"
-                  className="w-full rounded-xl border border-[#ece7de] bg-[#fff] pl-10 pr-4 py-3 text-xs md:text-sm outline-none focus:border-[#c8a45d] transition-all resize-none"
-                />
-              </div>
+  {/* Row 2 */}
+  <div className="flex flex-col md:flex-row items-stretch gap-3">
+    {/* Email */}
+    <div className="relative w-full">
+      <Mail
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c8a45d]"
+        size={14}
+        strokeWidth={1.8}
+      />
 
-              {/* Submit */}
-              <button
-                type="submit"
-                disabled={!isFormValid}
-                className={`w-auto px-4 mx-auto py-2 rounded-xl text-white text-xs md:text-base font-medium flex items-center justify-center gap-2 transition-all duration-300 ${isFormValid
-                    ? "bg-gradient-to-r from-[#183b17] to-[#2f5a21] hover:opacity-95 cursor-pointer"
-                    : "bg-gray-500 cursor-not-allowed opacity-70"
-                  }`}
-              >
-                <Send size={15} />
-                Send Message
-              </button>
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        disabled={emailVerified}
+        placeholder="Email Address"
+        className={`w-full h-9 md:h-10 rounded-lg border border-[#183b17] pl-9 pr-24 text-[11px] md:text-sm text-black placeholder:text-[#666] outline-none focus:border-[#c8a45d] transition-all ${
+          emailVerified ? "border-green-500 bg-green-50" : ""
+        }`}
+      />
 
-              <div className="flex items-center justify-center gap-2 pt-1 text-center">
-                <div className="w-5 h-5 rounded-full border border-[#e8d7b3] flex items-center justify-center shrink-0">
-                  <span className="text-[#c8a45d] text-[10px]">✓</span>
-                </div>
-                <p className="text-[11px] md:text-xs text-[#7a7a7a]">
-                  We'll get back to you as soon as possible.
-                </p>
-              </div>
-            </form>
+      {!emailVerified ? (
+        <button
+          type="button"
+          onClick={sendEmailOtp}
+          disabled={
+            sendingEmailOtp ||
+            emailTimer > 0 ||
+            !formData.email
+          }
+          className="absolute right-2 top-1/2 -translate-y-1/2 h-6 px-2.5 rounded-md bg-[#c8a45d] text-[#183b17] font-semibold text-[9px] hover:opacity-90 transition-all disabled:opacity-50"
+        >
+          {sendingEmailOtp
+            ? "..."
+            : emailTimer > 0
+            ? `${emailTimer}s`
+            : emailOtpSent
+            ? "Resend"
+            : "Send OTP"}
+        </button>
+      ) : (
+        <CheckCircle2
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-green-500"
+          size={16}
+        />
+      )}
+    </div>
+
+    {/* Product */}
+    <div className="relative w-full">
+      <Package
+        className="absolute left-3 top-1/2 -translate-y-1/2 text-[#c8a45d]"
+        size={14}
+        strokeWidth={1.8}
+      />
+
+      <select
+        name="productType"
+        value={formData.productType}
+        onChange={handleChange}
+        className="w-full h-9 md:h-10 rounded-lg border border-[#183b17] pl-9 pr-4 text-[11px] md:text-sm outline-none focus:border-[#c8a45d] transition-all appearance-none text-[#444]"
+      >
+        <option value="">Select Product Type</option>
+        <option>Panchkarma Equipment</option>
+        <option>Wellness Interiors</option>
+        <option>Custom Solutions</option>
+      </select>
+    </div>
+  </div>
+
+  {/* Email OTP */}
+  {emailOtpSent && !emailVerified && (
+    <div className="flex flex-col sm:flex-row gap-2">
+      <input
+        type="text"
+        value={emailOtp}
+        onChange={(e) => setEmailOtp(e.target.value)}
+        placeholder="Enter Email OTP"
+        maxLength={6}
+        className="w-full h-9 md:h-10 rounded-lg border border-[#183b17] px-4 text-[11px] md:text-sm text-black placeholder:text-[#666] outline-none focus:border-[#c8a45d]"
+      />
+
+      <button
+        type="button"
+        onClick={verifyEmailOtp}
+        disabled={verifyingEmail || !emailOtp}
+        className="w-full sm:min-w-[90px] sm:w-auto h-9 md:h-10 rounded-lg bg-[#183b17] text-white font-semibold text-[11px]"
+      >
+        {verifyingEmail ? "..." : "Verify"}
+      </button>
+    </div>
+  )}
+
+  {/* Textarea */}
+  <div className="relative">
+    <PencilLine
+      className="absolute left-3 top-3 text-[#c8a45d]"
+      size={14}
+      strokeWidth={1.8}
+    />
+
+    <textarea
+      rows={4}
+      name="message"
+      value={formData.message}
+      onChange={handleChange}
+      placeholder="Tell us more about yourself"
+      className="w-full rounded-lg border border-[#183b17] pl-9 pr-4 py-2.5 text-[11px] md:text-sm text-black placeholder:text-[#666] outline-none focus:border-[#c8a45d] transition-all resize-none"
+    />
+  </div>
+
+  {/* Submit */}
+  <button
+    type="submit"
+    disabled={!isFormValid}
+    className={`w-auto px-4 mx-auto py-2 rounded-lg text-white text-[11px] md:text-sm font-medium flex items-center justify-center gap-2 transition-all duration-300 ${
+      isFormValid
+        ? "bg-gradient-to-r from-[#183b17] to-[#2f5a21] hover:opacity-95 cursor-pointer"
+        : "bg-[#183b17] cursor-not-allowed opacity-70"
+    }`}
+  >
+    <Send size={14} />
+    Send Message
+  </button>
+
+  {/* Footer Text */}
+  <div className="flex items-center justify-center gap-2 pt-1 text-center">
+    <div className="w-4 h-4 rounded-full border border-[#f0c040] flex items-center justify-center shrink-0">
+      <span className="text-[#c8a45d] text-[9px]">✓</span>
+    </div>
+
+    <p className="text-[10px] md:text-[11px] font-medium text-[#444]">
+      We'll get back to you as soon as possible.
+    </p>
+  </div>
+</form>
           </div>
         </div>
       </Container>

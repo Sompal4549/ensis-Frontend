@@ -59,14 +59,14 @@ const AboutHero: React.FC = () => {
             </p>
 
             {/* Main Heading */}
-            <h1 className="text-[42px] sm:text-[42px] leading-[1.05] font-serif text-[#173128] font-semibold">
+            <h1 className="text-[42px] sm:text-[42px] leading-[1.05] font-serif font-semibold">
               Crafted for Wellness.
               <br />
               <span className="text-[#b58a48] font-semibold">Built for Life.</span>
             </h1>
 
             {/* Description */}
-            <p className="mt-3 text-xs leading-[22px] font-semibold text-[#5d5449] max-w-[400px]">
+            <p className="mt-3 text-xs leading-[22px] font-semibold max-w-[400px]">
               At ENSIS, we combine ancient Ayurvedic wisdom with modern
               craftsmanship to create authentic wellness environments that
               heal, rejuvenate and inspire.
@@ -77,7 +77,7 @@ const AboutHero: React.FC = () => {
 
               <div className="flex flex-col items-center text-center relative">
                 <Image src={authentic_ayurveda} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" />
-                <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
+                <p className="text-[11px] leading-[17px] font-semibold">
                   Authentic Ayurveda Focused Design
                 </p>
 
@@ -98,7 +98,7 @@ const AboutHero: React.FC = () => {
               <div className="flex flex-col items-center text-center relative">
                 <Image src={custom_solutions} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" />
                
-                <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
+                <p className="text-[11px] leading-[17px] font-semibold">
                   Custom Solutions for Every Need
                 </p>
 
@@ -108,7 +108,7 @@ const AboutHero: React.FC = () => {
 
               <div className="flex flex-col items-center text-center">
                <Image src={timely_delivery} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" />
-                <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
+                <p className="text-[11px] leading-[17px] font-semibold">
                   Timely Delivery & Installation Support
                 </p>
               </div>

@@ -108,7 +108,7 @@ export const Testimonials = ({title}:{title?:React.ReactNode}) => {
                     //  className="absolute top-4 left-4"
                   />
 
-               <p className="mb-2 text-xs text-[#3f3a32] pl-6 line-clamp-3">
+               <p className="mb-2 text-xs font-medium pl-6 line-clamp-3">
   {item.text}
 </p>
                   <div className='flex text-orange-400 items-center gap-2 my-2 pl-6'>
@@ -126,7 +126,7 @@ export const Testimonials = ({title}:{title?:React.ReactNode}) => {
                         {item.name}
                       </p>
 
-                      <span className="text-xs text-[#6f675d] leading-4">
+                      <span className="text-xs font-medium leading-4">
                         {item.role}
                       </span>
                     </div>

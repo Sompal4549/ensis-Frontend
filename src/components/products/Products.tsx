@@ -127,7 +127,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
             >
               {/* Categories */}
               <div className="bg-white rounded-2xl border border-[#ede8e0] p-4 overflow-hidden">
-                <p className="text-xs font-[700] tracking-[0.18em] text-[#c8a45d] uppercase mb-3">
+                <p className="text-xs font-semibold tracking-[0.18em] uppercase mb-3">
                   Categories
                 </p>
 
@@ -139,7 +139,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
                         className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-[12px] transition-all ${
                           activeCategory === cat.key
                             ? "bg-[#183b17] text-white font-[600]"
-                            : "text-[#4a3f30] hover:bg-[#f5ede0]"
+                            : "font-medium hover:bg-[#f5ede0]"
                         }`}
                       >
                         <span className="flex items-center gap-2 truncate">
@@ -169,7 +169,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
 
               {/* Filters */}
               <div className="bg-white rounded-2xl border border-[#ede8e0] p-4">
-                <p className="text-xs font-[700] tracking-[0.18em] text-[#c8a45d] uppercase mb-3">
+                <p className="text-xs font-medium tracking-[0.18em] uppercase mb-3">
                   Filter By
                 </p>
 
@@ -191,11 +191,11 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
                   />
 
                   <div className="flex justify-between mt-1.5">
-                    <span className="text-[10px] text-[#8a7560]">
+                    <span className="text-[10px] font-medium">
                       ₹1,000
                     </span>
 
-                    <span className="text-[10px] text-[#8a7560]">
+                    <span className="text-[10px] font-medium">
                       {fmt(priceRange)}+
                     </span>
                   </div>
@@ -242,7 +242,6 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
 
               {/* Selected Category Title */}
               <div className="mb-5">
-                  <SubHeading text=" Wellness Collection" className=' text-[#d5ad6a]' />
                 <h2 className="text-lg text-center font-semibold text-[#1a1a1a] leading-none">
                   {selectedCategory}
                 </h2>
@@ -372,99 +371,98 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
       Enquire Now
     </h3>
 
-    <p className="text-xs text-[#7a6a55] text-center leading-relaxed mb-2">
+    <p className="text-xs font-medium text-center leading-relaxed mb-2">
       Tell us about your requirements and our wellness experts
       will contact you.
     </p>
 
-    <div className="space-y-2.5">
+   <div className="space-y-2.5">
+  {/* Name */}
+  <input
+    type="text"
+    placeholder="Your Name"
+    value={enquiry.name}
+    onChange={(e) =>
+      setEnquiry((prev) => ({
+        ...prev,
+        name: e.target.value,
+      }))
+    }
+    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
+  />
 
-      {/* Name */}
-      <input
-        type="text"
-        placeholder="Your Name"
-        value={enquiry.name}
-        onChange={(e) =>
-          setEnquiry((prev) => ({
-            ...prev,
-            name: e.target.value,
-          }))
-        }
-        className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] outline-none focus:border-[#c8a45d] transition-colors placeholder:text-[#b0a090]"
-      />
+  {/* Email */}
+  <input
+    type="email"
+    placeholder="Email Address"
+    value={enquiry.email}
+    onChange={(e) =>
+      setEnquiry((prev) => ({
+        ...prev,
+        email: e.target.value,
+      }))
+    }
+    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
+  />
 
-      {/* Email */}
-      <input
-        type="email"
-        placeholder="Email Address"
-        value={enquiry.email}
-        onChange={(e) =>
-          setEnquiry((prev) => ({
-            ...prev,
-            email: e.target.value,
-          }))
-        }
-        className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] outline-none focus:border-[#c8a45d] transition-colors placeholder:text-[#b0a090]"
-      />
+  {/* Phone */}
+  <input
+    type="tel"
+    placeholder="Phone Number"
+    value={enquiry.phone}
+    onChange={(e) =>
+      setEnquiry((prev) => ({
+        ...prev,
+        phone: e.target.value,
+      }))
+    }
+    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
+  />
 
-      {/* Phone */}
-      <input
-        type="tel"
-        placeholder="Phone Number"
-        value={enquiry.phone}
-        onChange={(e) =>
-          setEnquiry((prev) => ({
-            ...prev,
-            phone: e.target.value,
-          }))
-        }
-        className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] outline-none focus:border-[#c8a45d] transition-colors placeholder:text-[#b0a090]"
-      />
+  {/* Category Select */}
+  <div className="relative">
+    <select
+      value={enquiry.category}
+      onChange={(e) =>
+        setEnquiry((prev) => ({
+          ...prev,
+          category: e.target.value,
+        }))
+      }
+      className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 pr-7 text-[12px] text-black outline-none focus:border-[#c8a45d] transition-colors appearance-none"
+    >
+      <option value="">Select Product Category</option>
 
-      {/* Category Select */}
-      <div className="relative">
-        <select
-          value={enquiry.category}
-          onChange={(e) =>
-            setEnquiry((prev) => ({
-              ...prev,
-              category: e.target.value,
-            }))
-          }
-          className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 pr-7 text-[12px] outline-none focus:border-[#c8a45d] transition-colors appearance-none text-[#6f6254]"
-        >
-          <option value="">Select Product Category</option>
+      {categories.slice(1).map((c) => (
+        <option key={c.key} value={c.key}>
+          {c.label}
+        </option>
+      ))}
+    </select>
 
-          {categories.slice(1).map((c) => (
-            <option key={c.key} value={c.key}>
-              {c.label}
-            </option>
-          ))}
-        </select>
+    <ChevronDown
+      size={11}
+      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9a8870] pointer-events-none"
+    />
+  </div>
 
-        <ChevronDown
-          size={11}
-          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9a8870] pointer-events-none"
-        />
-      </div>
+  {/* Message */}
+  <textarea
+    rows={3}
+    placeholder="Your Message"
+    value={enquiry.message}
+    onChange={(e) =>
+      setEnquiry((prev) => ({
+        ...prev,
+        message: e.target.value,
+      }))
+    }
+    className="w-full rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 py-2 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors resize-none"
+  />
 
-      {/* Message */}
-      <textarea
-        rows={3}
-        placeholder="Your Message"
-        value={enquiry.message}
-        onChange={(e) =>
-          setEnquiry((prev) => ({
-            ...prev,
-            message: e.target.value,
-          }))
-        }
-        className="w-full rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 py-2 text-[12px] outline-none focus:border-[#c8a45d] transition-colors resize-none placeholder:text-[#b0a090]"
-      />
-
-      {/* Button */}
-      <BookButton text="Send Enquiry" />
-    </div>
+  {/* Button */}
+  <BookButton text="Send Enquiry" />
+</div>
   </div>
 
               {/* Contact */}
@@ -500,7 +498,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
                     <div className="w-8 h-8 rounded-full border border-[#f0e8d8] flex items-center justify-center shrink-0 bg-[#faf6f1]">
                       <Icon
                         size={13}
-                        className="text-[#c8a45d]"
+                        className="text-[#c8a45d] font-medium"
                       />
                     </div>
 
@@ -511,7 +509,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
                             {title}
                           </p>
 
-                          <p className="text-[10px] text-[#7a6a55] leading-snug">
+                          <p className="text-[10px] font-medium leading-snug">
                             {value}
                           </p>
                         </Link>
@@ -521,7 +519,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
                             {title}
                           </p>
 
-                          <p className="text-[10px] text-[#7a6a55] leading-snug">
+                          <p className="text-[10px] font-medium leading-snug">
                             {value}
                           </p>
                         </>

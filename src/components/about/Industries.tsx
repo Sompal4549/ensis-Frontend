@@ -91,7 +91,7 @@ export default function IndustriesWeServe() {
       </div>
 
       {/* Title */}
-      <p className="text-[11px] font-medium leading-4 tracking-wide text-[#403831]">
+      <p className="text-[11px] font-medium leading-4 tracking-wide">
         {industry.title}
       </p>
     </div>

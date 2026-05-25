@@ -63,7 +63,7 @@ const WellnessSection: React.FC = () => {
           {/* Text */}
           <div className="h-full flex flex-col py-5">
             <div className="flex gap-1 mb-2 flex-col">
-              <span className="uppercase tracking-[2px] text-[#b78942] text-sm font-semibold">
+              <span className="uppercase tracking-[2px] text-[#a9742a] text-sm font-semibold">
                 Welcome To Ensis
               </span>
               <div className="flex gap-2 items-center">

@@ -74,7 +74,7 @@ const ExpertiseSection: React.FC = () => {
                                             <ArrowRight size={16} />
                                         </button>
                                     </div>
-                                    <p className="text-[12px] text-[#7a756f] leading-relaxed mt-2">
+                                    <p className="text-[12px] font-medium leading-relaxed mt-2">
                                         {item.description}
                                     </p>
                                 </div>

@@ -83,7 +83,7 @@ export default function WhyChoose() {
           {/* ── RIGHT PANEL ── */}
           <div className="bg-white/50 flex flex-col justify-center p-5 sm:p-7 md:p-8 flex-1 relative">
 
-            <p className="text-sm font-semibold tracking-[0.22em] text-[#c8a45d] uppercase mb-2">
+            <p className="text-sm font-semibold tracking-[0.22em] text-[#a9742a] uppercase mb-2">
               Welcome to ENSIS
             </p>
 
