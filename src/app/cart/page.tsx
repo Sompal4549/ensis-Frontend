@@ -250,7 +250,7 @@ export default function CartPage() {
               <button
                 type="button"
                 onClick={clearCart}
-                className="inline-flex h-10 items-center gap-2 rounded-md border border-[#d8d0c4] bg-white px-4 text-xs font-bold text-[#4f4941] transition-colors hover:bg-[#f2ebe1]"
+                className="inline-flex h-10 items-center gap-2 rounded-md border border-[#d8d0c4] bg-white px-4 text-xs font-bold transition-colors hover:bg-[#f2ebe1]"
               >
                 <Trash2 size={15} />
                 Clear Cart
@@ -471,7 +471,7 @@ export default function CartPage() {
           <div className="mt-2 flex flex-wrap items-center justify-between gap-4">
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 text-sm font-semibold text-[#313b30] hover:text-[#8d6a3a]"
+              className="inline-flex items-center gap-2 text-sm font-semibold hover:text-[#8d6a3a]"
             >
               <ArrowLeft size={16} />
               Continue Shopping
@@ -480,7 +480,7 @@ export default function CartPage() {
               <button
                 type="button"
                 onClick={clearCart}
-                className="inline-flex items-center gap-2 text-sm font-semibold text-[#6c7068] hover:text-[#1a1a1a]"
+                className="inline-flex items-center gap-2 text-sm font-semibold "
               >
                 <Trash2 size={16} />
                 Clear Cart
