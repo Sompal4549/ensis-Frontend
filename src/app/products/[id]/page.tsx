@@ -132,7 +132,7 @@ function InfoCard({
   children: ReactNode;
 }) {
   return (
-    <section className="rounded-lg border border-[#eee5d8] bg-white p-5 shadow-[0_8px_24px_rgba(49,59,48,0.04)]">
+    <section className="rounded-lg border border-[#eee5d8] bg-white p-2 shadow-[0_8px_24px_rgba(49,59,48,0.04)]">
       <h3 className="text-base font-semibold">{title}</h3>
       <div className="mt-4 text-sm">{children}</div>
     </section>
@@ -447,7 +447,7 @@ export default async function ProductPage({
             )}
           </div>
 
-          <div className="mt-6 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="mt-2 grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
             <InfoCard title="Product Overview">
               <div className="mb-4 grid gap-3 sm:grid-cols-4">
                 {[
