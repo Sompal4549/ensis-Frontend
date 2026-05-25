@@ -225,10 +225,6 @@ export default function CartPage() {
     .slice(0, 5);
   return (
     <div className="min-h-screen bg-[#fbfaf7] text-[#101010]">
-      <div className="bg-[#596555] px-4 py-2 text-center text-xs font-bold uppercase tracking-wide text-white">
-        <Truck size={15} className="mr-2 inline-block" />
-        Free shipping on orders above {formatCurrency(freeShippingAt)}
-      </div>
 <CartAndDetailHeroBanner imageSrc={product_cart.src} imageAlt="Therapy Table" />
       <Container>
         <div className="">
@@ -296,7 +292,7 @@ export default function CartPage() {
           </section>
 
           {hasItems ? (
-            <div className="mt-2 grid gap-8 lg:grid-cols-[1fr_360px] lg:items-start xl:grid-cols-[1fr_400px]">
+            <div className="mt-2 grid gap-4 lg:grid-cols-[1fr_360px] lg:items-start xl:grid-cols-[1fr_400px]">
               <section className="overflow-hidden rounded-lg border border-[#eee5d8] bg-white shadow-[0_8px_24px_rgba(49,59,48,0.04)]">
                 <div className="hidden grid-cols-[1fr_110px_150px_110px_34px] px-5 py-4 text-xs font-bold md:grid">
                   <span>Product</span>
