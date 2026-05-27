@@ -114,11 +114,198 @@ export default function ProductInfoSection() {
           </div>
         )}
 
-        {active !== "overview" && (
-          <div className="flex h-full items-center justify-center p-10 text-xs text-[#9a9a9a]">
-            {tabs.find((t) => t.id === active)?.label} content goes here.
+      <>
+  {active === "specifications" && (
+    <div className="p-6">
+      <h3 className="mb-6 text-2xl font-semibold">
+        Technical Specifications
+      </h3>
+
+      <div className="grid grid-cols-2 gap-x-12 gap-y-6 text-sm">
+        <div>
+          <p className="font-medium text-[#8d6a3a]">Wood Type</p>
+          <p>Premium Seasoned Teak Wood</p>
+        </div>
+
+        <div>
+          <p className="font-medium text-[#8d6a3a]">Finish</p>
+          <p>Natural Protective Polish</p>
+        </div>
+
+        <div>
+          <p className="font-medium text-[#8d6a3a]">Weight Capacity</p>
+          <p>Up to 250 kg</p>
+        </div>
+
+        <div>
+          <p className="font-medium text-[#8d6a3a]">Drainage System</p>
+          <p>Integrated Oil Collection Channel</p>
+        </div>
+
+        <div>
+          <p className="font-medium text-[#8d6a3a]">Assembly</p>
+          <p>Pre-Assembled</p>
+        </div>
+
+        <div>
+          <p className="font-medium text-[#8d6a3a]">Warranty</p>
+          <p>5 Years Manufacturing Warranty</p>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {active === "key-features" && (
+    <div className="p-6">
+      <h3 className="mb-6 text-2xl font-semibold">
+        Key Features
+      </h3>
+
+      <div className="grid grid-cols-2 gap-4">
+        {[
+          "Traditional Ayurvedic Design",
+          "Premium Brass Accessories",
+          "Integrated Oil Drainage",
+          "Ergonomic Patient Support",
+          "Handcrafted by Artisans",
+          "Moisture Resistant Finish",
+        ].map((item) => (
+          <div
+            key={item}
+            className="flex items-center gap-3 rounded-lg border border-[#e8dfd0] p-4"
+          >
+            <CheckCircle2
+              size={16}
+              className="text-[#8d6a3a]"
+            />
+            <span className="text-sm">{item}</span>
           </div>
-        )}
+        ))}
+      </div>
+    </div>
+  )}
+
+  {active === "dimensions" && (
+    <div className="p-6">
+      <h3 className="mb-6 text-2xl font-semibold">
+        Dimensions
+      </h3>
+
+      <div className="overflow-hidden rounded-lg border border-[#e8dfd0]">
+        <table className="w-full text-sm">
+          <tbody>
+            <tr className="border-b border-[#e8dfd0]">
+              <td className="p-4 font-medium">Length</td>
+              <td className="p-4">84 Inches</td>
+            </tr>
+
+            <tr className="border-b border-[#e8dfd0]">
+              <td className="p-4 font-medium">Width</td>
+              <td className="p-4">30 Inches</td>
+            </tr>
+
+            <tr className="border-b border-[#e8dfd0]">
+              <td className="p-4 font-medium">Height</td>
+              <td className="p-4">32 Inches</td>
+            </tr>
+
+            <tr>
+              <td className="p-4 font-medium">
+                Custom Sizes
+              </td>
+              <td className="p-4">
+                Available On Request
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )}
+
+  {active === "material" && (
+    <div className="p-6">
+      <h3 className="mb-6 text-2xl font-semibold">
+        Material & Care
+      </h3>
+
+      <div className="space-y-6 text-sm">
+        <div>
+          <h4 className="mb-2 font-semibold">
+            Materials Used
+          </h4>
+          <p>
+            Crafted from premium-grade teak wood with
+            corrosion-resistant brass fittings and a
+            natural protective finish.
+          </p>
+        </div>
+
+        <div>
+          <h4 className="mb-2 font-semibold">
+            Care Instructions
+          </h4>
+
+          <ul className="space-y-2">
+            <li>• Wipe clean after each therapy session.</li>
+            <li>• Avoid harsh chemical cleaners.</li>
+            <li>• Keep away from prolonged moisture.</li>
+            <li>• Re-polish periodically for longevity.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  )}
+
+  {active === "faqs" && (
+    <div className="p-6">
+      <h3 className="mb-6 text-2xl font-semibold">
+        Frequently Asked Questions
+      </h3>
+
+      <div className="grid grid-cols-2 gap-6">
+        <div>
+          <p className="font-semibold">
+            Is customization available?
+          </p>
+          <p className="mt-2 text-sm text-[#666]">
+            Yes. Dimensions, finish, upholstery and
+            accessories can be customized.
+          </p>
+        </div>
+
+        <div>
+          <p className="font-semibold">
+            What is the delivery time?
+          </p>
+          <p className="mt-2 text-sm text-[#666]">
+            Standard delivery takes 7–14 working days.
+          </p>
+        </div>
+
+        <div>
+          <p className="font-semibold">
+            Do you provide installation?
+          </p>
+          <p className="mt-2 text-sm text-[#666]">
+            Installation assistance is available in
+            major cities.
+          </p>
+        </div>
+
+        <div>
+          <p className="font-semibold">
+            Is EMI available?
+          </p>
+          <p className="mt-2 text-sm text-[#666]">
+            Yes, EMI options are available through
+            supported payment partners.
+          </p>
+        </div>
+      </div>
+    </div>
+  )}
+</>
       </div>
     </div>
     </Container>
