@@ -71,7 +71,7 @@ export default function ProductHeroBanner({
 
         {/* DARK OVERLAY */}
         <div
-          className="absolute inset-0 z-20 pointer-events-none"
+          className="absolute left-0 right-[50%] top-0 bottom-0 z-20 pointer-events-none"
           style={{
             background:
               "linear-gradient(to right, rgba(10,8,4,0.82) 0%, rgba(10,8,4,0.65) 55%, transparent 100%)",

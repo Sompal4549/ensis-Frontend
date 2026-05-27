@@ -43,24 +43,27 @@ export default function FaqSection() {
 
       <div className="flex flex-col gap-2">
         {/* Question pills row — layout never shifts */}
-        <div className="flex flex-wrap gap-2">
-          {faqs.map((faq, i) => (
-            <button
-              key={i}
-              onClick={() => setOpen(open === i ? null : i)}
-              className={`flex-1 min-w-[180px] flex items-center justify-between gap-3 px-4 py-2 rounded-md border bg-white text-left transition-colors font-semibold ${
-                open === i ? "border-[#8d6a3a]" : "border-[#d4c4a8]"
-              }`}
-            >
-              <span className="text-[11px] font-semibold leading-snug">{faq.question}</span>
-              {open === i ? (
-                <Minus size={13} className="shrink-0 text-[#8d6a3a]" />
-              ) : (
-                <Plus size={13} className="shrink-0" />
-              )}
-            </button>
-          ))}
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+  {faqs.map((faq, i) => (
+    <button
+      key={i}
+      onClick={() => setOpen(open === i ? null : i)}
+      className={`flex items-center justify-between gap-3 px-4 py-3 rounded-md border bg-white text-left transition-colors font-semibold ${
+        open === i ? "border-[#8d6a3a]" : "border-[#d4c4a8]"
+      }`}
+    >
+      <span className="text-[11px] font-semibold leading-snug">
+        {faq.question}
+      </span>
+
+      {open === i ? (
+        <Minus size={13} className="shrink-0 text-[#8d6a3a]" />
+      ) : (
+        <Plus size={13} className="shrink-0" />
+      )}
+    </button>
+  ))}
+</div>
 
         {/* Answer panel — appears below the row */}
         {open !== null && (

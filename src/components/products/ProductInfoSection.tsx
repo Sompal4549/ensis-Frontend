@@ -60,10 +60,10 @@ export default function ProductInfoSection() {
   const [finish, setFinish] = useState("teak");
 
   return (
-    <div className="bg-[#f5f0e8] rounded-xl overflow-hidden border border-[#e2d8c8]">
+    <div className="rounded-xl overflow-hidden">
 
       {/* ── TOP LABEL ── */}
-      <div className="px-6 pt-5 pb-1">
+      <div className="">
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8d6a3a]">
           Smart Design. Superior Functionality.
         </p>
@@ -73,7 +73,7 @@ export default function ProductInfoSection() {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr_0.75fr] gap-0 border-b border-[#e2d8c8]">
 
         {/* Left: product image with callout labels */}
-        <div className="border-r border-[#e2d8c8] px-5">
+        <div className="">
           <h2 className="font-serif text-2xl leading-tight mb-4">Product Specifications</h2>
           <div className="relative w-full">
             <Image
@@ -88,15 +88,15 @@ export default function ProductInfoSection() {
         </div>
 
         {/* Middle: specs table */}
-        <div className="border-r border-[#e2d8c8] p-5">
-          <table className="w-full text-[11px] border-collapse">
+        <div className="p-2">
+          <table className="w-full text-[11px]">
             <tbody>
               {specs.map((row, i) => (
-                <tr key={i} className={i % 2 === 0 ? "bg-white/70" : ""}>
-                  <td className="py-2 px-3 border border-[#d4c4a8] font-semibold align-top w-[44%] leading-snug">
+                <tr key={i} className={`border-b border-[#d4c4a8]`}>
+                  <td className="py-1.5 px-1.5 font-semibold align-top w-[44%] leading-snug">
                     {row.label}
                   </td>
-                  <td className="py-2 px-3 border border-[#d4c4a8] align-top leading-snug">
+                  <td className="py-1.5 px-1.5 align-top leading-snug">
                     {row.value}
                   </td>
                 </tr>
@@ -106,7 +106,7 @@ export default function ProductInfoSection() {
         </div>
 
         {/* Right: what's included + need customization */}
-        <div className="flex flex-col gap-4 p-5">
+        <div className="flex flex-col gap-4 p-2">
           {/* What's Included */}
           <div className="bg-white rounded-lg border border-[#e2d8c8] p-4">
             <h3 className="font-semibold text-sm mb-3">What's Included</h3>

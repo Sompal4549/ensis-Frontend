@@ -2,10 +2,12 @@ import React from 'react'
 import expert_consultation from "@/assets/products/expert_consultation.webp"
 import custom_design from "@/assets/products/custom_design.webp"
 import installation from "@/assets/products/comlete_installation.webp"
-import planning from "@/assets/products/planning_at_right.webp"
+import planning from "@/assets/products/planning2.webp"
 
 import Image from 'next/image'
 import { Container } from '../ui/Container'
+import { DownloadIcon } from 'lucide-react'
+import { FaPhone } from 'react-icons/fa'
 const features = [
   { icon: expert_consultation, label: "Expert Consultation" },
   { icon: custom_design, label: "Custom Design" },
@@ -14,9 +16,9 @@ const features = [
 
 const Planning = () => {
   return (
-    <section className="relative w-full bg-[#1E2412]">
+    <section className="relative w-full ">
   {/* Background image already applied by parent */}
- <div className="absolute inset-y-0 right-0 w-[40%] hidden lg:block">
+ <div className="absolute inset-y-0 right-0 w-[100%] hidden lg:block">
   <Image
     alt="planning bg"
     fill
@@ -25,14 +27,13 @@ const Planning = () => {
   />
 
   {/* Blend Gradient */}
-  <div className="absolute inset-0 bg-gradient-to-r from-[#0f1f16] via-[#0f1f16]/60 to-transparent" />
 </div>
   <Container className="relative z-10">
-    <div className="flex flex-col lg:flex-row lg:items-center py-6 lg:gap-40">
+    <div className="flex flex-col lg:flex-row lg:items-center py-10 lg:gap-40">
 
       {/* Left Content */}
       <div className="max-w-xl">
-        <h2 className=" text-white text-2xl leading-tight font-medium">
+        <h2 className=" text-white text-3xl leading-tight font-medium">
           Planning a Wellness Center?
         </h2>
 
@@ -54,22 +55,22 @@ const Planning = () => {
             )
           })}
 
+<div className=" flex gap-2 mt-6">
 
+        <button className="min-w-[220px] py-2 px-4 border border-[#e29c22] bg-[#e29c22] hover:bg-[#d3a85b] text-white text-xs font-semibold tracking-wide transition-all rounded-md flex items-center gap-2 justify-center">
+          TALK TO OUR EXPERT <FaPhone/>
+        </button>
+
+        <button className="min-w-[220px] py-2 px-4 border border-white text-white text-xs font-semibold tracking-wide hover:bg-white/5 transition-all rounded-md flex items-center gap-2 justify-center">
+          DOWNLOAD CATALOGUE <DownloadIcon/>
+        </button>
+
+      </div>
         </div>
       </div>
 
       {/* Right Buttons */}
-      <div className="flex flex-col gap-3 mt-6 lg:mt-0 lg:items-start">
-
-        <button className="min-w-[220px] py-2 px-4 bg-[#c89a4b] hover:bg-[#d3a85b] text-white text-sm font-medium tracking-wide transition-all rounded-md">
-          TALK TO OUR EXPERT
-        </button>
-
-        <button className="min-w-[220px] py-2 px-4 border border-[#c89a4b] text-white text-sm font-medium tracking-wide hover:bg-white/5 transition-all rounded-md">
-          DOWNLOAD CATALOGUE
-        </button>
-
-      </div>
+      
 
     </div>
   </Container>
