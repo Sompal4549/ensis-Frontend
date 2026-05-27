@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
+import { Container } from "../ui/Container";
 
 const faqs = [
   {
@@ -35,8 +36,8 @@ export default function FaqSection() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <div className="">
-      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#8d6a3a] mb-4">
+    <Container>
+      <p className="text-sm font-bold uppercase  text-[#8d6a3a] mb-2">
         Frequently Asked Questions
       </p>
 
@@ -51,7 +52,7 @@ export default function FaqSection() {
                 open === i ? "border-[#8d6a3a]" : "border-[#d4c4a8]"
               }`}
             >
-              <span className="text-[11px] font-medium leading-snug">{faq.question}</span>
+              <span className="text-[11px] font-semibold leading-snug">{faq.question}</span>
               {open === i ? (
                 <Minus size={13} className="shrink-0 text-[#8d6a3a]" />
               ) : (
@@ -68,6 +69,6 @@ export default function FaqSection() {
           </div>
         )}
       </div>
-    </div>
+    </Container>
   );
 }

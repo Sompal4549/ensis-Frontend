@@ -10,8 +10,8 @@ import teak_and_finish from "@/assets/products/teak_and_finish.webp";
 import need_customization from "@/assets/products/need_customization.webp";
 import therapy_centers from "@/assets/products/therapy_centers.webp";
 import wallnut_finish from "@/assets/products/wallnut_finish.webp";
-import honey_oak from "@/assets/products/honey_oak.webp";
-import mahogany from "@/assets/products/mahogany.webp";
+import honey_oak from "@/assets/products/honey_oak.png";
+import mahogany from "@/assets/products/mahogany.png";
 
 const specs = [
   { label: "Material", value: "Premium Teak Wood" },
@@ -38,8 +38,8 @@ const whatsIncluded = [
 const finishes = [
   { id: "teak", label: "Natural Teak", image: teak_and_finish },
   { id: "walnut", label: "Walnut", image: wallnut_finish },
-  // { id: "honey", label: "Honey Oak", image: honey_oak },
-  // { id: "mahogany", label: "Mahogany", image: mahogany },
+  { id: "honey", label: "Honey Oak", image: honey_oak },
+  { id: "mahogany", label: "Mahogany", image: mahogany },
 ];
 
 const sizeOptions = [
@@ -64,7 +64,7 @@ export default function ProductInfoSection() {
 
       {/* ── TOP LABEL ── */}
       <div className="px-6 pt-5 pb-1">
-        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#8d6a3a]">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8d6a3a]">
           Smart Design. Superior Functionality.
         </p>
       </div>
@@ -142,7 +142,7 @@ export default function ProductInfoSection() {
 
       {/* ── SECTION 2: Wood finish + size options + bulk order ── */}
       <div className="px-1">
-        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#8d6a3a] px-4 pt-4">
+        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8d6a3a] px-4 pt-4">
           Smart Design Appearance.
         </p>
       </div>
@@ -220,7 +220,7 @@ export default function ProductInfoSection() {
             <p className="text-[11px] leading-snug mb-4">
               We offer special pricing for bulk orders and turnkey wellness projects.
             </p>
-            <button className="w-full flex items-center justify-center gap-1.5 border border-[#8d6a3a] rounded-md py-2 text-[11px] font-bold uppercase tracking-wider text-[#8d6a3a] hover:bg-[#8d6a3a] hover:text-white transition-colors">
+            <button className="w-full flex items-center justify-center gap-1.5 border border-[#8d6a3a] rounded-md py-1 text-[11px] font-bold uppercase tracking-wider text-[#8d6a3a] hover:bg-[#8d6a3a] hover:text-white transition-colors">
               Get Bulk Quote <ArrowRight size={12} />
             </button>
           </div>

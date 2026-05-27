@@ -28,15 +28,15 @@ const Planning = () => {
   <div className="absolute inset-0 bg-gradient-to-r from-[#0f1f16] via-[#0f1f16]/60 to-transparent" />
 </div>
   <Container className="relative z-10">
-    <div className="flex flex-col lg:flex-row lg:items-center py-4 lg:py-8 lg:gap-40">
+    <div className="flex flex-col lg:flex-row lg:items-center py-6 lg:gap-40">
 
       {/* Left Content */}
       <div className="max-w-xl">
-        <h2 className="font-serif text-white text-3xl leading-tight font-medium">
+        <h2 className=" text-white text-2xl leading-tight font-medium">
           Planning a Wellness Center?
         </h2>
 
-        <p className="mt-2 text-white text-base max-w-md">
+        <p className="mt-2 text-white text-sm font-normal max-w-sm">
           We provide end-to-end solutions from concept to completion.
           Let's build your dream wellness space.
         </p>

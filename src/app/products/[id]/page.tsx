@@ -286,8 +286,7 @@ export default async function ProductPage({
           })}
         </section> */}
       </Container>
-<Planning />
-           <RealSpacesCarousel images={product.images} />
+   
 <Container>
 
         <section className="mt-2">
@@ -300,9 +299,12 @@ export default async function ProductPage({
             </YouMightCarousel>
           </div>
         </section>
-          <FaqSection />
 
               </Container>
+                      <RealSpacesCarousel images={product.images} />
+<Planning />
+
+          <FaqSection />
       {/* <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5ded5] bg-white/95 px-2 shadow-[0_-10px_30px_rgba(49,59,48,0.08)] backdrop-blur">
         <Container>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

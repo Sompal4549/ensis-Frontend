@@ -48,7 +48,7 @@ export default function RealSpacesCarousel({
       <Container>
         {/* Header */}
         <div className="mb-2">
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#b8922f] mb-2">
+          <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#b8922f] mb-2">
             See it in Real Spaces
           </p>
 

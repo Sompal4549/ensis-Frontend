@@ -83,7 +83,7 @@ export default function ProductHeroBanner({
         <Container className="relative h-full z-30">
 
           {/* LEFT TEXT */}
-          <div className="absolute inset-y-0 left-0 flex flex-col justify-center w-full md:max-w-[52%] box-border pl-6 md:pl-10">
+          <div className="absolute inset-y-0 left-0 flex flex-col justify-end md:justify-start md:pt-20 w-full md:max-w-[52%] box-border pl-6 md:pl-10">
             {product.tag && (
               <span className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[#c8921a]">
                 {product.tag}
