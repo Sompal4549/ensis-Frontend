@@ -1,24 +1,10 @@
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
-import type { ReactNode } from "react";
 import {
-  BadgeCheck,
-  Clock,
-  HeartHandshake,
-  Leaf,
-  LockKeyhole,
-  PackageCheck,
-  ShieldCheck,
   ShoppingCart,
-  Sparkles,
-  Star,
-  Truck,
-  Wrench,
 } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { allProducts, type Product } from "@/constants";
-import ProductGallery from "@/components/products/ProductGallery";
-import ProductDetailActions from "@/components/products/ProductDetailActions";
 import YouMightCarousel from "@/components/ui/YouMightCarousel";
 import CartAndDetailHeroBanner from "@/components/products/ProductDetailBanner";
 import ProductInfoSection from "@/components/products/ProductInfoSection";
@@ -77,24 +63,6 @@ function buildLocalView(product: Product): ProductView {
 export function getImageSource(image: string | StaticImageData | undefined) {
   if (!image) return img6;
   return typeof image === "string" ? image : image.src;
-}
-
-function InfoCard({ title, children }: { title: string; children: ReactNode }) {
-  return (
-    <section className="rounded-lg border border-[#eee5d8] bg-white p-2 shadow-[0_8px_24px_rgba(49,59,48,0.04)]">
-      <h3 className="text-base font-semibold">{title}</h3>
-      <div className="mt-4 text-sm">{children}</div>
-    </section>
-  );
-}
-
-function FeaturePill({ icon, label }: { icon: ReactNode; label: string }) {
-  return (
-    <div className="flex min-h-15 flex-col items-center justify-center gap-2 rounded-md bg-[#f7f3ec] px-3 py-2 text-center text-[11px] font-semibold text-[#313b30]">
-      <span className="text-[#8d6a3a]">{icon}</span>
-      {label}
-    </div>
-  );
 }
 
 function RelatedProductCard({ product }: { product: Product }) {

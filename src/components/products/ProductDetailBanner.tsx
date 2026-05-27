@@ -35,13 +35,6 @@ export default function ProductHeroBanner({
     [animating, current]
   );
 
-  useEffect(() => {
-    if (slides.length <= 1) return;
-    const id = setInterval(() => {
-      setCurrent((c) => (c + 1) % slides.length);
-    }, 5000);
-    return () => clearInterval(id);
-  }, [slides.length]);
 
   const visibleThumbs = slides.slice(0, 5);
   const extraCount = slides.length > 5 ? slides.length - 5 : 0;
@@ -49,22 +42,31 @@ export default function ProductHeroBanner({
   return (
     <div className="w-full">
       {/* Full-bleed banner — images span the viewport */}
-      <section className="relative w-full h-[480px] md:h-[580px] overflow-hidden bg-[#1a1208]">
+      <section className="relative w-full h-[480px] md:h-[580px] overflow-hidden bg-white">
 
         {/* SLIDES — always full viewport width */}
         {slides.map((src, i) => (
           <div
             key={i}
-            className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-              i === current ? "opacity-100 z-10" : "opacity-0 z-0"
-            }`}
+            className={`absolute left-0 top-0 bottom-0 right-[20%] transition-opacity duration-700 ease-in-out ${i === current ? "opacity-100 z-10" : "opacity-0 z-0"
+              }`}
           >
-            <Image
-              src={src}
-              alt={`${product.title ?? "Product"} – slide ${i + 1}`}
-              fill
-              priority={i === 0}
-              className="object-cover object-center"
+            {/* Background Image */}
+            <div
+              className="absolute inset-0 bg-cover bg-center"
+              style={{
+                backgroundImage: `url(${typeof src === "string" ? src : src.src
+                  })`,
+              }}
+            />
+
+            {/* Right-side blur effect (10%) */}
+            <div
+              className="absolute top-0 right-0 h-full w-[10%] backdrop-blur-xl"
+              style={{
+                background:
+                  "linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)",
+              }}
             />
           </div>
         ))}
@@ -74,7 +76,7 @@ export default function ProductHeroBanner({
           className="absolute left-0 right-[50%] top-0 bottom-0 z-20 pointer-events-none"
           style={{
             background:
-              "linear-gradient(to right, rgba(10,8,4,0.82) 0%, rgba(10,8,4,0.65) 55%, transparent 100%)",
+              "linear-gradient(to right, rgba(10,8,4,0.82) 0%, rgba(10,8,4,0.65) 40%, transparent 100%)",
           }}
         />
         <div className="absolute inset-0 z-20 pointer-events-none md:hidden" style={{ background: "rgba(10,8,4,0.55)" }} />
@@ -136,11 +138,10 @@ export default function ProductHeroBanner({
                 <button
                   key={i}
                   onClick={() => goTo(i)}
-                  className={`relative w-12 h-9 md:w-16 md:h-12 rounded overflow-hidden border-2 transition-all duration-200 shrink-0 ${
-                    i === current
+                  className={`relative w-12 h-9 md:w-16 md:h-12 rounded overflow-hidden border-2 transition-all duration-200 shrink-0 ${i === current
                       ? "border-[#c8921a] opacity-100"
                       : "border-white/30 opacity-60 hover:opacity-85"
-                  }`}
+                    }`}
                 >
                   <Image src={src} alt={`Thumbnail ${i + 1}`} fill sizes="64px" className="object-cover" />
                 </button>

@@ -44,7 +44,7 @@ export default function ProductInfoSection() {
 
   return (
     <Container>
-    <div className="mt-6 flex overflow-hidden rounded-xl  bg-[#faf6f0]">
+    <div className="mt-2 flex overflow-hidden rounded-xl">
       {/* Sidebar */}
       <nav className="flex w-[200px] shrink-0 flex-col ">
         {tabs.map((tab) => {
