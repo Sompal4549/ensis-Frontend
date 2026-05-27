@@ -34,7 +34,7 @@ export default function ProductDetailActions({
     >
       <div className="flex gap-2">
 
-      <div className="inline-flex h-8 w-[120px] items-center justify-between overflow-hidden rounded-md border border-[#e5ded5] bg-white">
+      <div className="inline-flex h-10 w-[120px] items-center justify-between overflow-hidden rounded-md border border-[#e5ded5] bg-white">
         <button
           type="button"
           aria-label="Decrease quantity"
@@ -59,8 +59,8 @@ export default function ProductDetailActions({
       <button
         type="button"
         onClick={addQuantityToCart}
-        className={`flex py-2 flex-1 items-center justify-center gap-2 rounded-md px-5 text-xs font-bold uppercase tracking-wide text-white transition-colors ${
-          added ? "bg-[#8d6a3a]" : "bg-[#263016] hover:bg-[#101010]"
+        className={`flex py-2.5 flex-1 items-center justify-center gap-2 rounded-md px-5 text-xs font-semibold uppercase tracking-wide text-white transition-colors ${
+          added ? "bg-[#313d1c]" : "bg-[#263016] hover:bg-[#101010]"
         }`}
       >
         {added ? "Added to Cart" : "Add to Cart"}
@@ -74,33 +74,30 @@ export default function ProductDetailActions({
           <Link
             href="/cart"
             onClick={addQuantityToCart}
-            className="flex py-2 items-center justify-center gap-2 rounded-md border border-[#263016] bg-white px-5 text-xs font-bold uppercase tracking-wide text-[#263016] transition-colors hover:bg-[#f6f0e8]"
+            className="flex py-2.5 items-center justify-center gap-2 rounded-md border border-[#c48734]  bg-[#c48734] px-5 text-xs font-semibold uppercase tracking-wide text-white transition-colors hover:bg-[#c48734] "
             >
-            <Zap size={15} />
+              <span className="text-white">
             Buy Now
+            </span>
           </Link>
 
         </div>
         <div className="flex gap-2">
           <Link
             type="button"
-            className={`flex flex-1 py-2 items-center justify-center gap-2 rounded-md border px-2 text-[10px] font-semibold uppercase tracking-wide transition-colors ${
+            className={`flex flex-1 py-2.5 items-center justify-center gap-2 rounded-md border px-2 text-[10px] font-semibold uppercase tracking-wide transition-colors ${
               liked
               ? "border-red-500 bg-red-50 text-red-600"
               : "border-[#d8cbb9] bg-white text-[#263016] hover:bg-[#fbf8f2]"
             }`}
             href="wa.me/+919654900525"
             >
-            <FaWhatsapp size={15} className={liked ? "fill-red-500" : ""} />
+            <FaWhatsapp size={15} />
             Whatsapp Expert
           </Link>
         <Link
             type="button"
-            className={`flex flex-1 py-2 items-center justify-center gap-2 rounded-md border px-2 text-[10px] font-semibold uppercase tracking-wide transition-colors ${
-              liked
-              ? "border-red-500 bg-red-50 text-red-600"
-              : "border-[#d8cbb9] bg-white text-[#263016] hover:bg-[#fbf8f2]"
-            }`}
+            className={`flex flex-1 py-2.5 items-center justify-center gap-2 rounded-md border px-2 text-[10px] font-semibold uppercase tracking-wide transition-colors `}
             href="tel:+919654900525"
             >
             <FaPhone size={15} className={liked ? "fill-red-500" : ""} />

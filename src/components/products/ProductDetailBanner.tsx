@@ -121,7 +121,7 @@ export default function ProductHeroBanner({
           </div>
 
           {/* RIGHT WHITE CARD — desktop only */}
-          <div className="hidden md:flex absolute top-4  bottom-4 rounded-lg w-[420px] max-w-[44%] bg-white shadow-2xl overflow-y-auto flex-col border border-[#f0e8d8] right-6 md:right-10">
+          <div className="hidden md:flex absolute top-8  bottom-8 rounded-lg w-[420px] max-w-[44%] bg-white shadow-2xl overflow-y-auto flex-col border border-[#f0e8d8] right-6 md:right-10">
             <div className="p-4 flex-1">
               <ProductPriceSection
                 shopProduct={shopProduct}

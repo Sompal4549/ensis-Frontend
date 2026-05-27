@@ -43,7 +43,7 @@ const ProductPriceSection = ({
                <button
           type="button"
          onClick={() => toggleLike(shopProduct)}
-          className="mt-3 flex  items-center justify-center rounded-md bg-transparent text-xs font-bold  transition-colors gap-2"
+          className="mt-3 flex  items-center justify-center rounded-md bg-transparent text-xs font-semibold  transition-colors gap-2"
         >
         <Heart size={13} className={wished ? "fill-red-500" : "text-red-500"} />
             {wished ? "In wishlist" : "Add to wishlist"}
@@ -53,7 +53,7 @@ const ProductPriceSection = ({
               {product.title}
             </h2>
 
-            <div className="mt-2 flex flex-wrap items-center gap-3 text-[8px] text-[#687064]">
+            <div className="mt-2 flex flex-wrap items-center gap-3 text-[10px]">
               <span className="flex items-center gap-1">
                 {Array.from({ length: 5 }).map((_, index) => (
                   <Star
@@ -63,9 +63,9 @@ const ProductPriceSection = ({
                   />
                 ))}
               </span>
-              <span className="font-semibold">4.8</span>
-              <span>(126 reviews)</span>
-              <span className="px-3 py-1 text-[11px] font-semibold pl-2 border-l border-gray-200">
+              <span className="font-medium">4.8</span>
+              <span className="font-medium">(126 reviews)</span>
+              <span className="py-1 text-[11px] font-semibold pl-2 border-l border-gray-200">
              SKU: ENS-PT-001
               </span>
             </div>
@@ -83,9 +83,9 @@ const ProductPriceSection = ({
               <FeaturePill icon={<Image alt="Water Resitant" src={water_resitant} width={20}height={20} />} label="Water Resitant" />
                <FeaturePill icon={<Image alt="Long Lasting Durability" src={long_lasting} width={20}height={20} />} label="Long Lasting Durability" />
             </div>
-           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-t border-black/10 pt-4">
   {/* Left */}
-  <div>
+  <div className="">
     <p className="text-xs uppercase tracking-[0.12em] text-[#C08A2E] font-semibold">
       Starting From
     </p>
@@ -94,7 +94,7 @@ const ProductPriceSection = ({
       {formatPrice(product.price)}
     </h2>
 
-    <p className="mt-2 text-xs font-medium text-[#444]">
+    <p className="mt-2 text-xs font-medium">
       (Inclusive of all taxes)
     </p>
   </div>
@@ -122,11 +122,6 @@ const ProductPriceSection = ({
 </div>
 
             <ProductDetailActions product={shopProduct} />
-
-            <p className="mt-2 flex items-center font-medium justify-center gap-2 text-[11px] sm:justify-start">
-              <LockKeyhole size={13} />
-              Secure checkout | 30-day support | Installation guidance
-            </p>
           </div>
   )
 }
