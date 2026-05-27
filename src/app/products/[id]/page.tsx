@@ -169,7 +169,7 @@ export default async function ProductPage({
     <div className="min-h-screen bg-[#fbfaf7]">
       <CartAndDetailHeroBanner
         originalPrice={originalPrice}
-        product={localProduct}
+        product={localProduct!}
         shopProduct={shopProduct}
       />
       <ProductFeatureStrip />

@@ -3,11 +3,11 @@
 import Image from "next/image";
 import { useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
-import dimensions from "@/assets/products/dimensions.webp";
+import dimensions from "@/assets/products/product.webp";
 import ayurveda_clinics from "@/assets/products/durable_and_highzenic.webp";
 import spa_and_wellness from "@/assets/products/spa_and_wellness.webp";
 import teak_and_finish from "@/assets/products/teak_and_finish.webp";
-import panchkarma_rooms from "@/assets/products/panchkarma_rooms.webp";
+import need_customization from "@/assets/products/need_customization.webp";
 import therapy_centers from "@/assets/products/therapy_centers.webp";
 import wallnut_finish from "@/assets/products/wallnut_finish.webp";
 import honey_oak from "@/assets/products/honey_oak.webp";
@@ -60,7 +60,7 @@ export default function ProductInfoSection() {
   const [finish, setFinish] = useState("teak");
 
   return (
-    <div className="bg-[#f5f0e8] mt-6 rounded-xl overflow-hidden border border-[#e2d8c8]">
+    <div className="bg-[#f5f0e8] rounded-xl overflow-hidden border border-[#e2d8c8]">
 
       {/* ── TOP LABEL ── */}
       <div className="px-6 pt-5 pb-1">
@@ -73,7 +73,7 @@ export default function ProductInfoSection() {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr_0.75fr] gap-0 border-b border-[#e2d8c8]">
 
         {/* Left: product image with callout labels */}
-        <div className="border-r border-[#e2d8c8] p-5">
+        <div className="border-r border-[#e2d8c8] px-5">
           <h2 className="font-serif text-2xl leading-tight mb-4">Product Specifications</h2>
           <div className="relative w-full">
             <Image
@@ -122,20 +122,20 @@ export default function ProductInfoSection() {
 
           {/* Need Customization */}
           <div className="bg-white rounded-lg border border-[#e2d8c8] p-4">
-            <div className="flex items-start gap-3 mb-3">
-              <div className="w-9 h-9 rounded-md bg-[#f5f0e8] border border-[#e2d8c8] flex items-center justify-center shrink-0">
-                <Image src={panchkarma_rooms} alt="customization" width={28} height={28} className="object-contain" />
+            <div className="flex items-start gap-3">
+              <div className="w-25 h-15 flex items-center justify-center">
+                <Image src={need_customization} alt="customization" width={48} height={48} className="object-fill" />
               </div>
               <div>
                 <h3 className="font-semibold text-sm leading-tight">Need Customization?</h3>
-                <p className="text-[11px] mt-1 leading-snug">
+                <p className="text-[10px] mt-1 leading-snug">
                   We create custom Panchkarma tables as per your therapy requirements.
                 </p>
-              </div>
-            </div>
-            <button className="w-full flex items-center justify-center gap-1.5 border border-[#8d6a3a] rounded-md py-2 text-[11px] font-bold uppercase tracking-wider text-[#8d6a3a] hover:bg-[#8d6a3a] hover:text-white transition-colors">
+            <button className="w-full flex items-center justify-center gap-1.5 border border-[#8d6a3a] rounded-md py-1 text-[11px] font-bold uppercase tracking-wider text-[#8d6a3a] hover:bg-[#8d6a3a] hover:text-white transition-colors mt-2">
               Contact Our Experts <ArrowRight size={12} />
             </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

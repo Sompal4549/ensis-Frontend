@@ -11,6 +11,11 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { Container } from "../ui/Container";
+import img3 from '@/assets/home/img-3.webp';
+import img2 from '@/assets/home/img-2.webp';
+import img1 from '@/assets/home/img-1.webp';
+import img4 from '@/assets/home/img-4.webp';
+import Image from "next/image";
 
 const tabs = [
   { id: "overview", label: "OVERVIEW", icon: LayoutGrid },
@@ -39,9 +44,9 @@ export default function ProductInfoSection() {
 
   return (
     <Container>
-    <div className="mt-6 flex overflow-hidden rounded-xl border border-[#e8dfd0] bg-[#faf6f0]">
+    <div className="mt-6 flex overflow-hidden rounded-xl  bg-[#faf6f0]">
       {/* Sidebar */}
-      <nav className="flex w-[200px] shrink-0 flex-col border-r border-[#e8dfd0]">
+      <nav className="flex w-[200px] shrink-0 flex-col ">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = active === tab.id;
@@ -67,7 +72,7 @@ export default function ProductInfoSection() {
         {active === "overview" && (
           <div className="flex h-full">
             {/* Left: heading + bullets */}
-            <div className="flex w-[350px] shrink-0 flex-col justify-center border-r border-[#e8dfd0] p-6">
+            <div className="flex w-[350px] shrink-0 flex-col justify-center p-6">
               <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[#8d6a3a]">
                 Overview
               </p>
@@ -94,7 +99,9 @@ export default function ProductInfoSection() {
             <div className="grid min-w-0 flex-1 gap-2 md:grid-cols-3">
               {highlights.map((h) => (
                 <div key={h.title} className="flex flex-col">
-                  <div className="h-[50%] w-full bg-[#e8dfd0]" />
+                  <div className="h-[50%] w-full bg-[#e8dfd0] rounded-tr-md rounded-tl-md overflow-hidden relative">
+                    <Image src={img1} alt={h.title} fill className="object-cover" />
+                  </div>
                   <div className="p-4">
                     <p className="text-xs font-semibold">{h.title}</p>
                     <p className="mt-1 text-xs">

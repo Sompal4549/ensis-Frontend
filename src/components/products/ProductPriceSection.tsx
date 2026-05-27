@@ -11,6 +11,12 @@ import {
 import React, { ReactNode } from "react";
 import ProductDetailActions from "./ProductDetailActions";
 import { useShop } from "@/context/ShopContext";
+import premium_teak from "@/assets/products/premium_teak_wood.webp";
+import brass_fitting from "@/assets/products/brass_design.webp"
+import erogonomic_design from "@/assets/products/erogonimc_design.webp"
+import water_resitant from "@/assets/products/water_resitant.webp"
+import long_lasting from "@/assets/products/long_lasting.webp"
+import Image from "next/image";
 
 interface ProductPriceSectionProps {
   product: any;
@@ -68,11 +74,12 @@ const ProductPriceSection = ({
               {product.description}
             </p> */}
 
-            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
-              <FeaturePill icon={<Sparkles size={20} />} label="Premium Finish" />
-              <FeaturePill icon={<Wrench size={20} />} label="Custom Built" />
-              <FeaturePill icon={<Leaf size={20} />} label="Wellness Grade" />
-              <FeaturePill icon={<ShieldCheck size={20} />} label="Durable Design" />
+            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-5">
+              <FeaturePill icon={<Image alt="Premium Teak Wood" src={premium_teak} width={20}height={20} />} label="Premium Finish" />
+              <FeaturePill icon={<Image alt="Brass Fittings" src={brass_fitting} width={20}height={20} />} label="Brass Fittings" />
+              <FeaturePill icon={<Image alt="Ergonomic Design" src={erogonomic_design} width={20}height={20} />} label="Ergonomic Design" />
+              <FeaturePill icon={<Image alt="Water Resitant" src={water_resitant} width={20}height={20} />} label="Water Resitant" />
+               <FeaturePill icon={<Image alt="Long Lasting Durability" src={long_lasting} width={20}height={20} />} label="Long Lasting Durability" />
             </div>
              <p className="mb-2 text-base text-[#F59E0B] font-semibold">
                 Starting Prize

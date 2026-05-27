@@ -54,7 +54,7 @@ function TrustItem({
 }) {
   return (
     <div className="flex items-center gap-3 px-2 py-2">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f5efe6] text-[#313b30]">
+      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f5efe6]">
         {icon}
       </div>
       <div>
@@ -225,7 +225,6 @@ export default function CartPage() {
     .slice(0, 5);
   return (
     <div className="min-h-screen bg-[#fbfaf7] text-[#101010]">
-<CartAndDetailHeroBanner imageSrc={product_cart.src} imageAlt="Therapy Table" />
       <Container>
         <div className="">
           <div className="flex flex-wrap items-end justify-between gap-4">

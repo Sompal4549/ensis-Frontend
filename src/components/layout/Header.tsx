@@ -32,6 +32,7 @@ import BookButton from "../ui/BookButton";
 import { useShop } from "@/context/ShopContext";
 
 export const Header = () => {
+    const [mounted, setMounted] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [wishlistOpen, setWishlistOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
@@ -39,7 +40,8 @@ export const Header = () => {
     const { addToCart, cartCount, likedCount, likedItems, toggleLike } = useShop();
     const wishlistRef = useRef<HTMLDivElement | null>(null);
     const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001";
-
+    
+    useEffect(() => setMounted(true), []);
     useEffect(() => {
         const stored = typeof window !== "undefined" ? localStorage.getItem("ensis_user") : null;
         if (!stored) return;
@@ -207,18 +209,9 @@ export const Header = () => {
                                 <li key={index}>
                                     <Link
                                         href={item.href}
-                                        className={`${navLink} ${item.hasDropdown ? "gap-1" : ""
-                                            } uppercase font-semibold`}
+                                        className={`${navLink} uppercase font-semibold`}
                                     >
                                         {item.label}
-
-                                        {item.hasDropdown && (
-                                            <ChevronDown
-                                                size={13}
-                                                strokeWidth={2.2}
-                                                className="translate-y-px"
-                                            />
-                                        )}
                                     </Link>
                                 </li>
                             ))}
@@ -329,7 +322,7 @@ export const Header = () => {
                             className="relative inline-flex size-10 items-center justify-center rounded-full border border-[#d8cbb9] text-[#263016] transition-colors hover:bg-[#fbf8f2]"
                         >
                             <ShoppingCart size={18} />
-                            {cartCount > 0 && (
+                           {mounted && cartCount > 0 && (
                                 <span className="absolute -right-1 -top-0.75 flex h-5 w-5 items-center justify-center rounded-full bg-[#263016] text-[10px] font-bold text-white">
                                     {cartCount}
                                 </span>
@@ -384,15 +377,10 @@ export const Header = () => {
                         <Link
                             key={index}
                             href={item.href}
-                            className={`${mobileLink} ${item.hasDropdown
-                                ? "flex items-center justify-betwee uppercasen"
-                                : ""
-                                }`}
+                            className={`${mobileLink}`}
                             onClick={() => setIsMenuOpen(false)}
                         >
                             {item.label}
-
-                            {item.hasDropdown && <ChevronDown size={14} />}
                         </Link>
                     ))}
                     <Link
@@ -401,9 +389,11 @@ export const Header = () => {
                         onClick={() => setIsMenuOpen(false)}
                     >
                         <span>Cart</span>
+                        {mounted && cartCount > 0 && (
                         <span className="rounded-full bg-[#263016] px-2 py-0.5 text-[10px] font-bold text-white">
                             {cartCount}
                         </span>
+                        )}
                     </Link>
                     <GreenButton text={<span className="uppercase text-[#050A1A]">E-Brochure</span>} path={"https://ensis.in/pdf/e-broucher.pdf"} />
                     <div className="flex justify-between gap-2 mt-2">

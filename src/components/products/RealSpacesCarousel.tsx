@@ -44,15 +44,15 @@ export default function RealSpacesCarousel({
   }, [emblaApi]);
 
   return (
-    <section className="bg-[#1e2b1a] py-12 overflow-hidden">
+    <section className="bg-[#1e2b1a] py-2">
       <Container>
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-2">
           <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#b8922f] mb-2">
             See it in Real Spaces
           </p>
 
-          <h2 className="font-serif text-2xl md:text-3xl text-white">
+          <h2 className="font-serif text-xl md:text-2xl text-white">
             {title || "Perfect for Every Wellness Environment"}
           </h2>
         </div>

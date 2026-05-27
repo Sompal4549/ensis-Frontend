@@ -2,7 +2,7 @@
 
 import { Heart, Minus, Plus, ShoppingCart, Zap } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useShop, type ShopProduct } from "@/context/ShopContext";
 import { FaPhone, FaWhatsapp } from "react-icons/fa";
 
@@ -13,10 +13,12 @@ export default function ProductDetailActions({
   product: ShopProduct;
   compact?: boolean;
 }) {
+   const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const { addToCart, isInCart, isLiked, toggleLike } = useShop();
   const [quantity, setQuantity] = useState(1);
-  const added = isInCart(product.id);
-  const liked = isLiked(product.id);
+  const added = mounted && isInCart(product.id);
+  const liked = mounted && isLiked(product.id);
 
   const addQuantityToCart = () => {
     Array.from({ length: quantity }).forEach(() => addToCart(product));
