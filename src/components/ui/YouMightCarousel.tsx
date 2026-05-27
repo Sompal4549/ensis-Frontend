@@ -46,7 +46,7 @@ const YouMightCarousel: React.FC<CarouselProps> = ({
               className="min-w-0 shrink-0 grow-0
                 basis-[calc(50%-6px)]
                 sm:basis-[calc(33.333%-8px)]
-                lg:basis-[calc(20%-10px)]"
+                lg:basis-[calc(20%-10px)] h-[220px]"
             >
               {child}
             </div>
