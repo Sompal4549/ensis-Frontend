@@ -8,6 +8,9 @@ import Image from 'next/image'
 import { Container } from '../ui/Container'
 import { DownloadIcon } from 'lucide-react'
 import { FaPhone } from 'react-icons/fa'
+import BookButton from '../ui/BookButton'
+import GreenButton from '../ui/GreenButton'
+import Link from 'next/link'
 const features = [
   { icon: expert_consultation, label: "Expert Consultation" },
   { icon: custom_design, label: "Custom Design" },
@@ -56,14 +59,15 @@ const Planning = () => {
           })}
 
 <div className=" flex gap-2 mt-6">
+<div className='min-w-[220px] '>
+<GreenButton path="tel:+919654900525" text="TALK TO OUR EXPERT" rightIcon={<FaPhone/>}/>
 
-        <button className="min-w-[220px] py-2 px-4 border border-[#e29c22] bg-[#e29c22] hover:bg-[#d3a85b] text-white text-xs font-semibold tracking-wide transition-all rounded-md flex items-center gap-2 justify-center">
-          TALK TO OUR EXPERT <FaPhone/>
-        </button>
-
-        <button className="min-w-[220px] py-2 px-4 border border-white text-white text-xs font-semibold tracking-wide hover:bg-white/5 transition-all rounded-md flex items-center gap-2 justify-center">
+</div>
+<Link href="https://ensis.in/pdf/e-broucher.pdf" target='_blank'>
+        <button className="min-w-[220px] py-1 px-4 border border-white text-white text-xs font-semibold tracking-wide hover:bg-white/5 transition-all rounded-md flex items-center gap-2 justify-center">
           DOWNLOAD CATALOGUE <DownloadIcon/>
         </button>
+</Link>
 
       </div>
         </div>

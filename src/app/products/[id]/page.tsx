@@ -261,7 +261,7 @@ export default async function ProductPage({
           <h2 className="text-2xl font-semibold text-[#1a1a1a]">You May Also Like</h2>
           <div className="mt-2">
             <YouMightCarousel>
-              {suggestions.map((item) => (
+              {allProducts.map((item) => (
                 <RelatedProductCard key={item.id} product={item} />
               ))}
             </YouMightCarousel>

@@ -81,7 +81,7 @@ export default function ProductInfoSection() {
                 <br />
                 Masterfully Crafted.
               </h2>
-              <p className="text-xs">
+              <p className="text-xs font-semibold">
                 Every curve, every detail is crafted to support the therapist and
                 ensure unmatched comfort for the patient.
               </p>

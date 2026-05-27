@@ -60,7 +60,7 @@ export default function ProductInfoSection() {
   const [finish, setFinish] = useState("teak");
 
   return (
-    <div className="rounded-xl overflow-hidden">
+    <div className="overflow-hidden">
 
       {/* ── TOP LABEL ── */}
       <div className="">
@@ -80,7 +80,7 @@ export default function ProductInfoSection() {
               src={dimensions}
               alt="Product dimensions diagram"
               width={400}
-              height={300}
+              height={120}
               className="w-full object-contain"
             />
           
