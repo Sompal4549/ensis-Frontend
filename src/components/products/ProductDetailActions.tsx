@@ -4,6 +4,7 @@ import { Heart, Minus, Plus, ShoppingCart, Zap } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useShop, type ShopProduct } from "@/context/ShopContext";
+import { FaPhone, FaWhatsapp } from "react-icons/fa";
 
 export default function ProductDetailActions({
   product,
@@ -29,6 +30,8 @@ export default function ProductDetailActions({
           : "mt-5 flex-col gap-3"
       }`}
     >
+      <div className="flex gap-2">
+
       <div className="inline-flex h-8 w-[120px] items-center justify-between overflow-hidden rounded-md border border-[#e5ded5] bg-white">
         <button
           type="button"
@@ -58,34 +61,51 @@ export default function ProductDetailActions({
           added ? "bg-[#8d6a3a]" : "bg-[#263016] hover:bg-[#101010]"
         }`}
       >
-        <ShoppingCart size={15} />
         {added ? "Added to Cart" : "Add to Cart"}
+        <ShoppingCart size={15} />
       </button>
+      </div>
 
       {!compact && (
-        <div className="grid gap-3 sm:grid-cols-[1fr_auto]">
+        <>
+        <div className="">
           <Link
             href="/cart"
             onClick={addQuantityToCart}
-            className="inline-flex py-2 items-center justify-center gap-2 rounded-md border border-[#263016] bg-white px-5 text-xs font-bold uppercase tracking-wide text-[#263016] transition-colors hover:bg-[#f6f0e8]"
-          >
+            className="flex py-2 items-center justify-center gap-2 rounded-md border border-[#263016] bg-white px-5 text-xs font-bold uppercase tracking-wide text-[#263016] transition-colors hover:bg-[#f6f0e8]"
+            >
             <Zap size={15} />
             Buy Now
           </Link>
 
-          <button
-            type="button"
-            onClick={() => toggleLike(product)}
-            className={`inline-flex py-2 items-center justify-center gap-2 rounded-md border px-5 text-xs font-bold uppercase tracking-wide transition-colors ${
-              liked
-                ? "border-red-500 bg-red-50 text-red-600"
-                : "border-[#d8cbb9] bg-white text-[#263016] hover:bg-[#fbf8f2]"
-            }`}
-          >
-            <Heart size={15} className={liked ? "fill-red-500" : ""} />
-            {liked ? "Wishlisted" : "Wishlist"}
-          </button>
         </div>
+        <div className="flex gap-2">
+          <Link
+            type="button"
+            className={`flex flex-1 py-2 items-center justify-center gap-2 rounded-md border px-2 text-[10px] font-semibold uppercase tracking-wide transition-colors ${
+              liked
+              ? "border-red-500 bg-red-50 text-red-600"
+              : "border-[#d8cbb9] bg-white text-[#263016] hover:bg-[#fbf8f2]"
+            }`}
+            href="wa.me/+919654900525"
+            >
+            <FaWhatsapp size={15} className={liked ? "fill-red-500" : ""} />
+            Whatsapp Expert
+          </Link>
+        <Link
+            type="button"
+            className={`flex flex-1 py-2 items-center justify-center gap-2 rounded-md border px-2 text-[10px] font-semibold uppercase tracking-wide transition-colors ${
+              liked
+              ? "border-red-500 bg-red-50 text-red-600"
+              : "border-[#d8cbb9] bg-white text-[#263016] hover:bg-[#fbf8f2]"
+            }`}
+            href="tel:+919654900525"
+            >
+            <FaPhone size={15} className={liked ? "fill-red-500" : ""} />
+            Request Custom Design
+          </Link>
+          </div>
+            </>
       )}
     </div>
   );

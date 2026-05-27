@@ -98,7 +98,7 @@ function CartTableRow({ item }: { item: CartItem }) {
   const liked = isLiked(item.id);
 
   return (
-    <div className="grid gap-4 border-t border-[#eee5d8] p-4 md:grid-cols-[1fr_110px_150px_110px_34px] md:items-center md:px-5">
+    <div className="grid gap-4 border-t border-[#eee5d8] p-2 md:grid-cols-[1fr_110px_150px_110px_34px] md:items-center md:px-5">
       <div className="grid grid-cols-[86px_1fr] gap-4">
         <Link
           href={`/products/${item.slug}`}
@@ -308,7 +308,7 @@ export default function CartPage() {
                   ))}
                 </div>
 
-                <div className="grid gap-4 border-t border-[#eee5d8] p-4 md:grid-cols-[1fr_auto] md:items-center md:p-5">
+                <div className="grid gap-4 border-t border-[#eee5d8] p-2 md:grid-cols-[1fr_auto] md:items-center">
                   <div className="flex gap-2">
                     <label className="relative flex-1">
                       <Tag
@@ -338,8 +338,8 @@ export default function CartPage() {
                 </div>
               </section>
 
-              <aside className="space-y-5 lg:sticky lg:top-24">
-                <section className="rounded-lg border border-[#eee5d8] bg-white p-4 shadow-[0_8px_24px_rgba(49,59,48,0.04)]">
+              <aside className="space-y-2 lg:sticky lg:top-24">
+                <section className="rounded-lg border border-[#eee5d8] bg-white p-2 shadow-[0_8px_24px_rgba(49,59,48,0.04)]">
                   <h2 className="text-xl font-semibold">
                     Order Summary
                   </h2>
@@ -372,7 +372,7 @@ export default function CartPage() {
                     </div>
                   </div>
 
-                  <div className="mt-2 border-t border-[#eee5d8] pt-5">
+                  <div className="mt-2 border-t border-[#eee5d8] pt-2">
                     <div className="flex items-center justify-between gap-4">
                       <span className="text-lg font-semibold ">
                         Total
@@ -381,7 +381,7 @@ export default function CartPage() {
                         {formatCurrency(total)}
                       </span>
                     </div>
-                    <p className="mt-3 text-xs">
+                    <p className="mt-1 text-xs">
                       Pay securely online or request support from our wellness
                       equipment team.
                     </p>
@@ -389,7 +389,7 @@ export default function CartPage() {
 
                   <Link
                     href="/checkout"
-                    className="mt-4 h-12 w-full flex items-center justify-center gap-2 rounded-xl bg-[#313b30] text-base font-semibold text-white transition-colors hover:bg-[#172015]"
+                    className="mt-2 py-2 w-full flex items-center justify-center gap-2 rounded-xl bg-[#313b30] text-base font-semibold text-white transition-colors hover:bg-[#172015]"
                   >
                     <div className="text-white flex gap-2 items-center justify-center">
                       <LockKeyhole size={16} />
@@ -400,16 +400,7 @@ export default function CartPage() {
                   <p className="mt-2 text-center text-[11px]">
                     Guaranteed safe and secure checkout
                   </p>
-                  <div className="mt-3 grid grid-cols-5 gap-2 text-center text-[10px] font-bold">
-                    {["VISA", "MC", "AMEX", "Apple", "GPay"].map((item) => (
-                      <span
-                        key={item}
-                        className="rounded border border-[#e5ded5] bg-[#fbfaf7] py-2"
-                      >
-                        {item}
-                      </span>
-                    ))}
-                  </div>
+             
                 </section>
 
                 {/* <section className="rounded-lg border border-[#eee5d8] bg-[#fbf2df] p-6">

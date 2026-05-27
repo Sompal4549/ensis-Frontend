@@ -48,7 +48,7 @@ export default function LoginPage() {
         <div className="mx-auto grid max-w-5xl overflow-hidden border border-[#ded3c4] bg-white md:grid-cols-[0.9fr_1.1fr]">
           <div className="bg-[#263016] p-8 text-white md:p-10">
             <span className="text-[11px] font-bold uppercase tracking-widest text-[#d9c49d]">Ensis Account</span>
-            <h1 className="mt-4 font-serif text-4xl leading-tight">User Login</h1>
+            <h2 className="mt-4 text-4xl leading-tight">User Login</h2>
             <p className="mt-4 text-sm leading-6 text-white/80">
               Sign in to your Ensis account. Admins should use the dedicated admin console.
             </p>

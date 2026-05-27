@@ -179,41 +179,32 @@ export default function CheckoutPage() {
   if (!isMounted) return null;
 
   return (
-    <div className="min-h-screen bg-[#fbfaf7] text-[#101010] py-8 md:py-12">
+    <div className="">
       <Container>
-        {/* Navigation Breadcrumb */}
-        <div className="mb-8 flex items-center gap-2 text-xs font-semibold">
-          <Link href="/cart" className="hover:text-[#313b30] flex items-center gap-1">
-            <ShoppingBag size={14} /> Cart
-          </Link>
-          <ChevronRight size={12} />
-          <span className="text-[#313b30] font-bold">Checkout</span>
-        </div>
-
-        <h2 className="text-2xl font-serif text-[#1a1a1a] mb-8 font-medium">Checkout Experience</h2>
+        <h2 className="text-2xl font-serif mb-2 font-medium">Checkout Experience</h2>
 
         {cartItems.length === 0 && !orderId ? (
-          <div className="flex flex-col items-center justify-center rounded-2xl border border-[#eee5d8] bg-white p-12 text-center shadow-sm">
-            <ShoppingBag size={48} className="text-[#c8a45d] mb-4" />
-            <h2 className="text-xl font-bold text-[#101010]">Your checkout is inactive</h2>
-            <p className="mt-2 text-sm text-slate-500 max-w-sm">
+          <div className="flex flex-col items-center justify-center rounded-2xl border border-[#eee5d8] bg-white p-4 text-center shadow-sm">
+            <ShoppingBag size={48} className="text-[#c8a45d] mb-2" />
+            <h2 className="text-xl font-bold">Your checkout is inactive</h2>
+            <p className="mt-2 text-sm max-w-sm">
               Your cart is empty. Please add some wellness products to checkout.
             </p>
             <Link
               href="/products"
-              className="mt-6 inline-flex h-10 items-center justify-center rounded-md bg-[#313b30] px-6 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#172015]"
+              className="mt-2 inline-flex h-10 items-center justify-center rounded-md bg-[#313b30] px-6 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#172015]"
             >
               Browse Products
             </Link>
           </div>
         ) : (
-          <div className="grid gap-8 lg:grid-cols-[1fr_380px] xl:grid-cols-[1fr_420px] items-start">
+          <div className="grid gap-4 lg:grid-cols-[1fr_380px] xl:grid-cols-[1fr_420px] items-start">
             {/* Left Side: Shipping Address & Payment Form */}
             <div className="space-y-6">
               {/* Form Block */}
-              <div className="rounded-2xl border border-[#eee5d8] bg-white p-6 shadow-[0_8px_24px_rgba(49,59,48,0.02)]">
-                <h2 className="flex items-center gap-2 text-lg font-bold border-b border-[#eee5d8] pb-4 mb-5">
-                  <MapPin size={20} className="text-[#313b30]" />
+              <div className="rounded-2xl border border-[#eee5d8] bg-white p-2 shadow-[0_8px_24px_rgba(49,59,48,0.02)]">
+                <h2 className="flex items-center gap-2 text-lg font-bold border-b border-[#eee5d8] pb-4 mb-2">
+                  <MapPin size={20} className="" />
                   Shipping Destination
                 </h2>
 
@@ -231,7 +222,7 @@ export default function CheckoutPage() {
                           required
                         />
                       </label>
-                      <label className="block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
+                      <label className="block text-xs font-bold uppercase tracking-wide">
                         Postal Code
                         <input
                           className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium outline-none focus:border-[#8d6a3a] bg-[#faf8f4] rounded-md"
@@ -245,7 +236,7 @@ export default function CheckoutPage() {
                       </label>
                     </div>
 
-                    <label className="block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
+                    <label className="block text-xs font-bold uppercase tracking-wide">
                       Street Address
                       <input
                         className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium  outline-none focus:border-[#8d6a3a] bg-[#faf8f4] rounded-md"
@@ -259,7 +250,7 @@ export default function CheckoutPage() {
                     </label>
 
                     <div className="grid grid-cols-3 gap-4">
-                      <label className="block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
+                      <label className="block text-xs font-bold uppercase tracking-wide">
                         City
                         <input
                           className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium outline-none focus:border-[#8d6a3a] bg-[#faf8f4] rounded-md"
@@ -270,7 +261,7 @@ export default function CheckoutPage() {
                           required
                         />
                       </label>
-                      <label className="block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
+                      <label className="block text-xs font-bold uppercase tracking-wide">
                         State
                         <input
                           className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium  outline-none focus:border-[#8d6a3a] bg-[#faf8f4] rounded-md"
@@ -281,7 +272,7 @@ export default function CheckoutPage() {
                           required
                         />
                       </label>
-                      <label className="block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
+                      <label className="block text-xs font-bold uppercase tracking-wide">
                         Country
                         <input
                           className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium outline-none focus:border-[#8d6a3a] bg-[#faf8f4] rounded-md"
@@ -297,7 +288,7 @@ export default function CheckoutPage() {
                     <button
                       type="submit"
                       disabled={isPlacingOrder}
-                      className="w-full mt-6 h-12 flex items-center justify-center gap-2 rounded-xl bg-[#313b30] text-sm font-bold text-white transition-colors hover:bg-[#1a2119] cursor-pointer"
+                      className="w-full mt-2 py-2 flex items-center justify-center gap-2 rounded-xl bg-[#313b30] text-sm font-bold text-white transition-colors hover:bg-[#1a2119] cursor-pointer"
                     >
                       <LockKeyhole size={16} />
                       {isPlacingOrder ? "Placing Order..." : "Confirm Shipping & Place Order"}
@@ -309,11 +300,11 @@ export default function CheckoutPage() {
                       <p className="text-xs font-bold text-[#516a35] uppercase tracking-wide">
                         Order Created Successfully!
                       </p>
-                      <p className="text-xs mt-1 text-slate-600">
+                      <p className="text-xs mt-1">
                         Order ID: <code className="font-mono bg-white/60 px-1 py-0.5 rounded">{orderId}</code>
                       </p>
                       <div className="mt-4 pt-3 border-t border-[#516a35]/10 text-xs">
-                        <p className="font-bold text-[#313b30]">Deliver To:</p>
+                        <p className="font-bold">Deliver To:</p>
                         <p className="mt-1 text-slate-700">
                           {shippingAddress.label} • {shippingAddress.street}, {shippingAddress.city},{" "}
                           {shippingAddress.state} - {shippingAddress.postalCode},{" "}
@@ -323,7 +314,7 @@ export default function CheckoutPage() {
                     </div>
 
                     <div className="space-y-3 pt-2">
-                      <p className="text-sm font-bold text-slate-700">Select payment method:</p>
+                      <p className="text-sm font-bold">Select payment method:</p>
                       <RazorpayCheckout
                         orderId={orderId}
                         token={token}
@@ -351,8 +342,8 @@ export default function CheckoutPage() {
 
             {/* Right Side: Order Summary */}
             <aside className="space-y-6 lg:sticky lg:top-24">
-              <div className="rounded-2xl border border-[#eee5d8] bg-white p-6 shadow-[0_8px_24px_rgba(49,59,48,0.02)]">
-                <h2 className="text-lg font-bold text-[#1a1a1a] mb-5">Order Summary</h2>
+              <div className="rounded-2xl border border-[#eee5d8] bg-white p-2 shadow-[0_8px_24px_rgba(49,59,48,0.02)]">
+                <h2 className="text-lg font-bold mb-5">Order Summary</h2>
 
                 {/* Items List */}
                 <div className="max-h-60 overflow-y-auto divide-y divide-[#eee5d8] pr-2 scrollbar-thin">
@@ -362,12 +353,12 @@ export default function CheckoutPage() {
                         <Image src={item.image} alt={item.name} fill className="object-cover" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="font-bold text-[#1a1a1a] truncate leading-tight">{item.name}</p>
+                        <p className="font-bold truncate leading-tight">{item.name}</p>
                         <p className="mt-1 text-slate-400 font-semibold">
                           {formatCurrency(item.price)} × {item.quantity}
                         </p>
                       </div>
-                      <span className="font-bold text-[#1a1a1a] shrink-0 text-right">
+                      <span className="font-bold shrink-0 text-right">
                         {formatCurrency(item.price * item.quantity)}
                       </span>
                     </div>
@@ -392,7 +383,7 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between">
                     <span>Estimated Tax (5%)</span>
-                    <span className="font-bold text-[#1a1a1a]">{formatCurrency(estimatedTax)}</span>
+                    <span className="font-bold">{formatCurrency(estimatedTax)}</span>
                   </div>
 
                   <div className="mt-4 border-t border-[#eee5d8] pt-4 flex items-center justify-between ">
@@ -408,7 +399,7 @@ export default function CheckoutPage() {
                     <span>SSL Secure Checkout</span>
                   </div>
                   <div className="flex items-center gap-1 text-[10px] font-semibold">
-                    <Truck size={14} className="text-slate-500" />
+                    <Truck size={14} className="" />
                     <span>Insured Delivery</span>
                   </div>
                 </div>
