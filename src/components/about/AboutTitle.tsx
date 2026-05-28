@@ -11,10 +11,10 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
   className
 }) => {
   return (
-    <div className="flex flex-col items-center justify-center bg-[#f7f2ea] ">
+    <div className="flex flex-col items-center justify-center ">
       {/* Top Line + Title + Top Line */}
       <div className="flex items-center gap-4">
-        <div className="w-15 h-[1px] bg-[#d8cec0]" />
+        <div className="w-15 h-[1px]" />
 
         <h2
             className={`
