@@ -5,6 +5,7 @@ import Image from "next/image";
 import banner_image from "@/assets/about_new/about_banner.webp"
 import BookButton from "../ui/BookButton";
 import GreenButton from "../ui/GreenButton";
+import lotus from "@/assets/about/lotus.png";
 export default function AboutHero() {
   return (
     <section className="relative overflow-hidden">
@@ -23,6 +24,7 @@ export default function AboutHero() {
           <div className="max-w-[620px] pt-10 pb-12 md:pt-16 md:pb-16">
             {/* Small Label */}
             <div className="mb-5 flex items-center gap-3">
+              <Image src={lotus} width={20} height={20} className="h-full object-contain" />
               <span className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#d6a85f]">
                 About Ensis
               </span>
