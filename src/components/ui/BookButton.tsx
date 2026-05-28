@@ -31,7 +31,7 @@ export default function BookButton({ path, text,leftIcon, rightIcon, variant = '
       <Link
         href={path || ""}
         target="_blank"
-        className={`flex items-center gap-1.5 px-4 h-8 rounded-lg relative z-10 hover:scale-[1.02] transition-transform
+        className={`flex items-center justify-center gap-1.5 px-4 h-8 rounded-lg relative z-10 hover:scale-[1.02] transition-transform
           ${isGolden
             ? 'bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)]'
             : 'bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)]'

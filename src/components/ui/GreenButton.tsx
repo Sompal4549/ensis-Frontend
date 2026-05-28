@@ -33,7 +33,7 @@ export default function GreenButton({ path = '/book-a-stand', variant = 'golden'
         href={path}
         target="_blank"
         onClick={onClick}
-        className={`flex items-center gap-1.5 px-4 h-8 rounded-lg relative z-10 hover:scale-[1.02] transition-transform
+        className={`flex items-center gap-1.5 px-4 h-8 rounded-lg relative z-10 hover:scale-[1.02] transition-transform justify-center
           ${isGolden
             ? 'bg-gradient-to-r from-[#f0c040] via-[#c8922a] to-[#f0c040] shadow-[0_2px_12px_rgba(200,146,42,0.35)]'
             : 'bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)]'

@@ -48,11 +48,11 @@ export default function AboutHero() {
             </p>
 
             {/* Buttons */}
-            <div className="mt-8 flex flex-wrap gap-4">
-              <div className="flex-1">
+            <div className="mt-8 flex flex-wrap gap-2">
+              <div className="w-50">
                 <BookButton text="Our Journey" />
               </div>
-              <div className="flex-1">
+             <div className="w-50">
                 <GreenButton text="Explore Products" />
               </div>
 
