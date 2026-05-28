@@ -53,7 +53,7 @@ const AboutWellnessSection = () => {
 
           {/* Center Content */}
           <div className=" px-6 py-7 flex flex-col justify-center">
-            <span className="text-[10px] uppercase tracking-[2px] bg-[#e1b271] border-[#e29222] border text-center rounded-2xl text-[#5e3b0a] inline-block font-semibold mb-2 w-25 ">
+            <span className="text-[10px] uppercase tracking-[2px] bg-[#e5c18e] border-[#e29222] border text-center rounded-2xl text-[#5e3b0a] inline-block font-semibold mb-2 w-25 ">
               Our Story
             </span>
 
@@ -86,7 +86,7 @@ const AboutWellnessSection = () => {
               Our Core Values
             </h3>
 
-            <div className="space-y-4">
+            <div className="space-y-2">
               {values.map((item, index) => (
                 <div key={index} className="flex items-center gap-3">
                   {/* Icon Placeholder */}
@@ -109,7 +109,7 @@ const AboutWellnessSection = () => {
             {stats.map((item, index) => (
               <div
                 key={index}
-                className="flex items-center gap-3 border-r border-white/10 last:border-r-0 pr-4"
+                className="flex items-center gap-3 border-r border-[#aa8f47] last:border-r-0 px-4"
               >
                 {/* Icon Placeholder */}
                 <div className="w-10 h-10">

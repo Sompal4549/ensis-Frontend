@@ -9,7 +9,7 @@ import Image from "next/image";
 import { Container } from "../ui/Container";
 const stats = [
   {
-    image:twenty,
+    image: twenty,
     number: "20+",
     label: "Years Experience",
   },
@@ -21,7 +21,7 @@ const stats = [
   {
     number: "200+",
     label: "Happy Clients",
-    image:  twohundred
+    image: twohundred
   },
   {
     number: "28",
@@ -31,42 +31,44 @@ const stats = [
   {
     number: "In-house",
     label: "Manufacturing",
-    image:in_house
+    image: in_house
   },
   {
     number: "Pan India",
     label: "Installation & Support",
-    image:pan_india
+    image: pan_india
   },
 ];
 
 export default function StatsStrip() {
   return (
-    <Container>
-      <div className="mx-auto flex w-full max-w-[1500px] items-center overflow-x-auto py-5">
-        {stats.map((item, index) => (
-          <div
-            key={index}
-            className="flex  flex-1 items-center gap-3 border-r border-black/10 px-4 last:border-r-0 md:min-w-0"
-          >
-            {/* White Icon Placeholder */}
-            <div className="h-9 w-9">
-            <Image src={item.image} alt={item.label} height={36} width={36} className="object-contain" />
-                </div>
+    <section className="bg-[#f2ede6]">
+      <Container className="">
+        <div className="mx-auto flex w-full max-w-[1500px] items-center overflow-x-auto py-2 ">
+          {stats.map((item, index) => (
+            <div
+              key={index}
+              className="flex  flex-1 items-center gap-3 border-r border-black/10 px-4 last:border-r-0 md:min-w-0"
+            >
+              {/* White Icon Placeholder */}
+              <div className="h-9 w-9">
+                <Image src={item.image} alt={item.label} height={36} width={36} className="object-contain" />
+              </div>
 
-            {/* Content */}
-            <div className="flex flex-col">
-              <span className="text-xs font-semibold leading-none text-black">
-                {item.number}
-              </span>
+              {/* Content */}
+              <div className="flex flex-col">
+                <span className="text-xs font-semibold leading-none text-black">
+                  {item.number}
+                </span>
 
-              <span className="mt-1 text-[10px] font-medium leading-[1.3] text-black/70">
-                {item.label}
-              </span>
+                <span className="mt-1 text-[10px] font-medium leading-[1.3] text-black/70">
+                  {item.label}
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    </Container>
+          ))}
+        </div>
+      </Container>
+    </section>
   );
 }
