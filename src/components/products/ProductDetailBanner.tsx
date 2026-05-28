@@ -97,7 +97,7 @@ export default function ProductHeroBanner({
             </h1>
 
             {product.description && (
-              <p className="text-sm leading-relaxed mb-6 max-w-[340px] text-[#f5ede0]/80">
+              <p className="text-sm leading-relaxed mb-6 max-w-[340px] text-white">
                 {product.description}
               </p>
             )}

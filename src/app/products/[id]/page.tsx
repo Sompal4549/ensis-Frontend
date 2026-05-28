@@ -255,6 +255,7 @@ export default async function ProductPage({
         </section> */}
       </Container>
    
+                      <RealSpacesCarousel images={product.images} />
 <Container>
 
         <section className="mt-2">
@@ -269,7 +270,6 @@ export default async function ProductPage({
         </section>
 
               </Container>
-                      <RealSpacesCarousel images={product.images} />
 <Planning />
 
           <FaqSection />

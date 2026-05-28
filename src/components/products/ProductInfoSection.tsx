@@ -74,7 +74,7 @@ export default function ProductInfoSection() {
 
         {/* Left: product image with callout labels */}
         <div className="">
-          <h2 className="font-serif text-2xl leading-tight mb-4">Product Specifications</h2>
+          <h2 className="font-semibold text-2xl leading-tight mb-4">Product Specifications</h2>
           <div className="relative w-full">
             <Image
               src={dimensions}
@@ -108,7 +108,7 @@ export default function ProductInfoSection() {
         {/* Right: what's included + need customization */}
         <div className="flex flex-col gap-4 p-2">
           {/* What's Included */}
-          <div className="bg-white rounded-lg border border-[#e2d8c8] p-4">
+          <div className="rounded-lg border border-[#e2d8c8] p-4">
             <h3 className="font-semibold text-sm mb-3">What's Included</h3>
             <ul className="space-y-2">
               {whatsIncluded.map((item, i) => (
@@ -121,7 +121,7 @@ export default function ProductInfoSection() {
           </div>
 
           {/* Need Customization */}
-          <div className="bg-white rounded-lg border border-[#e2d8c8] p-4">
+          <div className="rounded-lg border border-[#e2d8c8] p-4">
             <div className="flex items-start gap-3">
               <div className="w-25 h-15 flex items-center justify-center">
                 <Image src={need_customization} alt="customization" width={48} height={48} className="object-fill" />
@@ -131,7 +131,7 @@ export default function ProductInfoSection() {
                 <p className="text-[10px] mt-1 leading-snug">
                   We create custom Panchkarma tables as per your therapy requirements.
                 </p>
-            <button className="w-full flex items-center justify-center gap-1.5 border border-[#8d6a3a] rounded-md py-1 text-[11px] font-bold uppercase tracking-wider text-[#8d6a3a] hover:bg-[#8d6a3a] hover:text-white transition-colors mt-2">
+            <button className="w-full flex items-center justify-center gap-1.5 border rounded-md py-1 text-[11px] font-bold uppercase tracking-wider transition-colors mt-2 cursor-pointer">
               Contact Our Experts <ArrowRight size={12} />
             </button>
               </div>
@@ -174,8 +174,8 @@ export default function ProductInfoSection() {
         </div>
 
         {/* Size Options */}
-        <div className="border-r border-[#e2d8c8] px-5">
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.15em] mb-4">Size Options</h3>
+        <div className="px-5">
+          <h3 className="text-[10px] font-bold uppercase tracking-[0.15em] mb-4 text-[#8d6a3a]">Size Options</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {sizeOptions.map((s) => (
               <div
@@ -187,7 +187,7 @@ export default function ProductInfoSection() {
                 }`}
               >
                 <p className="text-[11px] font-semibold leading-tight">{s.label}</p>
-                <p className="text-[10px] mt-0.5">{s.desc}</p>
+                <p className="text-[10px] mt-2">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -215,7 +215,7 @@ export default function ProductInfoSection() {
 
         {/* Bulk Order */}
         <div className="px-5 flex flex-col justify-center">
-          <div className="bg-white rounded-lg border border-[#e2d8c8] p-4">
+          <div className="rounded-lg border border-[#e2d8c8] p-4">
             <h3 className="font-semibold text-sm leading-tight mb-1">Bulk Order / Project?</h3>
             <p className="text-[11px] leading-snug mb-4">
               We offer special pricing for bulk orders and turnkey wellness projects.

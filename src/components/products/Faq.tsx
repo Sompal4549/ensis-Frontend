@@ -30,14 +30,19 @@ const faqs = [
     answer:
       "Our tables are designed for Abhyanga, Shirodhara, Panchkarma, Pizhichil, and other traditional Ayurvedic therapies. Custom configurations are available for specific treatment needs.",
   },
+   {
+    question: "Is the product suitable for all therapies?",
+    answer:
+      "Our tables are designed for Abhyanga, Shirodhara, Panchkarma, Pizhichil, and other traditional Ayurvedic therapies. Custom configurations are available for specific treatment needs.",
+  },
 ];
 
 export default function FaqSection() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <Container>
-      <p className="text-sm font-bold uppercase  text-[#8d6a3a] mb-2">
+    <Container className="py-12">
+      <p className="text-sm font-bold uppercase  text-[#8d6a3a] mb-6 ">
         Frequently Asked Questions
       </p>
 
@@ -48,11 +53,11 @@ export default function FaqSection() {
     <button
       key={i}
       onClick={() => setOpen(open === i ? null : i)}
-      className={`flex items-center justify-between gap-3 px-4 py-3 rounded-md border bg-white text-left transition-colors font-semibold ${
+      className={`flex items-center justify-between gap-3 px-4 py-3 rounded-md border bg-[#f5f0ea] text-left transition-colors font-semibold ${
         open === i ? "border-[#8d6a3a]" : "border-[#d4c4a8]"
       }`}
     >
-      <span className="text-[11px] font-semibold leading-snug">
+      <span className="text-xs font-semibold leading-snug">
         {faq.question}
       </span>
 

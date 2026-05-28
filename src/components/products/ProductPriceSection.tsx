@@ -49,7 +49,7 @@ const ProductPriceSection = ({
             {wished ? "In wishlist" : "Add to wishlist"}
         </button>
       </div>
-            <h2 className="mt-2 text-xl font-semibold leading-tight text-[#001b10] md:text-2xl max-w-50">
+            <h2 className="mt-2 text-xl font-semibold leading-tight text-[#001b10] md:text-2xl max-w-60 line-clamp-2">
               {product.title}
             </h2>
 

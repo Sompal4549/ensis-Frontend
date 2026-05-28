@@ -26,13 +26,13 @@ const Planning = () => {
     alt="planning bg"
     fill
     src={planning}
-    className="object-fill object-center"
+    className="object-cover object-center"
   />
 
   {/* Blend Gradient */}
 </div>
   <Container className="relative z-10">
-    <div className="flex flex-col lg:flex-row lg:items-center py-10 lg:gap-40">
+    <div className="flex flex-col lg:flex-row lg:items-center py-16 lg:gap-40">
 
       {/* Left Content */}
       <div className="max-w-xl">
