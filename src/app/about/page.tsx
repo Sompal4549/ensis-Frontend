@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 const AboutEnsisSection = dynamic(() => import("@/components/about/AboutEnsis").then((mod) => mod.default));
-const AboutHero = dynamic(() => import("@/components/about/Banner").then((mod) => mod.default));
+const AboutHero = dynamic(() => import("@/components/about/AboutBanner").then((mod) => mod.default));
 const IndustriesWeServe = dynamic(() => import("@/components/about/Industries").then((mod) => mod.default));
 const OurProductsSection = dynamic(() => import("@/components/about/OurProducts").then((mod) => mod.default));
 const TurnkeyProcess = dynamic(() => import("@/components/about/TrunkeyProcess").then((mod) => mod.default));
