@@ -8,7 +8,7 @@ const FounderSection: React.FC = () => {
     <section className="relative">
         <Image alt="founder" src={founder} width={500} height={500} className="object-cover absolute top-0 left-0  bottom-0 w-[25%]"/>
  <Container className="relative z-10 py-0!">
-      <div className=" flex flex-col md:flex-row items-center">
+      <div className=" flex flex-col md:flex-row items-center lg:pr-20">
 
         {/* Left: Person Image Placeholder */}
         <div className="flex-shrink-0 w-full md:w-[260px] lg:w-[300px] bg-[#e8e0d0] flex items-end justify-center overflow-hidden min-h-[260px] md:min-h-0">
@@ -22,7 +22,7 @@ const FounderSection: React.FC = () => {
 
           {/* Label */}
           <p
-            className="text-[10px] md:text-[11px] tracking-[0.25em] uppercase text-black mb-3"
+            className="font-semibold text-sm uppercase text-black mb-3"
           >
             Founder &amp; Vision
           </p>

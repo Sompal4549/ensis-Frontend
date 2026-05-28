@@ -27,7 +27,7 @@ const YouMightCarousel: React.FC<CarouselProps> = ({
       {/* Prev button */}
       <button
         onClick={scrollPrev}
-        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-3 z-10
+        className="absolute -left-10 top-1/2 -translate-y-1/2 -translate-x-3 z-10
           bg-white border border-gray-200 shadow-md rounded-full p-1.5
           opacity-0 group-hover:opacity-100 transition-opacity
           hover:bg-gray-50 active:scale-95"
@@ -57,7 +57,7 @@ const YouMightCarousel: React.FC<CarouselProps> = ({
       {/* Next button */}
       <button
         onClick={scrollNext}
-        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-3 z-10
+        className="absolute right-[-40px] top-1/2 -translate-y-1/2 translate-x-3 z-10
           bg-white border border-gray-200 shadow-md rounded-full p-1.5
           opacity-0 group-hover:opacity-100 transition-opacity
           hover:bg-gray-50 active:scale-95"

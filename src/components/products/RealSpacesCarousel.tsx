@@ -65,7 +65,7 @@ export default function RealSpacesCarousel({
             className="
               hidden lg:flex
               absolute
-              left-[-20px]
+              left-[-60px]
               top-1/2
               -translate-y-1/2
               z-20
@@ -134,7 +134,7 @@ export default function RealSpacesCarousel({
             className="
               hidden lg:flex
               absolute
-              right-[-20px]
+              right-[-60px]
               top-1/2
               -translate-y-1/2
               z-20
