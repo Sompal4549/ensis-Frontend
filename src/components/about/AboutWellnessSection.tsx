@@ -33,7 +33,7 @@ const AboutWellnessSection = () => {
   ];
 
   return (
-    <section className="w-full relative">
+    <section className="w-full relative mt-2">
         <div className="absolute left-0 w-[35%] top-0 bottom-8 z-10">
             <Image
               src={our_story_image}
@@ -104,7 +104,7 @@ const AboutWellnessSection = () => {
         </div>
 
         {/* Bottom Stats Bar */}
-        <div className="mt-4 bg-[#033d2f] rounded-2xl py-5 px-5 border-3 border-[#e8c37a]">
+        <div className="mt-4 bg-[#03261b] rounded-2xl py-5 px-5 border-3 border-[#e8c37a]">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-6">
             {stats.map((item, index) => (
               <div

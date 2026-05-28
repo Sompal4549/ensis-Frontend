@@ -35,7 +35,7 @@ const FounderSection: React.FC = () => {
           </h2>
 
           {/* Body Copy */}
-          <div className="text-black text-sm md:text-[13.5px] leading-relaxed space-y-3 max-w-xl mb-6">
+          <div className="text-black text-sm md:text-[13.5px] leading-relaxed space-y-3 max-w-xl">
             <p>
               At ENSIS, we believe a well-designed wellness space has the power to heal,
               energize and transform lives. Our focus is on creating spaces that are authentic
@@ -52,7 +52,7 @@ const FounderSection: React.FC = () => {
           <div className="flex flex-col items-end">
 
             {/* Signature Image Placeholder */}
-            <div className="w-[140px] h-[48px] flex items-center ">
+            <div className="w-[140px] h-[48px] mb-4 flex items-center ">
               {/* Replace this div with your <img src="..." alt="Jomy Thomas signature" className="w-full h-auto" /> */}
               <div className="w-full h-full rounded flex items-center justify-center text-[#b0a090] text-[10px] tracking-widest uppercase select-none">
                 <Image alt="signature"  src={signature} width={150} height={50} className="object-contain"/>
@@ -61,16 +61,14 @@ const FounderSection: React.FC = () => {
 
             {/* Name & Title */}
             <div>
-              <p className="text-black font-semibold text-sm md:text-[13px] leading-tight">
-                Jomy Thomas
-              </p>
-              <p className="text-black text-[11px] md:text-[12px] leading-snug mt-0.5">
+             
+              <p className="text-black text-xs mt-0.5">
                 Founder
               </p>
-              <p className="text-black text-[11px] md:text-[12px] leading-snug">
+              <p className="text-black text-xs md:text-[12px] leading-snug">
                 Design House India Pvt. Ltd.
               </p>
-              <p className="text-black text-[11px] md:text-[12px] leading-snug">
+              <p className="text-black text-xs md:text-[12px] leading-snug">
                 (ENSIS – Wellness Division)
               </p>
             </div>
