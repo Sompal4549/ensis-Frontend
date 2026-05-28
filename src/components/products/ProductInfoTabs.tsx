@@ -46,7 +46,7 @@ export default function ProductInfoSection() {
     <Container>
     <div className="mt-2 flex overflow-hidden rounded-xl border border-[#e2d8c8]">
       {/* Sidebar */}
-      <nav className="flex w-[200px] shrink-0 flex-col ">
+      <nav className="flex w-[200px] shrink-0 flex-col border-r-2 border-r-[#8d6a3a]">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = active === tab.id;
@@ -56,8 +56,8 @@ export default function ProductInfoSection() {
               onClick={() => setActive(tab.id)}
               className={`flex items-center gap-2.5 border-b border-[#e8dfd0] px-4 py-3.5 text-left text-[11px] font-semibold tracking-[0.12em] transition-colors last:border-b-0 ${
                 isActive
-                  ? "border-r-2 border-r-[#8d6a3a] bg-white text-[#8d6a3a]"
-                  : "text-[#6b6b6b] hover:bg-white/60"
+                  ? " bg-white text-[#8d6a3a] font-bold"
+                  : "text-[#6b6b6b] hover:bg-white/60 font-normal"
               }`}
             >
               <Icon size={14} className={isActive ? "text-[#8d6a3a]" : "text-[#9a9a9a]"} />
@@ -186,8 +186,8 @@ export default function ProductInfoSection() {
   )}
 
   {active === "dimensions" && (
-    <div className="p-6">
-      <h3 className="mb-6 text-2xl font-semibold">
+    <div className="p-2">
+      <h3 className="mb-2 text-2xl font-semibold">
         Dimensions
       </h3>
 
@@ -195,25 +195,25 @@ export default function ProductInfoSection() {
         <table className="w-full text-sm">
           <tbody>
             <tr className="border-b border-[#e8dfd0]">
-              <td className="p-4 font-medium">Length</td>
-              <td className="p-4">84 Inches</td>
+              <td className="p-2 font-medium">Length</td>
+              <td className="p-2">84 Inches</td>
             </tr>
 
             <tr className="border-b border-[#e8dfd0]">
-              <td className="p-4 font-medium">Width</td>
-              <td className="p-4">30 Inches</td>
+              <td className="p-2 font-medium">Width</td>
+              <td className="p-2">30 Inches</td>
             </tr>
 
             <tr className="border-b border-[#e8dfd0]">
-              <td className="p-4 font-medium">Height</td>
-              <td className="p-4">32 Inches</td>
+              <td className="p-2 font-medium">Height</td>
+              <td className="p-2">32 Inches</td>
             </tr>
 
             <tr>
-              <td className="p-4 font-medium">
+              <td className="p-2 font-medium">
                 Custom Sizes
               </td>
-              <td className="p-4">
+              <td className="p-2">
                 Available On Request
               </td>
             </tr>
@@ -224,12 +224,12 @@ export default function ProductInfoSection() {
   )}
 
   {active === "material" && (
-    <div className="p-6">
-      <h3 className="mb-6 text-2xl font-semibold">
+    <div className="p-2">
+      <h3 className="mb-2 text-2xl font-semibold">
         Material & Care
       </h3>
 
-      <div className="space-y-6 text-sm">
+      <div className="space-y-2 text-sm">
         <div>
           <h4 className="mb-2 font-semibold">
             Materials Used
