@@ -6,7 +6,7 @@ import { Container } from "../ui/Container";
 const FounderSection: React.FC = () => {
   return (
     <section className="relative">
-        <Image alt="founder" src={founder} width={500} height={500} className="object-cover absolute top-0 left-0  bottom-0 w-[25%]"/>
+        <Image alt="founder" src={founder} width={500} height={500} className="hidden md:block object-cover absolute top-0 left-0  bottom-0 w-[25%]"/>
  <Container className="relative z-10 py-0!">
       <div className=" flex flex-col md:flex-row items-center lg:pr-20">
 
@@ -14,11 +14,12 @@ const FounderSection: React.FC = () => {
         <div className="flex-shrink-0 w-full md:w-[260px] lg:w-[300px] bg-[#e8e0d0] flex items-end justify-center overflow-hidden min-h-[260px] md:min-h-0">
           {/* Replace this div with your <img> tag */}
           <div className="w-full h-full flex items-center justify-center min-h-[260px] md:min-h-full">
+             <Image alt="founder" src={founder} width={500} height={500} className="object-cover block md:hidden" />
           </div>
         </div>
 
         {/* Right: Content */}
-        <div className="flex-1 flex flex-col justify-center px-8 md:px-10 lg:px-14 py-10 md:py-10">
+        <div className="flex-1 flex flex-col justify-center px-0 md:px-10 lg:px-14 py-10 md:py-10">
 
           {/* Label */}
           <p

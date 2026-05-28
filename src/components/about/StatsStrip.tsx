@@ -44,11 +44,11 @@ export default function StatsStrip() {
   return (
     <section className="bg-[#f2ede6]">
       <Container className="">
-        <div className="mx-auto flex w-full max-w-[1500px] items-center overflow-x-auto py-2 ">
+       <div className="mx-auto grid w-full max-w-[1500px] gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 py-2">
           {stats.map((item, index) => (
             <div
               key={index}
-              className="flex  flex-1 items-center gap-3 border-r border-black/10 px-4 last:border-r-0 md:min-w-0"
+              className="flex  flex-1 items-center gap-3 md:border-r border-black/10 px-4 last:border-r-0 md:min-w-0"
             >
               {/* White Icon Placeholder */}
               <div className="h-9 w-9">

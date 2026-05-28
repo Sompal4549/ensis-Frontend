@@ -16,7 +16,7 @@ export default function AboutHero() {
         bg-[url('/your-image.jpg')]
       */}
       <Image priority alt="about banner" src={banner_image} fill className="object-cover object-right absolute inset-0" />
-      <Container>
+      <Container className="bg-black md:bg-transparent">
       <div className="relative min-h-[470px] w-full ">
         {/* Overlay */}
         <div className="absolute inset-0 " />

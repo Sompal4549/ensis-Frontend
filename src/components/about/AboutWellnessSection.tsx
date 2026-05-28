@@ -34,7 +34,7 @@ const AboutWellnessSection = () => {
 
   return (
     <section className="w-full relative mt-2">
-        <div className="absolute left-0 w-[40%] top-0 bottom-8 z-10">
+        <div className="absolute left-0 w-[100%] md:w-[40%] top-0 h-50 md:h-full md:bottom-8 z-10">
             <Image
               src={our_story_image}
               alt="Wellness Building"
@@ -42,7 +42,7 @@ const AboutWellnessSection = () => {
             />
         </div>
   {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0)_0%,rgba(255,255,255,0.1)_20%,rgba(255,255,255,0.8)_50%,rgba(255,255,255,1)_100%)] z-10" /> */}
-      <Container className="relative z-20 p-0! ">
+      <Container className="relative z-20 md:p-0! md:pt-0 pt-[50%]">
        <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1.4fr_0.8fr] gap-4 items-stretch overflow-hidden h-full">
   {/* Gradient Overlay */}
 
@@ -52,12 +52,12 @@ const AboutWellnessSection = () => {
           </div>
 
           {/* Center Content */}
-          <div className=" px-6 py-7 flex flex-col justify-center">
+          <div className=" md:px-6 md:py-7 flex flex-col justify-center">
             <span className="text-[10px] uppercase tracking-[2px] bg-[#e5c18e] border-[#e29222] border text-center rounded-2xl text-[#5e3b0a] inline-block font-semibold mb-2 w-25 ">
               Our Story
             </span>
 
-            <h2 className="text-[28px] leading-[1.15] font-semibold ">
+            <h2 className="text-xl md:text-[28px] leading-[1.15] font-semibold ">
               From Vision to India’s
               <br/> Wellness Manufacturing Leader
             </h2>
@@ -111,7 +111,7 @@ const AboutWellnessSection = () => {
             {stats.map((item, index) => (
               <div
                 key={index}
-                className="flex items-center gap-3 border-r border-[#aa8f47] last:border-r-0 px-4"
+                className="flex items-center gap-3 md:border-r border-[#aa8f47] last:border-r-0 px-4"
               >
                 {/* Icon Placeholder */}
                 <div className="w-10 h-10">

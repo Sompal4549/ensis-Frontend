@@ -1,6 +1,6 @@
-import AboutWellnessSection from "@/components/about/AboutWellnessSection";
+const AboutWellnessSection = dynamic(() => import("@/components/about/AboutWellnessSection").then((mod) => mod.default)) ;
 import FounderSection from "@/components/about/FounderSection";
-import StatsStrip from "@/components/about/StatsStrip";
+const StatsStrip= dynamic(()=>import("@/components/about/StatsStrip").then((mod)=>mod.default));
 import dynamic from "next/dynamic";
 const AboutEnsisSection = dynamic(() => import("@/components/about/AboutEnsis").then((mod) => mod.default));
 const AboutHero = dynamic(() => import("@/components/about/AboutBanner").then((mod) => mod.default));

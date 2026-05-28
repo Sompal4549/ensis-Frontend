@@ -23,7 +23,7 @@ export default function WellnessBanner() {
       
 
         {/* Content */}
-        <div className="relative z-10 grid min-h-[180px] grid-cols-1 items-center gap-8 px-6 md:grid-cols-2 md:px-0 lg:px-0">
+        <div className="relative z-10 grid min-h-[180px] grid-cols-1 items-center gap-8 px-0 md:grid-cols-2 md:px-0 lg:px-0">
           {/* Left Side */}
           <div className="max-w-xl">
             <h2 className="    text-[28px]
