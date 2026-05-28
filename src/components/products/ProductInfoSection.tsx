@@ -92,7 +92,7 @@ export default function ProductInfoSection() {
           <table className="w-full text-[11px]">
             <tbody>
               {specs.map((row, i) => (
-                <tr key={i} className={`border-b border-[#d4c4a8]`}>
+                <tr key={i} className={`border-b border-[#d4c4a8] text-black`}>
                   <td className="py-1.5 px-1.5 font-semibold align-top w-[44%] leading-snug">
                     {row.label}
                   </td>
@@ -109,11 +109,11 @@ export default function ProductInfoSection() {
         <div className="flex flex-col gap-4 p-2">
           {/* What's Included */}
           <div className="rounded-lg border border-[#e2d8c8] p-4">
-            <h3 className="font-semibold text-sm mb-3">What's Included</h3>
+            <h3 className="font-semibold text-sm mb-3 border-b pb-1 border-[#d4c4a8]">What's Included</h3>
             <ul className="space-y-2">
               {whatsIncluded.map((item, i) => (
-                <li key={i} className="flex items-start gap-2 text-[11px] leading-snug">
-                  <Check size={13} className="shrink-0 mt-0.5 text-[#8d6a3a]" />
+                <li key={i} className="flex items-start gap-2 text-[11px] leading-snug text-black">
+                  <Check size={14} className="shrink-0 mt-0.5 text-[#8d6a3a] font-semibold" />
                   {item}
                 </li>
               ))}
