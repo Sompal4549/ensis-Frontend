@@ -18,9 +18,7 @@ import arrow from "@/assets/icons/arrow.png"
 const ContactHero: React.FC = () => {
   return (
     <section className="w-full bg-[#e9dfd3] overflow-hidden relative">
-      <Image src={aboutHeroImage} alt="About Us" className="w-full h-full object-cover absolute top-0 bottom-0 right-0 left-0" priority />
-      <Container className="grid min-h-[80dvh] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-20 items-center">
-        <div className="absolute inset-0 pointer-events-none  z-20 w-[100%] block lg:hidden"
+        <div className="absolute inset-0 pointer-events-none  z-30 w-[100%] block lg:hidden"
           style={{
             background: `
       linear-gradient(
@@ -33,7 +31,7 @@ const ContactHero: React.FC = () => {
       )
     `,
           }} />
- <div className="absolute inset-0 pointer-events-none backdrop-blur-[1px] z-20 w-[80%] lg:block hidden"
+ <div className="absolute inset-0 pointer-events-none backdrop-blur-[1px] z-30 w-[50%] lg:block hidden"
           style={{
             background: `
       linear-gradient(
@@ -46,9 +44,12 @@ const ContactHero: React.FC = () => {
       )
     `,
           }} />
+      <Image src={aboutHeroImage} alt="About Us" className="w-full h-full object-cover absolute top-0 bottom-0 right-0 left-0 z-20" priority />
+      <Container className="grid min-h-[80dvh] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-40 items-center">
+      
 
         {/* LEFT CONTENT */}
-        <div className="relative flex items-end md:items-center py-10 z-30 lg:top-0 bottom-0">
+        <div className="relative flex items-end md:items-center py-10 z-40 lg:top-0 bottom-0">
           {/* Content */}
           <div className="relative max-w-[600px] ">
 
