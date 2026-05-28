@@ -34,7 +34,7 @@ const AboutWellnessSection = () => {
 
   return (
     <section className="w-full relative mt-2">
-        <div className="absolute left-0 w-[35%] top-0 bottom-8 z-10">
+        <div className="absolute left-0 w-[40%] top-0 bottom-8 z-10">
             <Image
               src={our_story_image}
               alt="Wellness Building"
@@ -43,7 +43,7 @@ const AboutWellnessSection = () => {
         </div>
   {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0)_0%,rgba(255,255,255,0.1)_20%,rgba(255,255,255,0.8)_50%,rgba(255,255,255,1)_100%)] z-10" /> */}
       <Container className="relative z-20 p-0! ">
-       <div className="relative grid grid-cols-1 lg:grid-cols-[1.2fr_1.6fr_0.8fr] gap-4 items-stretch overflow-hidden h-full">
+       <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1.4fr_0.8fr] gap-4 items-stretch overflow-hidden h-full">
   {/* Gradient Overlay */}
 
           {/* Left Image */}
@@ -57,11 +57,12 @@ const AboutWellnessSection = () => {
               Our Story
             </span>
 
-            <h2 className="text-[28px] leading-[1.15] font-semibold max-w-[520px]">
+            <h2 className="text-[28px] leading-[1.15] font-semibold ">
               From Vision to India’s
               <br/> Wellness Manufacturing Leader
             </h2>
-
+<div className="max-w-[480px]">
+           
             <p className="text-xs font-semibold leading-6 mt-4">
               ENSIS, the wellness division of Design House India Pvt. Ltd.,
               was established in 2003 with a vision to create authentic,
@@ -78,6 +79,7 @@ const AboutWellnessSection = () => {
               Today, ENSIS is a preferred partner for clinics, hospitals,
               resorts, spas and wellness entrepreneurs across India.
             </p>
+             </div>
           </div>
 
           {/* Right Values Card */}

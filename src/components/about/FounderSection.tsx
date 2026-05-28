@@ -22,7 +22,7 @@ const FounderSection: React.FC = () => {
 
           {/* Label */}
           <p
-            className="font-semibold text-sm uppercase text-black mb-3"
+            className="font-medium text-sm uppercase text-black mb-3"
           >
             Founder &amp; Vision
           </p>
@@ -49,26 +49,26 @@ const FounderSection: React.FC = () => {
 
           {/* Signature + Name Row */}
         </div>
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col">
 
             {/* Signature Image Placeholder */}
-            <div className="w-[140px] h-[48px] mb-4 flex items-center ">
+            <div className="mb-2 flex items-center">
               {/* Replace this div with your <img src="..." alt="Jomy Thomas signature" className="w-full h-auto" /> */}
-              <div className="w-full h-full rounded flex items-center justify-center text-[#b0a090] text-[10px] tracking-widest uppercase select-none">
-                <Image alt="signature"  src={signature} width={150} height={50} className="object-contain"/>
+              <div className="w-full h-full rounded flex items-center select-none">
+                <Image alt="signature"  src={signature} width={150} height={50} className="object-fill"/>
               </div>
             </div>
 
             {/* Name & Title */}
             <div>
              
-              <p className="text-black text-xs mt-0.5">
+              <p className="text-black text-xs mb-1">
                 Founder
               </p>
-              <p className="text-black text-xs md:text-[12px] leading-snug">
+              <p className="text-black text-xs md:text-[12px] leading-snug mb-1">
                 Design House India Pvt. Ltd.
               </p>
-              <p className="text-black text-xs md:text-[12px] leading-snug">
+              <p className="text-black text-xs md:text-[12px] leading-snug mb-1">
                 (ENSIS – Wellness Division)
               </p>
             </div>
