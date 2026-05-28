@@ -1,3 +1,6 @@
+import AboutWellnessSection from "@/components/about/AboutWellnessSection";
+import FounderSection from "@/components/about/FounderSection";
+import StatsStrip from "@/components/about/StatsStrip";
 import dynamic from "next/dynamic";
 const AboutEnsisSection = dynamic(() => import("@/components/about/AboutEnsis").then((mod) => mod.default));
 const AboutHero = dynamic(() => import("@/components/about/AboutBanner").then((mod) => mod.default));
@@ -13,13 +16,16 @@ export default function About() {
   return (
     <>
     <AboutHero/>
-    <OurProductsSection />
-    <AboutEnsisSection/>
+    <StatsStrip/>
+    <AboutWellnessSection/>
+    {/* <OurProductsSection /> */}
+    {/* <AboutEnsisSection/> */}
     <WhyChooseEnsis/>
     <ExpertiseSection/>
     <TurnkeyProcess/>
     <IndustriesWeServe/>
     <Testimonials/>
+    <FounderSection />
     <WellnessBanner/>
     </>
   )
