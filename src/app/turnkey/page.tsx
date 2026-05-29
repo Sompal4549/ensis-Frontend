@@ -1,3 +1,4 @@
+import FacilitiesWeBuild from '@/components/turnkey/FacilitiesWeBuild'
 import TurnkeyHero from '@/components/turnkey/HeroBanner'
 import TrunkeyMeaning from '@/components/turnkey/TurnkeyMeaning'
 import TurnkeySolutionsSection from '@/components/turnkey/TurnkeySolutions'
@@ -10,6 +11,7 @@ const TurnkeySolutions = () => {
    <TurnkeyHero/>
    <TrunkeyMeaning/>
    <TurnkeySolutionsSection/>
+   <FacilitiesWeBuild/>
     </>
   )
 }
