@@ -42,9 +42,9 @@ export default function TurnkeyHero() {
             <div>
               <h1 className="text-[#1a2e1a] text-3xl lg:text-4xl  font-semibold leading-tight">
                 We Design, Build &amp; Launch
-              <h1 className="text-[#b8922a] text-3xl sm:text-4xl lg:text-4xl font-semibold leading-tight mt-1">
-                Complete Wellness Spaces
               </h1>
+              <h1 className="text-[#b8922a] text-3xl sm:text-4xl lg:text-[42px] font-semibold leading-tight mt-1">
+                Complete Wellness Spaces
               </h1>
             </div>
 
@@ -56,7 +56,7 @@ export default function TurnkeyHero() {
             </div>
 
             {/* Body copy */}
-            <p className="text-sm  max-w-lg">
+            <p className="text-sm  max-w-md leading-6 mb-4">
               From concept to commissioning, we deliver end-to-end{" "}
               <strong className="text-[#1a2e1a]">Panchakarma Centres</strong>,{" "}
               <strong className="text-[#1a2e1a]">Ayurveda Clinics</strong>,{" "}
@@ -85,7 +85,7 @@ export default function TurnkeyHero() {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-2">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-3">
               <BookButton text="REQUEST PROJECT PROPOSAL" />
                <GreenButton text="SCHEDULE SITE VISIT" />
             </div>
