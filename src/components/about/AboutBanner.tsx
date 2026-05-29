@@ -7,6 +7,7 @@ import BookButton from "../ui/BookButton";
 import GreenButton from "../ui/GreenButton";
 import lotus from "@/assets/about_new/about_lotus.png";
 import { Container } from "../ui/Container";
+
 export default function AboutHero() {
   return (
     <section className="relative overflow-hidden">

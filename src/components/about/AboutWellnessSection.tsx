@@ -42,8 +42,8 @@ const AboutWellnessSection = () => {
             />
         </div>
   {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0)_0%,rgba(255,255,255,0.1)_20%,rgba(255,255,255,0.8)_50%,rgba(255,255,255,1)_100%)] z-10" /> */}
-      <Container className="relative z-20 md:p-0! md:pt-0 pt-[50%]">
-       <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1.4fr_0.8fr] gap-4 items-stretch overflow-hidden h-full">
+      <Container className="relative z-20 md:p-0! md:pt-0 pt-[50%]  mb-12">
+       <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1.4fr_0.8fr] gap-4 items-stretch overflow-hidden h-full pb-10">
   {/* Gradient Overlay */}
 
           {/* Left Image */}
@@ -83,6 +83,8 @@ const AboutWellnessSection = () => {
           </div>
 
           {/* Right Values Card */}
+          <div>
+
         <div className="bg-[#efe5d5] rounded-2xl px-5 py-6">
             <h3 className="text-lg font-semibold mb-5">
               Our Core Values
@@ -103,10 +105,12 @@ const AboutWellnessSection = () => {
               ))}
             </div>
           </div>
+          </div>
+
         </div>
 
         {/* Bottom Stats Bar */}
-        <div className="mt-4 bg-[#03261b] rounded-2xl py-5 px-5 border-3 border-[#e8c37a]">
+        <div className="mt-4 bg-[#03261b] rounded-2xl py-5 px-5 border-3 border-[#e8c37a] absolute -bottom-10 left-0 right-0">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-6">
             {stats.map((item, index) => (
               <div

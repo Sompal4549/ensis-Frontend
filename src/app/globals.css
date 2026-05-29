@@ -35,9 +35,6 @@ h1 {
   font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
 }
 
-strong {
-  font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
-}
 
 * {
   box-sizing: border-box;

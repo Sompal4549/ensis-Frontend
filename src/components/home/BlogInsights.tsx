@@ -54,7 +54,7 @@ export const BlogInsights = () => {
                 <Image src={blog.image} alt={blog.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" />
               </div>
               <div className="p-4 flex flex-col justify-between h-30">
-                <h3 className="text-lg font-bold text-[#1f261b] leading-[120%]">{blog.title}</h3>
+                <h3 className="text-lg font-bold text-[#1f261b] leading-[120%] line-clamp-2">{blog.title}</h3>
                 <p className="mt-3 flex items-center gap-2 text-xs font-semibold text-[#7c6a53]">Read More <ArrowRight size={14} /></p>
               </div>
             </Link>
