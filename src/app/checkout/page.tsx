@@ -27,6 +27,22 @@ interface ShippingAddress {
   country: string;
 }
 
+interface CheckoutSnapshot {
+  items: {
+    id: string;
+    name: string;
+    image: string;
+    price: number;
+    quantity: number;
+  }[];
+  cartCount: number;
+  subtotal: number;
+  discount: number;
+  shipping: number;
+  estimatedTax: number;
+  grandTotal: number;
+}
+
 export default function CheckoutPage() {
   const router = useRouter();
   const { cartItems, cartCount, subtotal, clearCart } = useShop();
@@ -45,11 +61,12 @@ export default function CheckoutPage() {
   const [isPlacingOrder, setIsPlacingOrder] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [checkoutSnapshot, setCheckoutSnapshot] = useState<CheckoutSnapshot | null>(null);
 
   // Authentication check and dynamic mounting
   useEffect(() => {
     queueMicrotask(() => setIsMounted(true));
-    const savedToken = localStorage.getItem("ensis_user_token");
+    const savedToken = localStorage.getItem("ensis_access_token");
     if (!savedToken) {
       router.push("/login");
     } else {
@@ -73,6 +90,15 @@ export default function CheckoutPage() {
   const shipping = subtotal >= freeShippingAt || !hasItems ? 0 : 999;
   const estimatedTax = hasItems ? Math.round((subtotal - discount) * 0.05) : 0;
   const grandTotal = Math.max(0, subtotal - discount + shipping + estimatedTax);
+  const summary = checkoutSnapshot ?? {
+    items: cartItems,
+    cartCount,
+    subtotal,
+    discount,
+    shipping,
+    estimatedTax,
+    grandTotal,
+  };
 
   // Place internal MongoDB Order
   const handlePlaceOrder = async (e: React.FormEvent) => {
@@ -101,6 +127,15 @@ export default function CheckoutPage() {
         quantity: item.quantity,
         price: item.price,
       }));
+      const snapshot = {
+        items: cartItems.map((item) => ({ ...item })),
+        cartCount,
+        subtotal,
+        discount,
+        shipping,
+        estimatedTax,
+        grandTotal,
+      };
 
       const res = await fetch(`${API_URL}/orders`, {
         method: "POST",
@@ -122,6 +157,7 @@ export default function CheckoutPage() {
 
       // Store created MongoDB order ID
       const createdOrder = payload.data;
+      setCheckoutSnapshot(snapshot);
       setOrderId(createdOrder._id);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "An unexpected error occurred while placing order.");
@@ -132,9 +168,10 @@ export default function CheckoutPage() {
 
   // Success payment callback
   const handlePaymentSuccess = (paymentId: string, internalOrderId: string) => {
+    const paidSnapshot = checkoutSnapshot ?? summary;
     const orderSnapshot = {
       _id: internalOrderId,
-      items: cartItems.map((item) => ({
+      items: paidSnapshot.items.map((item) => ({
         product: {
           _id: item.id,
           title: item.name,
@@ -144,7 +181,7 @@ export default function CheckoutPage() {
         price: item.price,
         quantity: item.quantity,
       })),
-      totalAmount: grandTotal,
+      totalAmount: paidSnapshot.grandTotal,
       paymentStatus: "paid",
       orderStatus: "confirmed",
       shippingAddress,
@@ -307,7 +344,7 @@ export default function CheckoutPage() {
                         token={token}
                         onSuccess={handlePaymentSuccess}
                         onFailure={handlePaymentFailure}
-                        amount={grandTotal} // total is in rupees
+                        amount={summary.grandTotal} // total is in rupees
                       />
                     </div>
                   </div>
@@ -334,7 +371,7 @@ export default function CheckoutPage() {
 
                 {/* Items List */}
                 <div className="max-h-60 overflow-y-auto divide-y divide-[#eee5d8] pr-2 scrollbar-thin">
-                  {cartItems.map((item) => (
+                  {summary.items.map((item) => (
                     <div key={item.id} className="py-3 flex gap-3 text-xs items-center first:pt-0">
                       <div className="relative aspect-square h-12 w-12 shrink-0 overflow-hidden rounded-md bg-[#f7f3ec]">
                         <Image src={item.image} alt={item.name} fill className="object-cover" />
@@ -355,27 +392,27 @@ export default function CheckoutPage() {
                 {/* Pricing Totals */}
                 <div className="mt-4 border-t border-[#eee5d8] pt-4 space-y-2.5 text-xs ">
                   <div className="flex justify-between">
-                    <span>Subtotal ({cartCount} items)</span>
-                    <span className="font-bold text-[#1a1a1a]">{formatCurrency(subtotal)}</span>
+                    <span>Subtotal ({summary.cartCount} items)</span>
+                    <span className="font-bold text-[#1a1a1a]">{formatCurrency(summary.subtotal)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Discount (8% Promo)</span>
-                    <span className="font-bold text-[#3d7c39]">- {formatCurrency(discount)}</span>
+                    <span className="font-bold text-[#3d7c39]">- {formatCurrency(summary.discount)}</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Shipping Fee</span>
                     <span className="font-bold text-[#3d7c39]">
-                      {shipping === 0 ? "FREE" : formatCurrency(shipping)}
+                      {summary.shipping === 0 ? "FREE" : formatCurrency(summary.shipping)}
                     </span>
                   </div>
                   <div className="flex justify-between">
                     <span>Estimated Tax (5%)</span>
-                    <span className="font-bold">{formatCurrency(estimatedTax)}</span>
+                    <span className="font-bold">{formatCurrency(summary.estimatedTax)}</span>
                   </div>
 
                   <div className="mt-4 border-t border-[#eee5d8] pt-4 flex items-center justify-between ">
                     <span className="text-base font-bold">Total Amount</span>
-                    <span className="text-xl font-bold">{formatCurrency(grandTotal)}</span>
+                    <span className="text-xl font-bold">{formatCurrency(summary.grandTotal)}</span>
                   </div>
                 </div>
 

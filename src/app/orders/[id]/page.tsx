@@ -15,6 +15,7 @@ import {
   MapPin,
   Package,
   Phone,
+  Printer,
   ShieldCheck,
   ShoppingBag,
   Truck,
@@ -92,7 +93,7 @@ export default function OrderPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const savedToken = localStorage.getItem("ensis_user_token");
+    const savedToken = localStorage.getItem("ensis_access_token");
 
     if (!savedToken) {
       const snapshot = readOrderSnapshot(orderId);
@@ -123,7 +124,9 @@ export default function OrderPage() {
           throw new Error(orderPayload.message || "Failed to retrieve order details.");
         }
 
-        setOrder(orderPayload.data);
+        const snapshot = readOrderSnapshot(orderId);
+        const serverOrder = orderPayload.data as Order;
+        setOrder(serverOrder.totalAmount > 0 ? serverOrder : snapshot ?? serverOrder);
 
         if (isPaymentSuccess) {
           try {
@@ -329,15 +332,25 @@ export default function OrderPage() {
           </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
+            <button
+              type="button"
+              onClick={() => window.print()}
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#8d6a3a] px-6 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#6f542f] print:hidden"
+            >
+              <Printer size={14} /> Print Order
+            </button>
             <Link
               href="/products"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#313b30] px-6 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#1a2119]"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#313b30] px-6 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#1a2119] print:hidden"
             >
+              <div className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#313b30] px-6 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#1a2119] print:hidden">
+
               Continue Shopping <ArrowRight size={14} />
+              </div>
             </Link>
             <Link
               href="/"
-              className="inline-flex h-11 items-center justify-center rounded-md border border-[#d8d0c4] bg-white px-6 text-xs font-bold uppercase tracking-wide transition-colors hover:bg-stone-50"
+              className="inline-flex h-11 items-center justify-center rounded-md border border-[#d8d0c4] bg-white px-6 text-xs font-bold uppercase tracking-wide transition-colors hover:bg-stone-50 print:hidden"
             >
               Go to Home Page
             </Link>

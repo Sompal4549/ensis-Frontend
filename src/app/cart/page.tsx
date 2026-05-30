@@ -453,8 +453,10 @@ export default function CartPage() {
               href="/products"
               className="inline-flex items-center gap-2 text-sm font-semibold hover:text-[#8d6a3a]"
             >
+              <div className="inline-flex items-center gap-2 text-sm font-semibold hover:text-[#8d6a3a] text-[#8d6a3a]">
               <ArrowLeft size={16} />
               Continue Shopping
+              </div>
             </Link>
             {hasItems && (
               <button

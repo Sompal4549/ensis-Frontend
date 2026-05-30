@@ -274,14 +274,14 @@ const SocialSidebar = () => {
         }
       `}</style>
 
-      <div className="flex flex-col gap-2 lg:gap-3 fixed right-1 lg:right-1.5 top-[45%] lg:top-1/2 -translate-y-1/2 z-50">
+      <div className="flex flex-col gap-2 lg:gap-3 fixed right-1 lg:right-1.5 top-[45%] lg:top-1/2 -translate-y-1/2 z-50 print:hidden">
         {socialData.map((social, index) => {
           const Icon = social.icon;
 
           return (
             <div
               key={index}
-              className={`social-item relative ${isVisible ? "visible" : ""}`}
+              className={`social-item relative print:hidden ${isVisible ? "visible" : ""}`}
               style={{ "--index": index } as React.CSSProperties}
             >
               {/* Glow */}
