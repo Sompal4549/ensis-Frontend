@@ -4,13 +4,15 @@ import { FormEvent, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, LogIn } from "lucide-react";
+import { ArrowRight, UserPlus } from "lucide-react";
 import { API_URL } from "@/app/lib/api";
 const Container = dynamic(() => import("@/components/ui/Container").then((mod) => mod.Container));
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const router = useRouter();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -21,20 +23,21 @@ export default function LoginPage() {
     setMessage("");
 
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
+      const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, phone, password }),
       });
       const payload = await response.json();
       if (!response.ok || payload.status === "error") {
-        throw new Error(payload.message || "Login failed");
+        throw new Error(payload.message || "Registration failed");
       }
-      localStorage.setItem("ensis_user_token", payload.data.accessToken);
-      localStorage.setItem("ensis_user", JSON.stringify(payload.data.user));
-      router.push("/");
-      return;
+      
+      setMessage("Registration successful! Redirecting to login...");
+      setTimeout(() => {
+        router.push("/login");
+      }, 1500);
     } catch (error) {
       setMessage((error as Error).message);
     } finally {
@@ -48,34 +51,44 @@ export default function LoginPage() {
         <div className="mx-auto grid max-w-5xl overflow-hidden border border-[#ded3c4] bg-white md:grid-cols-[0.9fr_1.1fr]">
           <div className="bg-[#263016] p-8 text-white md:p-10">
             <span className="text-[11px] font-bold uppercase tracking-widest text-[#d9c49d]">Ensis Account</span>
-            <h2 className="mt-4 text-4xl leading-tight">User Login</h2>
+            <h2 className="mt-4 text-4xl leading-tight">Create Account</h2>
             <p className="mt-4 text-sm leading-6 text-white/80">
-              Sign in to your Ensis account. Admins should use the dedicated admin console.
+              Register for an Ensis account to securely save your wishlist, place orders, and track your purchase history.
             </p>
             <div className="mt-8 flex flex-col gap-4">
-              <Link href="/register" className="inline-flex items-center gap-3 text-sm font-bold text-white hover:text-[#d9c49d] transition-colors">
-                Don't have an account? Register <ArrowRight size={16} />
-              </Link>
-              <Link href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" className="inline-flex items-center gap-3 text-sm font-bold text-[#d9c49d]">
-                Admin Login <ArrowRight size={16} />
+              <Link href="/login" className="inline-flex items-center gap-3 text-sm font-bold text-[#d9c49d]">
+                Already have an account? Login <ArrowRight size={16} />
               </Link>
             </div>
           </div>
 
           <form onSubmit={onSubmit} className="p-8 md:p-10">
             <div className="mb-6 inline-flex size-12 items-center justify-center rounded-full bg-[#f3eee6] text-[#6f542f]">
-              <LogIn size={22} />
+              <UserPlus size={22} />
             </div>
+            
             <label className="block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
+              Full Name
+              <input className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium text-[#1f261b] outline-none focus:border-[#8d6a3a]" type="text" value={name} onChange={(event) => setName(event.target.value)} required />
+            </label>
+            
+            <label className="mt-5 block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
               Email
               <input className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium text-[#1f261b] outline-none focus:border-[#8d6a3a]" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
             </label>
+            
+            <label className="mt-5 block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
+              Phone Number (Optional)
+              <input className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium text-[#1f261b] outline-none focus:border-[#8d6a3a]" type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} />
+            </label>
+            
             <label className="mt-5 block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
               Password
-              <input className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium text-[#1f261b] outline-none focus:border-[#8d6a3a]" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
+              <input className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium text-[#1f261b] outline-none focus:border-[#8d6a3a]" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={6} />
             </label>
+            
             <button className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#6f542f] px-5 py-3 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#4c381f]" type="submit" disabled={isLoading}>
-              {isLoading ? "Signing In..." : "Sign In"}
+              {isLoading ? "Registering..." : "Create Account"}
             </button>
             {message && <p className="mt-4 text-sm font-semibold text-[#334022]">{message}</p>}
           </form>

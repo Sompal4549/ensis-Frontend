@@ -236,8 +236,8 @@ const TurnkeySolutions = () => {
         {/* Heading */}
         <div className="mb-2 flex items-center justify-center gap-3">
           <span className="h-px w-14 bg-[#c7a76b]" />
-          <h2 className="text-base font-bold uppercase tracking-[0.08em] text-[#4b3418]">
-            Our Complete Turnkey Solutions
+         <h2 className="text-base font-semibold uppercase">
+            Featured Turnkey Projects
           </h2>
           <span className="h-px w-14 bg-[#c7a76b]" />
         </div>

@@ -35,8 +35,8 @@ export default function FacilitiesWeBuild() {
         <div className="flex items-center gap-3 mb-2">
           <div className="flex-1 h-px bg-[#c9972a] opacity-40" />
           <div className="text-[#c9972a] text-base">❧</div>
-          <h2 className="text-xs sm:text-sm tracking-[0.3em] font-semibold uppercase whitespace-nowrap">
-            Facilities We Build
+             <h2 className="text-base font-semibold uppercase">
+            Featured Turnkey Projects
           </h2>
           <div className="text-[#c9972a] text-base">❧</div>
           <div className="flex-1 h-px bg-[#c9972a] opacity-40" />

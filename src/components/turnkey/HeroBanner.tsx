@@ -1,6 +1,6 @@
 import { Container } from "../ui/Container";
 import Image from "next/image";
-import banner_image from "@/assets/trunkey_solutions/turnkey_banner.webp"
+import banner_image from "@/assets/trunkey_solutions/trunkey_banner.webp"
 import single_point from "@/assets/trunkey_solutions/single_point_banner.webp"
 import on_time from "@/assets/trunkey_solutions/on_time.webp"
 import premium from "@/assets/trunkey_solutions/premium.webp"
@@ -21,7 +21,7 @@ const FEATURES = [
 export default function TurnkeyHero() {
   return (
     <div className="min-h-[80vh] relative">
-        <Image src={banner_image} alt="banner_image" fill className="object-cover z-0! absolute" preload  />
+        <Image src={banner_image} alt="banner_image" fill className="object-cover z-0! absolute fill" preload  />
       {/* ── HERO ── */}
       <Container className="relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center min-h-[80vh]">
