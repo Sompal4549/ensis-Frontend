@@ -12,6 +12,8 @@ import yogaIcon from "@/assets/trunkey_solutions/yoga_retreat_centers.webp";
 import ayurvedaHospitalIcon from "@/assets/trunkey_solutions/ayurveda_hospitals.webp";
 import wellnessFranchiseIcon from "@/assets/trunkey_solutions/wellness_franchise.png";
 import { Container } from "../ui/Container";
+import decorationLeft from "@/assets/icons/decoration_left.png"
+import decorationRight from "@/assets/icons/decoration_right.png"
 
 const FACILITIES = [
   { icon: panchkarmaIcon,        label: "Panchkarma\nCentres" },
@@ -34,11 +36,11 @@ export default function FacilitiesWeBuild() {
         {/* ── Section Title ── */}
         <div className="flex items-center gap-3 mb-2">
           <div className="flex-1 h-px bg-[#c9972a] opacity-40" />
-          <div className="text-[#c9972a] text-base">❧</div>
+          <div className="text-[#c9972a] text-base"> <Image src={decorationLeft} width={30} height={30} alt="decoration" className="h-full object-contain" /></div>
              <h2 className="text-base font-semibold uppercase">
-            Featured Turnkey Projects
+            Facilities We Build
           </h2>
-          <div className="text-[#c9972a] text-base">❧</div>
+          <div className="text-[#c9972a] text-base"> <Image src={decorationRight} width={30} height={30} alt="decoration" className="h-full object-contain" /></div>
           <div className="flex-1 h-px bg-[#c9972a] opacity-40" />
         </div>
 

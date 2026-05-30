@@ -7,6 +7,8 @@ import integrated from "@/assets/trunkey_solutions/featured_trunkey_5.webp";
 import spa from "@/assets/trunkey_solutions/featured_trunkey_6.webp";
 import { Container } from "../ui/Container";
 import BookButton from "../ui/BookButton";
+import decorationLeft from "@/assets/icons/decoration_left.png"
+import decorationRight from "@/assets/icons/decoration_right.png"
 
 const projects = [
   {
@@ -47,13 +49,11 @@ export default function FeaturedProjects() {
       <Container>
         {/* Heading */}
         <div className="mb-2 flex items-center justify-center gap-3">
-          <div className="h-px w-8 bg-[#b8904f]" />
-          <div className="h-2 w-2 rounded-full border border-[#b8904f]" />
+         <Image src={decorationLeft} width={30} height={30} alt="decoration" className="h-full object-contain" />
           <h2 className="text-base font-semibold uppercase">
             Featured Turnkey Projects
           </h2>
-          <div className="h-2 w-2 rounded-full border border-[#b8904f]" />
-          <div className="h-px w-8 bg-[#b8904f]" />
+          <Image src={decorationRight} width={30} height={30} alt="decoration" className="h-full object-contain" />
         </div>
 
         {/* Cards */}

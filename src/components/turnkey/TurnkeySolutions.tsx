@@ -12,6 +12,8 @@ import training from "@/assets/trunkey_solutions/recruitment_and_training.webp";
 import prelaunch from "@/assets/trunkey_solutions/pre_launch_support.webp";
 import handover from "@/assets/trunkey_solutions/handover.webp";
 import after_sales from "@/assets/trunkey_solutions/after_sales_support.webp";
+import decorationLeft from "@/assets/icons/decoration_left.png"
+import decorationRight from "@/assets/icons/decoration_right.png"
 
 import lotus from "@/assets/about/lotus.png";
 import BookButton from "../ui/BookButton";
@@ -253,11 +255,12 @@ const TurnkeySolutions = () => {
       <Container>
         {/* Heading */}
         <div className="mb-2 flex items-center justify-center gap-3">
-          <span className="h-px w-14 bg-[#c7a76b]" />
+          <Image src={decorationLeft} width={30} height={30} alt="decoration" className="h-full object-contain" />
           <h2 className="text-base font-semibold uppercase">
             Our Complete turnkit solutions
           </h2>
-          <span className="h-px w-14 bg-[#c7a76b]" />
+                  <Image src={decorationRight} width={30} height={30} alt="decoration" className="h-full object-contain" />
+
         </div>
       </Container>
 
