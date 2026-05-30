@@ -37,14 +37,14 @@ export default function TurnkeyMeaning() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-8 lg:gap-0 items-stretch">
 
           {/* ── COLUMN 1: What does Turnkey mean ── */}
-          <div className="flex flex-col justify-center gap-4 lg:pr-10">
-            <p className="text-[#d6a85f] text-xs sm:text-xs tracking-[0.25em] font-bold uppercase">
+          <div className="flex flex-col gap-4 lg:pr-10">
+            <p className="text-[#d19f4f] text-xs sm:text-sm font-bold uppercase">
               What does "Turnkey" mean?
             </p>
             <h2 className="text-2xl font-semibold leading-tight">
               One Partner.<br />Complete Responsibility.
             </h2>
-            <p className="text-sm">
+            <p className="text-xs font-semibold leading-6">
               Most wellness projects require coordination with multiple vendors.
               With Ensis, you get everything under one roof.
             </p>
@@ -74,7 +74,7 @@ export default function TurnkeyMeaning() {
                       className="object-contain"
                     />
                   </div>
-                  <p className="text-[9px] sm:text-[10px] leading-snug whitespace-pre-line font-medium text-[#333]">
+                  <p className="text-[9px] sm:text-[10px] leading-snug whitespace-pre-line font-semibold">
                     {v.label}
                   </p>
                 </div>
@@ -86,7 +86,7 @@ export default function TurnkeyMeaning() {
           <div className="hidden lg:block w-px bg-[#d6c5a0] mx-8 self-stretch" />
 
           {/* ── COLUMN 3: With ENSIS You Get + Plaque ── */}
-          <div className="flex flex-row items-center justify-between gap-6 lg:pl-4">
+          <div className="flex flex-row justify-between gap-6 lg:pl-4">
             <div className="flex flex-col gap-3">
               <p className="text-sm sm:text-base font-semibold">
                 With ENSIS You Get

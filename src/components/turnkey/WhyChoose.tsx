@@ -36,7 +36,7 @@ export default function WhyChoose() {
       {/* ── Top banner: "AND MANY MORE..." ── */}
       <div className="bg-[#f5efe0] py-3 flex items-center gap-3 px-4 sm:px-6 lg:px-10">
         <div className="flex-1 h-px bg-[#c9972a] opacity-40" />
-        <span className="text-[#c9972a] text-[10px] sm:text-xs tracking-[0.28em] font-semibold uppercase whitespace-nowrap">
+        <span className="text-[#d19f4f] text-base font-semibold uppercase tracking-[0.1em] whitespace-nowrap">
           ✦ And Many More Customised Wellness Facilities ✦
         </span>
         <div className="flex-1 h-px bg-[#c9972a] opacity-40" />
