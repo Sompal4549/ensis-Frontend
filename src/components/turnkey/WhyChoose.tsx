@@ -10,6 +10,7 @@ import transparentBoqIcon from "@/assets/trunkey_solutions/why_choose/transparen
 import traditionalModernIcon from "@/assets/trunkey_solutions/why_choose/traditional_modern.webp";
 import wellnessIndustryIcon from "@/assets/trunkey_solutions/why_choose/wellness_industry.webp";
 import expertReadyIcon from "@/assets/trunkey_solutions/expert_ready_solution.webp";
+import { Container } from "../ui/Container";
 
 const STATS = [
   { value: "20+",   label: "Years of\nExperience" },
@@ -34,13 +35,13 @@ export default function WhyChoose() {
     <div className="w-full">
 
       {/* ── Top banner: "AND MANY MORE..." ── */}
-      <div className="bg-[#f5efe0] py-3 flex items-center gap-3 px-4 sm:px-6 lg:px-10">
+      <Container className="py-3 flex items-center gap-3">
         <div className="flex-1 h-px bg-[#c9972a] opacity-40" />
         <span className="text-[#d19f4f] text-base font-semibold uppercase tracking-[0.1em] whitespace-nowrap">
           ✦ And Many More Customised Wellness Facilities ✦
         </span>
         <div className="flex-1 h-px bg-[#c9972a] opacity-40" />
-      </div>
+      </Container>
 
       {/* ── Main dark section ── */}
       <div className="relative w-full overflow-hidden">
@@ -56,10 +57,10 @@ export default function WhyChoose() {
         </div>
 
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-[#0e1f0e]/80 z-[1]" />
+        {/* <div className="absolute inset-0 bg-[#0e1f0e]/80 z-[1]" /> */}
 
         {/* Content */}
-        <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8">
+        <Container className="relative z-10 px-4 sm:px-6 lg:px-10 py-6 sm:py-8">
           <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-0">
 
             {/* ── LEFT: Section title + stats ── */}
@@ -118,7 +119,7 @@ export default function WhyChoose() {
             </div>
 
           </div>
-        </div>
+        </Container>
       </div>
     </div>
   );

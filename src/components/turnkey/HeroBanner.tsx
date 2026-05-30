@@ -21,7 +21,7 @@ const FEATURES = [
 export default function TurnkeyHero() {
   return (
     <div className="min-h-[80vh] relative">
-        <Image src={banner_image} alt="banner_image" fill className="object-cover z-0! absolute fill" preload  />
+        <Image src={banner_image} alt="banner_image" fill className="object-cover z-0! absolute object-top" preload  />
       {/* ── HERO ── */}
       <Container className="relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center min-h-[80vh]">
