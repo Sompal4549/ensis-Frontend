@@ -42,13 +42,22 @@ export const Header = () => {
     const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001";
     
     useEffect(() => setMounted(true), []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("ensis_access_token");
+        localStorage.removeItem("ensis_user");
+        setUser(null);
+        window.location.href = "/";
+    };
+
     useEffect(() => {
-        const stored = typeof window !== "undefined" ? localStorage.getItem("ensis_user") : null;
-        if (!stored) return;
-        try {
-            setUser(JSON.parse(stored));
-        } catch {
-            setUser(null);
+        const storedUser = typeof window !== "undefined" ? localStorage.getItem("ensis_user") : null;
+        if (storedUser) {
+            try {
+                setUser(JSON.parse(storedUser));
+            } catch (err) {
+                setUser(null);
+            }
         }
     }, []);
 
@@ -81,13 +90,6 @@ export const Header = () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
-
-    const handleLogout = () => {
-        localStorage.removeItem("ensis_user_token");
-        localStorage.removeItem("ensis_user");
-        setUser(null);
-        window.location.href = "/";
-    };
 
     const navLink =
         "inline-flex items-center border-b-2 border-transparent pt-0.5 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
@@ -166,9 +168,24 @@ export const Header = () => {
                     </div>
 
                     <div className="flex w-full items-center justify-between gap-4 md:w-auto md:justify-end">
-                        {!user && (
+                        {mounted && (user ? (
+                            <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1">
+                                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d9c49d] text-[10px] font-black text-[#263016]">
+                                        {user.name?.charAt(0).toUpperCase() || "U"}
+                                    </div>
+                                    <span className="text-[10px] font-bold tracking-wide text-white">{user.name}</span>
+                                </div>
+                                <button 
+                                    onClick={handleLogout}
+                                    className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#d9c49d] hover:text-white transition-colors"
+                                >
+                                    <LogOut size={12} /> Logout
+                                </button>
+                            </div>
+                        ) : (
                             <GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
-                        )}
+                        ))}
 
                         {/* <div className="hidden items-center gap-3 md:flex">
               {socialLinks.map((item, index) => (
@@ -395,11 +412,26 @@ export const Header = () => {
                         </span>
                         )}
                     </Link>
-                    <GreenButton text={<span className="uppercase text-[#050A1A]">E-Brochure</span>} path={"https://ensis.in/pdf/e-broucher.pdf"} />
-                    <div className="flex justify-between gap-2 mt-2">
-                        {!user &&
-                            (<GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
-                            )}
+                    <div className="mt-4 flex flex-col gap-3">
+                        <GreenButton text={<span className="uppercase text-[#050A1A]">E-Brochure</span>} path={"https://ensis.in/pdf/e-broucher.pdf"} />
+                        
+                        {mounted && (user ? (
+                            <div className="mt-2 rounded-md border border-[#d8cbb9] bg-white p-4">
+                                <div className="flex items-center gap-3">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#263016] text-sm font-bold text-white">
+                                        {user.name?.charAt(0).toUpperCase()}
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-bold text-[#1f261b]">{user.name}</p>
+                                        <button onClick={handleLogout} className="mt-1 text-[10px] font-bold uppercase tracking-widest text-[#9b2c2c]">
+                                            Sign Out
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
+                        ))}
                     </div>
                 </nav>
             </aside>

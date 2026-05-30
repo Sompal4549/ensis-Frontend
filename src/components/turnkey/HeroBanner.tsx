@@ -1,6 +1,6 @@
 import { Container } from "../ui/Container";
 import Image from "next/image";
-import banner_image from "@/assets/trunkey_solutions/ChatGPT.webp"
+import banner_image from "@/assets/trunkey_solutions/turnkey.webp"
 import single_point from "@/assets/trunkey_solutions/single_point_banner.webp"
 import on_time from "@/assets/trunkey_solutions/on_time.webp"
 import premium from "@/assets/trunkey_solutions/premium.webp"

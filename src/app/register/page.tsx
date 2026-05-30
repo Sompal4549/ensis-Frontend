@@ -56,8 +56,8 @@ export default function RegisterPage() {
               Register for an Ensis account to securely save your wishlist, place orders, and track your purchase history.
             </p>
             <div className="mt-8 flex flex-col gap-4">
-              <Link href="/login" className="inline-flex items-center gap-3 text-sm font-bold text-[#d9c49d]">
-                Already have an account? Login <ArrowRight size={16} />
+              <Link href="/login" className="inline-flex items-center justify-center gap-2 rounded-md border border-[#d9c49d]/30 bg-[#d9c49d]/10 px-5 py-3 text-xs font-bold uppercase tracking-wide text-[#d9c49d] transition-colors hover:bg-[#d9c49d]/20">
+                Already have an account? Sign In <ArrowRight size={16} />
               </Link>
             </div>
           </div>

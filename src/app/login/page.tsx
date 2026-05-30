@@ -31,7 +31,7 @@ export default function LoginPage() {
       if (!response.ok || payload.status === "error") {
         throw new Error(payload.message || "Login failed");
       }
-      localStorage.setItem("ensis_user_token", payload.data.accessToken);
+      localStorage.setItem("ensis_access_token", payload.data.accessToken);
       localStorage.setItem("ensis_user", JSON.stringify(payload.data.user));
       router.push("/");
       return;
