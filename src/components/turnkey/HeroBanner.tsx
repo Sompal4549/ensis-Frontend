@@ -41,7 +41,7 @@ export default function TurnkeyHero() {
             {/* Headline */}
             <div>
               <h1 className="text-[#1a2e1a] text-3xl lg:text-4xl  font-semibold leading-tight">
-                We Design, Build &amp; Launch
+                We Design, Build <span className="font-serif font-medium">&amp;</span> Launch
               </h1>
               <h1 className="text-[#c38727] text-3xl sm:text-4xl lg:text-[42px] font-semibold leading-tight mt-1">
                 Complete Wellness Spaces
