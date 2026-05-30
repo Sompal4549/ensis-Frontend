@@ -11,6 +11,8 @@ import traditionalModernIcon from "@/assets/trunkey_solutions/why_choose/traditi
 import wellnessIndustryIcon from "@/assets/trunkey_solutions/why_choose/wellness_industry.webp";
 import expertReadyIcon from "@/assets/trunkey_solutions/expert_ready_solution.webp";
 import { Container } from "../ui/Container";
+import decorationLeft from "@/assets/icons/arrow_left2.png"
+import decorationRight from "@/assets/icons/arrow_right2.png"
 
 const STATS = [
   { value: "20+",   label: "Years of\nExperience" },
@@ -36,11 +38,11 @@ export default function WhyChoose() {
 
       {/* ── Top banner: "AND MANY MORE..." ── */}
       <Container className="py-3 flex items-center gap-3">
-        <div className="flex-1 h-px bg-[#c9972a] opacity-40" />
+       <Image src={decorationLeft}  height={30} alt="decoration" className="h-full object-contain flex-1" />
         <span className="text-[#d19f4f] text-base font-semibold uppercase tracking-[0.1em] whitespace-nowrap">
-          ✦ And Many More Customised Wellness Facilities ✦
+          And Many More Customised Wellness Facilities
         </span>
-        <div className="flex-1 h-px bg-[#c9972a] opacity-40" />
+        <Image src={decorationRight}  height={30} alt="decoration" className="h-full object-contain flex-1" />
       </Container>
 
       {/* ── Main dark section ── */}
