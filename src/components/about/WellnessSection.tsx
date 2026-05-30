@@ -1,48 +1,70 @@
 import React from "react";
-import {
-  Bed,
-  FlaskConical,
-  Bath,
-  Flower2,
-  ChevronRight,
-} from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { getComponentContent, getImageUrl } from "@/app/lib/api";
+
 import flower from "@/assets/about/lotus.png";
 import { Container } from "../ui/Container";
-import welcome from "@/assets/about/welcome_to_ensis.webp"
+import welcome from "@/assets/about/welcome_to_ensis.webp";
 import table from "@/assets/home/table.webp";
 import shirodhara_eqipment from "@/assets/icons/shirodhara_eqipment.webp";
 import steam_sauna from "@/assets/icons/steam_sauna_icon.webp";
 import wellness_assossries from "@/assets/home/wellness_assossries_icon.webp";
 
-const services = [
-  {
-    image: table,
-    title: "PANCHAKARMA TABLES",
-    description:
-      "Experience authentic therapies with comfort and precision.",
-  },
-  {
-    image: shirodhara_eqipment,
-    title: "SHIRODHARA EQUIPMENTS",
-    description:
-      "Precision-crafted for deep relaxation and mental clarity.",
-  },
-  {
-    image: steam_sauna,
-    title: "STEAM & SAUNA",
-    description:
-      "Detoxify. Rejuvenate. Restore balance naturally.",
-  },
-  {
-    image: wellness_assossries,
-    title: "WELLNESS ACCESSORIES",
-    description:
-      "Thoughtful additions for a complete wellness journey.",
-  },
-];
+interface WellnessData {
+  welcomeImage: string;
+  eyebrow: string;
+  heading: string;
+  description: string;
+  buttonText: string;
+  buttonHref: string;
+  services: {
+    image: string;
+    title: string;
+    description: string;
+  }[];
+}
 
-const WellnessSection: React.FC = () => {
+const WellnessSection: React.FC = async () => {
+  const fallbackData: WellnessData = {
+    welcomeImage: "",
+    eyebrow: "Welcome To Ensis",
+    heading: "Where Tradition Meets Transformative Wellness.",
+    description: "At Ensis, we blend ancient Ayurvedic wisdom with exceptional craftsmanship to create timeless wellness solutions for modern lives.",
+    buttonText: "Know More",
+    buttonHref: "/about",
+    services: [
+      {
+        image: "",
+        title: "PANCHAKARMA TABLES",
+        description: "Experience authentic therapies with comfort and precision.",
+      },
+      {
+        image: "",
+        title: "SHIRODHARA EQUIPMENTS",
+        description: "Precision-crafted for deep relaxation and mental clarity.",
+      },
+      {
+        image: "",
+        title: "STEAM & SAUNA",
+        description: "Detoxify. Rejuvenate. Restore balance naturally.",
+      },
+      {
+        image: "",
+        title: "WELLNESS ACCESSORIES",
+        description: "Thoughtful additions for a complete wellness journey.",
+      },
+    ],
+  };
+
+  const fallbackServices = [table, shirodhara_eqipment, steam_sauna, wellness_assossries];
+
+  const content = await getComponentContent<WellnessData>("home.wellnessSection", fallbackData);
+
+  const welcomeImageSrc = content.welcomeImage ? getImageUrl(content.welcomeImage) : welcome;
+  const servicesData = content.services?.length ? content.services : fallbackData.services;
+
   return (
     <section>
       <Container className="grid grid-cols-1 lg:grid-cols-[1.8fr_1.8fr] gap-8 items-stretch">
@@ -51,12 +73,12 @@ const WellnessSection: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-8">
           
           {/* Image */}
-          <div className="overflow-hidden rounded-2xl shadow-md h-full">
+          <div className="overflow-hidden rounded-2xl shadow-md h-full min-h-[300px] relative">
             <Image 
-            height={300} width={450}
-              src={welcome}
+              src={welcomeImageSrc}
               alt="Ayurveda"
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
             />
           </div>
 
@@ -64,7 +86,7 @@ const WellnessSection: React.FC = () => {
           <div className="h-full flex flex-col py-5">
             <div className="flex gap-1 mb-2 flex-col">
               <span className="uppercase tracking-[2px] text-[#a9742a] text-sm font-semibold">
-                Welcome To Ensis
+                {content.eyebrow}
               </span>
               <div className="flex gap-2 items-center">
                 <div className="w-16 h-[1px] bg-[#c9a870]" />
@@ -74,28 +96,27 @@ const WellnessSection: React.FC = () => {
             </div>
 
             <h2 className="text-[#0f2518] text-[24px] leading-[1.2] max-w-[450px] font-semibold">
-              Where Tradition Meets Transformative Wellness.
+              {content.heading}
             </h2>
 
             <p className="text-[#0f2518] mt-3 text-xs max-w-[480px] leading-6 font-medium">
-              At Ensis, we blend ancient Ayurvedic wisdom with exceptional
-              craftsmanship to create timeless wellness solutions for modern
-              lives.
+              {content.description}
             </p>
 
-            <button className="group flex items-center gap-2 text-[#b78942] uppercase tracking-[1px] text-xs font-semibold mt-auto">
-              Know More
+            <Link href={content.buttonHref || "/about"} className="group flex items-center gap-2 text-[#b78942] uppercase tracking-[1px] text-xs font-semibold mt-auto pt-4 w-fit">
+              {content.buttonText || "Know More"}
               <ChevronRight
                 size={18}
                 className="transition-transform duration-300 group-hover:translate-x-1"
               />
-            </button>
+            </Link>
           </div>
         </div>
 
         {/* Right Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-3 h-full">
-          {services.map((service, index) => {
+          {servicesData.map((service, index) => {
+            const serviceImageSrc = service.image ? getImageUrl(service.image) : fallbackServices[index % fallbackServices.length];
             return (
               <div
                 key={index}
@@ -103,7 +124,7 @@ const WellnessSection: React.FC = () => {
               >
                 {/* Icon Circle */}
                 <div className="w-16 h-16 p-2 mx-auto rounded-full border border-[2.5px] border-[#c9a870] flex items-center justify-center mb-6">
-                  <Image src={service.image} alt={service.title} width={30} height={30} className="w-full h-full object-contain"/>
+                  <Image src={serviceImageSrc} alt={service.title} width={30} height={30} className="w-full h-full object-contain"/>
                 </div>
 
                 <p className="text-[#0f2518] text-[14px] font-semibold uppercase tracking-wide">
