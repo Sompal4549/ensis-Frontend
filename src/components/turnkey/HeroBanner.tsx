@@ -1,6 +1,6 @@
 import { Container } from "../ui/Container";
 import Image from "next/image";
-import banner_image from "@/assets/trunkey_solutions/newbanner.webp"
+import banner_image from "@/assets/trunkey_solutions/ChatGPT.webp"
 import single_point from "@/assets/trunkey_solutions/single_point_banner.webp"
 import on_time from "@/assets/trunkey_solutions/on_time.webp"
 import premium from "@/assets/trunkey_solutions/premium.webp"
@@ -21,7 +21,7 @@ const FEATURES = [
 export default function TurnkeyHero() {
   return (
     <div className="min-h-[80vh] relative">
-        <Image src={banner_image} alt="banner_image" fill className="object-cover z-0! absolute object-right" preload  />
+        <Image src={banner_image} alt="banner_image" fill className="object-fill z-0! absolute object-right" priority  />
       {/* ── HERO ── */}
       <Container className="relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center min-h-[80vh]">
@@ -30,12 +30,12 @@ export default function TurnkeyHero() {
           <div className="flex flex-col gap-4 h-full justify-center">
             {/* Eyebrow */}
             <div className="flex items-center gap-3">
-              <span className="text-[#d6a85f] text-xs sm:text-sm tracking-[0.25em] font-semibold uppercase">
+              <span className="text-[#c38727] text-xs sm:text-sm font-semibold uppercase">
                 Turnkey Solutions
               </span>
-              <div className="h-px w-8 bg-[#d6a85f]" />
+              <div className="h-px w-8 bg-[#c38727]" />
               <Image alt="lotus" src={lotus} width={30} height={30} className="h-full object-contain" />
-              <div className="h-px w-8 bg-[#d6a85f]" />
+              <div className="h-px w-8 bg-[#c38727]" />
             </div>
 
             {/* Headline */}
@@ -43,7 +43,7 @@ export default function TurnkeyHero() {
               <h1 className="text-[#1a2e1a] text-3xl lg:text-4xl  font-semibold leading-tight">
                 We Design, Build &amp; Launch
               </h1>
-              <h1 className="text-[#b8922a] text-3xl sm:text-4xl lg:text-[42px] font-semibold leading-tight mt-1">
+              <h1 className="text-[#c38727] text-3xl sm:text-4xl lg:text-[42px] font-semibold leading-tight mt-1">
                 Complete Wellness Spaces
               </h1>
             </div>
