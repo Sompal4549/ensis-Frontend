@@ -4,15 +4,20 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
-  CheckCircle2,
+  AlertCircle,
+  ArrowRight,
   Calendar,
+  CheckCircle2,
+  ClipboardCheck,
+  CreditCard,
+  Home,
+  Loader2,
   MapPin,
   Package,
-  ShoppingBag,
-  ArrowRight,
+  Phone,
   ShieldCheck,
-  Loader2,
-  AlertCircle,
+  ShoppingBag,
+  Truck,
 } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { formatCurrency } from "@/utils";
@@ -20,11 +25,13 @@ import { API_URL } from "@/app/lib/api";
 import { getPaymentStatus } from "@/utils/payment";
 
 interface OrderItem {
-  product: {
-    _id: string;
-    title: string;
-    images?: string[];
-  } | string;
+  product:
+    | {
+        _id: string;
+        title: string;
+        images?: string[];
+      }
+    | string;
   name?: string;
   price: number;
   quantity: number;
@@ -47,7 +54,32 @@ interface Order {
   createdAt: string;
 }
 
-export default function OrderSuccessPage() {
+function readOrderSnapshot(orderId: string): Order | null {
+  try {
+    const snapshot = localStorage.getItem(`ensis_order_${orderId}`);
+    return snapshot ? (JSON.parse(snapshot) as Order) : null;
+  } catch {
+    return null;
+  }
+}
+
+function itemName(item: OrderItem) {
+  return item.name || (typeof item.product === "object" ? item.product.title : "Product Detail");
+}
+
+function paymentBadgeClass(status: Order["paymentStatus"], verified: boolean) {
+  if (status === "paid" || verified) {
+    return "border-emerald-200 bg-emerald-50 text-emerald-700";
+  }
+
+  if (status === "failed") {
+    return "border-rose-200 bg-rose-50 text-rose-700";
+  }
+
+  return "border-[#ead28b] bg-[#fff6df] text-[#8d6a3a]";
+}
+
+export default function OrderPage() {
   const router = useRouter();
   const params = useParams();
   const searchParams = useSearchParams();
@@ -55,23 +87,31 @@ export default function OrderSuccessPage() {
   const isPaymentSuccess = searchParams.get("payment") === "success";
 
   const [order, setOrder] = useState<Order | null>(null);
-  const [paymentVerified, setPaymentVerified] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [paymentVerified, setPaymentVerified] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [token, setToken] = useState<string>("");
 
   useEffect(() => {
     const savedToken = localStorage.getItem("ensis_user_token");
+
     if (!savedToken) {
+      const snapshot = readOrderSnapshot(orderId);
+      if (snapshot) {
+        queueMicrotask(() => {
+          setOrder(snapshot);
+          setPaymentVerified(isPaymentSuccess);
+          setLoading(false);
+        });
+        return;
+      }
+
       router.push("/login");
       return;
     }
-    setToken(savedToken);
 
     const fetchOrderDetails = async () => {
       try {
         setLoading(true);
-        // Fetch order details
         const orderRes = await fetch(`${API_URL}/orders/${orderId}`, {
           headers: {
             Authorization: `Bearer ${savedToken}`,
@@ -85,19 +125,26 @@ export default function OrderSuccessPage() {
 
         setOrder(orderPayload.data);
 
-        // Optional payment verification double check
         if (isPaymentSuccess) {
           try {
             const statusRes = await getPaymentStatus(orderId, savedToken);
             if (statusRes.status === "success") {
               setPaymentVerified(true);
             }
-          } catch (e) {
-            console.warn("Could not verify double-check payment status:", e);
+          } catch (paymentError) {
+            console.warn("Could not verify payment status:", paymentError);
           }
         }
-      } catch (err: any) {
-        setError(err.message || "An error occurred while loading your order.");
+      } catch (err: unknown) {
+        const snapshot = readOrderSnapshot(orderId);
+        if (snapshot) {
+          setOrder(snapshot);
+          setPaymentVerified(isPaymentSuccess || snapshot.paymentStatus === "paid");
+          setError(null);
+          return;
+        }
+
+        setError(err instanceof Error ? err.message : "An error occurred while loading your order.");
       } finally {
         setLoading(false);
       }
@@ -110,24 +157,26 @@ export default function OrderSuccessPage() {
 
   if (loading) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center bg-[#fbfaf7] text-slate-600 gap-4">
+      <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4 bg-[#fbfaf7] text-[#4f574d]">
         <Loader2 className="h-10 w-10 animate-spin" />
-        <p className="text-sm font-bold animate-pulse">Loading order confirmation...</p>
+        <p className="text-sm font-semibold">Loading order confirmation...</p>
       </div>
     );
   }
 
   if (error || !order) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center bg-[#fbfaf7] px-6 text-center gap-4">
-        <div className="size-14 rounded-full bg-rose-50 flex items-center justify-center text-rose-500 border border-rose-200">
+      <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4 bg-[#fbfaf7] px-6 text-center">
+        <div className="flex size-14 items-center justify-center rounded-full border border-rose-200 bg-rose-50 text-rose-500">
           <AlertCircle size={28} />
         </div>
-        <h1 className="text-xl font-bold text-slate-800">Unable to load order</h1>
-        <p className="text-sm max-w-md">{error || "The requested order details could not be found."}</p>
+        <h1 className="text-xl font-semibold text-[#101010]">Unable to load order</h1>
+        <p className="max-w-md text-sm text-[#4f574d]">
+          {error || "The requested order details could not be found."}
+        </p>
         <Link
           href="/products"
-          className="mt-4 inline-flex h-10 items-center justify-center rounded-xl bg-[#313b30] px-6 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-black"
+          className="mt-4 inline-flex h-10 items-center justify-center rounded-md bg-[#313b30] px-6 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-black"
         >
           Browse Products
         </Link>
@@ -135,137 +184,160 @@ export default function OrderSuccessPage() {
     );
   }
 
+  const isPaid = order.paymentStatus === "paid" || paymentVerified;
+  const orderDate = new Date(order.createdAt).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+
   return (
-    <div className="min-h-screen bg-[#fbfaf7] py-12 md:py-16">
+    <div className="min-h-screen bg-[#fbfaf7] py-8 md:py-12">
       <Container>
-        <div className="mx-auto max-w-3xl">
-          {/* Stunning Success Banner */}
-          <div className="text-center mb-10 space-y-4">
-            <div className="inline-flex size-20 items-center justify-center rounded-full bg-emerald-50 text-emerald-500 border-2 border-emerald-100 shadow-[0_8px_30px_rgba(16,185,129,0.1)]">
-              <CheckCircle2 size={44} className="stroke-[1.5]" />
-            </div>
-            <h1 className="text-3xl md:text-4xl font-serif font-semibold leading-tight">
-              {isPaymentSuccess ? "Order Confirmed!" : "Order Placed Successfully"}
-            </h1>
-            <p className="text-sm text-slate-500 max-w-lg mx-auto">
-              {isPaymentSuccess
-                ? "Thank you for your wellness purchase. Your payment was verified securely, and your order has been registered."
-                : "Your order details have been saved. If you haven't paid yet, please complete the payment in your dashboard."}
-            </p>
-
-            <div className="inline-flex items-center gap-2 rounded-full bg-[#f3eee6] px-4 py-1.5 text-xs font-semibold text-[#6f542f] border border-[#dcd1be]/40">
-              <ShieldCheck size={14} /> Securing checkout verification
-            </div>
-          </div>
-
-          {/* Main Confirmation Content */}
-          <div className="grid gap-6">
-            {/* Order Overview Card */}
-            <div className="rounded-2xl border border-[#eee5d8] bg-white p-6 shadow-[0_8px_24px_rgba(49,59,48,0.01)] space-y-4">
-              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[#eee5d8] pb-4">
-                <div className="space-y-1">
-                  <p className="text-[10px] font-bold uppercase tracking-widest">Order Reference</p>
-                  <p className="font-mono text-sm font-bold text-slate-800">#{order._id.toUpperCase()}</p>
+        <div className="mx-auto max-w-6xl">
+          <section className="overflow-hidden rounded-lg border border-[#eee5d8] bg-white shadow-[0_16px_40px_rgba(49,59,48,0.06)]">
+            <div className="grid lg:grid-cols-[1.1fr_0.9fr]">
+              <div className="bg-[#243120] p-6 text-white md:p-8">
+                <div className="flex items-center gap-3">
+                  <div className="flex size-12 items-center justify-center rounded-full bg-white/10 text-emerald-200 ring-1 ring-white/20">
+                    <CheckCircle2 size={28} />
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[#e7c46c]">
+                      {isPaid ? "Payment Successful" : "Order Received"}
+                    </p>
+                    <h1 className="mt-1 text-3xl font-semibold leading-tight md:text-4xl">
+                      Thank you for your order
+                    </h1>
+                  </div>
                 </div>
-                <div className="flex gap-6">
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-bold uppercase tracking-widest">Order Date</p>
-                    <p className="text-xs font-semibold text-slate-700 flex items-center gap-1">
-                      <Calendar size={13} />
-                      {new Date(order.createdAt).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
+
+                <p className="mt-5 max-w-2xl text-sm leading-6 text-white/80">
+                  Your Ensis wellness equipment order has been registered. Our team will review the details and coordinate delivery support.
+                </p>
+
+                <div className="mt-7 grid gap-3 sm:grid-cols-3">
+                  <div className="rounded-md bg-white/10 p-4 ring-1 ring-white/10">
+                    <ClipboardCheck size={18} className="text-[#e7c46c]" />
+                    <p className="mt-3 text-[10px] font-bold uppercase tracking-widest text-white/60">Order ID</p>
+                    <p className="mt-1 break-all font-mono text-xs font-semibold">#{order._id}</p>
+                  </div>
+                  <div className="rounded-md bg-white/10 p-4 ring-1 ring-white/10">
+                    <Calendar size={18} className="text-[#e7c46c]" />
+                    <p className="mt-3 text-[10px] font-bold uppercase tracking-widest text-white/60">Date</p>
+                    <p className="mt-1 text-xs font-semibold">{orderDate}</p>
+                  </div>
+                  <div className="rounded-md bg-white/10 p-4 ring-1 ring-white/10">
+                    <CreditCard size={18} className="text-[#e7c46c]" />
+                    <p className="mt-3 text-[10px] font-bold uppercase tracking-widest text-white/60">Payment</p>
+                    <p className="mt-1 text-xs font-semibold">{isPaid ? "Paid" : order.paymentStatus}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-6 md:p-8">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest text-[#8d6a3a]">Total Amount</p>
+                    <p className="mt-2 text-3xl font-semibold text-[#101010]">
+                      {formatCurrency(order.totalAmount)}
                     </p>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-bold uppercase tracking-widest">Payment Status</p>
-                    <span
-                      className={`inline-flex rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide border ${
-                        order.paymentStatus === "paid" || paymentVerified
-                          ? "bg-emerald-50 border-emerald-200 text-emerald-700"
-                          : order.paymentStatus === "failed"
-                          ? "bg-rose-50 border-rose-200 text-rose-700"
-                          : "bg-[#faf1dc] border-[#e6c878] text-[#8d6a3a]"
-                      }`}
-                    >
-                      {order.paymentStatus === "paid" || paymentVerified ? "PAID" : "PENDING"}
-                    </span>
+                  <span className={`inline-flex rounded-full border px-3 py-1 text-[10px] font-bold uppercase tracking-wide ${paymentBadgeClass(order.paymentStatus, paymentVerified)}`}>
+                    {isPaid ? "Paid" : order.paymentStatus}
+                  </span>
+                </div>
+
+                <div className="mt-6 space-y-3 rounded-md bg-[#fbfaf7] p-4">
+                  <div className="flex gap-3">
+                    <Truck size={18} className="mt-0.5 shrink-0 text-[#313b30]" />
+                    <div>
+                      <p className="text-sm font-bold capitalize">Order status: {order.orderStatus}</p>
+                      <p className="mt-1 text-xs leading-5 text-[#5f665b]">
+                        Dispatch and tracking details will be shared after order review.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex gap-3 border-t border-[#eee5d8] pt-3">
+                    <ShieldCheck size={18} className="mt-0.5 shrink-0 text-[#313b30]" />
+                    <p className="text-xs leading-5 text-[#5f665b]">
+                      Secure checkout details are verified through the payment provider.
+                    </p>
                   </div>
                 </div>
               </div>
-
-              {/* Items List */}
-              <div className="space-y-3">
-                <p className="text-[10px] font-bold uppercase tracking-widest flex items-center gap-1.5">
-                  <Package size={13} /> Items Packaged
-                </p>
-                <div className="divide-y divide-[#eee5d8]">
-                  {order.items.map((item, index) => {
-                    const itemName = item.name || (typeof item.product === "object" ? item.product.title : "Product Detail");
-                    return (
-                      <div key={index} className="py-3.5 flex items-center justify-between text-xs gap-4 first:pt-0 last:pb-0">
-                        <div className="min-w-0">
-                          <p className="font-bold text-slate-800 truncate leading-snug">{itemName}</p>
-                          <p className="mt-0.5 text-slate-400 font-semibold">
-                            {formatCurrency(item.price)} × {item.quantity}
-                          </p>
-                        </div>
-                        <span className="font-bold text-slate-800">{formatCurrency(item.price * item.quantity)}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Total Calculation */}
-              <div className="border-t border-[#eee5d8] pt-4 flex items-center justify-between">
-                <span className="text-sm font-bold">Total Paid Amount</span>
-                <span className="text-xl font-bold font-serif">{formatCurrency(order.totalAmount)}</span>
-              </div>
             </div>
+          </section>
 
-            {/* Delivery target & Info Details */}
-            <div className="grid gap-6 md:grid-cols-2">
-              <div className="rounded-2xl border border-[#eee5d8] bg-white p-6 shadow-[0_8px_24px_rgba(49,59,48,0.01)] space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-widest flex items-center gap-1.5 border-b border-[#eee5d8] pb-3">
-                  <MapPin size={13} /> Shipping Address
-                </h3>
-                <div className="text-xs space-y-1.5 text-slate-700">
-                  <p className="font-bold text-slate-800">{order.shippingAddress.label} Destination</p>
-                  <p className="leading-5">
+          <div className="mt-5 grid gap-5 lg:grid-cols-[1fr_360px]">
+            <section className="rounded-lg border border-[#eee5d8] bg-white p-5 shadow-[0_8px_24px_rgba(49,59,48,0.04)]">
+              <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#8d6a3a]">
+                <Package size={15} /> Order Items
+              </p>
+              <div className="mt-4 divide-y divide-[#eee5d8]">
+                {order.items.map((item, index) => (
+                  <div
+                    key={`${itemName(item)}-${index}`}
+                    className="grid gap-3 py-4 text-sm first:pt-0 last:pb-0 sm:grid-cols-[1fr_110px_120px] sm:items-center"
+                  >
+                    <div className="min-w-0">
+                      <p className="font-semibold text-[#101010]">{itemName(item)}</p>
+                      <p className="mt-1 text-xs font-medium text-[#6c7068]">
+                        {formatCurrency(item.price)} x {item.quantity}
+                      </p>
+                    </div>
+                    <span className="text-xs font-semibold text-[#6c7068]">Qty {item.quantity}</span>
+                    <span className="font-semibold text-[#101010] sm:text-right">
+                      {formatCurrency(item.price * item.quantity)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <aside className="space-y-5">
+              <section className="rounded-lg border border-[#eee5d8] bg-white p-5 shadow-[0_8px_24px_rgba(49,59,48,0.04)]">
+                <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#8d6a3a]">
+                  <MapPin size={15} /> Shipping Address
+                </h2>
+                <div className="mt-4 text-sm text-[#4f574d]">
+                  <p className="font-semibold text-[#101010]">{order.shippingAddress.label}</p>
+                  <p className="mt-2 leading-6">
                     {order.shippingAddress.street}<br />
                     {order.shippingAddress.city}, {order.shippingAddress.state} - {order.shippingAddress.postalCode}<br />
                     {order.shippingAddress.country}
                   </p>
                 </div>
-              </div>
+              </section>
 
-              <div className="rounded-2xl border border-[#eee5d8] bg-white p-6 shadow-[0_8px_24px_rgba(49,59,48,0.01)] space-y-3">
-                <h3 className="text-xs font-bold uppercase tracking-widest flex items-center gap-1.5 border-b border-[#eee5d8] pb-3">
-                  <ShoppingBag size={13} /> What Next?
-                </h3>
-                <ul className="text-[11px] leading-5 space-y-2 list-disc pl-4">
-                  <li>Our wellness equipment team will review your order.</li>
-                  <li>You will receive tracking details via email/phone once dispatched.</li>
-                  <li>Have queries? Reach us at any time through our Support channels.</li>
-                </ul>
-              </div>
-            </div>
+              <section className="rounded-lg border border-[#eee5d8] bg-white p-5 shadow-[0_8px_24px_rgba(49,59,48,0.04)]">
+                <h2 className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#8d6a3a]">
+                  <ShoppingBag size={15} /> What Happens Next
+                </h2>
+                <div className="mt-4 space-y-4 text-sm">
+                  <div className="flex gap-3">
+                    <Phone size={17} className="mt-0.5 shrink-0 text-[#313b30]" />
+                    <p className="leading-5 text-[#4f574d]">Our team may call to confirm product and delivery details.</p>
+                  </div>
+                  <div className="flex gap-3">
+                    <Home size={17} className="mt-0.5 shrink-0 text-[#313b30]" />
+                    <p className="leading-5 text-[#4f574d]">Installation or project support will be coordinated where applicable.</p>
+                  </div>
+                </div>
+              </section>
+            </aside>
           </div>
 
-          {/* Action Links */}
-          <div className="mt-10 flex flex-wrap gap-4 items-center justify-center">
+          <div className="mt-6 flex flex-wrap gap-3">
             <Link
               href="/products"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#313b30] px-6 text-xs font-bold uppercase tracking-wide text-white transition-all hover:bg-[#1a2119] hover:translate-y-[-1px] shadow-lg shadow-stone-800/10 cursor-pointer"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#313b30] px-6 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#1a2119]"
             >
               Continue Shopping <ArrowRight size={14} />
             </Link>
             <Link
               href="/"
-              className="inline-flex h-11 items-center justify-center rounded-xl border border-[#eee5d8] bg-white px-6 text-xs font-bold uppercase tracking-wide transition-all hover:bg-stone-50"
+              className="inline-flex h-11 items-center justify-center rounded-md border border-[#d8d0c4] bg-white px-6 text-xs font-bold uppercase tracking-wide transition-colors hover:bg-stone-50"
             >
               Go to Home Page
             </Link>

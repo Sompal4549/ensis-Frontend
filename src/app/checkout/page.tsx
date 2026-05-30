@@ -6,8 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowLeft,
-  ChevronRight,
-  CreditCard,
   LockKeyhole,
   MapPin,
   ShieldCheck,
@@ -50,12 +48,12 @@ export default function CheckoutPage() {
 
   // Authentication check and dynamic mounting
   useEffect(() => {
-    setIsMounted(true);
+    queueMicrotask(() => setIsMounted(true));
     const savedToken = localStorage.getItem("ensis_user_token");
     if (!savedToken) {
       router.push("/login");
     } else {
-      setToken(savedToken);
+      queueMicrotask(() => setToken(savedToken));
     }
   }, [router]);
 
@@ -75,44 +73,6 @@ export default function CheckoutPage() {
   const shipping = subtotal >= freeShippingAt || !hasItems ? 0 : 999;
   const estimatedTax = hasItems ? Math.round((subtotal - discount) * 0.05) : 0;
   const grandTotal = Math.max(0, subtotal - discount + shipping + estimatedTax);
-
-  // Sync the frontend localStorage cart to the backend MongoDB cart
-  const syncCartToBackend = async (): Promise<void> => {
-    // First, clear the backend cart by fetching it and removing all items
-    const cartRes = await fetch(`${API_URL}/cart`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const cartPayload = await cartRes.json();
-    if (cartRes.ok && cartPayload.data?.items?.length) {
-      // Remove existing items from backend cart to avoid duplicates
-      for (const item of cartPayload.data.items) {
-        const productId = item.product?._id || item.product;
-        await fetch(`${API_URL}/cart/${productId}`, {
-          method: "DELETE",
-          headers: { Authorization: `Bearer ${token}` },
-        });
-      }
-    }
-
-    // Now add each frontend cart item to the backend cart
-    for (const item of cartItems) {
-      const addRes = await fetch(`${API_URL}/cart/${item.id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ quantity: item.quantity }),
-      });
-
-      if (!addRes.ok) {
-        const errPayload = await addRes.json().catch(() => ({}));
-        throw new Error(
-          errPayload.message || `Failed to sync cart item "${item.name}" to server.`
-        );
-      }
-    }
-  };
 
   // Place internal MongoDB Order
   const handlePlaceOrder = async (e: React.FormEvent) => {
@@ -135,17 +95,24 @@ export default function CheckoutPage() {
     setError(null);
 
     try {
-      // Step 1: Sync frontend cart to backend MongoDB cart
-      await syncCartToBackend();
+      const items = cartItems.map((item) => ({
+        product: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      }));
 
-      // Step 2: Create order (backend reads items from its own cart)
       const res = await fetch(`${API_URL}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ shippingAddress }),
+        body: JSON.stringify({
+          shippingAddress,
+          items,
+          totalAmount: grandTotal,
+        }),
       });
 
       const payload = await res.json();
@@ -156,8 +123,8 @@ export default function CheckoutPage() {
       // Store created MongoDB order ID
       const createdOrder = payload.data;
       setOrderId(createdOrder._id);
-    } catch (err: any) {
-      setError(err.message || "An unexpected error occurred while placing order.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An unexpected error occurred while placing order.");
     } finally {
       setIsPlacingOrder(false);
     }
@@ -165,6 +132,26 @@ export default function CheckoutPage() {
 
   // Success payment callback
   const handlePaymentSuccess = (paymentId: string, internalOrderId: string) => {
+    const orderSnapshot = {
+      _id: internalOrderId,
+      items: cartItems.map((item) => ({
+        product: {
+          _id: item.id,
+          title: item.name,
+          images: [item.image],
+        },
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+      })),
+      totalAmount: grandTotal,
+      paymentStatus: "paid",
+      orderStatus: "confirmed",
+      shippingAddress,
+      createdAt: new Date().toISOString(),
+    };
+
+    localStorage.setItem(`ensis_order_${internalOrderId}`, JSON.stringify(orderSnapshot));
     // Clear items in local state cart context
     clearCart();
     // Redirect to success page

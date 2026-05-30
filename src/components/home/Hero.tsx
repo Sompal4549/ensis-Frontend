@@ -28,19 +28,25 @@ import BookButton from '../ui/BookButton';
 
 
 type HeroSlide = {
-  id?: number;
+  id?: any;
   image: any;
   title: React.ReactNode;
   highlight?: string;
   description?: string;
-  primaryBtn: string;
+  primaryBtn?: string;
   secondaryBtn?: string;
   showLutus?: boolean;
   listdesc?: string[];
+  listItems?: string[];
   isCenter?: boolean;
   buttons?: React.ReactNode[];
   icons?: React.ReactNode[];
+  primaryButtonText?: string;
+  primaryButtonHref?: string;
+  secondaryButtonText?: string;
+  secondaryButtonHref?: string;
 };
+
 
 export const Hero = async () => {
   const fallbackSlides: HeroSlide[] = [
@@ -213,10 +219,10 @@ export const Hero = async () => {
 
                   {/* List desc */}
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-2 text-[12px] font-semibold text-[#313628]">
-                    {slide.listdesc && slide.listdesc.map((item, i) => (
+                    {((slide.listItems || slide.listdesc) as string[])?.map((item, i, arr) => (
                       <div key={item}>
                         <span key={item} className="nav-item">{item}</span>
-                        {slide.listdesc && i < slide.listdesc.length - 1 && (
+                        {i < arr.length - 1 && (
                           <span key={`div-${i}`} className="nav-divider">|</span>
                         )}
                       </div>
@@ -333,7 +339,24 @@ export const Hero = async () => {
 
                   {/* Buttons */}
                   <div className="mt-4 md:mt-6 flex flex-wrap gap-3 md:gap-5">
-                    {slide.buttons?.map((button, index) => <div key={index}>{button}</div>)}
+                    {slide.buttons && slide.buttons.length > 0 ? (
+                      slide.buttons.map((button, index) => <div key={index}>{button}</div>)
+                    ) : (
+                      <>
+                        {(slide.primaryButtonText || slide.primaryBtn) && (
+                          <BookButton
+                            text={slide.primaryButtonText || slide.primaryBtn}
+                            path={slide.primaryButtonHref || '/contact'}
+                          />
+                        )}
+                        {(slide.secondaryButtonText || slide.secondaryBtn) && (
+                          <GreenButton
+                            text={slide.secondaryButtonText || slide.secondaryBtn}
+                            path={slide.secondaryButtonHref || '/contact'}
+                          />
+                        )}
+                      </>
+                    )}
                   </div>
                 </div>
 
