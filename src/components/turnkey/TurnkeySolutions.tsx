@@ -23,6 +23,8 @@ type SolutionCard = {
   title: string;
   points: string[];
   image?: any;
+  bottomStrap?: boolean;
+  bottomStrapText?: string;
 };
 
 const solutions: SolutionCard[] = [
@@ -38,6 +40,7 @@ const solutions: SolutionCard[] = [
       "Project Budgeting",
     ],
     image: project,
+    bottomStrap: false,
   },
   {
     id: "02",
@@ -51,6 +54,7 @@ const solutions: SolutionCard[] = [
       "Future Expansion Planning",
     ],
     image: architecture,
+    bottomStrap: false,
   },
   {
     id: "03",
@@ -64,6 +68,7 @@ const solutions: SolutionCard[] = [
       "Treatment Room Design",
     ],
     image: interior,
+    bottomStrap: false,
   },
   {
     id: "04",
@@ -77,6 +82,8 @@ const solutions: SolutionCard[] = [
       "Storage & Cabinets",
     ],
     image: furniture,
+    bottomStrap: true,
+    bottomStrapText: " Manufactured In Our Own State-of-the-Art Facility"
   },
   {
     id: "05",
@@ -90,6 +97,7 @@ const solutions: SolutionCard[] = [
       "Hygiene & Utility Equipment",
     ],
     image: equipment,
+    bottomStrap: false,
   },
   {
     id: "06",
@@ -103,6 +111,7 @@ const solutions: SolutionCard[] = [
       "Painting & Finishes",
     ],
     image: civil,
+    bottomStrap: false,
   },
   {
     id: "07",
@@ -116,6 +125,7 @@ const solutions: SolutionCard[] = [
       "Backup Power & Safety",
     ],
     image: mep,
+    bottomStrap: false,
   },
   {
     id: "08",
@@ -129,6 +139,7 @@ const solutions: SolutionCard[] = [
       "Brand Storytelling",
     ],
     image: branding,
+    bottomStrap: false,
   },
   {
     id: "09",
@@ -142,6 +153,7 @@ const solutions: SolutionCard[] = [
       "Staff Training Programs",
     ],
     image: training,
+    bottomStrap: false,
   },
 ];
 
@@ -222,6 +234,15 @@ const Card = ({
           </ul>
         </div>
       </div>
+
+      {/* Bottom Strap */}
+      {item.bottomStrap && (
+        <div className="flex items-center justify-center gap-2 bg-[#b8892e] px-3 py-[6px] absolute bottom-0 left-0 right-0">
+          <span className="text-white text-xs font-semibold tracking-wide text-center leading-none">
+           {item.bottomStrapText}
+          </span>
+        </div>
+      )}
     </div>
   );
 };
