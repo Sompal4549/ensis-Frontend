@@ -253,11 +253,11 @@ const TurnkeySolutions = () => {
         <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_2fr]">
           <Card item={bottomCards[0]} />
 
-          <div className="overflow-hidden rounded-[10px] border border-[#1c5d4b] bg-[#063d30]">
+          <div className="overflow-hidden rounded-[10px] border border-[#1c5d4b] bg-[#063d30] max-h-53.25">
             <div className="grid h-full grid-cols-[200px_1fr_1fr]">
               {/* Left Image Placeholder */}
-              <div className="relative bg-[#0b4b3a] flex items-center justify-center">
-                <Image src={handover} alt="Handover & After Sales Support" className="object-fill" width={120} height={120}/>
+              <div className="relative flex items-center justify-center border-r  border-[#d0a965] py-5">
+                <Image src={handover} alt="Handover & After Sales Support" className="object-contain" width={120} height={120}/>
               </div>
 
               {/* Content */}
