@@ -30,7 +30,7 @@ export default function TurnkeyHero() {
           <div className="flex flex-col gap-4 h-full justify-center">
             {/* Eyebrow */}
             <div className="flex items-center gap-3">
-              <span className="text-[#d6a85f] text-xs sm:text-sm font-semibold uppercase">
+              <span className="text-[#d6a85f] text-xs sm:text-sm tracking-[0.25em] font-semibold uppercase">
                 Turnkey Solutions
               </span>
               <div className="h-px w-8 bg-[#d6a85f]" />
@@ -43,7 +43,7 @@ export default function TurnkeyHero() {
               <h1 className="text-[#1a2e1a] text-3xl lg:text-4xl  font-semibold leading-tight">
                 We Design, Build &amp; Launch
               </h1>
-              <h1 className="text-[#d6a85f] text-3xl sm:text-4xl lg:text-[42px] font-semibold leading-tight mt-1">
+              <h1 className="text-[#b8922a] text-3xl sm:text-4xl lg:text-[42px] font-semibold leading-tight mt-1">
                 Complete Wellness Spaces
               </h1>
             </div>

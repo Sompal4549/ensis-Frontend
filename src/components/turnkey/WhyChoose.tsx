@@ -39,7 +39,7 @@ export default function WhyChoose() {
       {/* ── Top banner: "AND MANY MORE..." ── */}
       <Container className="py-3 flex items-center gap-3">
        <Image src={decorationLeft}  height={30} alt="decoration" className="h-full object-contain flex-1" />
-        <span className="text-[#d19f4f] text-base font-semibold uppercase tracking-[0.1em] whitespace-nowrap">
+        <span className="text-[#d19f4f] text-base font-semibold uppercase whitespace-nowrap">
           And Many More Customised Wellness Facilities
         </span>
         <Image src={decorationRight}  height={30} alt="decoration" className="h-full object-contain flex-1" />
