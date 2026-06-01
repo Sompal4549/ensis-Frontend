@@ -7,7 +7,11 @@ import WellnessCtaBanner from '@/components/turnkey/WellnessCtaBanner'
 import WhyChoose from '@/components/turnkey/WhyChoose'
 
 import React from 'react'
+import { generateSeo } from "@/lib/api/seo";
 
+export async function generateMetadata() {
+  return generateSeo("home");
+}
 const TurnkeySolutions = () => {
   return (
     <>

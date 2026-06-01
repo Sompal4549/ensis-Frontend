@@ -218,7 +218,9 @@ export default function CheckoutPage() {
               href="/products"
               className="mt-2 inline-flex h-10 items-center justify-center rounded-md bg-[#313b30] px-6 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#172015]"
             >
+              <p className="text-white">
               Browse Products
+              </p>
             </Link>
           </div>
         ) : (

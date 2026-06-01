@@ -5,7 +5,11 @@ const SupportSection = dynamic(() => import('@/components/blog/SupportSection').
 const WellnessResources = dynamic(() => import('@/components/blog/WellnessResource').then((mod) => mod.default));
 import NewsletterCard from '@/components/blog/NewsletterCard';
 import React from 'react'
+import { generateSeo } from "@/lib/api/seo";
 
+export async function generateMetadata() {
+  return generateSeo("home");
+}
 const Blog = () => {
   return (
     <div>

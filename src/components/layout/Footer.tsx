@@ -2,10 +2,12 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Phone, Mail } from 'lucide-react';
+import designHouse from "@/assets/icons/design_house.webp"
 import { FaFacebook, FaInstagram, FaYoutube, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
 import { Container } from '../ui/Container';
 import logoImg from '@/assets/logo.png';
 import BookButton from '../ui/BookButton';
+import GlowLogo from './GlowLogo';
 
 export const Footer = () => {
   const heading = "mb-5 text-[11px] font-bold tracking-widest text-[#d0a965]";
@@ -17,7 +19,10 @@ export const Footer = () => {
       <Container className='pt-2!'>
         <div className="grid gap-8 border-b border-white/10 pb-10 md:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_0.9fr_0.9fr_1.2fr]">
           <div>
-            <Image src={logoImg} alt="ENSIS Logo" className="h-[54px] w-auto object-contain brightness-125" />
+            <GlowLogo href="/">
+
+            <Image src={designHouse} alt="ENSIS Logo" className="h-[54px] w-[120px] object-contain brightness-125" />
+            </GlowLogo>
             <p className="mt-5 max-w-[320px] text-sm leading-6 text-[#cfc7ba]">
               Leading manufacturer of Ayurvedic, Spa & Wellness equipments. Crafting premium solutions for a healthier & better tomorrow.
             </p>
@@ -70,6 +75,12 @@ export const Footer = () => {
           <div>
             <h4 className={heading}>CONTACT US</h4>
             <ul className="space-y-4 text-sm leading-6 text-[#cfc7ba]">
+              <li>
+                <GlowLogo>
+
+                <Image src={logoImg} alt="ENSIS Logo" className="h-[54px] w-auto object-contain brightness-125" />
+                </GlowLogo>
+              </li>
               <li className="flex gap-3">
                 <MapPin size={16} className="mt-1 shrink-0 text-[#d0a965]" />
                 <span>Address: 12/29, Site-II, Loni Road, Industrial Area,<br/> Mohan Nagar - 201007, India, Uttar Pradesh, India</span>

@@ -213,9 +213,11 @@ export const Hero = async () => {
                   </div>
 
                   {/* Description */}
-                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-[#313628]">
-                    <span className='font-semibold'>{slide.description}</span>
-                  </div>
+                  {slide.description && (
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-[#313628]">
+                      <span className='font-semibold' dangerouslySetInnerHTML={{ __html: slide.description }}></span>
+                    </div>
+                  )}
 
                   {/* List desc */}
                   <div className="flex flex-wrap items-center gap-x-2 gap-y-2 text-[12px] font-semibold text-[#313628]">

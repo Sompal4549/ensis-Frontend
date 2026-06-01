@@ -99,9 +99,10 @@ const WellnessSection: React.FC = async () => {
               {content.heading}
             </h2>
 
-            <p className="text-[#0f2518] mt-3 text-xs max-w-[480px] leading-6 font-medium">
-              {content.description}
-            </p>
+            <p 
+              dangerouslySetInnerHTML={{ __html: content.description || "" }} 
+              className="text-[#0f2518] mt-3 text-xs max-w-[480px] leading-6" 
+            />
 
             <Link href={content.buttonHref || "/about"} className="group flex items-center gap-2 text-[#b78942] uppercase tracking-[1px] text-xs font-semibold mt-auto pt-4 w-fit">
               {content.buttonText || "Know More"}

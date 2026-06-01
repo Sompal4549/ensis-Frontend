@@ -30,6 +30,7 @@ import logoImg from "@/assets/logo.png";
 import GreenButton from "../ui/GreenButton";
 import BookButton from "../ui/BookButton";
 import { useShop } from "@/context/ShopContext";
+import GlowLogo from "./GlowLogo";
 
 export const Header = () => {
     const [mounted, setMounted] = useState(false);
@@ -40,25 +41,39 @@ export const Header = () => {
     const { addToCart, cartCount, likedCount, likedItems, toggleLike } = useShop();
     const wishlistRef = useRef<HTMLDivElement | null>(null);
     const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001";
-    
+
     useEffect(() => setMounted(true), []);
 
     const handleLogout = () => {
         localStorage.removeItem("ensis_access_token");
         localStorage.removeItem("ensis_user");
+        window.dispatchEvent(new Event("ensis-auth-change"));
         setUser(null);
         window.location.href = "/";
     };
 
     useEffect(() => {
-        const storedUser = typeof window !== "undefined" ? localStorage.getItem("ensis_user") : null;
-        if (storedUser) {
+        const syncUser = () => {
+            const storedUser = typeof window !== "undefined" ? localStorage.getItem("ensis_user") : null;
+            if (!storedUser) {
+                setUser(null);
+                return;
+            }
             try {
                 setUser(JSON.parse(storedUser));
             } catch (err) {
                 setUser(null);
             }
-        }
+        };
+
+        syncUser();
+        window.addEventListener("ensis-auth-change", syncUser);
+        window.addEventListener("storage", syncUser);
+
+        return () => {
+            window.removeEventListener("ensis-auth-change", syncUser);
+            window.removeEventListener("storage", syncUser);
+        };
     }, []);
 
     useEffect(() => {
@@ -176,7 +191,7 @@ export const Header = () => {
                                     </div>
                                     <span className="text-[10px] font-bold tracking-wide text-white">{user.name}</span>
                                 </div>
-                                <button 
+                                <button
                                     onClick={handleLogout}
                                     className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#d9c49d] hover:text-white transition-colors"
                                 >
@@ -209,15 +224,20 @@ export const Header = () => {
                 className={`bg-white`}
 
             >
-                <Container className="flex items-center justify-between gap-6 py-2!">
-                    <Link href="/" className="shrink-0">
-                        <Image
-                            src={logoImg}
-                            alt="ENSIS Logo"
-                            className="h-[32px] w-auto object-contain"
-                            priority
-                        />
-                    </Link>
+                <Container className="flex items-center justify-between gap-6 py-2! relative">
+                 <Link href="/" className="absolute left-4 xl:left-6 top-full -translate-y-[85%] shrink-0 z-10">
+            <GlowLogo>
+                <Image
+                    src={logoImg}
+                    alt="ENSIS Logo"
+                    className="h-[46px] w-auto object-contain"
+                    priority
+                />
+            </GlowLogo>
+        </Link>
+ 
+        {/* Spacer so nav doesn't go under the logo */}
+        <div className="w-[120px] shrink-0" />
 
                     {/* Desktop Navigation */}
                     <nav className="hidden flex-1 justify-center xl:flex">
@@ -339,7 +359,7 @@ export const Header = () => {
                             className="relative inline-flex size-10 items-center justify-center rounded-full border border-[#d8cbb9] text-[#263016] transition-colors hover:bg-[#fbf8f2]"
                         >
                             <ShoppingCart size={18} />
-                           {mounted && cartCount > 0 && (
+                            {mounted && cartCount > 0 && (
                                 <span className="absolute -right-1 -top-0.75 flex h-5 w-5 items-center justify-center rounded-full bg-[#263016] text-[10px] font-bold text-white">
                                     {cartCount}
                                 </span>
@@ -407,14 +427,14 @@ export const Header = () => {
                     >
                         <span>Cart</span>
                         {mounted && cartCount > 0 && (
-                        <span className="rounded-full bg-[#263016] px-2 py-0.5 text-[10px] font-bold text-white">
-                            {cartCount}
-                        </span>
+                            <span className="rounded-full bg-[#263016] px-2 py-0.5 text-[10px] font-bold text-white">
+                                {cartCount}
+                            </span>
                         )}
                     </Link>
                     <div className="mt-4 flex flex-col gap-3">
                         <GreenButton text={<span className="uppercase text-[#050A1A]">E-Brochure</span>} path={"https://ensis.in/pdf/e-broucher.pdf"} />
-                        
+
                         {mounted && (user ? (
                             <div className="mt-2 rounded-md border border-[#d8cbb9] bg-white p-4">
                                 <div className="flex items-center gap-3">

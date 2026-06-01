@@ -1,7 +1,7 @@
 const BASE_API_URL = (
   process.env.NEXT_PUBLIC_API_URL ||
   process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "http://localhost:4000/api/v1"
+  "http://localhost:5000/api/v1"
 ).replace(/\/$/, "");
 
 export const API_URL = BASE_API_URL.endsWith("/api/v1") ? BASE_API_URL : `${BASE_API_URL}/api/v1`;
@@ -38,6 +38,15 @@ const unwrap = async <T>(response: Response): Promise<T> => {
     return payload.data as T;
 };
 
+const normalizeOtpResponse = async (response: Response) => {
+    const payload = await response.json();
+    return {
+        ...payload,
+        success: response.ok && (payload.success === true || payload.status === "success"),
+        message: payload.message || (response.ok ? "OTP request successful" : "API request failed")
+    };
+};
+
 export const getImageUrl = (image?: string) => {
     if (!image) return "";
     if (image.startsWith("http")) return image;
@@ -58,42 +67,46 @@ export const productApi = {
 
 export const verifyApi = {
     sendEmailOtp: async (email: string, profile: string = 'SPEAKER') => {
-        const response = await fetch(`${API_URL}/auth/email-otp/verify`, {
+        const response = await fetch(`${API_URL}/auth/send-email-otp`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, profile })
+            body: JSON.stringify({ email, purpose: profile })
         });
-        return await response.json();
+        return normalizeOtpResponse(response);
     },
     verifyEmailOtp: async (email: string, otp: string) => {
-        const response = await fetch(`${API_URL}/verify/verify-email-otp`, {
+        const response = await fetch(`${API_URL}/auth/verify-email-otp`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, otp })
         });
-        return await response.json();
+        return normalizeOtpResponse(response);
     },
     sendPhoneOtp: async (phone: string, profile: string = 'CONTACT', name: string = '') => {
-        const response = await fetch(`${API_URL}/verify/send-phone-otp`, {
+        const response = await fetch(`${API_URL}/auth/send-phone-otp`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone, profile, name: name || null })
+            body: JSON.stringify({
+                phone,
+                purpose: profile,
+                message: name ? `Dear ${name}, your IHWE OTP is {{code}}.` : undefined
+            })
         });
-        return await response.json();
+        return normalizeOtpResponse(response);
     },
     verifyPhoneOtp: async (phone: string, otp: string) => {
-        const response = await fetch(`${API_URL}/verify/verify-phone-otp`, {
+        const response = await fetch(`${API_URL}/auth/verify-phone-otp`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ phone, otp })
         });
-        return await response.json();
+        return normalizeOtpResponse(response);
     }
 };
 
 export const getComponentContent = async <T>(key: string, fallback: T): Promise<T> => {
     try {
-        const response = await fetch(`${API_URL}/component-content/${key}`, { next: { revalidate: 60 } });
+        const response = await fetch(`${API_URL}/component-content/${key}`, { cache: "no-store" });
         const payload = await response.json();
         if (!response.ok || payload.status === "error") return fallback;
         return { ...fallback, ...(payload.data?.data || {}) };

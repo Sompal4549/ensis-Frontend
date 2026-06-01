@@ -15,6 +15,17 @@ import ProductInfoTabs from "@/components/products/ProductInfoTabs";
 import Planning from "@/components/products/Planning";
 import FaqSection from "@/components/products/Faq";
 import RealSpacesCarousel from "@/components/products/RealSpacesCarousel";
+import { generateSeo } from "@/lib/api/seo";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}) {
+  return generateSeo(
+    `products/${params.id}`
+  );
+}
 
 type ProductView = {
   id: string;

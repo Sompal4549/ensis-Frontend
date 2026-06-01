@@ -10,8 +10,14 @@ const BlogInsights = dynamic(() => import("@/components/home/BlogInsights").then
 const WellnessRoomSetups = dynamic(() => import("@/components/home/WellnessRoomSetups").then((mod) => mod.default));
 const WellnessSection = dynamic(() => import("@/components/about/WellnessSection").then((mod) => mod.default));
 const FullWidthFeatures = dynamic(() => import("@/components/home/FullWidthFeatures").then((mod) => mod.default));
+import { generateSeo } from "@/lib/api/seo";
+
+export async function generateMetadata() {
+  return generateSeo("home");
+}
 
 export default function Home() {
+
   return (
     <>
       <Hero />

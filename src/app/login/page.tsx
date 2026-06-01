@@ -33,6 +33,7 @@ export default function LoginPage() {
       }
       localStorage.setItem("ensis_access_token", payload.data.accessToken);
       localStorage.setItem("ensis_user", JSON.stringify(payload.data.user));
+      window.dispatchEvent(new Event("ensis-auth-change"));
       router.push("/");
       return;
     } catch (error) {

@@ -11,7 +11,12 @@ const WellnessBanner = dynamic(() => import("@/components/about/WellnessBanner")
 const WhyChooseEnsis = dynamic(() => import("@/components/about/WhyChoose").then((mod) => mod.default));
 const Testimonials = dynamic(() => import("@/components/home/Testimonials").then((mod) => mod.Testimonials));
 const ExpertiseSection = dynamic(() => import("@/components/about/OurExperties").then((mod) => mod.default));
+import { generateSeo } from "@/lib/api/seo";
 
+
+export async function generateMetadata() {
+  return generateSeo("home");
+}
 export default function About() {
   return (
     <>
