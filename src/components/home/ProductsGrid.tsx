@@ -14,73 +14,74 @@ import img6 from '@/assets/home/img-6.webp';
 import img13 from '@/assets/home/img-13.webp';
 
 import SubHeading from './SubHeading';
-import { getImageUrl, productApi, type Product } from '@/app/lib/api';
+import { getComponentContent, getImageUrl, productApi, type Product } from '@/app/lib/api';
+
+const fallbackImageMap: Record<string, any> = {
+  "panchkarma-beds": img12,
+  "steam-chambers": img16,
+  "spa-massage-tables": img13,
+  "sauna-systems": img4,
+  "bronze-accessories": img5,
+  "spa-furniture": img6,
+  "steam-generators": img14,
+  "yoga-wellness": img3,
+};
+
+const defaultContent = {
+  subtitle: "OUR PRODUCTS",
+  heading: "Premium Wellness Equipment",
+  description: "Wide range of Ayurvedic, Spa & Wellness equipment crafted\nfor modern wellness spaces.",
+  buttonText: "VIEW ALL PRODUCTS",
+  buttonPath: "/products",
+  productsLimit: 8,
+  products: [
+    { id: "panchkarma-beds", title: "Panchkarma Beds", image: "" },
+    { id: "steam-chambers", title: "Steam Chambers", image: "" },
+    { id: "spa-massage-tables", title: "Spa Massage Tables", image: "" },
+    { id: "sauna-systems", title: "Sauna Systems", image: "" },
+    { id: "bronze-accessories", title: "Bronze Accessories", image: "" },
+    { id: "spa-furniture", title: "Spa Furniture", image: "" },
+    { id: "steam-generators", title: "Steam Generators", image: "" },
+    { id: "yoga-wellness", title: "Yoga & Wellness", image: "" },
+  ],
+};
 
 export const ProductsGrid = async () => {
-  const fallbackProducts = [
-    { id: 'panchkarma-beds', title: 'Panchkarma Beds', image: img12 },
-    { id: 'steam-chambers', title: 'Steam Chambers', image: img16 },
-    { id: 'spa-massage-tables', title: 'Spa Massage Tables', image: img13 },
-    { id: 'sauna-systems', title: 'Sauna Systems', image: img4 },
-    { id: 'bronze-accessories', title: 'Bronze Accessories', image: img5 },
-    { id: 'spa-furniture', title: 'Spa Furniture', image: img6 },
-    { id: 'steam-generators', title: 'Steam Generators', image: img14 },
-    { id: 'yoga-wellness', title: 'Yoga & Wellness', image: img3 },
-  ];
-  let apiProducts: Product[] = [];
+  const content = await getComponentContent("home.productsGrid", defaultContent);
 
-  try {
-    const result = await productApi.list(8);
-    apiProducts = result.products;
-  } catch {
-    apiProducts = [];
-  }
-
-  // const products = apiProducts.length ? apiProducts : fallbackProducts;
-  const products = fallbackProducts;
-
+  // Use the CMS products list (which doubles as fallback category cards)
+  const products = content.products;
 
   return (
     <section className="bg-[#fbf8f2] relative z-10">
       <Container>
         <div className="mb-6 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <SubHeading text={'OUR PRODUCTS'} className='text-[#8d6a3a]'/>
-            <h2 className=" font-serif text-3xl leading-tight text-[#0f2518] md:text-3xl font-semibold">Premium Wellness Equipment</h2>
+            <SubHeading text={content.subtitle} className='text-[#8d6a3a]'/>
+            <h2 className="font-serif text-3xl leading-tight text-[#0f2518] md:text-3xl font-semibold">{content.heading}</h2>
             <p className="max-w-[380px] text-xs leading-4.5 text-[#0f2518]">
-              Wide range of Ayurvedic, Spa & Wellness equipment crafted
-              <br/> for modern wellness spaces.
+              {content.description}
             </p>
           </div>
-          <Link href="/products" className="inline-flex w-fit items-center gap-5 border border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#0f2518] transition-colors hover:bg-[#f3eee6] rounded-md">
-            VIEW ALL PRODUCTS <ArrowRight size={16} />
+          <Link href={content.buttonPath} className="inline-flex w-fit items-center gap-5 border border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#0f2518] transition-colors hover:bg-[#f3eee6] rounded-md">
+            {content.buttonText} <ArrowRight size={16} />
           </Link>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((product) => {
-            const productId = (('slug' in product && product.slug) ? product.slug : ('_id' in product ? (product._id as string) : product.id)) || Math.random().toString();
-            // const imageUrl = '_id' in product ? getImageUrl(product.images?.[0]) : '';
-            const imageUrl = typeof product.image === 'string' ? getImageUrl(product.image) : product.image;
+          {products.map((product: { id: string; title: string; image: string }) => {
+            const imageUrl = product.image
+              ? getImageUrl(product.image)
+              : fallbackImageMap[product.id] || img12;
 
             return (
-            <Link href={`/products/${productId}`} key={productId.toString()} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-xl">
+            <Link href={`/products/${product.id}`} key={product.id} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-xl">
               <div className="relative aspect-[2/1] overflow-hidden bg-[#e5dccf] rounded-tl-xl rounded-tr-xl">
-                {/* {'_id' in product && imageUrl ? (
-                  <Image src={imageUrl} alt={product.title} fill className="object-cover" />
-                ) : (
-                  <Image src={img12} alt={product.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" />
-                )} */}
                    <Image src={imageUrl} alt={product.title} fill className="object-cover" />
               </div>
               <div className="p-5">
                 <p className="text-base font-semibold text-[#0f2518]">{product.title}</p>
-                {/* {'_id' in product && (
-                  <p className="mt-2 text-sm font-semibold text-[#334022]">
-                    {product.price ? `₹${product.price.toLocaleString('en-IN')}` : 'Ask for Price'}
-                  </p>
-                )} */}
-                <span className=" inline-flex items-center gap-2 text-xs font-semibold text-[#0f2518]">Explore Now <ArrowRight size={14} /></span>
+                <span className="inline-flex items-center gap-2 text-xs font-semibold text-[#0f2518]">Explore Now <ArrowRight size={14} /></span>
               </div>
             </Link>
           )})}

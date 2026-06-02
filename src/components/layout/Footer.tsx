@@ -8,8 +8,48 @@ import { Container } from '../ui/Container';
 import logoImg from '@/assets/logo.png';
 import BookButton from '../ui/BookButton';
 import GlowLogo from './GlowLogo';
+import { getComponentContent } from '@/app/lib/api';
 
-export const Footer = () => {
+const defaultFooter = {
+  companyDescription: "Leading manufacturer of Ayurvedic, Spa & Wellness equipments. Crafting premium solutions for a healthier & better tomorrow.",
+  quickLinks: [
+    { label: "Home", href: "/" },
+    { label: "About Us", href: "/about" },
+    { label: "Products", href: "/products" },
+    { label: "Turnkey Solutions", href: "/turnkey" },
+    { label: "Projects", href: "/projects" },
+    { label: "Blog", href: "/blog" },
+    { label: "Contact Us", href: "/contact" }
+  ],
+  productCategories: [
+    { label: "Panchkarma Beds", href: "/products/panchkarma-beds" },
+    { label: "Spa Massage Tables", href: "/products/spa-massage-tables" },
+    { label: "Steam Chambers", href: "/products/steam-chambers" },
+    { label: "Sauna Systems", href: "/products/sauna-systems" },
+    { label: "Bronze Accessories", href: "/products/bronze-accessories" },
+    { label: "Spa Furniture", href: "/products/spa-furniture" },
+    { label: "Steam Generators", href: "/products/steam-generators" },
+    { label: "Yoga & Wellness", href: "/products/yoga-wellness" }
+  ],
+  solutionLinks: [
+    { label: "Panchkarma Clinic Setup", href: "/solutions/clinic" },
+    { label: "Resort & Spa Setup", href: "/solutions/resort" },
+    { label: "Wellness Retreat Design", href: "/solutions/retreat" },
+    { label: "Ayurveda Hospital Setup", href: "/solutions/hospital" },
+    { label: "Interior & Equipment Integration", href: "/solutions/integration" }
+  ],
+  contact: {
+    address: "12/29, Site-II, Loni Road, Industrial Area, Mohan Nagar - 201007, India, Uttar Pradesh, India",
+    phone: "+91 9654900525",
+    email: "info@ensis.in",
+    whatsappPhone: "+919654900525"
+  },
+  copyrightText: "Ensis Panchkarma & Spa Solutions. All Rights Reserved."
+};
+
+export const Footer = async () => {
+  const content = await getComponentContent("layout.footer", defaultFooter);
+
   const heading = "mb-5 text-[11px] font-bold tracking-widest text-[#d0a965]";
   const linkList = "space-y-2 text-sm text-[#cfc7ba]";
   const linkClass = "transition-colors hover:text-white";
@@ -20,11 +60,10 @@ export const Footer = () => {
         <div className="grid gap-8 border-b border-white/10 pb-10 md:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_0.9fr_0.9fr_1.2fr]">
           <div>
             <GlowLogo href="/">
-
             <Image src={designHouse} alt="ENSIS Logo" className="h-[54px] w-[120px] object-contain brightness-125" />
             </GlowLogo>
             <p className="mt-5 max-w-[320px] text-sm leading-6 text-[#cfc7ba]">
-              Leading manufacturer of Ayurvedic, Spa & Wellness equipments. Crafting premium solutions for a healthier & better tomorrow.
+              {content.companyDescription}
             </p>
             <div className="mt-5 flex items-center gap-4 text-[#d0a965]">
               <Link href="#" aria-label="Facebook" className={linkClass}><FaFacebook size={18} /></Link>
@@ -37,38 +76,27 @@ export const Footer = () => {
           <div>
             <h4 className={heading}>QUICK LINKS</h4>
             <ul className={linkList}>
-              <li><Link href="/" className={linkClass}>Home</Link></li>
-              <li><Link href="/about" className={linkClass}>About Us</Link></li>
-              <li><Link href="/products" className={linkClass}>Products</Link></li>
-              <li><Link href="/turnkey" className={linkClass}>Turnkey Solutions</Link></li>
-              <li><Link href="/projects" className={linkClass}>Projects</Link></li>
-              <li><Link href="/blog" className={linkClass}>Blog</Link></li>
-              <li><Link href="/contact" className={linkClass}>Contact Us</Link></li>
+              {content.quickLinks.map((link: { label: string; href: string }, index: number) => (
+                <li key={index}><Link href={link.href} className={linkClass}>{link.label}</Link></li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h4 className={heading}>PRODUCT CATEGORIES</h4>
             <ul className={linkList}>
-              <li><Link href="/products/panchkarma-beds" className={linkClass}>Panchkarma Beds</Link></li>
-              <li><Link href="/products/spa-massage-tables" className={linkClass}>Spa Massage Tables</Link></li>
-              <li><Link href="/products/steam-chambers" className={linkClass}>Steam Chambers</Link></li>
-              <li><Link href="/products/sauna-systems" className={linkClass}>Sauna Systems</Link></li>
-              <li><Link href="/products/bronze-accessories" className={linkClass}>Bronze Accessories</Link></li>
-              <li><Link href="/products/spa-furniture" className={linkClass}>Spa Furniture</Link></li>
-              <li><Link href="/products/steam-generators" className={linkClass}>Steam Generators</Link></li>
-              <li><Link href="/products/yoga-wellness" className={linkClass}>Yoga & Wellness</Link></li>
+              {content.productCategories.map((link: { label: string; href: string }, index: number) => (
+                <li key={index}><Link href={link.href} className={linkClass}>{link.label}</Link></li>
+              ))}
             </ul>
           </div>
 
           <div>
             <h4 className={heading}>OUR SOLUTIONS</h4>
             <ul className={linkList}>
-              <li><Link href="/solutions/clinic" className={linkClass}>Panchkarma Clinic Setup</Link></li>
-              <li><Link href="/solutions/resort" className={linkClass}>Resort & Spa Setup</Link></li>
-              <li><Link href="/solutions/retreat" className={linkClass}>Wellness Retreat Design</Link></li>
-              <li><Link href="/solutions/hospital" className={linkClass}>Ayurveda Hospital Setup</Link></li>
-              <li><Link href="/solutions/integration" className={linkClass}>Interior & Equipment Integration</Link></li>
+              {content.solutionLinks.map((link: { label: string; href: string }, index: number) => (
+                <li key={index}><Link href={link.href} className={linkClass}>{link.label}</Link></li>
+              ))}
             </ul>
           </div>
 
@@ -77,36 +105,34 @@ export const Footer = () => {
             <ul className="space-y-4 text-sm leading-6 text-[#cfc7ba]">
               <li>
                 <GlowLogo>
-
                 <Image src={logoImg} alt="ENSIS Logo" className="h-[54px] w-auto object-contain brightness-125" />
                 </GlowLogo>
               </li>
               <li className="flex gap-3">
                 <MapPin size={16} className="mt-1 shrink-0 text-[#d0a965]" />
-                <span>Address: 12/29, Site-II, Loni Road, Industrial Area,<br/> Mohan Nagar - 201007, India, Uttar Pradesh, India</span>
+                <span>Address: {content.contact.address}</span>
               </li>
               <li className="flex gap-3">
-                <Link href="tel:++919654900525" className='flex gap-3'>
+                <Link href={`tel:${content.contact.phone}`} className='flex gap-3'>
                 <Phone size={16} className="mt-1 shrink-0 text-[#d0a965]" />
-                <span>+91 9654900525</span>
+                <span>{content.contact.phone}</span>
                 </Link>
-
               </li>
               <li className="">
-                <Link href="mailto:info@ensis.in" className='flex gap-3'>
+                <Link href={`mailto:${content.contact.email}`} className='flex gap-3'>
                 <Mail size={16} className="mt-1 shrink-0 text-[#d0a965]" />
-                <span>info@ensis.in</span>
+                <span>{content.contact.email}</span>
                 </Link>
               </li>
             </ul>
             <div className='max-w-[180px] mt-3'>
-            <BookButton path="https://wa.me/+919654900525" text="WHATSAPP CHAT" rightIcon={<FaWhatsapp size={14} className="ml-2" />} />
+            <BookButton path={`https://wa.me/${content.contact.whatsappPhone}`} text="WHATSAPP CHAT" rightIcon={<FaWhatsapp size={14} className="ml-2" />} />
             </div>
           </div>
         </div>
 
         <div className="flex flex-col justify-between gap-3 py-5 text-xs text-[#9f978a] md:flex-row md:items-center">
-          <p>&copy; {new Date().getFullYear()} Ensis Panchkarma & Spa Solutions. All Rights Reserved.</p>
+          <p>&copy; {new Date().getFullYear()} {content.copyrightText}</p>
           <div className="flex gap-5">
             <Link href="/privacy" className={linkClass}>Privacy Policy</Link>
             <Link href="/terms" className={linkClass}>Terms & Conditions</Link>

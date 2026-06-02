@@ -74,14 +74,14 @@ export const verifyApi = {
         });
         return normalizeOtpResponse(response);
     },
-    verifyEmailOtp: async (email: string, otp: string) => {
-        const response = await fetch(`${API_URL}/auth/verify-email-otp`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, otp })
-        });
-        return normalizeOtpResponse(response);
-    },
+ verifyEmailOtp: async (email: string, otp: string) => {
+    const response = await fetch(`${API_URL}/auth/verify-email-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp }) // ← already correct, don't change
+    });
+    return normalizeOtpResponse(response);
+},
     sendPhoneOtp: async (phone: string, profile: string = 'CONTACT', name: string = '') => {
         const response = await fetch(`${API_URL}/auth/send-phone-otp`, {
             method: 'POST',
@@ -94,14 +94,14 @@ export const verifyApi = {
         });
         return normalizeOtpResponse(response);
     },
-    verifyPhoneOtp: async (phone: string, otp: string) => {
-        const response = await fetch(`${API_URL}/auth/verify-phone-otp`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone, otp })
-        });
-        return normalizeOtpResponse(response);
-    }
+verifyPhoneOtp: async (phone: string, otp: string) => {
+    const response = await fetch(`${API_URL}/auth/verify-phone-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone, otp }) // ← already correct, don't change
+    });
+    return normalizeOtpResponse(response);
+},
 };
 
 export const getComponentContent = async <T>(key: string, fallback: T): Promise<T> => {

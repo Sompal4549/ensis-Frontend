@@ -1,20 +1,29 @@
 import { Metadata } from "next";
+import { API_URL, getImageUrl } from "@/app/lib/api";
 
-interface SeoData {
-  title?: string;
-  description?: string;
-  keywords?: string[];
-  ogTitle?: string;
-  ogDescription?: string;
-  ogImage?: string;
+interface PageSeoData {
+  pageName: string;
+  slug: string;
+  seo: {
+    metaTitle: string;
+    metaDescription: string;
+    metaKeywords?: string;
+    h1: string;
+    canonical?: string;
+    ogTitle?: string;
+    ogDescription?: string;
+    ogImage?: string;
+  };
+  robots?: string;
 }
 
 export async function generateSeo(
   page: string
 ): Promise<Metadata> {
   try {
+    const slugName = page === "home" ? "home" : page;
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/seo/${page}`,
+      `${API_URL}/pages/${slugName}`,
       {
         next: {
           revalidate: 3600,
@@ -22,28 +31,36 @@ export async function generateSeo(
       }
     );
 
-    const { data }: { data: SeoData } =
-      await response.json();
+    const payload = await response.json();
+    if (!response.ok || !payload.success || !payload.data) {
+      throw new Error("Page not found");
+    }
+
+    const pageData: PageSeoData = payload.data;
+    const { seo, robots } = pageData;
+
+    const keywordsArray = seo.metaKeywords
+      ? seo.metaKeywords.split(",").map((k) => k.trim()).filter(Boolean)
+      : [];
+
+    const ogImageSrc = seo.ogImage ? getImageUrl(seo.ogImage) : "";
 
     return {
-      title: data.title,
-      description: data.description,
-      keywords: data.keywords,
+      title: seo.metaTitle,
+      description: seo.metaDescription,
+      keywords: keywordsArray,
+      alternates: seo.canonical ? { canonical: seo.canonical } : undefined,
+      robots: robots || "index, follow",
       openGraph: {
-        title: data.ogTitle || data.title,
-        description:
-          data.ogDescription ||
-          data.description,
-        images: data.ogImage
-          ? [data.ogImage]
-          : [],
+        title: seo.ogTitle || seo.metaTitle,
+        description: seo.ogDescription || seo.metaDescription,
+        images: ogImageSrc ? [ogImageSrc] : [],
       },
     };
   } catch {
     return {
-      title: "Default Title",
-      description:
-        "Default Description",
+      title: "Ensis - Premium Panchkarma & Wellness Spaces",
+      description: "Leading manufacturer of Ayurvedic, Spa & Wellness equipments. Crafting premium solutions.",
     };
   }
 }

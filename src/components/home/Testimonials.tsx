@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container } from '../ui/Container';
 import Image from 'next/image';
 
@@ -11,66 +11,43 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import quote from '@/assets/icons/quote.webp';
-import userImage from "@/assets/home/testimonial1.webp"
+import userImage from "@/assets/home/testimonial1.webp";
 import SubHeading from './SubHeading';
 import { FaStar } from 'react-icons/fa';
+import { getComponentContent } from '@/app/lib/api';
+
+const defaultContent = {
+  subtitle: "WHAT OUR CLIENTS SAY",
+  testimonials: [
+    { text: "Ensis has delivered exceptional quality Panchkarma equipment for our center. Their customization and support are outstanding.", name: "Dr. Anand Sharma", role: "Ayurveda Physician", image: "" },
+    { text: "The spa setup by Ensis has elevated our resort's wellness experience to a whole new level.", name: "Neha Malhotra", role: "Wellness Resort Owner", image: "" },
+    { text: "Excellent workmanship, premium finishing and on-time delivery. Highly recommended!", name: "Arjun Menon", role: "Spa Consultant", image: "" },
+    { text: "Their steam chambers and massage tables are of outstanding quality. Our clients love them.", name: "Priya Nair", role: "Wellness Center Director", image: "" },
+  ],
+};
 
 export const Testimonials = ({title}:{title?:React.ReactNode}) => {
-  const testimonials = [
-    {
-      text: 'Ensis has delivered exceptional quality Panchkarma equipment for our center. Their customization and support are outstanding.',
-      name: 'Dr. Anand Sharma',
-      role: 'Ayurveda Physician',
-      imgurl: userImage
-    },
-    {
-      text: "The spa setup by Ensis has elevated our resort's wellness experience to a whole new level.",
-      name: 'Neha Malhotra',
-      role: 'Wellness Resort Owner',
-      imgurl: userImage
-    },
-    {
-      text: 'Excellent workmanship, premium finishing and on-time delivery. Highly recommended!',
-      name: 'Arjun Menon',
-      role: 'Spa Consultant',
-      imgurl: userImage
-    },
-    {
-      text: 'Their steam chambers and massage tables are of outstanding quality. Our clients love them.',
-      name: 'Priya Nair',
-      role: 'Wellness Center Director',
-      imgurl: userImage
-    },
-    {
-      text: 'Ensis has delivered exceptional quality Panchkarma equipment for our center. Their customization and support are outstanding.',
-      name: 'Dr. Anand Sharma',
-      role: 'Ayurveda Physician',
-      imgurl: userImage
-    },
-    {
-      text: "The spa setup by Ensis has elevated our resort's wellness experience to a whole new level.",
-      name: 'Neha Malhotra',
-      role: 'Wellness Resort Owner',
-      imgurl: userImage
-    },
-    {
-      text: 'Excellent workmanship, premium finishing and on-time delivery. Highly recommended!',
-      name: 'Arjun Menon',
-      role: 'Spa Consultant',
-      imgurl: userImage
-    },
-    {
-      text: 'Their steam chambers and massage tables are of outstanding quality. Our clients love them.',
-      name: 'Priya Nair',
-      role: 'Wellness Center Director',
-      imgurl: userImage
-    },
-  ];
+  const [content, setContent] = useState(defaultContent);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const data = await getComponentContent("home.testimonials", defaultContent);
+        setContent(data);
+      } catch {
+        // Keep defaults
+      }
+    };
+    fetchContent();
+  }, []);
+
+  // Duplicate testimonials for a smooth loop effect
+  const testimonials = [...content.testimonials, ...content.testimonials];
 
   return (
     <section className="bg-[#fbf8f2]">
       <Container>
-        {title|| <SubHeading className='text-black' text='WHAT OUR CLIENTS SAY' />}
+        {title|| <SubHeading className='text-black' text={content.subtitle} />}
         <div className="mt-2">
           <Swiper
             modules={[Autoplay, Pagination]}
@@ -105,7 +82,6 @@ export const Testimonials = ({title}:{title?:React.ReactNode}) => {
                     width={28}
                     alt="quote"
                     src={quote}
-                    //  className="absolute top-4 left-4"
                   />
 
                <p className="mb-2 text-xs font-medium pl-6 line-clamp-3">
@@ -119,7 +95,7 @@ export const Testimonials = ({title}:{title?:React.ReactNode}) => {
                     <FaStar />
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="size-11 rounded-full bg-cover bg-center" style={{ backgroundImage: `url(${userImage.src})` }} />
+                    <div className="size-11 rounded-full bg-cover bg-center" style={{ backgroundImage: `url(${item.image || userImage.src})` }} />
 
                     <div className="py-1">
                       <p className="text-xs font-bold text-[#1f261b] leading-5">

@@ -31,6 +31,7 @@ import GreenButton from "../ui/GreenButton";
 import BookButton from "../ui/BookButton";
 import { useShop } from "@/context/ShopContext";
 import GlowLogo from "./GlowLogo";
+import { getComponentContent } from "@/app/lib/api";
 
 export const Header = () => {
     const [mounted, setMounted] = useState(false);
@@ -112,18 +113,37 @@ export const Header = () => {
     const mobileLink =
         "border-b border-[#e8e0d3] py-4 text-[12px] font-bold tracking-wide text-[#1f261b]";
 
-    // Navigation Links Array
-    const navLinks = [
-        { label: "Home", href: "/" },
-        { label: "About Us", href: "/about" },
-        { label: "Products", href: "/products" },
-        { label: "Turnkey Solutions", href: "/turnkey" },
-        { label: "Consultancy", href: "/consultancy" },
-        { label: "Projects And Clients", href: "/projects-and-clients" },
-        { label: "Blog", href: "/blog" },
-        { label: "Enquiry", href: "/enquiry" },
-        { label: "Contact Us", href: "/contact" },
-    ];
+    const [headerContent, setHeaderContent] = useState({
+        phone: "+91 9654900525",
+        email: "info@ensis.in",
+        brochureUrl: "https://ensis.in/pdf/e-broucher.pdf",
+        badges: ["Exporting Worldwide", "ISO 9001:2015 Certified", "Manufactured in India"],
+        navLinks: [
+            { label: "Home", href: "/" },
+            { label: "About Us", href: "/about" },
+            { label: "Products", href: "/products" },
+            { label: "Turnkey Solutions", href: "/turnkey" },
+            { label: "Consultancy", href: "/consultancy" },
+            { label: "Projects And Clients", href: "/projects-and-clients" },
+            { label: "Blog", href: "/blog" },
+            { label: "Enquiry", href: "/enquiry" },
+            { label: "Contact Us", href: "/contact" }
+        ]
+    });
+
+    useEffect(() => {
+        const fetchHeader = async () => {
+            try {
+                const data = await getComponentContent("layout.header", headerContent);
+                setHeaderContent(data);
+            } catch (err) {
+                // Keep default
+            }
+        };
+        fetchHeader();
+    }, []);
+
+    const navLinks = headerContent.navLinks;
 
     // Social Links Array
     const socialLinks = [
@@ -166,19 +186,19 @@ export const Header = () => {
 
                         <span className="flex items-center gap-2">
                             <Factory size={13} />
-                            Manufactured in India
+                            {headerContent.badges?.[2] || "Manufactured in India"}
                         </span>
-                        <Link href="tel:+919654900525" className="flex items-center gap-2">
+                        <Link href={`tel:${headerContent.phone}`} className="flex items-center gap-2">
                             <Phone size={13} />
-                            +91 9654900525
+                            {headerContent.phone}
                         </Link>
 
                         <Link
-                            href="mailto:info@ensis.in"
+                            href={`mailto:${headerContent.email}`}
                             className="hidden items-center gap-2 sm:flex"
                         >
                             <Mail size={13} />
-                            info@ensis.in
+                            {headerContent.email}
                         </Link>
                     </div>
 
@@ -225,15 +245,15 @@ export const Header = () => {
 
             >
                 <Container className="flex items-center justify-between gap-6 py-2! relative">
-                 <Link href="/" className="absolute left-4 xl:left-6 top-full -translate-y-[85%] shrink-0 z-10">
-            <GlowLogo>
-                <Image
-                    src={logoImg}
-                    alt="ENSIS Logo"
-                    className="h-[46px] w-auto object-contain"
-                    priority
-                />
-            </GlowLogo>
+                 <Link href="/" className="absolute left-4 xl:left-6 top-[80%] -translate-y-[85%] shrink-0 z-10">
+
+  <Image
+    src={logoImg}
+    alt="ENSIS Logo"
+    className="h-11.5 w-auto object-contain"
+    priority
+  />
+    
         </Link>
  
         {/* Spacer so nav doesn't go under the logo */}
@@ -365,7 +385,7 @@ export const Header = () => {
                                 </span>
                             )}
                         </Link>
-                        <BookButton text="E-Brochure" path={"https://ensis.in/pdf/e-broucher.pdf"} />
+                        <BookButton text="E-Brochure" path={headerContent.brochureUrl} />
                         <button
                             className="inline-flex size-10 items-center justify-center border border-[#d8cbb9] text-[#263016] xl:hidden"
                             aria-label="Open menu"
@@ -433,7 +453,7 @@ export const Header = () => {
                         )}
                     </Link>
                     <div className="mt-4 flex flex-col gap-3">
-                        <GreenButton text={<span className="uppercase text-[#050A1A]">E-Brochure</span>} path={"https://ensis.in/pdf/e-broucher.pdf"} />
+                        <GreenButton text={<span className="uppercase text-[#050A1A]">E-Brochure</span>} path={headerContent.brochureUrl} />
 
                         {mounted && (user ? (
                             <div className="mt-2 rounded-md border border-[#d8cbb9] bg-white p-4">
