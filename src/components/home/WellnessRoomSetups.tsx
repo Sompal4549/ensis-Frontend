@@ -89,6 +89,7 @@ const WellnessRoomSetups: React.FC = () => {
                 alt={room.title}
                 className={`w-full h-full object-cover transition-transform duration-500 ${hovered === index ? "scale-105" : "scale-100"
                   }`}
+                  crossOrigin="anonymous"
               />
 
 

@@ -64,9 +64,9 @@ export const TurnkeySolutions = async () => {
                 <div key={index} className="text-center items-center sm:flex-row sm:items-center">
                   <div className="mx-auto mb-2 flex size-14 items-center justify-center text-[#d5ad6a]">
                     {typeof icon === "string" ? (
-                      <Image src={getImageUrl(icon)} alt={solution.title} width={250} height={150} className="object-contain" />
+                      <Image src={getImageUrl(icon)} alt={solution.title} width={250} height={150} className="object-contain" crossOrigin="anonymous" />
                     ) : (
-                      <Image src={icon} alt={solution.title} width={250} height={150} className="object-contain" />
+                      <Image src={icon} alt={solution.title} width={250} height={150} className="object-contain" crossOrigin="anonymous" />
                     )}
                   </div>
                   <span className="text-xs font-semibold text-[#f3eee6] w-20!">{solution.title}</span>

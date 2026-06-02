@@ -110,6 +110,7 @@ function CartTableRow({ item }: { item: CartItem }) {
             fill
             sizes="86px"
             className="object-cover"
+            crossOrigin="anonymous"
           />
         </Link>
         <div className="min-w-0 py-1">
@@ -175,6 +176,7 @@ function RecommendationCard({ product }: { product: Product }) {
             fill
             sizes="(max-width: 768px) 45vw, 150px"
             className="object-cover transition-transform duration-500 hover:scale-105"
+            crossOrigin="anonymous"
           />
         </Link>
         <button

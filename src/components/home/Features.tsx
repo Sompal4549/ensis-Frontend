@@ -67,6 +67,7 @@ export const Features = async () => {
             width={70}
             height={50}
             className="rounded-full object-contain object-center"
+            crossOrigin="anonymous"
           />
         ) : (
           <Image
@@ -75,6 +76,7 @@ export const Features = async () => {
             width={70}
             height={50}
             className="rounded-full object-contain object-center"
+            crossOrigin="anonymous"
           />
         )}
       </div>

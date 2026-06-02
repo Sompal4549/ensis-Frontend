@@ -54,7 +54,7 @@ export const BlogInsights = async () => {
             return (
               <Link href={`/blog/${index}`} key={index} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-lg">
                 <div className="relative aspect-[2.3/1] overflow-hidden bg-[#e5dccf]">
-                  <Image src={blogImage} alt={blog.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" />
+                  <Image src={blogImage} alt={blog.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" crossOrigin="anonymous" />
                 </div>
                 <div className="p-4 flex flex-col justify-between h-30">
                   <h3 className="text-lg font-bold text-[#1f261b] leading-[120%] line-clamp-2">{blog.title}</h3>

@@ -162,18 +162,18 @@ export const Hero = async () => {
             {/* Background Image - full on desktop, fixed height on mobile */}
             <div className="absolute inset-0 hidden md:block">
               {typeof slide.image === "string" && slide.image ? (
-                <Image src={getImageUrl(slide.image)} alt="" fill className="object-fill" />
+                <Image src={getImageUrl(slide.image)} alt="" fill className="object-fill" crossOrigin="anonymous" sizes="100vw" />
               ) : (
-                <Image src={slide.image} alt="" fill priority quality={95} className="object-fill" />
+                <Image src={slide.image} alt="" fill priority className="object-fill" crossOrigin="anonymous" sizes="100vw" />
               )}
             </div>
 
             {/* Mobile image - shown above content */}
             <div className="relative w-full h-55 sm:h-65 md:hidden overflow-hidden">
               {typeof slide.image === "string" && slide.image ? (
-                <Image src={getImageUrl(slide.image)} alt="" fill className="object-fill object-left" />
+                <Image src={getImageUrl(slide.image)} alt="" fill className="object-fill object-left" crossOrigin="anonymous" sizes="100vw" />
               ) : (
-                <Image src={slide.image} alt="" fill priority quality={95} className="object-fill object-left" />
+                <Image src={slide.image} alt="" fill priority className="object-fill object-left" crossOrigin="anonymous" sizes="100vw" />
               )}
             </div>
 
@@ -209,7 +209,7 @@ export const Hero = async () => {
 
                   {/* Divider */}
                   <div className={`flex w-full py-2 ${slide.isCenter && "flex flex-col items-center justify-center"}`}>
-                    <Image src={arrow} alt='arrow' width={350} height={10} className="max-w-[220px] sm:max-w-[300px] md:max-w-[350px]" />
+                    <Image src={arrow} alt='arrow' width={350} height={10} className="max-w-[220px] sm:max-w-[300px] md:max-w-[350px]" crossOrigin="anonymous" />
                   </div>
 
                   {/* Description */}
@@ -220,16 +220,16 @@ export const Hero = async () => {
                   )}
 
                   {/* List desc */}
-                  <div className="flex flex-wrap items-center gap-x-2 gap-y-2 text-[12px] font-semibold text-[#313628]">
-                    {((slide.listItems || slide.listdesc) as string[])?.map((item, i, arr) => (
-                      <div key={item}>
-                        <span key={item} className="nav-item">{item}</span>
-                        {i < arr.length - 1 && (
-                          <span key={`div-${i}`} className="nav-divider">|</span>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+               <div className="flex flex-wrap items-center text-[12px] font-semibold text-[#313628]">
+  {((slide.listItems || slide.listdesc) as string[])?.map((item, i, arr) => (
+    <React.Fragment key={item}>
+      <span className="nav-item">{item}</span>
+      {i < arr.length - 1 && (
+        <span className="nav-divider mx-2">|</span>
+      )}
+    </React.Fragment>
+  ))}
+</div>
 
                   {/* Icons */}
                   <div className="mt-4 md:mt-6 flex flex-wrap gap-5 overflow-x-auto no-scrollbar">
@@ -266,7 +266,7 @@ export const Hero = async () => {
                             className="w-9 h-9 md:w-14 md:h-14 rounded-full flex items-center justify-center"
                             style={{ border: "2px solid #b89060" }}
                           >
-                            <Image src={premium_craftmanship} alt="deep detox" width={18} height={18} className="object-contain md:w-[28px] md:h-[28px]" />
+                            <Image src={premium_craftmanship} alt="deep detox" width={18} height={18} className="object-contain md:w-[28px] md:h-[28px]" crossOrigin="anonymous"/>
                           </div>
                           <div className="flex flex-col items-center">
                             <span
@@ -292,7 +292,7 @@ export const Hero = async () => {
                             className="w-9 h-9 md:w-14 md:h-14 rounded-full flex items-center justify-center"
                             style={{ border: "2px solid #b89060" }}
                           >
-                            <Image src={durable} alt="deep detox" width={18} height={18} className="object-contain md:w-[28px] md:h-[28px]" />
+                            <Image src={durable} alt="deep detox" width={18} height={18} className="object-contain md:w-[28px] md:h-[28px]" crossOrigin="anonymous" />
                           </div>
                           <div className="flex flex-col items-center">
                             <span
@@ -318,7 +318,7 @@ export const Hero = async () => {
                             className="w-9 h-9 md:w-14 md:h-14 rounded-full flex items-center justify-center"
                             style={{ border: "2px solid #b89060" }}
                           >
-                            <Image src={wellness_focused} alt="deep detox" width={18} height={18} className="object-contain md:w-[28px] md:h-[28px]" />
+                            <Image src={wellness_focused} alt="deep detox" width={18} height={18} className="object-contain md:w-[28px] md:h-[28px]" crossOrigin="anonymous"/>
                           </div>
                           <div className="flex flex-col items-center">
                             <span

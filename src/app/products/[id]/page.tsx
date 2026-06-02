@@ -86,6 +86,7 @@ function RelatedProductCard({ product }: { product: Product }) {
         <Image
           src={product.image}
           alt={product.name}
+          crossOrigin="anonymous"
           fill
           sizes="(max-width: 768px) 45vw, 180px"
           className="object-cover transition-transform duration-500 group-hover:scale-105"

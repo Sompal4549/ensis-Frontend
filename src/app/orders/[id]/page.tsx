@@ -195,9 +195,9 @@ export default function OrderPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#fbfaf7] py-8 md:py-12">
+    <div className="min-h-screen bg-[#fbfaf7] py-8">
       <Container>
-        <div className="mx-auto max-w-6xl">
+    <div id="order-print-area">
           <section className="overflow-hidden rounded-lg border border-[#eee5d8] bg-white shadow-[0_16px_40px_rgba(49,59,48,0.06)]">
             <div className="grid lg:grid-cols-[1.1fr_0.9fr]">
               <div className="bg-[#243120] p-6 text-white md:p-8">

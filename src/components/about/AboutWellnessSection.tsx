@@ -39,6 +39,7 @@ const AboutWellnessSection = () => {
               src={our_story_image}
               alt="Wellness Building"
               className="w-full h-full object-cover"
+              crossOrigin="anonymous"
             />
         </div>
   {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0)_0%,rgba(255,255,255,0.1)_20%,rgba(255,255,255,0.8)_50%,rgba(255,255,255,1)_100%)] z-10" /> */}
@@ -95,7 +96,8 @@ const AboutWellnessSection = () => {
                 <div key={index} className="flex items-center gap-3">
                   {/* Icon Placeholder */}
                   <div className="w-9 h-9">
-                    <Image alt={item.text} src={item.image} width={30} height={30} className="object-contain" />
+                    <Image alt={item.text} src={item.image} width={30} height={30} className="object-contain"
+                    crossOrigin="anonymous" />
                   </div>
 
                   <span className="text-xs  font-semibold">
@@ -119,7 +121,7 @@ const AboutWellnessSection = () => {
               >
                 {/* Icon Placeholder */}
                 <div className="w-10 h-10">
-                    <Image alt={item.title} src={item.image} width={40} height={40} className="object-contain"/>
+                    <Image alt={item.title} src={item.image} width={40} height={40} className="object-contain" crossOrigin="anonymous"/>
                 </div>
 
                 <div>

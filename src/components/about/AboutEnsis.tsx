@@ -62,6 +62,7 @@ export default function AboutEnsisSection() {
               width={500}
               height={320}
               src={abouteEnsis}
+              crossOrigin="anonymous"
               alt="Workshop"
               className="h-full w-full object-cover rounded-tl-xl rounded-tr-xl"
             />
@@ -149,6 +150,7 @@ export default function AboutEnsisSection() {
                   width={26}
                   height={26}
                   className="object-contain"
+                  crossOrigin="anonymous"
                 />
               </div>
 

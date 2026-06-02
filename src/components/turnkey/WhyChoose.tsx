@@ -42,7 +42,7 @@ export default function WhyChoose() {
         <span className="text-[#d19f4f] text-base font-semibold uppercase whitespace-nowrap">
           And Many More Customised Wellness Facilities
         </span>
-        <Image src={decorationRight}  height={30} alt="decoration" className="h-full object-contain flex-1" />
+        <Image src={decorationRight}  height={30} alt="decoration" className="h-full object-contain flex-1" crossOrigin="anonymous" />
       </Container>
 
       {/* ── Main dark section ── */}

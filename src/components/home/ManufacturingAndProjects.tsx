@@ -106,6 +106,8 @@ export const ManufacturingAndProjects = async () => {
                   alt=""
                   fill
                   className="object-cover"
+                  crossOrigin="anonymous"
+                  sizes="(max-width: 1024px) 100vw, 40vw"
                 />
               </div>
 
@@ -116,6 +118,8 @@ export const ManufacturingAndProjects = async () => {
                   alt=""
                   fill
                   className="object-cover"
+                  crossOrigin="anonymous"
+                  sizes="(max-width: 1024px) 50vw, 20vw"
                 />
               </div>
 
@@ -126,6 +130,8 @@ export const ManufacturingAndProjects = async () => {
                   alt=""
                   fill
                   className="object-cover"
+                  crossOrigin="anonymous"
+                  sizes="(max-width: 1024px) 50vw, 20vw"
                 />
               </div>
 
@@ -162,6 +168,8 @@ export const ManufacturingAndProjects = async () => {
                     alt=""
                     fill
                     className="object-cover"
+                    crossOrigin="anonymous"
+                    sizes="(max-width: 1024px) 33vw, 15vw"
                   />
                 </div>
 
@@ -172,6 +180,8 @@ export const ManufacturingAndProjects = async () => {
                     alt=""
                     fill
                     className="object-cover"
+                    crossOrigin="anonymous"
+                    sizes="(max-width: 1024px) 33vw, 10vw"
                   />
                 </div>
 
@@ -182,6 +192,8 @@ export const ManufacturingAndProjects = async () => {
                     alt=""
                     fill
                     className="object-cover"
+                    crossOrigin="anonymous"
+                    sizes="(max-width: 1024px) 33vw, 10vw"
                   />
                 </div>
 
@@ -192,6 +204,8 @@ export const ManufacturingAndProjects = async () => {
                     alt=""
                     fill
                     className="object-cover"
+                    crossOrigin="anonymous"
+                    sizes="(max-width: 1024px) 33vw, 10vw"
                   />
                 </div>
 
@@ -202,6 +216,8 @@ export const ManufacturingAndProjects = async () => {
                     alt=""
                     fill
                     className="object-cover"
+                    crossOrigin="anonymous"
+                    sizes="(max-width: 1024px) 33vw, 10vw"
                   />
                 </div>
 

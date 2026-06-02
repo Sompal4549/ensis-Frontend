@@ -37,6 +37,7 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
       <Image width={35} height={20}
         src={lotus}
         alt="decoration"
+        crossOrigin="anonymous"
         className="object-contain opacity-90"
       />
     </div>

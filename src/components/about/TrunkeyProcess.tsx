@@ -70,6 +70,8 @@ const TurnkeyProcess: React.FC = () => {
             alt="Turnkey Process"
             className="h-full w-full object-cover"
             fill
+            crossOrigin="anonymous"
+            sizes="100vw"
           />
         </div>
       <Container>

@@ -43,6 +43,7 @@ export default async function FullWidthFeatures() {
                   width={20}
                   height={20}
                   className="w-full h-full object-contain"
+                  crossOrigin="anonymous"
                 />
               </div>
 

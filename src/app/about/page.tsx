@@ -15,7 +15,7 @@ import { generateSeo } from "@/lib/api/seo";
 
 
 export async function generateMetadata() {
-  return generateSeo("home");
+  return generateSeo("about");
 }
 export default function About() {
   return (

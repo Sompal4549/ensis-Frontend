@@ -35,9 +35,9 @@ export const GlobalPresence = async () => {
           
           <div className="relative overflow-hidden">
             {typeof content.image === "string" && content.image ? (
-              <Image src={getImageUrl(content.image)} alt="globe" width={500} height={150} className="object-cover object-top max-h-[150px]" />
+              <Image src={getImageUrl(content.image)} alt="globe" width={500} height={150} className="object-cover object-top max-h-[150px]" crossOrigin="anonymous" />
             ) : (
-              <Image src={globe} alt="globe" width={500} height={150} className="object-cover object-top max-h-[150px]" />
+              <Image src={globe} alt="globe" width={500} height={150} className="object-cover object-top max-h-[150px]" crossOrigin="anonymous" />
             )}
           </div>
 

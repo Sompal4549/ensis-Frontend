@@ -16,6 +16,8 @@ export default function WellnessBanner() {
             alt="Luxury Wellness Interior"
             className="h-full w-full object-cover"
             fill
+            crossOrigin="anonymous"
+            sizes="100vw"
           />
         </div>
       <Container className="relative mx-auto overflow-hidden rounded-md py-4!">

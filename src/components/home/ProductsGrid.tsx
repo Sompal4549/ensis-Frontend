@@ -77,7 +77,14 @@ export const ProductsGrid = async () => {
             return (
             <Link href={`/products/${product.id}`} key={product.id} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-xl">
               <div className="relative aspect-[2/1] overflow-hidden bg-[#e5dccf] rounded-tl-xl rounded-tr-xl">
-                   <Image src={imageUrl} alt={product.title} fill className="object-cover" />
+                   <Image 
+                     src={imageUrl} 
+                     alt={product.title} 
+                     fill 
+                     className="object-cover" 
+                     crossOrigin="anonymous" 
+                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                   />
               </div>
               <div className="p-5">
                 <p className="text-base font-semibold text-[#0f2518]">{product.title}</p>

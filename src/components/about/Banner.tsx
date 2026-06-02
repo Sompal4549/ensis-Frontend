@@ -19,7 +19,7 @@ import GreenButton from "../ui/GreenButton";
 const AboutHero: React.FC = () => {
   return (
     <section className="w-full bg-[#e9dfd3] overflow-hidden relative">
-      <Image src={aboutHeroImage} alt="About Us" className="w-full h-full object-fill absolute top-0 bottom-0 right-0 left-0" priority />
+      <Image src={aboutHeroImage} alt="About Us" className="w-full h-full object-fill absolute top-0 bottom-0 right-0 left-0" priority crossOrigin="anonymous" />
       <Container className=" grid grid-cols-1 lg:grid-cols-2 min-h-[85dvh] max-h-[650px] z-10">
         {/* <div className="absolute inset-0 pointer-events-none  z-20 w-[100%] block lg:hidden"
           style={{
@@ -76,7 +76,7 @@ const AboutHero: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
 
               <div className="flex flex-col items-center text-center relative">
-                <Image src={authentic_ayurveda} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" />
+                <Image src={authentic_ayurveda} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" crossOrigin="anonymous" />
                 <p className="text-[11px] leading-[17px] font-semibold">
                   Authentic Ayurveda Focused Design
                 </p>
@@ -86,7 +86,7 @@ const AboutHero: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center text-center relative">
-                 <Image src={premium_quality} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" />
+                 <Image src={premium_quality} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" crossOrigin="anonymous" />
                 <p className="text-[11px] text-[#4e463d] font-semibold">
                   Premium Quality Products
                 </p>
@@ -96,7 +96,7 @@ const AboutHero: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center text-center relative">
-                <Image src={custom_solutions} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" />
+                <Image src={custom_solutions} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" crossOrigin="anonymous" />
                
                 <p className="text-[11px] leading-[17px] font-semibold">
                   Custom Solutions for Every Need
@@ -107,7 +107,7 @@ const AboutHero: React.FC = () => {
               </div>
 
               <div className="flex flex-col items-center text-center">
-               <Image src={timely_delivery} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" />
+               <Image src={timely_delivery} alt="Authentic Ayurveda" width={35} height={35} className="text-[#b58a48] mb-3" crossOrigin="anonymous" />
                 <p className="text-[11px] leading-[17px] font-semibold">
                   Timely Delivery & Installation Support
                 </p>

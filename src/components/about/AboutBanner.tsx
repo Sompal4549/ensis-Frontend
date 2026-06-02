@@ -16,7 +16,14 @@ export default function AboutHero() {
         Add your background image using:
         bg-[url('/your-image.jpg')]
       */}
-      <Image priority alt="about banner" src={banner_image} fill className="object-cover object-right absolute inset-0" />
+      <Image 
+        priority 
+        alt="about banner" 
+        src={banner_image} 
+        fill 
+        className="object-cover object-right absolute inset-0" 
+        crossOrigin="anonymous" 
+        sizes="100vw" />
       <Container className="bg-black md:bg-transparent">
       <div className="relative min-h-[470px] w-full ">
         {/* Overlay */}
@@ -27,7 +34,7 @@ export default function AboutHero() {
           <div className="max-w-[620px] pt-10 pb-12 md:pt-16 md:pb-16">
             {/* Small Label */}
             <div className="mb-5 flex items-center gap-3">
-              <Image alt="lotus" src={lotus} width={20} height={20} className="h-full object-contain" />
+              <Image alt="lotus" src={lotus} width={20} height={20} className="h-full object-contain" crossOrigin="anonymous" />
               <span className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#d6a85f]">
                 About Ensis
               </span>
