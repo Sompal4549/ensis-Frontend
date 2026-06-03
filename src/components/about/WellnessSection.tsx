@@ -62,7 +62,7 @@ const WellnessSection: React.FC = async () => {
 
   const content = await getComponentContent<WellnessData>("home.wellnessSection", fallbackData);
 
-  const welcomeImageSrc = content.welcomeImage ? getImageUrl(content.welcomeImage) : welcome;
+  const welcomeImageSrc = typeof content.welcomeImage === "string" && content.welcomeImage ? getImageUrl(content.welcomeImage) : welcome;
   const servicesData = content.services?.length ? content.services : fallbackData.services;
 
   return (
@@ -91,7 +91,15 @@ const WellnessSection: React.FC = async () => {
               </span>
               <div className="flex gap-2 items-center">
                 <div className="w-16 h-[1px] bg-[#c9a870]" />
-                <Image src={flower} height={20} width={20} alt="flower" className="h-full object-contain object-center w-auto max-w-5" crossOrigin="anonymous" style={{  }} />
+                <Image 
+                  src={flower} 
+                  height={20} 
+                  width={20} 
+                  alt="flower" 
+                  className="h-full object-contain object-center w-auto max-w-5" 
+                  crossOrigin="anonymous" 
+                  style={{ width: "auto" }} 
+                />
                 <div className="w-16 h-[1px] bg-[#c9a870]" />
               </div>
             </div>
@@ -118,7 +126,7 @@ const WellnessSection: React.FC = async () => {
         {/* Right Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-3 h-full">
           {servicesData.map((service, index) => {
-            const serviceImageSrc = service.image ? getImageUrl(service.image) : fallbackServices[index % fallbackServices.length];
+            const serviceImageSrc = typeof service.image === "string" && service.image ? getImageUrl(service.image) : fallbackServices[index % fallbackServices.length];
             return (
               <div
                 key={index}

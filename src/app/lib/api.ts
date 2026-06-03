@@ -55,8 +55,8 @@ const normalizeOtpResponse = (response: AxiosResponse) => {
     };
 };
 
-export const getImageUrl = (image?: string) => {
-    if (!image) return "";
+export const getImageUrl = (image?: any) => {
+    if (!image || typeof image !== "string") return image || "";
     if (image.startsWith("http")) return image;
 
     // Ensure we have a leading slash but no double slashes

@@ -43,6 +43,7 @@ export default async function FullWidthFeatures() {
                   height={20}
                   className="w-full h-full object-contain"
                   crossOrigin="anonymous"
+                  style={{ height: "auto" }}
                 />
               </div>
 

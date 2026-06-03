@@ -11,6 +11,7 @@ import projects from "@/assets/consultancy/projects.webp"
 import clients from "@/assets/consultancy/happy_clients.webp"
 import experience from "@/assets/consultancy/experience.webp"
 import support360 from "@/assets/consultancy/business_setup.webp"
+import { Download } from "lucide-react";
 
 type Feature = {
   title: string;
@@ -110,7 +111,7 @@ export default function ConsultancyHero() {
       }}
     />
 
-      <Container className="relative z-10 mb-6">
+     <Container className="relative z-10">
         <div className="grid min-h-[70vh] grid-cols-1 lg:grid-cols-2 items-center">
           {/* LEFT CONTENT */}
          <div className="max-w-[700px] flex flex-col justify-center">
@@ -180,11 +181,11 @@ export default function ConsultancyHero() {
 
               <a
                 href={consultancyData.buttons.secondary.href}
-                className="inline-flex h-[50px] items-center justify-center rounded-lg border border-[#d6d9e2] bg-white px-4 text-[14px] font-semibold"
+                className="inline-flex h-[50px] items-center justify-center rounded-lg border-2 border-[#9fa0a1] bg-white px-4 text-[14px] font-semibold"
               >
                 {consultancyData.buttons.secondary.label}
 
-                <span className="ml-4">↓</span>
+                <span className="ml-4"><Download size={16} /></span>
               </a>
             </div>
           </div>
@@ -193,7 +194,7 @@ export default function ConsultancyHero() {
     
       </Container>
       </div>
-      <Container className="-mt-6 relative z-10">
+    <Container className="md:-mt-10 relative z-20">
             {/* STATS CARD */}
         <div>
           <div className="rounded-[20px] bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
@@ -235,7 +236,7 @@ export default function ConsultancyHero() {
                       {item.value}
                     </div>
 
-                    <div className="mt-3 text-sm">
+                    <div className="mt-3 text-sm font-semibold">
                       {item.title}
                     </div>
 

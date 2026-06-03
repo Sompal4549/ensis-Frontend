@@ -35,14 +35,15 @@ export default function ConsultancyCTA() {
     <div className="relative overflow-hidden rounded-[14px]">
       {/* BACKGROUND IMAGE */}
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat py-10"
+        className="absolute inset-0 bg-cover  bg-no-repeat py-10"
         style={{
           backgroundImage: `url(${bg.src})`,
+          backgroundPosition: "right center",
         }}
       />
 
       {/* CONTENT */}
-      <div className="relative z-10 grid min-h-[146px] grid-cols-1 items-center gap-6 px-5 py-5 md:grid-cols-[1fr_auto_280px] lg:px-10">
+      <div className="relative z-10 grid min-h-[220px] grid-cols-1 items-center gap-6 px-5 py-5 md:grid-cols-[1fr_auto_280px] lg:px-10">
         {/* LEFT CONTENT */}
         <div className="flex items-center gap-4 lg:gap-5">
           {/* HEADSET ICON */}
@@ -51,15 +52,15 @@ export default function ConsultancyCTA() {
           </div>
 
           <div className="max-w-[520px]">
-            <p className="text-[11px] font-semibold uppercase tracking-[1.8px] text-[#F4B16A]">
+            <p className="text-sm font-semibold uppercase tracking-[1.8px] text-[#F4B16A]">
               {ctaData.badge}
             </p>
 
-            <h2 className="mt-1 text-[24px] font-bold leading-[1.2] text-white">
+            <h2 className="mt-3 text-[24px] font-bold leading-[1.2] text-white">
               {ctaData.title}
             </h2>
 
-            <p className="mt-2 text-[14px] text-white/90">
+            <p className="mt-2 text-[14px] text-white max-w-[450px]">
               {ctaData.description}
             </p>
           </div>

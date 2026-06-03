@@ -92,13 +92,13 @@ export default function ConsultancyServices() {
             {consultancyServicesData.title}
           </h2>
 
-          <p className="mx-auto mt-3 max-w-[500px] text-[13px] leading-6">
+          <p className="mx-auto mt-3 max-w-[500px] text-[13px] font-medium">
             {consultancyServicesData.description}
           </p>
         </div>
 
         {/* CARDS */}
-        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {consultancyServicesData.services.map((service) => (
             <div
               key={service.title}
