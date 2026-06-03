@@ -9,7 +9,7 @@ import exportIcon from "@/assets/icons/export_quality.webp"
 import { getComponentContent, getImageUrl } from '@/app/lib/api';
 
 type FeatureItem = {
-  imgurl: any;
+  imgUrl: any;
   title: string;
   desc: string;
 };
@@ -17,38 +17,37 @@ type FeatureItem = {
 export const Features = async () => {
   const fallbackFeatures: FeatureItem[] = [
     {
-      imgurl: inhouse,
+      imgUrl: inhouse,
       title: "In-house Manufacturing",
       desc: "Premium quality products crafted in our own facility"
     },
     {
-      imgurl: info2,
+      imgUrl: info2,
       title: "Customized Solutions",
       desc: "Tailored equipment as per your space & requirement"
     },
     {
-      imgurl: exportIcon,
+      imgUrl: exportIcon,
       title: "Export Quality Standards",
       desc: "International standards with strict quality control"
     },
     {
-      imgurl: trunkey,
+      imgUrl: trunkey,
       title: "Turnkey Wellness Solutions",
       desc: "From concept to complete wellness setup"
     }
   ];
   const content = await getComponentContent<{ features: FeatureItem[] }>("home.features", { features: fallbackFeatures });
   const features = content.features?.length ? content.features : fallbackFeatures;
-
   return (
    <Container className="static lg:absolute lg:z-10 lg:-bottom-0 lg:left-1/2 lg:-translate-x-1/2 py-0!">
       <div className=' border-y border-[#e5dccf] bg-[#f3eee6] rounded-xl py-3 px-3'>
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
          {features.map((feature, index) => {
   const fallbackIcon =
-    fallbackFeatures[index % fallbackFeatures.length].imgurl;
+    fallbackFeatures[index % fallbackFeatures.length].imgUrl;
 
-  const icon = feature.imgurl || fallbackIcon;
+  const icon = feature.imgUrl || fallbackIcon;
 
   return (
     <div

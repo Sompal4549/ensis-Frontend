@@ -87,7 +87,7 @@ export default function IndustriesWeServe() {
     >
       {/* Icon */}
       <div className="mb-2 flex items-center justify-center text-[#b78a56] transition-all duration-300 group-hover:scale-105">
-        <Image src={industry.image} alt={industry.title} className="h-15 w-15 object-contain" width={60} height={60} />
+        <Image src={industry.image} alt={industry.title} className="object-contain" width={60} height={60} style={{ height: "auto" }} />
       </div>
 
       {/* Title */}

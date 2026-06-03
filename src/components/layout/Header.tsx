@@ -135,6 +135,7 @@ export const Header = () => {
         const fetchHeader = async () => {
             try {
                 const data = await getComponentContent("layout.header", headerContent);
+                console.log("Fetched header content:", data); // Debug log to check fetched data
                 setHeaderContent(data);
             } catch (err) {
                 // Keep default
@@ -174,20 +175,14 @@ export const Header = () => {
             <div className={`bg-[#263016] text-white py-1`}>
                 <Container className="flex min-h-8 items-center justify-between gap-4 text-[11px] font-medium py-0!">
                     <div className="hidden items-center gap-6 md:flex">
-                        {/* <span className="flex items-center gap-2">
-              <Globe size={13} />
-              Exporting Worldwide
-            </span>
-
-            <span className="flex items-center gap-2">
-              <Award size={13} />
-              ISO 9001:2015 Certified
-            </span> */}
-
-                        <span className="flex items-center gap-2">
-                            <Factory size={13} />
-                            {headerContent.badges?.[2] || "Manufactured in India"}
-                        </span>
+                        {headerContent.badges?.map((badge, index) => (
+                            <span key={index} className="flex items-center gap-2">
+                                {index === 0 && <Globe size={13} />}
+                                {index === 1 && <Award size={13} />}
+                                {index === 2 && <Factory size={13} />}
+                                {badge}
+                            </span>
+                        ))}
                         <Link href={`tel:${headerContent.phone}`} className="flex items-center gap-2">
                             <Phone size={13} />
                             {headerContent.phone}
@@ -252,6 +247,7 @@ export const Header = () => {
     alt="ENSIS Logo"
     className="h-11.5 w-auto object-contain"
     priority
+    style={{ width: "auto" }}
   />
     
         </Link>
@@ -418,6 +414,7 @@ export const Header = () => {
                         src={logoImg}
                         alt="ENSIS Logo"
                         className="h-10 w-auto object-contain"
+                        style={{ width: "auto" }}
                     />
 
                     <button

@@ -35,28 +35,28 @@ const steps: ProcessStep[] = [
     id: 2,
     title: "DESIGN & 3D VISUALIZATION",
     icon: (
-      <Image src={design} alt="Design & Visualization" width={35} height={35} className="text-[#b79a7a] mb-3" />
+      <Image src={design} alt="Design & Visualization" width={35} height={35} className="text-[#b79a7a] mb-3" style={{ height: "auto" }} />
     ),
   },
   {
     id: 3,
     title: "MANUFACTURING & PRODUCTION",
     icon: (
-      <Image src={manufacturing} alt="Manufacturing & Production" width={35} height={35} className="text-[#b79a7a] mb-3 object-cover" />
+      <Image src={manufacturing} alt="Manufacturing & Production" width={35} height={35} className="text-[#b79a7a] mb-3 object-cover" style={{ height: "auto" }} />
     ),
   },
   {
     id: 4,
     title: "INSTALLATION & EXECUTION",
     icon: (
-       <Image src={installation} alt="Installation & Execution" width={35} height={35} className="text-[#b79a7a] mb-3" />
+       <Image src={installation} alt="Installation & Execution" width={35} height={35} className="text-[#b79a7a] mb-3" style={{ height: "auto" }} />
     ),
   },
   {
     id: 5,
     title: "HANDOVER & SUPPORT",
     icon: (
-      <Image src={after_sales_support} alt="After Sales Support" width={35} height={35} className="text-[#b79a7a] mb-3" />
+      <Image src={after_sales_support} alt="After Sales Support" width={35} height={35} className="text-[#b79a7a] mb-3" style={{ height: "auto" }} />
     ),
   },
 ];

@@ -97,7 +97,7 @@ const AboutWellnessSection = () => {
                   {/* Icon Placeholder */}
                   <div className="w-9 h-9">
                     <Image alt={item.text} src={item.image} width={30} height={30} className="object-contain"
-                    crossOrigin="anonymous" />
+                    crossOrigin="anonymous" style={{ height: "auto" }} />
                   </div>
 
                   <span className="text-xs  font-semibold">
@@ -121,7 +121,7 @@ const AboutWellnessSection = () => {
               >
                 {/* Icon Placeholder */}
                 <div className="w-10 h-10">
-                    <Image alt={item.title} src={item.image} width={40} height={40} className="object-contain" crossOrigin="anonymous"/>
+                    <Image alt={item.title} src={item.image} width={40} height={40} className="object-contain" crossOrigin="anonymous" style={{ height: "auto" }} />
                 </div>
 
                 <div>

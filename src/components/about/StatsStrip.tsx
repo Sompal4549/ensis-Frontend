@@ -52,7 +52,7 @@ export default function StatsStrip() {
             >
               {/* White Icon Placeholder */}
               <div className="h-9 w-9">
-                <Image src={item.image} alt={item.label} height={36} width={36} className="object-contain" />
+                <Image src={item.image} alt={item.label} height={36} width={36} className="object-contain" style={{ height: "auto" }} />
               </div>
 
               {/* Content */}

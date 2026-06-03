@@ -240,7 +240,7 @@ export const Hero = async () => {
                             className="w-9 h-9 md:w-14 md:h-14 rounded-full flex items-center justify-center"
                             style={{ border: "2px solid #b89060" }}
                           >
-                            <Image src={ayurvedic_wisdom} alt="deep detox" width={18} height={18} className="object-contain md:w-[28px] md:h-[28px]" />
+                            <Image src={ayurvedic_wisdom} alt="deep detox" width={18} height={18} className="object-contain md:w-[28px] md:h-[28px]" crossOrigin="anonymous" />
                           </div>
                           <div className="flex flex-col items-center">
                             <span

@@ -377,7 +377,7 @@ export default function CheckoutPage() {
                     <div key={item.id} className="py-3 flex gap-3 text-xs items-center first:pt-0">
                       <div className="relative aspect-square h-12 w-12 shrink-0 overflow-hidden rounded-md bg-[#f7f3ec]">
                         <Image src={item.image} alt={item.name} fill className="object-cover"
-                        crossOrigin="anonymous" />
+                        crossOrigin="anonymous" sizes="48px" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="font-bold truncate leading-tight">{item.name}</p>

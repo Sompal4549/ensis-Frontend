@@ -39,6 +39,7 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
         alt="decoration"
         crossOrigin="anonymous"
         className="object-contain opacity-90"
+        style={{ height: "auto" }}
       />
     </div>
   );

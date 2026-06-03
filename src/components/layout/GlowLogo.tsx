@@ -20,18 +20,15 @@ export function GlowLogo({
   const inner = (
     <div
       className={className}
-      style={{
-        display: "inline-block",
-        flexShrink: 0,
-filter: `
-  drop-shadow(0 0 1px rgba(${rgb},1))
-  drop-shadow(0 0 3px rgba(${rgb},1))
-  drop-shadow(0 0 6px rgba(${rgb},0.9))
-  drop-shadow(0 2px 8px rgba(${rgb},0.8))
-  drop-shadow(0 4px 10px rgba(${rgb},0.5))
-  drop-shadow(0 15px 10px rgba(${rgb},0.2))
-`,
-      }}
+style={{
+  display: "inline-block",
+  flexShrink: 0,
+  filter: `
+    drop-shadow(0 0 2px rgba(${rgb},0.9))
+    drop-shadow(0 0 8px rgba(${rgb},0.7))
+    drop-shadow(0 0 16px rgba(${rgb},0.5))
+  `,
+}}
     >
       {children}
     </div>

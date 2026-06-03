@@ -79,6 +79,7 @@ const WellnessSection: React.FC = async () => {
               alt="Ayurveda"
               fill
               className="object-cover"
+              crossOrigin="anonymous"
             />
           </div>
 
@@ -90,7 +91,7 @@ const WellnessSection: React.FC = async () => {
               </span>
               <div className="flex gap-2 items-center">
                 <div className="w-16 h-[1px] bg-[#c9a870]" />
-                <Image src={flower} height={20} width={20} alt="flower" className="h-full object-contain object-center"  />
+                <Image src={flower} height={20} width={20} alt="flower" className="h-full object-contain object-center w-auto max-w-5" crossOrigin="anonymous" style={{  }} />
                 <div className="w-16 h-[1px] bg-[#c9a870]" />
               </div>
             </div>
@@ -125,7 +126,7 @@ const WellnessSection: React.FC = async () => {
               >
                 {/* Icon Circle */}
                 <div className="w-16 h-16 p-2 mx-auto rounded-full border border-[2.5px] border-[#c9a870] flex items-center justify-center mb-6">
-                  <Image src={serviceImageSrc} alt={service.title} width={30} height={30} className="w-full h-full object-contain"/>
+                  <Image src={serviceImageSrc} alt={service.title} width={30} height={30} className="w-full h-full object-contain" crossOrigin="anonymous" />
                 </div>
 
                 <p className="text-[#0f2518] text-[14px] font-semibold uppercase tracking-wide">

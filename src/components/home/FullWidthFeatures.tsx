@@ -5,7 +5,7 @@ import holistic_wellbeing from "@/assets/home/holistic_wellbeing.webp";
 import timeless_care from "@/assets/home/timeless_care.webp";
 import Image from "next/image";
 import GreenButton from "../ui/GreenButton";
-import { getComponentContent } from "@/app/lib/api";
+import { getComponentContent, getImageUrl } from "@/app/lib/api";
 
 const fallbackImages: Record<string, any> = {
   "Authentic Ayurveda": authentic_ayurveda,
@@ -15,9 +15,9 @@ const fallbackImages: Record<string, any> = {
 
 const defaultContent = {
   features: [
-    { title: "Authentic Ayurveda", subtitle: "Rooted in ancient wisdom", image: "" },
-    { title: "Holistic Well-being", subtitle: "For mind, body & soul", image: "" },
-    { title: "Timeless Care", subtitle: "Lasting transformation", image: "" },
+    { title: "Authentic Ayurveda", subtitle: "Rooted in ancient wisdom", image: authentic_ayurveda },
+    { title: "Holistic Well-being", subtitle: "For mind, body & soul", image: holistic_wellbeing },
+    { title: "Timeless Care", subtitle: "Lasting transformation", image: timeless_care },
   ],
   buttonText: "Get In Touch",
   buttonPath: "/contact",
@@ -25,12 +25,11 @@ const defaultContent = {
 
 export default async function FullWidthFeatures() {
   const content = await getComponentContent("home.fullWidthFeatures", defaultContent);
-
   return (
     <section className="w-full bg-[#0d2a17] border border-[#3d5c39]">
       <Container>
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 w-full">
-          {content.features.map((item: { title: string; subtitle: string; image: string }, index: number) => (
+          {content.features.map((item: { title: string; subtitle: string; image: any }, index: number) => (
             <div
               key={index}
               className="flex flex-col items-center text-center sm:flex-row sm:items-center sm:text-left gap-4 min-w-0"
@@ -38,8 +37,8 @@ export default async function FullWidthFeatures() {
               {/* Icon */}
               <div className="flex items-center justify-center w-10 h-10 shrink-0">
                 <Image
-                  src={item.image || fallbackImages[item.title] || authentic_ayurveda}
-                  alt={item.title}
+                  src={getImageUrl(item?.image) || fallbackImages[item.title] || authentic_ayurveda}
+                  alt={item?.title}
                   width={20}
                   height={20}
                   className="w-full h-full object-contain"

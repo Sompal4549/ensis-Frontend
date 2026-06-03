@@ -105,7 +105,7 @@ export const Footer = async () => {
             <ul className="space-y-4 text-sm leading-6 text-[#cfc7ba]">
               <li>
                 <GlowLogo>
-                <Image src={logoImg} alt="ENSIS Logo" className="h-[54px] w-auto object-contain brightness-125" />
+                <Image src={logoImg} alt="ENSIS Logo" className="h-[54px] w-auto object-contain brightness-125" style={{ width: "auto" }} />
                 </GlowLogo>
               </li>
               <li className="flex gap-3">
