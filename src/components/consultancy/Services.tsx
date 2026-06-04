@@ -80,7 +80,7 @@ const consultancyServicesData = {
 
 export default function ConsultancyServices() {
   return (
-    <section className="py-4">
+    <section>
       <Container>
         {/* HEADER */}
         <div className="mx-auto max-w-[540px] text-center">
@@ -118,7 +118,7 @@ export default function ConsultancyServices() {
                     />
               </div>
 
-              <h3 className="mt-5 text-xs font-bold leading-[1.45]">
+              <h3 className="mt-3 text-xs font-bold leading-[1.45]">
                 {service.title}
               </h3>
 

@@ -281,7 +281,7 @@ export const Header = () => {
                                 className="relative inline-flex size-10 items-center justify-center rounded-full border border-[#d8cbb9] text-[#263016] transition-colors hover:bg-[#fbf8f2]"
                             >
                                 <Heart size={18} />
-                                {likedCount > 0 && (
+                                {mounted && (
                                     <span className="absolute -right-1 -top-0.75 flex h-5 w-5 items-center justify-center rounded-full bg-[#c8a45d] text-[10px] font-bold text-white">
                                         {likedCount}
                                     </span>
@@ -375,7 +375,7 @@ export const Header = () => {
                             className="relative inline-flex size-10 items-center justify-center rounded-full border border-[#d8cbb9] text-[#263016] transition-colors hover:bg-[#fbf8f2]"
                         >
                             <ShoppingCart size={18} />
-                            {mounted && cartCount > 0 && (
+                            {mounted && (
                                 <span className="absolute -right-1 -top-0.75 flex h-5 w-5 items-center justify-center rounded-full bg-[#263016] text-[10px] font-bold text-white">
                                     {cartCount}
                                 </span>
@@ -443,7 +443,7 @@ export const Header = () => {
                         onClick={() => setIsMenuOpen(false)}
                     >
                         <span>Cart</span>
-                        {mounted && cartCount > 0 && (
+                        {mounted && (
                             <span className="rounded-full bg-[#263016] px-2 py-0.5 text-[10px] font-bold text-white">
                                 {cartCount}
                             </span>

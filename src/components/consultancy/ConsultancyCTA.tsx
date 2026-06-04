@@ -44,7 +44,7 @@ export default function ConsultancyCTA() {
       />
 
       {/* CONTENT */}
-      <div className="relative z-10 grid min-h-[160px] grid-cols-1 items-center gap-6 px-5 py-5 md:grid-cols-[1fr_auto_280px] lg:px-10">
+      <div className="relative z-10 grid min-h-[160px] grid-cols-1 items-center gap-6 px-5 py-5 md:grid-cols-[1fr_auto_380px] lg:px-10">
         {/* LEFT CONTENT */}
         <div className="flex items-center gap-4 lg:gap-5">
           {/* HEADSET ICON */}
