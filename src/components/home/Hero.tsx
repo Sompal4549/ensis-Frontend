@@ -152,12 +152,12 @@ export const Hero = async () => {
   const heroSlides = content.slides?.length ? content.slides : fallbackSlides;
 
   return (
-    <section className="bg-[#f7f2ea] relative z-20">
+    <section className="bg-[#f7f2ea] relative z-20 mb-12">
       <Carousel autoplayDelay={6000}>
         {heroSlides.map((slide) => (
           <div
             key={slide.id || `${slide.title}-${slide.primaryBtn}`}
-            className="relative pb-16 md:pb-16"
+            className="relative"
           >
             {/* Background Image - full on desktop, fixed height on mobile */}
             <div className="absolute inset-0 hidden md:block">
@@ -182,14 +182,12 @@ export const Hero = async () => {
 
             {/* Content */}
             <Container className="relative z-10">
-              <div className="flex md:min-h-[82dvh] md:max-h-[650px] md:items-center">
-
-                <div
-                  className={`max-w-175 pt-6 md:pt-10 w-full ${slide.isCenter && "flex flex-col items-center justify-center"}`}
-                  style={{
-                    background: "linear-gradient(90deg, rgba(255,255,255,0.10) 0%, rgba(255,255,255,0.05) 100%)",
-                  }}
-                >
+  <div className="flex md:h-[calc(100vh-96px)]">
+  <div
+    className={`max-w-175 w-full pt-8 md:pt-16 lg:pt-20 xl:pt-24 ${
+      slide.isCenter && "flex flex-col items-center"
+    }`}
+  >
                   {/* Main Heading */}
                   <h1 className={`mt-4 md:mt-6 font-serif text-[28px] sm:text-[36px] leading-[0.96] tracking-[-0.02em] text-[#0e3d21] font-medium lg:text-[62px] ${slide.isCenter && "text-center"}`}>
                     {typeof slide.title === "string" ? (

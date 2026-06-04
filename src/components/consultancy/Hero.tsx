@@ -12,6 +12,8 @@ import clients from "@/assets/consultancy/happy_clients.webp"
 import experience from "@/assets/consultancy/experience.webp"
 import support360 from "@/assets/consultancy/business_setup.webp"
 import { Download } from "lucide-react";
+import BookButton from "../ui/BookButton";
+import GreenButton from "../ui/GreenButton";
 
 type Feature = {
   title: string;
@@ -103,7 +105,7 @@ export default function ConsultancyHero() {
   return (
   <section className="overflow-hidden bg-[#f7f5f2]">
       {/* BG IMAGE */}
-  <div className="relative z-0">
+   <div className="relative z-0 h-[calc(100vh-96px)]">
     <div
       className="absolute inset-0 bg-cover bg-center bg-no-repeat"
       style={{
@@ -111,8 +113,8 @@ export default function ConsultancyHero() {
       }}
     />
 
-     <Container className="relative z-10">
-        <div className="grid min-h-[70vh] grid-cols-1 lg:grid-cols-2 items-center">
+  <Container className="relative z-10 h-full">
+      <div className="grid h-full grid-cols-1 lg:grid-cols-2 items-start pt-10 md:pt-14 lg:pt-20 xl:pt-24">
           {/* LEFT CONTENT */}
          <div className="max-w-[700px] flex flex-col justify-center">
     <p className="mb-4 text-[12px] font-bold tracking-[1.8px] text-[#d66a38] uppercase">
@@ -167,26 +169,9 @@ export default function ConsultancyHero() {
 
             {/* BUTTONS */}
           <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-              <a
-                href={consultancyData.buttons.primary.href}
-                className="inline-flex h-[50px] items-center justify-center rounded-lg bg-[#2563eb] px-4 text-[14px] font-semiboldd text-white transition hover:opacity-90"
-              >
-                <span className="text-white">
-
-                {consultancyData.buttons.primary.label}
-
-                </span>
-                <span className="ml-4 text-white">→</span>
-              </a>
-
-              <a
-                href={consultancyData.buttons.secondary.href}
-                className="inline-flex h-[50px] items-center justify-center rounded-lg border-2 border-[#9fa0a1] bg-white px-4 text-[14px] font-semibold"
-              >
-                {consultancyData.buttons.secondary.label}
-
-                <span className="ml-4"><Download size={16} /></span>
-              </a>
+            <BookButton text={consultancyData.buttons.primary.label} path={consultancyData.buttons.primary.href}/>
+          
+<GreenButton text={consultancyData.buttons.secondary.label} path={consultancyData.buttons.secondary.href} rightIcon={<Download size={16} />} />
             </div>
           </div>
         </div>
@@ -194,7 +179,7 @@ export default function ConsultancyHero() {
     
       </Container>
       </div>
-    <Container className="md:-mt-10 relative z-20">
+<Container className="relative z-20 md:-mt-[45px]">
             {/* STATS CARD */}
         <div>
           <div className="rounded-[20px] bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
@@ -202,7 +187,7 @@ export default function ConsultancyHero() {
               {consultancyData.stats.map((item, index) => (
                 <div
                   key={item.title}
-                  className="relative flex items-center gap-5 px-8 py-8 lg:px-10"
+                  className="relative flex items-center gap-5 px-8 py-2 lg:px-10"
                 >
                   {/* VERTICAL DIVIDER */}
                   {index !== 0 && (
@@ -211,7 +196,7 @@ export default function ConsultancyHero() {
 
                   {/* ICON */}
                   <div
-                    className={`flex h-20 w-20 shrink-0 items-center justify-center rounded-full
+                    className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full
                     ${
                       index === 0
                         ? "bg-[#fff3e5]"
@@ -232,11 +217,11 @@ export default function ConsultancyHero() {
                   </div>
 
                   <div>
-                    <div className="text-2xl font-bold leading-none">
+                    <div className="text-md font-bold leading-none">
                       {item.value}
                     </div>
 
-                    <div className="mt-3 text-sm font-semibold">
+                    <div className="mt-1 text-sm font-semibold">
                       {item.title}
                     </div>
 

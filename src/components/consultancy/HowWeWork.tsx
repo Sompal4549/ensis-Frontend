@@ -1,10 +1,11 @@
 "use client";
 
-import { ChartNoAxesCombined, LucideIcon, Settings, SquarePen, Users } from "lucide-react";
+import { ChartNoAxesCombined, Check, LucideIcon, Settings, SquarePen, Users } from "lucide-react";
 import React from "react";
 import { Container } from "../ui/Container";
 import Image from "next/image";
 import ourMission from "@/assets/consultancy/our-mission.webp"
+import BookButton from "../ui/BookButton";
 
 type Benefit = {
   text: string;
@@ -130,9 +131,9 @@ export default function HowWeWork() {
                       className="flex items-center gap-3"
                     >
                       {/* CHECK ICON */}
-                      <div className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-[#2563EB]">
+                      <div className="flex h-4 w-4 shrink-0 font-bold items-center justify-center rounded-full bg-[#2563EB]">
                         {/* ADD CHECK ICON HERE */}
-                        <div className="h-2 w-2" />
+                        <Check size={10} strokeWidth={2} color="#fff" />
                       </div>
 
                       <span className="text-[13px]">
@@ -141,17 +142,11 @@ export default function HowWeWork() {
                     </div>
                   ))}
                 </div>
+                <div className="w-50 h-10 mt-4">
 
-                <a
-                  href={whyChooseData.button.href}
-                  className="mt-6 inline-flex h-[44px] w-fit items-center justify-center rounded-lg bg-[#2563EB] px-5 text-[13px] font-semibold text-white"
-                ><span className="text-white">
+<BookButton text={whyChooseData.button.label} path={whyChooseData.button.href} />
+                </div>
 
-                  {whyChooseData.button.label}
-                </span>
-
-                  <span className="ml-3 text-white">→</span>
-                </a>
               </div>
 
               {/* IMAGE AREA */}
@@ -173,7 +168,7 @@ export default function HowWeWork() {
   </div>
 
   {/* PROCESS LIST */}
-  <div className="mt-5 flex-1">
+  <div className="mt-2 flex-1">
     {whyChooseData.process.steps.map((step, index) => {
       const Icon = step.icon;
 

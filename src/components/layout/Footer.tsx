@@ -49,7 +49,6 @@ const defaultFooter = {
 
 export const Footer = async () => {
   const content = await getComponentContent("layout.footer", defaultFooter);
-
   const heading = "mb-5 text-[11px] font-bold tracking-widest text-[#d0a965]";
   const linkList = "space-y-2 text-sm text-[#cfc7ba]";
   const linkClass = "transition-colors hover:text-white";

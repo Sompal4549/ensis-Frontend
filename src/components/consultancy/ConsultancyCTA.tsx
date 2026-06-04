@@ -5,6 +5,7 @@ import { Container } from "../ui/Container";
 import Image from "next/image";
 import HeadsetIcon from "@/assets/consultancy/headset.webp";
 import bg from "@/assets/consultancy/letsbuildbg.webp"
+import BookButton from "../ui/BookButton";
 
 
 type CtaData = {
@@ -35,7 +36,7 @@ export default function ConsultancyCTA() {
     <div className="relative overflow-hidden rounded-[14px]">
       {/* BACKGROUND IMAGE */}
       <div
-        className="absolute inset-0 bg-cover  bg-no-repeat py-10"
+        className="absolute inset-0 bg-cover  bg-no-repeat"
         style={{
           backgroundImage: `url(${bg.src})`,
           backgroundPosition: "right center",
@@ -43,7 +44,7 @@ export default function ConsultancyCTA() {
       />
 
       {/* CONTENT */}
-      <div className="relative z-10 grid min-h-[220px] grid-cols-1 items-center gap-6 px-5 py-5 md:grid-cols-[1fr_auto_280px] lg:px-10">
+      <div className="relative z-10 grid min-h-[160px] grid-cols-1 items-center gap-6 px-5 py-5 md:grid-cols-[1fr_auto_280px] lg:px-10">
         {/* LEFT CONTENT */}
         <div className="flex items-center gap-4 lg:gap-5">
           {/* HEADSET ICON */}
@@ -68,17 +69,7 @@ export default function ConsultancyCTA() {
 
         {/* BUTTON */}
         <div className="flex justify-start md:justify-center">
-          <a
-            href={ctaData.button.href}
-            className="inline-flex h-[52px] items-center justify-center rounded-lg bg-white px-7 text-[14px] font-semibold text-[#2563EB] shadow-lg transition-all duration-300 hover:-translate-y-0.5"
-          >
-            <span className="text-[#2563EB]">
-
-            {ctaData.button.label}
-            </span>
-
-            <span className="ml-4 text-[#2563EB]">→</span>
-          </a>
+          <BookButton text={ctaData.button.label} path={ctaData.button.href} />
         </div>
 
         {/* EMPTY COLUMN TO KEEP RIGHT IMAGE VISIBLE */}
