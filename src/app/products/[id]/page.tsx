@@ -17,15 +17,19 @@ import FaqSection from "@/components/products/Faq";
 import RealSpacesCarousel from "@/components/products/RealSpacesCarousel";
 import { generateSeo } from "@/lib/api/seo";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { id: string };
+export async function generateMetadata({ 
+  params 
+}: { 
+  params: Promise<{ id: string }> 
 }) {
+  // Await the params promise to get the actual values
+  const { id } = await params;
+
   return generateSeo(
-    `products/${params.id}`
+    `products/${id}`
   );
 }
+
 
 type ProductView = {
   id: string;

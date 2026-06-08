@@ -25,6 +25,7 @@ interface ShippingAddress {
   state: string;
   postalCode: string;
   country: string;
+  phone: string;
 }
 
 interface CheckoutSnapshot {
@@ -55,6 +56,7 @@ export default function CheckoutPage() {
     state: "",
     postalCode: "",
     country: "India",
+    phone: "",
   });
 
   const [orderId, setOrderId] = useState<string | null>(null);
@@ -111,7 +113,8 @@ export default function CheckoutPage() {
       !shippingAddress.city.trim() ||
       !shippingAddress.state.trim() ||
       !shippingAddress.postalCode.trim() ||
-      !shippingAddress.country.trim()
+      !shippingAddress.country.trim() ||
+      !shippingAddress.phone.trim()
     ) {
       setError("Please complete all shipping address fields.");
       return;
@@ -263,6 +266,19 @@ export default function CheckoutPage() {
                     </div>
 
                     <label className="block text-xs font-bold uppercase tracking-wide">
+                      Phone Number
+                      <input
+                        className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium  outline-none focus:border-[#8d6a3a] bg-[#faf8f4] rounded-md"
+                        type="tel"
+                        name="phone"
+                        placeholder="e.g. +91 98765 43210"
+                        value={shippingAddress.phone}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </label>
+
+                    <label className="block text-xs font-bold uppercase tracking-wide">
                       Street Address
                       <input
                         className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium  outline-none focus:border-[#8d6a3a] bg-[#faf8f4] rounded-md"
@@ -333,7 +349,7 @@ export default function CheckoutPage() {
                         <p className="font-bold">Deliver To:</p>
                         <p className="mt-1 text-slate-700">
                           {shippingAddress.label} • {shippingAddress.street}, {shippingAddress.city},{" "}
-                          {shippingAddress.state} - {shippingAddress.postalCode},{" "}
+                          {shippingAddress.state} - {shippingAddress.postalCode}. Tel: {shippingAddress.phone},{" "}
                           {shippingAddress.country}
                         </p>
                       </div>
