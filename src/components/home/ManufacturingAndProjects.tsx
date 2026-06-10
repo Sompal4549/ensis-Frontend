@@ -1,4 +1,5 @@
-import React from 'react';
+"use client"
+import React, { useState, useEffect } from 'react';
 import { CheckSquare2 } from 'lucide-react';
 import { Container } from '../ui/Container';
 import Image from 'next/image';
@@ -12,14 +13,28 @@ import img16 from '@/assets/home/img-1.webp';
 import SubHeading from './SubHeading';
 import BookButton from '../ui/BookButton';
 import { getComponentContent, getImageUrl } from '@/app/lib/api';
-
+import DOMPurify from "isomorphic-dompurify";
 const mfgFallbackImages = [img11, img12, img13];
 const projFallbackImages = [img12, img13, img14, img15, img16];
 
 const defaultContent = {
+  // --- Admin API fields ---
   mfgSubtitle: "MANUFACTURING EXCELLENCE",
-  mfgHeading: "Crafted with Precision,\nDelivered Worldwide",
-  mfgDescription: "Our advanced manufacturing facility combines traditional craftsmanship with modern technology to deliver world-class wellness equipment.",
+  heading: "Crafted with Precision,\nDelivered Worldwide",
+  description: "Our advanced manufacturing facility combines traditional craftsmanship with modern technology to deliver world-class wellness equipment.",
+  stats: [
+    { value: "25+", label: "Countries" },
+    { value: "500+", label: "Projects" },
+    { value: "10+", label: "Years" },
+  ],
+  projects: [
+    { image: "", title: "Project 1", location: "" },
+    { image: "", title: "Project 2", location: "" },
+    { image: "", title: "Project 3", location: "" },
+    { image: "", title: "Project 4", location: "" },
+    { image: "", title: "Project 5", location: "" },
+  ],
+  // --- Local-only fields (not from admin, kept as frontend defaults) ---
   mfgFeatures: [
     "Premium Quality Raw Materials",
     "Skilled Artisans & Modern Machinery",
@@ -28,30 +43,54 @@ const defaultContent = {
   ],
   mfgButtonText: "OUR MANUFACTURING",
   mfgButtonPath: "/manufacturing",
-  mfgImages: ["", "", ""],
+  
+mfgImages: ["", "", ""],
   projSubtitle: "OUR PROJECTS",
   projHeading: "Creating Wellness\nSpaces Worldwide",
   projDescription: "Proud to be a trusted partner for 500+ wellness projects across the globe.",
   projButtonText: "VIEW ALL PROJECTS",
   projButtonPath: "/projects",
-  projImages: ["", "", "", "", ""],
 };
 
-export const ManufacturingAndProjects = async () => {
-  const content = await getComponentContent("home.manufacturingAndProjects", defaultContent);
+export const ManufacturingAndProjects: React.FC = () => {
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [content, setContent] = useState(defaultContent);
 
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const data = await getComponentContent("home.manufacturingAndProjects", defaultContent);
+        setContent(data);
+      } catch {
+        // Keep defaults
+      }
+    };
+    fetchContent();
+  }, []);
+console.log(content,"manufaturing and Projects")
+  // Manufacturing images: use local fallbacks (admin doesn't send mfg images)
   const getMfgImage = (index: number) => {
     const cmsImg = content.mfgImages?.[index];
     return cmsImg ? getImageUrl(cmsImg) : mfgFallbackImages[index] || img11;
   };
 
+  // Project images: use admin `projects` array images, fallback to local
+  const projects = content.projects?.length ? content.projects : defaultContent.projects;
   const getProjImage = (index: number) => {
-    const cmsImg = content.projImages?.[index];
-    return cmsImg ? getImageUrl(cmsImg) : projFallbackImages[index] || img12;
+    const proj = projects[index];
+    return proj?.image ? getImageUrl(proj.image) : projFallbackImages[index] || img12;
   };
 
-  const mfgHeadingLines = content.mfgHeading.split("\n");
-  const projHeadingLines = content.projHeading.split("\n");
+  // Use admin fields for the main heading area, fallback to local fields
+  const sectionSubtitle = content.mfgSubtitle || defaultContent.mfgSubtitle;
+  const sectionHeading = content.heading || defaultContent.heading;
+  const sectionDescription = content.description || defaultContent.description;
+
+  const mfgHeadingLines = sectionHeading.split("\n");
+  const projHeadingLines = (content.projHeading || defaultContent.projHeading).split("\n");
+
+  // Stats from admin
+  const stats = content.stats?.length ? content.stats : defaultContent.stats;
 
   return (
     <section className="border-b border-[#e7ddd1] bg-[#fbf8f2]">
@@ -63,7 +102,7 @@ export const ManufacturingAndProjects = async () => {
 
             {/* Content */}
             <div className="flex flex-col justify-center">
-              <SubHeading className=' text-black font-normal' text={content.mfgSubtitle} />
+              <SubHeading className=' text-black font-normal' text={sectionSubtitle} />
               <h2 className="mt-2 font-serif text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
                 {mfgHeadingLines.map((line: string, i: number) => (
                   <React.Fragment key={i}>
@@ -72,10 +111,22 @@ export const ManufacturingAndProjects = async () => {
                   </React.Fragment>
                 ))}
               </h2>
+<div
+  className="mt-2 text-xs text-[#5f5a50]"
+  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(sectionDescription || "") }}
+/>
 
-              <p className="mt-2 text-xs text-[#5f5a50]">
-                {content.mfgDescription}
-              </p>
+              {/* Stats from admin API */}
+              {stats.length > 0 && (
+                <div className="mt-4 grid grid-cols-3 gap-3">
+                  {stats.map((stat: { value: string; label: string }, i: number) => (
+                    <div key={i} className="text-center">
+                      <span className="block text-xl font-bold text-[#334022]">{stat.value}</span>
+                      <span className="block text-[10px] font-semibold text-[#5f5a50] uppercase tracking-wide">{stat.label}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               <ul className="mt-6 space-y-2">
                 {content.mfgFeatures.map((item: string) => (
@@ -103,7 +154,7 @@ export const ManufacturingAndProjects = async () => {
               <div className="relative col-span-2 h-[100%] overflow-hidden rounded-xl">
                 <Image
                   src={getMfgImage(0)}
-                  alt=""
+                  alt="Manufacturing Excellence"
                   fill
                   className="object-cover"
                   crossOrigin="anonymous"
@@ -115,7 +166,7 @@ export const ManufacturingAndProjects = async () => {
               <div className="relative h-[100%] overflow-hidden rounded-xl">
                 <Image
                   src={getMfgImage(1)}
-                  alt=""
+                  alt="Manufacturing Detail"
                   fill
                   className="object-cover"
                   crossOrigin="anonymous"
@@ -127,7 +178,7 @@ export const ManufacturingAndProjects = async () => {
               <div className="relative h-[100%] overflow-hidden rounded-xl">
                 <Image
                   src={getMfgImage(2)}
-                  alt=""
+                  alt="Manufacturing Detail"
                   fill
                   className="object-cover"
                   crossOrigin="anonymous"
@@ -157,68 +208,98 @@ export const ManufacturingAndProjects = async () => {
               <BookButton text={content.projButtonText} path={content.projButtonPath} />
             </div>
 
-            {/* Project Grid */}
+            {/* Project Grid — uses admin `projects` array */}
             <div className="mt-2">
               <div className="grid h-50 grid-cols-3 grid-rows-[1fr_1fr] gap-2">
 
                 {/* Left Tall */}
-                <div className="relative row-span-2 h-full overflow-hidden rounded-xl">
+                <div className="relative row-span-2 h-full overflow-hidden rounded-xl group">
                   <Image
                     src={getProjImage(0)}
-                    alt=""
+                    alt={projects[0]?.title || ""}
                     fill
                     className="object-cover"
                     crossOrigin="anonymous"
                     sizes="(max-width: 1024px) 33vw, 15vw"
                   />
+                  {(projects[0]?.title || projects[0]?.location) && (
+                    <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
+                      {projects[0]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[0].title}</p>}
+                      {projects[0]?.location && <p className="text-white/80 text-[9px]">{projects[0].location}</p>}
+                    </div>
+                  )}
                 </div>
 
                 {/* Top Middle */}
-                <div className="relative h-full overflow-hidden rounded-xl">
+                <div className="relative h-full overflow-hidden rounded-xl group">
                   <Image
                     src={getProjImage(1)}
-                    alt=""
+                    alt={projects[1]?.title || ""}
                     fill
                     className="object-cover"
                     crossOrigin="anonymous"
                     sizes="(max-width: 1024px) 33vw, 10vw"
                   />
+                  {(projects[1]?.title || projects[1]?.location) && (
+                    <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
+                      {projects[1]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[1].title}</p>}
+                      {projects[1]?.location && <p className="text-white/80 text-[9px]">{projects[1].location}</p>}
+                    </div>
+                  )}
                 </div>
 
                 {/* Top Right */}
-                <div className="relative h-full overflow-hidden rounded-xl">
+                <div className="relative h-full overflow-hidden rounded-xl group">
                   <Image
                     src={getProjImage(2)}
-                    alt=""
+                    alt={projects[2]?.title || ""}
                     fill
                     className="object-cover"
                     crossOrigin="anonymous"
                     sizes="(max-width: 1024px) 33vw, 10vw"
                   />
+                  {(projects[2]?.title || projects[2]?.location) && (
+                    <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
+                      {projects[2]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[2].title}</p>}
+                      {projects[2]?.location && <p className="text-white/80 text-[9px]">{projects[2].location}</p>}
+                    </div>
+                  )}
                 </div>
 
                 {/* Bottom Middle */}
-                <div className="relative h-full overflow-hidden rounded-xl">
+                <div className="relative h-full overflow-hidden rounded-xl group">
                   <Image
                     src={getProjImage(3)}
-                    alt=""
+                    alt={projects[3]?.title || ""}
                     fill
                     className="object-cover"
                     crossOrigin="anonymous"
                     sizes="(max-width: 1024px) 33vw, 10vw"
                   />
+                  {(projects[3]?.title || projects[3]?.location) && (
+                    <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
+                      {projects[3]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[3].title}</p>}
+                      {projects[3]?.location && <p className="text-white/80 text-[9px]">{projects[3].location}</p>}
+                    </div>
+                  )}
                 </div>
 
                 {/* Bottom Right */}
-                <div className="relative h-full overflow-hidden rounded-xl">
+                <div className="relative h-full overflow-hidden rounded-xl group">
                   <Image
                     src={getProjImage(4)}
-                    alt=""
+                    alt={projects[4]?.title || ""}
                     fill
                     className="object-cover"
                     crossOrigin="anonymous"
                     sizes="(max-width: 1024px) 33vw, 10vw"
                   />
+                  {(projects[4]?.title || projects[4]?.location) && (
+                    <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
+                      {projects[4]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[4].title}</p>}
+                      {projects[4]?.location && <p className="text-white/80 text-[9px]">{projects[4].location}</p>}
+                    </div>
+                  )}
                 </div>
 
               </div>

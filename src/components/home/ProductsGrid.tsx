@@ -14,7 +14,7 @@ import img6 from '@/assets/home/img-6.webp';
 import img13 from '@/assets/home/img-13.webp';
 
 import SubHeading from './SubHeading';
-import { getComponentContent, getImageUrl, productApi, type Product } from '@/app/lib/api';
+import { getComponentContent, getImageUrl, getProducts, productApi, type Product } from '@/app/lib/api';
 
 const fallbackImageMap: Record<string, any> = {
   "panchkarma-beds": img12,
@@ -48,10 +48,9 @@ const defaultContent = {
 
 export const ProductsGrid = async () => {
   const content = await getComponentContent("home.productsGrid", defaultContent);
-
+const products = await getProducts()
   // Use the CMS products list (which doubles as fallback category cards)
-  const products = content.products;
-
+console.log(products,"products")
   return (
     <section className="bg-[#fbf8f2] relative z-10">
       <Container>
@@ -69,13 +68,13 @@ export const ProductsGrid = async () => {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {products.map((product: { id: string; title: string; image: string }) => {
-            const imageUrl = product.image
-              ? getImageUrl(product.image)
-              : fallbackImageMap[product.id] || img12;
+          {products.slice(0,8).map((product: Product) => {
+            const imageUrl = product.images?.[0]
+              ? getImageUrl(product.images[0])
+              : fallbackImageMap[product.slug] || img12;
 
             return (
-            <Link href={`/products/${product.id}`} key={product.id} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-xl">
+            <Link href={`/products/${product.slug}`} key={product.slug} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-xl">
               <div className="relative aspect-[2/1] overflow-hidden bg-[#e5dccf] rounded-tl-xl rounded-tr-xl">
                    <Image 
                      src={imageUrl} 

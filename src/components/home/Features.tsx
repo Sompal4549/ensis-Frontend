@@ -85,8 +85,7 @@ export const Features = async () => {
           {feature.title}
         </p>
 
-        <p className="mt-1 text-xs leading-4 text-[#0f2518] font-medium ">
-          {feature.desc}
+        <p className="mt-1 text-xs leading-4 text-[#0f2518] font-medium " dangerouslySetInnerHTML={{__html:feature.desc}}>
         </p>
       </div>
     </div>

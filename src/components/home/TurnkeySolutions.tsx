@@ -36,7 +36,7 @@ export const TurnkeySolutions = async () => {
   };
   const content = await getComponentContent<typeof fallback>("home.turnkeySolutions", fallback);
   const backgroundImage = typeof content.backgroundImage === "string" && content.backgroundImage ? getImageUrl(content.backgroundImage) : img15.src;
-console.log("TurnkeySolutions content:", content);
+console.log(content, "content")
   return (
     <section className="relative overflow-hidden bg-cover bg-center text-white">
       <Image src={backgroundImage} alt="Background" fill className="object-cover z-0" crossOrigin="anonymous"/>
@@ -50,7 +50,7 @@ console.log("TurnkeySolutions content:", content);
                 {content.description}
               </p>
               <div className='mt-2 w-65'>
-              <GreenButton text={content.buttonText} leftIcon={<MessageCircle className="text-[#050A1A]" size={16}/>} rightIcon={<ArrowRight className="text-[#050A1A]" size={16}/>} path="tel:+919654900525" />
+              <GreenButton text={content.buttonText} leftIcon={<MessageCircle className="text-[#050A1A]" size={16}/>} rightIcon={<ArrowRight className="text-[#050A1A]" size={16}/>} path={content.buttonHref || "tel:+919654900525"} />
               </div>
             </div>
          <div className="py-8 self-stretch hidden lg:flex items-stretch px-6">

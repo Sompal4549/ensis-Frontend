@@ -113,3 +113,9 @@ export const getComponentContent = async <T>(key: string, fallback: T): Promise<
         return fallback;
     }
 };
+
+export const getProducts = async () => {
+    const response = await apiClient.get(`/products?limit=100`);
+    console.log(response,"produts")
+    return response.data.data.products;
+};
