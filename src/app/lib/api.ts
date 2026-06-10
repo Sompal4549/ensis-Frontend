@@ -1,3 +1,8 @@
+
+
+
+
+
 import axios, { AxiosResponse } from "axios";
 
 const BASE_API_URL = (
@@ -14,6 +19,37 @@ const apiClient = axios.create({
     validateStatus: () => true, // Handle status codes manually to match previous fetch logic
 });
 
+
+const normalizePageResponse = (payload: any) => {
+  if (!payload) return null;
+  if (Array.isArray(payload)) return payload;
+  if (Array.isArray(payload?.data)) return payload.data;
+  if (Array.isArray(payload?.data?.data)) return payload.data.data;
+
+  const direct = payload?.data?.data ?? payload?.data ?? payload;
+  if (Array.isArray(direct?.sections)) return direct;
+  if (Array.isArray(direct?.data?.sections)) return direct.data;
+  if (Array.isArray(direct?.page?.sections)) return direct.page;
+  if (Array.isArray(payload?.data?.data?.sections)) return payload.data.data;
+  if (Array.isArray(payload?.data?.page?.sections)) return payload.data.page;
+
+  return direct;
+};
+
+export async function getPageComponent(slug: string) {
+  const response = await apiClient.get(`/component-content/page/${slug}`);
+
+  if (response.status < 200 || response.status >= 300) {
+    throw new Error(`Failed to fetch page content for: ${slug}`);
+  }
+
+  const payload = response.data;
+  if (payload?.status === "error") {
+    throw new Error(payload.message || `Failed to fetch page content for: ${slug}`);
+  }
+
+  return normalizePageResponse(payload);
+}
 export type Product = {
     _id: string;
     title: string;

@@ -6,6 +6,7 @@ const WellnessResources = dynamic(() => import('@/components/blog/WellnessResour
 import NewsletterCard from '@/components/blog/NewsletterCard';
 import React from 'react'
 import { generateSeo } from "@/lib/api/seo";
+import PageBuilder from '@/components/PageBuilder';
 
 export async function generateMetadata() {
   return generateSeo("home");
@@ -13,12 +14,7 @@ export async function generateMetadata() {
 const Blog = () => {
   return (
     <div>
-        <BlogHeroSection/>
-        <BlogSection/>
-        <WellnessResources/>
-      <NewsletterCard />
-
-        <SupportSection/>
+   <PageBuilder slug="blog" />
     </div>
   )
 }

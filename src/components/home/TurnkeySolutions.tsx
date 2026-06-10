@@ -25,6 +25,7 @@ export const TurnkeySolutions = async () => {
     heading: "From Concept to\nComplete Wellness Setup",
     description: "We provide end-to-end solutions for Panchkarma Clinics, Resorts, Hospitals & Wellness Centers.",
     buttonText: "BOOK DESIGN CONSULTATION",
+    buttonHref: "/contact",
     backgroundImage: img15,
     solutions: [
       { imgUrl: god, title: "Panchkarma Clinic Setup" },
@@ -36,7 +37,6 @@ export const TurnkeySolutions = async () => {
   };
   const content = await getComponentContent<typeof fallback>("home.turnkeySolutions", fallback);
   const backgroundImage = typeof content.backgroundImage === "string" && content.backgroundImage ? getImageUrl(content.backgroundImage) : img15.src;
-console.log(content, "content")
   return (
     <section className="relative overflow-hidden bg-cover bg-center text-white">
       <Image src={backgroundImage} alt="Background" fill className="object-cover z-0" crossOrigin="anonymous"/>

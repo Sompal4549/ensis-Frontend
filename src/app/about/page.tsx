@@ -12,6 +12,7 @@ const WhyChooseEnsis = dynamic(() => import("@/components/about/WhyChoose").then
 const Testimonials = dynamic(() => import("@/components/home/Testimonials").then((mod) => mod.Testimonials));
 const ExpertiseSection = dynamic(() => import("@/components/about/OurExperties").then((mod) => mod.default));
 import { generateSeo } from "@/lib/api/seo";
+import PageBuilder from "@/components/PageBuilder";
 
 
 export async function generateMetadata() {
@@ -20,18 +21,7 @@ export async function generateMetadata() {
 export default function About() {
   return (
     <>
-    <AboutHero/>
-    <StatsStrip/>
-    <AboutWellnessSection/>
-    {/* <OurProductsSection /> */}
-    {/* <AboutEnsisSection/> */}
-    <WhyChooseEnsis/>
-    <ExpertiseSection/>
-    <TurnkeyProcess/>
-    <IndustriesWeServe/>
-    <Testimonials/>
-    <FounderSection />
-    <WellnessBanner/>
+<PageBuilder slug="about"/>
     </>
   )
 }

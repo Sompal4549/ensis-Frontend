@@ -45,7 +45,7 @@ type HeroSlide = {
   features?: { imgUrl?: string; title?: string }[];  // ← add karo
 };
 
-export const Hero = async () => {
+export const Hero = async (data: { slides: HeroSlide[] }) => {
   const fallbackSlides: HeroSlide[] = [
     {
       id: 1,
@@ -145,7 +145,7 @@ export const Hero = async () => {
       ],
     }
   ];
-  const content = await getComponentContent<{ slides: HeroSlide[] }>("home.hero", { slides: fallbackSlides });
+  const content = data||fallbackSlides;
   const heroSlides = content.slides?.length ? content.slides : fallbackSlides;
   console.log(content, "content")
 

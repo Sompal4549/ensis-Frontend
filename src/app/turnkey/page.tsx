@@ -8,6 +8,7 @@ import WhyChoose from '@/components/turnkey/WhyChoose'
 
 import React from 'react'
 import { generateSeo } from "@/lib/api/seo";
+import PageBuilder from '@/components/PageBuilder'
 
 export async function generateMetadata() {
   return generateSeo("home");
@@ -15,13 +16,7 @@ export async function generateMetadata() {
 const TurnkeySolutions = () => {
   return (
     <>
-   <TurnkeyHero/>
-   <TrunkeyMeaning/>
-   <TurnkeySolutionsSection/>
-   <FacilitiesWeBuild/>
-   <WhyChoose />
-   <FeaturedProjects/>
-   <WellnessCtaBanner/>
+      <PageBuilder slug="turnkey"/>
     </>
   )
 }

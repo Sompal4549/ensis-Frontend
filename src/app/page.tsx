@@ -1,35 +1,55 @@
-import dynamic from "next/dynamic";
-const Hero = dynamic(() => import("@/components/home/Hero").then((mod) => mod.Hero));
-const Features = dynamic(() => import("@/components/home/Features").then((mod) => mod.Features));
-const ProductsGrid = dynamic(() => import("@/components/home/ProductsGrid").then((mod) => mod.ProductsGrid));
-const TurnkeySolutions = dynamic(() => import("@/components/home/TurnkeySolutions").then((mod) => mod.TurnkeySolutions));
-const ManufacturingAndProjects = dynamic(() => import("@/components/home/ManufacturingAndProjects").then((mod) => mod.ManufacturingAndProjects));
-const GlobalPresence = dynamic(() => import("@/components/home/GlobalPresence").then((mod) => mod.GlobalPresence));
-const Testimonials = dynamic(() => import("@/components/home/Testimonials").then((mod) => mod.Testimonials));
-const BlogInsights = dynamic(() => import("@/components/home/BlogInsights").then((mod) => mod.BlogInsights));
-const WellnessRoomSetups = dynamic(() => import("@/components/home/WellnessRoomSetups").then((mod) => mod.default));
-const WellnessSection = dynamic(() => import("@/components/about/WellnessSection").then((mod) => mod.default));
-const FullWidthFeatures = dynamic(() => import("@/components/home/FullWidthFeatures").then((mod) => mod.default));
-import { generateSeo } from "@/lib/api/seo";
+import { getPageComponent } from "@/app/lib/api";
+import RenderSection from "@/components/RenderSections";
 
-export async function generateMetadata() {
-  return generateSeo("home");
-}
+export default async function HomePage() {
+  try {
+    const homePageData = await getPageComponent("home");
 
-export default function Home() {
+    const sections = Array.isArray(homePageData)
+      ? homePageData
+      : Array.isArray(homePageData?.sections)
+      ? homePageData.sections
+      : Array.isArray(homePageData?.data?.sections)
+      ? homePageData.data.sections
+      : Array.isArray(homePageData?.page?.sections)
+      ? homePageData.page.sections
+      : [];
 
-  return (
-    <>
-      <Hero />
-      <WellnessSection />
-      <FullWidthFeatures/>
-      <ProductsGrid />
-      <TurnkeySolutions />
-      <WellnessRoomSetups/>
-      <ManufacturingAndProjects />
-      <GlobalPresence />
-      <Testimonials />
-      <BlogInsights />
-    </>
-  );
+    const sortedSections = [...sections].sort((a: any, b: any) => {
+      const ai = typeof a?.index === "number" ? a.index : Number.MAX_SAFE_INTEGER;
+      const bi = typeof b?.index === "number" ? b.index : Number.MAX_SAFE_INTEGER;
+      return ai - bi;
+    });
+
+    if (sortedSections.length === 0) {
+      return (
+        <div className="p-20 text-center">
+          <p className="">No sections configured for the Home Page.</p>
+        </div>
+      );
+    }
+
+    return (
+      <main>
+        {sortedSections.map((section: any, index: number) => {
+          const componentKey = section.key || section.componentKey;
+          if (!componentKey) return null;
+          return (
+            <RenderSection
+              key={`${componentKey}-${index}`}
+              componentKey={componentKey}
+              data={section.data || {}}
+            />
+          );
+        })}
+      </main>
+    );
+  } catch (error) {
+    console.error("Home Page Load Error:", error);
+    return (
+      <main className="flex min-h-screen items-center justify-center">
+        <p className="text-slate-500">Unable to load page content. Please try again later.</p>
+      </main>
+    );
+  }
 }

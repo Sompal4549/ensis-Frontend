@@ -5,7 +5,7 @@ import BookButton from "../ui/BookButton";
 import GreenButton from "../ui/GreenButton";
 import lotus from "@/assets/about_new/about_lotus.png";
 import { Container } from "../ui/Container";
-import { getComponentContent, getImageUrl } from "@/app/lib/api";
+import { getImageUrl } from "@/app/lib/api";
 
 interface AboutBannerProps {
   title?: string;
@@ -30,7 +30,7 @@ export default async function AboutHero({
   secondaryBtnPath = "/products",
   image
 }: AboutBannerProps) {
-  const bannerData = await getComponentContent("about.hero", {
+  const bannerData =  {
     title,
     subtitle,
     description,
@@ -40,7 +40,7 @@ export default async function AboutHero({
     primaryBtnPath,
     secondaryBtnText,
     secondaryBtnPath,
-  });
+  };
 
   // Merge API data over prop defaults
   const resolvedTitle = bannerData?.title ?? title;
