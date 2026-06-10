@@ -155,6 +155,18 @@ case "consultancy.whyChooseOurProcess":
           return <NewsletterCard {...data} />
           case "blog.supportWellness":
            return <WellnessResources {...data}/>
+
+      case "product.hero":
+        return <ProductSlider {...data} />
+case "product.featureStrip":
+      return <WellnessFeatureStrip {...data} />
+case "product.trustedBrands":
+      return <TrustedBrandsStrip {...data} />
+case "product.whyChoose":
+      return <ProductWhyChoose {...data} />
+case "product.testimonials":
+      return <Testimonials  {...data} />
+
     default:
       return null;
   }

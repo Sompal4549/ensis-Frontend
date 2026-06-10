@@ -13,7 +13,7 @@ export default async function ProductsPage() {
 
   return (
    <>
-<PageBuilder slug="products" />
+<PageBuilder slug="product" />
    </>
   );
 }
