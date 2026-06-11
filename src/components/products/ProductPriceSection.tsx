@@ -1,4 +1,4 @@
-import { formatPrice } from "@/utils";
+import { formatPrice, isOrderItemForProduct } from "@/utils";
 import {
   CheckCircle,
   CheckCircle2,
@@ -9,8 +9,9 @@ import {
   Sparkles,
   Star,
   Wrench,
+  X,
 } from "lucide-react";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState, useEffect } from "react";
 import ProductDetailActions from "./ProductDetailActions";
 import { useShop } from "@/context/ShopContext";
 import premium_teak from "@/assets/products/premium_teak_wood.webp";
@@ -31,6 +32,77 @@ const ProductPriceSection = ({
   originalPrice,
   shopProduct,
 }: ProductPriceSectionProps) => {
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
+  const [reviewData, setReviewData] = useState<{
+    averageRating: number;
+    totalReviews: number;
+    reviews: any[];
+  }>({
+    averageRating: 0,
+    totalReviews: 0,
+    reviews: []
+  });
+  const [hasPurchased, setHasPurchased] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    setToken(localStorage.getItem("ensis_access_token"));
+  }, []);
+
+  useEffect(() => {
+    const getReviewSummary = async () => {
+      try {
+        const res = await fetch(`/api/v1/reviews/${product.id}`);
+        const data = await res.json();
+        if (data.success) {
+          setReviewData({
+            averageRating: data.averageRating,
+            totalReviews: data.reviews.length,
+            reviews: data.reviews
+          });
+        }
+      } catch (err) {
+        console.error("Failed to fetch review summary", err);
+      }
+    };
+    getReviewSummary();
+  }, [product.id]);
+
+  useEffect(() => {
+    const verifyPurchase = async () => {
+      if (!token) return;
+      try {
+        const res = await fetch("/api/v1/orders/my-orders", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await res.json();
+        const orders = Array.isArray(data.data)
+          ? data.data
+          : Array.isArray(data.orders)
+          ? data.orders
+          : [];
+
+        const bought = orders.some((order: any) =>
+          order.items?.some((item: any) =>
+            isOrderItemForProduct(item, {
+              id: String(product.id),
+              slug: product.slug,
+              title: product.title || product.name,
+              name: product.name,
+            })
+          )
+        );
+        setHasPurchased(bought);
+      } catch (err) {
+        console.error("Purchase verification failed", err);
+      }
+    };
+    verifyPurchase();
+  }, [product.id, token]);
+
    const { addToCart, toggleLike, isLiked } = useShop();
      const wished = isLiked(shopProduct?.id);
   return (
@@ -50,21 +122,26 @@ const ProductPriceSection = ({
         </button>
       </div>
             <h2 className="mt-2 text-xl font-semibold leading-tight text-[#001b10] md:text-2xl max-w-60 line-clamp-2">
-              {product.title}
+              {product.title || product.name}
             </h2>
 
             <div className="mt-2 flex flex-wrap items-center gap-3 text-[10px]">
-              <span className="flex items-center gap-1">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <Star
-                    key={index}
-                    size={15}
-                    className="fill-[#d5a642] text-[#d5a642]"
-                  />
-                ))}
-              </span>
-              <span className="font-medium">4.8</span>
-              <span className="font-medium">(126 reviews)</span>
+              <button 
+                onClick={() => setIsReviewOpen(true)}
+                className="flex items-center gap-2 hover:opacity-70 transition-opacity"
+              >
+                <span className="flex items-center gap-1">
+                  {[...Array(5)].map((_, index) => (
+                    <Star
+                      key={index}
+                      size={15}
+                      className={index < Math.round(reviewData.averageRating) ? "fill-[#d5a642] text-[#d5a642]" : "text-gray-300"}
+                    />
+                  ))}
+                </span>
+                <span className="font-medium">{reviewData.averageRating || "0.0"}</span>
+                <span className="font-medium underline decoration-dotted decoration-gray-400 underline-offset-2">({reviewData.totalReviews} reviews)</span>
+              </button>
               <span className="py-1 text-[11px] font-semibold pl-2 border-l border-gray-200">
              SKU: ENS-PT-001
               </span>
@@ -122,6 +199,67 @@ const ProductPriceSection = ({
 </div>
 
             <ProductDetailActions product={shopProduct} />
+
+      {/* Reviews Popup Modal */}
+      {isReviewOpen && (
+        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col">
+            <div className="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-[#fbfaf7]">
+              <div>
+                <h3 className="font-bold text-[#313b30]">Customer Reviews</h3>
+                <div className="flex items-center gap-2 mt-0.5">
+                  <div className="flex">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={10} className="fill-[#d5a642] text-[#d5a642]" />
+                    ))}
+                  </div>
+                  <span className="text-[10px] font-bold text-gray-500">{reviewData.averageRating}/5.0 average rating</span>
+                </div>
+              </div>
+              <button 
+                onClick={() => setIsReviewOpen(false)}
+                className="p-1.5 hover:bg-gray-200 rounded-full transition-colors text-gray-500"
+              >
+                <X size={18} />
+              </button>
+            </div>
+            
+            <div className="p-5 overflow-y-auto max-h-[60vh] space-y-6">
+              {reviewData.reviews.map((rev) => (
+                <div key={rev._id} className="border-b border-gray-50 pb-5 last:border-0 last:pb-0">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[11px] font-bold text-[#1a1a1a]">{rev.user}</span>
+                    <span className="text-[9px] text-gray-400">{new Date(rev.createdAt).toLocaleDateString()}</span>
+                  </div>
+                  <div className="flex mb-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={10} className={i < rev.rating ? "fill-[#d5a642] text-[#d5a642]" : "text-gray-200"} />
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-gray-600 leading-relaxed italic">
+                    &quot;{rev.comment}&quot;
+                  </p>
+                </div>
+              ))}
+            </div>
+            
+            {hasPurchased && (
+              <div className="p-4 bg-gray-50 border-t border-gray-100">
+                <button 
+                  onClick={() => {
+                    setIsReviewOpen(false);
+                    const reviewSection = document.getElementById('review-section');
+                    if (reviewSection) reviewSection.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="w-full py-2.5 text-[10px] font-bold uppercase tracking-widest text-[#8d6a3a] border border-[#8d6a3a] rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-all"
+                >
+                  Write a Review
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
           </div>
   )
 }

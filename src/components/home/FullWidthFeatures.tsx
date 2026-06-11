@@ -7,6 +7,7 @@ import Image from "next/image";
 import GreenButton from "../ui/GreenButton";
 import { getComponentContent, getImageUrl } from "@/app/lib/api";
 import SubHeading from "./SubHeading";
+import { features } from "process";
 
 const fallbackImages: Record<string, any> = {
   "Authentic Ayurveda": authentic_ayurveda,
@@ -24,8 +25,13 @@ const defaultContent = {
   buttonPath: "/contact",
 };
 
-export default async function FullWidthFeatures() {
-  const content = await getComponentContent("home.fullWidthFeatures", defaultContent);
+export default async function FullWidthFeatures(data?: { features?: any[]; buttonText?: string; buttonPath?: string }) {
+  const content = {
+    features: data?.features ?? defaultContent.features,
+    buttonText: data?.buttonText ?? defaultContent.buttonText,
+    buttonPath: data?.buttonPath ?? defaultContent.buttonPath,
+  };
+  // const content = defaultContent
   return (
     <section className="w-full bg-[#0d2a17] border border-[#3d5c39]">
       <Container>
@@ -50,9 +56,6 @@ export default async function FullWidthFeatures() {
 
               {/* Text */}
               <div className="min-w-0">
-                {item.tag && (
-                  <span className="text-[#d5ad6a] text-[10px] font-semibold uppercase tracking-wider">{item.tag}</span>
-                )}
                 <h3 className="text-[#f5e7c8] text-base font-semibold leading-tight font-serif">
                   {item.title}
                 </h3>

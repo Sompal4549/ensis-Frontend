@@ -48,7 +48,7 @@ export default function ProductHeroBanner({
         {slides.map((src, i) => (
           <div
             key={i}
-            className={`absolute left-0 top-0 bottom-0 right-[20%] transition-opacity duration-700 ease-in-out ${i === current ? "opacity-100 z-10" : "opacity-0 z-0"
+            className={`absolute left-0 top-0 bottom-0 right-0 md:right-[20%] transition-opacity duration-700 ease-in-out ${i === current ? "opacity-100 z-10" : "opacity-0 z-0"
               }`}
           >
             {/* Background Image */}
@@ -62,7 +62,7 @@ export default function ProductHeroBanner({
 
             {/* Right-side blur effect (10%) */}
             <div
-              className="absolute top-0 right-0 h-full w-[10%] backdrop-blur-xl"
+              className="absolute top-0 right-0 h-full w-0 md:w-[10%] backdrop-blur-xl"
               style={{
                 background:
                   "linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%)",
@@ -85,7 +85,7 @@ export default function ProductHeroBanner({
         <Container className="relative h-full z-30">
 
           {/* LEFT TEXT */}
-          <div className="absolute inset-y-0 left-0 flex flex-col justify-end md:justify-start md:pt-20 w-full md:max-w-[52%] box-border pl-6 md:pl-10">
+          <div className="absolute inset-y-0 left-0 flex flex-col justify-center md:justify-start md:pt-20 w-full md:max-w-[52%] box-border pl-6 md:pl-10">
             {product.tag && (
               <span className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[#c8921a]">
                 {product.tag}

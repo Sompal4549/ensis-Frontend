@@ -45,9 +45,11 @@ const defaultContent = {
   ctaBgImage: "",
 };
 
-export const BlogInsights = async () => {
-  const content = await getComponentContent<BlogContent>("home.blogInsights", defaultContent);
-  const blogData: any = await getComponentContent("blog.allBlogs", defaultContent.blogs);
+export const BlogInsights = async (data: { subtitle: string; heading: string; buttonText: string; buttonPath: string }) => {
+  // const content = await getComponentContent<BlogContent>("home.blogInsights", defaultContent);
+  // const blogData: any = await getComponentContent("blog.allBlogs", defaultContent.blogs);
+    const content =  defaultContent;
+  const blogData: any = defaultContent.blogs;
 
   // Extract the actual blog array from the API response object
   // Based on your console.log, it resides in 'blogData.blogs'

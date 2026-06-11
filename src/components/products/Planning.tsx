@@ -21,7 +21,7 @@ const Planning = () => {
   return (
     <section className="relative w-full ">
   {/* Background image already applied by parent */}
- <div className="absolute inset-y-0 right-0 w-[100%] hidden lg:block">
+ <div className="absolute inset-y-0 right-0 w-[100%] block">
   <Image
     alt="planning bg"
     fill
@@ -58,7 +58,7 @@ const Planning = () => {
             )
           })}
 
-<div className=" flex gap-2 mt-6">
+<div className=" flex gap-4 md:gap-2 mt-6 flex-wrap ">
 <div className='min-w-[220px] '>
 <GreenButton path="tel:+919654900525" text="TALK TO OUR EXPERT" rightIcon={<FaPhone/>}/>
 
