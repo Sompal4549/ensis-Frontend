@@ -15,11 +15,12 @@ import React, { ReactNode, useState, useEffect } from "react";
 import ProductDetailActions from "./ProductDetailActions";
 import { useShop } from "@/context/ShopContext";
 import premium_teak from "@/assets/products/premium_teak_wood.webp";
-import brass_fitting from "@/assets/products/brass_design.webp"
-import erogonomic_design from "@/assets/products/erogonimc_design.webp"
-import water_resitant from "@/assets/products/water_resitant.webp"
-import long_lasting from "@/assets/products/long_lasting.webp"
+import brass_fitting from "@/assets/products/brass_design.webp";
+import erogonomic_design from "@/assets/products/erogonimc_design.webp";
+import water_resitant from "@/assets/products/water_resitant.webp";
+import long_lasting from "@/assets/products/long_lasting.webp";
 import Image from "next/image";
+import { API_URL } from "@/app/lib/api";
 
 interface ProductPriceSectionProps {
   product: any;
@@ -43,6 +44,12 @@ const ProductPriceSection = ({
     reviews: []
   });
   const [hasPurchased, setHasPurchased] = useState(false);
+  const [isWritingReview, setIsWritingReview] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [hover, setHover] = useState(0);
+  const [comment, setComment] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [userReviewId, setUserReviewId] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
@@ -53,7 +60,11 @@ const ProductPriceSection = ({
   useEffect(() => {
     const getReviewSummary = async () => {
       try {
-        const res = await fetch(`/api/v1/reviews/${product.id}`);
+        const headers: Record<string, string> = {};
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+        const res = await fetch(`${API_URL}/reviews/${product.id}`, { headers });
         const data = await res.json();
         if (data.success) {
           setReviewData({
@@ -61,19 +72,28 @@ const ProductPriceSection = ({
             totalReviews: data.reviews.length,
             reviews: data.reviews
           });
+          
+          const myReview = data.reviews.find((r: any) => r.isMine);
+          if (myReview) {
+            setUserReviewId(myReview._id);
+            if (!isWritingReview) {
+              setRating(myReview.rating);
+              setComment(myReview.comment);
+            }
+          }
         }
       } catch (err) {
         console.error("Failed to fetch review summary", err);
       }
     };
-    getReviewSummary();
-  }, [product.id]);
+    if (product.id) getReviewSummary();
+  }, [product.id, token, isWritingReview]);
 
   useEffect(() => {
     const verifyPurchase = async () => {
       if (!token) return;
       try {
-        const res = await fetch("/api/v1/orders/my-orders", {
+        const res = await fetch(`${API_URL}/orders/my-orders`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -102,6 +122,46 @@ const ProductPriceSection = ({
     };
     verifyPurchase();
   }, [product.id, token]);
+
+  const handleReviewSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (rating === 0) return alert("Please select a rating");
+    if (!token) return alert("Please login to submit a review");
+
+    setIsSubmitting(true);
+    try {
+      const method = userReviewId ? 'PUT' : 'POST';
+      const url = userReviewId 
+        ? `${API_URL}/reviews/${userReviewId}` 
+        : `${API_URL}/reviews/${product.id}`;
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ rating, comment }),
+      });
+
+      if (res.ok) {
+        alert(userReviewId ? "Review updated successfully!" : "Review submitted successfully!");
+        setIsWritingReview(false);
+        // Force refresh reviews
+        const refreshRes = await fetch(`${API_URL}/reviews/${product.id}`);
+        const refreshData = await refreshRes.json();
+        if (refreshData.success) {
+          setReviewData({ averageRating: refreshData.averageRating, totalReviews: refreshData.reviews.length, reviews: refreshData.reviews });
+        }
+      } else {
+        alert("Failed to submit review. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
    const { addToCart, toggleLike, isLiked } = useShop();
      const wished = isLiked(shopProduct?.id);
@@ -224,36 +284,91 @@ const ProductPriceSection = ({
               </button>
             </div>
             
-            <div className="p-5 overflow-y-auto max-h-[60vh] space-y-6">
-              {reviewData.reviews.map((rev) => (
-                <div key={rev._id} className="border-b border-gray-50 pb-5 last:border-0 last:pb-0">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-[11px] font-bold text-[#1a1a1a]">{rev.user}</span>
-                    <span className="text-[9px] text-gray-400">{new Date(rev.createdAt).toLocaleDateString()}</span>
+            <div className="p-5 overflow-y-auto max-h-[60vh]">
+              {isWritingReview ? (
+                <form onSubmit={handleReviewSubmit} className="space-y-4">
+                  <h4 className="text-sm font-bold text-[#313b30]">{userReviewId ? "Edit Your Review" : "Write a Review"}</h4>
+                  <div className="flex gap-1">
+                    {[...Array(5)].map((_, i) => {
+                      const starValue = i + 1;
+                      return (
+                        <button
+                          type="button"
+                          key={starValue}
+                          onClick={() => setRating(starValue)}
+                          onMouseEnter={() => setHover(starValue)}
+                          onMouseLeave={() => setHover(0)}
+                          className="focus:outline-none"
+                        >
+                          <Star
+                            size={24}
+                            className={`transition-colors ${starValue <= (hover || rating) ? "fill-[#d5a642] text-[#d5a642]" : "text-gray-300"}`}
+                          />
+                        </button>
+                      );
+                    })}
                   </div>
-                  <div className="flex mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} size={10} className={i < rev.rating ? "fill-[#d5a642] text-[#d5a642]" : "text-gray-200"} />
-                    ))}
+                  <div>
+                    <label className="text-[11px] font-bold uppercase mb-2 block">Your Experience</label>
+                    <textarea
+                      rows={4}
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                      placeholder="What did you like or dislike about the product?"
+                      className="w-full p-3 text-xs rounded-lg border border-[#eee5d8] outline-none focus:border-[#d5a642] bg-white"
+                      required
+                    />
                   </div>
-                  <p className="text-[11px] text-gray-600 leading-relaxed italic">
-                    &quot;{rev.comment}&quot;
-                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setIsWritingReview(false)}
+                      className="flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest text-white bg-[#313b30] rounded-lg hover:bg-black transition-all disabled:opacity-50"
+                    >
+                      {isSubmitting ? "Submitting..." : (userReviewId ? "Update Review" : "Submit Review")}
+                    </button>
+                  </div>
+                </form>
+              ) : (
+                <div className="space-y-6">
+                  {reviewData.reviews.length > 0 ? (
+                    reviewData.reviews.map((rev) => (
+                      <div key={rev._id} className="border-b border-gray-50 pb-5 last:border-0 last:pb-0">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-[11px] font-bold text-[#1a1a1a]">{rev.user}</span>
+                          <span className="text-[9px] text-gray-400">{new Date(rev.createdAt).toLocaleDateString()}</span>
+                        </div>
+                        <div className="flex mb-2">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} size={10} className={i < rev.rating ? "fill-[#d5a642] text-[#d5a642]" : "text-gray-200"} />
+                          ))}
+                        </div>
+                        <p className="text-[11px] text-gray-600 leading-relaxed italic">
+                          &quot;{rev.comment}&quot;
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-center text-xs text-gray-500">No reviews yet. Be the first to review!</p>
+                  )}
                 </div>
-              ))}
+              )}
             </div>
             
-            {hasPurchased && (
+            {hasPurchased && !isWritingReview && (
               <div className="p-4 bg-gray-50 border-t border-gray-100">
                 <button 
-                  onClick={() => {
-                    setIsReviewOpen(false);
-                    const reviewSection = document.getElementById('review-section');
-                    if (reviewSection) reviewSection.scrollIntoView({ behavior: 'smooth' });
-                  }}
+                  onClick={() => setIsWritingReview(true)}
                   className="w-full py-2.5 text-[10px] font-bold uppercase tracking-widest text-[#8d6a3a] border border-[#8d6a3a] rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-all"
                 >
-                  Write a Review
+                  {userReviewId ? "Edit Your Review" : "Write a Review"}
                 </button>
               </div>
             )}

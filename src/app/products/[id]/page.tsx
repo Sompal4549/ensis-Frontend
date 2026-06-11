@@ -14,7 +14,6 @@ import img6 from "@/assets/home/img-6.webp";
 import ProductInfoTabs from "@/components/products/ProductInfoTabs";
 import Planning from "@/components/products/Planning";
 import FaqSection from "@/components/products/Faq";
-import ReviewSection from "@/components/products/ReviewSection";
 import RealSpacesCarousel from "@/components/products/RealSpacesCarousel";
 import { generateSeo } from "@/lib/api/seo";
 
@@ -273,6 +272,11 @@ export default async function ProductPage({
       </Container>
    
                       <RealSpacesCarousel images={product.images} />
+      {/* <ReviewSection
+        productId={product.id}
+        productTitle={product.title}
+        productSlug={product.slug}
+      /> */}
 <Container>
 
         <section className="mt-2">
@@ -288,8 +292,6 @@ export default async function ProductPage({
 
               </Container>
 <Planning />
-
-          <ReviewSection productId={product.id} productTitle={product.title} productSlug={product.slug} />
 
           <FaqSection />
       {/* <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5ded5] bg-white/95 px-2 shadow-[0_-10px_30px_rgba(49,59,48,0.08)] backdrop-blur">

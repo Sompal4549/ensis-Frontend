@@ -17,42 +17,43 @@ import DOMPurify from "isomorphic-dompurify";
 const mfgFallbackImages = [img11, img12, img13];
 const projFallbackImages = [img12, img13, img14, img15, img16];
 
-const defaultContent = {
+
+
+export const ManufacturingAndProjects: React.FC<{ sectionContent?: any }> = ({ sectionContent = {} }) => {
+  const defaultContent = {
   // --- Admin API fields ---
-  mfgSubtitle: "MANUFACTURING EXCELLENCE",
-  heading: "Crafted with Precision,\nDelivered Worldwide",
-  description: "Our advanced manufacturing facility combines traditional craftsmanship with modern technology to deliver world-class wellness equipment.",
-  stats: [
+  mfgSubtitle: sectionContent.subtitle||"MANUFACTURING EXCELLENCE",
+  heading: sectionContent.heading||"Crafted with Precision,\nDelivered Worldwide",
+  description: sectionContent.description||"Our advanced manufacturing facility combines traditional craftsmanship with modern technology to deliver world-class wellness equipment.",
+  stats:sectionContent.stats|| [
     { value: "25+", label: "Countries" },
     { value: "500+", label: "Projects" },
     { value: "10+", label: "Years" },
   ],
-  projects: [
-    { image: "", title: "Project 1", location: "" },
-    { image: "", title: "Project 2", location: "" },
-    { image: "", title: "Project 3", location: "" },
-    { image: "", title: "Project 4", location: "" },
-    { image: "", title: "Project 5", location: "" },
-  ],
   // --- Local-only fields (not from admin, kept as frontend defaults) ---
-  mfgFeatures: [
+  mfgFeatures: sectionContent.features||[
     "Premium Quality Raw Materials",
     "Skilled Artisans & Modern Machinery",
     "Multi-Level Quality Testing",
     "International Export Packing",
   ],
-  mfgButtonText: "OUR MANUFACTURING",
-  mfgButtonPath: "/manufacturing",
+  mfgButtonText: sectionContent.mfgButtonText||"OUR MANUFACTURING",
+  mfgButtonPath: sectionContent.mfgButtonHref||"/manufacturing",
   
-mfgImages: ["", "", ""],
-  projSubtitle: "OUR PROJECTS",
-  projHeading: "Creating Wellness\nSpaces Worldwide",
-  projDescription: "Proud to be a trusted partner for 500+ wellness projects across the globe.",
-  projButtonText: "VIEW ALL PROJECTS",
-  projButtonPath: "/projects",
+mfgImages: sectionContent.mfgImages||["", "", ""],
+  projSubtitle:sectionContent.projSubtitle ||"OUR PROJECTS",
+  projHeading: sectionContent.projHeading||"Creating Wellness\nSpaces Worldwide",
+  projDescription: sectionContent.projDescription||"Proud to be a trusted partner for 500+ wellness projects across the globe.",
+  projButtonText: sectionContent.projButtonText||"VIEW ALL PROJECTS",
+  projButtonPath: sectionContent.mfgButtonPath||"/projects",
+  projects: sectionContent.projects||[
+    { image: "", title: "Project 1", location: "" },
+    { image: "", title: "Project 2", location: "" },
+    { image: "", title: "Project 3", location: "" },
+    { image: "", title: "Project 4", location: "" },  
+    { image: "", title: "Project 5", location: "" },
+  ],
 };
-
-export const ManufacturingAndProjects: React.FC = () => {
   const [hovered, setHovered] = useState<number | null>(null);
   const [content, setContent] = useState(defaultContent);
 
@@ -70,8 +71,12 @@ export const ManufacturingAndProjects: React.FC = () => {
 console.log(content,"manufaturing and Projects")
   // Manufacturing images: use local fallbacks (admin doesn't send mfg images)
   const getMfgImage = (index: number) => {
-    const cmsImg = content.mfgImages?.[index];
+    const cmsImg = content.mfgImages?.[index].image;
     return cmsImg ? getImageUrl(cmsImg) : mfgFallbackImages[index] || img11;
+  };
+   const getMfgImageTitle = (index: number) => {
+    const cmsImg = content.mfgImages?.[index].title;
+    return cmsImg ? getImageUrl(cmsImg) : mfgFallbackImages[index] || "";
   };
 
   // Project images: use admin `projects` array images, fallback to local
@@ -154,7 +159,7 @@ console.log(content,"manufaturing and Projects")
               <div className="relative col-span-2 h-[100%] overflow-hidden rounded-xl">
                 <Image
                   src={getMfgImage(0)}
-                  alt="Manufacturing Excellence"
+                  alt={getMfgImageTitle(0)||"Manufacturing Excellence"}
                   fill
                   className="object-cover"
                   crossOrigin="anonymous"
@@ -166,7 +171,7 @@ console.log(content,"manufaturing and Projects")
               <div className="relative h-[100%] overflow-hidden rounded-xl">
                 <Image
                   src={getMfgImage(1)}
-                  alt="Manufacturing Detail"
+                  alt={getMfgImageTitle(0)||"Manufacturing Excellence"}
                   fill
                   className="object-cover"
                   crossOrigin="anonymous"
@@ -178,7 +183,7 @@ console.log(content,"manufaturing and Projects")
               <div className="relative h-[100%] overflow-hidden rounded-xl">
                 <Image
                   src={getMfgImage(2)}
-                  alt="Manufacturing Detail"
+                  alt={getMfgImageTitle(0)||"Manufacturing Excellence"}
                   fill
                   className="object-cover"
                   crossOrigin="anonymous"

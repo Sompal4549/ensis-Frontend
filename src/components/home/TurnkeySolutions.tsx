@@ -13,21 +13,38 @@ import info from "@/assets/icons/info.png"
 import tf3 from "@/assets/icons/tf3.png"
 import info1 from "@/assets/icons/info1.png"
 import info2 from "@/assets/icons/info2.webp"
-import Image from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import SubHeading from './SubHeading';
 import { getComponentContent, getImageUrl } from '@/app/lib/api';
 import { BiChat } from 'react-icons/bi';
 import GreenButton from '../ui/GreenButton';
 
-export const TurnkeySolutions = async () => {
+type ImageSource = string | StaticImageData;
+
+interface TurnkeySolutionsProps {
+  sectionData?: {
+    eyebrow?: string;
+    heading?: string;
+    description?: string;
+    buttonText?: string;
+    buttonHref?: string;
+    backgroundImage?: ImageSource;
+    solutions?: {
+      imgUrl?: ImageSource;
+      title: string;
+    }[];
+  };
+}
+
+export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) => {
   const fallback = {
-    eyebrow: "TURNKEY WELLNESS SOLUTIONS",
-    heading: "From Concept to\nComplete Wellness Setup",
-    description: "We provide end-to-end solutions for Panchkarma Clinics, Resorts, Hospitals & Wellness Centers.",
-    buttonText: "BOOK DESIGN CONSULTATION",
-    buttonHref: "/contact",
-    backgroundImage: img15,
-    solutions: [
+    eyebrow: sectionData?.eyebrow || "TURNKEY WELLNESS SOLUTIONS",
+    heading: sectionData?.heading || "From Concept to\nComplete Wellness Setup",
+    description: sectionData?.description || "We provide end-to-end solutions for Panchkarma Clinics, Resorts, Hospitals & Wellness Centers.",
+    buttonText: sectionData?.buttonText || "BOOK DESIGN CONSULTATION",
+    buttonHref: sectionData?.buttonHref || "/contact",
+    backgroundImage: sectionData?.backgroundImage || img15,
+    solutions: sectionData?.solutions || [
       { imgUrl: god, title: "Panchkarma Clinic Setup" },
       { imgUrl: resort, title: "Resort & Spa Setup" },
       { imgUrl: wellness, title: "Wellness Retreat Design" },
@@ -35,7 +52,7 @@ export const TurnkeySolutions = async () => {
       { imgUrl: interior, title: "Interior & Equipment Integration" }
     ],
   };
-  const content = await getComponentContent<typeof fallback>("home.turnkeySolutions", fallback);
+  const content = fallback;
   const backgroundImage = typeof content.backgroundImage === "string" && content.backgroundImage ? getImageUrl(content.backgroundImage) : img15.src;
   return (
     <section className="relative overflow-hidden bg-cover bg-center text-white">

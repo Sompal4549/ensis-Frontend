@@ -6,20 +6,30 @@ import globe from "@/assets/icons/globe.webp"
 import SubHeading from './SubHeading';
 import { getComponentContent, getImageUrl } from '@/app/lib/api';
 
-export const GlobalPresence = async () => {
+type GlobalPresenceProps = {
+  sectionData: {
+    eyebrow?: string;
+    heading?: string;
+    description?: string;
+    image?: string;
+    stats?: { value: string; label: string }[];
+  };
+};
+
+export const GlobalPresence = async ({ sectionData }: GlobalPresenceProps) => {
   const fallback = {
-    eyebrow: "GLOBAL PRESENCE",
-    heading: "Trusted by Wellness\nProfessionals Worldwide",
-    description: "Exporting to 25+ countries and growing stronger every day",
-    image: globe,
-    stats: [
+    eyebrow: sectionData.eyebrow ||"GLOBAL PRESENCE",
+    heading: sectionData.heading ||"Trusted by Wellness\nProfessionals Worldwide",
+    description: sectionData.description ||"Exporting to 25+ countries and growing stronger every day",
+    image: sectionData.image||globe,
+    stats:sectionData.stats|| [
     { value: "25+", label: "Countries" },
     { value: "500+", label: "Projects" },
     { value: "10+", label: "Years of Excellence" },
     { value: "100%", label: "Customer Satisfaction" }
     ],
   };
-  const content = await getComponentContent<typeof fallback>("home.globalPresence", fallback);
+  const content =  fallback;
 
   return (
     <section className="bg-[#f3eee6]">

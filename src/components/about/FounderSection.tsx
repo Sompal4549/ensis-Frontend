@@ -3,7 +3,12 @@ import React from "react";
 import founder from "@/assets/about_new/founder.webp"
 import signature from "@/assets/about_new/signature.webp"
 import { Container } from "../ui/Container";
-const FounderSection: React.FC = () => {
+
+interface FounderSectionProps {
+  sectionContent: any;
+}
+
+const FounderSection: React.FC<FounderSectionProps> = ({ sectionContent }) => {
   return (
     <section className="relative">
         <Image alt="founder" src={founder} width={500} height={500} className="hidden md:block object-cover absolute top-0 left-0  bottom-0 w-[25%]"/>
@@ -14,7 +19,7 @@ const FounderSection: React.FC = () => {
         <div className="flex-shrink-0 w-full md:w-[260px] lg:w-[300px] bg-[#e8e0d0] flex items-end justify-center overflow-hidden min-h-[260px] md:min-h-0">
           {/* Replace this div with your <img> tag */}
           <div className="w-full h-full flex items-center justify-center min-h-[260px] md:min-h-full">
-             <Image alt="founder" src={founder} width={500} height={500} className="object-cover block md:hidden" />
+             <Image alt={sectionContent.founderImageurl.alt} src={sectionContent.founderImageurl.imageUrl} width={500} height={500} className="object-cover block md:hidden" />
           </div>
         </div>
 
@@ -25,27 +30,21 @@ const FounderSection: React.FC = () => {
           <p
             className="font-medium text-sm uppercase text-black mb-3"
           >
-            Founder &amp; Vision
+            {sectionContent?.heading}
           </p>
 
           {/* Heading */}
           <h2
             className="text-2xl md:text-3xl lg:text-[2rem] font-semibold text-black leading-snug mb-4"
           >
-            Crafting Spaces That Heal
+            {sectionContent.title}
           </h2>
 
           {/* Body Copy */}
           <div className="text-black text-sm md:text-[13.5px] leading-relaxed space-y-3 max-w-xl">
-            <p>
-              At ENSIS, we believe a well-designed wellness space has the power to heal,
-              energize and transform lives. Our focus is on creating spaces that are authentic
-              to Ayurveda, visually premium and practically efficient.
-            </p>
-            <p>
-              We are committed to supporting wellness professionals and hospitality brands
-              with solutions that make a real difference.
-            </p>
+              <p>
+                {sectionContent.description}
+              </p>
           </div>
 
           {/* Signature + Name Row */}
@@ -56,7 +55,7 @@ const FounderSection: React.FC = () => {
             <div className="mb-2 flex items-center">
               {/* Replace this div with your <img src="..." alt="Jomy Thomas signature" className="w-full h-auto" /> */}
               <div className="w-full h-full rounded flex items-center select-none">
-                <Image alt="signature"  src={signature} width={150} height={50} className="object-fill"/>
+                <Image alt={sectionContent.signatureImageurl.alt}  src={sectionContent.signatureImageurl.imageUrl} width={150} height={50} className="object-fill"/>
               </div>
             </div>
 
@@ -64,13 +63,13 @@ const FounderSection: React.FC = () => {
             <div>
              
               <p className="text-black text-xs mb-1">
-                Founder
+                {sectionContent.aboutFounder.title}
               </p>
               <p className="text-black text-xs md:text-[12px] leading-snug mb-1">
-                Design House India Pvt. Ltd.
+                {sectionContent.aboutFounder.company}
               </p>
               <p className="text-black text-xs md:text-[12px] leading-snug mb-1">
-                (ENSIS – Wellness Division)
+                {sectionContent.aboutFounder.division}
               </p>
             </div>
 

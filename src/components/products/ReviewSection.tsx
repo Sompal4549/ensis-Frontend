@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Star, CheckCircle, MessageSquare } from "lucide-react";
 import { Container } from "../ui/Container";
 import { isOrderItemForProduct } from "@/utils";
+import { API_URL } from "@/app/lib/api";
 
 interface Review {
   _id: string;
@@ -34,7 +35,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
     const checkPurchaseStatus = async () => {
       if (!token) return;
       try {
-        const res = await fetch("/api/v1/orders/my-orders", {
+        const res = await fetch(`${API_URL}/orders/my-orders`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -67,14 +68,17 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const res = await fetch(`/api/v1/reviews/${productId}`);
+        const headers: Record<string, string> = {};
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+        const res = await fetch(`${API_URL}/reviews/${productId}`, { headers });
         const data = await res.json();
         if (data.success) {
           setReviews(data.reviews);
           setAverageRating(data.averageRating);
           
           // If user has already reviewed, store the ID for updates
-          // This assumes the API returns a way to identify the current user's review
           const myReview = data.reviews.find((r: any) => r.isMine); 
           if (myReview) {
             setUserReviewId(myReview._id);
@@ -90,7 +94,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
     };
 
     fetchReviews();
-  }, [productId]);
+  }, [productId, token]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -101,8 +105,8 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
       // Use PUT if review already exists, otherwise POST (assuming standard REST)
       const method = userReviewId ? 'PUT' : 'POST';
       const url = userReviewId 
-        ? `/api/v1/reviews/${userReviewId}` 
-        : `/api/v1/reviews/${productId}`;
+        ? `${API_URL}/reviews/${userReviewId}` 
+        : `${API_URL}/reviews/${productId}`;
 
       const res = await fetch(url, {
         method,
@@ -116,7 +120,11 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
       if (res.ok) {
         setSubmitted(true);
         // Refresh list
-        const updated = await fetch(`/api/v1/reviews/${productId}`).then(r => r.json());
+        const headers: Record<string, string> = {};
+        if (token) {
+          headers["Authorization"] = `Bearer ${token}`;
+        }
+        const updated = await fetch(`${API_URL}/reviews/${productId}`, { headers }).then(r => r.json());
         setReviews(updated.reviews);
       } else {
         alert("Failed to submit review. Please try again.");
@@ -163,8 +171,14 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
             {hasPurchased ? (
               !submitted ? (
                 <>
-                  <h3 className="text-lg font-semibold mb-2">Write a Review</h3>
-                  <p className="text-xs text-gray-600 mb-6">As a verified buyer, your feedback helps others choose wisely.</p>
+                  <h3 className="text-lg font-semibold mb-2">
+                    {userReviewId ? "Edit Your Review" : "Write a Review"}
+                  </h3>
+                  <p className="text-xs text-gray-600 mb-6">
+                    {userReviewId 
+                      ? "Update your existing rating and experience below." 
+                      : "As a verified buyer, your feedback helps others choose wisely."}
+                  </p>
                   
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
@@ -207,7 +221,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                       type="submit"
                       className="w-full py-3 bg-[#313b30] text-white text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-black transition-colors"
                     >
-                      Submit Review
+                      {userReviewId ? "Update Review" : "Submit Review"}
                     </button>
                   </form>
                 </>
@@ -216,8 +230,16 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                   <div className="bg-emerald-100 text-emerald-700 p-3 rounded-full w-fit mx-auto mb-4">
                     <CheckCircle size={24} />
                   </div>
-                  <h3 className="font-semibold text-emerald-800">Review Submitted!</h3>
-                  <p className="text-xs text-emerald-600 mt-1">Thank you for sharing your experience.</p>
+                  <h3 className="font-semibold text-emerald-800">
+                    {userReviewId ? "Review Updated!" : "Review Submitted!"}
+                  </h3>
+                  <p className="text-xs text-emerald-600 mt-1 mb-4">Thank you for sharing your experience.</p>
+                  <button
+                    onClick={() => setSubmitted(false)}
+                    className="w-full py-2 border border-[#8d6a3a] text-[#8d6a3a] text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-colors"
+                  >
+                    Edit Review Again
+                  </button>
                 </div>
               )
             ) : (

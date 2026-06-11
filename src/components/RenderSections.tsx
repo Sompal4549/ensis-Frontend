@@ -56,106 +56,107 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
     case "home.fullWidthFeatures":
       return <FullWidthFeatures {...data} />;
     case "home.globalPresence":
-      return <GlobalPresence {...data} />;
+      return <GlobalPresence sectionData={data} />;
     case "home.blogInsights":
-      return <BlogInsights {...data} />;
+      return <BlogInsights subtitle={data.subtitle} heading={data.heading} buttonText={data.buttonText} buttonPath={data.buttonPath} />;
     case "home.manufacturingAndProjects":
-      return <ManufacturingAndProjects {...data} />;
+      return <ManufacturingAndProjects sectionContent={data} />;
     case "home.productsGrid":
-      return <ProductsGrid {...data} />;
+      return <ProductsGrid sectionContent={data} />;
     case "home.testimonials":
-      return <Testimonials {...data} />;
+      return <Testimonials title={data.subtitle} />;
     case "home.turnkeySolutions":
-      return <TurnkeySolutions {...data} />;
+      return <TurnkeySolutions sectionData={data} />;
     case "home.wellnessRoomSetups":
-      return <WellnessRoomSetups {...data} />;
+      return <WellnessRoomSetups sectionContent={data} />;
+      
     case "about.hero":
-      return <AboutHero {...data} />;
+      return <AboutHero sectionContent={data} />;
 
     case "about.ourStory":
-      return <AboutWellnessSection {...data} />;
+      return <AboutWellnessSection sectionContent={data} />;
 
     case "about.statsStrip":
-      return <StatsStrip {...data} />;
+      return <StatsStrip sectionContent={data} />;
 
     case "about.industriesWeServe":
-      return <IndustriesWeServe {...data} />;
+      return <IndustriesWeServe sectionContent={data} />;
 
     case "about.ourProducts":
-      return <OurProductsSection {...data} />;
+      return <OurProductsSection sectionContent={data} />;
 
     case "about.ourExpertise":
-      return <ExpertiseSection {...data} />;
+      return <ExpertiseSection sectionContent={data} />;
 
     case "about.wellnessSection":
-      return <WellnessSection {...data} />;
+      return <WellnessSection sectionContent={data} />;
 
     case "about.ourTurnkeyProcess":
-      return <TurnkeyProcess {...data} />;
+      return <TurnkeyProcess sectionContent={data} />;
 
     case "about.aboutEnsis":
-      return <AboutEnsisSection {...data} />;
+      return <AboutEnsisSection sectionContent={data} />;
 
     case "about.whyChooseEnsis":
-      return <WhyChooseEnsis {...data} />;
+      return <WhyChooseEnsis sectionContent={data} />;
 
     case "about.testimonials":
-      return <WellnessBanner {...data} />;
+      return <WellnessBanner sectionContent={data} />;
 
     case "about.founderSection":
-      return <FounderSection {...data} />;
+      return <FounderSection sectionContent={data} />;
 
     case "turnkey.banner":
-      return <TurnkeyHero {...data} />;
+      return <TurnkeyHero sectionContent={data} />;
     case "turnkey.completeSolutions":
-      return <TurnkeySolutionsSection {...data} />;
+      return <TurnkeySolutionsSection sectionContent={data} />;
     case "turnkey.customized":
-      return <TurnkeyWhyChoose {...data} />;
+      return <TurnkeyWhyChoose sectionContent={data} />;
     case "turnkey.facilities":
-      return <FacilitiesWeBuild {...data} />;
+      return <FacilitiesWeBuild sectionContent={data} />;
     case "turnkey.whatIsTurnkey":
-      return <WellnessCtaBanner {...data} />
+      return <WellnessCtaBanner sectionContent={data} />
 
     case "consultancy.hero":
-      return <ConsultancyHero {...data} />;
+      return <ConsultancyHero sectionContent={data} />;
     case "consultancy.readyToGetStarted":
-      return <ConsultancyCTA {...data} />;
+      return <ConsultancyCTA sectionContent={data} />;
     case 'consultancy.whatWeOffer':
-      return <HowWeWork {...data} />
+      return <HowWeWork sectionContent={data} />
     case "consultancy.whyChooseOurProcess":
-      return <ConsultancyServices {...data} />
+      return <ConsultancyServices sectionContent={data} />
 
 
     case "contact.featuresStrip":
-      return <SupportHighlights {...data} />
+      return <SupportHighlights sectionContent={data} />
     case "contact.getInTouch":
-      return <ContactSection {...data} />
+      return <ContactSection sectionContent={data} />
     case "contact.hero":
-      return <ContactHero {...data} />
+      return <ContactHero sectionContent={data} />
 
     case "blog.allBlogs":
-      return <BlogSection {...data} />
+      return <BlogSection sectionContent={data} />
     case "blog.mediaResources":
-      return <SupportSection {...data} />
+      return <SupportSection sectionContent={data} />
     case 'blog.hero':
-      return <BlogHeroSection {...data} />
+      return <BlogHeroSection sectionContent={data} />
     case "blog.stayInspired":
-      return <NewsletterCard {...data} />
+      return <NewsletterCard sectionContent={data} />
     case "blog.supportWellness":
-      return <WellnessResources {...data} />
+      return <WellnessResources sectionContent={data} />
 
     case "product.hero":
-      return <ProductSlider {...data} />
+      return <ProductSlider sectionContent={data} />
     case "product.featureStrip":
-      return <WellnessFeatureStrip {...data} />
+      return <WellnessFeatureStrip sectionContent={data} />
     case "product.trustedBy":
-      return <TrustedBrandsStrip {...data} />
+      return <TrustedBrandsStrip sectionContent={data} />
     case "product.whyChoose":
-      return <ProductWhyChoose {...data} />
+      return <ProductWhyChoose sectionContent={data} />
     case "product.testimonials":
-      return <Testimonials  {...data} />
+      return <Testimonials  sectionContent={data} />
     case "product.productsection":
-      return <Products {...data} />
+      return <Products sectionContent={data} />
     default:
       return null;
   }

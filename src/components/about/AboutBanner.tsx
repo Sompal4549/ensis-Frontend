@@ -17,41 +17,24 @@ interface AboutBannerProps {
   primaryBtnPath?: string;
   secondaryBtnText?: string;
   secondaryBtnPath?: string;
+  sectionContent?: AboutBannerProps;
 }
 
 export default async function AboutHero({
-  title = "Crafting Wellness Spaces",
-  subtitle = "About Ensis",
-  description = "India's trusted manufacturer of Panchkarma equipment, wellness furniture and turnkey spa interiors since 2003. We design, build and install complete wellness centres that blend Ayurvedic wisdom with modern comfort.",
-  highlight = "That Heal & Inspire",
-  primaryBtnText = "Our Journey",
-  primaryBtnPath = "/about",
-  secondaryBtnText = "Explore Products",
-  secondaryBtnPath = "/products",
-  image
+sectionContent = {}
 }: AboutBannerProps) {
-  const bannerData =  {
-    title,
-    subtitle,
-    description,
-    highlight,
-    image,
-    primaryBtnText,
-    primaryBtnPath,
-    secondaryBtnText,
-    secondaryBtnPath,
-  };
+
 
   // Merge API data over prop defaults
-  const resolvedTitle = bannerData?.title ?? title;
-  const resolvedSubtitle = bannerData?.subtitle ?? subtitle;
-  const resolvedDescription = bannerData?.description ?? description;
-  const resolvedHighlight = bannerData?.highlight ?? highlight;
-  const resolvedPrimaryBtnText = bannerData?.primaryBtnText ?? primaryBtnText;
-  const resolvedPrimaryBtnPath = bannerData?.primaryBtnPath ?? primaryBtnPath;
-  const resolvedSecondaryBtnText = bannerData?.secondaryBtnText ?? secondaryBtnText;
-  const resolvedSecondaryBtnPath = bannerData?.secondaryBtnPath ?? secondaryBtnPath;
-  const resolvedImage = bannerData?.image ?? image;
+  const resolvedTitle = sectionContent?.title;
+  const resolvedSubtitle = sectionContent?.subtitle;
+  const resolvedDescription = sectionContent?.description;
+  const resolvedHighlight = sectionContent?.highlight;
+  const resolvedPrimaryBtnText = sectionContent?.primaryBtnText;
+  const resolvedPrimaryBtnPath = sectionContent?.primaryBtnPath;
+  const resolvedSecondaryBtnText = sectionContent?.secondaryBtnText;
+  const resolvedSecondaryBtnPath = sectionContent?.secondaryBtnPath;
+  const resolvedImage = sectionContent?.image;
 
   const imageUrl = resolvedImage?.imageUrl;
 

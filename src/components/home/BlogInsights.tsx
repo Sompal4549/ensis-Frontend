@@ -20,7 +20,7 @@ type BlogContent = {
   heading: string;
   buttonText: string;
   buttonPath: string;
-  blogs: { id: string; title: string; date: string; description: string; link: string; image: string, ctaText: string}[];
+  blogs: { id: string; title: string; date: string; description: string; link: string; image: string, ctaText: string }[];
   ctaHeading: string;
   ctaDescription: string;
   ctaButtonText: string;
@@ -33,10 +33,10 @@ const defaultContent = {
   buttonText: "VIEW ALL BLOGS",
   buttonPath: "/blog",
   blogs: [
-    { id: "1", title: "Panchkarma Room Design Guide: Everything You Need to Know", image: "", date: "", description: "", link: "", ctaText:"" },
-    { id: "2", title: "How to Choose the Right Spa Equipment for Your Business", image: "", date: "", description: "", link: "", ctaText:"" },
-    { id: "3", title: "Steam Chamber Benefits for Detox & Relaxation Therapy", image: "", date: "", description: "", link: "", ctaText:"" },
-    { id: "4", title: "Top 7 Ayurveda Wellness Trends in 2024", image: "", date: "", description: "", link: "", ctaText:"" },
+    { id: "1", title: "Panchkarma Room Design Guide: Everything You Need to Know", image: "", date: "", description: "", link: "", ctaText: "" },
+    { id: "2", title: "How to Choose the Right Spa Equipment for Your Business", image: "", date: "", description: "", link: "", ctaText: "" },
+    { id: "3", title: "Steam Chamber Benefits for Detox & Relaxation Therapy", image: "", date: "", description: "", link: "", ctaText: "" },
+    { id: "4", title: "Top 7 Ayurveda Wellness Trends in 2024", image: "", date: "", description: "", link: "", ctaText: "" },
   ],
   ctaHeading: "Ready to Build Your Dream Wellness Space?",
   ctaDescription: "Connect with our experts for personalized consultation and premium solutions.",
@@ -45,11 +45,14 @@ const defaultContent = {
   ctaBgImage: "",
 };
 
-export const BlogInsights = async (data: { subtitle: string; heading: string; buttonText: string; buttonPath: string }) => {
+export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }: { subtitle: string; heading: string; buttonText: string; buttonPath: string }) => {
   // const content = await getComponentContent<BlogContent>("home.blogInsights", defaultContent);
-  // const blogData: any = await getComponentContent("blog.allBlogs", defaultContent.blogs);
-    const content =  defaultContent;
-  const blogData: any = defaultContent.blogs;
+  const blogData = await getComponentContent("blog.allBlogs", defaultContent.blogs);
+  const contactData = await getComponentContent("home.readyToBuild", { ctaHeading: defaultContent.ctaHeading, ctaDescription: defaultContent.ctaDescription, ctaButtonText: defaultContent.ctaButtonText, ctaButtonPath: defaultContent.ctaButtonPath, ctaBgImage: defaultContent.ctaBgImage });
+  console.log(contactData);
+
+  // const content = defaultContent;
+  // const blogData: any = defaultContent.blogs;
 
   // Extract the actual blog array from the API response object
   // Based on your console.log, it resides in 'blogData.blogs'
@@ -61,10 +64,10 @@ export const BlogInsights = async (data: { subtitle: string; heading: string; bu
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
           <div className="grid gap-6 md:items-start">
             <div>
-              <SubHeading className=' text-black' text={content.subtitle} />
-              <h2 className="mt-2 font-serif text-xl leading-tight text-[#1f261b] md:text-2xl font-semibold">{content.heading}</h2>
-              <Link href={content.buttonPath} className="mt-6 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6] rounded-md">
-                {content.buttonText} <ArrowRight size={16} />
+              <SubHeading className=' text-black' text={subtitle} />
+              <h2 className="mt-2 font-serif text-xl leading-tight text-[#1f261b] md:text-2xl font-semibold">{heading}</h2>
+              <Link href={buttonPath} className="mt-6 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6] rounded-md">
+                {buttonText} <ArrowRight size={16} />
               </Link>
             </div>
           </div>
@@ -91,13 +94,13 @@ export const BlogInsights = async (data: { subtitle: string; heading: string; bu
       </Container>
 
       <div className="relative overflow-hidden bg-[#1f261b] py-4 text-white">
-        <Image src={content.ctaBgImage ? getImageUrl(content.ctaBgImage) : img7} alt="" fill style={{ objectFit: 'cover' }} className="opacity-25" />
+        <Image src={contactData.ctaBgImage ? getImageUrl(contactData.ctaBgImage) : img7} alt="" fill style={{ objectFit: 'cover' }} className="opacity-25" />
         <Container className="relative z-10 flex flex-col justify-center gap-20 md:flex-row md:items-center">
           <div>
-            <h2 className="font-serif text-2xl leading-tight font-semibold">{content.ctaHeading}</h2>
-            <p className="mt-2 text-sm text-[#e5dccf]">{content.ctaDescription}</p>
+            <h2 className="font-serif text-2xl leading-tight font-semibold">{contactData.ctaHeading}</h2>
+            <p className="mt-2 text-sm text-[#e5dccf]">{contactData.ctaDescription}</p>
           </div>
-          <GreenButton path={content.ctaButtonPath} text={content.ctaButtonText} />
+          <GreenButton path={contactData.ctaButtonPath} text={contactData.ctaButtonText} />
         </Container>
       </div>
     </section>

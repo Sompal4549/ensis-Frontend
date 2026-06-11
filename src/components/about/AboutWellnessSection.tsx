@@ -14,7 +14,7 @@ import innovation from "@/assets/about_new/innovation.png"
 import customer_satisfaction from "@/assets/about_new/innovation.png"
 import integrity from "@/assets/about_new/integrity.png"
 
-const AboutWellnessSection = () => {
+const AboutWellnessSection: React.FC<{ sectionContent?: unknown }> = ({ sectionContent }) => {
   const stats = [
     { title: "2003", subtitle: "In Wellness Industry", image: since},
     { title: "1000+", subtitle: "Successful Projects", image: successfull_projects},

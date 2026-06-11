@@ -46,11 +46,14 @@ const defaultContent = {
   ],
 };
 
-export const ProductsGrid = async () => {
-  const content = await getComponentContent("home.productsGrid", defaultContent);
+type ProductsGridProps = {
+  sectionContent?: typeof defaultContent;
+};
+
+export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
+  const content = sectionContent || defaultContent;
 const products = await getProducts()
   // Use the CMS products list (which doubles as fallback category cards)
-console.log(products,"products")
   return (
     <section className="bg-[#fbf8f2] relative z-10">
       <Container>

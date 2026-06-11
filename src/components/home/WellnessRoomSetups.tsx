@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, SectionIcon } from "lucide-react";
 import { Container } from "../ui/Container";
 import SubHeading from "./SubHeading";
 import panchkarma from "@/assets/home/panchkarma.webp";
@@ -18,14 +18,27 @@ const fallbackImages: Record<string, any> = {
   "Consultation Room Setup": consultaion,
 };
 
-const defaultContent = {
-  subtitle: "Complete Wellness Solutions",
-  heading: "Complete Room\nSetups",
-  description: "Thoughtfully designed, perfectly crafted wellness rooms that reflect the essence of Ayurveda and modern luxury.",
-  buttonText: "EXPLORE ROOM SETUPS",
-  buttonPath: "/products",
+
+interface WellnessRoomSetupsProps {
+  sectionContent?: {
+    subtitle?: string;
+    heading?: string;
+    description?: string;
+    sectionButtonText?: string;
+    sectionButtonPath?: string;
+    cards?: Array<{ id?: string; title: string; image: string; tag?: string }>;
+  };
+}
+
+const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent = {} }) => {
+  const defaultContent = {
+  subtitle: sectionContent.subtitle ||"Complete Wellness Solutions",
+  heading: sectionContent.heading ||"Complete Room\nSetups",
+  description:sectionContent.description ||"Thoughtfully designed, perfectly crafted wellness rooms that reflect the essence of Ayurveda and modern luxury.",
+  buttonText: sectionContent.sectionButtonText||"EXPLORE ROOM SETUPS",
+  buttonPath: sectionContent.sectionButtonPath ||"/products",
   // Admin sends `cards`, frontend fallback uses `cards` to match
-  cards: [
+  cards:sectionContent.cards ||[
     { id: "1", title: "Panchkarma Suite Setup", image: "", tag: "" },
     { id: "2", title: "Shirodhara Room Setup", image: "", tag: "" },
     { id: "3", title: "Steam Therapy Room Setup", image: "", tag: "" },
@@ -33,7 +46,6 @@ const defaultContent = {
   ],
 };
 
-const WellnessRoomSetups: React.FC = () => {
   const [hovered, setHovered] = useState<number | null>(null);
   const [content, setContent] = useState(defaultContent);
 
