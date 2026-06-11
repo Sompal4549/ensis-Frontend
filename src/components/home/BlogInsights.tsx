@@ -47,7 +47,7 @@ const defaultContent = {
 
 export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }: { subtitle: string; heading: string; buttonText: string; buttonPath: string }) => {
   // const content = await getComponentContent<BlogContent>("home.blogInsights", defaultContent);
-  const blogData = await getComponentContent("blog.allBlogs", defaultContent.blogs);
+  const blogData: any = await getComponentContent("blog.allBlogs", defaultContent.blogs);
   const contactData = await getComponentContent("home.readyToBuild", { ctaHeading: defaultContent.ctaHeading, ctaDescription: defaultContent.ctaDescription, ctaButtonText: defaultContent.ctaButtonText, ctaButtonPath: defaultContent.ctaButtonPath, ctaBgImage: defaultContent.ctaBgImage });
   console.log(contactData);
 
