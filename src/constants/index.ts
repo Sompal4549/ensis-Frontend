@@ -32,18 +32,26 @@ const decorImages = [img16, img13, img9, img15];
 const brassImages = [img5, img9, img16, img3];
 
 export interface Product {
-  title: string;
-  tag: ReactNode;
-  description: ReactNode;
-  id: number;
-  category: string;
-  categoryKey: string;
-  name: string;
-  price: number;
-  image: string | StaticImageData;
-  badge?: string;
-  slug: string;
-  images?:string|StaticImageData[]
+    title: string;
+    tag?: ReactNode;
+    description: string;
+    id: string; // Changed to string as API returns _id as string
+    category: any;
+    categoryKey?: string;
+    name: string;
+    price: number;
+    image: string | StaticImageData;
+    badge?: string;
+    slug: string;
+    images?: any;
+    code?: string;
+    shortDescription?: string;
+    material?: string;
+    subcategory?: string;
+    dimensions?: { length: string; width: string; height: string };
+    weight?: string;
+    features?: string[];
+    specifications?: { woodType?: string; finish?: string; fitting?: string };
 }
 
 const defaultProductDetails = {
@@ -125,7 +133,7 @@ export const idealFor = [
 
 export const allProducts: Product[] = [
   {
-    id: 1,
+    id: '1',
     slug: "handcrafted_panchkarma_therapy_table",
     categoryKey: "panchkarma",
     category: "PANCHKARMA EQUIPMENT",
@@ -141,7 +149,7 @@ export const allProducts: Product[] = [
     ...panchkarmaSpecs
   },
   {
-    id: 2,
+    id: '2',
     slug: "luxury_steam_sauna_cabin",
     categoryKey: "steam",
     category: "STEAM & SAUNA",
@@ -157,7 +165,7 @@ export const allProducts: Product[] = [
     ...spaSpecs
   },
   {
-    id: 3,
+    id: '3',
     slug: "brass_ayurvedic_bowl_set",
     categoryKey: "ayurvedic",
     category: "AYURVEDIC ACCESSORIES",
@@ -173,7 +181,7 @@ export const allProducts: Product[] = [
     ...spaSpecs,
   },
   {
-    id: 4,
+    id: '4',
     slug: "wellness_aroma_oil_collection",
     categoryKey: "oils",
     category: "ESSENTIAL OILS",
@@ -189,7 +197,7 @@ export const allProducts: Product[] = [
     ...steamSpecs
   },
   {
-    id: 5,
+    id: '5',
     slug: "spa_lounge_wooden_chair",
     categoryKey: "spa",
     category: "SPA FURNITURE",
@@ -205,7 +213,7 @@ export const allProducts: Product[] = [
     ...spaSpecs
   },
   {
-    id: 6,
+    id: '6',
     slug: "shirodhara_therapy_stand",
     categoryKey: "panchkarma",
     category: "PANCHKARMA EQUIPMENT",
@@ -221,7 +229,7 @@ export const allProducts: Product[] = [
     ...ayurvedicSpecs
   },
   {
-    id: 7,
+    id: '7',
     slug: "brass_deepam_lamp",
     categoryKey: "decor",
     category: "WELLNESS DECOR",
@@ -237,7 +245,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 8,
+    id: '8',
     slug: "massage_table_with_storage",
     categoryKey: "spa",
     category: "SPA FURNITURE",
@@ -253,7 +261,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 9,
+    id: '9',
     slug: "copper_jal_neti_pot",
     categoryKey: "ayurvedic",
     category: "AYURVEDIC ACCESSORIES",
@@ -269,7 +277,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 10,
+    id: '10',
     slug: "therapeutic_oil_set_of_6",
     categoryKey: "oils",
     category: "ESSENTIAL OILS",
@@ -285,7 +293,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 11,
+    id: '11',
     slug: "aromatherapy_diffuser",
     categoryKey: "decor",
     category: "WELLNESS DECOR",
@@ -301,7 +309,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 12,
+    id: '12',
     slug: "steam_bath_laydown",
     categoryKey: "steam",
     category: "STEAM & SAUNA",
@@ -317,7 +325,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 13,
+    id: '13',
     slug: "ceremonial_pooja_thali_set",
     categoryKey: "brass",
     category: "BRASS RITUAL ITEMS",
@@ -333,7 +341,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 14,
+    id: '14',
     slug: "herbal_powder_steam_cabinet",
     categoryKey: "panchkarma",
     category: "PANCHKARMA EQUIPMENT",
@@ -349,7 +357,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 15,
+    id: '15',
     slug: "teak_reception_desk",
     categoryKey: "spa",
     category: "SPA FURNITURE",
@@ -365,7 +373,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 16,
+    id: '16',
     slug: "kansa_wand_facial_massager",
     categoryKey: "ayurvedic",
     category: "AYURVEDIC ACCESSORIES",
@@ -381,7 +389,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 17,
+    id: '17',
     slug: "ashwagandha_infused_body_oil",
     categoryKey: "oils",
     category: "ESSENTIAL OILS",
@@ -397,7 +405,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 18,
+    id: '18',
     slug: "hand-painted_mandala_wall_panel",
     categoryKey: "decor",
     category: "WELLNESS DECOR",
@@ -413,7 +421,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 19,
+    id: '19',
     slug: "singing_bowl_with_mallet",
     categoryKey: "brass",
     category: "BRASS RITUAL ITEMS",
@@ -429,7 +437,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 20,
+    id: '20',
     slug: "compact_herbal_steam_box",
     categoryKey: "steam",
     category: "STEAM & SAUNA",
@@ -445,7 +453,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 21,
+    id: '21',
     slug: "abhyanga_drizzle_stand",
     categoryKey: "panchkarma",
     category: "PANCHKARMA EQUIPMENT",
@@ -461,7 +469,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 22,
+    id: '22',
     slug: "recliner_zero-gravity_chair",
     categoryKey: "spa",
     category: "SPA FURNITURE",
@@ -477,7 +485,7 @@ export const allProducts: Product[] = [
     ...spaSpecs
   },
   {
-    id: 23,
+    id: '23',
     slug: "marble_mortar_&_pestle",
     categoryKey: "ayurvedic",
     category: "AYURVEDIC ACCESSORIES",
@@ -493,7 +501,7 @@ export const allProducts: Product[] = [
     ...decorSpecs
   },
   {
-    id: 24,
+    id: '24',
     slug: "bamboo_zen_water_fountain",
     categoryKey: "decor",
     category: "WELLNESS DECOR",

@@ -1,7 +1,6 @@
 import Image from "next/image";
 
 // Replace with your actual asset imports
-import bgImage from "@/assets/trunkey_solutions/why_choose_bg.webp";
 import singlePointIcon from "@/assets/trunkey_solutions/why_choose/single_point.webp";
 import noVendorIcon from "@/assets/trunkey_solutions/nod_wendor.webp";
 import fasterProjectIcon from "@/assets/trunkey_solutions/why_choose/faster.webp";
@@ -14,25 +13,17 @@ import { Container } from "../ui/Container";
 import decorationLeft from "@/assets/icons/arrow_left2.png"
 import decorationRight from "@/assets/icons/arrow_right2.png"
 
-const STATS = [
-  { value: "20+",   label: "Years of\nExperience" },
-  { value: "1000+", label: "Products\nManufactured" },
-  { value: "500+",  label: "Projects\nDelivered" },
-  { value: "PAN",   label: "India\nExecution" },
-];
 
-const FEATURES = [
-  { icon: singlePointIcon,      label: "Single Point\nResponsibility" },
-  { icon: noVendorIcon,         label: "No Vendor\nCoordination" },
-  { icon: fasterProjectIcon,    label: "Faster Project\nCompletion" },
-  { icon: ownManufacturingIcon, label: "Own Manufacturing\nFacility" },
-  { icon: transparentBoqIcon,   label: "Transparent\nBOQ" },
-  { icon: traditionalModernIcon,label: "Traditional + Modern\nDesign Approach" },
-  { icon: wellnessIndustryIcon, label: "Wellness Industry\nSpecialists" },
-  { icon: expertReadyIcon,      label: "Expert Ready\nSolutions" },
-];
 
-export default function WhyChoose() {
+export interface TurnkeyWhyChooseContent {
+  title: string;
+  backgroundImage: { imageUrl: string; alt?: string };
+  statsTitle: string; // Used for sectionContent.statsTitle
+  stats: Array<{ value: string; label: string, title:string, description:string }>; // Changed to value and label to match usage
+  features: Array<{ title: string; image: { imageUrl: string; alt: string } }>;
+}
+
+export default function WhyChoose({sectionContent}: { sectionContent: TurnkeyWhyChooseContent }) {
   return (
     <div className="w-full">
 
@@ -40,7 +31,7 @@ export default function WhyChoose() {
       <Container className="py-3 flex items-center gap-3">
        <Image src={decorationLeft}  height={30} alt="decoration" className="h-full object-contain flex-1" />
         <span className="text-[#d19f4f] text-base font-semibold uppercase whitespace-nowrap">
-          And Many More Customised Wellness Facilities
+         {sectionContent.title}
         </span>
         <Image src={decorationRight}  height={30} alt="decoration" className="h-full object-contain flex-1" crossOrigin="anonymous" />
       </Container>
@@ -51,8 +42,8 @@ export default function WhyChoose() {
         {/* Background image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src={bgImage}
-            alt="Why ENSIS background"
+            src={sectionContent.backgroundImage.imageUrl}
+            alt={sectionContent.backgroundImage.alt||""}
             fill
             className="object-fill"
           />
@@ -72,25 +63,25 @@ export default function WhyChoose() {
               <div className="flex items-center gap-2 ml-20">
                 <div className="h-px w-10 bg-[#c9972a] opacity-60" />
                 <p className="text-[#c9972a] text-sm tracking-[0.28em] font-semibold uppercase whitespace-nowrap ">
-                  Why Clients Choose Ensis?
+                  {sectionContent.statsTitle}
                 </p>
                 <div className="h-px w-10 bg-[#c9972a] opacity-60" />
               </div>
 
               {/* Stats row */}
               <div className="flex items-stretch gap-0 lg:border-r-2 lg:border-[#c9972a]/30 lg:pr-8 pt-2">
-                {STATS.map((s, index) => (
+                {sectionContent.stats.map((s, index) => (
                   <div
                     key={s.label}
                     className={`flex flex-col items-start justify-center px-5 first:pl-0 ${
-                      index !== STATS.length - 1 ? "border-r border-[#c9972a]/40" : ""
+                      index !== sectionContent.stats.length - 1 ? "border-r border-[#c9972a]/40" : ""
                     }`}
                   >
                     <span className="text-[#c9972a] text-2xl sm:text-4xl font-semibold leading-none">
-                      {s.value}
+                      {s?.title||""}
                     </span>
                     <span className="text-[#e8d9b5] text-[10px] sm:text-xs leading-snug whitespace-pre-line mt-1 font-medium">
-                      {s.label}
+                      {s.description}
                     </span>
                   </div>
                 ))}
@@ -99,22 +90,22 @@ export default function WhyChoose() {
 
             {/* ── RIGHT: Feature icons ── */}
             <div className="flex flex-wrap lg:flex-nowrap items-center justify-start lg:justify-around gap-4 lg:gap-0 lg:pl-8 w-full">
-              {FEATURES.map((f, index) => (
-                <div
-                  key={f.label}
+              {sectionContent.features.map((f) => (
+                <div 
+                  key={f.title} // Changed f.label to f.title
                   className={`flex flex-col items-center gap-2 text-center px-2 lg:px-2`}
                 >
                   <div className="w-12 h-12 flex items-center justify-center">
                     <Image
-                      src={f.icon}
-                      alt={f.label}
+                      src={f.image.imageUrl}
+                      alt={f.image.alt}
                       width={48}
                       height={48}
                       className="object-contain w-full h-full"
                     />
                   </div>
                   <p className="text-[#e8d9b5] text-[9px] sm:text-[10px] leading-snug whitespace-pre-line">
-                    {f.label}
+                    {f.title}
                   </p>
                 </div>
               ))}

@@ -2,12 +2,8 @@ import React from "react";
 import durable_and_highzenic from "@/assets/products/durable_and_highzenic.webp";
 import easy_mobility from "@/assets/products/easy_mobility.webp"
 import erogonomic_handle from "@/assets/products/erogonomic_handle.webp"
-import front_view from "@/assets/products/front_view.webp"
 import premium_solid_wood from "@/assets/products/premium_solid_wood.webp"
 import raised_edge from "@/assets/products/raised_edge.webp"
-import rear_view from "@/assets/products/rear_view.webp"
-import side_view from "@/assets/products/side_view.webp"
-import top_view from "@/assets/products/top_view.webp"
 import spaciour_three_selves from "@/assets/products/spaciour_three_selves.webp"
 import Image from "next/image";
 const features = [

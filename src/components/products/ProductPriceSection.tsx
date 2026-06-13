@@ -1,14 +1,8 @@
 import { formatPrice, isOrderItemForProduct } from "@/utils";
 import {
-  CheckCircle,
   CheckCircle2,
   Heart,
-  Leaf,
-  LockKeyhole,
-  ShieldCheck,
-  Sparkles,
   Star,
-  Wrench,
   X,
 } from "lucide-react";
 import React, { ReactNode, useState, useEffect } from "react";
@@ -20,10 +14,11 @@ import erogonomic_design from "@/assets/products/erogonimc_design.webp";
 import water_resitant from "@/assets/products/water_resitant.webp";
 import long_lasting from "@/assets/products/long_lasting.webp";
 import Image from "next/image";
-import { API_URL } from "@/app/lib/api";
+import { API_URL } from "@/lib/api/api";
+import { Product } from "@/app/lib/api";
 
 interface ProductPriceSectionProps {
-  product: any;
+  product: Product; // Use the Product interface from constants
   originalPrice: number;
   shopProduct: any;
 }
@@ -33,6 +28,8 @@ const ProductPriceSection = ({
   originalPrice,
   shopProduct,
 }: ProductPriceSectionProps) => {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
   const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [reviewData, setReviewData] = useState<{
     averageRating: number;
@@ -64,7 +61,7 @@ const ProductPriceSection = ({
         if (token) {
           headers["Authorization"] = `Bearer ${token}`;
         }
-        const res = await fetch(`${API_URL}/reviews/${product.id}`, { headers });
+        const res = await fetch(`${API_URL}/reviews/${product._id}`, { headers });
         const data = await res.json();
         if (data.success) {
           setReviewData({
@@ -86,8 +83,8 @@ const ProductPriceSection = ({
         console.error("Failed to fetch review summary", err);
       }
     };
-    if (product.id) getReviewSummary();
-  }, [product.id, token, isWritingReview]);
+    if (product._id) getReviewSummary();
+  }, [product._id, token, isWritingReview]);
 
   useEffect(() => {
     const verifyPurchase = async () => {
@@ -108,10 +105,10 @@ const ProductPriceSection = ({
         const bought = orders.some((order: any) =>
           order.items?.some((item: any) =>
             isOrderItemForProduct(item, {
-              id: String(product.id),
+              id: String(product._id),
               slug: product.slug,
-              title: product.title || product.name,
-              name: product.name,
+              title: product.title || product.title,
+              name: product.title,
             })
           )
         );
@@ -121,7 +118,7 @@ const ProductPriceSection = ({
       }
     };
     verifyPurchase();
-  }, [product.id, token]);
+  }, [product._id, token]);
 
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,7 +130,7 @@ const ProductPriceSection = ({
       const method = userReviewId ? 'PUT' : 'POST';
       const url = userReviewId 
         ? `${API_URL}/reviews/${userReviewId}` 
-        : `${API_URL}/reviews/${product.id}`;
+        : `${API_URL}/reviews/${product._id}`;
 
       const res = await fetch(url, {
         method,
@@ -148,7 +145,7 @@ const ProductPriceSection = ({
         alert(userReviewId ? "Review updated successfully!" : "Review submitted successfully!");
         setIsWritingReview(false);
         // Force refresh reviews
-        const refreshRes = await fetch(`${API_URL}/reviews/${product.id}`);
+        const refreshRes = await fetch(`${API_URL}/reviews/${product._id}`);
         const refreshData = await refreshRes.json();
         if (refreshData.success) {
           setReviewData({ averageRating: refreshData.averageRating, totalReviews: refreshData.reviews.length, reviews: refreshData.reviews });
@@ -170,19 +167,20 @@ const ProductPriceSection = ({
       <div className="flex justify-between items-center w-full">
 
             <span className="text-xs font-semibold uppercase text-[#F59E0B] ">
-              {product.category}
+              {typeof product.category === 'object' ? product.category.name : product.category}
             </span>
                <button
+          suppressHydrationWarning
           type="button"
          onClick={() => toggleLike(shopProduct)}
           className="mt-3 flex  items-center justify-center rounded-md bg-transparent text-xs font-semibold  transition-colors gap-2"
         >
-        <Heart size={13} className={wished ? "fill-red-500" : "text-red-500"} />
-            {wished ? "In wishlist" : "Add to wishlist"}
+        <Heart size={13} className={mounted && wished ? "fill-red-500" : "text-red-500"} />
+            {mounted && wished ? "In wishlist" : "Add to wishlist"}
         </button>
       </div>
             <h2 className="mt-2 text-xl font-semibold leading-tight text-[#001b10] md:text-2xl max-w-60 line-clamp-2">
-              {product.title || product.name}
+              {product.title}
             </h2>
 
             <div className="mt-2 flex flex-wrap items-center gap-3 text-[10px]">
@@ -203,7 +201,7 @@ const ProductPriceSection = ({
                 <span className="font-medium underline decoration-dotted decoration-gray-400 underline-offset-2">({reviewData.totalReviews} reviews)</span>
               </button>
               <span className="py-1 text-[11px] font-semibold pl-2 border-l border-gray-200">
-             SKU: ENS-PT-001
+             SKU: {product.code || 'ENS-PT-001'}
               </span>
             </div>
 

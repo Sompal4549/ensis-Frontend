@@ -11,10 +11,7 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { Container } from "../ui/Container";
-import img3 from '@/assets/home/img-3.webp';
-import img2 from '@/assets/home/img-2.webp';
 import img1 from '@/assets/home/img-1.webp';
-import img4 from '@/assets/home/img-4.webp';
 import Image from "next/image";
 
 const tabs = [

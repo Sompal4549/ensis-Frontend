@@ -13,33 +13,86 @@ import quality from "@/assets/about_new/quality_and_durability.png"
 import innovation from "@/assets/about_new/innovation.png"
 import customer_satisfaction from "@/assets/about_new/innovation.png"
 import integrity from "@/assets/about_new/integrity.png"
+import { getComponentContent, getImageUrl } from "@/lib/api/api";
 
-const AboutWellnessSection: React.FC<{ sectionContent?: unknown }> = ({ sectionContent }) => {
-  const stats = [
-    { title: "2003", subtitle: "In Wellness Industry", image: since},
-    { title: "1000+", subtitle: "Successful Projects", image: successfull_projects},
-    { title: "200+", subtitle: "Satisfied Clients", image: happy_clients},
-    { title: "28", subtitle: "States Across India", image: states},
-    { title: "In-house", subtitle: "Manufacturing Unit", image: in_house},
-    { title: "100%", subtitle: "Quality Promise", image: quality_promise},
-  ];
+interface ImageUrlData {
+  imageUrl: string;
+  alt: string;
+}
 
-  const values = [
-    {text:"Ayurveda Centric Design", image:ayurved},
-    {text:"Quality & Durability", image:quality},
-    {text:"Innovation & Functionality", image:innovation},
-   {text: "Customer Satisfaction", image:customer_satisfaction},
-   {text: "Integrity & Transparency", image:integrity},
-  ];
+interface AboutWellnessSectionValue {
+  title: string;
+  imageurl: ImageUrlData;
+}
+
+interface AboutWellnessSectionStat {
+  title: string;
+  subtitle: string;
+  imageurl: ImageUrlData;
+}
+
+interface AboutWellnessSectionContent {
+  heading: string;
+  title: string;
+  description: string;
+  ourCoreValues: AboutWellnessSectionValue[];
+  stats: AboutWellnessSectionStat[];
+  imageurl: ImageUrlData; // For the main image
+}
+
+const fallbackContent: AboutWellnessSectionContent = {
+  heading: "Our Story",
+  title: "Crafting Wellness Since 2003",
+  description: `
+    <p class="text-xs font-semibold leading-6 mt-4">
+      ENSIS, the wellness division of Design House India Pvt. Ltd.,
+      was established in 2003 with a vision to create authentic,
+      durable and aesthetically superior wellness solutions.
+    </p>
+    <p class="text-xs font-semibold leading-6 ">
+      We combine the wisdom of Ayurveda with modern engineering to
+      build products and spaces that deliver healing, comfort and
+      long-term value.
+    </p>
+    <p class="text-xs font-semibold leading-6 ">
+      Today, ENSIS is a preferred partner for clinics, hospitals,
+      resorts, spas and wellness entrepreneurs across India.
+    </p>
+  `,
+  imageurl: { imageUrl: our_story_image.src, alt: "Wellness Building" },
+  ourCoreValues: [
+    { title: "Ayurveda Centric Design", imageurl: { imageUrl: ayurved.src, alt: "Ayurveda Centric Design" } },
+    { title: "Quality & Durability", imageurl: { imageUrl: quality.src, alt: "Quality & Durability" } },
+    { title: "Innovation & Functionality", imageurl: { imageUrl: innovation.src, alt: "Innovation & Functionality" } },
+    { title: "Customer Satisfaction", imageurl: { imageUrl: customer_satisfaction.src, alt: "Customer Satisfaction" } },
+    { title: "Integrity & Transparency", imageurl: { imageUrl: integrity.src, alt: "Integrity & Transparency" } },
+  ],
+  stats: [
+    { title: "2003", subtitle: "In Wellness Industry", imageurl: { imageUrl: since.src, alt: "Years Experience" } },
+    { title: "1000+", subtitle: "Successful Projects", imageurl: { imageUrl: successfull_projects.src, alt: "Projects Completed" } },
+    { title: "200+", subtitle: "Satisfied Clients", imageurl: { imageUrl: happy_clients.src, alt: "Happy Clients" } },
+    { title: "28", subtitle: "States Across India", imageurl: { imageUrl: states.src, alt: "States Served" } },
+    { title: "In-house", subtitle: "Manufacturing Unit", imageurl: { imageUrl: in_house.src, alt: "In-house Manufacturing" } },
+    { title: "100%", subtitle: "Quality Promise", imageurl: { imageUrl: quality_promise.src, alt: "Quality Promise" } },
+  ],
+};
+
+const AboutWellnessSection = ({
+  sectionContent,
+}: {
+  sectionContent: AboutWellnessSectionContent;
+}) => {
+  // direct use sectionContent
 
   return (
     <section className="w-full relative mt-2">
         <div className="absolute left-0 w-[100%] md:w-[40%] top-0 h-50 md:h-full md:bottom-8 z-10">
             <Image
-              src={our_story_image}
-              alt="Wellness Building"
+              src={getImageUrl(sectionContent.imageurl.imageUrl)}
+              alt={sectionContent.imageurl.alt}
               className="w-full h-full object-cover"
               crossOrigin="anonymous"
+              fill
             />
         </div>
   {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0)_0%,rgba(255,255,255,0.1)_20%,rgba(255,255,255,0.8)_50%,rgba(255,255,255,1)_100%)] z-10" /> */}
@@ -55,31 +108,17 @@ const AboutWellnessSection: React.FC<{ sectionContent?: unknown }> = ({ sectionC
           {/* Center Content */}
           <div className=" md:px-6 md:py-7 flex flex-col justify-center">
             <span className="text-[10px] uppercase tracking-[2px] bg-[#e5c18e] border-[#e29222] border text-center rounded-2xl text-[#5e3b0a] inline-block font-semibold mb-2 w-25 ">
-              Our Story
+              {sectionContent.heading}
             </span>
 
             <h2 className="text-xl md:text-[28px] leading-[1.15] font-semibold ">
-              From Vision to India’s
-              <br/> Wellness Manufacturing Leader
+            {sectionContent.title}
             </h2>
-<div className="max-w-[480px]">
-           
-            <p className="text-xs font-semibold leading-6 mt-4">
-              ENSIS, the wellness division of Design House India Pvt. Ltd.,
-              was established in 2003 with a vision to create authentic,
-              durable and aesthetically superior wellness solutions.
-            </p>
-
-            <p className="text-xs font-semibold leading-6 ">
-              We combine the wisdom of Ayurveda with modern engineering to
-              build products and spaces that deliver healing, comfort and
-              long-term value.
-            </p>
-
-            <p className="text-xs font-semibold leading-6 ">
-              Today, ENSIS is a preferred partner for clinics, hospitals,
-              resorts, spas and wellness entrepreneurs across India.
-            </p>
+            <div className="max-w-[480px]">
+              <div
+                className="text-xs font-semibold leading-6 mt-4"
+                dangerouslySetInnerHTML={{ __html: sectionContent.description }}
+              />
              </div>
           </div>
 
@@ -92,16 +131,16 @@ const AboutWellnessSection: React.FC<{ sectionContent?: unknown }> = ({ sectionC
             </h3>
 
             <div className="space-y-2">
-              {values.map((item, index) => (
+              {sectionContent.ourCoreValues.map((item, index) => (
                 <div key={index} className="flex items-center gap-3">
                   {/* Icon Placeholder */}
                   <div className="w-9 h-9">
-                    <Image alt={item.text} src={item.image} width={30} height={30} className="object-contain"
+                    <Image alt={item.imageurl.alt} src={getImageUrl(item.imageurl.imageUrl)} width={30} height={30} className="object-contain"
                     crossOrigin="anonymous" style={{ height: "auto" }} />
                   </div>
 
                   <span className="text-xs  font-semibold">
-                    {item.text}
+                    {item.title}
                   </span>
                 </div>
               ))}
@@ -114,14 +153,14 @@ const AboutWellnessSection: React.FC<{ sectionContent?: unknown }> = ({ sectionC
         {/* Bottom Stats Bar */}
         <div className="mt-4 bg-[#03261b] rounded-2xl py-5 px-5 border-3 border-[#e8c37a] absolute -bottom-10 left-0 right-0">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-6">
-            {stats.map((item, index) => (
+            {sectionContent.stats.map((item, index) => (
               <div
                 key={index}
                 className="flex items-center gap-3 md:border-r border-[#aa8f47] last:border-r-0 px-4"
               >
                 {/* Icon Placeholder */}
                 <div className="w-10 h-10">
-                    <Image alt={item.title} src={item.image} width={40} height={40} className="object-contain" crossOrigin="anonymous" style={{ height: "auto" }} />
+                    <Image alt={item.imageurl.alt} src={getImageUrl(item.imageurl.imageUrl)} width={40} height={40} className="object-contain" crossOrigin="anonymous" style={{ height: "auto" }} />
                 </div>
 
                 <div>

@@ -1,10 +1,7 @@
 import React from 'react';
-import Link from 'next/link';
 import Image from 'next/image';
 
-import {
-  ArrowRight,
-} from 'lucide-react';
+
 
 import { Container } from '../ui/Container';
 import { Carousel } from '../ui/Carousel';
@@ -15,7 +12,7 @@ import wellness_spaces from '@/assets/bg/bg2.webp';
 import wooden_steam from '@/assets/bg/bg1.webp';
 import arrow from "@/assets/icons/arrow.png"
 import { Features } from './Features';
-import { getComponentContent, getImageUrl } from '@/app/lib/api';
+import { getComponentContent, getImageUrl } from '@/lib/api/api';
 import premium_craftmanship from "@/assets/icons/premium_craftmanship.webp"
 import ayurvedic_wisdom from "@/assets/icons/ayurvedic_wisdom.webp"
 import durable from "@/assets/icons/durable.webp"

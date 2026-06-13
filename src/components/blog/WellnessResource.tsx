@@ -48,8 +48,8 @@ const Card = ({ title, description, linkText, image, icon }: CardProps) => {
   );
 };
 
-const WellnessResources = () => {
-  return (
+const WellnessResources = ({ sectionContent }: { sectionContent: any }) => {
+  return(
     <section>
 
     <Container>

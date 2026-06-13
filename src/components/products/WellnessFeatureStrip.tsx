@@ -1,14 +1,5 @@
 "use client";
 
-import React from "react";
-import {
-  Leaf,
-  Flower2,
-  Hammer,
-  ShieldCheck,
-  Building2,
-  Globe,
-} from "lucide-react";
 import { Container } from "../ui/Container";
 import sustainable_material from "@/assets/products/sustainable_material.png"
 import ayurvedic_heritage from "@/assets/products/ayurvedic_heritage.png"
@@ -52,13 +43,22 @@ const features = [
   },
 ];
 
-export default function WellnessFeatureStrip() {
+interface WellnessFeature {
+  image: string; // Assuming image is a path/URL
+  title: string;
+  subtitle: string;
+}
+
+export interface WellnessFeatureStripContent {
+  features: WellnessFeature[];
+}
+
+export default function WellnessFeatureStrip({sectionContent}: { sectionContent: WellnessFeatureStripContent }) {
   return (
     <section className="w-full bg-gradient-to-r from-[#012c20] via-[#013727] to-[#012c20] border-y border-[#9f7a43]/20">
       <Container>
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6">
-          {features.map((item, index) => {
-            const Icon = item.icon;
+          {sectionContent.features.map((item, index) => {
 
             return (
               <div
@@ -79,7 +79,7 @@ export default function WellnessFeatureStrip() {
                     className="text-[#c4934d]"
                     height={26}
                     width={26}
-                    src={Icon}
+                    src={item.image}
                     alt={item.title}
                   />
                 </div>

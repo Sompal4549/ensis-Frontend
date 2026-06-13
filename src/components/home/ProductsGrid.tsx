@@ -14,7 +14,7 @@ import img6 from '@/assets/home/img-6.webp';
 import img13 from '@/assets/home/img-13.webp';
 
 import SubHeading from './SubHeading';
-import { getComponentContent, getImageUrl, getProducts, productApi, type Product } from '@/app/lib/api';
+import {  getImageUrl, getProducts,  type Product } from '@/lib/api/api';
 
 const fallbackImageMap: Record<string, any> = {
   "panchkarma-beds": img12,
@@ -46,13 +46,24 @@ const defaultContent = {
   ],
 };
 
-type ProductsGridProps = {
+export interface ProductsGridContent { // Exported for RenderSection
+  subtitle: string;
+  heading: string;
+  description: string;
+  buttonText: string;
+  buttonPath: string;
+  productsLimit: number;
+  products: Array<{ id: string; title: string; image: string }>; // Assuming image is string
+}
+
+type ProductsGridProps = { // Renamed to ProductsGridProps for the component
   sectionContent?: typeof defaultContent;
 };
 
 export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
   const content = sectionContent || defaultContent;
 const products = await getProducts()
+console.log(products,"products")
   // Use the CMS products list (which doubles as fallback category cards)
   return (
     <section className="bg-[#fbf8f2] relative z-10">
@@ -77,7 +88,7 @@ const products = await getProducts()
               : fallbackImageMap[product.slug] || img12;
 
             return (
-            <Link href={`/products/${product.slug}`} key={product.slug} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-xl">
+            <Link href={`/products/${product._id}`} key={product._id} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-xl">
               <div className="relative aspect-[2/1] overflow-hidden bg-[#e5dccf] rounded-tl-xl rounded-tr-xl">
                    <Image 
                      src={imageUrl} 

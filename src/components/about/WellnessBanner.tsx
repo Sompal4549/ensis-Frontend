@@ -6,33 +6,29 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { GrCatalogOption } from "react-icons/gr";
 import GreenButton from "../ui/GreenButton";
 import BookButton from "../ui/BookButton";
-import { getImageUrl } from "@/app/lib/api";
+import { getImageUrl } from "@/lib/api/api";
 
-interface WellnessBannerProps {
+export interface WellnessBannerContent { // Renamed to WellnessBannerContent
   title?: string;
   description?: string;
-  backgroundImage?: string;
-  primaryBtnText?: string;
-  primaryBtnPath?: string;
-  secondaryBtnText?: string;
-  secondaryBtnPath?: string;
+  imageurl?: { imageUrl: string; alt?: string }; // Changed to imageurl to match usage
+  primaryAction: { label: string; url: string }; // Changed to primaryAction
+  secondaryAction: { label: string; url: string }; // Changed to secondaryAction
+}
+
+interface WellnessBannerProps { // Renamed to WellnessBannerProps for the component
+  sectionContent: WellnessBannerContent; // Use the new interface
 }
 
 export default function WellnessBanner({
-  title = "LET’S BUILD YOUR WELLNESS SPACE",
-  description = "Whether you are planning a wellness center, spa, resort or Ayurveda hospital, our experts are here to bring your vision to life.",
-  backgroundImage,
-  primaryBtnText = "BOOK A CONSULTATION",
-  primaryBtnPath = "/contact",
-  secondaryBtnText = "EXPLORE PRODUCTS",
-  secondaryBtnPath = "https://ensis.in/pdf/e-broucher.pdf"
+sectionContent
 }: WellnessBannerProps) {
   return (
     <section className="w-full relative">
           <div className="absolute inset-0">
           <Image
-            src={backgroundImage ? getImageUrl(backgroundImage) : wellness}
-            alt="Luxury Wellness Interior"
+            src={sectionContent.imageurl ? getImageUrl(sectionContent?.imageurl?.imageUrl) : wellness}
+            alt={sectionContent.imageurl?.alt || sectionContent.title || "Wellness Banner"} // Added fallback for alt
             className="h-full w-full object-cover"
             fill
             crossOrigin="anonymous"
@@ -52,18 +48,18 @@ export default function WellnessBanner({
             tracking-[2px] leading-[120%]
             uppercase
             font-serif text-[#f5efe6]">
-              {title}
+              {sectionContent.title}
             </h2>
 
             <p className="mt-3 text-sm text-[#ddd1c1] md:text-[15px] ">
-              {description}
+              {sectionContent.description}
             </p>
 
             {/* Buttons */}
             <div className="mt-3 flex flex-wrap gap-4">
 
-<GreenButton leftIcon={<Phone className="text-[#050A1A]" size={16} />} text={primaryBtnText} path={primaryBtnPath} rightIcon={<FaArrowRightLong />} />
-  <BookButton leftIcon={<GrCatalogOption className="text-white" size={16} />} text={secondaryBtnText} rightIcon={<Download size={16} className="text-white" />}  path={secondaryBtnPath} />
+<GreenButton leftIcon={<Phone className="text-[#050A1A]" size={16} />} text={sectionContent.primaryAction.label} path={sectionContent.primaryAction.url} rightIcon={<FaArrowRightLong />} />
+  <BookButton leftIcon={<GrCatalogOption className="text-white" size={16} />} text={sectionContent.secondaryAction.label} rightIcon={<Download size={16} className="text-white" />}  path={sectionContent.secondaryAction.url} />
 </div>
           </div>
         </div>

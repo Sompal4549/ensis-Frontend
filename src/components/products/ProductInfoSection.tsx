@@ -4,14 +4,12 @@ import Image from "next/image";
 import { useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import dimensions from "@/assets/products/product.webp";
-import ayurveda_clinics from "@/assets/products/durable_and_highzenic.webp";
-import spa_and_wellness from "@/assets/products/spa_and_wellness.webp";
 import teak_and_finish from "@/assets/products/teak_and_finish.webp";
 import need_customization from "@/assets/products/need_customization.webp";
-import therapy_centers from "@/assets/products/therapy_centers.webp";
 import wallnut_finish from "@/assets/products/wallnut_finish.webp";
 import honey_oak from "@/assets/products/honey_oak.png";
 import mahogany from "@/assets/products/mahogany.png";
+import { Product } from "@/app/lib/api";
 
 const specs = [
   { label: "Material", value: "Premium Teak Wood" },
@@ -56,8 +54,22 @@ const calloutLabels = [
   { text: "Sturdy Storage\nBeds", top: "78%", left: "28%" },
 ];
 
-export default function ProductInfoSection() {
+export default function ProductInfoSection({ product }: { product: Product }) { // Ensure product is always passed and typed
   const [finish, setFinish] = useState("teak");
+
+  const dynamicSpecs = product ? [
+    { label: "Material", value: product.material || "Premium Teak Wood" },
+    { label: "Wood Finish", value: product.specifications?.finish || "Natural Polish" },
+    { label: "Dimensions (L x W x H)", value: product.dimensions ? `${product.dimensions.length} x ${product.dimensions.width} x ${product.dimensions.height} inches` : "78 x 30 x 30 inches" },
+    { label: "Weight", value: product.weight ? `${product.weight} Kg` : "N/A" },
+    { label: "Fitting", value: product.specifications?.fitting || "Brass" },
+    { label: "Category", value: product.category?.name || "Ayurvedic" },
+    { label: "Subcategory", value: product.subcategory || "N/A" },
+    { label: "Code", value: product.code || "N/A" },
+    { label: "Warranty", value: "1 Year Manufacturing Warranty" },
+  ] : specs;
+
+  const dynamicFeatures = product?.features || whatsIncluded;
 
   return (
     <div className="overflow-hidden">
@@ -91,7 +103,7 @@ export default function ProductInfoSection() {
         <div className="p-2">
           <table className="w-full text-[11px]">
             <tbody>
-              {specs.map((row, i) => (
+              {dynamicSpecs.map((row, i) => (
                 <tr key={i} className={`border-b border-[#d4c4a8] text-black`}>
                   <td className="py-1.5 px-1.5 font-semibold align-top w-[44%] leading-snug">
                     {row.label}
@@ -111,7 +123,7 @@ export default function ProductInfoSection() {
           <div className="rounded-lg border border-[#e2d8c8] p-4">
             <h3 className="font-semibold text-sm mb-3 border-b pb-1 border-[#d4c4a8]">What's Included</h3>
             <ul className="space-y-2">
-              {whatsIncluded.map((item, i) => (
+              {dynamicFeatures.map((item: string, i: number) => (
                 <li key={i} className="flex items-start gap-2 text-[11px] leading-snug text-black">
                   <Check size={14} className="shrink-0 mt-0.5 text-[#8d6a3a] font-semibold" />
                   {item}

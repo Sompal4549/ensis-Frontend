@@ -29,7 +29,7 @@ import YouMightCarousel from "@/components/ui/YouMightCarousel";
 import CartAndDetailHeroBanner from "@/components/products/ProductDetailBanner";
 import product_cart from "@/assets/products/cart.webp"
 function imageSource(image: string | StaticImageData) {
-  return typeof image === "string" ? image : image.src;
+  return typeof image === "string" ? image : image.src; // This function is not used in this file
 }
 
 function productToShopProduct(product: Product): ShopProduct {
@@ -101,7 +101,7 @@ function CartTableRow({ item }: { item: CartItem }) {
     <div className="grid gap-4 border-t border-[#eee5d8] p-2 md:grid-cols-[1fr_110px_150px_110px_34px] md:items-center md:px-5">
       <div className="grid grid-cols-[86px_1fr] gap-4">
         <Link
-          href={`/products/${item.slug}`}
+          href={`/products/${item.id}`}
           className="relative aspect-square overflow-hidden rounded-md bg-[#f7f3ec]"
         >
           <Image
@@ -114,7 +114,7 @@ function CartTableRow({ item }: { item: CartItem }) {
           />
         </Link>
         <div className="min-w-0 py-1">
-          <Link href={`/products/${item.slug}`}>
+          <Link href={`/products/${item.id}`}>
             <h2 className="line-clamp-2 text-sm font-bold leading-5 text-[#1a1a1a]">
               {item.name}
             </h2>
@@ -169,7 +169,7 @@ function RecommendationCard({ product }: { product: Product }) {
   return (
     <div className="rounded-lg  bg-white p-2 transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(49,59,48,0.08)]">
       <div className="relative aspect-[2/1] overflow-hidden rounded-md bg-[#f7f3ec]">
-        <Link href={`/products/${product.slug}`}>
+        <Link href={`/products/${product.id}`}>
           <Image
             src={product.image}
             alt={product.name}
@@ -189,7 +189,7 @@ function RecommendationCard({ product }: { product: Product }) {
         </button>
       </div>
       <div className="px-1 py-2">
-        <Link href={`/products/${product.slug}`}>
+        <Link href={`/products/${product.id}`}>
           <h3 className="line-clamp-2 min-h-9 text-xs font-semibold leading-5">
             {product.name}
           </h3>

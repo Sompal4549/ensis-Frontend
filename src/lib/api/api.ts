@@ -1,8 +1,4 @@
 
-
-
-
-
 import axios, { AxiosResponse } from "axios";
 
 const BASE_API_URL = (
@@ -120,7 +116,7 @@ export const productApi = {
         const response = await apiClient.get(`/products/${idOrSlug}`);
         return unwrap<Product>(response);
     },
-
+  
 };
 
 export const categoryApi = {
@@ -169,5 +165,5 @@ export const getComponentContent = async <T>(key: string, fallback: T): Promise<
 export const getProducts = async () => {
     const response = await apiClient.get(`/products?limit=100`);
     console.log(response,"produts")
-    return response.data.data.products as Product[]; // Explicitly cast to Product[]
+    return response.data.data.products;
 };

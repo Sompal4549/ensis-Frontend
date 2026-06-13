@@ -22,7 +22,7 @@ import {
 } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { formatCurrency } from "@/utils";
-import { API_URL } from "@/app/lib/api";
+import { API_URL } from "@/lib/api/api";
 import { getPaymentStatus } from "@/utils/payment";
 
 interface OrderItem {

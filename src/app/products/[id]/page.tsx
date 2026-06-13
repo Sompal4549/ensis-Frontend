@@ -16,6 +16,8 @@ import Planning from "@/components/products/Planning";
 import FaqSection from "@/components/products/Faq";
 import RealSpacesCarousel from "@/components/products/RealSpacesCarousel";
 import { generateSeo } from "@/lib/api/seo";
+import { productApi, getImageUrl } from "@/lib/api/api";
+import { notFound } from "next/navigation";
 
 export async function generateMetadata({ 
   params 
@@ -31,50 +33,6 @@ export async function generateMetadata({
 }
 
 
-type ProductView = {
-  id: string;
-  title: string;
-  code: string;
-  price?: number;
-  category: string;
-  description: string;
-  dimension: string;
-  customization: string;
-  images: Array<string | StaticImageData>;
-  slug: string;
-};
-
-function codeFromId(id: string | number) {
-  return `Ens - ${id.toString().padStart(3, "0")}`;
-}
-
-function getLocalProduct(slug: string): Product | undefined {
-  return allProducts.find((product) => product.slug === slug);
-}
-
-function buildLocalView(product: Product): ProductView {
-  const productIndex = allProducts.findIndex((item) => item.id === product.id);
-  const galleryImages = Array.from({ length: 4 }, (_, index) => {
-    const imageProduct =
-      allProducts[(productIndex + index + allProducts.length) % allProducts.length];
-    return imageProduct?.image || product.image;
-  });
-
-  return {
-    id: product.id.toString(),
-    title: product.name,
-    code: codeFromId(product.id),
-    price: product.price,
-    category: product.category,
-    description: `${product.name} is crafted for professional wellness spaces with durable materials, refined finishing, and practical day-to-day usability.`,
-    dimension: "7 ft 10 inch x W 2 ft 10 inch x H 2 ft 10 inch",
-    customization:
-      "Available in custom dimensions, polish tones, wood finish, and upholstery options to suit your wellness space.",
-    images: galleryImages,
-    slug: product.slug,
-  };
-}
-
 export function getImageSource(image: string | StaticImageData | undefined) {
   if (!image) return img6;
   return typeof image === "string" ? image : image.src;
@@ -83,7 +41,7 @@ export function getImageSource(image: string | StaticImageData | undefined) {
 function RelatedProductCard({ product }: { product: Product }) {
   return (
     <Link
-      href={`/products/${product.slug}`}
+      href={`/products/${product.id}`}
       className="group rounded-lg bg-white transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(49,59,48,0.08)]"
     >
       <div className="relative aspect-[2/1] overflow-hidden rounded-md bg-[#f7f3ec]">
@@ -117,43 +75,54 @@ export default async function ProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const localProduct = getLocalProduct(id);
-  const product = localProduct ? buildLocalView(localProduct) : null;
+  
+  let apiProduct;
+  try {
+    apiProduct = await productApi.detail(id);
+  } catch (err) {
+    console.log(err)
+    return notFound();
+  }
 
-  if (!product) return null;
+  if (!apiProduct) return notFound();
 
-  const gallery =
-    product.images.length > 0 ? product.images : [img6, img6, img6, img6];
+  // Transform API data to component-friendly object
+  const product: any = {
+    ...apiProduct,
+    id: apiProduct._id,
+    name: apiProduct.title,
+    image: apiProduct.images?.[0] ? getImageUrl(apiProduct.images[0]) : "",
+    images: apiProduct.images?.length 
+      ? apiProduct.images.map((img: string) => getImageUrl(img)) 
+      : [img6, img6, img6, img6],
+    categoryKey: apiProduct.category?.slug || apiProduct.category
+  };
 
   const shopProduct = {
     id: product.id,
     slug: product.slug,
-    name: product.title,
-    category: product.category,
+    name: product.name,
+    category: typeof product.category === 'object' ? product.category.name : product.category,
     price: product.price || 0,
-    image: getImageSource(gallery[0]),
+    image: product.image,
   };
 
   const originalPrice = product.price ? Math.round(product.price * 1.18) : 0;
 
-  const relatedProducts = allProducts
-    .filter(
-      (item) =>
-        item.slug !== product.slug &&
-        (item.categoryKey === localProduct?.categoryKey ||
-          item.category === product.category)
+  const suggestions = allProducts
+    .filter((item) => 
+      item.slug !== product.slug && 
+      (item.categoryKey === product.categoryKey || (typeof product.category === 'object' && item.category === product.category.name))
     )
-    .slice(0, 5);
-  const fallbackRelated = allProducts
-    .filter((item) => item.slug !== product.slug)
-    .slice(0, 5);
-  const suggestions = relatedProducts.length > 0 ? relatedProducts : fallbackRelated;
+    .slice(0, 8);
+
+  const finalSuggestions = suggestions.length > 0 ? suggestions : allProducts.filter(i => i.slug !== product.slug).slice(0, 8);
 
   return (
     <div className="min-h-screen bg-[#fbfaf7]">
       <CartAndDetailHeroBanner
         originalPrice={originalPrice}
-        product={localProduct!}
+        product={product}
         shopProduct={shopProduct}
       />
       <ProductFeatureStrip />
@@ -161,9 +130,7 @@ export default async function ProductPage({
 
       <Container>
         <section className="grid lg:items-start xl:gap-8">
-          <div>
-            <ProductInfoSection />
-          </div>
+          {<ProductInfoSection product={product} />}
         </section>
 
         {/* <section className="mt-10 border-t border-[#e5ded5] pt-6">
@@ -283,7 +250,7 @@ export default async function ProductPage({
           <h2 className="text-2xl font-semibold text-[#1a1a1a]">You May Also Like</h2>
           <div className="mt-2">
             <YouMightCarousel>
-              {allProducts.map((item) => (
+              {finalSuggestions.map((item) => (
                 <RelatedProductCard key={item.id} product={item} />
               ))}
             </YouMightCarousel>

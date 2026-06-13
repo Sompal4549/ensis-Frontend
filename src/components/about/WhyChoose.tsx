@@ -91,24 +91,36 @@ const features: Feature[] = [
   },
 ];
 
-const WhyChooseEnsis: React.FC = () => {
+interface WhyChooseEnsisFeature {
+  id: number;
+  title: string;
+  description: string;
+  imageurl: { imageUrl: string; alt: string };
+}
+
+export interface WhyChooseEnsisContent {
+  title: string;
+  description: string;
+  experience: WhyChooseEnsisFeature[];
+}
+
+const WhyChooseEnsis: React.FC<{ sectionContent: WhyChooseEnsisContent }> = ({ sectionContent }) => {
   return (
     <section className="w-full bg-[#f8f5f1] text-[#2e2b28]">
       <Container>
-        <AboutTitle title="Why Choose Ensis?" />
+        <AboutTitle title={sectionContent.title || "Why Choose Ensis?"} />
 
         <p className="text-center text-sm text-[#5e5a55] mb-[20px] max-w-3xl mx-auto font-semibold">
-          We don&apos;t just sell products, we create complete wellness
-          experiences.
+         {sectionContent.description || " We don&apos;t just sell products, we create complete wellness experiences."}
         </p>
 
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-[14px]">
-          {features.map((feature) => (
+          {sectionContent.experience.map((feature) => (
             <div
               key={feature.id}
               className="bg-[#f3ede7] rounded-xl px-[18px] py-7 min-h-[220px] text-center border border-[rgba(194,174,153,0.15)] transition-transform duration-200 hover:-translate-y-[2px] flex items-center justify-center flex-col"
             >
-              {feature.icon}
+            <Image src={feature.imageurl.imageUrl} alt={feature.imageurl.alt}  width={34} height={34} style={{ height: "auto" }}  />
 
               <b className="mb-3 text-[14px] font-semibold tracking-[0.4px]">
                 {feature.title}

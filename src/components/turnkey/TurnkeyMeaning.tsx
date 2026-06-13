@@ -30,7 +30,25 @@ const BENEFITS = [
   "One Responsibility",
 ];
 
-export default function TurnkeyMeaning() {
+export interface TurnkeyMeaningContent {
+  subheading: string;
+  title: string;
+  description: string;
+  mostProjectsTitle: string;
+  mostProjects: Array<{
+    id: string;
+    image: { imageUrl: string; alt?: string }; // Added alt for Image component
+    label?: string;
+    title: string;
+  }>;
+  withEnsis: {
+    title: string;
+    withEnsisList: string[];
+    image: { imageUrl: string };
+  };
+}
+
+export default function TurnkeyMeaning({ sectionContent }: { sectionContent: TurnkeyMeaningContent }) {
   return (
     <section className="bg-[#f5efe0] w-full py-4 border-t border-[#d78c2f] border-b">
       <Container className="">
@@ -39,14 +57,13 @@ export default function TurnkeyMeaning() {
           {/* ── COLUMN 1: What does Turnkey mean ── */}
           <div className="flex flex-col gap-4 lg:pr-10">
             <p className="text-[#d19f4f] text-xs sm:text-sm font-bold uppercase">
-              What does "Turnkey" mean?
+              {sectionContent.subheading}
             </p>
             <h2 className="text-2xl font-semibold leading-tight">
-              One Partner.<br />Complete Responsibility.
+              {sectionContent.title}
             </h2>
             <p className="text-xs font-semibold leading-6">
-              Most wellness projects require coordination with multiple vendors.
-              With Ensis, you get everything under one roof.
+           {sectionContent.description}
             </p>
           </div>
 
@@ -56,26 +73,26 @@ export default function TurnkeyMeaning() {
           {/* ── COLUMN 2: Most Projects Need Multiple Vendors ── */}
           <div className="flex flex-col gap-5 lg:px-4">
             <p className="text-sm font-semibold text-center lg:text-left">
-              Most Projects Need Multiple Vendors
+              {sectionContent.mostProjectsTitle}
             </p>
             <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-4 xl:grid-cols-6 gap-x-2 gap-y-5">
-              {VENDORS.map((v) => (
+              {sectionContent.mostProjects.map((v) => (
                 <div
-                  key={v.label}
+                  key={v.id}
                   className="flex flex-col items-center gap-1.5 text-center"
                 >
                   {/* Icon slot — replace div with your Image when ready */}
                   <div className="w-10 h-10 flex items-center justify-center">
                     <Image
-                      src={v.icon}
-                      alt={v.label}
+                      src={v.image.imageUrl||""}
+                      alt={v.label||""}
                       width={40}
                       height={40}
                       className="object-contain"
                     />
                   </div>
                   <p className="text-[9px] sm:text-[10px] leading-snug whitespace-pre-line font-semibold">
-                    {v.label}
+                    {v.title}
                   </p>
                 </div>
               ))}
@@ -89,10 +106,10 @@ export default function TurnkeyMeaning() {
           <div className="flex flex-row justify-between gap-6 lg:pl-4">
             <div className="flex flex-col gap-3">
               <p className="text-sm sm:text-base font-semibold">
-                With ENSIS You Get
+                {sectionContent.withEnsis.title}
               </p>
               <ul className="flex flex-col gap-2">
-                {BENEFITS.map((b) => (
+                {sectionContent.withEnsis.withEnsisList.map((b) => (
                   <li key={b} className="flex items-center gap-2 text-sm">
                     <Image alt="dot" src={withEnsis} height={20} width={20} />
                     {b}
@@ -104,7 +121,7 @@ export default function TurnkeyMeaning() {
             {/* ENSIS Plaque image */}
             <div className="shrink-0 w-28 sm:w-32 lg:w-36">
               <Image
-                src={ensisPlaque}
+                src={sectionContent.withEnsis.image.imageUrl}
                 alt="ENSIS — Everything Under One Roof"
                 width={144}
                 height={160}

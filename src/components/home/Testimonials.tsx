@@ -14,7 +14,7 @@ import quote from '@/assets/icons/quote.webp';
 import userImage from "@/assets/home/testimonial1.webp";
 import SubHeading from './SubHeading';
 import { FaStar } from 'react-icons/fa';
-import { getComponentContent } from '@/app/lib/api';
+import { getComponentContent } from '@/lib/api/api';
 
 const defaultContent = {
   subtitle: "WHAT OUR CLIENTS SAY",

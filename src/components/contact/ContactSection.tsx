@@ -3,29 +3,35 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Mail,
-  MapPin,
   Phone,
-  Globe,
   Send,
   User,
   Package,
   PencilLine,
-  Clock,
   CheckCircle2,
 } from "lucide-react";
 import { Container } from "../ui/Container";
-import {
-  FaFacebook,
-  FaInstagram,
-  FaLinkedin,
-  FaTwitter,
-  FaYoutube,
-} from "react-icons/fa";
-import Link from "next/link";
-import { verifyApi } from "@/app/lib/api";
-// import { useToast } from "@/hooks/use-toast";
 
-const ContactSection = () => {
+import { verifyApi } from "@/lib/api/api";
+import Image from "next/image";
+// import { useToast } from "@/hooks/use-toast";
+interface ContactDetailItem {
+  id: string;
+  icon: string; // Assuming this is an image URL or path
+  title: string;
+  description: string;
+}
+
+export interface ContactSectionContent {
+  title: string;
+  description: string;
+  contactDetails: ContactDetailItem[];
+  // Add other properties if they are used from sectionContent
+  // e.g., form fields, social links, etc.
+}
+
+const ContactSection = ({sectionContent}: { sectionContent: ContactSectionContent }) => {
+  // const { toast } = useToast();
   // const { toast } = useToast();
 
   const [formData, setFormData] = useState({
@@ -241,189 +247,44 @@ const ContactSection = () => {
           <div className="bg-white rounded-[28px] border border-[#ebe7df] shadow-[0_10px_40px_rgba(0,0,0,0.04)] p-4 md:p-5">
             <div className="text-center mb-2">
               <h2 className="text-[#20351f] text-xl md:text-2xl font-serif font-semibold mb-2">
-                Get In Touch
+               {sectionContent.title}
               </h2>
 
               <div className="w-16 h-[2px] bg-[#d4b06a] mx-auto mb-2" />
 
               <p className="text-sm max-w-md mx-auto font-semibold">
-                Have a question or need assistance? We’re here to help you on
-                your wellness journey.
+               {sectionContent.description}
               </p>
             </div>
-
             <div className="space-y-2">
-              <div className="flex gap-5 pb-2 border-b border-[#f0ece5]">
+
+{sectionContent.contactDetails.map((detail, index)=>(
+  <div className="flex gap-5 pb-2 border-b border-[#f0ece5]" key={detail.id}>
                 <div className="min-w-[58px] h-[58px] rounded-full bg-[#faf6ee] flex items-center justify-center">
-                  <MapPin
+                  <Image
                     className="text-[#c8a45d]"
-                    size={24}
-                    strokeWidth={1.8}
+                    height={24}
+                    width={24}
+                    src={detail.icon}
+                    alt={detail.title}
                   />
+                 
                 </div>
 
                 <div>
                   <h3 className="text-[#20351f] text-sm font-semibold mb-2">
-                    Address
+                    {detail.title}
                   </h3>
 
                   <p className="font-medium text-xs">
                     <span className="text-[#20351f]">
-                      12/29, Site-II, Loni Road, Industrial Area,Mohan Nagar -
-                      201007, Ghaziabad, Uttar Pradesh, India
+                   {detail.description}
                     </span>
                   </p>
                 </div>
               </div>
-
-              <div className="flex gap-5 pb-2 border-b border-[#f0ece5]">
-                <div className="min-w-[58px] h-[58px] rounded-full bg-[#faf6ee] flex items-center justify-center">
-                  <Link href="tel:+919654900525">
-                    <Phone
-                      className="text-[#c8a45d]"
-                      size={24}
-                      strokeWidth={1.8}
-                    />
-                  </Link>
-                </div>
-
-                <div>
-                  <h3 className="text-[#20351f] text-sm font-semibold mb-2">
-                    Call Us
-                  </h3>
-
-                  <p className="font-medium text-xs">
-                    <Link href="tel:+919654900525">
-                      <span className="text-[#20351f]">
-                        +91-9654900525
-                      </span>
-                    </Link>
-
-                    <br />
-
-                    <span className="text-xs">
-                      Mon – Sat, 9:00 AM – 6:00 PM (GST)
-                    </span>
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-5 pb-2 border-b border-[#f0ece5]">
-                <div className="min-w-[58px] h-[58px] rounded-full bg-[#faf6ee] flex items-center justify-center">
-                  <Link href="mailto:info@ensis.in">
-                    <Mail
-                      className="text-[#c8a45d]"
-                      size={24}
-                      strokeWidth={1.8}
-                    />
-                  </Link>
-                </div>
-
-                <div>
-                  <h3 className="text-[#20351f] text-sm font-semibold mb-2">
-                    Email
-                  </h3>
-
-                  <p className="font-medium text-[15px]">
-                    <Link href="mailto:info@ensis.in">
-                      <span className="text-[#20351f]">
-                        info@ensis.in
-                      </span>
-                    </Link>
-
-                    <br />
-
-                    <span className="text-xs">
-                      We'll respond within 24 hours
-                    </span>
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-5 pb-2 border-b border-[#f0ece5]">
-                <div className="min-w-[58px] h-[58px] rounded-full bg-[#faf6ee] flex items-center justify-center">
-                  <Clock
-                    className="text-[#c8a45d]"
-                    size={24}
-                    strokeWidth={1.8}
-                  />
-                </div>
-
-                <div>
-                  <h3 className="text-[#20351f] text-sm font-semibold mb-2">
-                    Business Hours
-                  </h3>
-
-                  <p className="font-medium text-xs">
-                    <span className=" text-[#20351f]">
-                      Mon – Sat: 9:00 AM – 6:00 PM
-                    </span>
-
-                    <br />
-
-                    <span className="text-xs">
-                      Sunday: Closed
-                    </span>
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex gap-5">
-                <div className="min-w-[58px] h-[58px] rounded-full bg-[#faf6ee] flex items-center justify-center">
-                  <Globe
-                    className="text-[#c8a45d]"
-                    size={24}
-                    strokeWidth={1.8}
-                  />
-                </div>
-
-                <div>
-                  <h3 className="text-[#20351f] text-sm font-semibold mb-2">
-                    Social
-                  </h3>
-
-                  <div className="flex gap-3">
-                    {[
-                      {
-                        url: "https://www.facebook.com/EnsisPanchkarmaSpaSolutions",
-                        icon: <FaFacebook />,
-                      },
-                      {
-                        url: "https://x.com/Ensis9",
-                        icon: <FaTwitter />,
-                      },
-                      {
-                        url: "https://www.instagram.com/solutionensis/",
-                        icon: <FaInstagram />,
-                      },
-                      {
-                        url: "https://www.linkedin.com/company/ensis-panchkarma-and-spa-solutions/",
-                        icon: <FaLinkedin />,
-                      },
-                      {
-                        url: "https://ensis.in/",
-                        icon: <Globe />,
-                      },
-                      {
-                        url: "https://www.youtube.com/channel/UCbREPw5Nyi0DqpByPdaS-3w",
-                        icon: <FaYoutube />,
-                      },
-                    ].map((item, index) => (
-                      <Link
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        key={index}
-                        className="w-8 h-8 rounded-full border border-[#e8d7b3] text-[#c8a45d] hover:bg-[#20351f] hover:text-white! transition-all duration-300 flex items-center justify-center text-lg"
-                      >
-                        {React.cloneElement(item.icon, {
-                          className: "transition-colors duration-300",
-                        })}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              </div>
+))}
+          
             </div>
           </div>
 

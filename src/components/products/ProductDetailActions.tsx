@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, Minus, Plus, ShoppingCart, Zap } from "lucide-react";
+import {  Minus, Plus, ShoppingCart} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useShop, type ShopProduct } from "@/context/ShopContext";

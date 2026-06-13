@@ -1,5 +1,5 @@
 "use client"
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaFacebook, FaInstagram,FaTwitter,FaLinkedin, FaYoutube } from "react-icons/fa";
 
 

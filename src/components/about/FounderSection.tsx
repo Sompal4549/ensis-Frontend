@@ -3,10 +3,23 @@ import React from "react";
 import founder from "@/assets/about_new/founder.webp"
 import signature from "@/assets/about_new/signature.webp"
 import { Container } from "../ui/Container";
+export interface FounderSectionContent {
+  founderImageurl: { imageUrl: string; alt: string };
+  heading: string;
+  title: string;
+  description: string;
+  signatureImageurl: { imageUrl: string; alt: string };
+  aboutFounder: {
+    title: string;
+    company: string;
+    division: string;
+  };
+}
 
 interface FounderSectionProps {
-  sectionContent: any;
+  sectionContent: FounderSectionContent;
 }
+
 
 const FounderSection: React.FC<FounderSectionProps> = ({ sectionContent }) => {
   return (

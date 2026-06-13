@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import ProductPriceSection from "@/components/products/ProductPriceSection";
-import { type Product } from "@/constants";
+import { type Product as ProductBase } from "@/constants";
 import { Container } from "../ui/Container";
 
 export default function ProductHeroBanner({
@@ -12,9 +12,9 @@ export default function ProductHeroBanner({
   originalPrice,
   shopProduct,
 }: {
-  product: Product;
+  product: ProductBase & { _id: string };
   originalPrice?: number;
-  shopProduct?: unknown;
+  shopProduct?: any; // Changed to any for now, can be more specific if needed
 }) {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
@@ -86,9 +86,9 @@ export default function ProductHeroBanner({
 
           {/* LEFT TEXT */}
           <div className="absolute inset-y-0 left-0 flex flex-col justify-center md:justify-start md:pt-20 w-full md:max-w-[52%] box-border pl-6 md:pl-10">
-            {product.tag && (
+            {(product.subcategory || product.category?.name) && (
               <span className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[#c8921a]">
-                {product.tag}
+                {product.subcategory || product.category?.name}
               </span>
             )}
 

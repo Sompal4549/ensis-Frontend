@@ -1,35 +1,20 @@
 "use client";
 
-import React from "react";
 import { Container } from "../ui/Container";
 import Image from "next/image";
 import HeadsetIcon from "@/assets/consultancy/headset.webp";
-import bg from "@/assets/consultancy/letsbuildbg.webp"
 import BookButton from "../ui/BookButton";
 
 
-type CtaData = {
-  badge: string;
+interface ConsultancyCTAContent {
+  bgImage: string;
+  heading: string;
   title: string;
   description: string;
-  button: {
-    label: string;
-    href: string;
-  };
-};
+  primaryButton: { label: string; href: string };
+}
 
-const ctaData: CtaData = {
-  badge: "READY TO GET STARTED?",
-  title: "Let's Build Your Wellness Success Story",
-  description:
-    "Connect with our experts and take the first step towards your successful wellness business.",
-  button: {
-    label: "Book a Consultation",
-    href: "#",
-  },
-};
-
-export default function ConsultancyCTA() {
+export default function ConsultancyCTA({ sectionContent }: { sectionContent: ConsultancyCTAContent }) {
   return (
   <section>
   <Container>
@@ -38,7 +23,7 @@ export default function ConsultancyCTA() {
       <div
         className="absolute inset-0 bg-cover  bg-no-repeat"
         style={{
-          backgroundImage: `url(${bg.src})`,
+          backgroundImage: `url(${sectionContent.bgImage})`,
           backgroundPosition: "right center",
         }}
       />
@@ -54,22 +39,22 @@ export default function ConsultancyCTA() {
 
           <div className="max-w-[520px]">
             <p className="text-sm font-semibold uppercase tracking-[1.8px] text-[#F4B16A]">
-              {ctaData.badge}
+              {sectionContent.heading}
             </p>
 
             <h2 className="mt-3 text-[24px] font-bold leading-[1.2] text-white">
-              {ctaData.title}
+              {sectionContent.title}
             </h2>
 
             <p className="mt-2 text-[14px] text-white max-w-[450px]">
-              {ctaData.description}
+              {sectionContent.description}
             </p>
           </div>
         </div>
 
         {/* BUTTON */}
         <div className="flex justify-start md:justify-center">
-          <BookButton text={ctaData.button.label} path={ctaData.button.href} />
+          <BookButton text={sectionContent.primaryButton.label} path={sectionContent.primaryButton.href} />
         </div>
 
         {/* EMPTY COLUMN TO KEEP RIGHT IMAGE VISIBLE */}

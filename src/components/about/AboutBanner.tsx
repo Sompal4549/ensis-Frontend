@@ -5,9 +5,9 @@ import BookButton from "../ui/BookButton";
 import GreenButton from "../ui/GreenButton";
 import lotus from "@/assets/about_new/about_lotus.png";
 import { Container } from "../ui/Container";
-import { getImageUrl } from "@/app/lib/api";
+import { getComponentContent, getImageUrl } from "@/lib/api/api";
 
-interface AboutBannerProps {
+export interface AboutBannerContent { // Renamed to AboutBannerContent
   title?: string;
   subtitle?: string;
   description?: string;
@@ -17,7 +17,10 @@ interface AboutBannerProps {
   primaryBtnPath?: string;
   secondaryBtnText?: string;
   secondaryBtnPath?: string;
-  sectionContent?: AboutBannerProps;
+}
+
+interface AboutBannerProps { // Renamed to AboutBannerProps for the component
+  sectionContent?: AboutBannerContent; // Use the new interface
 }
 
 export default async function AboutHero({

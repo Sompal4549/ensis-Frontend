@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Building, Home, Activity, Cross, Ruler, ChartNoAxesGanttIcon, MessageCircle } from 'lucide-react';
+import { ArrowRight, MessageCircle } from 'lucide-react';
 import { Container } from '../ui/Container';
 import img15 from '@/assets/home/img-15.webp';
 import god from '@/assets/icons/ihouse.webp';
@@ -9,14 +9,10 @@ import ayurveda from '@/assets/icons/ayurveda.webp';
 import interior from '@/assets/icons/interior.webp';
 
 
-import info from "@/assets/icons/info.png"
-import tf3 from "@/assets/icons/tf3.png"
-import info1 from "@/assets/icons/info1.png"
-import info2 from "@/assets/icons/info2.webp"
+
 import Image, { type StaticImageData } from 'next/image';
 import SubHeading from './SubHeading';
-import { getComponentContent, getImageUrl } from '@/app/lib/api';
-import { BiChat } from 'react-icons/bi';
+import {  getImageUrl } from '@/lib/api/api';
 import GreenButton from '../ui/GreenButton';
 
 type ImageSource = string | StaticImageData;
@@ -84,7 +80,7 @@ export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) =
                     {typeof icon === "string" ? (
                       <Image src={getImageUrl(icon)} alt={solution.title} width={250} height={150} className="object-contain" crossOrigin="anonymous" />
                     ) : (
-                      <Image src={icon} alt={solution.title} width={250} height={150} className="object-contain" crossOrigin="anonymous" />
+                      <Image src={icon||""} alt={solution.title} width={250} height={150} className="object-contain" crossOrigin="anonymous" />
                     )}
                   </div>
                   <span className="text-xs font-semibold text-[#f3eee6] w-20!">{solution.title}</span>

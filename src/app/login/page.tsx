@@ -4,8 +4,13 @@ import { FormEvent, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { ArrowRight, LogIn } from "lucide-react";
-import { API_URL } from "@/app/lib/api";
+import { ArrowRight } from "lucide-react";
+import { API_URL } from "@/lib/api/api";
+import ForgotPasswordFlow from "@/components/ForgotPasswordFlow";
+import bannerImage from "@/assets/home/home_banner2.webp"
+import Image from "next/image";
+import lotus from "@/assets/about_new/about_lotus.png";
+import AuthLayout from "@/components/layout/AuthLayout";
 const Container = dynamic(() => import("@/components/ui/Container").then((mod) => mod.Container));
 
 export default function LoginPage() {
@@ -14,6 +19,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -42,46 +48,106 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
+const buttonClass =
+  "mt-4 h-10 w-full rounded-lg bg-gradient-to-r from-[#b88b3d] via-[#e2c684] to-[#c7a45d] text-xs font-semibold uppercase tracking-[1.5px] text-[#1f261b] transition-all hover:opacity-90";
+
+const inputClass =
+  "mt-1 h-10 w-full rounded-lg border border-[#d9c49d] bg-[#faf8f4] px-3 text-sm text-[#1f261b] placeholder:text-gray-400 outline-none focus:border-[#b88b3d]";
+const labelClass =
+  "block text-[10px] font-semibold uppercase tracking-[2px] text-[#8b6b35] mb-1";
+
+  if (showForgotPassword) {
+    return (
+      <AuthLayout
+        title="Reset Password"
+        subtitle="We'll send a reset link to your email"
+      >
+        <ForgotPasswordFlow onBackToLogin={() => setShowForgotPassword(false)} />
+      </AuthLayout>
+
+    );
+  };
 
   return (
-    <section className="bg-[#fbf8f2] py-12 md:py-16">
-      <Container>
-        <div className="mx-auto grid max-w-5xl overflow-hidden border border-[#ded3c4] bg-white md:grid-cols-[0.9fr_1.1fr]">
-          <div className="bg-[#263016] p-8 text-white md:p-10">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-[#d9c49d]">Ensis Account</span>
-            <h2 className="mt-4 text-4xl leading-tight">User Login</h2>
-            <p className="mt-4 text-sm leading-6 text-white/80">
-              Sign in to your Ensis account. Admins should use the dedicated admin console.
-            </p>
-            <div className="mt-8 flex flex-col gap-4">
-              <Link href="/register" className="inline-flex items-center gap-3 text-sm font-bold text-white hover:text-[#d9c49d] transition-colors">
-                Don't have an account? Register <ArrowRight size={16} />
-              </Link>
-              <Link href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" className="inline-flex items-center gap-3 text-sm font-bold text-[#d9c49d]">
-                Admin Login <ArrowRight size={16} />
-              </Link>
-            </div>
-          </div>
+    <AuthLayout
+  title="Client Portal"
+subtitle="Access your wellness projects and services"
+      page="login"
+    >
 
-          <form onSubmit={onSubmit} className="p-8 md:p-10">
-            <div className="mb-6 inline-flex size-12 items-center justify-center rounded-full bg-[#f3eee6] text-[#6f542f]">
-              <LogIn size={22} />
-            </div>
-            <label className="block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
-              Email
-              <input className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium text-[#1f261b] outline-none focus:border-[#8d6a3a]" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
-            </label>
-            <label className="mt-5 block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
-              Password
-              <input className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium text-[#1f261b] outline-none focus:border-[#8d6a3a]" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required />
-            </label>
-            <button className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#6f542f] px-5 py-3 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#4c381f]" type="submit" disabled={isLoading}>
-              {isLoading ? "Signing In..." : "Sign In"}
-            </button>
-            {message && <p className="mt-4 text-sm font-semibold text-[#334022]">{message}</p>}
-          </form>
+      <form onSubmit={onSubmit}>
+        <div>
+          <label className={labelClass}>
+            Email Address
+          </label>
+
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            placeholder="Enter your email"
+            className={inputClass}
+          />
         </div>
-      </Container>
-    </section>
+
+        <div className="mt-5">
+          <label className={labelClass}>
+            Password
+          </label>
+
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            placeholder="Enter your password"
+            className={inputClass}
+          />
+        </div>
+
+        <div className="mt-4 flex justify-end">
+          <button
+            type="button"
+            onClick={() => setShowForgotPassword(true)}
+            className={labelClass}
+          >
+            Forgot Password?
+          </button>
+        </div>
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className={buttonClass}
+        >
+          {isLoading ? "Signing In..." : "Sign In"}
+        </button>
+
+        {message && (
+          <p className="mt-4 text-sm text-center text-red-300">
+            {message}
+          </p>
+        )}
+
+        <div className="mt-3 border-t border-white/10 text-center">
+          <Link
+            href="/register"
+            className="block text-white hover:text-[#d9c49d]"
+          >
+            Create New Account
+          </Link>
+
+          <Link
+            href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"}
+            target="_blank"
+            className="mt-3 block text-white"
+          >
+            Admin Portal →
+          </Link>
+        </div>
+      </form>
+    </AuthLayout>
+
   );
 }

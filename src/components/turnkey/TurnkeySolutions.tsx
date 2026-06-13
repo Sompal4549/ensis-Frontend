@@ -11,188 +11,29 @@ import branding from "@/assets/trunkey_solutions/building_and_experience_design.
 import training from "@/assets/trunkey_solutions/recruitment_and_training.webp";
 import prelaunch from "@/assets/trunkey_solutions/pre_launch_support.webp";
 import handover from "@/assets/trunkey_solutions/handover.webp";
-import after_sales from "@/assets/trunkey_solutions/after_sales_support.webp";
 import decorationLeft from "@/assets/icons/decoration_left.png"
 import decorationRight from "@/assets/icons/decoration_right.png"
+import { Container } from "@/components/ui/Container";
 
-import lotus from "@/assets/about/lotus.png";
-import BookButton from "../ui/BookButton";
-import GreenButton from "../ui/GreenButton";
-import { Container } from "../ui/Container";
 
 type SolutionCard = {
   id: string;
   title: string;
-  points: string[];
+  details: string[]; // Changed from description to details to match usage
   image?: any;
   bottomStrap?: boolean;
   bottomStrapText?: string;
 };
 
-const solutions: SolutionCard[] = [
-  {
-    id: "01",
-    title: "Project Planning & Consultancy",
-    points: [
-      "Feasibility Study",
-      "Business Planning",
-      "Wellness Concept Development",
-      "Investment Planning",
-      "Revenue Model Consultation",
-      "Project Budgeting",
-    ],
-    image: project,
-    bottomStrap: false,
-  },
-  {
-    id: "02",
-    title: "Architecture & Master Planning",
-    points: [
-      "Master Layout",
-      "Floor Plans",
-      "Treatment Flow Design",
-      "Patient Movement Planning",
-      "Utility Planning",
-      "Future Expansion Planning",
-    ],
-    image: architecture,
-    bottomStrap: false,
-  },
-  {
-    id: "03",
-    title: "Interior Design & Ambience Creation",
-    points: [
-      "Luxury Ayurveda Interiors",
-      "Kerala Traditional Theme",
-      "Modern Wellness Theme",
-      "Resort Style Design",
-      "Reception & Lounge",
-      "Treatment Room Design",
-    ],
-    image: interior,
-    bottomStrap: false,
-  },
-  {
-    id: "04",
-    title: "Custom Furniture Manufacturing",
-    points: [
-      "Panchkarma Tables",
-      "Shirodhara Tables",
-      "Massage & Spa Beds",
-      "Consultation Furniture",
-      "Reception Counters",
-      "Storage & Cabinets",
-    ],
-    image: furniture,
-    bottomStrap: true,
-    bottomStrapText: " Manufactured In Our Own State-of-the-Art Facility"
-  },
-  {
-    id: "05",
-    title: "Panchkarma Equipment Supply",
-    points: [
-      "Traditional Panchkarma Equipment",
-      "Shirodhara Systems",
-      "Steam Therapy Systems",
-      "Copper Accessories",
-      "Therapy Tools",
-      "Hygiene & Utility Equipment",
-    ],
-    image: equipment,
-    bottomStrap: false,
-  },
-  {
-    id: "06",
-    title: "Civil & Interior Execution",
-    points: [
-      "Civil Work & Flooring",
-      "False Ceiling & Lighting",
-      "Electrical & Plumbing",
-      "HVAC Coordination",
-      "Partitions & Woodwork",
-      "Painting & Finishes",
-    ],
-    image: civil,
-    bottomStrap: false,
-  },
-  {
-    id: "07",
-    title: "MEP & Technical Infrastructure",
-    points: [
-      "Electrical Planning",
-      "Water Supply & Drainage",
-      "Hot Water Systems",
-      "Steam & Gas Systems",
-      "HVAC & Ventilation",
-      "Backup Power & Safety",
-    ],
-    image: mep,
-    bottomStrap: false,
-  },
-  {
-    id: "08",
-    title: "Branding & Experience Design",
-    points: [
-      "Logo & Identity Placement",
-      "Directional Signage",
-      "Room Identification",
-      "Wall Graphics & Art",
-      "Patient Journey Design",
-      "Brand Storytelling",
-    ],
-    image: branding,
-    bottomStrap: false,
-  },
-  {
-    id: "09",
-    title: "Recruitment & Training Support",
-    points: [
-      "Therapist Training",
-      "Equipment Usage Training",
-      "Operational SOPs",
-      "Patient Handling Protocols",
-      "Treatment Room Setup",
-      "Staff Training Programs",
-    ],
-    image: training,
-    bottomStrap: false,
-  },
-];
-
-const bottomCards = [
-  {
-    id: "10",
-    title: "Pre-Launch Support",
-    points: [
-      "Soft Launch Planning",
-      "Final Inspection",
-      "Quality Audit",
-      "Operational Testing",
-      "Vendor Coordination",
-      "Launch Preparation",
-    ],
-    image: prelaunch,
-  },
-  {
-    id: "11",
-    title: "Handover & After Sales Support",
-    points: [
-      "Final Handover Documentation",
-      "Warranty Support",
-      "Maintenance Guidance",
-      "AMC & Service Support",
-      "Continuous Assistance",
-    ],
-    image: handover,
-  },
-];
 
 const Card = ({
   item,
   dark = false,
+  index
 }: {
   item: SolutionCard;
   dark?: boolean;
+  index: number;
 }) => {
   return (
     <div
@@ -204,13 +45,13 @@ const Card = ({
       <div className="grid grid-cols-[1fr_1fr] h-full">
         {/* Image Placeholder */}
         <div className="relative border-r border-[#dcc9a8]/70 bg-[#e7dcc7]">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Image src={item.image} alt={item.title} className="object-fill" fill />
+          <div className="absolute inset-0 flex items-center justify-center"> {/* item.image is any, assuming it has imageUrl and alt */}
+            <Image src={item.image.imageUrl} alt={item.image.alt} className="object-fill" fill />
           </div>
 
           {/* Number Badge */}
           <div className="absolute -right-5 top-0 flex rounded-bl-md h-[36px] w-[36px] items-center justify-center bg-[#b8892e] text-[15px] font-semibold text-white">
-            {item.id}
+            {index}
           </div>
         </div>
 
@@ -227,7 +68,7 @@ const Card = ({
             className={`mt-3 space-y-[5px] text-xs leading-[1.25] font-semibold ${dark ? "text-[#f4e8c9]" : ""
               }`}
           >
-            {item.points.map((point, index) => (
+              {item.details.map((point, index) => (
               <li key={index} className="flex gap-2">
                 <span className="mt-[4px] h-[5px] w-[5px] rounded-full bg-[#b8892e]" />
                 <span>{point}</span>
@@ -249,7 +90,18 @@ const Card = ({
   );
 };
 
-const TurnkeySolutions = () => {
+export interface TurnkeySolutionsContent {
+  title: string;
+  cards: Array<SolutionCard & { image: { imageUrl: string; alt?: string } }>; // Added image type
+  specialCard: {
+    leftImage: { imageUrl: string; alt?: string };
+    details: string[];
+    rightImage: { imageUrl: string; alt?: string };
+  };
+}
+
+const TurnkeySolutions = ({sectionContent}: { sectionContent: TurnkeySolutionsContent }) => { // Added explicit type
+  const lastCard =sectionContent.cards[sectionContent.cards.length - 1]
   return (
     <section className="w-full bg-[#f6f1e8]">
       <Container>
@@ -257,7 +109,7 @@ const TurnkeySolutions = () => {
         <div className="mb-2 flex items-center justify-center gap-3">
           <Image src={decorationLeft} width={30} height={30} alt="decoration" className="h-full object-contain" />
           <h2 className="text-base font-semibold uppercase">
-            Our Complete turnkit solutions
+           {sectionContent.title}
           </h2>
                   <Image src={decorationRight} width={30} height={30} alt="decoration" className="h-full object-contain" />
 
@@ -269,36 +121,35 @@ const TurnkeySolutions = () => {
         <Container>
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-            {solutions.map((item) => (
-              <Card key={item.id} item={item} />
+            {sectionContent.cards.map((item,index) => ( // Changed to map all cards
+              <Card key={item.id} item={item} index={index+1} /> // Pass index+1 for correct numbering
             ))}
           </div>
 
           {/* Bottom Row */}
-          <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_2fr]">
-            <Card item={bottomCards[0]} />
+          <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_2fr]"> {/* Removed the extra Card component here */}
 
             <div className="overflow-hidden rounded-[10px] border border-[#1c5d4b] bg-[#063d30] max-h-53.25">
               <div className="grid h-full grid-cols-[200px_1fr_1fr]">
                 {/* Left Image Placeholder */}
                 <div className="relative flex items-center justify-center border-r  border-[#d0a965] py-5">
-                  <Image src={handover} alt="Handover & After Sales Support" className="object-contain" width={120} height={120} />
+                  <Image src={sectionContent.specialCard.leftImage.imageUrl} alt={sectionContent.specialCard.leftImage.alt||""} className="object-contain" width={120} height={120} />
                 </div>
 
                 {/* Content */}
                 <div className="px-5 py-4 text-[#f4e8c9]">
                   <div className="mb-3 flex items-center gap-3 text-[#d0a965]">
-                    <div className="flex items-center justify-center text-md font-bold">
+                    {/* <div className="flex items-center justify-center text-md font-bold">
                       11
-                    </div>
+                    </div> */}
 
                     <h3 className="font-bold text-base leading-none">
-                      Handover & After Sales Support
+                     {lastCard.title}
                     </h3>
                   </div>
 
                   <ul className="space-y-[7px] text-xs">
-                    {bottomCards[1].points.map((point, index) => (
+                    {sectionContent.specialCard.details.map((point, index) => (
                       <li key={index} className="flex gap-2">
                         <span className="mt-[4px] h-[5px] w-[5px] rounded-full bg-[#d8b46d]" />
                         <span>{point}</span>
@@ -309,7 +160,7 @@ const TurnkeySolutions = () => {
 
                 {/* Right Image Placeholder */}
                 <div className="relative bg-[#0b4b3a]">
-                  <Image src={after_sales} alt="Handover & After Sales Support" className="object-fill" fill />
+                  <Image src={sectionContent.specialCard.rightImage.imageUrl} alt={sectionContent.specialCard.rightImage.alt||""} className="object-fill" fill />
                 </div>
               </div>
             </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { getComponentContent, getImageUrl } from "@/app/lib/api";
+import { getComponentContent, getImageUrl } from "@/lib/api/api";
 
 import flower from "@/assets/about/lotus.png";
 import { Container } from "../ui/Container";
@@ -13,10 +13,10 @@ import steam_sauna from "@/assets/icons/steam_sauna_icon.webp";
 import wellness_assossries from "@/assets/home/wellness_assossries_icon.webp";
 
 interface WellnessData {
-  welcomeImage: string;
+  welcomeImage: string; // Assuming this is a URL or path
   eyebrow: string;
   heading: string;
-  description: string;
+  description: string; // This is HTML string, so keep as string
   buttonText: string;
   buttonHref: string;
   services: {
@@ -58,7 +58,7 @@ const WellnessSection: React.FC = async () => {
     ],
   };
 
-  const fallbackServices = [table, shirodhara_eqipment, steam_sauna, wellness_assossries];
+  const fallbackServices = [table, shirodhara_eqipment, steam_sauna, wellness_assossries]; // Fallback images for services
 
   const content = await getComponentContent<WellnessData>("home.wellnessSection", fallbackData);
 

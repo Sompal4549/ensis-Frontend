@@ -8,9 +8,8 @@ import Image from 'next/image'
 import { Container } from '../ui/Container'
 import { DownloadIcon } from 'lucide-react'
 import { FaPhone } from 'react-icons/fa'
-import BookButton from '../ui/BookButton'
-import GreenButton from '../ui/GreenButton'
 import Link from 'next/link'
+import GreenButton from '../ui/GreenButton'
 const features = [
   { icon: expert_consultation, label: "Expert Consultation" },
   { icon: custom_design, label: "Custom Design" },

@@ -16,7 +16,7 @@ import { useShop } from "@/context/ShopContext";
 import { Container } from "@/components/ui/Container";
 import { formatCurrency } from "@/utils";
 import { RazorpayCheckout } from "@/components/RazorpayCheckout";
-import { API_URL } from "@/app/lib/api";
+import { API_URL } from "@/lib/api/api";
 
 interface ShippingAddress {
   label: string;

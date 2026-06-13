@@ -1,21 +1,9 @@
 "use client";
 
 import React from "react";
-import {
-  Leaf,
-  Flower2,
-  Hammer,
-  ShieldCheck,
-  Building2,
-  Globe,
-} from "lucide-react";
+
 import { Container } from "../ui/Container";
-import sustainable_material from "@/assets/products/sustainable_material.png"
-import ayurvedic_heritage from "@/assets/products/ayurvedic_heritage.png"
-import handmade_excellence from "@/assets/products/handmade_excellence.png"
-import therapist_approved from "@/assets/products/therapist_approved.png"
-import hotel_spa_quality from "@/assets/products/hotel_and_spa_quality.png"
-import global_shipping from "@/assets/products/global_shippning.png"
+
 import Image from "next/image";
 import made_in from "@/assets/products/made_in_india.webp"
 import seven_days from "@/assets/products/sevem_days.webp"

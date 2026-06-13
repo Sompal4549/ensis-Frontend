@@ -11,7 +11,7 @@ import img16 from '@/assets/home/img-16.webp';
 import img6 from '@/assets/home/img-6.webp';
 import SubHeading from './SubHeading';
 import GreenButton from '../ui/GreenButton';
-import { getComponentContent, getImageUrl } from '@/app/lib/api';
+import { getComponentContent, getImageUrl } from '@/lib/api/api';
 
 const blogFallbackImages = [panchkarma_2, img6, img16, img10];
 type BlogContent = {

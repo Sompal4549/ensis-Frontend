@@ -6,7 +6,7 @@ import { Container } from "../ui/Container";
 import blog_decoration from "@/assets/icons/blog_decoration_1.png"
 
 
-export default function BlogHeroSection() {
+export default function BlogHeroSection({ sectionContent }: { sectionContent: any }) {
   return (
     <section className="w-full bg-[#f8f1e7] overflow-hidden relative">
        <Image
@@ -23,7 +23,7 @@ export default function BlogHeroSection() {
 
             {/* Heading */}
             <h1 className="font-serif text-[52px] leading-none text-[#1f3b1f] sm:text-[68px] lg:text-[82px] text-center">
-              Blog
+              {sectionContent.heading}
             </h1>
 
             {/* Small Ornament */}
@@ -35,7 +35,7 @@ export default function BlogHeroSection() {
 
             {/* Subtitle */}
             <h2 className="mt-4 font-serif text-[24px] italic leading-relaxed text-[#a7652a] sm:text-[30px]">
-              Insights. Wisdom. Wellness.
+             {sectionContent.title}
             </h2>
 
             {/* Description */}

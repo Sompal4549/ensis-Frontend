@@ -6,7 +6,7 @@ import in_house from "@/assets/about_new/in_house.webp"
 import pan_india from "@/assets/about_new/pan_india.webp"
 import Image from "next/image";
 import { Container } from "../ui/Container";
-import { getComponentContent, getImageUrl } from "@/app/lib/api";
+import { getComponentContent, getImageUrl } from "@/lib/api/api";
 
 const defaultStats = [
   { image: twenty, number: "20+", subTitle: "Years Experience" },
@@ -24,8 +24,8 @@ interface StatItem {
   imageurl?: { imageUrl: string; alt: string; };
 }
 
-interface StatsStripProps {
-  stats?: StatItem[];
+interface StatsStripContent {
+  stats: StatItem[];
 }
 
 function resolveImageSrc(image: any): string {
@@ -37,17 +37,12 @@ function resolveImageSrc(image: any): string {
   return image;
 }
 
-export default async function StatsStrip({ stats = defaultStats }: StatsStripProps) {
-const statsStrip = await getComponentContent<any>("about.statsStrip", defaultStats);
-
-const rawStats = Array.isArray(statsStrip) ? statsStrip : (statsStrip?.stats ?? stats);
-
-const resolvedStats: StatItem[] = rawStats.map((item: StatItem, i: number) => ({
-  ...defaultStats[i],
+export default async function StatsStrip({ sectionContent }: { sectionContent: StatsStripContent }) {
+const resolvedStats: StatItem[] = sectionContent.stats.map((item: StatItem, i: number) => ({
+  ...defaultStats[i], // Fallback to defaultStats if API doesn't provide all fields
   ...item,
   image: item.imageurl?.imageUrl ? { src: getImageUrl(item.imageurl.imageUrl) } : (item.image ?? defaultStats[i].image),
 }));
-console.log(resolvedStats)
   return (
     <section className="bg-[#f2ede6]">
       <Container>
@@ -59,8 +54,8 @@ console.log(resolvedStats)
             >
               <div className="h-9 w-9">
                 <Image
-                  src={resolveImageSrc(item.image)}
-                  alt={item.subTitle}
+                  src={item.image.src} // Use item.image.src from resolvedStats
+                  alt={item.image.alt || item.subTitle} // Use item.image.alt from resolvedStats
                   height={36}
                   width={36}
                   className="object-contain"

@@ -17,7 +17,7 @@ const blogPosts = [
   { title: "Ayurvedic Ingredients that Nourish and Heal", date: "May 05, 2024", category: "Ingredients", image: feature4 },
 ];
 
-export default function AllBlogs() {
+export default function AllBlogs({ sectionContent }: { sectionContent: any }) {
   const [selected, setSelected] = useState("All");
 
   const filtered = selected === "All"

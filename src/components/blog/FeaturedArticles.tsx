@@ -27,7 +27,7 @@ const featuredArticles = [
   },
 ];
 
-export default function FeaturedArticles() {
+export default function FeaturedArticles({ sectionContent }: { sectionContent: any }) {
   return (
     <div className="mb-3">
       <SectionTitle title="Featured Articles" />

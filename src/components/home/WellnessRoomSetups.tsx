@@ -1,6 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { ArrowRight, SectionIcon } from "lucide-react";
+import React, {  useState } from "react";
+import { ArrowRight } from "lucide-react";
 import { Container } from "../ui/Container";
 import SubHeading from "./SubHeading";
 import panchkarma from "@/assets/home/panchkarma.webp";
@@ -9,7 +9,7 @@ import steam from "@/assets/home/panchkarma.webp";
 import consultaion from "@/assets/home/consultation.webp";
 import Image from "next/image";
 import BookButton from "../ui/BookButton";
-import { getComponentContent, getImageUrl } from "@/app/lib/api";
+import {  getImageUrl } from "@/lib/api/api";
 
 const fallbackImages: Record<string, any> = {
   "Panchkarma Suite Setup": panchkarma,
@@ -47,19 +47,8 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
 };
 
   const [hovered, setHovered] = useState<number | null>(null);
-  const [content, setContent] = useState(defaultContent);
+  const content = defaultContent;
 
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const data = await getComponentContent("home.wellnessRoomSetups", defaultContent);
-        setContent(data);
-      } catch {
-        // Keep defaults
-      }
-    };
-    fetchContent();
-  }, []);
 
   const headingLines = (content.heading || "").split("\n");
   // Use `cards` from admin API (fallback to defaultContent.cards)

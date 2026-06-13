@@ -1,4 +1,4 @@
-import { getPageComponent } from "@/app/lib/api";
+import { getPageComponent } from "@/lib/api/api";
 import RenderSection from "./RenderSections";
 
 type PageBuilderProps = {

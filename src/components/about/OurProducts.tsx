@@ -7,43 +7,21 @@ import wellness_assosries from "@/assets/home/wellness_assossories.webp"
 import wellness_furniture from "@/assets/home/wellness_furniture.webp"
 import wellnessInteriors from "@/assets/home/wellness_interiors.webp"
 import Image from "next/image";
+interface ProductItem {
+  title: string;
+  subtitle: string;
+  image: string; // Assuming this is an image URL or path
+}
 
-export default function OurProductsSection() {
-  const products = [
-    {
-      title: 'PANCHKARMA',
-      subtitle: 'EQUIPMENT',
-      image:
-        panchkarma_2,
-    },
-    {
-      title: 'SHIRODHARA',
-      subtitle: 'EQUIPMENT',
-      image: img12,
-    },
-    {
-      title: 'STEAM & SAUNA',
-      subtitle: 'SOLUTIONS',
-      image: steam,
-    },
-    {
-      title: 'WELLNESS',
-      subtitle: 'FURNITURE',
-      image: wellness_furniture,
-    },
-    {
-      title: 'WELLNESS',
-      subtitle: 'ACCESSORIES',
-      image:
-        wellness_assosries,
-    },
-    {
-      title: 'WELLNESS',
-      subtitle: 'INTERIORS',
-      image:
-        wellnessInteriors,
-    },
-  ];
+export interface OurProductsSectionContent {
+  title: string;
+  products: ProductItem[];
+}
+
+export default function OurProductsSection({ sectionContent }: { sectionContent: OurProductsSectionContent }) {
+  const products = sectionContent.products; // Use products from sectionContent
+  const title = sectionContent.title; // Use title from sectionContent
+
 
   return (
     <section className="w-full bg-[#f7f2ec]">

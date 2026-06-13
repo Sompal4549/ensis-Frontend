@@ -6,6 +6,7 @@ import {
   BadgeCheck,
 } from "lucide-react";
 import { Container } from "../ui/Container";
+import Image from "next/image";
 
 const features = [
   {
@@ -30,17 +31,26 @@ const features = [
   },
 ];
 
-const SupportHighlights = () => {
+interface SupportHighlightItem {
+  iconImage: string; // Assuming this is an image URL or path
+  title: string;
+  description: string;
+}
+
+export interface SupportHighlightsContent {
+  features: SupportHighlightItem[];
+}
+
+const SupportHighlights = ({sectionContent}: { sectionContent: SupportHighlightsContent }) => {
   return (
     <section className="w-full">
       <Container>
         <div className="border border-[#ece7df] rounded-[26px] px-4 py-2 shadow-[0_8px_30px_rgba(0,0,0,0.03)] bg-white">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-            {features.map((item, index) => {
-              const Icon = item.icon;
+            {sectionContent.features.map((item, index) => {
 
               return (
-                <div
+                <div 
                   key={index}
                   className={`flex items-center gap-5 px-2 py-2 ${
                     index !== features.length - 1
@@ -50,10 +60,12 @@ const SupportHighlights = () => {
                 >
                   {/* Icon */}
                   <div className="min-w-[52px] h-[52px] rounded-full bg-[#f4f0e6] flex items-center justify-center">
-                    <Icon
-                      className="text-[#c8a45d]"
-                      size={24}
-                      strokeWidth={1.8}
+                    <Image
+                      className="text-[#c8a45d]" // This class is likely for lucide-react icons, might not apply to Image
+                      height={24}
+                      width={24}
+                     alt={item.title}
+                      src={item.iconImage}
                     />
                   </div>
 

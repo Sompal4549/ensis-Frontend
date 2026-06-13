@@ -8,7 +8,7 @@ import { Container } from '../ui/Container';
 import logoImg from '@/assets/logo.png';
 import BookButton from '../ui/BookButton';
 import GlowLogo from './GlowLogo';
-import { getComponentContent } from '@/app/lib/api';
+import { getComponentContent } from '@/lib/api/api';
 
 const defaultFooter = {
   companyDescription: "Leading manufacturer of Ayurvedic, Spa & Wellness equipments. Crafting premium solutions for a healthier & better tomorrow.",

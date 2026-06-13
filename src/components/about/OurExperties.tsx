@@ -39,16 +39,30 @@ const expertiseData = [
     },
 ];
 
-const ExpertiseSection: React.FC = () => {
+interface ExpertiseItem {
+    title: string;
+    description: string;
+    imageurl: {
+        imageUrl: string;
+        alt: string;
+    };
+}
+
+interface ExpertiseSectionContent {
+    title: string;
+    items: ExpertiseItem[];
+}
+
+const ExpertiseSection: React.FC<{ sectionContent: ExpertiseSectionContent }> = ({ sectionContent }) => { // Added explicit type
     return (
         <section >
             <Container>
                 {/* Heading */}
-              <AboutTitle title="Our Expertise" />
+              <AboutTitle title={sectionContent.title} />
 
                 {/* Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mt-2">
-                    {expertiseData.map((item, index) => (
+                    {sectionContent.items.map((item, index) => (
                         <div
                             key={index}
                             className="bg-[#f7f3ed] border border-[#e5ddd2] rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group"
@@ -56,8 +70,8 @@ const ExpertiseSection: React.FC = () => {
                             {/* Image */}
                             <div className="relative h-[180px] overflow-hidden">
                                 <Image
-                                    src={item.image}
-                                    alt={item.title}
+                                    src={item.imageurl.imageUrl}
+                                    alt={item.imageurl.alt}
                                     width={350}
                                     height={350}
                                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 object-contain"

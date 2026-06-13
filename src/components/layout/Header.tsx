@@ -30,8 +30,7 @@ import logoImg from "@/assets/logo.png";
 import GreenButton from "../ui/GreenButton";
 import BookButton from "../ui/BookButton";
 import { useShop } from "@/context/ShopContext";
-import GlowLogo from "./GlowLogo";
-import { getComponentContent } from "@/app/lib/api";
+import { getComponentContent } from "@/lib/api/api";
 
 export const Header = () => {
     const [mounted, setMounted] = useState(false);
@@ -274,6 +273,7 @@ export const Header = () => {
                     <div className="flex items-center gap-2 sm:gap-3">
                         <div ref={wishlistRef} className="relative hidden sm:block">
                             <button
+                                suppressHydrationWarning
                                 type="button"
                                 aria-label="Open wishlist"
                                 aria-expanded={wishlistOpen}
@@ -307,7 +307,7 @@ export const Header = () => {
                                                     className="grid grid-cols-[64px_1fr] gap-3 border-b border-[#f0e8df] px-4 py-3 last:border-b-0"
                                                 >
                                                     <Link
-                                                        href={`/products/${item.slug}`}
+                                                        href={`/products/${item.id}`}
                                                         onClick={() => setWishlistOpen(false)}
                                                         className="relative block aspect-square overflow-hidden bg-[#f8f3ec]"
                                                     >
@@ -322,7 +322,7 @@ export const Header = () => {
 
                                                     <div className="min-w-0">
                                                         <Link
-                                                            href={`/products/${item.slug}`}
+                                                            href={`/products/${item.id}`}
                                                             onClick={() => setWishlistOpen(false)}
                                                             className="line-clamp-2 text-[12px] font-bold leading-snug text-[#1f261b] hover:text-[#8d6a3a]"
                                                         >
@@ -383,6 +383,7 @@ export const Header = () => {
                         </Link>
                         <BookButton text="E-Brochure" path={headerContent.brochureUrl} />
                         <button
+                            suppressHydrationWarning
                             className="inline-flex size-10 items-center justify-center border border-[#d8cbb9] text-[#263016] xl:hidden"
                             aria-label="Open menu"
                             aria-expanded={isMenuOpen}

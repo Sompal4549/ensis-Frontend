@@ -5,9 +5,8 @@ import holistic_wellbeing from "@/assets/home/holistic_wellbeing.webp";
 import timeless_care from "@/assets/home/timeless_care.webp";
 import Image from "next/image";
 import GreenButton from "../ui/GreenButton";
-import { getComponentContent, getImageUrl } from "@/app/lib/api";
-import SubHeading from "./SubHeading";
-import { features } from "process";
+import { getImageUrl } from "@/lib/api/api";
+
 
 const fallbackImages: Record<string, any> = {
   "Authentic Ayurveda": authentic_ayurveda,

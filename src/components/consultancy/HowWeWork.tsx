@@ -94,7 +94,30 @@ steps: [
   },
 };
 
-export default function HowWeWork() {
+interface HowWeWorkContent {
+  whyChoose: {
+    bgImage: string;
+    heading: string;
+    title: string;
+    description: string;
+    chooseList: Array<{ text: string }>;
+    primaryButton: { label: string; href: string }; // Changed href to path
+  };
+  ourProcess: {
+    heading: string;
+    title: string;
+    processList: Array<{
+      title: string;
+      description: string;
+      color: string; // Assuming color is a string like "#HEX"
+      icon: any; // Changed from image to icon
+    }>;
+  };
+}
+
+export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWorkContent }) {
+  const whyChoose = sectionContent.whyChoose;
+  const ourProcess = sectionContent.ourProcess;
   return (
     <section>
       <Container>
@@ -103,7 +126,7 @@ export default function HowWeWork() {
           <div className="overflow-hidden rounded-2xl border border-[#ECECEC] bg-[#F8FBFE]">
             <div className="grid h-full md:grid-cols-[1.2fr_0.95fr] relative">
               <Image
-                src={whyChooseData.image}
+                src={whyChoose.bgImage}
                 alt="Why Choose Us"
                 fill
                 className="object-cover object-center z-0"
@@ -111,23 +134,21 @@ export default function HowWeWork() {
               {/* CONTENT */}
               <div className="flex flex-col justify-center p-6 lg:p-7 z-10">
                 <p className="text-sm font-semibold uppercase tracking-[2px] text-[#D66A38]">
-                  {whyChooseData.badge}
+                  {whyChoose.heading}
                 </p>
 
                 <h2 className="mt-2 text-[28px] font-bold leading-[1.1] ">
-                  {whyChooseData.title.line1}
-                  <br />
-                  {whyChooseData.title.line2}
+                  {whyChoose.title}
                 </h2>
 
                 <p className="mt-4 text-[13px] leading-6">
-                  {whyChooseData.description}
+                  {whyChoose.description}
                 </p>
 
                 <div className="mt-5 space-y-3">
-                  {whyChooseData.benefits.map((item) => (
+                  {whyChoose.chooseList.map((item, index) => (
                     <div
-                      key={item.text}
+                      key={index}
                       className="flex items-center gap-3"
                     >
                       {/* CHECK ICON */}
@@ -144,7 +165,7 @@ export default function HowWeWork() {
                 </div>
                 <div className="w-50 h-10 mt-4">
 
-<BookButton text={whyChooseData.button.label} path={whyChooseData.button.href} />
+<BookButton text={whyChoose.primaryButton.label} path={whyChoose.primaryButton.href} />
                 </div>
 
               </div>
@@ -159,22 +180,21 @@ export default function HowWeWork() {
        <div className="flex flex-col">
   <div>
     <p className="text-sm font-semibold uppercase tracking-[2px] text-[#D66A38]">
-      {whyChooseData.process.badge}
+      {ourProcess.heading}
     </p>
 
     <h2 className="mt-1 text-[28px] font-bold leading-tight">
-      {whyChooseData.process.title}
+      {ourProcess.title}
     </h2>
   </div>
 
   {/* PROCESS LIST */}
   <div className="mt-2 flex-1">
-    {whyChooseData.process.steps.map((step, index) => {
-      const Icon = step.icon;
+    {ourProcess.processList.map((step, index) => {
 
       return (
         <div
-          key={step.step}
+          key={index}
           className="relative flex items-start gap-4"
         >
           {/* NUMBER COLUMN */}
@@ -186,11 +206,11 @@ export default function HowWeWork() {
                 color: step.color,
               }}
             >
-              {step.step}
+              {index+1}
             </div>
 
             {index !==
-              whyChooseData.process.steps.length - 1 && (
+              ourProcess.processList.length - 1 && ( // Changed to ourProcess.processList
               <div
                 className="mt-1 w-px flex-1 border-l border-dashed"
                 style={{
@@ -217,10 +237,11 @@ export default function HowWeWork() {
             </div>
 
             <div className="ml-4 shrink-0">
-              <Icon
-                size={22}
-                strokeWidth={1.8}
+              <Image src={step.icon} // Changed to step.icon
+                height={22}
+                width={22}
                 style={{ color: step.color }}
+                alt={step.title}
               />
             </div>
           </div>

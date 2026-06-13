@@ -38,7 +38,23 @@ const stats = [
   },
 ];
 
-export default function WhyChoose() {
+export interface WhyChooseContent {
+  whyChoose: {
+    title: string;
+    reasons: string[];
+    button: {
+      label: string;
+      url: string;
+    };
+  };
+  welcomeToEnsis: {
+    highlight: string;
+    title: string;
+    description: string;
+  };
+}
+
+export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseContent }) {
   return (
     <section className="wca-body w-full bg-[#f5efe6]">
       <Container>
@@ -52,10 +68,10 @@ export default function WhyChoose() {
 
             <div>
               <p className="font-semibold tracking-[0.22em] text-[#c8a45d] uppercase mb-4 text-sm">
-                Why Choose ENSIS?
+                {sectionContent.whyChoose.title}
               </p>
               <ul className="space-y-4 mb-6">
-                {features.map((f) => (
+                {sectionContent.whyChoose.reasons.map((f) => (
                   <li key={f} className="flex items-start gap-2">
                     <span className="mt-[2px] shrink-0 w-[15px] h-[15px] rounded-full border border-[#c8a45d]/60 flex items-center justify-center">
                       <svg width="7" height="7" viewBox="0 0 8 8" fill="none">
@@ -67,7 +83,7 @@ export default function WhyChoose() {
                 ))}
               </ul>
             </div>
-            <GreenButton rightIcon={<ArrowRight size={11} className="text-[#c8a45d]" />} text="Know More About Us" />
+            <GreenButton rightIcon={<ArrowRight size={11} className="text-[#c8a45d]" />} text={sectionContent.whyChoose.button.label} path={sectionContent.whyChoose.button.url}/>
           </div>
 
           {/* ── CENTRE — image ── */}
@@ -84,18 +100,15 @@ export default function WhyChoose() {
           <div className="bg-white/50 flex flex-col justify-center p-5 sm:p-7 md:p-8 flex-1 relative">
 
             <p className="text-sm font-semibold tracking-[0.22em] text-[#a9742a] uppercase mb-2">
-              Welcome to ENSIS
+              {sectionContent.welcomeToEnsis.highlight}
             </p>
 
             <h2 className="wca-serif text-[1.35rem] sm:text-[1.6rem] lg:text-[1.85rem] leading-[1.1] font-[600] text-[#1a1a1a] mb-2.5">
-              Where Ancient Wisdom<br />Meets Modern Wellness
+              {sectionContent.welcomeToEnsis.title}
             </h2>
 
             <p className="text-[11px] sm:text-[12px] text-[#5a5040] leading-relaxed mb-4 max-w-[340px]">
-              At ENSIS Wellness Solutions, we are passionate about creating authentic,
-              luxurious, and sustainable wellness experiences. Our premium range of
-              Ayurvedic and spa products is crafted with precision, tradition, and the
-              finest natural materials.
+         {sectionContent.welcomeToEnsis.description}
             </p>
 
             {/* Stats row — icons only, no bg/border */}

@@ -1,4 +1,3 @@
-import { Heart, ShoppingCart } from "lucide-react";
 import { useState } from "react";
 import { fmt } from "./Products";
 import Image, { type StaticImageData } from "next/image";
@@ -7,11 +6,11 @@ import { useShop, type ShopProduct } from "@/context/ShopContext";
 import type {Product} from "@/constants"
 
 export default function ProductCard({ product }: { product: Product }) {
-  const { addToCart, isInCart, isLiked, toggleLike } = useShop();
+  const {  isInCart, isLiked } = useShop();
   const shopProduct: ShopProduct = {
     id: product.id.toString(),
     slug: product.slug,
-    name: product.name,
+    name: product.name || product.title, // Use product.title as fallback for name
     category: product.category,
     price: product.price,
     image: typeof product.image === "string" ? product.image : product.image.src,
@@ -21,12 +20,15 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <div className="group relative bg-white rounded-[18px] overflow-hidden border border-[#ede8e0] hover:shadow-[0_4px_18px_rgba(0,0,0,0.07)] transition-all duration-300">
-      <Link href={`/products/${product.slug}`} className="block">
+      <Link href={`/products/${product.id}`} className="block">
         <div className="relative h-32 sm:h-36 overflow-hidden bg-[#f8f3ec]">
           <Image
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+            crossOrigin="anonymous"
+            className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </div>
       </Link>
@@ -53,7 +55,7 @@ export default function ProductCard({ product }: { product: Product }) {
           {product.category}
         </p> */}
 
-        <Link href={`/products/${product.slug}`} className="block">
+        <Link href={`/products/${product.id}`} className="block">
           <h3 className="ws-body text-[12px] sm:text-[13px] font-[500] text-[#1a1a1a] leading-[1.35] mb-1 line-clamp-2">
             {product.name}
           </h3>

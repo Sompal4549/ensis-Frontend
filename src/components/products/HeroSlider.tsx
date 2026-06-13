@@ -1,76 +1,44 @@
 "use client";
 
 import { Carousel } from "../ui/Carousel";
-import rooted from '@/assets/bg/bg3.webp';
-import tradition from '@/assets/bg/bg4.webp';
-import wellness_spaces from '@/assets/bg/bg2.webp';
-import wooden_steam from '@/assets/bg/bg1.webp';
+import { StaticImageData } from "next/image";
+
 import Image from "next/image";
 import { Container } from "../ui/Container";
 import BookButton from "../ui/BookButton";
 import GreenButton from "../ui/GreenButton";
-// ─── Slide data ───────────────────────────────────────────────────────────────
-const slides = [
-  {
-    id: 1,
-    badge: "Panchkarma Collection",
-    title: "Our Wellness",
-    titleHighlight: "Product",
-    description:
-      "Explore our curated range of authentic Ayurvedic wellness products crafted for luxury spas, wellness centers and healing environments.",
-    cta1: "Explore Collection",
-    cta2: "Book Consultation",
-    image:rooted,
-    accent: "#c8a45d",
-  },
-  {
-    id: 2,
-    badge: "Dhara Therapy",
-    title: "Shirodhara",
-    titleHighlight: "Drip Tables",
-    description:
-      "Handcrafted teak & brass Shirodhara stands with precision-flow vessels — the centrepiece of any authentic Ayurvedic retreat.",
-    cta1: "View Dhara Range",
-    cta2: "Request Quote",
-    image:wellness_spaces,
-    accent: "#b87333",
-  },
-  {
-    id: 3,
-    badge: "Steam & Sauna",
-    title: "Herbal Steam",
-    titleHighlight: "Cabinets",
-    description:
-      "Single-herb and blended medicated steam cabinets engineered for therapeutic efficacy — from compact clinics to grand spa suites.",
-    cta1: "Shop Steam Cabinets",
-    cta2: "Book Consultation",
-    image:tradition,
-        accent: "#c8a45d",
-  },
-  {
-    id: 4,
-    badge: "Massage Tables",
-    title: "Abhyanga",
-    titleHighlight: "Treatment Tables",
-    description:
-      "Solid hardwood Abhyanga tables with carved oil channels, adjustable height and premium upholstery — built for decades of daily practice.",
-    cta1: "Explore Tables",
-    cta2: "Book Consultation",
-    image:wooden_steam,
-    accent: "#c8a45d",
-  },
-];
+
+interface HeroSliderButton {
+  label: string;
+  url: string;
+}
+
+interface HeroSlide {
+  id: number;
+  badge: string;
+  title: string;
+  highlight: string;
+  description: string;
+  primaryButton: HeroSliderButton;
+  secondaryButton: HeroSliderButton;
+  bgImage: string | StaticImageData;
+  accent: string;
+}
+
+export interface HeroSliderContent {
+  slides: HeroSlide[];
+}
 
 // ─── Individual slide ─────────────────────────────────────────────────────────
-function SlideContent({ slide }: { slide: (typeof slides)[0] }) {
+function SlideContent({ slide }: { slide: HeroSlide }) {
   return (
     <div className="ws-banner ws-grain relative h-[82dvh] w-full overflow-hidden bg-[#f5efe6]">
       
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src={slide.image}
-          alt={slide.titleHighlight}
+          src={slide.bgImage}
+          alt={slide.highlight || ""}
           fill
           className="object-cover md:object-fill object-center"
           loading="eager"
@@ -91,9 +59,9 @@ function SlideContent({ slide }: { slide: (typeof slides)[0] }) {
 
               <em
                 className="not-italic font-medium"
-                style={{ color: slide.accent }}
+                style={{ color: '#b87333' }}
               >
-                {slide.titleHighlight}
+                {slide.highlight}
               </em>
             </h1>
 
@@ -104,8 +72,8 @@ function SlideContent({ slide }: { slide: (typeof slides)[0] }) {
 
             {/* CTAs */}
             <div className="flex flex-wrap gap-3 sm:gap-4">
-              <BookButton text={slide.cta1} />
-              <GreenButton text={slide.cta2} />
+              <BookButton text={slide.primaryButton.label} path={slide.primaryButton.url} />
+              <GreenButton text={slide.secondaryButton.label} path={slide.secondaryButton.url} />
             </div>
 
           </div>
@@ -116,7 +84,7 @@ function SlideContent({ slide }: { slide: (typeof slides)[0] }) {
 }
 
 // ─── Main export ──────────────────────────────────────────────────────────────
-export default function HeroSlider() {
+export default function HeroSlider({ sectionContent }: { sectionContent: HeroSliderContent }) { // Added explicit type
   return (
     <>
       <section
@@ -124,7 +92,7 @@ export default function HeroSlider() {
         className="relative w-full h-[82dvh]"
       >
         <Carousel autoplayDelay={5000}>
-          {slides.map((slide) => (
+          {sectionContent.slides.map((slide) => (
             <SlideContent key={slide.id} slide={slide} />
           ))}
         </Carousel>

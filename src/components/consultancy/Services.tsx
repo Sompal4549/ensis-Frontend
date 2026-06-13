@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { Container } from "../ui/Container";
 import planning from "@/assets/consultancy/project_planning.webp"
 import design from "@/assets/consultancy/design_and_space.webp"
@@ -78,68 +77,76 @@ const consultancyServicesData = {
   ] as Service[],
 };
 
-export default function ConsultancyServices() {
+interface ConsultancyServicesContent {
+  subheading: string;
+  title: string;
+  description: string;
+  serviceCards: Array<{
+    title: string;
+    description: string;
+    iconBg: string;
+    image: string; // Assuming image is a path/URL
+    learnMoreLink: string;
+  }>;
+}
+
+export default function ConsultancyServices({ sectionContent }: { sectionContent: ConsultancyServicesContent }) {
   return (
     <section>
       <Container>
         {/* HEADER */}
         <div className="mx-auto max-w-[540px] text-center">
           <p className="text-sm font-semibold uppercase tracking-[2px] text-[#D66736]">
-            {consultancyServicesData.badge}
+            {sectionContent.subheading}
           </p>
 
           <h2 className="mt-2 text-[28px] font-bold leading-tight">
-            {consultancyServicesData.title}
+            {sectionContent.title}
           </h2>
 
           <p className="mx-auto mt-3 max-w-[500px] text-[13px] font-medium">
-            {consultancyServicesData.description}
+            {sectionContent.description}
           </p>
         </div>
 
         {/* CARDS */}
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-          {consultancyServicesData.services.map((service) => (
-            <div
-              key={service.title}
-              className="group flex min-h-[260px] flex-col rounded-[14px] border border-[#E9E9E9] bg-white px-5 py-5 transition-all duration-300 hover:shadow-md justify-center items-center text-center"
-            >
-              {/* ICON */}
-              <div
-                className="flex h-[60px] w-[60px] items-center justify-center rounded-full"
-                style={{ backgroundColor: service.iconBg }}
-              >
+          {sectionContent.serviceCards.map((service) => (
+           <div
+  key={service.title}
+  className="group flex min-h-[260px] flex-col rounded-[14px] border border-[#E9E9E9] bg-white px-5 py-5 transition-all duration-300 hover:shadow-md items-center text-center"
+>
+  {/* ICON */}
+  <div
+    className="flex h-[60px] w-[60px] items-center justify-center rounded-full"
+    style={{ backgroundColor: service.iconBg }}
+  >
+    <Image src={service.image} alt={service.title} width={26} height={26} />
+  </div>
 
-   <Image
-                      src={service.icon}
-                      alt={service.title}
-                      width={26}
-                      height={26}
-                    />
-              </div>
+  <h3 className="mt-3 text-xs font-bold leading-[1.45]">
+    {service.title}
+  </h3>
 
-              <h3 className="mt-3 text-xs font-bold leading-[1.45]">
-                {service.title}
-              </h3>
+  <p className="mt-3 text-[12px] text-gray-500">
+    {service.description}
+  </p>
 
-              <p className="mt-3 text-[12px]">
-                {service.description}
-              </p>
-
-              <a
-                href={service.href}
-                className="mt-auto inline-flex items-center gap-2 pt-5 "
-              >
-                <span className="text-[12px] font-semibold text-[#2563EB]">
-
-                Learn More
-                </span>
-
-                <span className="transition-transform duration-300 group-hover:translate-x-1  text-[#2563EB]">
-                  →
-                </span>
-              </a>
-            </div>
+  {/* mt-auto yahan flex-grow wale div pe lagao */}
+ <div className="mt-auto pt-5">
+  <a
+    href={`/${service.learnMoreLink}`}
+    className="flex items-center justify-center gap-2" // Removed Next/Link import, using <a>
+  >
+    <span style={{ fontSize: '12px', fontWeight: 600, color: '#2563EB' }}>
+      Learn More
+    </span>
+    <span style={{ color: '#2563EB' }} className="transition-transform duration-300 group-hover:translate-x-1">
+      &#8594;
+    </span>
+  </a>
+</div>
+</div>
           ))}
         </div>
       </Container>

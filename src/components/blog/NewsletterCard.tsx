@@ -3,7 +3,7 @@
 import BookButton from "../ui/BookButton";
 import { Container } from "../ui/Container";
 
-export default function NewsletterCard() {
+export default function NewsletterCard({sectionContent} : {sectionContent: any}) {
   return (
     <Container>
     <div className="rounded-xl border border-[#dcc9b5] bg-[#efe4d7] p-4">

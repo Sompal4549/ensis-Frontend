@@ -1,10 +1,9 @@
 import React from 'react';
 import { Container } from '../ui/Container';
-import { MapPin } from 'lucide-react';
 import Image from 'next/image';
 import globe from "@/assets/icons/globe.webp"
 import SubHeading from './SubHeading';
-import { getComponentContent, getImageUrl } from '@/app/lib/api';
+import { getImageUrl } from '@/lib/api/api';
 
 type GlobalPresenceProps = {
   sectionData: {

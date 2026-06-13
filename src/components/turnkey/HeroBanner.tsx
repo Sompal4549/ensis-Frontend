@@ -18,10 +18,25 @@ const FEATURES = [
   { icon: after_sales, label: "After Sales\nSupport" },
 ];
 
-export default function TurnkeyHero() {
+export interface TurnkeyHeroContent {
+  backgroundImage: { imageUrl: string; alt?: string };
+  subheading: string;
+  title: string;
+  highlight: string;
+  description: string;
+  features: Array<{
+    title: string;
+    label:string;
+    image: { imageUrl: string; alt?: string };
+  }>;
+  primaryButton: { label: string; url: string }; // Changed url to path
+  secondaryButton: { label: string; url: string }; // Changed url to path
+}
+
+export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyHeroContent }) {
   return (
     <div className="min-h-[80vh] relative">
-        <Image src={banner_image} alt="banner_image" fill className="object-fill z-0! absolute object-right" priority  />
+        <Image src={sectionContent.backgroundImage.imageUrl} alt={sectionContent.backgroundImage.alt||sectionContent.title} fill className="object-fill z-0! absolute object-right" priority  />
       {/* ── HERO ── */}
       <Container className="relative z-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center min-h-[80vh]">
@@ -31,7 +46,7 @@ export default function TurnkeyHero() {
             {/* Eyebrow */}
             <div className="flex items-center gap-3">
               <span className="text-[#c38727] text-xs sm:text-sm font-semibold uppercase">
-                Turnkey Solutions
+                {sectionContent.subheading}
               </span>
               <div className="h-px w-8 bg-[#c38727]" />
               <Image alt="lotus" src={lotus} width={30} height={30} className="h-full object-contain" />
@@ -41,10 +56,10 @@ export default function TurnkeyHero() {
             {/* Headline */}
             <div>
               <h1 className="text-[#1a2e1a] text-3xl lg:text-4xl  font-semibold leading-tight">
-                We Design, Build <span className="font-serif font-medium">&amp;</span> Launch
+               {sectionContent.title}
               </h1>
               <h1 className="text-[#c38727] text-3xl sm:text-4xl lg:text-[42px] font-semibold leading-tight mt-1">
-                Complete Wellness Spaces
+                {sectionContent.highlight}
               </h1>
             </div>
 
@@ -57,17 +72,12 @@ export default function TurnkeyHero() {
 
             {/* Body copy */}
             <p className="text-sm  max-w-md leading-6 mb-4">
-              From concept to commissioning, we deliver end-to-end{" "}
-              <strong className="text-[#1a2e1a]">Panchakarma Centres</strong>,{" "}
-              <strong className="text-[#1a2e1a]">Ayurveda Clinics</strong>,{" "}
-              <strong className="text-[#1a2e1a]">Wellness Resorts</strong> &amp;{" "}
-              <strong className="text-[#1a2e1a]">Health Retreats</strong> that
-              are beautiful, functional and future-ready.
+          {sectionContent.description}
             </p>
 
             {/* Feature icons */}
             <div className="flex flex-wrap gap-4 sm:gap-6">
-          {FEATURES.map((f, index) => (
+          {sectionContent.features.map((f, index) => (
   <div
     key={f.label}
     className={`flex flex-col items-center gap-2 text-center min-w-[64px] pr-6 ${
@@ -75,10 +85,10 @@ export default function TurnkeyHero() {
     }`}
   >
     <div className="w-12 h-12 text-[#d6a85f] flex items-center justify-center text-xl">
-      <Image src={f.icon} alt={f.label} width={40} height={40} className="object-fill" />
+      <Image src={f.image.imageUrl} alt={f.image.alt||f.title} width={40} height={40} className="object-fill" />
     </div>
     <p className="text-[10px] sm:text-xs leading-snug whitespace-pre-line font-medium">
-      {f.label}
+      {f.title}
     </p>
   </div>
 ))}
@@ -86,8 +96,8 @@ export default function TurnkeyHero() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-3">
-              <BookButton text="REQUEST PROJECT PROPOSAL" />
-               <GreenButton text="SCHEDULE SITE VISIT" />
+              <BookButton text={sectionContent.primaryButton.label} path={sectionContent.primaryButton.url}/>
+               <GreenButton text={sectionContent.secondaryButton.label} path={sectionContent.secondaryButton.url} />
             </div>
           </div>
 

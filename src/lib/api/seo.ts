@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { API_URL, getImageUrl } from "@/app/lib/api";
+import { API_URL, getImageUrl } from "@/lib/api/api";
 
 interface PageSeoData {
   pageName: string;

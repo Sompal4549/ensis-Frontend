@@ -14,9 +14,9 @@ import {
 import Link from "next/link";
 import { allProducts, categories, idealFor, materials, PAGE_SIZE } from "@/constants";
 import ProductCard, { Checkbox } from "./ProductCard";
+import { productApi, categoryApi, getImageUrl } from "@/app/lib/api";
 import BookButton from "../ui/BookButton";
 import Image from "next/image";
-import SubHeading from "../home/SubHeading";
 import lotus from "@/assets/about/lotus.png";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -25,7 +25,7 @@ export const fmt = (n: number) => "₹" + n.toLocaleString("en-IN");
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function Products() {
-  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeCategory, setActiveCategory] = useState("all"); // This state is not used in the provided snippet
   const [sortBy, setSortBy] = useState("Featured");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [priceRange, setPriceRange] = useState(150000);
@@ -34,9 +34,48 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
   // Infinite scroll
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const [products, setProducts] = useState<any[]>([]);
+  const [apiCategories, setApiCategories] = useState<any[]>([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const [pRes, cRes] = await Promise.all([
+          productApi.list(100),
+          categoryApi.list()
+        ]);
+        const normalized = pRes.products.map((item: any) => ({
+          ...item,
+          id: item._id,
+          name: item.title,
+          image: item.images?.[0] ? getImageUrl(item.images[0]) : "",
+          categoryKey: typeof item.category === 'object' ? item.category.slug : item.category
+        }));
+        setProducts(normalized);
+        setApiCategories(cRes);
+      } catch (e) {
+        console.error("Error loading products/categories:", e);
+        setProducts(allProducts);
+      }
+    };
+    loadData();
+  }, []);
+
+  const displayCategories = useMemo(() => {
+    if (apiCategories.length === 0) return categories;
+    return [
+      categories[0], // "All Products"
+      ...apiCategories.map(c => ({
+        key: c.slug,
+        label: c.name,
+        icon: categories.find(cat => cat.key === c.slug)?.icon || categories[1]?.icon,
+        count: products.filter(p => p.categoryKey === c.slug).length
+      }))
+    ];
+  }, [apiCategories, products]);
 
   const filtered = useMemo(() => {
-    let data = allProducts.filter((product) => {
+    let data = products.filter((product) => {
       const matchesCategory =
         activeCategory === "all" ||
         product.categoryKey === activeCategory;
@@ -59,7 +98,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
     }
 
     return data;
-  }, [activeCategory, priceRange, sortBy]);
+  }, [products, activeCategory, priceRange, sortBy]);
 
   // Reset visible products on filter/category change
   useEffect(() => {
@@ -100,7 +139,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
   const visibleProducts = filtered.slice(0, visibleCount);
 
   const selectedCategory =
-    categories.find((cat) => cat.key === activeCategory)?.label ||
+    displayCategories.find((cat) => cat.key === activeCategory)?.label ||
     "All Products";
 
   return (
@@ -110,6 +149,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
 
           {/* Mobile Filter Toggle */}
           <button
+            suppressHydrationWarning
             className="lg:hidden mb-4 flex items-center gap-2 px-4 py-2 bg-[#183b17] text-white rounded-full text-xs font-[600] tracking-wider"
             onClick={() => setSidebarOpen((o) => !o)}
           >
@@ -132,9 +172,10 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
                 </p>
 
                 <ul className="space-y-0.5">
-                  {categories.map((cat) => (
+                  {displayCategories.map((cat) => (
                     <li key={cat.key}>
                       <button
+                        suppressHydrationWarning
                         onClick={() => setActiveCategory(cat.key)}
                         className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-[12px] transition-all ${
                           activeCategory === cat.key
@@ -228,6 +269,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
                 </div>
 
                 <button
+                  suppressHydrationWarning
                   onClick={() => setPriceRange(150000)}
                   className="flex items-center gap-1.5 text-[11px] font-[600] text-[#183b17] border border-[#183b17] rounded-full px-3 py-1.5 hover:bg-[#183b17] hover:text-white transition-colors"
                 >
@@ -268,6 +310,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
 
                     <div className="relative">
                       <select
+                        suppressHydrationWarning
                         value={sortBy}
                         onChange={(e) =>
                           setSortBy(e.target.value)
@@ -294,6 +337,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
                   {/* View */}
                   <div className="flex items-center gap-1 bg-white border border-[#ede8e0] rounded-lg p-1">
                     <button
+                      suppressHydrationWarning
                       onClick={() => setViewMode("grid")}
                       className={`p-1.5 rounded transition-colors ${
                         viewMode === "grid"
@@ -305,6 +349,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
                     </button>
 
                     <button
+                      suppressHydrationWarning
                       onClick={() => setViewMode("list")}
                       className={`p-1.5 rounded transition-colors ${
                         viewMode === "list"
@@ -379,6 +424,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
    <div className="space-y-2.5">
   {/* Name */}
   <input
+    suppressHydrationWarning
     type="text"
     placeholder="Your Name"
     value={enquiry.name}
@@ -393,6 +439,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
 
   {/* Email */}
   <input
+    suppressHydrationWarning
     type="email"
     placeholder="Email Address"
     value={enquiry.email}
@@ -407,6 +454,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
 
   {/* Phone */}
   <input
+    suppressHydrationWarning
     type="tel"
     placeholder="Phone Number"
     value={enquiry.phone}
@@ -422,6 +470,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
   {/* Category Select */}
   <div className="relative">
     <select
+      suppressHydrationWarning
       value={enquiry.category}
       onChange={(e) =>
         setEnquiry((prev) => ({
@@ -433,7 +482,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
     >
       <option value="">Select Product Category</option>
 
-      {categories.slice(1).map((c) => (
+      {displayCategories.slice(1).map((c) => (
         <option key={c.key} value={c.key}>
           {c.label}
         </option>

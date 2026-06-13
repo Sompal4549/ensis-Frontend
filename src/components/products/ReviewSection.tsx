@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Star, CheckCircle, MessageSquare } from "lucide-react";
 import { Container } from "../ui/Container";
 import { isOrderItemForProduct } from "@/utils";
-import { API_URL } from "@/app/lib/api";
+import { API_URL } from "@/lib/api/api";
 
 interface Review {
   _id: string;

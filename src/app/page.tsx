@@ -1,4 +1,4 @@
-import { getPageComponent } from "@/app/lib/api";
+import { getPageComponent } from "@/lib/api/api";
 import RenderSection from "@/components/RenderSections";
 
 export default async function HomePage() {

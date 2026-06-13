@@ -61,13 +61,35 @@ const steps: ProcessStep[] = [
   },
 ];
 
-const TurnkeyProcess: React.FC = () => {
+type SectionStep = {
+  id: number;
+  title: string;
+  imageurl: {
+    imageUrl: string;
+    alt: string;
+  };
+};
+
+type SectionContent = {
+  title: string;
+  imageurl: {
+    imageUrl: string;
+    alt: string;
+  };
+  steps: SectionStep[];
+};
+
+type TurnkeyProcessProps = {
+  sectionContent: SectionContent;
+};
+
+const TurnkeyProcess: React.FC<TurnkeyProcessProps> = ({ sectionContent }) => {
   return (
     <section className="w-full bg-[#f8f5f1] overflow-hidden relative">
         <div className="absolute inset-0">
           <Image
-            src={trunkry}
-            alt="Turnkey Process"
+            src={sectionContent.imageurl.imageUrl}
+            alt={sectionContent.imageurl.alt}
             className="h-full w-full object-cover"
             fill
             crossOrigin="anonymous"
@@ -79,15 +101,15 @@ const TurnkeyProcess: React.FC = () => {
           {/* LEFT SIDE */}
           <div className="w-full lg:w-[58%] px-6 md:px-10 py-4 flex flex-col justify-center relative z-10">
             <h2 className="text-[#2d2a28] text-[18px] md:text-[24px] font-bold font-serif uppercase tracking-[0.4px] mb-6">
-              OUR TURNKEY PROCESS
+              {sectionContent.title}
             </h2>
             
             <div className="flex items-start justify-between gap-2 md:gap-4 relative">
-              {steps.map((step, index) => (
+              {sectionContent.steps.map((step, index) => (
                 <React.Fragment key={step.id}>
                   <div className="flex flex-col items-center text-center max-w-[120px] relative z-10">
                     <div className="text-[#b79a7a] mb-4 flex items-center justify-center">
-                      {step.icon}
+                      <Image src={step.imageurl.imageUrl} alt={step.imageurl.alt} width={35} height={35} className="text-[#b79a7a] mb-3" style={{ height: "auto" }}/>
                     </div>
 
                     <p className="text-[10px] md:text-[11px] leading-[1.5] font-semibold tracking-[0.3px] text-[#3f3a36] uppercase">

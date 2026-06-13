@@ -5,7 +5,11 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowRight, UserPlus } from "lucide-react";
-import { API_URL } from "@/app/lib/api";
+import { API_URL } from "@/lib/api/api";
+import bannerImage from "@/assets/home/home_banner2.webp"
+import Image from "next/image";
+import AuthLayout from "@/components/layout/AuthLayout";
+
 const Container = dynamic(() => import("@/components/ui/Container").then((mod) => mod.Container));
 
 export default function RegisterPage() {
@@ -44,56 +48,50 @@ export default function RegisterPage() {
       setIsLoading(false);
     }
   };
+const buttonClass =
+  "mt-4 h-10 w-full rounded-lg bg-gradient-to-r from-[#b88b3d] via-[#e2c684] to-[#c7a45d] text-xs font-semibold uppercase tracking-[1.5px] text-[#1f261b] transition-all hover:opacity-90";
 
+const inputClass =
+  "mt-1 h-10 w-full rounded-lg border border-[#d9c49d] bg-[#faf8f4] px-3 text-sm text-[#1f261b] placeholder:text-gray-400 outline-none focus:border-[#b88b3d]";
+  const labelClass =
+  "block text-[10px] font-semibold uppercase tracking-[2px] text-[#8b6b35] mb-1";
   return (
-    <section className="bg-[#fbf8f2] py-12 md:py-16">
-      <Container>
-        <div className="mx-auto grid max-w-5xl overflow-hidden border border-[#ded3c4] bg-white md:grid-cols-[0.9fr_1.1fr]">
-          <div className="bg-[#263016] p-8 text-white md:p-10">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-[#d9c49d]">Ensis Account</span>
-            <h2 className="mt-4 text-4xl leading-tight">Create Account</h2>
-            <p className="mt-4 text-sm leading-6 text-white/80">
-              Register for an Ensis account to securely save your wishlist, place orders, and track your purchase history.
-            </p>
-            <div className="mt-8 flex flex-col gap-4">
-              <Link href="/login" className="inline-flex items-center justify-center gap-2 rounded-md border border-[#d9c49d]/30 bg-[#d9c49d]/10 px-5 py-3 text-xs font-bold uppercase tracking-wide text-[#d9c49d] transition-colors hover:bg-[#d9c49d]/20">
-                Already have an account? Sign In <ArrowRight size={16} />
-              </Link>
-            </div>
-          </div>
+    <AuthLayout
+  title="Create Your Account"
+  page="register"
+  subtitle="Join the ENSIS wellness ecosystem and access premium solutions."
+>
 
-          <form onSubmit={onSubmit} className="p-8 md:p-10">
+          <form onSubmit={onSubmit}>
             <div className="mb-6 inline-flex size-12 items-center justify-center rounded-full bg-[#f3eee6] text-[#6f542f]">
               <UserPlus size={22} />
             </div>
             
-            <label className="block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
+            <label className={labelClass}>
               Full Name
-              <input className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium text-[#1f261b] outline-none focus:border-[#8d6a3a]" type="text" value={name} onChange={(event) => setName(event.target.value)} required />
+              <input className={inputClass} type="text" value={name} onChange={(event) => setName(event.target.value)} required />
             </label>
             
-            <label className="mt-5 block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
+            <label className={labelClass}>
               Email
-              <input className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium text-[#1f261b] outline-none focus:border-[#8d6a3a]" type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
+              <input className={inputClass} type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
             </label>
             
-            <label className="mt-5 block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
+            <label className={labelClass}>
               Phone Number (Optional)
-              <input className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium text-[#1f261b] outline-none focus:border-[#8d6a3a]" type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} />
+              <input className={inputClass} type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} />
             </label>
             
-            <label className="mt-5 block text-xs font-bold uppercase tracking-wide text-[#5f5a50]">
+            <label className={labelClass}>
               Password
-              <input className="mt-2 w-full border border-[#d8cbb9] px-4 py-3 text-sm font-medium text-[#1f261b] outline-none focus:border-[#8d6a3a]" type="password" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={6} />
+              <input className={inputClass} type="password" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={6} />
             </label>
             
-            <button className="mt-7 inline-flex w-full items-center justify-center gap-2 rounded-md bg-[#6f542f] px-5 py-3 text-xs font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#4c381f]" type="submit" disabled={isLoading}>
+            <button className={buttonClass} type="submit" disabled={isLoading}>
               {isLoading ? "Registering..." : "Create Account"}
             </button>
             {message && <p className="mt-4 text-sm font-semibold text-[#334022]">{message}</p>}
           </form>
-        </div>
-      </Container>
-    </section>
+     </AuthLayout>
   );
 }

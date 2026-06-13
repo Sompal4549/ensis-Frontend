@@ -3,11 +3,8 @@
 import React from "react";
 import { Container } from "../ui/Container";
 import SubHeading from "../home/SubHeading";
-import ananda from "@/assets/products/ananda_image.png"
 import six_senses from "@/assets/products/six_senses.png"
-import taj from "@/assets/products/taj.png"
 import kama from "@/assets/products/kama.png"
-import the_leela from "@/assets/products/the_leela.png"
 import jw_marriott from "@/assets/products/jw_marriott.png"
 import Image from "next/image";
 
@@ -44,7 +41,11 @@ const brands = [
   },
 ];
 
-export default function TrustedBrandsStrip() {
+export interface TrustedBrandsStripContent {
+  images: string[]; // Assuming images are URLs or paths
+}
+
+export default function TrustedBrandsStrip({sectionContent}: { sectionContent: TrustedBrandsStripContent }) {
   return (
     <section className="w-full bg-[#f8f3ec]">
       <Container>
@@ -58,13 +59,13 @@ export default function TrustedBrandsStrip() {
 
           {/* Brands — flex with vertical dividers */}
           <div className="flex flex-wrap xl:flex-nowrap items-center justify-center divide-x divide-[#e2d0b8]">
-            {brands.map((brand, index) => (
+            {sectionContent.images.map((brand, index) => (
               <div
                 key={index}
                 className="flex flex-col items-center justify-center text-center px-4 sm:px-6 py-2 xl:py-0 w-1/2 md:w-1/3 xl:w-auto xl:flex-1"
               >
                 <div className="text-[#a67945] text-base sm:text-lg mb-1.5 opacity-90 ">
-                  <Image src={brand.logo} alt={brand.name} width={100} height={100} className="object-cover object-center max-h-25 max-w-25" />
+                  <Image src={brand} alt={brand} width={100} height={100} className="object-cover object-center max-h-25 max-w-25" />
                 </div>
               </div>
             ))}

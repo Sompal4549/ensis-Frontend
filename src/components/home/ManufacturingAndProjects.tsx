@@ -12,7 +12,7 @@ import img15 from '@/assets/home/img-7.webp';
 import img16 from '@/assets/home/img-1.webp';
 import SubHeading from './SubHeading';
 import BookButton from '../ui/BookButton';
-import { getComponentContent, getImageUrl } from '@/app/lib/api';
+import { getComponentContent, getImageUrl } from '@/lib/api/api';
 import DOMPurify from "isomorphic-dompurify";
 const mfgFallbackImages = [img11, img12, img13];
 const projFallbackImages = [img12, img13, img14, img15, img16];

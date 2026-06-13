@@ -1,12 +1,11 @@
 import React from 'react';
-import { Factory, Settings, Award, Layers } from 'lucide-react';
 import { Container } from '../ui/Container';
 import inhouse from "@/assets/icons/in_house_manufacture.webp"
 import info2 from "@/assets/icons/customized.webp"
 import trunkey from "@/assets/icons/trunkey.webp"
 import Image from 'next/image';
 import exportIcon from "@/assets/icons/export_quality.webp"
-import { getComponentContent, getImageUrl } from '@/app/lib/api';
+import { getComponentContent, getImageUrl } from '@/lib/api/api';
 
 type FeatureItem = {
   imgUrl: any;

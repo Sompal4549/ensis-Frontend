@@ -3,29 +3,20 @@ import React from "react";
 import ready_to_build2 from "@/assets/trunkey_solutions/ready_to_build (2).webp";
 
 import { Container } from "../ui/Container";
-import request from "@/assets/trunkey_solutions/request.webp";
-import book from "@/assets/trunkey_solutions/book_site_visit.webp";
-import talk from "@/assets/trunkey_solutions/talk _to_project.webp";
 
-const WellnessCtaBanner: React.FC = () => {
-  const actions = [
-    {
-      title: "Request",
-      subtitle: "Detailed Proposal",
-      image: request,
-    },
-    {
-      title: "Book",
-      subtitle: "Site Visit",
-      image: book,
-    },
-    {
-      title: "Talk To",
-      subtitle: "Project Expert",
-      image: talk,
-    },
-  ];
 
+export interface WellnessCtaBannerContent {
+  title: string;
+  heading: string; // Changed from heading to description in JSX, but keeping heading here for consistency with other components
+  description: string;
+  buttons: Array<{
+    title: string;
+    description: string;
+    image: { imageUrl: string; alt?: string };
+  }>;
+}
+
+const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> = ({ sectionContent }) => {
   return (
     <section className="relative overflow-hidden border border-[#8B6B2E] bg-[#062A22]">
       {/* Absolute Left Image */}
@@ -44,31 +35,30 @@ const WellnessCtaBanner: React.FC = () => {
           {/* Content */}
           <div className="px-4 pt-4 lg:pt-5 lg:flex-1 flex flex-col gap-2">
             <h2 className="text-[#E7C17A] text-lg md:text-xl leading-none font-bold">
-              Ready To Build Your Wellness Dream?
+             {sectionContent.title}
             </h2>
 
             <p className="mt-1.5 text-sm text-white leading-relaxed max-w-[520px]">
-              Whether it is a 500 Sq Ft Clinic or a 50,000 Sq Ft Wellness
-              Retreat —{" "}
+         {sectionContent.heading}
             </p>
               <p className="font-semibold text-[#E7C17A]">
-                Ensis can Design, Manufacture, Execute and Launch it for you.
+              {sectionContent.description}
               </p>
           </div>
 
           {/* Action Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 px-4 pb-4 lg:pb-0 lg:pr-4">
-            {actions.map((item) => (
+            {sectionContent.buttons.map((item) => (
               <button
                 key={item.title}
                 className="group flex items-center gap-2 rounded border-2 border-[#8B6B2E] px-3 py-5 h-full text-left transition-all hover:bg-[#0B3A30]"
               >
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded">
                   <Image
-                    src={item.image}
+                    src={item.image.imageUrl}
                     height={28}
                     width={28}
-                    alt={item.title}
+                    alt={item.image.alt||item.title}
                   />
                 </div>
 
@@ -77,7 +67,7 @@ const WellnessCtaBanner: React.FC = () => {
                     {item.title}
                   </div>
                   <div className="mt-0.5 text-[10px] leading-tight text-white  mt-1">
-                    {item.subtitle}
+                    {item.description}
                   </div>
                 </div>
               </button>

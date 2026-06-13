@@ -16,32 +16,37 @@ import FullWidthFeatures from "@/components/home/FullWidthFeatures";
 import { TurnkeySolutions } from "@/components/home/TurnkeySolutions"
 import { GlobalPresence } from "@/components/home/GlobalPresence";
 import { ManufacturingAndProjects } from "@/components/home/ManufacturingAndProjects";
-import { ProductsGrid } from "@/components/home/ProductsGrid";
+import { ProductsGrid, ProductsGridContent } from "@/components/home/ProductsGrid";
 import WellnessRoomSetups from "@/components/home/WellnessRoomSetups";
 import ConsultancyCTA from "@/components/consultancy/ConsultancyCTA";
 import ConsultancyHero from "@/components/consultancy/Hero";
 import HowWeWork from "@/components/consultancy/HowWeWork";
-import ProductSlider from "@/components/products/HeroSlider";
-import Products from "@/components/products/Products";
-import React from "react"
 import ConsultancyServices from "@/components/consultancy/Services";
 import ContactHero from "@/components/contact/ContactHero";
 import ContactSection from "@/components/contact/ContactSection";
 import SupportHighlights from "@/components/contact/SupportHightlights";
-import FacilitiesWeBuild from "@/components/turnkey/FacilitiesWeBuild";
-import TurnkeyHero from "@/components/turnkey/HeroBanner";
-import TurnkeySolutionsSection from "@/components/turnkey/TurnkeySolutions";
+import FacilitiesWeBuild, { FacilitiesWeBuildContent } from "@/components/turnkey/FacilitiesWeBuild";
+import TurnkeyHero, { TurnkeyHeroContent } from "@/components/turnkey/HeroBanner";
+import TurnkeySolutionsSection, { TurnkeySolutionsContent } from "@/components/turnkey/TurnkeySolutions";
 import WellnessCtaBanner from "@/components/turnkey/WellnessCtaBanner";
 import BlogSection from "@/components/blog/BlogSection";
 import BlogHeroSection from "@/components/blog/HeroSection";
 import SupportSection from "@/components/blog/SupportSection";
 import WellnessResources from "@/components/blog/WellnessResource";
 import NewsletterCard from "@/components/blog/NewsletterCard";
-import TrustedBrandsStrip from "@/components/products/TrustedBrandsStrip";
-import WellnessFeatureStrip from "@/components/products/WellnessFeatureStrip";
-import ProductWhyChoose from "@/components/products/WhyChoose";
+import TrustedBrandsStrip, { TrustedBrandsStripContent } from "@/components/products/TrustedBrandsStrip";
+import WellnessFeatureStrip, { WellnessFeatureStripContent } from "@/components/products/WellnessFeatureStrip";
+import ProductWhyChoose, { WhyChooseContent } from "@/components/products/WhyChoose";
 import { BlogInsights } from "./home/BlogInsights";
-import TurnkeyWhyChoose from '@/components/turnkey/WhyChoose'
+import TurnkeyWhyChoose, { TurnkeyWhyChooseContent } from '@/components/turnkey/WhyChoose'
+import HeroSlider, { HeroSliderContent } from "@/components/products/HeroSlider"; // Already imported
+import Products from "@/components/products/Products"; // Removed invalid named import
+import TrunkeyMeaning, { TurnkeyMeaningContent } from '@/components/turnkey/TurnkeyMeaning' // Already imported
+import FeaturedProjects from '@/components/turnkey/FeaturedTrunkeyProjects' // Already imported
+import { WellnessCtaBannerContent } from "@/components/turnkey/WellnessCtaBanner";
+import { SupportHighlightsContent } from "./contact/SupportHightlights"; // Added import
+import { ContactSectionContent } from "./contact/ContactSection"; // Added import
+import { ContactHeroContent } from "./contact/ContactHero"; // Added import
 
 interface RenderSectionProps {
   componentKey: string;
@@ -62,7 +67,7 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
     case "home.manufacturingAndProjects":
       return <ManufacturingAndProjects sectionContent={data} />;
     case "home.productsGrid":
-      return <ProductsGrid sectionContent={data} />;
+      return <ProductsGrid sectionContent={data as ProductsGridContent} />;
     case "home.testimonials":
       return <Testimonials title={data.subtitle} />;
     case "home.turnkeySolutions":
@@ -74,89 +79,98 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       return <AboutHero sectionContent={data} />;
 
     case "about.ourStory":
-      return <AboutWellnessSection sectionContent={data} />;
+      return <AboutWellnessSection sectionContent={data as any} />;
 
     case "about.statsStrip":
-      return <StatsStrip sectionContent={data} />;
+      return <StatsStrip sectionContent={data as any} />;
 
     case "about.industriesWeServe":
-      return <IndustriesWeServe sectionContent={data} />;
+      const IndustriesComp: any = IndustriesWeServe;
+      return <IndustriesComp sectionContent={data} />;
 
     case "about.ourProducts":
-      return <OurProductsSection sectionContent={data} />;
-
+      return <OurProductsSection sectionContent={data as any} />;
+ case "about.testimonials":
+      return <Testimonials title={data.subtitle} />;
     case "about.ourExpertise":
-      return <ExpertiseSection sectionContent={data} />;
+      return <ExpertiseSection sectionContent={data as any} />;
 
     case "about.wellnessSection":
-      return <WellnessSection sectionContent={data} />;
+      return <WellnessSection {...(data as any)} />;
 
     case "about.ourTurnkeyProcess":
-      return <TurnkeyProcess sectionContent={data} />;
+      const TurnkeyProcessComp: any = TurnkeyProcess;
+      return <TurnkeyProcessComp sectionContent={data as any} />;
 
     case "about.aboutEnsis":
-      return <AboutEnsisSection sectionContent={data} />;
+      const AboutEnsisComp: any = AboutEnsisSection;
+      return <AboutEnsisComp sectionContent={data as any} />;
 
     case "about.whyChooseEnsis":
-      return <WhyChooseEnsis sectionContent={data} />;
+      return <WhyChooseEnsis sectionContent={data as any} />;
 
-    case "about.testimonials":
-      return <WellnessBanner sectionContent={data} />;
+    case "about.letsBuild":
+      return <WellnessBanner sectionContent={data as any} />;
 
-    case "about.founderSection":
-      return <FounderSection sectionContent={data} />;
+    case "about.founderVision":
+      return <FounderSection sectionContent={data as any} />;
 
     case "turnkey.banner":
-      return <TurnkeyHero sectionContent={data} />;
+      return <TurnkeyHero sectionContent={data as TurnkeyHeroContent} />;
     case "turnkey.completeSolutions":
-      return <TurnkeySolutionsSection sectionContent={data} />;
+      return <TurnkeySolutionsSection sectionContent={data as TurnkeySolutionsContent} />;
     case "turnkey.customized":
-      return <TurnkeyWhyChoose sectionContent={data} />;
+      return <TurnkeyWhyChoose sectionContent={data as TurnkeyWhyChooseContent} />;
     case "turnkey.facilities":
-      return <FacilitiesWeBuild sectionContent={data} />;
+      return <FacilitiesWeBuild sectionContent={data as FacilitiesWeBuildContent} />;
     case "turnkey.whatIsTurnkey":
-      return <WellnessCtaBanner sectionContent={data} />
+      return <TrunkeyMeaning sectionContent={data as TurnkeyMeaningContent} />
+      case "turnkey.readyToBuild":
+      return <WellnessCtaBanner sectionContent={data as WellnessCtaBannerContent} />
+      case "turnkey.featuredProjects":
+        return <FeaturedProjects sectionContent={data} /> 
 
     case "consultancy.hero":
-      return <ConsultancyHero sectionContent={data} />;
+      return <ConsultancyHero sectionContent={data as any} />;
     case "consultancy.readyToGetStarted":
-      return <ConsultancyCTA sectionContent={data} />;
-    case 'consultancy.whatWeOffer':
-      return <HowWeWork sectionContent={data} />
-    case "consultancy.whyChooseOurProcess":
-      return <ConsultancyServices sectionContent={data} />
+      return <ConsultancyCTA sectionContent={data as any} />;
+    case 'consultancy.whyChooseOurProcess':
+      return <HowWeWork sectionContent={data as any} />
+    case "consultancy.whatWeOffer":
+      return <ConsultancyServices sectionContent={data as any} />
 
 
     case "contact.featuresStrip":
-      return <SupportHighlights sectionContent={data} />
+      return <SupportHighlights sectionContent={data as SupportHighlightsContent} />;
     case "contact.getInTouch":
-      return <ContactSection sectionContent={data} />
+      return <ContactSection sectionContent={data as ContactSectionContent} />;
     case "contact.hero":
-      return <ContactHero sectionContent={data} />
+      return <ContactHero sectionContent={data as ContactHeroContent} />;
 
     case "blog.allBlogs":
-      return <BlogSection sectionContent={data} />
+      return <BlogSection {...(data as any)} />;
     case "blog.mediaResources":
-      return <SupportSection sectionContent={data} />
+      return <SupportSection {...(data as any)} />;
     case 'blog.hero':
-      return <BlogHeroSection sectionContent={data} />
+      return <BlogHeroSection {...(data as any)} />;
     case "blog.stayInspired":
-      return <NewsletterCard sectionContent={data} />
+      return <NewsletterCard sectionContent={data as any} />;
     case "blog.supportWellness":
-      return <WellnessResources sectionContent={data} />
+      return <WellnessResources sectionContent={data as any} />;
 
     case "product.hero":
-      return <ProductSlider sectionContent={data} />
+      return <HeroSlider sectionContent={data as HeroSliderContent} />
     case "product.featureStrip":
-      return <WellnessFeatureStrip sectionContent={data} />
+      return <WellnessFeatureStrip sectionContent={data as WellnessFeatureStripContent} />
     case "product.trustedBy":
-      return <TrustedBrandsStrip sectionContent={data} />
+      return <TrustedBrandsStrip sectionContent={data as TrustedBrandsStripContent} />
     case "product.whyChoose":
-      return <ProductWhyChoose sectionContent={data} />
+      const ProductWhyChooseComp: any = ProductWhyChoose;
+      return <ProductWhyChooseComp sectionContent={data as WhyChooseContent} />
     case "product.testimonials":
-      return <Testimonials  sectionContent={data} />
+      return <Testimonials title={data.subtitle} />
     case "product.productsection":
-      return <Products sectionContent={data} />
+      return <Products {...(data as any)} />
     default:
       return null;
   }

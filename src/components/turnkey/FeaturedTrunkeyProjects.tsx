@@ -1,49 +1,12 @@
 import Image from "next/image";
-import luxury from "@/assets/trunkey_solutions/featured_trunkey1.webp";
-import ayurveda from "@/assets/trunkey_solutions/featured_trunkey_2.webp";  
-import resort from "@/assets/trunkey_solutions/featured_trunkey_3.webp";
-import retreat from "@/assets/trunkey_solutions/featured_trunkey_4.webp";
-import integrated from "@/assets/trunkey_solutions/featured_trunkey_5.webp";
-import spa from "@/assets/trunkey_solutions/featured_trunkey_6.webp";
+
 import { Container } from "../ui/Container";
 import BookButton from "../ui/BookButton";
 import decorationLeft from "@/assets/icons/decoration_left.png"
 import decorationRight from "@/assets/icons/decoration_right.png"
 
-const projects = [
-  {
-    title: "Luxury Panchkarma Centre",
-    location: "Kerala",
-    image:luxury,
-  },
-  {
-    title: "Ayurveda Hospital",
-    location: "Maharashtra",
-    image:ayurveda,
-  },
-  {
-    title: "Wellness Resort & Spa",
-    location: "Karnataka",
-    image:resort,
-  },
-  {
-    title: "Health Retreat",
-    location: "Himachal Pradesh",
-    image:retreat,
-  },
-  {
-    title: "Integrative Clinic",
-    location: "Delhi",
-    image:integrated,
-  },
-  {
-    title: "Spa & Wellness Facility",
-    location: "Goa",
-    image:spa,
-  },
-];
 
-export default function FeaturedProjects() {
+export default function FeaturedProjects({sectionContent}: { sectionContent: any }) {
   return (
     <section className="w-full bg-[#f7f3eb]">
       <Container>
@@ -51,14 +14,14 @@ export default function FeaturedProjects() {
         <div className="mb-2 flex items-center justify-center gap-3">
          <Image src={decorationLeft} width={30} height={30} alt="decoration" className="h-full object-contain" />
           <h2 className="text-base font-semibold uppercase">
-            Featured Turnkey Projects
+            {sectionContent.title}
           </h2>
           <Image src={decorationRight} width={30} height={30} alt="decoration" className="h-full object-contain" />
         </div>
 
         {/* Cards */}
  <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6">
-  {projects.map((project, index) => (
+  {sectionContent.cards.map((project:any, index:number) => (
     <div
       key={index}
       className="overflow-hidden rounded-md border border-[#d8d2c6] bg-white"
@@ -66,8 +29,8 @@ export default function FeaturedProjects() {
       {/* Image with fixed height container */}
       <div className="relative h-[160px] w-full">
         <Image
-          src={project.image}
-          alt={project.title}
+          src={project.image.imageUrl}
+          alt={project.image.alt }
           fill
           className="object-cover scale-110"
         />
