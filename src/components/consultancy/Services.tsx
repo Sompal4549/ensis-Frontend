@@ -87,6 +87,7 @@ interface ConsultancyServicesContent {
     iconBg: string;
     image: string; // Assuming image is a path/URL
     learnMoreLink: string;
+    learnMoreText:string
   }>;
 }
 
@@ -139,7 +140,7 @@ export default function ConsultancyServices({ sectionContent }: { sectionContent
     className="flex items-center justify-center gap-2" // Removed Next/Link import, using <a>
   >
     <span style={{ fontSize: '12px', fontWeight: 600, color: '#2563EB' }}>
-      Learn More
+      {service.learnMoreText}
     </span>
     <span style={{ color: '#2563EB' }} className="transition-transform duration-300 group-hover:translate-x-1">
       &#8594;

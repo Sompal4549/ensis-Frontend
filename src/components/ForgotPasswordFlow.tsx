@@ -132,6 +132,7 @@ const handleRequestOTP = async (e: React.FormEvent) => {
             <input
               type="email"
               placeholder="Email Address"
+              suppressHydrationWarning
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full h-12 pl-12 pr-4 rounded-xl border border-[#183b17] focus:ring-1 focus:ring-[#c8a45d] outline-none"
@@ -146,6 +147,7 @@ const handleRequestOTP = async (e: React.FormEvent) => {
             <input
               type="text"
               placeholder="Enter 6-digit OTP"
+              suppressHydrationWarning
               maxLength={6}
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
@@ -162,6 +164,7 @@ const handleRequestOTP = async (e: React.FormEvent) => {
               <input
                 type="password"
                 placeholder="New Password"
+                suppressHydrationWarning
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full h-12 pl-12 pr-4 rounded-xl border border-[#183b17] focus:ring-1 focus:ring-[#c8a45d] outline-none"
@@ -173,6 +176,7 @@ const handleRequestOTP = async (e: React.FormEvent) => {
               <input
                 type="password"
                 placeholder="Confirm New Password"
+                suppressHydrationWarning
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full h-12 pl-12 pr-4 rounded-xl border border-[#183b17] focus:ring-1 focus:ring-[#c8a45d] outline-none"

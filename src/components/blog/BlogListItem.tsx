@@ -1,13 +1,15 @@
 // components/blog/cards/BlogListItem.tsx
-
-import Image, { StaticImageData } from "next/image";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { getImageUrl } from "@/lib/api/api";
 
 interface Props {
   title: string;
   date: string;
   category: string;
-  image: StaticImageData;
+  image: any;
+  link?: string;
 }
 
 export default function BlogListItem({
@@ -15,15 +17,19 @@ export default function BlogListItem({
   date,
   category,
   image,
+  link,
 }: Props) {
+  const href = link ? `/blog/${link}` : "#";
+  const imageUrl = typeof image === 'string' || !image?.src ? getImageUrl(image) : image;
+
   return (
-    <div className="flex flex-col gap-5 border-b border-[#e7d9cb] pb-3 sm:flex-row">
+    <Link href={href} className="group flex flex-col gap-5 border-b border-[#e7d9cb] pb-3 sm:flex-row">
       <div className="relative h-37.5 w-full overflow-hidden rounded-2xl sm:w-[300px]">
         <Image
-          src={image}
+          src={imageUrl || "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=2070"}
           alt={title}
           fill
-          className="object-cover"
+          className="object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
 
@@ -38,11 +44,11 @@ export default function BlogListItem({
           {title}
         </h3>
 
-        <button className="mt-3 flex items-center gap-2 text-sm font-medium text-[#b36c2c] transition hover:gap-3">
+        <div className="mt-3 flex items-center gap-2 text-sm font-medium text-[#b36c2c] transition group-hover:gap-3">
           Read More
           <ArrowRight size={15} />
-        </button>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 }

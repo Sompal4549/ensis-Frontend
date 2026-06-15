@@ -2,7 +2,7 @@ import Image from "next/image";
 import suppport from "@/assets/blog/support.webp"
 import { Container } from "../ui/Container";
 import BookButton from "../ui/BookButton";
-const SupportSection = () => {
+const SupportSection = ({sectionContent}) => {
   return (
     <Container>
     <div className="relative overflow-hidden rounded-2xl border border-[#e4d5c2] bg-gradient-to-r from-[#f6eddc] via-[#f1dfc7] to-[#d8b078]  flex flex-col lg:flex-row">

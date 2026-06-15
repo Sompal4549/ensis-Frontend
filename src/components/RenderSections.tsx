@@ -148,11 +148,11 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       return <ContactHero sectionContent={data as ContactHeroContent} />;
 
     case "blog.allBlogs":
-      return <BlogSection {...(data as any)} />;
+      return <BlogSection sectionContent={data} />;
     case "blog.mediaResources":
-      return <SupportSection {...(data as any)} />;
+      return <SupportSection sectionContent={data} />;
     case 'blog.hero':
-      return <BlogHeroSection {...(data as any)} />;
+      return <BlogHeroSection sectionContent={data} />;
     case "blog.stayInspired":
       return <NewsletterCard sectionContent={data as any} />;
     case "blog.supportWellness":

@@ -13,7 +13,7 @@ import quality from "@/assets/about_new/quality_and_durability.png"
 import innovation from "@/assets/about_new/innovation.png"
 import customer_satisfaction from "@/assets/about_new/innovation.png"
 import integrity from "@/assets/about_new/integrity.png"
-import { getComponentContent, getImageUrl } from "@/lib/api/api";
+import { getImageUrl } from "@/lib/api/api";
 
 interface ImageUrlData {
   imageUrl: string;

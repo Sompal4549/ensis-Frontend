@@ -1,68 +1,55 @@
 // components/blog/sidebar/PopularPosts.tsx
-
 import Image from "next/image";
 import SectionTitle from "./SectionTitle";
+import { API_URL } from "@/app/lib/api";
+import { getImageUrl } from "@/lib/api/api";
+import Link from "next/link";
 
-import feature1 from "@/assets/home/img-4.webp";
-import feature2 from "@/assets/home/img-5.webp";
-import feature3 from "@/assets/home/img-6.webp";
-import feature4 from "@/assets/home/img-7.webp";
+async function getPopularPosts() {
+  try {
+    const res = await fetch(`${API_URL}/blogs/popular`, { next: { revalidate: 3600 } });
+    const json = await res.json();
+    
+    if (json.status !== "success") return [];
+    
+    const data = json.data;
+    return data?.blogs || (Array.isArray(data) ? data : []);
+  } catch (error) {
+    console.error("Failed to fetch popular posts:", error);
+    return [];
+  }
+}
 
-const popularPosts = [
-  {
-    title: "The Benefits of Abhyanga (Ayurvedic Massage)",
-    date: "May 18, 2024",
-    image: feature1,
-  },
-  {
-    title: "Creating a Signature Spa Experience",
-    date: "May 12, 2024",
-    image: feature2,
-  },
-  {
-    title: "Herbal Steam Therapies and Their Benefits",
-    date: "May 09, 2024",
-    image: feature3,
-  },
-  {
-    title: "Aromatherapy in Spa Treatments",
-    date: "May 03, 2024",
-    image: feature4,
-  },
-  {
-    title: "Why Panchakarma is More Relevant Today Than Ever",
-    date: "April 27, 2024",
-    image: feature1,
-  },
-];
+export default async function PopularPosts() {
+  const popularPosts = await getPopularPosts();
 
-export default function PopularPosts() {
   return (
     <div>
       <SectionTitle title="Popular Posts" />
-
       <div className="space-y-2">
-        {popularPosts.map((post, index) => (
-          <div key={index} className="flex gap-4">
+        {popularPosts.slice(0, 5).map((post: any, index: number) => (
+          <Link 
+            href={`/blog/${post.link || post.id}`} 
+            key={post.id || index} 
+            className="flex gap-4 group"
+          >
             <div className="relative h-24 w-28 overflow-hidden rounded-xl">
               <Image
-                src={post.image}
+                src={post.image ? getImageUrl(post.image) : "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=2070"}
                 alt={post.title}
                 fill
-                className="object-cover"
+                className="object-cover transition-transform duration-300 group-hover:scale-110"
               />
             </div>
-
             <div className="flex-1">
-              <h4 className="line-clamp-2 font-serif text-lg leading-7 text-[#2b241f]">
+              <h4 className="line-clamp-2 font-serif text-lg leading-7 text-[#2b241f] group-hover:text-[#a7652a] transition-colors">
                 {post.title}
               </h4>
-
               <p className="mt-2 text-sm text-[#8d725f]">
-                {post.date}
+                {post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : post.date}
               </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
