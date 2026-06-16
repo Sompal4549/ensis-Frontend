@@ -17,7 +17,6 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,8 +29,7 @@ export default function RegisterPage() {
       const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ name, email, phone, password }),
+        body: JSON.stringify({ name, email, phone }),
       });
       const payload = await response.json();
       if (!response.ok || payload.status === "error") {
@@ -62,11 +60,7 @@ const inputClass =
   subtitle="Join the ENSIS wellness ecosystem and access premium solutions."
 >
 
-          <form onSubmit={onSubmit}>
-            <div className="mb-6 inline-flex size-12 items-center justify-center rounded-full bg-[#f3eee6] text-[#6f542f]">
-              <UserPlus size={22} />
-            </div>
-            
+          <form onSubmit={onSubmit}>     
             <label className={labelClass}>
               Full Name
               <input className={inputClass} type="text" value={name} onChange={(event) => setName(event.target.value)} required />
@@ -78,13 +72,8 @@ const inputClass =
             </label>
             
             <label className={labelClass}>
-              Phone Number (Optional)
-              <input className={inputClass} type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} />
-            </label>
-            
-            <label className={labelClass}>
-              Password
-              <input className={inputClass} type="password" value={password} onChange={(event) => setPassword(event.target.value)} required minLength={6} />
+              Phone Number
+              <input className={inputClass} type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required placeholder="91XXXXXXXXXX" />
             </label>
             
             <button className={buttonClass} type="submit" disabled={isLoading}>
