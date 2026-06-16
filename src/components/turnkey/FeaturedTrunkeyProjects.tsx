@@ -18,7 +18,9 @@ export default function FeaturedProjects({sectionContent}: { sectionContent: any
           </h2>
           <Image src={decorationRight} width={30} height={30} alt="decoration" className="h-full object-contain" />
         </div>
-
+<p className="mb-6 text-center text-xs sm:text-sm font-semibold">
+  {sectionContent.subtitle}
+</p>
         {/* Cards */}
  <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6">
   {sectionContent.cards.map((project:any, index:number) => (

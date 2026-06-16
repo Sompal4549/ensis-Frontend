@@ -151,9 +151,36 @@ subtitle="Access your wellness projects and services"
               className={`${inputClass} tracking-[4px] text-center font-bold`}
             />
             {timer > 0 && (
-              <p className="mt-2 text-sm text-center text-gray-500">
-                Resend OTP in {timer}s
-              </p>
+              <div className="mt-4 flex flex-col items-center justify-center gap-2">
+                <div className="relative flex items-center justify-center h-12 w-12">
+                  <svg className="h-full w-full -rotate-90 transform" viewBox="0 0 40 40">
+                    <circle
+                      cx="20"
+                      cy="20"
+                      r="18"
+                      stroke="#e8e0d3"
+                      strokeWidth="2.5"
+                      fill="transparent"
+                    />
+                    <circle
+                      cx="20"
+                      cy="20"
+                      r="18"
+                      stroke="#b88b3d"
+                      strokeWidth="2.5"
+                      fill="transparent"
+                      strokeDasharray={2 * Math.PI * 18}
+                      strokeDashoffset={2 * Math.PI * 18 - (timer / 60) * (2 * Math.PI * 18)}
+                      strokeLinecap="round"
+                      className="transition-all duration-1000 ease-linear"
+                    />
+                  </svg>
+                  <span className="absolute text-[11px] font-bold text-[#8b6b35]">{timer}</span>
+                </div>
+                <p className="text-[9px] font-bold uppercase tracking-[1px] text-[#8b6b35]/60 text-center">
+                  Waiting for resend...
+                </p>
+              </div>
             )}
             {showResendButton && (
               <button

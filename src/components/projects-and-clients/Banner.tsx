@@ -1,10 +1,14 @@
 "use client";
 
+import React from "react";
 import Image from "next/image";
-import banner from "@/assets/projects-and-clients/banner.webp"
+import banner from "@/assets/projects-and-clients/banner.webp";
+import { Container } from "../ui/Container";
+import flower from "@/assets/about/lotus.png";
+import left from "@/assets/icons/arrow_left.png"
+import right from "@/assets/icons/arrow_right.png"
 export interface ProjectsBannerContent {
-  logo: string;
-  logoAlt: string;
+ 
 
   title: {
     line1: string;
@@ -12,20 +16,11 @@ export interface ProjectsBannerContent {
   };
 
   subtitle: string;
-
   description: string;
-
-  heroImage: string;
-
-  sectionTitle: string;
+  heroImage?: string;
 }
-// data/projects-banner-fallback.ts
-
 
 export const fallbackProjectsBanner: ProjectsBannerContent = {
-  logo: "/images/ensis-logo.png",
-  logoAlt: "ENSIS Logo",
-
   title: {
     line1: "Our Projects.",
     line2: "Our Clients.",
@@ -36,9 +31,6 @@ export const fallbackProjectsBanner: ProjectsBannerContent = {
   description:
     "From concept to completion, we create holistic wellness environments that inspire healing, balance and transformation.",
 
-  heroImage: "/images/projects-banner.webp",
-
-  sectionTitle: "Our Projects",
 };
 
 interface ProjectsBannerProps {
@@ -49,59 +41,76 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
   content = fallbackProjectsBanner,
 }) => {
   return (
-    <section className="relative overflow-hidden">
-      <div className="grid lg:grid-cols-2 min-h-[650px]">
-        {/* LEFT CONTENT */}
-        <div className="flex flex-col justify-center px-6 md:px-12 xl:px-16 py-12">
-          <h1 className="font-serif leading-tight">
-            <span className="block text-[#1f2c25] text-5xl md:text-6xl xl:text-7xl">
-              {content.title.line1}
-            </span>
+ <section className="relative overflow-hidden bg-[#f8f2e8]">
+  {/* Background Image */}
+  <div className="absolute inset-0 z-0">
+    <Image
+      src={banner}
+      alt={content.title.line1}
+      fill
+      priority
+      sizes="100vw"
+      className="object-cover"
+    />
 
-            <span className="block text-[#b1793d] text-5xl md:text-6xl xl:text-7xl">
-              {content.title.line2}
-            </span>
-          </h1>
+    {/* Strong Luxury Gradient */}
+    <div className="absolute inset-0 bg-gradient-to-r from-[#f8f2e8] w-[60%] via-[#f8f2e8]/95 via-45% to-transparent" />
 
-          <div className="w-28 h-px bg-[#b1793d] my-8" />
+    {/* Extra Solid Layer */}
+    {/* <div className="absolute inset-y-0 left-0 w-[60%] bg-[#f8f2e8]/40" /> */}
+  </div>
 
-          <h2 className="text-2xl md:text-3xl text-[#1f2c25] font-medium mb-4">
-            {content.subtitle}
-          </h2>
+  {/* Content */}
+  <Container className="relative z-10">
+    <div className="flex min-h-[650px] md:min-h-[calc(100vh-96px)] items-center">
+      <div className="w-full lg:max-w-[42%]">
+        <h1 className="leading-[2]">
+          <span className="block text-[#1f2c25] text-4xl md:text-5xl lg:text-6xl">
+            {content.title.line1}
+          </span>
 
-          <p className="max-w-lg text-[#4f4f4f] text-lg leading-8">
-            {content.description}
-          </p>
-        </div>
+          <span className="block text-[#b1793d] text-4xl md:text-5xl lg:text-6xl">
+            {content.title.line2}
+          </span>
+        </h1>
 
-        {/* RIGHT IMAGE */}
-        <div className="relative min-h-[500px] lg:min-h-full">
+        <div className="flex items-center gap-2 my-2">
           <Image
-            src={banner}
-            alt={content.sectionTitle}
-            fill
-            priority
-            className="object-cover"
+            src={left}
+            height={45}
+            width={240}
+            alt="left decoration"
+            className="h-12 w-auto max-w-20 object-contain"
           />
 
-          {/* Luxury Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#f8f2e8]/70 via-transparent to-transparent" />
+          <Image
+            src={flower}
+            height={25}
+            width={50}
+            alt="flower"
+            className="h-5 w-auto object-contain"
+          />
+
+          <Image
+            src={right}
+            height={45}
+            width={240}
+            alt="right decoration"
+            className="h-12 w-auto max-w-20 object-contain"
+          />
         </div>
+
+        <h2 className="mb-4 text-xl text-[#1f2c25] font-medium">
+          {content.subtitle}
+        </h2>
+
+        <p className="max-w-xs leading-relaxed text-sm">
+          {content.description}
+        </p>
       </div>
-
-      {/* Bottom Section Header */}
-      <div className="border-t border-[#d7c3a5] py-6">
-        <div className="flex items-center justify-center gap-4">
-          <span className="w-12 h-px bg-[#b1793d]" />
-
-          <h3 className="font-serif text-4xl text-[#1f2c25]">
-            {content.sectionTitle}
-          </h3>
-
-          <span className="w-12 h-px bg-[#b1793d]" />
-        </div>
-      </div>
-    </section>
+    </div>
+  </Container>
+</section>
   );
 };
 
