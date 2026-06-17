@@ -284,7 +284,7 @@ export default function ContactBanner({
               </div>
             </div>
           </div>
-          <Image src={contact} alt="contact" width={250} height={250} className="object-fill" />
+          <Image src={contact} alt="contact" width={300} height={180} className="object-fill" />
         </div>
 
         {/* Bottom Strip */}
