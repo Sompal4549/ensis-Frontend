@@ -183,26 +183,26 @@ const errorClass =
   </div>
 
   {/* Content */}
-  <Container className="relative z-10 grid min-h-[550px] md:min-h-[calc(100vh-96px)]grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
-    <div className="flex flex-col items-center justify-center text-center">
-      <h1 className="text-4xl sm:text-6xl">
-        {content.hero.heading}
-      </h1>
+  <Container className="relative z-10 grid max-h-[650px] md:min-h-[calc(100vh-96px)] grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
+   <div className="flex flex-col items-center justify-center text-center rounded-2xl px-8 py-10 bg-gradient-to-r from-white/40 via-white/5 to-white/5 backdrop-blur-[2px]">
+  <h1 className="text-4xl sm:text-6xl">
+    {content.hero.heading}
+  </h1>
 
-      <div className="my-5 flex items-center gap-3">
-        <span className="h-px w-16 bg-[#b1793d]/80" />
-        <span className="h-2 w-2 rotate-45 bg-[#b1793d]/80" />
-        <span className="h-px w-16 bg-[#b1793d]/80" />
-      </div>
+  <div className="my-5 flex items-center gap-3">
+    <span className="h-px w-16 bg-[#b1793d]/80" />
+    <span className="h-2 w-2 rotate-45 bg-[#b1793d]/80" />
+    <span className="h-px w-16 bg-[#b1793d]/80" />
+  </div>
 
-      <h2 className="font-serif text-xl sm:text-2xl text-[#b1793d] font-semibold">
-        {content.hero.subheading}
-      </h2>
+  <h2 className="font-serif text-xl sm:text-2xl text-[#b1793d] font-semibold">
+    {content.hero.subheading}
+  </h2>
 
-      <p className="mt-3 max-w-md text-sm leading-relaxed sm:text-base font-semibold">
-        {content.hero.description}
-      </p>
-    </div>
+  <p className="mt-3 max-w-md text-sm leading-relaxed sm:text-base font-semibold">
+    {content.hero.description}
+  </p>
+</div>
   </Container>
 </section>
 
@@ -214,9 +214,9 @@ const errorClass =
         >
           {/* Form Card */}
           <div className="rounded-xl  bg-[#fdfaf3] p-5 sm:p-8">
-            <div className="mb-8 flex items-center justify-center gap-3">
+            <div className="mb-4 flex items-center justify-center gap-3">
               <span aria-hidden="true" className="h-px w-12 bg-[#b1793d]/50" />
-              <h3 className="text-center font-serif text-xl text-[#1f2c25] sm:text-2xl">
+              <h3 className="text-center font-serif text-xl text-[#1f2c25] sm:text-2xl font-semibold">
                 {content.formTitle}
               </h3>
               <span aria-hidden="true" className="h-px w-12 bg-[#b1793d]/50" />
