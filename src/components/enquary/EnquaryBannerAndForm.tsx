@@ -183,7 +183,7 @@ const errorClass =
   </div>
 
   {/* Content */}
-  <Container className="relative z-10 grid min-h-[650px] md:min-h-[calc(90vh-96px)]grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
+  <Container className="relative z-10 grid min-h-[550px] md:min-h-[calc(100vh-96px)]grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
     <div className="flex flex-col items-center justify-center text-center">
       <h1 className="text-4xl sm:text-6xl">
         {content.hero.heading}
@@ -207,13 +207,13 @@ const errorClass =
 </section>
 
       {/* Form + Sidebar Section */}
-      <Container>
+      <Container className="relative z-20 -mt-12 sm:-mt-10 bg-white rounded-xl p-0! border-[#e3d2b0] border">
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_320px]"
+          className="grid grid-cols-1 lg:grid-cols-[1fr_380px]"
         >
           {/* Form Card */}
-          <div className="rounded-xl border border-[#e3d2b0] bg-[#fdfaf3] p-5 sm:p-8">
+          <div className="rounded-xl  bg-[#fdfaf3] p-5 sm:p-8">
             <div className="mb-8 flex items-center justify-center gap-3">
               <span aria-hidden="true" className="h-px w-12 bg-[#b1793d]/50" />
               <h3 className="text-center font-serif text-xl text-[#1f2c25] sm:text-2xl">
@@ -552,45 +552,7 @@ const errorClass =
 
           {/* Sidebar */}
           <aside className="overflow-hidden rounded-xl ">
-            {/* <div className="p-6">
-              <h4 className="mb-6 text-center text-sm font-semibold uppercase tracking-wide text-[#e8c766]">
-                {content.whyChoose.heading}
-              </h4>
-
-              <div className="divide-y divide-[#e8c766]/15">
-                {content.whyChoose.items.map((item: WhyChooseItem) => (
-                  <div key={item.id} className="flex gap-4 py-4 first:pt-0 last:pb-0">
-                    <div className="relative h-9 w-9 shrink-0">
-                      <Image
-                        src={item.iconSrc}
-                        alt={item.iconAlt}
-                        fill
-                        className="object-contain"
-                        sizes="36px"
-                      />
-                    </div>
-                    <div>
-                      <p className="font-serif text-base text-[#e8c766]">
-                        {item.title}
-                      </p>
-                      <p className="mt-1 text-xs leading-relaxed text-[#cbd5c8]">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="relative h-40 w-full sm:h-48">
-              <Image
-                src={content.whyChoose.bottomImageSrc}
-                alt={content.whyChoose.bottomImageAlt}
-                fill
-                className="object-cover"
-                sizes="320px"
-              />
-            </div> */}
+            
             <Image alt="enquary bg" src={enquaryBg} />
           </aside>
         </form>
