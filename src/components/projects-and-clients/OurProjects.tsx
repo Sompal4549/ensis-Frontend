@@ -6,7 +6,27 @@ import decorationLeft from "@/assets/icons/decoration_left.png";
 import decorationRight from "@/assets/icons/decoration_right.png";
 import { MapPin } from "lucide-react";
 
-export default function OurProjects({ sectionContent }: { sectionContent: any }) {
+interface ProjectCardImage {
+  imageUrl: string;
+  alt: string;
+}
+
+interface ProjectCard {
+  title: string;
+  location: string;
+  image: ProjectCardImage;
+}
+interface OurProjectsContent {
+  title: string;
+  subtitle: string;
+  cards: ProjectCard[];
+}
+
+interface OurProjectsProps {
+  sectionContent: OurProjectsContent;
+}
+
+export default function OurProjects({ sectionContent }: OurProjectsProps) {
   return (
     <section className="w-full bg-[#f7f3eb] py-10 sm:py-12">
       <Container>
@@ -36,7 +56,7 @@ export default function OurProjects({ sectionContent }: { sectionContent: any })
 
         {/* Cards */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-          {sectionContent.cards.map((project: any, index: number) => (
+          {sectionContent.cards.map((project: ProjectCard, index: number) => (
             <div
               key={index}
               className="overflow-hidden rounded-md border border-[#d8d2c6] bg-white"

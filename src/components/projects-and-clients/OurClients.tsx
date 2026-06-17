@@ -2,13 +2,20 @@ import Image, { StaticImageData } from "next/image";
 import { Container } from "../ui/Container";
 import decorationLeft from "@/assets/icons/decoration_left.png"
 import decorationRight from "@/assets/icons/decoration_right.png"
-import client from "@/assets/projects-and-clients/contact.webp"
 import flower from "@/assets/about/lotus.png";
 import projects from "@/assets/images/projects.webp"
 import experience from "@/assets/images/experience.webp"
 import professionals from "@/assets/images/professionals.webp"
 import pan_india from "@/assets/products/pan_india.webp"
 import customized from "@/assets/icons/customized.webp"
+import hotels_and_retreats from "@/assets/icons/hotels_and_retreats.webp"
+import panchkarma2 from "@/assets/icons/panchkarma2.webp"
+import partner from "@/assets/projects-and-clients/ourclients.webp"
+import client1 from "@/assets/projects-and-clients/client1.webp"
+import client2 from "@/assets/projects-and-clients/client2.webp"
+import client3 from "@/assets/projects-and-clients/client3.webp"
+import ourClients from "@/assets/projects-and-clients/ourclients.webp"
+
 export interface ClientLogo {
   id: string;
   name: string;
@@ -36,8 +43,8 @@ export interface OurClients {
 }
 export const clientsBannerFallback: OurClients = {
   heading: "Our Clients",
-  subheading: "Trusted by Leading Wellness Brands Across India.",
-  decorativeImageSrc: client,
+  subheading: "Trusted by Leading Wellness Brands Across India. (Dummy Images)",
+  decorativeImageSrc:ourClients, // Dummy image for decorativeImageSrc
   decorativeImageAlt: "Ayurvedic spa items with diya, leaves and towels",
   clients: [
     {
@@ -51,7 +58,7 @@ export const clientsBannerFallback: OurClients = {
     {
       id: "jiva",
       name: "JIVA Ayurveda",
-      imageSrc: "/images/clients/jiva.png",
+      imageSrc: client1,
       imageAlt: "JIVA Ayurveda logo",
       width: 160,
       height: 48,
@@ -59,7 +66,7 @@ export const clientsBannerFallback: OurClients = {
     {
       id: "kairali",
       name: "Kairali Ayurvedic Group",
-      imageSrc: "/images/clients/kairali.png",
+      imageSrc:client2,
       imageAlt: "Kairali Ayurvedic Group logo",
       width: 160,
       height: 48,
@@ -67,7 +74,7 @@ export const clientsBannerFallback: OurClients = {
     {
       id: "somatheeram",
       name: "Somatheeram Ayurveda Group",
-      imageSrc: "/images/clients/somatheeram.png",
+      imageSrc: client3,
       imageAlt: "Somatheeram Ayurveda Group logo",
       width: 160,
       height: 48,
@@ -75,7 +82,7 @@ export const clientsBannerFallback: OurClients = {
     {
       id: "srisri",
       name: "Sri Sri Tattva",
-      imageSrc: "/images/clients/srisri.png",
+      imageSrc: client1,
       imageAlt: "Sri Sri Tattva logo",
       width: 160,
       height: 48,
@@ -83,7 +90,7 @@ export const clientsBannerFallback: OurClients = {
     {
       id: "vaidyaratnam",
       name: "Vaidyaratnam",
-      imageSrc: "/images/clients/vaidyaratnam.png",
+      imageSrc: client2,
       imageAlt: "Vaidyaratnam logo",
       width: 160,
       height: 48,
@@ -91,7 +98,7 @@ export const clientsBannerFallback: OurClients = {
     {
       id: "arogyadhama",
       name: "Arogyadhama Ayurveda",
-      imageSrc: "/images/clients/arogyadhama.png",
+      imageSrc:client3,
       imageAlt: "Arogyadhama Ayurveda logo",
       width: 160,
       height: 48,
@@ -99,7 +106,7 @@ export const clientsBannerFallback: OurClients = {
     {
       id: "sahayog",
       name: "Sahayog Wellness",
-      imageSrc: "/images/clients/sahayog.png",
+      imageSrc: client1,
       imageAlt: "Sahayog Wellness logo",
       width: 160,
       height: 48,
@@ -108,42 +115,42 @@ export const clientsBannerFallback: OurClients = {
   stats: [
     {
       id: "happy-clients",
-      iconSrc: flower,
+      iconSrc: flower, // Dummy image for flower icon
       iconAlt: "Lotus icon",
       value: "500+",
       label: "Happy Clients",
     },
     {
       id: "projects-completed",
-      iconSrc: projects,
+      iconSrc: projects, // Dummy image for projects icon
       iconAlt: "Projects icon",
       value: "1000+",
       label: "Projects Completed",
     },
     {
       id: "years-trust",
-      iconSrc: experience,
+      iconSrc: experience, // Dummy image for experience icon
       iconAlt: "Shield icon",
       value: "20+",
       label: "Years of Trust",
     },
     {
       id: "expert-professionals",
-      iconSrc: professionals,
+      iconSrc: professionals, // Dummy image for professionals icon
       iconAlt: "Professionals icon",
       value: "50+",
       label: "Expert Professionals",
     },
     {
       id: "pan-india",
-      iconSrc: pan_india,
+      iconSrc: pan_india, // Dummy image for pan_india icon
       iconAlt: "Location pin icon",
       value: "Pan India",
       label: "Presence",
     },
     {
       id: "client-satisfaction",
-      iconSrc: customized,
+      iconSrc: customized, // Dummy image for customized icon
       iconAlt: "Satisfaction icon",
       value: "100%",
       label: "Client Satisfaction",
@@ -197,7 +204,7 @@ export default function WhyPartner({ data }: OurClientsBannerProps) {
         <div aria-hidden="true" className="mb-8 h-px w-full bg-[#E3D2B0]" />
 
         {/* Stats + decorative image */}
-        <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
+        <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-6 relative pr-20">
     <div className="grid w-full grid-cols-2 gap-6 sm:grid-cols-3 lg:flex-1 lg:grid-cols-6 lg:gap-4">
   {banner.stats.map((stat, index) => (
     <div
@@ -229,7 +236,7 @@ export default function WhyPartner({ data }: OurClientsBannerProps) {
             ))}
           </div>
 
-          <div className="relative h-24 w-40 shrink-0 sm:h-28 sm:w-48 lg:h-24 lg:w-44">
+          <div className="absolute -right-10 -top-10 bottom-0 w-40 shrink-0 sm:h-28 sm:w-48 lg:h-24 lg:w-44">
             <Image
               src={banner.decorativeImageSrc}
               alt={banner.decorativeImageAlt}

@@ -1,16 +1,21 @@
 "use client";
 
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { Container } from "../ui/Container";
 import flower from "@/assets/about/lotus.png";
 import left from "@/assets/icons/arrow_left.png"
 import right from "@/assets/icons/arrow_right.png"
 import Link from "next/link";
 import GreenButton from "../ui/GreenButton";
-
+import quote from '@/assets/icons/quote.webp';
+import contact from "@/assets/projects-and-clients/contact.webp"
+import contact2 from "@/assets/projects-and-clients/contact2.png"
+import client1 from "@/assets/projects-and-clients/client1.webp"
+import client2 from "@/assets/projects-and-clients/client2.webp"
+import client3 from "@/assets/projects-and-clients/client3.webp"
 
 interface Testimonial {
-  logo: string;
+  logo: string | StaticImageData;
   company: string;
   person: string;
   designation: string;
@@ -26,7 +31,7 @@ interface ContactInfo {
   workingHours: string;
 }
 
-interface ContactBannerContent {
+interface ContactSection {
   quote: string;
 
   testimonials: Testimonial[];
@@ -37,31 +42,31 @@ interface ContactBannerContent {
 
   contact: ContactInfo;
 
-  leftImage: string;
+  leftImage: StaticImageData;
   rightImage: string;
 
   bottomText: string;
 }
 
-const fallbackContactBanner: ContactBannerContent = {
+const fallbackContactBanner: ContactSection = {
   quote:
     "ENSIS transforms ideas into timeless wellness spaces that create impact, build trust and heal lives.",
 
   testimonials: [
     {
-      logo: "/images/clients/kairali.png",
+      logo: client1, // Dummy image for Kairali logo
       company: "Kairali Ayurvedic Group",
       person: "Ms. Anagha Joshi",
       designation: "Managing Director",
     },
     {
-      logo: "/images/clients/somatheeram.png",
+      logo: client2, // Dummy image for Somatheeram logo
       company: "Somatheeram Ayurveda Group",
       person: "Dr. Pradeep Sharma",
       designation: "CEO",
     },
     {
-      logo: "/images/clients/arogyadhama.png",
+      logo: client3, // Dummy image for Arogyadhama logo
       company: "Arogyadhama Ayurveda",
       person: "Dr. Rakesh Nair",
       designation: "Director",
@@ -85,15 +90,15 @@ const fallbackContactBanner: ContactBannerContent = {
     workingHours: "9:00 AM - 6:00 PM",
   },
 
-  leftImage: "/images/contact-banner-left.png",
-  rightImage: "/images/contact-banner-right.png",
+  leftImage: contact2, // Dummy image for leftImage (even if commented out in JSX)
+  rightImage: "https://placehold.co/600x400?text=Contact+Banner",
 
   bottomText: "Crafting Wellness Spaces. Creating Lasting Legacies.",
 };
 
 
 interface Props {
-  content?: ContactBannerContent;
+  content?: ContactSection;
 }
 
 export default function ContactBanner({
@@ -102,25 +107,31 @@ export default function ContactBanner({
   return (
     <section className="overflow-hidden border border-[#e3d4bf] bg-[#faf5ed]">
       <Container className="!py-0">
+        <div className="flex">
+          {/* Top */}
+          <div>
 
-        {/* Top */}
-        <div className="grid lg:grid-cols-[1fr_2fr] border-b border-[#e3d4bf]">
-          {/* Quote */}
-          <div className="p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-[#e3d4bf]">
-            <p className="text-lg text-[#2f2f2f] leading-relaxed">
-              {content.quote}
-            </p>
-            <div className="flex gap-2 items-center justify-center">
-<Image
+            <div className="grid lg:grid-cols-[1fr_2fr] border-b border-[#e3d4bf]">
+              {/* Quote */}
+              <div className="p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-[#e3d4bf] ">
+                <div className="flex">
 
- src={left}
+                  <Image src={quote} height={30} width={30} alt="quote" className="max-h-7.5 object-contain" />
+                  <p className="text-md text-[#2f2f2f] leading-relaxed">
+                    {content.quote}
+                  </p>
+                </div>
+                <div className="flex gap-2 items-center justify-center">
+                  <Image
+
+                    src={left}
                     height={35}
                     width={240}
                     alt="flower"
                     className="object-contain object-center w-auto max-w-20 h-10"
                     crossOrigin="anonymous"
-                    style={{ width: "auto" }}/>
-               <Image
+                    style={{ width: "auto" }} />
+                  <Image
                     src={flower}
                     height={40}
                     width={40}
@@ -128,155 +139,152 @@ export default function ContactBanner({
                     className="h-full object-contain object-center w-auto max-w-10"
                     crossOrigin="anonymous"
                     style={{ width: "auto" }}
-                    />
-                    <Image
+                  />
+                  <Image
 
- src={right}
+                    src={right}
                     height={35}
                     width={240}
                     alt="flower"
                     className="object-contain object-center w-auto max-w-20 h-10"
                     crossOrigin="anonymous"
-                    style={{ width: "auto" }}/>
+                    style={{ width: "auto" }} />
+                </div>
+              </div>
+
+              {/* Clients */}
+              <div className="grid items-stretch sm:grid-cols-2 lg:grid-cols-3">
+                {content.testimonials.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex h-full flex-col border-b border-[#e3d4bf] p-6 text-center sm:border-b-0 lg:border-r last:border-r-0"
+                  >
+                    {/* Fixed Logo Area */}
+                    <div className="mb-4 flex h-12 items-center justify-center">
+                      <Image
+                        src={item.logo}
+                        alt={item.company}
+                        width={100}
+                        height={30}
+                        className="object-contain"
+                      />
                     </div>
-          </div>
 
-          {/* Clients */}
-        <div className="grid items-stretch sm:grid-cols-2 lg:grid-cols-3">
-  {content.testimonials.map((item, index) => (
-    <div
-      key={index}
-      className="flex h-full flex-col border-b border-[#e3d4bf] p-6 text-center sm:border-b-0 lg:border-r last:border-r-0"
-    >
-      {/* Fixed Logo Area */}
-      <div className="mb-4 flex h-20 items-center justify-center">
-        <Image
-          src={item.logo}
-          alt={item.company}
-          width={120}
-          height={60}
-          className="object-contain"
-        />
-      </div>
+                    {/* Content */}
+                    <div className="flex flex-1 flex-col">
+                      <h4 className="font-semibold">{item.person}</h4>
 
-      {/* Content */}
-      <div className="flex flex-1 flex-col">
-        <h4 className="font-semibold">{item.person}</h4>
+                      <p className="text-sm ">
+                        {item.designation}
+                      </p>
 
-        <p className="text-sm text-[#666]">
-          {item.designation}
-        </p>
-
-        <p className="mt-auto pt-2 text-xs text-[#888]">
-          {item.company}
-        </p>
-      </div>
-    </div>
-  ))}
-</div>
-        </div>
-
-        {/* Middle */}
-        <div className="grid lg:grid-cols-2">
-          {/* CTA */}
-          <div className="relative min-h-[320px] bg-[#002112]">
-            {/* <Image
-              src={content.leftImage}
-              alt="Wellness"
-              fill
-              className="object-cover"
-            /> */}
-
-            <div className="absolute inset-0 bg-[#002112]" />
-
-            <div className="absolute inset-0 flex flex-col justify-center p-8 md:p-12 text-white">
-              <h3 className="text-2xl md:text-4xl font-serif mb-4">
-                {content.ctaTitle}
-              </h3>
-
-              <p className="max-w-md mb-6 text-sm md:text-base">
-                {content.ctaDescription}
-              </p>
-<div>
-
-<GreenButton text={content.ctaButtonText} path="/projects-and-clients"/>
-</div>
-            </div>
-          </div>
-
-          {/* Contact */}
-          <div className="relative min-h-[320px] bg-[#f8f2e8]">
-            <Image
-              src={content.rightImage}
-              alt="Contact"
-              fill
-              className="object-cover opacity-20"
-            />
-
-            <div className="relative z-10 p-8 md:p-12">
-              <h3 className="text-3xl font-serif">
-                Get in Touch
-              </h3>
-
-              <div className="space-y-2">
-                <div className="flex items-baseline justify-between">
-
-                  <div>
-                    <h4 className="font-semibold">
-                      {content.contact.officeName}
-                    </h4>
-
-                    <p>{content.contact.address}</p>
+                      <p className="mt-auto pt-2 text-xs font-medium">
+                        {item.company}
+                      </p>
+                    </div>
                   </div>
-          <div className="flex gap-2 items-center justify-center">
-<Image
+                ))}
+              </div>
+            </div>
 
- src={left}
-                    height={35}
-                    width={240}
-                    alt="flower"
-                    className="object-contain object-center w-auto max-w-20 h-10"
-                    crossOrigin="anonymous"
-                    style={{ width: "auto" }}/>
-               <Image
-                    src={flower}
-                    height={40}
-                    width={40}
-                    alt="flower"
-                    className="h-full object-contain object-center w-auto max-w-10"
-                    crossOrigin="anonymous"
-                    style={{ width: "auto" }}
-                    />
-                    <Image
+            {/* Middle */}
+           <div className="grid lg:grid-cols-[3fr_2fr]">
+              {/* CTA */}
+              <div className="relative bg-[#002112] pl-10">
+                <Image
+                  src={content.leftImage}
+                  alt="Wellness"
+                  fill
+                  className="object-fill z-10 max-w-40"
+                />
 
- src={right}
-                    height={35}
-                    width={240}
-                    alt="flower"
-                    className="object-contain object-center w-auto max-w-20 h-10"
-                    crossOrigin="anonymous"
-                    style={{ width: "auto" }}/>
+                {/* <div className="absolute inset-0 bg-[#002112] z-20" /> */}
+
+                <div className="absolute inset-0 flex flex-col justify-center  text-white z-20 pl-50">
+                  <h3 className="text-lg font-serif mb-4">
+                    {content.ctaTitle}
+                  </h3>
+
+                  <p className="max-w-md mb-6 text-sm">
+                    {content.ctaDescription}
+                  </p>
+                  <div>
+
+                    <GreenButton text={content.ctaButtonText} path="/projects-and-clients" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact */}
+              <div className="relative bg-[#f8f2e8]">
+
+                <div className="relative z-10 py-4 pl-12">
+                  <h3 className="text-xl font-serif font-semibold">
+                    Get in Touch
+                  </h3>
+
+                  <div className="space-y-2">
+                    <div className="flex items-baseline justify-between">
+
+                      <div>
+                        <h4 className="font-semibold">
+                          {content.contact.officeName}
+                        </h4>
+
+                        <p>{content.contact.address}</p>
+                      </div>
+                      <div className="flex gap-2 items-center justify-center">
+                        <Image
+
+                          src={left}
+                          height={35}
+                          width={60}
+                          alt="flower"
+                          className="object-contain object-center w-auto max-w-15 h-10"
+                          crossOrigin="anonymous"
+                          style={{ width: "auto" }} />
+                        <Image
+                          src={flower}
+                          height={40}
+                          width={40}
+                          alt="flower"
+                          className="h-full object-contain object-center w-auto max-w-10"
+                          crossOrigin="anonymous"
+                          style={{ width: "auto" }}
+                        />
+                        <Image
+
+                          src={right}
+                          height={35}
+                          width={60}
+                          alt="flower"
+                          className="object-contain object-center w-auto max-w-20 h-10"
+                          crossOrigin="anonymous"
+                          style={{ width: "auto" }} />
+                      </div>
                     </div>
-                </div>
-                <div className="flex items-baseline justify-between">
-                <div>
+                    <div className="flex items-baseline justify-between">
+                      <div>
 
-                  <p>{content.contact.phone}</p>
-                  <p>{content.contact.email}</p>
-                  <p>{content.contact.website}</p>
-                </div>
-                <div className="">
-                  <h4 className="font-semibold">
-                    Working Hours
-                  </h4>
+                        <p>{content.contact.phone}</p>
+                        <p>{content.contact.email}</p>
+                        <p>{content.contact.website}</p>
+                      </div>
+                      <div className="">
+                        <h4 className="font-semibold">
+                          Working Hours
+                        </h4>
 
-                  <p>{content.contact.workingDays}</p>
-                  <p>{content.contact.workingHours}</p>
-                </div>
+                        <p>{content.contact.workingDays}</p>
+                        <p>{content.contact.workingHours}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
+          <Image src={contact} alt="contact" width={250} height={250} className="object-fill" />
         </div>
 
         {/* Bottom Strip */}

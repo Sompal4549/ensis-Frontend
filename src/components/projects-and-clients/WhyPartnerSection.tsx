@@ -9,6 +9,7 @@ import pan_india from "@/assets/products/pan_india.webp"
 import customized from "@/assets/icons/customized.webp"
 import hotels_and_retreats from "@/assets/icons/hotels_and_retreats.webp"
 import panchkarma2 from "@/assets/icons/panchkarma2.webp"
+import partner from "@/assets/projects-and-clients/ourclients.webp"
  interface PartnerFeature {
   id: string;
   iconSrc: string|StaticImageData;
@@ -20,7 +21,7 @@ import panchkarma2 from "@/assets/icons/panchkarma2.webp"
  interface WhyPartnerBannerData {
   heading: string;
   features: PartnerFeature[];
-  decorativeImageSrc: string;
+  decorativeImageSrc: string|StaticImageData;
   decorativeImageAlt: string;
 }
 interface WhyPartnerBannerProps {
@@ -30,7 +31,7 @@ interface WhyPartnerBannerProps {
 
  const whyPartnerBannerFallback: WhyPartnerBannerData = {
   heading: "Why Partner with ENSIS?",
-  decorativeImageSrc: "/images/why-partner/decor-spa-items.png",
+  decorativeImageSrc: partner,
   decorativeImageAlt: "Ayurvedic spa items with copper vessels, herbal pouch and candles",
   features: [
     {
@@ -93,7 +94,7 @@ export default function WhyPartnerBanner({ data }: WhyPartnerBannerProps) {
         />
       </div>
 
-      <Container className="relative">
+      <Container className="relative pr-40!">
         {/* Heading */}
         <div className="mb-2 flex items-center gap-3 pt-2">
           <h2 className="font-serif text-xl font-semibold text-[#E8C766] sm:text-2xl">

@@ -62,7 +62,7 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
 
   {/* Content */}
   <Container className="relative z-10">
-    <div className="flex min-h-[650px] md:min-h-[calc(100vh-96px)] items-center">
+    <div className="flex min-h-[650px] md:min-h-[calc(90vh-96px)] items-center">
       <div className="w-full lg:max-w-[42%]">
         <h1 className="leading-[2]">
           <span className="block text-[#1f2c25] text-4xl md:text-5xl lg:text-6xl">
