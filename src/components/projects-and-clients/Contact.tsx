@@ -8,12 +8,12 @@ import right from "@/assets/icons/arrow_right.png"
 import Link from "next/link";
 import GreenButton from "../ui/GreenButton";
 import quote from '@/assets/icons/quote.webp';
-import contact from "@/assets/projects-and-clients/contact.webp"
+import contact from "@/assets/projects-and-clients/contact.png"
 import contact2 from "@/assets/projects-and-clients/contact2.png"
 import client1 from "@/assets/projects-and-clients/client1.webp"
 import client2 from "@/assets/projects-and-clients/client2.webp"
 import client3 from "@/assets/projects-and-clients/client3.webp"
-
+import arrow from "@/assets/icons/arrow.png"
 interface Testimonial {
   logo: string | StaticImageData;
   company: string;
@@ -111,82 +111,6 @@ export default function ContactBanner({
           {/* Top */}
           <div>
 
-            <div className="grid lg:grid-cols-[1fr_2fr] border-b border-[#e3d4bf]">
-              {/* Quote */}
-              <div className="p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-[#e3d4bf] ">
-                <div className="flex">
-
-                  <Image src={quote} height={30} width={30} alt="quote" className="max-h-7.5 object-contain" />
-                  <p className="text-md text-[#2f2f2f] leading-relaxed">
-                    {content.quote}
-                  </p>
-                </div>
-                <div className="flex gap-2 items-center justify-center">
-                  <Image
-
-                    src={left}
-                    height={35}
-                    width={240}
-                    alt="flower"
-                    className="object-contain object-center w-auto max-w-20 h-10"
-                    crossOrigin="anonymous"
-                    style={{ width: "auto" }} />
-                  <Image
-                    src={flower}
-                    height={40}
-                    width={40}
-                    alt="flower"
-                    className="h-full object-contain object-center w-auto max-w-10"
-                    crossOrigin="anonymous"
-                    style={{ width: "auto" }}
-                  />
-                  <Image
-
-                    src={right}
-                    height={35}
-                    width={240}
-                    alt="flower"
-                    className="object-contain object-center w-auto max-w-20 h-10"
-                    crossOrigin="anonymous"
-                    style={{ width: "auto" }} />
-                </div>
-              </div>
-
-              {/* Clients */}
-              <div className="grid items-stretch sm:grid-cols-2 lg:grid-cols-3">
-                {content.testimonials.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex h-full flex-col border-b border-[#e3d4bf] p-6 text-center sm:border-b-0 lg:border-r last:border-r-0"
-                  >
-                    {/* Fixed Logo Area */}
-                    <div className="mb-4 flex h-12 items-center justify-center">
-                      <Image
-                        src={item.logo}
-                        alt={item.company}
-                        width={100}
-                        height={30}
-                        className="object-contain"
-                      />
-                    </div>
-
-                    {/* Content */}
-                    <div className="flex flex-1 flex-col">
-                      <h4 className="font-semibold">{item.person}</h4>
-
-                      <p className="text-sm ">
-                        {item.designation}
-                      </p>
-
-                      <p className="mt-auto pt-2 text-xs font-medium">
-                        {item.company}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
             {/* Middle */}
            <div className="grid lg:grid-cols-[3fr_2fr]">
               {/* CTA */}
@@ -234,33 +158,7 @@ export default function ContactBanner({
                         <p>{content.contact.address}</p>
                       </div>
                       <div className="flex gap-2 items-center justify-center">
-                        <Image
-
-                          src={left}
-                          height={35}
-                          width={60}
-                          alt="flower"
-                          className="object-contain object-center w-auto max-w-15 h-10"
-                          crossOrigin="anonymous"
-                          style={{ width: "auto" }} />
-                        <Image
-                          src={flower}
-                          height={40}
-                          width={40}
-                          alt="flower"
-                          className="h-full object-contain object-center w-auto max-w-10"
-                          crossOrigin="anonymous"
-                          style={{ width: "auto" }}
-                        />
-                        <Image
-
-                          src={right}
-                          height={35}
-                          width={60}
-                          alt="flower"
-                          className="object-contain object-center w-auto max-w-20 h-10"
-                          crossOrigin="anonymous"
-                          style={{ width: "auto" }} />
+                         <Image src={arrow} alt='arrow' width={150} height={40} className="max-w-55 sm:max-w-75 md:max-w-87.5" crossOrigin="anonymous" />
                       </div>
                     </div>
                     <div className="flex items-baseline justify-between">
@@ -284,7 +182,7 @@ export default function ContactBanner({
               </div>
             </div>
           </div>
-          <Image src={contact} alt="contact" width={300} height={180} className="object-fill" />
+          <Image src={contact} alt="contact" width={150} height={150} className="object-fill max-h-[100%]" />
         </div>
 
         {/* Bottom Strip */}

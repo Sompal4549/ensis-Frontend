@@ -160,7 +160,7 @@ const labelBaseClass =
   "mb-1 block text-xs font-medium text-[#5a5248]";
 
 const inputBaseClass =
-  "w-full rounded-md border border-[#d8cdb8] bg-white px-3 py-1 text-sm text-[#3a3a3a] outline-none transition focus:border-[#b1793d] focus:ring-1 focus:ring-[#b1793d]/20";
+  "w-full rounded-md border border-[#d8cdb8] bg-white px-3 py-1 text-sm text-[#3a3a3a] placeholder:text-black outline-none transition focus:border-[#b1793d] focus:ring-1 focus:ring-[#b1793d]/20";
 
 const errorClass =
   "mt-1 text-[11px] text-red-600";
@@ -335,7 +335,7 @@ const errorClass =
                   <span className={labelBaseClass}>Project Location</span>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
-                      <label className="mb-1 block text-xs text-[#5a5248]" htmlFor="state">
+                      <label className="mb-1 block text-xs" htmlFor="state">
                         State
                       </label>
                       <select
@@ -353,7 +353,7 @@ const errorClass =
                       </select>
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-[#5a5248]" htmlFor="city">
+                      <label className="mb-1 block text-xs" htmlFor="city">
                         City
                       </label>
                       <select
@@ -469,8 +469,8 @@ const errorClass =
               {/* Upload */}
               <div>
                 <h4 className={sectionHeadingClass}>Upload</h4>
-                <p className="mb-1 text-sm text-[#3a3a3a]">{content.upload.label}</p>
-                <p className="mb-1 text-xs text-[#a39d8e]">
+                <p className="mb-1 text-sm ">{content.upload.label}</p>
+                <p className="mb-1 text-xs">
                   {content.upload.helperText}
                 </p>
                 <div className="flex items-center gap-3">
@@ -489,7 +489,7 @@ const errorClass =
                       setField("file", e.target.files?.[0] ?? null)
                     }
                   />
-                  <span className="truncate text-xs text-[#a39d8e]">
+                  <span className="truncate text-xs">
                     {formData.file ? formData.file.name : "No file chosen"}
                   </span>
                 </div>

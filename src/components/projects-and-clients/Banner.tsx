@@ -7,6 +7,7 @@ import { Container } from "../ui/Container";
 import flower from "@/assets/about/lotus.png";
 import left from "@/assets/icons/arrow_left.png"
 import right from "@/assets/icons/arrow_right.png"
+import arrow from "@/assets/icons/arrow.png"
 export interface ProjectsBannerContent {
  
 
@@ -69,38 +70,16 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
             {content.title.line1}
           </span>
 
-          <span className="block text-[#b1793d] text-4xl md:text-5xl lg:text-6xl">
+          <span className="block text-[#b1793d] text-4xl md:text-5xl lg:text-6xl italic">
             {content.title.line2}
           </span>
         </h1>
 
         <div className="flex items-center gap-2 my-2">
-          <Image
-            src={left}
-            height={45}
-            width={240}
-            alt="left decoration"
-            className="h-12 w-auto max-w-20 object-contain"
-          />
-
-          <Image
-            src={flower}
-            height={25}
-            width={50}
-            alt="flower"
-            className="h-5 w-auto object-contain"
-          />
-
-          <Image
-            src={right}
-            height={45}
-            width={240}
-            alt="right decoration"
-            className="h-12 w-auto max-w-20 object-contain"
-          />
+           <Image src={arrow} alt='arrow' width={350} height={10} className="max-w-55 sm:max-w-75 md:max-w-87.5" crossOrigin="anonymous" />
         </div>
 
-        <h2 className="mb-4 text-xl text-[#1f2c25] font-medium">
+        <h2 className="mb-4 text-md font-medium">
           {content.subtitle}
         </h2>
 
