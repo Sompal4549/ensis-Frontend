@@ -10,6 +10,7 @@ export interface WellnessCtaBannerContent {
   heading: string; // Changed from heading to description in JSX, but keeping heading here for consistency with other components
   description: string;
   buttons: Array<{
+    id?: string; // Added id for unique key prop
     title: string;
     description: string;
     image: { imageUrl: string; alt?: string };
@@ -50,7 +51,7 @@ const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 px-4 pb-4 lg:pb-0 lg:pr-4">
             {sectionContent.buttons.map((item) => (
               <button
-                key={item.title}
+                key={item.id || item.title}
                 className="group flex items-center gap-2 rounded border-2 border-[#8B6B2E] px-3 py-5 h-full text-left transition-all hover:bg-[#0B3A30]"
               >
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded">

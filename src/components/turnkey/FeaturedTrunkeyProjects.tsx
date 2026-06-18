@@ -5,8 +5,23 @@ import BookButton from "../ui/BookButton";
 import decorationLeft from "@/assets/icons/decoration_left.png"
 import decorationRight from "@/assets/icons/decoration_right.png"
 
+export interface FeaturedProjectsContent {
+  title: string;
+  subtitle: string;
+  cards: Array<{
+    id?: string; // Added id for unique key prop
+    title: string;
+    location: string;
+    image: {
+      imageUrl: string;
+      alt: string;
+    };
+  }>;
+  buttonText: string;
+  buttonPath: string;
+}
 
-export default function FeaturedProjects({sectionContent}: { sectionContent: any }) {
+export default function FeaturedProjects({sectionContent}: { sectionContent: FeaturedProjectsContent }) {
   return (
     <section className="w-full bg-[#f7f3eb]">
       <Container>
@@ -25,7 +40,7 @@ export default function FeaturedProjects({sectionContent}: { sectionContent: any
  <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6">
   {sectionContent.cards.map((project:any, index:number) => (
     <div
-      key={index}
+      key={project.id || index}
       className="overflow-hidden rounded-md border border-[#d8d2c6] bg-white"
     >
       {/* Image with fixed height container */}

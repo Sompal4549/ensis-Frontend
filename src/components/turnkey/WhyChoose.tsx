@@ -18,9 +18,9 @@ import decorationRight from "@/assets/icons/arrow_right2.png"
 export interface TurnkeyWhyChooseContent {
   title: string;
   backgroundImage: { imageUrl: string; alt?: string };
-  statsTitle: string; // Used for sectionContent.statsTitle
-  stats: Array<{ value: string; label: string, title:string, description:string }>; // Changed to value and label to match usage
-  features: Array<{ title: string; image: { imageUrl: string; alt: string } }>;
+  statsTitle: string;
+  stats: Array<{ id?: string; value: string; label: string, title:string, description:string }>; // Added id for unique key prop
+  features: Array<{ id?: string; title: string; image: { imageUrl: string; alt: string, id?: string; } }>;
 }
 
 export default function WhyChoose({sectionContent}: { sectionContent: TurnkeyWhyChooseContent }) {
@@ -72,7 +72,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: TurnkeyWhy
               <div className="flex items-stretch gap-0 lg:border-r-2 lg:border-[#c9972a]/30 lg:pr-8 pt-2">
                 {sectionContent.stats.map((s, index) => (
                   <div
-                    key={s.label}
+                    key={s.id || index}
                     className={`flex flex-col items-start justify-center px-5 first:pl-0 ${
                       index !== sectionContent.stats.length - 1 ? "border-r border-[#c9972a]/40" : ""
                     }`}
@@ -92,7 +92,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: TurnkeyWhy
             <div className="flex flex-wrap lg:flex-nowrap items-center justify-start lg:justify-around gap-4 lg:gap-0 lg:pl-8 w-full">
               {sectionContent.features.map((f) => (
                 <div 
-                  key={f.title} // Changed f.label to f.title
+                  key={f.id || f.title} // Changed f.label to f.title
                   className={`flex flex-col items-center gap-2 text-center px-2 lg:px-2`}
                 >
                   <div className="w-12 h-12 flex items-center justify-center">
