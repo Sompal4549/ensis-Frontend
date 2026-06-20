@@ -4,7 +4,6 @@ import RenderSection from "@/components/RenderSections";
 export default async function HomePage() {
   try {
     const homePageData = await getPageComponent("home");
-
     const sections = Array.isArray(homePageData)
       ? homePageData
       : Array.isArray(homePageData?.sections)

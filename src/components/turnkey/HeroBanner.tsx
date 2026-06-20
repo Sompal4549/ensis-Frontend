@@ -25,6 +25,7 @@ export interface TurnkeyHeroContent {
   highlight: string;
   description: string;
   features: Array<{
+    id?: string; // Added id for unique key prop
     title: string;
     label:string;
     image: { imageUrl: string; alt?: string };
@@ -79,7 +80,7 @@ export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyH
             <div className="flex flex-wrap gap-4 sm:gap-6">
           {sectionContent.features.map((f, index) => (
   <div
-    key={`${f.label}-${index}`}
+    key={f.id || index}
     className={`flex flex-col items-center gap-2 text-center min-w-[64px] pr-6 ${
       index !== sectionContent.features.length - 1 ? "border-r border-[#7c5c18]" : ""
     }`}
