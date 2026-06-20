@@ -12,58 +12,26 @@ import shirodhara_eqipment from "@/assets/icons/shirodhara_eqipment.webp";
 import steam_sauna from "@/assets/icons/steam_sauna_icon.webp";
 import wellness_assossries from "@/assets/home/wellness_assossries_icon.webp";
 
-interface WellnessData {
-  welcomeImage: string; // Assuming this is a URL or path
-  eyebrow: string;
-  heading: string;
-  description: string; // This is HTML string, so keep as string
-  buttonText: string;
-  buttonHref: string;
-  services: {
-    image: string;
-    title: string;
-    description: string;
-  }[];
+interface WellnessData{
+                welcomeImage: string;
+                eyebrow: string;
+                heading: string;
+                description: string;
+                buttonText: string;
+                buttonHref: string;
+                services:
+                    {
+                        image: string;
+                        "title": string;
+                        "description":string;
+                    }[]
+            }
+            interface WellnessSectionProps {
+  sectionContent: WellnessData;
 }
-
-const WellnessSection: React.FC = async () => {
-  const fallbackData: WellnessData = {
-    welcomeImage: "",
-    eyebrow: "Welcome To Ensis",
-    heading: "Where Tradition Meets Transformative Wellness.",
-    description: "At Ensis, we blend ancient Ayurvedic wisdom with exceptional craftsmanship to create timeless wellness solutions for modern lives.",
-    buttonText: "Know More",
-    buttonHref: "/about",
-    services: [
-      {
-        image: "",
-        title: "PANCHAKARMA TABLES",
-        description: "Experience authentic therapies with comfort and precision.",
-      },
-      {
-        image: "",
-        title: "SHIRODHARA EQUIPMENTS",
-        description: "Precision-crafted for deep relaxation and mental clarity.",
-      },
-      {
-        image: "",
-        title: "STEAM & SAUNA",
-        description: "Detoxify. Rejuvenate. Restore balance naturally.",
-      },
-      {
-        image: "",
-        title: "WELLNESS ACCESSORIES",
-        description: "Thoughtful additions for a complete wellness journey.",
-      },
-    ],
-  };
-
-  const fallbackServices = [table, shirodhara_eqipment, steam_sauna, wellness_assossries]; // Fallback images for services
-
-  const content = await getComponentContent<WellnessData>("home.wellnessSection", fallbackData);
-
-  const welcomeImageSrc = typeof content.welcomeImage === "string" && content.welcomeImage ? getImageUrl(content.welcomeImage) : welcome;
-  const servicesData = content.services?.length ? content.services : fallbackData.services;
+const WellnessSection: React.FC<WellnessSectionProps> = async ({
+  sectionContent,
+}) => {
 
   return (
     <section>
@@ -75,7 +43,7 @@ const WellnessSection: React.FC = async () => {
           {/* Image */}
           <div className="overflow-hidden rounded-2xl shadow-md h-full min-h-[300px] relative">
             <Image 
-              src={welcomeImageSrc}
+              src={sectionContent.welcomeImage}
               alt="Ayurveda"
               fill
               className="object-cover"
@@ -87,7 +55,7 @@ const WellnessSection: React.FC = async () => {
           <div className="h-full flex flex-col py-5">
             <div className="flex gap-1 mb-2 flex-col">
               <span className="uppercase tracking-[2px] text-[#a9742a] text-sm font-semibold">
-                {content.eyebrow}
+                {sectionContent.eyebrow}
               </span>
               <div className="flex gap-2 items-center">
                 <div className="w-16 h-[1px] bg-[#c9a870]" />
@@ -105,16 +73,16 @@ const WellnessSection: React.FC = async () => {
             </div>
 
             <h2 className="text-[#0f2518] text-[24px] leading-[1.2] max-w-[450px] font-semibold">
-              {content.heading}
+              {sectionContent.heading}
             </h2>
 
             <p 
-              dangerouslySetInnerHTML={{ __html: content.description || "" }} 
+              dangerouslySetInnerHTML={{ __html: sectionContent.description || "" }} 
               className="text-[#0f2518] mt-3 text-xs max-w-[480px] leading-6" 
             />
 
-            <Link href={content.buttonHref || "/about"} className="group flex items-center gap-2 text-[#b78942] uppercase tracking-[1px] text-xs font-semibold mt-auto pt-4 w-fit">
-              {content.buttonText || "Know More"}
+            <Link href={sectionContent.buttonHref || "/about"} className="group flex items-center gap-2 text-[#b78942] uppercase tracking-[1px] text-xs font-semibold mt-auto pt-4 w-fit">
+              {sectionContent.buttonText || "Know More"}
               <ChevronRight
                 size={18}
                 className="transition-transform duration-300 group-hover:translate-x-1"
@@ -125,8 +93,8 @@ const WellnessSection: React.FC = async () => {
 
         {/* Right Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-3 h-full">
-          {servicesData.map((service, index) => {
-            const serviceImageSrc = typeof service.image === "string" && service.image ? getImageUrl(service.image) : fallbackServices[index % fallbackServices.length];
+          {sectionContent.services.map((service, index) => {
+            const serviceImageSrc = typeof service.image === "string" && service.image && getImageUrl(service.image);
             return (
               <div
                 key={index}
@@ -141,10 +109,7 @@ const WellnessSection: React.FC = async () => {
                   {service.title}
                 </p>
 
-                <p className="text-[#0f2518] text-[12px] mt-3 min-h-[90px]">
-                  {service.description}
-                </p>
-
+                <p className="text-[#0f2518] text-[12px] mt-3 min-h-[90px]" dangerouslySetInnerHTML={{__html:service.description}}/>
                 <div>
                   <div className="w-full h-[1px] bg-[#d5bc94] mx-auto mb-1.5" />
                   <button className="group flex items-center justify-center gap-1 mx-auto text-[#0f2518] text-[10px] uppercase tracking-wide font-semibold">

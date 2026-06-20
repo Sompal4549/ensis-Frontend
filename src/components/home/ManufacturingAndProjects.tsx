@@ -122,7 +122,7 @@ console.log(content,"manufaturing and Projects")
 />
 
               {/* Stats from admin API */}
-              {stats.length > 0 && (
+              {/* {stats.length > 0 && (
                 <div className="mt-4 grid grid-cols-3 gap-3">
                   {stats.map((stat: { value: string; label: string }, i: number) => (
                     <div key={i} className="text-center">
@@ -131,7 +131,7 @@ console.log(content,"manufaturing and Projects")
                     </div>
                   ))}
                 </div>
-              )}
+              )} */}
 
               <ul className="mt-6 space-y-2">
                 {content.mfgFeatures.map((item: string) => (

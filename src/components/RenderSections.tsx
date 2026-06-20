@@ -74,7 +74,8 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       return <TurnkeySolutions sectionData={data} />;
     case "home.wellnessRoomSetups":
       return <WellnessRoomSetups sectionContent={data} />;
-      
+    case "home.wellnessSection":
+      return <WellnessSection sectionContent={data as any} />;
     case "about.hero":
       return <AboutHero sectionContent={data} />;
 
