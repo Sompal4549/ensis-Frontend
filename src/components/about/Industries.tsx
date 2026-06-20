@@ -61,13 +61,12 @@ const industries: IndustryItem[] = [
 
 interface IndustryItemContent {
   title: string;
-  image: string; // Assuming this is an image URL or path
-  alt?: string;
+  imageurl: {imageUrl:string, alt:string}; // Assuming this is an image URL or path
 }
 
 export interface IndustriesWeServeContent {
   title: string;
-  items: IndustryItemContent[];
+  industries: IndustryItemContent[];
 }
 
 export default function IndustriesWeServe({ sectionContent }: { sectionContent: IndustriesWeServeContent }) {
@@ -91,14 +90,14 @@ export default function IndustriesWeServe({ sectionContent }: { sectionContent: 
 <AboutTitle title="Industries We Serve" />
         {/* Cards */}
         <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 mt-2 divide-x divide-[#e7dfd5]">
-  {sectionContent.items.map((industry, index) => ( // Use sectionContent.items
+  {sectionContent.industries.map((industry, index) => ( // Use sectionContent.items
     <div
       key={index}
       className="group flex flex-col items-center justify-center px-3 py-4 text-center transition-all duration-300 hover:bg-[#fbf8f4]"
     >
       {/* Icon */}
       <div className="mb-2 flex items-center justify-center text-[#b78a56] transition-all duration-300 group-hover:scale-105">
-        <Image src={industry.image} alt={industry.alt || industry.title} className="object-contain" width={60} height={60} style={{ height: "auto" }} />
+        <Image src={industry.imageurl.imageUrl} alt={industry.imageurl.alt || industry.title} className="object-contain" width={60} height={60} style={{ height: "auto" }} />
       </div>
 
       {/* Title */}

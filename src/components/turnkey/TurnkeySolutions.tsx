@@ -121,14 +121,18 @@ const TurnkeySolutions = ({sectionContent}: { sectionContent: TurnkeySolutionsCo
         <Container>
 
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-            {sectionContent.cards.map((item,index) => ( // Changed to map all cards
-              <Card key={item.id} item={item} index={index+1} /> // Pass index+1 for correct numbering
-            ))}
+           {sectionContent.cards.slice(0, -1).map((item, index) => (
+  <Card
+    key={item.id}
+    item={item}
+    index={index + 1}
+  />
+))}
           </div>
 
           {/* Bottom Row */}
           <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_2fr]"> {/* Removed the extra Card component here */}
-
+<Card index={sectionContent.cards.length} item={sectionContent.cards[sectionContent.cards.length-1]} />
             <div className="overflow-hidden rounded-[10px] border border-[#1c5d4b] bg-[#063d30] max-h-53.25">
               <div className="grid h-full grid-cols-[200px_1fr_1fr]">
                 {/* Left Image Placeholder */}

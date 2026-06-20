@@ -76,6 +76,7 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       return <WellnessRoomSetups sectionContent={data} />;
     case "home.wellnessSection":
       return <WellnessSection sectionContent={data as any} />;
+      
     case "about.hero":
       return <AboutHero sectionContent={data} />;
 
@@ -93,8 +94,8 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       return <OurProductsSection sectionContent={data as any} />;
  case "about.testimonials":
       return <Testimonials title={data.subtitle} />;
-    case "about.ourExpertise":
-      return <ExpertiseSection sectionContent={data as any} />;
+    // case "about.ourExpertise":
+    //   return <ExpertiseSection sectionContent={data as any} />;
 
     case "about.wellnessSection":
       return <WellnessSection {...(data as any)} />;
@@ -107,8 +108,8 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       const AboutEnsisComp: any = AboutEnsisSection;
       return <AboutEnsisComp sectionContent={data as any} />;
 
-    case "about.whyChooseEnsis":
-      return <WhyChooseEnsis sectionContent={data as any} />;
+    // case "about.whyChooseEnsis":
+    //   return <WhyChooseEnsis sectionContent={data as any} />;
 
     case "about.letsBuild":
       return <WellnessBanner sectionContent={data as any} />;
