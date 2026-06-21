@@ -92,7 +92,7 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
 
     case "about.ourProducts":
       return <OurProductsSection sectionContent={data as any} />;
- case "about.testimonials":
+    case "about.testimonials":
       return <Testimonials title={data.subtitle} />;
     // case "about.ourExpertise":
     //   return <ExpertiseSection sectionContent={data as any} />;
@@ -127,10 +127,10 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       return <FacilitiesWeBuild sectionContent={data as FacilitiesWeBuildContent} />;
     case "turnkey.whatIsTurnkey":
       return <TrunkeyMeaning sectionContent={data as TurnkeyMeaningContent} />
-      case "turnkey.readyToBuild":
+    case "turnkey.readyToBuild":
       return <WellnessCtaBanner sectionContent={data as WellnessCtaBannerContent} />
-      case "turnkey.featuredProjects":
-        return <FeaturedProjects sectionContent={data} /> 
+    case "turnkey.featuredProjects":
+      return <FeaturedProjects sectionContent={data as any} />
 
     case "consultancy.hero":
       return <ConsultancyHero sectionContent={data as any} />;
