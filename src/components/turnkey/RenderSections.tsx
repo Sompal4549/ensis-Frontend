@@ -1,12 +1,14 @@
 "use client";
 
 import React from "react";
-import TurnkeyHero from "../turnkey/HeroBanner";
-import CtaBanner from "../enquary/CtaBanner";
-import GetInTouchBanner from "../enquary/GetInTouch";
-import FeaturedProjects from "./FeaturedTrunkeyProjects";
-import WhyChoose from "./WhyChoose";
 
+import WhyChoose from "./WhyChoose";
+import ProjectsBanner from "@/components/projects-and-clients/Banner";
+import WhyPartner from "@/components/projects-and-clients/WhyPartnerSection";
+import OurClients from "@/components/projects-and-clients/OurClients";
+import ContactBanner from "@/components/projects-and-clients/Contact";
+import FeaturedProjects from "@/components/turnkey/FeaturedTrunkeyProjects";
+import { ourProjects } from "@/data/ourProjects";
 interface SectionRendererProps {
   section: {
     key: string;
@@ -21,7 +23,7 @@ const RenderSections: React.FC<SectionRendererProps> = ({ section }) => {
   switch (key) {
     case "projects.banner":
       return (
-        <TurnkeyHero
+        <ProjectsBanner
           key={_id}
           sectionContent={{
             backgroundImage: { imageUrl: data.heroImage, alt: data.bgImageAlt },

@@ -47,6 +47,10 @@ import { WellnessCtaBannerContent } from "@/components/turnkey/WellnessCtaBanner
 import { SupportHighlightsContent } from "./contact/SupportHightlights"; // Added import
 import { ContactSectionContent } from "./contact/ContactSection"; // Added import
 import { ContactHeroContent } from "./contact/ContactHero"; // Added import
+import ProjectsBanner from "@/components/projects-and-clients/Banner";
+import WhyPartner from "@/components/projects-and-clients/WhyPartnerSection";
+import OurClients from "@/components/projects-and-clients/OurClients";
+import ContactBanner from "@/components/projects-and-clients/Contact";
 
 interface RenderSectionProps {
   componentKey: string;
@@ -173,6 +177,16 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       return <Testimonials title={data.subtitle} />
     case "product.productsection":
       return <Products {...(data as any)} />
+    case "projects.banner":
+      return <ProjectsBanner sectionContent={data} />
+    case "projects.contactSection":
+  return<ContactBanner  sectionContent={data}/> 
+  case "projects.ourClients":
+    return <OurClients sectionContent={data} />
+    case "projects.ourProjects":
+  return <FeaturedProjects  sectionContent={data}/> 
+  case "projects.whyPartner":
+return<WhyPartner sectionContent={data}/>
     default:
       return null;
   }
