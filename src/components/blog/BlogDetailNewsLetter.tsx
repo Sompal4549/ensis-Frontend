@@ -19,7 +19,7 @@ export interface BlogNewsLaterPropps{
   followText:string;
   followLinks:{image:string;path:string;}
 }
-const BlogDetailNewsletter = () => {
+const BlogDetailNewsletter = ({sectionContent}:{sectionContent:any}) => {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<{

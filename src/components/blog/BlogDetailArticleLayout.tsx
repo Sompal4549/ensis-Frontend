@@ -207,11 +207,11 @@ const socialIconMap = {
 /* ---------------------------------- Component ---------------------------------- */
 
 interface BlogArticleLayoutProps {
-  content?: BlogArticleContent;
+  sectionContent?: BlogArticleContent;
 }
 
 const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
-  content = fallbackBlogArticle,
+  sectionContent = fallbackBlogArticle,
 }) => {
   const {
     heroImage,
@@ -232,7 +232,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
     toc,
     guide,
     relatedArticles,
-  } = content;
+  } = sectionContent;
 
   return (
     <div className="bg-[#faf6ef]">
