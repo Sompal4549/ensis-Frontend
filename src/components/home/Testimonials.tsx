@@ -15,6 +15,19 @@ import userImage from "@/assets/home/testimonial1.webp";
 import SubHeading from './SubHeading';
 import { FaStar } from 'react-icons/fa';
 import { getComponentContent } from '@/lib/api/api';
+export interface Testimonial {
+    title: string;
+    testimonials: {
+        text: string;
+        name: string;
+        role: string;
+        image: string;
+    }[];
+}
+
+interface TestimonialsProps {
+  sectionContent: Testimonial;
+}
 
 const defaultContent = {
   subtitle: "WHAT OUR CLIENTS SAY",
@@ -26,28 +39,16 @@ const defaultContent = {
   ],
 };
 
-export const Testimonials = ({title}:{title?:React.ReactNode}) => {
-  const [content, setContent] = useState(defaultContent);
-
-  useEffect(() => {
-    const fetchContent = async () => {
-      try {
-        const data = await getComponentContent("home.testimonials", defaultContent);
-        setContent(data);
-      } catch {
-        // Keep defaults
-      }
-    };
-    fetchContent();
-  }, []);
+export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
+  
 
   // Duplicate testimonials for a smooth loop effect
-  const testimonials = [...content.testimonials, ...content.testimonials];
+  const testimonials = [...sectionContent.testimonials];
 
   return (
     <section className="bg-[#fbf8f2]">
       <Container>
-        {title|| <SubHeading className='text-black' text={content.subtitle} />}
+        {sectionContent.title|| <SubHeading className='text-black' text={sectionContent.subtitle} />}
         <div className="mt-2">
           <Swiper
             modules={[Autoplay, Pagination]}

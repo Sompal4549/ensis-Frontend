@@ -31,7 +31,7 @@ interface ContactInfo {
   workingHours: string;
 }
 
-interface ContactSection {
+export interface ContactSection {
   quote: string;
 
   testimonials: Testimonial[];
