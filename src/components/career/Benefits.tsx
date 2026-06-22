@@ -11,39 +11,46 @@ import growth from "@/assets/career/growth.webp"
 interface Benefit {
   title: string;
   icon: string | StaticImageData;
+  description:string;
 }
 
 const benefits: Benefit[] = [
   {
-    title: "Competitive Compensation",
+    title: "Competitive ",
     icon: competitive,
+    description:"Compensation"
   },
   {
-    title: "Health & Wellness Programs",
+    title: "Health & Wellness ",
     icon: health,
+    description:"Programs"
   },
   {
-    title: "Learning & Development",
+    title: "Learning & ",
     icon: learning,
+    description:"Development"
   },
   {
-    title: "Work-Life Balance",
+    title: "Work-Life ",
     icon: workLife,
+    description:"Balance"
   },
   {
-    title: "Celebrations & Team Events",
+    title: "Celebrations & ",
     icon: celebration,
+    description:"Team Events"
   },
   {
-    title: "Growth & Career Advancement",
+    title: "Growth & Career ",
     icon: growth,
+    description:"Advancement"
   },
 ];
 export interface CareerBenefitsProps {
   title: string;
   benefits: Benefit[]
 }
-const CareerBenefits = ({ sectionContent }: CareerBenefitsProps) => {
+const CareerBenefits = ({ sectionContent }: { sectionContent: CareerBenefitsProps }) => {
   return (
     <section className="relative overflow-hidden">
 

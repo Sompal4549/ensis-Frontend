@@ -9,6 +9,8 @@ import OurClients from "@/components/projects-and-clients/OurClients";
 import ContactBanner from "@/components/projects-and-clients/Contact";
 import FeaturedProjects from "@/components/turnkey/FeaturedTrunkeyProjects";
 import { ourProjects } from "@/data/ourProjects";
+import CtaBanner from "../enquary/CtaBanner";
+import GetInTouchBanner from "../enquary/GetInTouch";
 interface SectionRendererProps {
   section: {
     key: string;
@@ -25,6 +27,7 @@ const RenderSections: React.FC<SectionRendererProps> = ({ section }) => {
       return (
         <ProjectsBanner
           key={_id}
+          // cast to any to satisfy differing prop shape between CMS and component types
           sectionContent={{
             backgroundImage: { imageUrl: data.heroImage, alt: data.bgImageAlt },
             subheading: data.subtitle,
@@ -34,7 +37,7 @@ const RenderSections: React.FC<SectionRendererProps> = ({ section }) => {
             features: [], // Banner in JSON doesn't have features
             primaryButton: { label: "Explore", url: "#" },
             secondaryButton: { label: "Contact Us", url: "/enquiry" },
-          }}
+          } as any}
         />
       );
 

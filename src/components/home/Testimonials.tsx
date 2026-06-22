@@ -25,7 +25,7 @@ export interface Testimonial {
     }[];
 }
 
-interface TestimonialsProps {
+export interface TestimonialsProps {
   sectionContent: Testimonial;
 }
 
@@ -48,7 +48,7 @@ export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
   return (
     <section className="bg-[#fbf8f2]">
       <Container>
-        {sectionContent.title|| <SubHeading className='text-black' text={sectionContent.subtitle} />}
+       <SubHeading className='text-black' text={sectionContent.title} />
         <div className="mt-2">
           <Swiper
             modules={[Autoplay, Pagination]}

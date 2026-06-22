@@ -162,8 +162,8 @@ interface OurClientsBannerProps {
   data?: OurClients;
 }
 
-export default function WhyPartner({ sectionContent }: OurClientsBannerProps) {
-  const banner = sectionContent ?? clientsBannerFallback;
+export default function WhyPartner({ sectionContent }: {sectionContent: OurClientsBannerProps}) {
+  const banner = sectionContent?.data ?? clientsBannerFallback;
 
   return (
     <section className="relative w-full bg-[#FBF3E7]">

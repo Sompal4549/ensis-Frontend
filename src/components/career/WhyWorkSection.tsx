@@ -51,7 +51,7 @@ const cards: CardItem[] = [
         icon: flower,
   },
 ];
-const WhyWorkSection = ({sectionContent}:WhyWorkProps) => {
+const WhyWorkSection = ({sectionContent}:{sectionContent:WhyWorkProps}) => {
   return (
     <section className="relative overflow-hidden mt-2">
       {/* Background Image */}

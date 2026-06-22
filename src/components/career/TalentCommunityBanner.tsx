@@ -13,14 +13,15 @@ export interface CareerTalentCommunity{
   bgImage:{image:string; alt:string;}
   heading:string;
   description:string;
-  features:{image: string; label:string;}[];
+  features:string[];
   newsLetterCard:{
     title:string;
     description:string;
     buttonText:string;
   }
+  button:string
 }
-const TalentCommunityBanner = ({sectionContent}:CareerTalentCommunity) => {
+const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentCommunity}) => {
   return (
     <section className="relative">
       {/* Background Image */}
@@ -47,9 +48,9 @@ const TalentCommunityBanner = ({sectionContent}:CareerTalentCommunity) => {
           </p>
 
           <ul className="mt-6 space-y-4">
-            {sectionContent.features.map((item) => (
+            {sectionContent.features.map((item, index) => (
               <li
-                key={item}
+                key={index}
                 className="flex items-center gap-3 text-sm text-white/90"
               >
                 <CheckCircle2

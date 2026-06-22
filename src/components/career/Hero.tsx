@@ -17,13 +17,13 @@ export interface CareersBannerProps {
   buttonPath:string
 }
 
-const CareersBanner = ({sectionContent }: CareersBannerProps) => {
+const CareersBanner = ({sectionContent }: {sectionContent:CareersBannerProps}) => {
   console.log(sectionContent,"banner")
   return (
     <section className="relative">
       {/* Background */}
       <Image
-        src={sectionContent.bgImage.imageurl||bgImage}
+        src={sectionContent.bgImage.imageUrl||bgImage}
         alt={sectionContent.bgImage.imageAlt||"Careers at ENSIS"}
         fill
         priority
