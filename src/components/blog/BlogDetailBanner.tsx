@@ -45,10 +45,15 @@ interface BlogHeroBannerProps {
   content?: BlogHeroBannerContent;
 }
 
+// BlogDetailBanner.tsx mein
+interface BlogHeroBannerProps {
+  sectionContent?: BlogHeroBannerContent; // ← content → sectionContent
+}
+
 const BlogDetailBanner: React.FC<BlogHeroBannerProps> = ({
-  content = fallbackBlogHeroBanner,
+  sectionContent = fallbackBlogHeroBanner, // ← content → sectionContent
 }) => {
-  const { breadcrumbs, title, date, readTime, category, bgImage } = content;
+  const { breadcrumbs, title, date, readTime, category, bgImage } = sectionContent;
 
   return (
     <section className="relative overflow-hidden bg-[#0f2e22]">
