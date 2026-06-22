@@ -80,8 +80,8 @@ export default async function ConsultancyHero({ sectionContent }: { sectionConte
               </span>
             </h1>
 
-           <p className="mt-4 max-w-[520px] text-[15px]">
-              {sectionContent.description}
+           <p className="mt-4 max-w-[520px] text-[15px]" dangerouslySetInnerHTML={{__html:sectionContent.description}}>
+              
             </p>
 
             {/* FEATURES */}

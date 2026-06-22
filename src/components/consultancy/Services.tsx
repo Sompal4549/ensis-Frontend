@@ -105,8 +105,8 @@ export default function ConsultancyServices({ sectionContent }: { sectionContent
             {sectionContent.title}
           </h2>
 
-          <p className="mx-auto mt-3 max-w-[500px] text-[13px] font-medium">
-            {sectionContent.description}
+          <p className="mx-auto mt-3 max-w-[500px] text-[13px] font-medium" dangerouslySetInnerHTML={{__html:sectionContent.description}}>
+            
           </p>
         </div>
 

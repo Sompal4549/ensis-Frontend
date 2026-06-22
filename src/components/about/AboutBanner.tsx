@@ -9,7 +9,7 @@ import { getComponentContent, getImageUrl } from "@/lib/api/api";
 
 export interface AboutBannerContent { // Renamed to AboutBannerContent
   title?: string;
-  subtitle?: string;
+  heading?: string;
   description?: string;
   highlight?: string;
   image?: {imageUrl:string; alt:string;};
@@ -30,7 +30,7 @@ sectionContent = {}
 
   // Merge API data over prop defaults
   const resolvedTitle = sectionContent?.title;
-  const resolvedSubtitle = sectionContent?.subtitle;
+  const resolvedSubtitle = sectionContent?.heading;
   const resolvedDescription = sectionContent?.description;
   const resolvedHighlight = sectionContent?.highlight;
   const resolvedPrimaryBtnText = sectionContent?.primaryBtnText;

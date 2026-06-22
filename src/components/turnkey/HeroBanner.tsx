@@ -72,8 +72,8 @@ export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyH
             </div>
 
             {/* Body copy */}
-            <p className="text-sm  max-w-md leading-6 mb-4">
-          {sectionContent.description}
+            <p className="text-sm  max-w-md leading-6 mb-4" dangerouslySetInnerHTML={{__html:sectionContent.description}}>
+          
             </p>
 
             {/* Feature icons */}
@@ -81,14 +81,14 @@ export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyH
           {sectionContent.features.map((f, index) => (
   <div
     key={f.id || index}
-    className={`flex flex-col items-center gap-2 text-center min-w-[64px] pr-6 ${
+    className={`flex flex-col items-center gap-2 text-center min-w-[64px] pr-3 ${
       index !== sectionContent.features.length - 1 ? "border-r border-[#7c5c18]" : ""
     }`}
   >
     <div className="w-12 h-12 text-[#d6a85f] flex items-center justify-center text-xl">
       <Image src={f.image.imageUrl} alt={f.image.alt||f.title} width={40} height={40} className="object-fill" />
     </div>
-    <p className="text-[10px] sm:text-xs leading-snug whitespace-pre-line font-medium">
+    <p className="text-[10px] sm:text-xs leading-snug whitespace-pre-line font-medium max-w-[90px]">
       {f.title}
     </p>
   </div>

@@ -31,7 +31,7 @@ interface ContactInfo {
   workingHours: string;
 }
 
-interface ContactSection {
+export interface ContactSection {
   quote: string;
 
   testimonials: Testimonial[];
@@ -98,11 +98,11 @@ const fallbackContactBanner: ContactSection = {
 
 
 interface Props {
-  content?: ContactSection;
+  sectionContent?: ContactSection;
 }
 
 export default function ContactBanner({
-  content = fallbackContactBanner,
+  sectionContent = fallbackContactBanner,
 }: Props) {
   return (
     <section className="overflow-hidden border border-[#e3d4bf] bg-[#faf5ed]">
@@ -116,7 +116,7 @@ export default function ContactBanner({
               {/* CTA */}
               <div className="relative bg-[#002112] pl-10">
                 <Image
-                  src={content.leftImage}
+                  src={sectionContent.leftImage}
                   alt="Wellness"
                   fill
                   className="object-fill z-10 max-w-40"
@@ -126,15 +126,15 @@ export default function ContactBanner({
 
                 <div className="absolute inset-0 flex flex-col justify-center  text-white z-20 pl-50">
                   <h3 className="text-lg font-serif mb-4">
-                    {content.ctaTitle}
+                    {sectionContent.ctaTitle}
                   </h3>
 
                   <p className="max-w-md mb-6 text-sm">
-                    {content.ctaDescription}
+                    {sectionContent.ctaDescription}
                   </p>
                   <div>
 
-                    <GreenButton text={content.ctaButtonText} path="/projects-and-clients" />
+                    <GreenButton text={sectionContent.ctaButtonText} path="/projects-and-clients" />
                   </div>
                 </div>
               </div>
@@ -152,10 +152,10 @@ export default function ContactBanner({
 
                       <div>
                         <h4 className="font-semibold">
-                          {content.contact.officeName}
+                          {sectionContent.contact.officeName}
                         </h4>
 
-                        <p>{content.contact.address}</p>
+                        <p>{sectionContent.contact.address}</p>
                       </div>
                       <div className="flex gap-2 items-center justify-center">
                          <Image src={arrow} alt='arrow' width={150} height={40} className="max-w-55 sm:max-w-75 md:max-w-87.5" crossOrigin="anonymous" />
@@ -164,17 +164,17 @@ export default function ContactBanner({
                     <div className="flex items-baseline justify-between">
                       <div>
 
-                        <p>{content.contact.phone}</p>
-                        <p>{content.contact.email}</p>
-                        <p>{content.contact.website}</p>
+                        <p>{sectionContent.contact.phone}</p>
+                        <p>{sectionContent.contact.email}</p>
+                        <p>{sectionContent.contact.website}</p>
                       </div>
                       <div className="">
                         <h4 className="font-semibold">
                           Working Hours
                         </h4>
 
-                        <p>{content.contact.workingDays}</p>
-                        <p>{content.contact.workingHours}</p>
+                        <p>{sectionContent.contact.workingDays}</p>
+                        <p>{sectionContent.contact.workingHours}</p>
                       </div>
                     </div>
                   </div>
@@ -188,7 +188,7 @@ export default function ContactBanner({
         {/* Bottom Strip */}
         <div className="bg-[#032c22] px-4 py-4 text-center">
           <p className="text-sm md:text-lg text-[#e4c27c]">
-            {content.bottomText}
+            {sectionContent.bottomText}
           </p>
         </div>
       </Container>

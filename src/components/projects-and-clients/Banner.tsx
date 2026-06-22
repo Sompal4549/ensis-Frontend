@@ -35,11 +35,11 @@ export const fallbackProjectsBanner: ProjectsBannerContent = {
 };
 
 interface ProjectsBannerProps {
-  content?: ProjectsBannerContent;
+  sectionContent?: ProjectsBannerContent;
 }
 
 const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
-  content = fallbackProjectsBanner,
+  sectionContent = fallbackProjectsBanner,
 }) => {
   return (
  <section className="relative overflow-hidden bg-[#f8f2e8]">
@@ -47,7 +47,7 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
   <div className="absolute inset-0 z-0">
     <Image
       src={banner}
-      alt={content.title.line1}
+      alt={sectionContent.title.line1}
       fill
       priority
       sizes="100vw"
@@ -55,23 +55,23 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
     />
 
     {/* Strong Luxury Gradient */}
-    <div className="absolute inset-0 bg-gradient-to-r from-[#f8f2e8] w-[60%] via-[#f8f2e8]/95 via-45% to-transparent" />
 
     {/* Extra Solid Layer */}
     {/* <div className="absolute inset-y-0 left-0 w-[60%] bg-[#f8f2e8]/40" /> */}
   </div>
+    <div className="absolute inset-0 bg-gradient-to-r from-[#f8f2e8] from-10% via-[#f8f2e8]/80 via-50% to-transparent w-[60%] z-10 h-[100%]" />
 
   {/* Content */}
-  <Container className="relative z-10">
-    <div className="flex min-h-[650px] md:min-h-[calc(90vh-96px)] items-center">
+  <Container className="relative z-20">
+    <div className="flex min-h-162.5 md:min-h-[calc(90vh-96px)] items-center">
       <div className="w-full lg:max-w-[42%]">
-        <h1 className="leading-[2]">
+        <h1 className="leading-loose">
           <span className="block text-[#1f2c25] text-4xl md:text-5xl lg:text-6xl">
-            {content.title.line1}
+            {sectionContent.title.line1}
           </span>
 
           <span className="block text-[#b1793d] text-4xl md:text-5xl lg:text-6xl italic">
-            {content.title.line2}
+            {sectionContent.title.line2}
           </span>
         </h1>
 
@@ -80,11 +80,11 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
         </div>
 
         <h2 className="mb-4 text-md font-medium">
-          {content.subtitle}
+          {sectionContent.subtitle}
         </h2>
 
         <p className="max-w-xs leading-relaxed text-sm">
-          {content.description}
+          {sectionContent.description}
         </p>
       </div>
     </div>

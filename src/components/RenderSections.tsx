@@ -10,7 +10,7 @@ import AboutEnsisSection from "@/components/about/AboutEnsis";
 import WhyChooseEnsis from "@/components/about/WhyChoose";
 import WellnessBanner from "@/components/about/WellnessBanner";
 import FounderSection from "@/components/about/FounderSection";
-import { Testimonials } from "@/components/home/Testimonials";
+import { Testimonial, Testimonials } from "@/components/home/Testimonials";
 import { Hero } from "@/components/home/Hero";
 import FullWidthFeatures from "@/components/home/FullWidthFeatures";
 import { TurnkeySolutions } from "@/components/home/TurnkeySolutions"
@@ -23,7 +23,6 @@ import ConsultancyHero from "@/components/consultancy/Hero";
 import HowWeWork from "@/components/consultancy/HowWeWork";
 import ConsultancyServices from "@/components/consultancy/Services";
 import ContactHero from "@/components/contact/ContactHero";
-import ContactSection from "@/components/contact/ContactSection";
 import SupportHighlights from "@/components/contact/SupportHightlights";
 import FacilitiesWeBuild, { FacilitiesWeBuildContent } from "@/components/turnkey/FacilitiesWeBuild";
 import TurnkeyHero, { TurnkeyHeroContent } from "@/components/turnkey/HeroBanner";
@@ -45,8 +44,19 @@ import TrunkeyMeaning, { TurnkeyMeaningContent } from '@/components/turnkey/Turn
 import FeaturedProjects from '@/components/turnkey/FeaturedTrunkeyProjects' // Already imported
 import { WellnessCtaBannerContent } from "@/components/turnkey/WellnessCtaBanner";
 import { SupportHighlightsContent } from "./contact/SupportHightlights"; // Added import
-import { ContactSectionContent } from "./contact/ContactSection"; // Added import
+import ContactSection, { ContactSectionContent } from "./contact/ContactSection"; // Added import
 import { ContactHeroContent } from "./contact/ContactHero"; // Added import
+import ProjectsBanner, { ProjectsBannerContent } from "@/components/projects-and-clients/Banner";
+import WhyPartner from "@/components/projects-and-clients/WhyPartnerSection";
+import OurClients from "@/components/projects-and-clients/OurClients";
+import ContactBanner, {
+  ContactSection as ProjectsContactSection,
+} from "@/components/projects-and-clients/Contact";
+import CareersBanner from "./career/Hero";
+import WhyWorkSection from "./career/WhyWorkSection";
+import CareersSection from "./career/CareerSection";
+import TalentCommunityBanner from "./career/TalentCommunityBanner";
+import CareerBenefits from "./career/Benefits";
 
 interface RenderSectionProps {
   componentKey: string;
@@ -69,13 +79,14 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
     case "home.productsGrid":
       return <ProductsGrid sectionContent={data as ProductsGridContent} />;
     case "home.testimonials":
-      return <Testimonials title={data.subtitle} />;
+      return <Testimonials sectionContent={data as Testimonial} />;
     case "home.turnkeySolutions":
       return <TurnkeySolutions sectionData={data} />;
     case "home.wellnessRoomSetups":
       return <WellnessRoomSetups sectionContent={data} />;
     case "home.wellnessSection":
       return <WellnessSection sectionContent={data as any} />;
+      
     case "about.hero":
       return <AboutHero sectionContent={data} />;
 
@@ -92,9 +103,9 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
     case "about.ourProducts":
       return <OurProductsSection sectionContent={data as any} />;
     case "about.testimonials":
-      return <Testimonials title={data.subtitle} />;
-    case "about.ourExpertise":
-      return <ExpertiseSection sectionContent={data as any} />;
+      return <Testimonials sectionContent={data as Testimonial} />;
+    // case "about.ourExpertise":
+    //   return <ExpertiseSection sectionContent={data as any} />;
 
     case "about.wellnessSection":
       return <WellnessSection {...(data as any)} />;
@@ -107,8 +118,8 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       const AboutEnsisComp: any = AboutEnsisSection;
       return <AboutEnsisComp sectionContent={data as any} />;
 
-    case "about.whyChooseEnsis":
-      return <WhyChooseEnsis sectionContent={data as any} />;
+    // case "about.whyChooseEnsis":
+    //   return <WhyChooseEnsis sectionContent={data as any} />;
 
     case "about.letsBuild":
       return <WellnessBanner sectionContent={data as any} />;
@@ -143,8 +154,8 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
 
     case "contact.featuresStrip":
       return <SupportHighlights sectionContent={data as SupportHighlightsContent} />;
-    case "contact.getInTouch":
-      return <ContactSection sectionContent={data as ContactSectionContent} />;
+ case "projects.contactSection":
+return <ContactBanner sectionContent={data as any} />;
     case "contact.hero":
       return <ContactHero sectionContent={data as ContactHeroContent} />;
 
@@ -169,9 +180,35 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       const ProductWhyChooseComp: any = ProductWhyChoose;
       return <ProductWhyChooseComp sectionContent={data as WhyChooseContent} />
     case "product.testimonials":
-      return <Testimonials title={data.subtitle} />
+      return <Testimonials sectionContent={data as Testimonial} />
     case "product.productsection":
       return <Products {...(data as any)} />
+    case "projects.banner":
+      return <ProjectsBanner sectionContent={data as ProjectsBannerContent} />
+    case "projects.contactSection":
+  return <ProjectsBanner  sectionContent={data as any}/> 
+  case "projects.ourClients":
+    return <OurClients sectionContent={data} />
+    case "projects.ourProjects":
+  return <FeaturedProjects  sectionContent={data as any}/> 
+  case "projects.whyPartner":
+return<WhyPartner sectionContent={data as any}/>
+
+// career
+case "career.banner":
+  return <CareersBanner sectionContent={data as any}/>
+  case "career.features":
+    return <WellnessFeatureStrip sectionContent={data as any}/>
+  case "career.whyWork":
+    return <WhyWorkSection sectionContent={data as any} />
+  case "career.section":
+    return <CareersSection sectionContent={data as any} />
+  case "career.benefits":
+    return <CareerBenefits sectionContent={data as any}/>
+  case "career.talentCommunity":
+    return <TalentCommunityBanner sectionContent={data as any}/>
+  case "career.testimonials":
+    return <Testimonials sectionContent={data as Testimonial} />
     default:
       return null;
   }

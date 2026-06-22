@@ -37,8 +37,7 @@ const CtaBanner = ({ data }: CtaBannerProps) => {
             <span className="h-px w-10 bg-[#C9972A]/60 sm:w-14" />
           </div>
 
-          <p className="mx-auto text-sm leading-relaxed text-[#EDE6D6]/90 sm:text-base md:mx-0 md:text-[1.05rem]">
-            {description}
+          <p className="mx-auto text-sm leading-relaxed text-[#EDE6D6]/90 sm:text-base md:mx-0 md:text-[1.05rem]" dangerouslySetInnerHTML={{__html:description}}>
           </p>
 
           <div className="mt-2 flex justify-center">

@@ -51,10 +51,12 @@ export interface WhyChooseContent {
     highlight: string;
     title: string;
     description: string;
+    features:{id: string, image: string, title: string}[]
   };
 }
 
 export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseContent }) {
+  console.log(sectionContent, "why choose")
   return (
     <section className="wca-body w-full bg-[#f5efe6]">
       <Container>
@@ -107,19 +109,18 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
               {sectionContent.welcomeToEnsis.title}
             </h2>
 
-            <p className="text-[11px] sm:text-[12px] text-[#5a5040] leading-relaxed mb-4 max-w-[340px]">
-         {sectionContent.welcomeToEnsis.description}
+            <p className="text-[11px] sm:text-[12px] text-[#5a5040] leading-relaxed mb-4 max-w-[340px]" dangerouslySetInnerHTML={{__html:sectionContent.welcomeToEnsis.description}}>
             </p>
 
             {/* Stats row — icons only, no bg/border */}
             <div className="grid grid-cols-4 gap-2 mb-4">
-              {stats.map((s) => (
-                <div key={s.label} className="flex flex-col items-center gap-1 text-center">
+              {sectionContent.welcomeToEnsis.features.map((s) => (
+                <div key={s.id} className="flex flex-col items-center gap-1 text-center">
                   <div className="flex items-center justify-center w-8 h-8">
-                    <Image src={s.icon} alt={s.label} width={30} height={30} className="object-fill object-center" />
+                    <Image src={s.image} alt={s.title} width={30} height={30} className="object-fill object-center" />
                   </div>
                   <span className="text-xs whitespace-pre-line">
-                    {s.label}
+                    {s.title}
                   </span>
                 </div>
               ))}

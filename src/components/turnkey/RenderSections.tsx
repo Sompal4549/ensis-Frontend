@@ -1,12 +1,16 @@
 "use client";
 
 import React from "react";
-import TurnkeyHero from "../turnkey/HeroBanner";
+
+import WhyChoose from "./WhyChoose";
+import ProjectsBanner from "@/components/projects-and-clients/Banner";
+import WhyPartner from "@/components/projects-and-clients/WhyPartnerSection";
+import OurClients from "@/components/projects-and-clients/OurClients";
+import ContactBanner from "@/components/projects-and-clients/Contact";
+import FeaturedProjects from "@/components/turnkey/FeaturedTrunkeyProjects";
+import { ourProjects } from "@/data/ourProjects";
 import CtaBanner from "../enquary/CtaBanner";
 import GetInTouchBanner from "../enquary/GetInTouch";
-import FeaturedProjects from "./FeaturedTrunkeyProjects";
-import WhyChoose from "./WhyChoose";
-
 interface SectionRendererProps {
   section: {
     key: string;
@@ -21,8 +25,9 @@ const RenderSections: React.FC<SectionRendererProps> = ({ section }) => {
   switch (key) {
     case "projects.banner":
       return (
-        <TurnkeyHero
+        <ProjectsBanner
           key={_id}
+          // cast to any to satisfy differing prop shape between CMS and component types
           sectionContent={{
             backgroundImage: { imageUrl: data.heroImage, alt: data.bgImageAlt },
             subheading: data.subtitle,
@@ -32,7 +37,7 @@ const RenderSections: React.FC<SectionRendererProps> = ({ section }) => {
             features: [], // Banner in JSON doesn't have features
             primaryButton: { label: "Explore", url: "#" },
             secondaryButton: { label: "Contact Us", url: "/enquiry" },
-          }}
+          } as any}
         />
       );
 

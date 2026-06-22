@@ -66,8 +66,7 @@ function SlideContent({ slide }: { slide: HeroSlide }) {
             </h1>
 
             {/* Description */}
-            <p className="mb-6 max-w-[400px] text-[13px] font-semibold leading-relaxed text-[#5a5040] sm:mb-8 sm:text-[14px] md:text-[15px]">
-              {slide.description}
+            <p className="mb-6 max-w-[400px] text-[13px] font-semibold leading-relaxed text-[#5a5040] sm:mb-8 sm:text-[14px] md:text-[15px]" dangerouslySetInnerHTML={{__html:slide.description}}>
             </p>
 
             {/* CTAs */}

@@ -25,7 +25,7 @@ import partner from "@/assets/projects-and-clients/ourclients.webp"
   decorativeImageAlt: string;
 }
 interface WhyPartnerBannerProps {
-  data?: WhyPartnerBannerData;
+  sectionContent?: WhyPartnerBannerData;
 }
 
 
@@ -78,8 +78,8 @@ interface WhyPartnerBannerProps {
     },
   ],
 };
-export default function WhyPartnerBanner({ data }: WhyPartnerBannerProps) {
-  const banner = data ?? whyPartnerBannerFallback;
+export default function WhyPartnerBanner({ sectionContent }: WhyPartnerBannerProps) {
+  const banner = sectionContent ?? whyPartnerBannerFallback;
 
   return (
     <section className="relative w-full overflow-hidden bg-[#0F2E22]">

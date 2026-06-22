@@ -162,8 +162,8 @@ interface OurClientsBannerProps {
   data?: OurClients;
 }
 
-export default function WhyPartner({ data }: OurClientsBannerProps) {
-  const banner = data ?? clientsBannerFallback;
+export default function WhyPartner({ sectionContent }: {sectionContent: OurClientsBannerProps}) {
+  const banner = sectionContent?.data ?? clientsBannerFallback;
 
   return (
     <section className="relative w-full bg-[#FBF3E7]">
@@ -238,8 +238,8 @@ export default function WhyPartner({ data }: OurClientsBannerProps) {
 
           <div className="absolute -right-10 -top-10 bottom-0 w-40 shrink-0 sm:h-28 sm:w-48 lg:h-24 lg:w-44">
             <Image
-              src={banner.decorativeImageSrc}
-              alt={banner.decorativeImageAlt}
+              src={ourClients}
+              alt={"Image"}
               fill
               className="object-contain object-right"
               sizes="(max-width: 1024px) 200px, 180px"

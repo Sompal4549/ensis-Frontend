@@ -256,7 +256,7 @@ export const Header = () => {
 
                     {/* Desktop Navigation */}
                     <nav className="hidden flex-1 justify-center xl:flex">
-                        <ul className="flex items-center gap-6">
+                        <ul className="flex items-center gap-4">
                             {navLinks.map((item, index) => (
                                 <li key={index}>
                                     <Link

@@ -44,8 +44,8 @@ export default function NewsletterCard({sectionContent} : {sectionContent: any})
           <h3 className="font-serif text-2xl text-[#2b241f] font-semibold lg:text-left text-center">
             {sectionContent?.heading || "Stay Inspired"}
           </h3>
-          <p className="text-[15px] text-[#6e5b4d] lg:text-left text-center">
-            {sectionContent?.description || "Subscribe for wellness insights, updates, and exclusive offers."}
+          <p className="text-[15px] text-[#6e5b4d] lg:text-left text-center" dangerouslySetInnerHTML={{__html:sectionContent?.description || "Subscribe for wellness insights, updates, and exclusive offers."}}>
+            
           </p>
         </div>
 
