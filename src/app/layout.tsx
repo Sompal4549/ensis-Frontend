@@ -4,9 +4,9 @@ import "./globals.css";
 import { Montserrat, Cormorant_Garamond, Playfair_Display } from 'next/font/google';
 import { ShopProvider } from "@/context/ShopContext";
 
-const montserrat = Montserrat({ subsets: ['latin'], weight: ['300','400','500','600','700'], variable: '--font-montserrat' });
-const cormorant = Playfair_Display({ subsets: ['latin'], weight: ['400','600','700'], variable: '--font-cormorant' });
-const Header = dynamic(() => import("@/components/layout/Header").then((mod) => mod.Header));
+const montserrat = Montserrat({ subsets: ['latin'], weight: ['300','400','500','600','700'], variable: '--font-montserrat',display:"swap" });
+const cormorant = Playfair_Display({ subsets: ['latin'], weight: ['400','600','700'], variable: '--font-cormorant', display:"swap" });
+import { Header } from "@/components/layout/Header";
 const Footer = dynamic(() => import("@/components/layout/Footer").then((mod) => mod.Footer));
 const SocialSidebar = dynamic(() => import("@/components/layout/SocialSidebar").then((mod) => mod.default));
 const WhatsAppFloat = dynamic(() => import("@/components/ui/WhatsAppFloat").then((mod) => mod.default));

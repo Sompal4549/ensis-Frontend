@@ -51,7 +51,7 @@ const CareersBanner = ({sectionContent }: {sectionContent:CareersBannerProps}) =
             authentic wellness experiences. Join our passionate team and build a
             career that makes a difference.`}
           </p>
-          <div className="w-[220px] mt-4">
+          <div className="w-[250px] mt-4">
 
 <GreenButton text={sectionContent.buttonText||"Explore Opportunities"} path={sectionContent.buttonPath||"/contact"}/>
           </div>

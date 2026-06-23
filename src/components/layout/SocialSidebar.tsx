@@ -303,7 +303,7 @@ const SocialSidebar = () => {
                 rel="noopener noreferrer"
                 className="social-button"
                 style={{ borderColor: social.color }}
-               
+               aria-label={social.url}
               >
                 <div className="icon-wrapper">
                   <Icon className="w-3.5 h-3.5 lg:w-[18px] lg:h-[18px]" style={{ color: social.color }} />

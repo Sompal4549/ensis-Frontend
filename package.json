@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "axios": "^1.16.1",
+    "critters": "^0.0.23",
     "dompurify": "^3.4.8",
     "embla-carousel-autoplay": "^8.6.0",
     "embla-carousel-react": "^8.6.0",

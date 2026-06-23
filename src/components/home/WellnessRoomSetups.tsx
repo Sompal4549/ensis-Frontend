@@ -114,6 +114,7 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
                     ? "bg-white text-black"
                     : "text-white"
                     }`}
+                    aria-label="View product"
                 >
                   <ArrowRight size={18} />
                 </button>

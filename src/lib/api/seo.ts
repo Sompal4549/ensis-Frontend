@@ -10,26 +10,18 @@ interface PageSeoData {
     metaKeywords?: string;
     h1: string;
     canonical?: string;
-    ogTitle?: string;
-    ogDescription?: string;
-    ogImage?: string;
+    ogJson?: string;
+    schema?: string;
   };
   robots?: string;
 }
 
-export async function generateSeo(
-  page: string
-): Promise<Metadata> {
+export async function generateSeo(page: string): Promise<Metadata> {
   try {
     const slugName = page === "home" ? "home" : page;
-    const response = await fetch(
-      `${API_URL}/pages/${slugName}`,
-      {
-        next: {
-          revalidate: 3600,
-        },
-      }
-    );
+    const response = await fetch(`${API_URL}/pages/${slugName}`, {
+      next: { revalidate: 3600 },
+    });
 
     const payload = await response.json();
     if (!response.ok || !payload.success || !payload.data) {
@@ -43,7 +35,13 @@ export async function generateSeo(
       ? seo.metaKeywords.split(",").map((k) => k.trim()).filter(Boolean)
       : [];
 
-    const ogImageSrc = seo.ogImage ? getImageUrl(seo.ogImage) : "";
+    // Parse ogJson
+    let ogExtra: Record<string, string> = {};
+    if (seo.ogJson) {
+      try { ogExtra = JSON.parse(seo.ogJson); } catch { /* invalid json */ }
+    }
+
+    const ogImage = ogExtra["og:image"] || "";
 
     return {
       title: seo.metaTitle,
@@ -52,9 +50,12 @@ export async function generateSeo(
       alternates: seo.canonical ? { canonical: seo.canonical } : undefined,
       robots: robots || "index, follow",
       openGraph: {
-        title: seo.ogTitle || seo.metaTitle,
-        description: seo.ogDescription || seo.metaDescription,
-        images: ogImageSrc ? [ogImageSrc] : [],
+        title: ogExtra["og:title"] || seo.metaTitle,
+        description: ogExtra["og:description"] || seo.metaDescription,
+        url: ogExtra["og:url"] || undefined,
+        siteName: ogExtra["og:site_name"] || undefined,
+        type: (ogExtra["og:type"] as "website" | "article") || "website",
+        images: ogImage ? [{ url: getImageUrl(ogImage) }] : [],
       },
     };
   } catch {

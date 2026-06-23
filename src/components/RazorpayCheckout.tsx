@@ -39,7 +39,7 @@ export function RazorpayCheckout({
         disabled={disabled || isPending}
         className={`relative w-full overflow-hidden rounded-xl border border-white/10 px-6 py-4 font-bold tracking-wide text-white shadow-2xl transition-all duration-300 active:scale-[0.98] ${
           disabled || isPending
-            ? "cursor-not-allowed bg-slate-800/50 text-slate-400"
+            ? "cursor-not-allowed bg-slate-800/50"
             : "bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-500 hover:via-purple-500 hover:to-indigo-600 hover:shadow-indigo-500/25 hover:shadow-[0_12px_30px_-6px]"
         }`}
       >
@@ -71,7 +71,7 @@ export function RazorpayCheckout({
       {/* Trust & Verification Badges */}
       <div className="flex items-center justify-center gap-2 text-[11px]">
         <ShieldCheck className="h-4 w-4 text-[#516a35]" />
-        <span className="font-semibold text-slate-500">Secured by Razorpay • 256-bit SSL Encryption</span>
+        <span className="font-semibold">Secured by Razorpay • 256-bit SSL Encryption</span>
       </div>
 
       {/* Visual State Indicators */}

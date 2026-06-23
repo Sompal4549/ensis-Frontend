@@ -1,7 +1,12 @@
 import { getPageComponent } from "@/lib/api/api";
 import RenderSection from "@/components/RenderSections";
+import { generateSeo } from "@/lib/api/seo";
 
+export async function generateMetadata() {
+  return generateSeo("home");
+}
 export default async function HomePage() {
+  
   try {
     const homePageData = await getPageComponent("home");
     const sections = Array.isArray(homePageData)
@@ -47,7 +52,7 @@ export default async function HomePage() {
     console.error("Home Page Load Error:", error);
     return (
       <main className="flex min-h-screen items-center justify-center">
-        <p className="text-slate-500">Unable to load page content. Please try again later.</p>
+        <p className="">Unable to load page content. Please try again later.</p>
       </main>
     );
   }
