@@ -1,7 +1,12 @@
 import { getPageComponent } from "@/lib/api/api";
 import RenderSection from "@/components/RenderSections";
+import { generateSeo } from "@/lib/api/seo";
 
+export async function generateMetadata() {
+  return generateSeo("home");
+}
 export default async function HomePage() {
+  
   try {
     const homePageData = await getPageComponent("home");
     const sections = Array.isArray(homePageData)
