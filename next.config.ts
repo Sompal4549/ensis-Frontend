@@ -1,6 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+    experimental: {
+    optimizeCss: true,
+  },
+    compiler: {
+    // modern browsers target
+  },
+  transpilePackages: [],
+
   images: {
     unoptimized: true,
     remotePatterns: [

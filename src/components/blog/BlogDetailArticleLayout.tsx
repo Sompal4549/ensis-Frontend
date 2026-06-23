@@ -325,7 +325,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-slate-200 bg-white px-4 py-1.5 text-[11px] text-slate-600"
+                  className="rounded-full border border-slate-200 bg-white px-4 py-1.5 text-[11px]"
                 >
                   {tag}
                 </span>
@@ -338,7 +338,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                 <a
                   key={idx}
                   href="#"
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-500 transition-colors hover:border-[#C9972A] hover:text-[#C9972A]"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 transition-colors hover:border-[#C9972A] hover:text-[#C9972A]"
                 >
                   <Icon size={14} />
                 </a>
@@ -386,7 +386,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                     <li key={item.id}>
                       <Link
                         href={item.href}
-                        className="flex items-center gap-2 text-[11px] text-slate-600 transition-colors hover:text-[#C9972A]"
+                        className="flex items-center gap-2 text-[11px] transition-colors hover:text-[#C9972A]"
                       >
                         <Circle size={6} className="fill-[#C9972A] text-[#C9972A]" />
                         {item.label}
@@ -430,7 +430,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                         <p className="text-[11px] font-bold leading-snug text-[#1f2c25] group-hover:text-[#C9972A]">
                           {item.title}
                         </p>
-                        <p className="mt-1.5 text-[10px] text-slate-500">
+                        <p className="mt-1.5 text-[10px]">
                           {item.date} • {item.readTime}
                         </p>
                       </div>

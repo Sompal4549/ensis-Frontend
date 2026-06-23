@@ -109,14 +109,41 @@ export default async function ProductPage({
 
   const originalPrice = product.price ? Math.round(product.price * 1.18) : 0;
 
-  const suggestions = allProducts
+  let suggestionsList: any[] = [];
+  try {
+    const listRes = await productApi.list(100);
+    if (listRes && listRes.products && listRes.products.length > 0) {
+      suggestionsList = listRes.products.map((item: any) => ({
+        ...item,
+        id: item._id,
+        name: item.title,
+        image: item.images?.[0] ? getImageUrl(item.images[0]) : "",
+        images: item.images?.length 
+          ? item.images.map((img: string) => getImageUrl(img)) 
+          : [img6, img6, img6, img6],
+        categoryKey: item.category?.slug || item.category,
+        category: typeof item.category === 'object' ? item.category.name : item.category
+      }));
+    }
+  } catch (err) {
+    console.error("Failed to fetch suggestions from backend:", err);
+  }
+
+  // Fallback to local allProducts if backend list fails or is empty
+  if (suggestionsList.length === 0) {
+    suggestionsList = allProducts;
+  }
+
+  const suggestions = suggestionsList
     .filter((item) => 
       item.slug !== product.slug && 
-      (item.categoryKey === product.categoryKey || (typeof product.category === 'object' && item.category === product.category.name))
+      (item.categoryKey === product.categoryKey || item.category === product.category)
     )
     .slice(0, 8);
 
-  const finalSuggestions = suggestions.length > 0 ? suggestions : allProducts.filter(i => i.slug !== product.slug).slice(0, 8);
+  const finalSuggestions = suggestions.length > 0 
+    ? suggestions 
+    : suggestionsList.filter(i => i.slug !== product.slug).slice(0, 8);
 
   return (
     <div className="min-h-screen bg-[#fbfaf7]">

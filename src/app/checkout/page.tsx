@@ -347,7 +347,7 @@ export default function CheckoutPage() {
                       </p>
                       <div className="mt-4 pt-3 border-t border-[#516a35]/10 text-xs">
                         <p className="font-bold">Deliver To:</p>
-                        <p className="mt-1 text-slate-700">
+                        <p className="mt-1 ">
                           {shippingAddress.label} • {shippingAddress.street}, {shippingAddress.city},{" "}
                           {shippingAddress.state} - {shippingAddress.postalCode}. Tel: {shippingAddress.phone},{" "}
                           {shippingAddress.country}
@@ -397,7 +397,7 @@ export default function CheckoutPage() {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="font-bold truncate leading-tight">{item.name}</p>
-                        <p className="mt-1 text-slate-400 font-semibold">
+                        <p className="mt-1  font-semibold">
                           {formatCurrency(item.price)} × {item.quantity}
                         </p>
                       </div>

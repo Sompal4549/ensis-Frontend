@@ -52,7 +52,7 @@ export default async function HomePage() {
     console.error("Home Page Load Error:", error);
     return (
       <main className="flex min-h-screen items-center justify-center">
-        <p className="text-slate-500">Unable to load page content. Please try again later.</p>
+        <p className="">Unable to load page content. Please try again later.</p>
       </main>
     );
   }
