@@ -36,6 +36,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const advSeo = await getAdvancedSeo();
+
+  console.log("ADV SEO", advSeo);
+  console.log("Analytics", advSeo?.analytics);
   const analytics = advSeo?.analytics || {};
   const searchConsole = advSeo?.searchConsole || {};
 

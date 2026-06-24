@@ -63,7 +63,7 @@ type ProductsGridProps = { // Renamed to ProductsGridProps for the component
 export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
   const content = sectionContent || defaultContent;
   const products = await getProducts()
-  console.log(products, "products")
+  // console.log(products, "products")
   // Use the CMS products list (which doubles as fallback category cards)
   return (
     <section className="bg-[#fbf8f2] relative z-10">
