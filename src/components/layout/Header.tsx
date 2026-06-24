@@ -196,7 +196,7 @@ export const Header = () => {
                         </Link>
                     </div>
 
-                    <div className="flex w-full items-center justify-between gap-4 md:w-auto md:justify-end">
+                    <div className="flex w-full items-center justify-end gap-4 md:w-auto">
                         {mounted && (user ? (
                             <div className="flex items-center gap-3">
                                 <div className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1">
@@ -239,20 +239,20 @@ export const Header = () => {
 
             >
                 <Container className="flex items-center justify-between gap-6 py-2! relative">
-                 <Link href="/" className="absolute left-4 xl:left-6 top-[80%] -translate-y-[85%] shrink-0 z-10">
+                    <Link href="/" className="absolute left-4 xl:left-6 top-[80%] -translate-y-[85%] shrink-0 z-10">
 
-  <Image
-    src={logoImg}
-    alt="ENSIS Logo"
-    className="h-11.5 w-auto object-contain"
-    priority
-    style={{ width: "auto" }}
-  />
-    
-        </Link>
- 
-        {/* Spacer so nav doesn't go under the logo */}
-        <div className="w-[120px] shrink-0" />
+                        <Image
+                            src={logoImg}
+                            alt="ENSIS Logo"
+                            className="h-11.5 w-auto object-contain"
+                            priority
+                            style={{ width: "auto" }}
+                        />
+
+                    </Link>
+
+                    {/* Spacer so nav doesn't go under the logo */}
+                    <div className="w-[120px] shrink-0" />
 
                     {/* Desktop Navigation */}
                     <nav className="hidden flex-1 justify-center xl:flex">

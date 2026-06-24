@@ -3,6 +3,7 @@ import React from "react";
 import ready_to_build2 from "@/assets/trunkey_solutions/ready_to_build (2).webp";
 
 import { Container } from "../ui/Container";
+import Link from "next/link";
 
 
 export interface WellnessCtaBannerContent {
@@ -14,6 +15,7 @@ export interface WellnessCtaBannerContent {
     title: string;
     description: string;
     image: { imageUrl: string; alt?: string };
+    link: string;
   }>;
 }
 
@@ -36,21 +38,21 @@ const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> 
           {/* Content */}
           <div className="px-4 pt-4 lg:pt-5 lg:flex-1 flex flex-col gap-2">
             <h2 className="text-[#E7C17A] text-lg md:text-xl leading-none font-bold">
-             {sectionContent.title}
+              {sectionContent.title}
             </h2>
 
             <p className="mt-1.5 text-sm text-white leading-relaxed max-w-[520px]">
-         {sectionContent.heading}
+              {sectionContent.heading}
             </p>
-              <p className="font-semibold text-[#E7C17A]">
+            <p className="font-semibold text-[#E7C17A]">
               {sectionContent.description}
-              </p>
+            </p>
           </div>
 
           {/* Action Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 px-4 pb-4 lg:pb-0 lg:pr-4">
             {sectionContent.buttons.map((item) => (
-              <button
+              <Link href={item.link || ""}
                 key={item.id || item.title}
                 className="group flex items-center gap-2 rounded border-2 border-[#8B6B2E] px-3 py-5 h-full text-left transition-all hover:bg-[#0B3A30]"
               >
@@ -59,7 +61,7 @@ const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> 
                     src={item.image.imageUrl}
                     height={28}
                     width={28}
-                    alt={item.image.alt||item.title}
+                    alt={item.image.alt || item.title}
                   />
                 </div>
 
@@ -71,7 +73,7 @@ const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> 
                     {item.description}
                   </div>
                 </div>
-              </button>
+              </Link>
             ))}
           </div>
         </div>

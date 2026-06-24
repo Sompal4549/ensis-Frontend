@@ -32,26 +32,43 @@ const decorImages = [img16, img13, img9, img15];
 const brassImages = [img5, img9, img16, img3];
 
 export interface Product {
-    title: string;
-    tag?: ReactNode;
-    description: string;
-    id: string; // Changed to string as API returns _id as string
-    category: any;
-    categoryKey?: string;
-    name: string;
-    price: number;
-    image: string | StaticImageData;
-    badge?: string;
-    slug: string;
-    images?: any;
-    code?: string;
-    shortDescription?: string;
-    material?: string;
-    subcategory?: string;
-    dimensions?: { length: string; width: string; height: string };
-    weight?: string;
-    features?: string[];
-    specifications?: { woodType?: string; finish?: string; fitting?: string };
+  title: string;
+  slug: string;
+  code?: string;
+  description: string;
+  shortDescription?: string;
+  price: number;
+  discountPrice?: number;
+  category: any;
+  subcategory?: string;
+  material?: string;
+  weight?: string;
+  images: string | StaticImageData[];
+  stock: number;
+  tags: string[];
+  averageRating: number;
+  reviews: any;
+  isActive: boolean;
+  isFeatured: boolean;
+  overview?: {
+    title?: string;
+    description?: string;
+    overviewList?: string[];
+    specifications?: { title: string; specificationsList: { title: string; description: string }[] }[];
+    keyFeatures?: { title: string; keyFeaturesList: string[] };
+    dimensions?: { title: string; dimensionsList: { title: string; description: string }[] }[];
+    materialAndCare?: { title: string; description: string };
+    productSpecifications?: { highlight: string; title: string; image: string; specifications: { title: string; description: string }[] }[];
+    whatisInclueded?: string[];
+    items?: { image: string; title: string; description: string }[];
+    smartDesignAppearance?: {
+      highlight?: string;
+      title?: string;
+      woodFinish?: string[];
+      sizeOptions?: { title: string; description: string }[];
+    };
+    faqs?: { question: string; description: string }[];
+  };
 }
 
 const defaultProductDetails = {
@@ -109,11 +126,11 @@ export const categories = [
   { key: "spa", label: "Spa Furniture", icon: spa, count: 16 },
   { key: "ayurvedic", label: "Ayurvedic Accessories", icon: ayurvedic, count: 24 },
   { key: "steam", label: "Steam & Sauna", icon: steam, count: 10 },
- 
-  { key: "decor", label: "Wellness Decor", icon:interior, count: 18 },
+
+  { key: "decor", label: "Wellness Decor", icon: interior, count: 18 },
   { key: "brass", label: "Brass Ritual Items", icon: wellness_assossries_icon, count: 22 },
-  {key:"table", label:"Panchkarma Table", icon:table, count:1},
-   {key:"shirodha", label:"Shirodhara Equipment", icon:shirodhara_eqipment, count:1}
+  { key: "table", label: "Panchkarma Table", icon: table, count: 1 },
+  { key: "shirodha", label: "Shirodhara Equipment", icon: shirodhara_eqipment, count: 1 }
 ];
 export const materials = [
   "Teak Wood",
@@ -177,7 +194,7 @@ export const allProducts: Product[] = [
     images: ayurvedicImages,
     tag: "Authentic Ayurveda",
     description: "Hand-finished brass bowl set for traditional Ayurvedic preparations. Includes three graduated sizes perfect for mixing herbal pastes and oils.",
-     ...defaultProductDetails,
+    ...defaultProductDetails,
     ...spaSpecs,
   },
   {
@@ -193,7 +210,7 @@ export const allProducts: Product[] = [
     images: oilImages,
     tag: "Essential Oils",
     description: "Curated collection of therapeutic-grade essential oils sourced from organic farms. Includes lavender, eucalyptus, peppermint, and sandalwood blends.",
-     ...defaultProductDetails,
+    ...defaultProductDetails,
     ...steamSpecs
   },
   {
@@ -209,7 +226,7 @@ export const allProducts: Product[] = [
     images: spaImages,
     tag: "Luxury Spa",
     description: "Ergonomically designed wooden lounge chair crafted from premium teak. Features adjustable recline positions and a smooth hand-polished finish.",
-     ...defaultProductDetails,
+    ...defaultProductDetails,
     ...spaSpecs
   },
   {
@@ -225,7 +242,7 @@ export const allProducts: Product[] = [
     images: panchkarmaImages,
     tag: "Dhara Therapy",
     description: "Precision-engineered Shirodhara stand with adjustable height and flow-control valve. Designed for consistent oil drip therapy in clinical settings.",
-     ...defaultProductDetails,
+    ...defaultProductDetails,
     ...ayurvedicSpecs
   },
   {
@@ -241,7 +258,7 @@ export const allProducts: Product[] = [
     images: decorImages,
     tag: "Wellness Decor",
     description: "Traditional brass Deepam lamp with intricate hand-engraved motifs. Creates a warm, meditative ambiance for wellness spaces and therapy rooms.",
-     ...defaultProductDetails,
+    ...defaultProductDetails,
     ...decorSpecs
   },
   {

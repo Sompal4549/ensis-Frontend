@@ -2,9 +2,9 @@
 import axios, { AxiosResponse } from "axios";
 
 const BASE_API_URL = (
-  process.env.NEXT_PUBLIC_API_URL ||
-  process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "http://localhost:5000/api/v1"
+    process.env.NEXT_PUBLIC_API_URL ||
+    process.env.NEXT_PUBLIC_API_BASE_URL ||
+    "http://localhost:5000/api/v1"
 ).replace(/\/$/, "");
 
 export const API_URL = BASE_API_URL.endsWith("/api/v1") ? BASE_API_URL : `${BASE_API_URL}/api/v1`;
@@ -18,34 +18,34 @@ const apiClient = axios.create({
 
 
 const normalizePageResponse = (payload: any) => {
-  if (!payload) return null;
-  if (Array.isArray(payload)) return payload;
-  if (Array.isArray(payload?.data)) return payload.data;
-  if (Array.isArray(payload?.data?.data)) return payload.data.data;
+    if (!payload) return null;
+    if (Array.isArray(payload)) return payload;
+    if (Array.isArray(payload?.data)) return payload.data;
+    if (Array.isArray(payload?.data?.data)) return payload.data.data;
 
-  const direct = payload?.data?.data ?? payload?.data ?? payload;
-  if (Array.isArray(direct?.sections)) return direct;
-  if (Array.isArray(direct?.data?.sections)) return direct.data;
-  if (Array.isArray(direct?.page?.sections)) return direct.page;
-  if (Array.isArray(payload?.data?.data?.sections)) return payload.data.data;
-  if (Array.isArray(payload?.data?.page?.sections)) return payload.data.page;
+    const direct = payload?.data?.data ?? payload?.data ?? payload;
+    if (Array.isArray(direct?.sections)) return direct;
+    if (Array.isArray(direct?.data?.sections)) return direct.data;
+    if (Array.isArray(direct?.page?.sections)) return direct.page;
+    if (Array.isArray(payload?.data?.data?.sections)) return payload.data.data;
+    if (Array.isArray(payload?.data?.page?.sections)) return payload.data.page;
 
-  return direct;
+    return direct;
 };
 
 export async function getPageComponent(slug: string) {
-  const response = await apiClient.get(`/component-content/page/${slug}`);
+    const response = await apiClient.get(`/component-content/page/${slug}`);
 
-  if (response.status < 200 || response.status >= 300) {
-    throw new Error(`Failed to fetch page content for: ${slug}`);
-  }
+    if (response.status < 200 || response.status >= 300) {
+        throw new Error(`Failed to fetch page content for: ${slug}`);
+    }
 
-  const payload = response.data;
-  if (payload?.status === "error") {
-    throw new Error(payload.message || `Failed to fetch page content for: ${slug}`);
-  }
+    const payload = response.data;
+    if (payload?.status === "error") {
+        throw new Error(payload.message || `Failed to fetch page content for: ${slug}`);
+    }
 
-  return normalizePageResponse(payload);
+    return normalizePageResponse(payload);
 }
 export type Product = {
     _id: string;
@@ -117,7 +117,7 @@ export const productApi = {
         const response = await apiClient.get(`/products/${idOrSlug}`);
         return unwrap<Product>(response);
     },
-  
+
 };
 
 export const categoryApi = {
@@ -165,6 +165,5 @@ export const getComponentContent = async <T>(key: string, fallback: T): Promise<
 
 export const getProducts = async () => {
     const response = await apiClient.get(`/products?limit=100`);
-    console.log(response,"produts")
     return response.data.data.products;
 };

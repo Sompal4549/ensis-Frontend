@@ -19,10 +19,10 @@ import { generateSeo } from "@/lib/api/seo";
 import { productApi, getImageUrl } from "@/lib/api/api";
 import { notFound } from "next/navigation";
 
-export async function generateMetadata({ 
-  params 
-}: { 
-  params: Promise<{ id: string }> 
+export async function generateMetadata({
+  params
+}: {
+  params: Promise<{ id: string }>
 }) {
   // Await the params promise to get the actual values
   const { id } = await params;
@@ -41,7 +41,7 @@ export function getImageSource(image: string | StaticImageData | undefined) {
 function RelatedProductCard({ product }: { product: Product }) {
   return (
     <Link
-      href={`/products/${product.id}`}
+      href={`/products/${product.slug}`}
       className="group rounded-lg bg-white transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(49,59,48,0.08)]"
     >
       <div className="relative aspect-[2/1] overflow-hidden rounded-md bg-[#f7f3ec]">
@@ -75,7 +75,7 @@ export default async function ProductPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  
+
   let apiProduct;
   try {
     apiProduct = await productApi.detail(id);
@@ -92,8 +92,8 @@ export default async function ProductPage({
     id: apiProduct._id,
     name: apiProduct.title,
     image: apiProduct.images?.[0] ? getImageUrl(apiProduct.images[0]) : "",
-    images: apiProduct.images?.length 
-      ? apiProduct.images.map((img: string) => getImageUrl(img)) 
+    images: apiProduct.images?.length
+      ? apiProduct.images.map((img: string) => getImageUrl(img))
       : [img6, img6, img6, img6],
     categoryKey: apiProduct.category?.slug || apiProduct.category
   };
@@ -118,8 +118,8 @@ export default async function ProductPage({
         id: item._id,
         name: item.title,
         image: item.images?.[0] ? getImageUrl(item.images[0]) : "",
-        images: item.images?.length 
-          ? item.images.map((img: string) => getImageUrl(img)) 
+        images: item.images?.length
+          ? item.images.map((img: string) => getImageUrl(img))
           : [img6, img6, img6, img6],
         categoryKey: item.category?.slug || item.category,
         category: typeof item.category === 'object' ? item.category.name : item.category
@@ -135,14 +135,14 @@ export default async function ProductPage({
   }
 
   const suggestions = suggestionsList
-    .filter((item) => 
-      item.slug !== product.slug && 
+    .filter((item) =>
+      item.slug !== product.slug &&
       (item.categoryKey === product.categoryKey || item.category === product.category)
     )
     .slice(0, 8);
 
-  const finalSuggestions = suggestions.length > 0 
-    ? suggestions 
+  const finalSuggestions = suggestions.length > 0
+    ? suggestions
     : suggestionsList.filter(i => i.slug !== product.slug).slice(0, 8);
 
   return (
@@ -153,7 +153,7 @@ export default async function ProductPage({
         shopProduct={shopProduct}
       />
       <ProductFeatureStrip />
-      <ProductInfoTabs />
+      <ProductInfoTabs product={product} />
 
       <Container>
         <section className="grid lg:items-start xl:gap-8">
@@ -264,14 +264,14 @@ export default async function ProductPage({
           })}
         </section> */}
       </Container>
-   
-                      <RealSpacesCarousel images={product.images} />
+
+      <RealSpacesCarousel images={product.images} />
       {/* <ReviewSection
         productId={product.id}
         productTitle={product.title}
         productSlug={product.slug}
       /> */}
-<Container>
+      <Container>
 
         <section className="mt-2">
           <h2 className="text-2xl font-semibold text-[#1a1a1a]">You May Also Like</h2>
@@ -284,10 +284,10 @@ export default async function ProductPage({
           </div>
         </section>
 
-              </Container>
-<Planning />
+      </Container>
+      <Planning />
 
-          <FaqSection />
+      <FaqSection />
       {/* <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5ded5] bg-white/95 px-2 shadow-[0_-10px_30px_rgba(49,59,48,0.08)] backdrop-blur">
         <Container>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
