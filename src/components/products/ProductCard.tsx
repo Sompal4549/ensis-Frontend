@@ -3,10 +3,10 @@ import { fmt } from "./Products";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { useShop, type ShopProduct } from "@/context/ShopContext";
-import type {Product} from "@/constants"
+import type { Product } from "@/constants"
 
 export default function ProductCard({ product }: { product: Product }) {
-  const {  isInCart, isLiked } = useShop();
+  const { isInCart, isLiked } = useShop();
   const shopProduct: ShopProduct = {
     id: product.id.toString(),
     slug: product.slug,
@@ -20,7 +20,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <div className="group relative bg-white rounded-[18px] overflow-hidden border border-[#ede8e0] hover:shadow-[0_4px_18px_rgba(0,0,0,0.07)] transition-all duration-300">
-      <Link href={`/products/${product.id}`} className="block">
+      <Link href={`/products/${product.slug}`} className="block">
         <div className="relative h-32 sm:h-36 overflow-hidden bg-[#f8f3ec]">
           <Image
             src={product.image}
@@ -96,11 +96,10 @@ export function Checkbox({ label }: { label: string }) {
     <label className="flex items-center gap-2.5 cursor-pointer group">
       <div
         onClick={() => setChecked((c) => !c)}
-        className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${
-          checked
+        className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${checked
             ? "bg-[#183b17] border-[#183b17]"
             : "bg-white"
-        }`}
+          }`}
       >
         {checked && (
           <svg width="9" height="7" viewBox="0 0 9 7" fill="none">

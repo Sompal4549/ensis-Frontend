@@ -14,7 +14,7 @@ import img6 from '@/assets/home/img-6.webp';
 import img13 from '@/assets/home/img-13.webp';
 
 import SubHeading from './SubHeading';
-import {  getImageUrl, getProducts,  type Product } from '@/lib/api/api';
+import { getImageUrl, getProducts, type Product } from '@/lib/api/api';
 
 const fallbackImageMap: Record<string, any> = {
   "panchkarma-beds": img12,
@@ -62,15 +62,15 @@ type ProductsGridProps = { // Renamed to ProductsGridProps for the component
 
 export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
   const content = sectionContent || defaultContent;
-const products = await getProducts()
-console.log(products,"products")
+  const products = await getProducts()
+  console.log(products, "products")
   // Use the CMS products list (which doubles as fallback category cards)
   return (
     <section className="bg-[#fbf8f2] relative z-10">
       <Container>
         <div className="mb-6 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <SubHeading text={content.subtitle} className='text-[#8d6a3a]'/>
+            <SubHeading text={content.subtitle} className='text-[#8d6a3a]' />
             <h2 className="font-serif text-3xl leading-tight text-[#0f2518] md:text-3xl font-semibold">{content.heading}</h2>
             <p className="max-w-[380px] text-xs leading-4.5 text-[#0f2518]">
               {content.description}
@@ -82,29 +82,30 @@ console.log(products,"products")
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {products.slice(0,8).map((product: Product) => {
+          {products.slice(0, 8).map((product: Product) => {
             const imageUrl = product.images?.[0]
               ? getImageUrl(product.images[0])
               : fallbackImageMap[product.slug] || img12;
 
             return (
-            <Link href={`/products/${product._id}`} key={product._id} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-xl">
-              <div className="relative aspect-[2/1] overflow-hidden bg-[#e5dccf] rounded-tl-xl rounded-tr-xl">
-                   <Image 
-                     src={imageUrl} 
-                     alt={product.title} 
-                     fill 
-                     className="object-cover" 
-                     crossOrigin="anonymous" 
-                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                   />
-              </div>
-              <div className="p-5">
-                <p className="text-base font-semibold text-[#0f2518]">{product.title}</p>
-                <span className="inline-flex items-center gap-2 text-xs font-semibold text-[#0f2518]">Explore Now <ArrowRight size={14} /></span>
-              </div>
-            </Link>
-          )})}
+              <Link href={`/products/${product.slug}`} key={product._id} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-xl">
+                <div className="relative aspect-[2/1] overflow-hidden bg-[#e5dccf] rounded-tl-xl rounded-tr-xl">
+                  <Image
+                    src={imageUrl}
+                    alt={product.title}
+                    fill
+                    className="object-cover"
+                    crossOrigin="anonymous"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  />
+                </div>
+                <div className="p-5">
+                  <p className="text-base font-semibold text-[#0f2518]">{product.title}</p>
+                  <span className="inline-flex items-center gap-2 text-xs font-semibold text-[#0f2518]">Explore Now <ArrowRight size={14} /></span>
+                </div>
+              </Link>
+            )
+          })}
         </div>
       </Container>
     </section>
