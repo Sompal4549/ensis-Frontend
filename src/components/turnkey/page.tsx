@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import RenderSections from "@/components/turnkey/RenderSections";
-import { API_URL } from "@/app/lib/api";
+import { API_URL } from "@/lib/api/api";
 
 const ProjectsPage = () => {
   const [sections, setSections] = useState<any[]>([]);

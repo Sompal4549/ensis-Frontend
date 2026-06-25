@@ -110,7 +110,7 @@ interface HowWeWorkContent {
       title: string;
       description: string;
       color: string; // Assuming color is a string like "#HEX"
-      icon: any; // Changed from image to icon
+      image: any; // Changed from image to icon
     }>;
   };
 }
@@ -236,7 +236,7 @@ export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWor
                       </div>
 
                       <div className="ml-4 shrink-0">
-                        <Image src={step.icon} // Changed to step.icon
+                        <Image src={step.image} // Changed to step.icon
                           height={22}
                           width={22}
                           style={{ color: step.color }}

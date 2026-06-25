@@ -18,7 +18,7 @@ export interface Testimonial {
     text: string;
     name: string;
     role: string;
-    image: string;
+    image: any;
   }[];
 }
 
@@ -35,6 +35,7 @@ const breakpointsConfig = {
 };
 
 export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
+  console.log(sectionContent, "testimonial")
   return (
     <section className="bg-[#fbf8f2]">
       <Container>
@@ -63,8 +64,8 @@ export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
                     {/* ✅ backgroundImage se Image component pe switch karo */}
                     <div className="size-11 rounded-full overflow-hidden shrink-0 bg-[#e8e0d5]">
                       <Image
-                        src={item.image || userImage}
-                        alt={item.name}
+                        src={item?.image?.imageUrl||item?.image || userImage}
+                        alt={item.name||item.image.alt}
                         width={44}
                         height={44}
                         className="w-full h-full object-cover"

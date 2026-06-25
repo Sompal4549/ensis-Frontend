@@ -1,8 +1,7 @@
 // components/blog/sidebar/PopularPosts.tsx
 import Image from "next/image";
 import SectionTitle from "./SectionTitle";
-import { API_URL } from "@/app/lib/api";
-import { getImageUrl } from "@/lib/api/api";
+import { API_URL, getImageUrl } from "@/lib/api/api";
 import Link from "next/link";
 
 async function getPopularPosts() {

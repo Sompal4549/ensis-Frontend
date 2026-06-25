@@ -1,5 +1,6 @@
-
+import { Product } from "@/constants";
 import axios, { AxiosResponse } from "axios";
+import { StaticImageData } from "next/image";
 
 const BASE_API_URL = (
     process.env.NEXT_PUBLIC_API_URL ||
@@ -13,9 +14,8 @@ export const BACKEND_URL = API_URL.replace(/\/api\/v1$/, "");
 
 const apiClient = axios.create({
     baseURL: API_URL,
-    validateStatus: () => true, // Handle status codes manually to match previous fetch logic
+    validateStatus: () => true,
 });
-
 
 const normalizePageResponse = (payload: any) => {
     if (!payload) return null;
@@ -47,26 +47,7 @@ export async function getPageComponent(slug: string) {
 
     return normalizePageResponse(payload);
 }
-export type Product = {
-    _id: string;
-    title: string;
-    slug: string;
-    description: string;
-    price: number;
-    discountPrice?: number;
-    images?: string[];
-    stock?: number;
-    averageRating?: number;
-    category: { _id: string; name: string; slug: string; description?: string };
-    code?: string;
-    shortDescription?: string;
-    material?: string;
-    subcategory?: string;
-    dimensions?: { length: string; width: string; height: string };
-    weight?: string;
-    features?: string[];
-    specifications?: { woodType?: string; finish?: string; fitting?: string };
-};
+
 
 export type ComponentContent<T> = {
     _id: string;
@@ -92,7 +73,7 @@ const normalizeOtpResponse = (response: AxiosResponse) => {
     return {
         ...payload,
         success: isOk && (payload.success === true || payload.status === "success"),
-        message: payload.message || (isOk ? "OTP request successful" : "API request failed")
+        message: payload.message || (isOk ? "OTP request successful" : "API request failed"),
     };
 };
 
@@ -100,7 +81,6 @@ export const getImageUrl = (image?: any) => {
     if (!image || typeof image !== "string") return image || "";
     if (image.startsWith("http")) return image;
 
-    // Ensure we have a leading slash but no double slashes
     const cleanPath = image.startsWith("/") ? image : `/${image}`;
     if (cleanPath.startsWith("/uploads")) {
         return `${BACKEND_URL}${cleanPath}`;
@@ -117,33 +97,29 @@ export const productApi = {
         const response = await apiClient.get(`/products/${idOrSlug}`);
         return unwrap<Product>(response);
     },
-
 };
 
 export const categoryApi = {
     list: async () => {
         const response = await apiClient.get(`/categories`);
         return unwrap<any[]>(response);
-    }
+    },
 };
 
 export const verifyApi = {
-    sendEmailOtp: async (email: string, profile: string = 'SPEAKER') => {
-        const response = await apiClient.post(`/auth/send-email-otp`, {
-            email,
-            purpose: profile
-        });
+    sendEmailOtp: async (email: string, profile: string = "SPEAKER") => {
+        const response = await apiClient.post(`/auth/send-email-otp`, { email, purpose: profile });
         return normalizeOtpResponse(response);
     },
     verifyEmailOtp: async (email: string, otp: string) => {
         const response = await apiClient.post(`/auth/verify-email-otp`, { email, otp });
         return normalizeOtpResponse(response);
     },
-    sendPhoneOtp: async (phone: string, profile: string = 'CONTACT', name: string = '') => {
+    sendPhoneOtp: async (phone: string, profile: string = "CONTACT", name: string = "") => {
         const response = await apiClient.post(`/auth/send-phone-otp`, {
             phone,
             purpose: profile,
-            message: name ? `Dear ${name}, your IHWE OTP is {{code}}.` : undefined
+            message: name ? `Dear ${name}, your IHWE OTP is {{code}}.` : undefined,
         });
         return normalizeOtpResponse(response);
     },
@@ -165,5 +141,5 @@ export const getComponentContent = async <T>(key: string, fallback: T): Promise<
 
 export const getProducts = async () => {
     const response = await apiClient.get(`/products?limit=100`);
-    return response.data.data.products;
+    return response.data.data.products as Product[];
 };

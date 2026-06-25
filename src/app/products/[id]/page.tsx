@@ -4,7 +4,7 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { allProducts, type Product } from "@/constants";
+import {  type Product } from "@/constants";
 import YouMightCarousel from "@/components/ui/YouMightCarousel";
 import CartAndDetailHeroBanner from "@/components/products/ProductDetailBanner";
 import ProductInfoSection from "@/components/products/ProductInfoSection";
@@ -46,8 +46,8 @@ function RelatedProductCard({ product }: { product: Product }) {
     >
       <div className="relative aspect-[2/1] overflow-hidden rounded-md bg-[#f7f3ec]">
         <Image
-          src={product.image}
-          alt={product.name}
+          src={product.images[0]}
+          alt={product.title}
           crossOrigin="anonymous"
           fill
           sizes="(max-width: 768px) 45vw, 180px"
@@ -55,7 +55,7 @@ function RelatedProductCard({ product }: { product: Product }) {
         />
       </div>
       <div className="px-1 py-3">
-        <h3 className="line-clamp-2 text-xs font-semibold">{product.name}</h3>
+        <h3 className="line-clamp-2 text-xs font-semibold">{product.title}</h3>
         <div className="mt-1 flex items-center justify-between gap-2">
           <span className="text-sm font-bold text-[#1a1a1a]">
             {formatPrice(product.price)}
@@ -76,7 +76,7 @@ export default async function ProductPage({
 }) {
   const { id } = await params;
 
-  let apiProduct;
+  let apiProduct: any;
   try {
     apiProduct = await productApi.detail(id);
   } catch (err) {
@@ -89,7 +89,7 @@ export default async function ProductPage({
   // Transform API data to component-friendly object
   const product: any = {
     ...apiProduct,
-    id: apiProduct._id,
+    id: apiProduct._id ?? apiProduct.id ?? id,
     name: apiProduct.title,
     image: apiProduct.images?.[0] ? getImageUrl(apiProduct.images[0]) : "",
     images: apiProduct.images?.length
@@ -101,7 +101,7 @@ export default async function ProductPage({
   const shopProduct = {
     id: product.id,
     slug: product.slug,
-    name: product.name,
+    name: product.title,
     category: typeof product.category === 'object' ? product.category.name : product.category,
     price: product.price || 0,
     image: product.image,
@@ -130,9 +130,9 @@ export default async function ProductPage({
   }
 
   // Fallback to local allProducts if backend list fails or is empty
-  if (suggestionsList.length === 0) {
-    suggestionsList = allProducts;
-  }
+  // if (suggestionsList.length === 0) {
+  //   suggestionsList = allProducts;
+  // }
 
   const suggestions = suggestionsList
     .filter((item) =>
@@ -287,7 +287,7 @@ export default async function ProductPage({
       </Container>
       <Planning />
 
-      <FaqSection />
+      <FaqSection product={product} />
       {/* <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5ded5] bg-white/95 px-2 shadow-[0_-10px_30px_rgba(49,59,48,0.08)] backdrop-blur">
         <Container>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

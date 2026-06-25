@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import axios from "axios";
-import { API_URL } from "@/app/lib/api";
 import {
   FaLinkedinIn,
   FaInstagram,
@@ -12,6 +11,7 @@ import {
 } from "react-icons/fa";
 import { Container } from "../ui/Container";
 import flower from "@/assets/about/lotus.png";
+import { API_URL } from "@/lib/api/api";
 export interface BlogNewsLaterPropps{
   lotusImage:{image:string; alt:string;};
   title:string;

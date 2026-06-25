@@ -10,10 +10,10 @@ export default function ProductCard({ product }: { product: Product }) {
   const shopProduct: ShopProduct = {
     id: product.id.toString(),
     slug: product.slug,
-    name: product.name || product.title, // Use product.title as fallback for name
+    name:  product.title, // Use product.title as fallback for name
     category: product.category,
     price: product.price,
-    image: typeof product.image === "string" ? product.image : product.image.src,
+    image: typeof product.images[0],
   };
   const wished = isLiked(shopProduct.id);
   const added = isInCart(shopProduct.id);
@@ -23,8 +23,8 @@ export default function ProductCard({ product }: { product: Product }) {
       <Link href={`/products/${product.slug}`} className="block">
         <div className="relative h-32 sm:h-36 overflow-hidden bg-[#f8f3ec]">
           <Image
-            src={product.image}
-            alt={product.name}
+            src={product.images[0]}
+            alt={product.title}
             fill
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             crossOrigin="anonymous"
@@ -47,7 +47,7 @@ export default function ProductCard({ product }: { product: Product }) {
         />
       </button> */}
 
-      <div className="p-2.5 sm:p-3 h-[90px] flex flex-col justify-between">
+      <div className="p-2.5 sm:p-3 h-22.5 flex flex-col justify-between">
         {/* <p
           className="text-[8px] sm:text-[9px] font-[600] tracking-[0.14em] mb-1 uppercase"
           style={{ color: "#c8a45d" }}
@@ -56,13 +56,13 @@ export default function ProductCard({ product }: { product: Product }) {
         </p> */}
 
         <Link href={`/products/${product.id}`} className="block">
-          <h3 className="ws-body text-[12px] sm:text-[13px] font-[500] text-[#1a1a1a] leading-[1.35] mb-1 line-clamp-2">
-            {product.name}
+          <h3 className="ws-body text-[12px] sm:text-[13px] font-medium text-[#1a1a1a] leading-[1.35] mb-1 line-clamp-2">
+            {product.title}
           </h3>
         </Link>
 
         <div className="mt-auto">
-          <span className="text-sm font-[600] text-[#1a1a1a]">
+          <span className="text-sm font-semibold text-[#1a1a1a]">
             {fmt(product.price)}
           </span>
 

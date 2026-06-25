@@ -15,7 +15,7 @@ import water_resitant from "@/assets/products/water_resitant.webp";
 import long_lasting from "@/assets/products/long_lasting.webp";
 import Image from "next/image";
 import { API_URL } from "@/lib/api/api";
-import { Product } from "@/app/lib/api";
+import { Product } from "@/constants";
 
 interface ProductPriceSectionProps {
   product: Product; // Use the Product interface from constants
@@ -260,7 +260,7 @@ const ProductPriceSection = ({
 
       {/* Reviews Popup Modal */}
       {isReviewOpen && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+        <div className="fixed inset-0 z-999 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col">
             <div className="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-[#fbfaf7]">
               <div>

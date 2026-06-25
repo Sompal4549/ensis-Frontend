@@ -11,13 +11,14 @@ import {
   Package,
   RefreshCw,
 } from "lucide-react";
+import { nanoid } from 'nanoid'
 import Link from "next/link";
-import { allProducts, categories, idealFor, materials, PAGE_SIZE } from "@/constants";
+import {  categories, idealFor, materials, PAGE_SIZE } from "@/constants";
 import ProductCard, { Checkbox } from "./ProductCard";
-import { productApi, categoryApi, getImageUrl } from "@/app/lib/api";
 import BookButton from "../ui/BookButton";
 import Image from "next/image";
 import lotus from "@/assets/about/lotus.png";
+import { categoryApi, getImageUrl, productApi } from "@/lib/api/api";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 export const fmt = (n: number) => "₹" + n.toLocaleString("en-IN");
@@ -55,7 +56,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
         setApiCategories(cRes);
       } catch (e) {
         console.error("Error loading products/categories:", e);
-        setProducts(allProducts);
+        // setProducts(allProducts);
       }
     };
     loadData();
@@ -173,7 +174,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
 
                 <ul className="space-y-0.5">
                   {displayCategories.map((cat) => (
-                    <li key={cat.key}>
+                    <li key={nanoid()}>
                       <button
                         suppressHydrationWarning
                         onClick={() => setActiveCategory(cat.key)}

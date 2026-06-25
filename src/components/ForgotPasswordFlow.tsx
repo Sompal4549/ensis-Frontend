@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { Mail, Lock, KeyRound, CheckCircle2, ArrowLeft } from "lucide-react";
-import { API_URL } from "@/app/lib/api";
+import { API_URL } from "@/lib/api/api";
 
 interface ForgotPasswordFlowProps {
   onBackToLogin: () => void;

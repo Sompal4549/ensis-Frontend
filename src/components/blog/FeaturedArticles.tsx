@@ -1,7 +1,7 @@
 // components/blog/FeaturedArticles.tsx
+import { API_URL } from "@/lib/api/api";
 import BlogCard from "./BlogCard";
 import SectionTitle from "./SectionTitle";
-import { API_URL } from "@/app/lib/api";
 
 export default async function FeaturedArticles({ sectionContent }: { sectionContent: any }) {
   let blogs = sectionContent?.blogs || [];

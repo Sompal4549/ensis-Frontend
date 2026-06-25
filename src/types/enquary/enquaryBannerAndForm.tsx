@@ -24,17 +24,13 @@ export interface WhyChooseItem {
 }
 
 export interface EnquiryPageContent {
-  brand: {
-    logoSrc: string;
-    logoAlt: string;
-    tagline: string;
-  };
   hero: {
     heading: string;
     subheading: string;
     description: string;
     imageSrc: string;
     imageAlt: string;
+    formImageSrc:string
   };
   formTitle: string;
   projectTypeOptions: SelectOption[];

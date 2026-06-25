@@ -38,7 +38,6 @@ export default async function PageBuilder({ slug }: PageBuilderProps) {
         </div>
       );
     }
-console.log(pageData, "sortedSections")
     return (
       <main>
         {sortedSections.map((section: PageSection, index: number) => {
