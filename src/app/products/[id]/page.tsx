@@ -98,14 +98,14 @@ export default async function ProductPage({
     categoryKey: apiProduct.category?.slug || apiProduct.category
   };
 
-  const shopProduct = {
-    id: product.id,
-    slug: product.slug,
-    name: product.title,
-    category: typeof product.category === 'object' ? product.category.name : product.category,
-    price: product.price || 0,
-    image: product.image,
-  };
+  // const shopProduct = {
+  //   id: product.id,
+  //   slug: product.slug,
+  //   name: product.title,
+  //   category: typeof product.category === 'object' ? product.category.name : product.category,
+  //   price: product.price || 0,
+  //   image: product.image,
+  // };
 
   const originalPrice = product.price ? Math.round(product.price * 1.18) : 0;
 
@@ -150,7 +150,7 @@ export default async function ProductPage({
       <CartAndDetailHeroBanner
         originalPrice={originalPrice}
         product={product}
-        shopProduct={shopProduct}
+        shopProduct={product}
       />
       <ProductFeatureStrip />
       <ProductInfoTabs product={product} />
@@ -265,7 +265,7 @@ export default async function ProductPage({
         </section> */}
       </Container>
 
-      <RealSpacesCarousel images={product.images} />
+      <RealSpacesCarousel images={product?.overview?.seeItInRealSpaces?.images||[]} title={product?.overview?.seeItInRealSpaces?.title||""} />
       {/* <ReviewSection
         productId={product.id}
         productTitle={product.title}

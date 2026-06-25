@@ -1,0 +1,32 @@
+"use client";
+
+import { socialApi } from "@/lib/api/api";
+
+
+interface Props {
+  href: string;
+  platform: string;
+  className?: string;
+  children: React.ReactNode;
+}
+
+export default function SocialIconLink({
+  href,
+  platform,
+  className,
+  children,
+}: Props) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={className}
+      onClick={() => {
+        void socialApi.trackClick(platform);
+      }}
+    >
+      {children}
+    </a>
+  );
+}

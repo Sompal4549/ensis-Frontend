@@ -1,57 +1,199 @@
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { MapPin, Phone, Mail } from 'lucide-react';
 import designHouse from "@/assets/icons/design_house.webp"
-import { FaFacebook, FaInstagram, FaYoutube, FaLinkedin, FaWhatsapp } from 'react-icons/fa';
+import { FaFacebook, FaInstagram, FaYoutube, FaLinkedin, FaWhatsapp, FaTwitter } from 'react-icons/fa';
 import { Container } from '../ui/Container';
 import logoImg from '@/assets/logo.png';
 import BookButton from '../ui/BookButton';
 import GlowLogo from './GlowLogo';
-import { getComponentContent } from '@/lib/api/api';
+import { getComponentContent, socialApi } from '@/lib/api/api';
+import { SocialLink } from '@/constants';
+import type { IconType } from "react-icons";
+import SocialIconLink from './SocialLink';
 
-const defaultFooter = {
-  companyDescription: "Leading manufacturer of Ayurvedic, Spa & Wellness equipments. Crafting premium solutions for a healthier & better tomorrow.",
-  quickLinks: [
-    { label: "Home", href: "/" },
-    { label: "About Us", href: "/about" },
-    { label: "Products", href: "/products" },
-    { label: "Turnkey Solutions", href: "/turnkey" },
-    { label: "Projects", href: "/projects" },
-    { label: "Blog", href: "/blog" },
-    { label: "Contact Us", href: "/contact" }
-  ],
-  productCategories: [
-    { label: "Panchkarma Beds", href: "/products/panchkarma-beds" },
-    { label: "Spa Massage Tables", href: "/products/spa-massage-tables" },
-    { label: "Steam Chambers", href: "/products/steam-chambers" },
-    { label: "Sauna Systems", href: "/products/sauna-systems" },
-    { label: "Bronze Accessories", href: "/products/bronze-accessories" },
-    { label: "Spa Furniture", href: "/products/spa-furniture" },
-    { label: "Steam Generators", href: "/products/steam-generators" },
-    { label: "Yoga & Wellness", href: "/products/yoga-wellness" }
-  ],
-  solutionLinks: [
-    { label: "Panchkarma Clinic Setup", href: "/solutions/clinic" },
-    { label: "Resort & Spa Setup", href: "/solutions/resort" },
-    { label: "Wellness Retreat Design", href: "/solutions/retreat" },
-    { label: "Ayurveda Hospital Setup", href: "/solutions/hospital" },
-    { label: "Interior & Equipment Integration", href: "/solutions/integration" }
-  ],
-  contact: {
-    address: "12/29, Site-II, Loni Road, Industrial Area, Mohan Nagar - 201007, India, Uttar Pradesh, India",
-    phone: "+91 9654900525",
-    email: "info@ensis.in",
-    whatsappPhone: "+919654900525"
-  },
-  copyrightText: "Ensis Panchkarma & Spa Solutions. All Rights Reserved."
+const iconMap: Record<string, IconType> = {
+  facebook: FaFacebook,
+  instagram: FaInstagram,
+  youtube: FaYoutube,
+  linkedin: FaLinkedin,
+  whatsapp: FaWhatsapp,
+  twitter: FaTwitter,
+  x: FaTwitter,
 };
+
+const defaultFooter =  {
+            "company": {
+                "name": "Design House India Pvt. Ltd.",
+                "designHouselogo": {
+                    "imageUrl": "/images/design-house-logo.png",
+                    "alt": "Design House Logo"
+                },
+                "description": "Leading manufacturer of Ayurvedic, Spa & Wellness equipments. Crafting premium solutions for a healthier & better tomorrow.",
+                "ensisLogo": {
+                    "imageUrl": "/images/ensis-logo.png",
+                    "alt": "Ensis Logo"
+                },
+                "socialLinks": [
+                    {
+                        "image": {
+                            "imageUrl": "/icons/facebook.svg",
+                            "alt": "Facebook Icon"
+                        },
+                        "url": "https://facebook.com"
+                    },
+                    {
+                        "image": {
+                            "imageUrl": "/icons/instagram.svg",
+                            "alt": "Instagram Icon"
+                        },
+                        "url": "https://instagram.com"
+                    },
+                    {
+                        "image": {
+                            "imageUrl": "/icons/youtube.svg",
+                            "alt": "YouTube Icon"
+                        },
+                        "url": "https://youtube.com"
+                    },
+                    {
+                        "image": {
+                            "imageUrl": "/icons/linkedin.svg",
+                            "alt": "LinkedIn Icon"
+                        },
+                        "url": "https://linkedin.com"
+                    }
+                ],
+                "maplink": "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7000.624411489639!2d77.38796300000001!3d28.680306000000005!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf1ead9e1d9e5%3A0x31a2384cd903039b!2sEnsis%20(Best%20Ayurvedic%2C%20Spa%20%26%20Panchkarma%20Equipment%20Manufacturer%20in%20Delhi%20NCR)!5e0!3m2!1sen!2sin!4v1782380646800!5m2!1sen!2sin"
+            },
+            "navigation": [
+                {
+                    "title": "Quick Links",
+                    "links": [
+                        {
+                            "label": "Home",
+                            "href": "/"
+                        },
+                        {
+                            "label": "About Us",
+                            "href": "/about-us"
+                        },
+                        {
+                            "label": "Products",
+                            "href": "/products"
+                        },
+                        {
+                            "label": "Turnkey Solutions",
+                            "href": "/turnkey-solutions"
+                        },
+                        {
+                            "label": "Projects",
+                            "href": "/projects"
+                        },
+                        {
+                            "label": "Blog",
+                            "href": "/blog"
+                        },
+                        {
+                            "label": "Contact Us",
+                            "href": "/contact-us"
+                        }
+                    ]
+                },
+                {
+                    "title": "Product Categories",
+                    "links": [
+                        {
+                            "label": "Panchkarma Beds",
+                            "href": "/products/panchkarma-beds"
+                        },
+                        {
+                            "label": "Spa Massage Tables",
+                            "href": "/products/spa-massage-tables"
+                        },
+                        {
+                            "label": "Steam Chambers",
+                            "href": "/products/steam-chambers"
+                        },
+                        {
+                            "label": "Sauna Systems",
+                            "href": "/products/sauna-systems"
+                        },
+                        {
+                            "label": "Bronze Accessories",
+                            "href": "/products/bronze-accessories"
+                        },
+                        {
+                            "label": "Spa Furniture",
+                            "href": "/products/spa-furniture"
+                        },
+                        {
+                            "label": "Steam Generators",
+                            "href": "/products/steam-generators"
+                        },
+                        {
+                            "label": "Yoga & Wellness",
+                            "href": "/products/yoga-wellness"
+                        }
+                    ]
+                },
+                {
+                    "title": "Our Solutions",
+                    "links": [
+                        {
+                            "label": "Panchkarma Clinic Setup",
+                            "href": "/solutions/panchkarma-clinic-setup"
+                        },
+                        {
+                            "label": "Resort & Spa Setup",
+                            "href": "/solutions/resort-spa-setup"
+                        },
+                        {
+                            "label": "Wellness Retreat Design",
+                            "href": "/solutions/wellness-retreat-design"
+                        },
+                        {
+                            "label": "Ayurveda Hospital Setup",
+                            "href": "/solutions/ayurveda-hospital-setup"
+                        },
+                        {
+                            "label": "Interior & Equipment Integration",
+                            "href": "/solutions/interior-equipment-integration"
+                        }
+                    ]
+                }
+            ],
+            "contact": {
+                "address": "12/29, Site-II, Loni Road, Industrial Area, Mohan Nagar - 201007, India, Uttar Pradesh, India",
+                "phone": "+91 9654900525",
+                "email": "info@ensis.in",
+                "whatsappPhone": "+919654900525"
+            },
+            "copyright": {
+                "text": "© 2026 Ensis Panchkarma & Spa Solutions. All Rights Reserved.",
+                "links": [
+                    {
+                        "label": "Privacy Policy",
+                        "href": "/privacy-policy"
+                    },
+                    {
+                        "label": "Terms & Conditions",
+                        "href": "/terms-and-conditions"
+                    }
+                ]
+            }
+        };
 
 export const Footer = async () => {
   const content = await getComponentContent("layout.footer", defaultFooter);
   const heading = "mb-5 text-[11px] font-bold tracking-widest text-[#d0a965]";
   const linkList = "space-y-2 text-sm text-[#cfc7ba]";
   const linkClass = "transition-colors hover:text-white";
+ const socialLinks = (await socialApi.getLinks())
+  .filter((item) => item.isActive)
+  .sort((a, b) => a.order - b.order);
 
   return (
     <footer className="bg-[#171c11] pt-2 text-white">
@@ -62,53 +204,79 @@ export const Footer = async () => {
             <Image src={designHouse} alt="ENSIS Logo" className="h-[54px] w-[120px] object-contain brightness-125" />
             </GlowLogo>
             <p className="mt-5 max-w-[320px] text-sm leading-6 text-[#cfc7ba]">
-              {content.companyDescription}
+              {content.company.description}
             </p>
-            <div className="mt-5 flex items-center gap-4 text-[#d0a965]">
-              <Link href="#" aria-label="Facebook" className={linkClass}><FaFacebook size={18} /></Link>
-              <Link href="#" aria-label="Instagram" className={linkClass}><FaInstagram size={18} /></Link>
-              <Link href="#" aria-label="Youtube" className={linkClass}><FaYoutube size={18} /></Link>
-              <Link href="#" aria-label="LinkedIn" className={linkClass}><FaLinkedin size={18} /></Link>
-            </div>
-            <div className="mt-5">
-  <iframe
-    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7000.624411489639!2d77.38796300000001!3d28.680306000000005!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf1ead9e1d9e5%3A0x31a2384cd903039b!2sEnsis%20(Best%20Ayurvedic%2C%20Spa%20%26%20Panchkarma%20Equipment%20Manufacturer%20in%20Delhi%20NCR)!5e0!3m2!1sen!2sin!4v1782367991356!5m2!1sen!2sin"
-    width="full"
-    height="120"
-    loading="lazy"
-   className="rounded-xl border border-[#d0a965]/30 shadow-[0_8px_30px_rgba(0,0,0,0.35)] overflow-hidden"
-    style={{
-      border: 0,
-      filter: "saturate(1.2) contrast(1.05)",
-    }}
-    allowFullScreen
-    referrerPolicy="no-referrer-when-downgrade"
-  />
+             <div className="mt-5 flex items-center gap-4 text-[#d0a965]">
+              {socialLinks.map((social) => {
+        const platform = social.platform.toLowerCase();
+        const Icon = iconMap[platform];
+
+        if (!Icon) return null;
+
+        return (
+       <SocialIconLink
+  key={social._id}
+  href={social.url}
+  platform={social.platform}
+  className="text-2xl hover:scale-110 transition"
+>
+  <Icon />
+</SocialIconLink>
+        );
+      })}
+      </div>
+    <div className="mt-6">
+  <div className="group relative overflow-hidden rounded-2xl border-2 border-[#d0a965]/30 bg-gradient-to-br from-[#1f2518] to-[#171c11] p-1 shadow-[0_10px_40px_rgba(0,0,0,0.45)] transition-all duration-500 hover:border-[#d0a965]/60 hover:shadow-[0_15px_50px_rgba(208,169,101,0.2)]">
+    {/* Top Label
+    <div className="absolute left-4 top-3 z-10 rounded-full bg-black/60 px-3 py-1 text-[8px] font-semibold tracking-[0.2em] text-[#d0a965] backdrop-blur-md">
+       Panchkarma Equipments | Therapy Equipments - Ensis
+    </div> */}
+
+    {/* Glow Effect */}
+    <div className="absolute inset-0 bg-gradient-to-tr from-[#d0a965]/5 via-transparent to-[#d0a965]/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+    <iframe
+      src={
+        content.company.maplink ||
+        "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7000.624411489639!2d77.38796300000001!3d28.680306000000005!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf1ead9e1d9e5%3A0x31a2384cd903039b!2sEnsis%20(Best%20Ayurvedic%2C%20Spa%20%26%20Panchkarma%20Equipment%20Manufacturer%20in%20Delhi%20NCR)!5e0!3m2!1sen!2sin!4v1782367991356!5m2!1sen!2sin"
+      }
+      width="100%"
+      height="150"
+      loading="lazy"
+      className="relative rounded-[18px] transition-transform duration-500 group-hover:scale-[1.02]"
+      style={{
+        border: 0,
+        filter: "saturate(1.15) contrast(1.08)",
+      }}
+      allowFullScreen
+      referrerPolicy="no-referrer-when-downgrade"
+    />
+  </div>
 </div>
           </div>
 
           <div>
-            <h4 className={heading}>QUICK LINKS</h4>
+            <h4 className={heading}>{content.navigation[0].title||"QUICK LINKS"}</h4>
             <ul className={linkList}>
-              {content.quickLinks.map((link: { label: string; href: string }, index: number) => (
+              {content.navigation[0].links.map((link: { label: string; href: string }, index: number) => (
                 <li key={index}><Link href={link.href} className={linkClass}>{link.label}</Link></li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h4 className={heading}>PRODUCT CATEGORIES</h4>
+            <h4 className={heading}>{content.navigation[1].title||'PRODUCT CATEGORIES'}</h4>
             <ul className={linkList}>
-              {content.productCategories.map((link: { label: string; href: string }, index: number) => (
+              {content.navigation[1].links.map((link: { label: string; href: string }, index: number) => (
                 <li key={index}><Link href={link.href} className={linkClass}>{link.label}</Link></li>
               ))}
             </ul>
           </div>
 
           <div>
-            <h4 className={heading}>OUR SOLUTIONS</h4>
+            <h4 className={heading}>{content.navigation[2].title||'OUR SOLUTIONS'}</h4>
             <ul className={linkList}>
-              {content.solutionLinks.map((link: { label: string; href: string }, index: number) => (
+              {content.navigation[2].links.map((link: { label: string; href: string }, index: number) => (
                 <li key={index}><Link href={link.href} className={linkClass}>{link.label}</Link></li>
               ))}
             </ul>
@@ -146,10 +314,10 @@ export const Footer = async () => {
         </div>
 
         <div className="flex flex-col justify-between gap-3 py-5 text-xs text-[#9f978a] md:flex-row md:items-center">
-          <p>&copy; {new Date().getFullYear()} {content.copyrightText}</p>
+          <p>&copy; {new Date().getFullYear()} {content.copyright.text}</p>
           <div className="flex gap-5">
-            <Link href="/privacy" className={linkClass}>Privacy Policy</Link>
-            <Link href="/terms" className={linkClass}>Terms & Conditions</Link>
+            <Link href={content.copyright.links[0].href||"/privacy"} className={linkClass}>{content.copyright.links[1].label||`Privacy Policy`}</Link>
+            <Link href={content.copyright.links[1].href||"/terms"} className={linkClass}>{content.copyright.links[1].label||'Terms & Conditions'}</Link>
           </div>
         </div>
       </Container>

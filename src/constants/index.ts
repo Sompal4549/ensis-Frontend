@@ -31,6 +31,23 @@ const spaImages = [img14, img6, img7, img12];
 const decorImages = [img16, img13, img9, img15];
 const brassImages = [img5, img9, img16, img3];
 
+export type SocialLink = {
+  _id?: string;
+  platform: string;
+  url: string;
+  icon?: string;
+  isActive: boolean;
+  order: number;
+};
+
+export type SocialClick = {
+  _id?: string;
+  platform: string;
+  ip?: string;
+  userAgent?: string;
+  country?: string;
+  createdAt?: string;
+};
 export interface Product {
   id:string;
   _id:string;
@@ -60,8 +77,8 @@ export interface Product {
       title?: string;
       specificationsList?: { title: string; description: string }[];
     };
-    seeItInRealSpaces:{title:string; image:string; imageAlt:string};
-    productPricingFeatures:{title:string; image:string};
+    seeItInRealSpaces:{title:string; images:{image:string; imageAlt:string}[]};
+    productPricingFeatures:{title:string; image:string}[];
     emiOptions:boolean;
     customSize:boolean;
     keyFeatures?: {
