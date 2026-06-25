@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { useShop, type CartItem, type ShopProduct } from "@/context/ShopContext";
 import { Container } from "@/components/ui/Container";
-import { allProducts, type Product } from "@/constants";
+import { type Product } from "@/constants";
 import { formatCurrency } from "@/utils";
 import YouMightCarousel from "@/components/ui/YouMightCarousel";
 import CartAndDetailHeroBanner from "@/components/products/ProductDetailBanner";
@@ -32,14 +32,15 @@ function imageSource(image: string | StaticImageData) {
   return typeof image === "string" ? image : image.src; // This function is not used in this file
 }
 
+
 function productToShopProduct(product: Product): ShopProduct {
   return {
     id: product.id.toString(),
     slug: product.slug,
-    name: product.name,
+    name: product.title,
     category: product.category,
     price: product.price,
-    image: imageSource(product.image),
+    image: imageSource(product.images[0]),
   };
 }
 
@@ -171,8 +172,8 @@ function RecommendationCard({ product }: { product: Product }) {
       <div className="relative aspect-[2/1] overflow-hidden rounded-md bg-[#f7f3ec]">
         <Link href={`/products/${product.id}`}>
           <Image
-            src={product.image}
-            alt={product.name}
+            src={product.images[0]}
+            alt={product.title}
             fill
             sizes="(max-width: 768px) 45vw, 150px"
             className="object-cover transition-transform duration-500 hover:scale-105"
@@ -191,7 +192,7 @@ function RecommendationCard({ product }: { product: Product }) {
       <div className="px-1 py-2">
         <Link href={`/products/${product.id}`}>
           <h3 className="line-clamp-2 min-h-9 text-xs font-semibold leading-5">
-            {product.name}
+            {product.title}
           </h3>
         </Link>
         {/* <p className="mt-1 text-[11px]">
@@ -222,9 +223,9 @@ export default function CartPage() {
   const shipping = subtotal >= freeShippingAt || !hasItems ? 0 : 999;
   const estimatedTax = hasItems ? Math.round((subtotal - discount) * 0.05) : 0;
   const total = Math.max(0, subtotal - discount + shipping + estimatedTax);
-  const suggestions = allProducts
-    .filter((product) => !cartItems.some((item) => item.slug === product.slug))
-    .slice(0, 5);
+  // const suggestions = allProducts
+  //   .filter((product) => !cartItems.some((item) => item.slug === product.slug))
+  //   .slice(0, 5);
   return (
     <div className="min-h-screen bg-[#fbfaf7] text-[#101010]">
       <Container>
@@ -477,12 +478,12 @@ export default function CartPage() {
               You May Also Like
             </h2>
             <div className="mt-2">
-              <YouMightCarousel>
+              {/* <YouMightCarousel>
 
               {suggestions.map((product) => (
                 <RecommendationCard key={product.id} product={product} />
               ))}
-              </YouMightCarousel>
+              </YouMightCarousel> */}
             </div>
           </section>
 

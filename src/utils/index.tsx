@@ -8,7 +8,7 @@ export function isOrderItemForProduct(
   item: any,
   product: { id?: string; slug?: string; title?: string; name?: string }
 ) {
-  const productIdentifiers = [product.id, product.slug, product.title, product.name]
+  const productIdentifiers = [product.id, product.slug, product.title]
     .filter(Boolean)
     .map((value) => String(value).toLowerCase());
 

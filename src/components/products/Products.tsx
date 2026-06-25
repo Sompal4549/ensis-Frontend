@@ -12,7 +12,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import Link from "next/link";
-import { allProducts, categories, idealFor, materials, PAGE_SIZE } from "@/constants";
+import {  categories, idealFor, materials, PAGE_SIZE } from "@/constants";
 import ProductCard, { Checkbox } from "./ProductCard";
 import { productApi, categoryApi, getImageUrl } from "@/app/lib/api";
 import BookButton from "../ui/BookButton";
@@ -55,7 +55,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
         setApiCategories(cRes);
       } catch (e) {
         console.error("Error loading products/categories:", e);
-        setProducts(allProducts);
+        // setProducts(allProducts);
       }
     };
     loadData();

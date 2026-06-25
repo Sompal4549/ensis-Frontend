@@ -22,6 +22,7 @@ export interface BlogHeroBannerContent {
   readTime: string;
   category: string;
   bgImage: string|StaticImageData;
+  slug?:string;
 }
 
 export const fallbackBlogHeroBanner: BlogHeroBannerContent = {
@@ -53,7 +54,7 @@ interface BlogHeroBannerProps {
 const BlogDetailBanner: React.FC<BlogHeroBannerProps> = ({
   sectionContent = fallbackBlogHeroBanner, // ← content → sectionContent
 }) => {
-  const { breadcrumbs, title, date, readTime, category, bgImage } = sectionContent;
+  const { slug, title, date, readTime, category, bgImage } = sectionContent;
 
   return (
     <section className="relative overflow-hidden bg-[#0f2e22]">
@@ -81,7 +82,7 @@ const BlogDetailBanner: React.FC<BlogHeroBannerProps> = ({
       {/* Content */}
       <Container className="relative z-20 mx-auto px-6 py-8 md:py-10">
         {/* Breadcrumb */}
-        <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs text-white/75">
+        {/* <nav className="mb-5 flex flex-wrap items-center gap-2 text-xs text-white/75">
           {breadcrumbs.map((item, idx) => (
             <span key={item.label} className="flex items-center gap-2">
               {idx > 0 && <span className="text-white/40">{">"}</span>}
@@ -94,7 +95,7 @@ const BlogDetailBanner: React.FC<BlogHeroBannerProps> = ({
               )}
             </span>
           ))}
-        </nav>
+        </nav> */}
 
         {/* Title */}
         <h1 className="max-w-xl font-serif leading-snug text-white">

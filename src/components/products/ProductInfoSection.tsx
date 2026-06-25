@@ -57,27 +57,15 @@ const calloutLabels = [
 export default function ProductInfoSection({ product }: { product: Product }) { // Ensure product is always passed and typed
   const [finish, setFinish] = useState("teak");
 
-  const dynamicSpecs = product ? [
-    { label: "Material", value: product.material || "Premium Teak Wood" },
-    { label: "Wood Finish", value: product.specifications?.finish || "Natural Polish" },
-    { label: "Dimensions (L x W x H)", value: product.dimensions ? `${product.dimensions.length} x ${product.dimensions.width} x ${product.dimensions.height} inches` : "78 x 30 x 30 inches" },
-    { label: "Weight", value: product.weight ? `${product.weight} Kg` : "N/A" },
-    { label: "Fitting", value: product.specifications?.fitting || "Brass" },
-    { label: "Category", value: product.category?.name || "Ayurvedic" },
-    { label: "Subcategory", value: product.subcategory || "N/A" },
-    { label: "Code", value: product.code || "N/A" },
-    { label: "Warranty", value: "1 Year Manufacturing Warranty" },
-  ] : specs;
-
-  const dynamicFeatures = product?.features || whatsIncluded;
-
+  const overview = product.overview
+  const productOverview = product.overview?.productSpecifications;
   return (
     <div className="overflow-hidden">
 
       {/* ── TOP LABEL ── */}
       <div className="">
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8d6a3a]">
-          Smart Design. Superior Functionality.
+          {productOverview?.[0]?.highlight || ` Smart Design. Superior Functionality.`}
         </p>
       </div>
 
@@ -86,16 +74,16 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
 
         {/* Left: product image with callout labels */}
         <div className="">
-          <h2 className="font-semibold text-2xl leading-tight mb-4">Product Specifications</h2>
+          <h2 className="font-semibold text-2xl leading-tight mb-4">{productOverview?.[0]?.title || `Product Specifications`}</h2>
           <div className="relative w-full">
             <Image
-              src={dimensions}
+              src={productOverview?.[0]?.image || ""}
               alt="Product dimensions diagram"
               width={400}
               height={120}
               className="w-full object-contain"
             />
-          
+
           </div>
         </div>
 
@@ -103,13 +91,13 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
         <div className="p-2">
           <table className="w-full text-[11px]">
             <tbody>
-              {dynamicSpecs.map((row, i) => (
+              {productOverview?.[0]?.specifications?.map((row, i) => (
                 <tr key={i} className={`border-b border-[#d4c4a8] text-black`}>
                   <td className="py-1.5 px-1.5 font-semibold align-top w-[44%] leading-snug">
-                    {row.label}
+                    {row.title}
                   </td>
                   <td className="py-1.5 px-1.5 align-top leading-snug">
-                    {row.value}
+                    {row.description}
                   </td>
                 </tr>
               ))}
@@ -123,7 +111,7 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
           <div className="rounded-lg border border-[#e2d8c8] p-4">
             <h3 className="font-semibold text-sm mb-3 border-b pb-1 border-[#d4c4a8]">What's Included</h3>
             <ul className="space-y-2">
-              {dynamicFeatures.map((item: string, i: number) => (
+              {overview?.whatisInclueded?.map((item: string, i: number) => (
                 <li key={i} className="flex items-start gap-2 text-[11px] leading-snug text-black">
                   <Check size={14} className="shrink-0 mt-0.5 text-[#8d6a3a] font-semibold" />
                   {item}
@@ -143,9 +131,9 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
                 <p className="text-[10px] mt-1 leading-snug">
                   We create custom Panchkarma tables as per your therapy requirements.
                 </p>
-            <button className="w-full flex items-center justify-center gap-1.5 border rounded-md py-1 text-[11px] font-bold uppercase tracking-wider transition-colors mt-2 cursor-pointer">
-              Contact Our Experts <ArrowRight size={12} />
-            </button>
+                <button className="w-full flex items-center justify-center gap-1.5 border rounded-md py-1 text-[11px] font-bold uppercase tracking-wider transition-colors mt-2 cursor-pointer">
+                  Contact Our Experts <ArrowRight size={12} />
+                </button>
               </div>
             </div>
           </div>
@@ -155,7 +143,7 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
       {/* ── SECTION 2: Wood finish + size options + bulk order ── */}
       <div className="px-1">
         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8d6a3a] px-4 pt-4">
-          Smart Design Appearance.
+          {overview?.smartDesignAppearance?.highlight || "Smart Design Appearance."}
         </p>
       </div>
 
@@ -189,17 +177,18 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
         <div className="px-5">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.15em] mb-4 text-[#8d6a3a]">Size Options</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-            {sizeOptions.map((s) => (
+            {overview?.smartDesignAppearance?.sizeOptions?.map((s) => (
               <div
-                key={s.label}
-                className={`rounded-lg border px-3 py-2.5 text-center cursor-pointer transition-colors ${
-                  s.active
-                    ? "border-[#8d6a3a] bg-white"
-                    : "border-[#d4c4a8] hover:border-[#8d6a3a]/50"
-                }`}
+                key={s.title}
+                className={`rounded-lg border px-3 py-2.5 text-center cursor-pointer transition-colors 
+                  `}
+                  // ${s.active
+                  // ? "border-[#8d6a3a] bg-white"
+                  // : "border-[#d4c4a8] hover:border-[#8d6a3a]/50"
+                  // }
               >
-                <p className="text-[11px] font-semibold leading-tight">{s.label}</p>
-                <p className="text-[10px] mt-2">{s.desc}</p>
+                <p className="text-[11px] font-semibold leading-tight">{s.title}</p>
+                <p className="text-[10px] mt-2">{s.description}</p>
               </div>
             ))}
           </div>

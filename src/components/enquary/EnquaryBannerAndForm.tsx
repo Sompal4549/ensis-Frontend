@@ -183,8 +183,8 @@ const errorClass =
   </div>
 
   {/* Content */}
-  <Container className="relative z-10 grid max-h-[650px] md:min-h-[calc(100vh-96px)] grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
-   <div className="flex flex-col items-center justify-center text-center rounded-2xl px-8 py-10 bg-gradient-to-r from-white/40 via-white/5 to-white/5 backdrop-blur-[2px]">
+  <Container className="relative z-10 grid max-h-162.5 md:min-h-[calc(100vh-96px)] grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
+   <div className="flex flex-col items-center justify-center text-center rounded-2xl px-8 py-10 bg-linear-to-r from-white/40 via-white/5 to-white/5 backdrop-blur-[2px]">
   <h1 className="text-4xl sm:text-6xl">
     {content.hero.heading}
   </h1>
@@ -553,7 +553,7 @@ const errorClass =
           {/* Sidebar */}
           <aside className="overflow-hidden rounded-xl ">
             
-            <Image alt="enquary bg" src={enquaryBg} />
+            <Image alt="enquary bg" src={content?.hero?.formImageSrc} width={400} height={1000} />
           </aside>
         </form>
       </Container>

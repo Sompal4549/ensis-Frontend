@@ -10,10 +10,10 @@ export default function ProductCard({ product }: { product: Product }) {
   const shopProduct: ShopProduct = {
     id: product.id.toString(),
     slug: product.slug,
-    name: product.name || product.title, // Use product.title as fallback for name
+    name:  product.title, // Use product.title as fallback for name
     category: product.category,
     price: product.price,
-    image: typeof product.image === "string" ? product.image : product.image.src,
+    image: typeof product.images[0],
   };
   const wished = isLiked(shopProduct.id);
   const added = isInCart(shopProduct.id);
@@ -23,8 +23,8 @@ export default function ProductCard({ product }: { product: Product }) {
       <Link href={`/products/${product.slug}`} className="block">
         <div className="relative h-32 sm:h-36 overflow-hidden bg-[#f8f3ec]">
           <Image
-            src={product.image}
-            alt={product.name}
+            src={product.images[0]}
+            alt={product.title}
             fill
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             crossOrigin="anonymous"
@@ -57,7 +57,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
         <Link href={`/products/${product.id}`} className="block">
           <h3 className="ws-body text-[12px] sm:text-[13px] font-[500] text-[#1a1a1a] leading-[1.35] mb-1 line-clamp-2">
-            {product.name}
+            {product.title}
           </h3>
         </Link>
 

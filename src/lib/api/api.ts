@@ -1,5 +1,6 @@
 
 import axios, { AxiosResponse } from "axios";
+import { StaticImageData } from "next/image";
 
 const BASE_API_URL = (
     process.env.NEXT_PUBLIC_API_URL ||
@@ -47,26 +48,47 @@ export async function getPageComponent(slug: string) {
 
     return normalizePageResponse(payload);
 }
-export type Product = {
-    _id: string;
+export interface Product {
+    _id:string;
+    id:string;
     title: string;
     slug: string;
+    code?: string;
     description: string;
+    shortDescription?: string;
     price: number;
     discountPrice?: number;
-    images?: string[];
-    stock?: number;
-    averageRating?: number;
-    category: { _id: string; name: string; slug: string; description?: string };
-    code?: string;
-    shortDescription?: string;
-    material?: string;
+    category: any;
     subcategory?: string;
-    dimensions?: { length: string; width: string; height: string };
+    material?: string;
     weight?: string;
-    features?: string[];
-    specifications?: { woodType?: string; finish?: string; fitting?: string };
-};
+    images: string | StaticImageData[];
+    stock: number;
+    tags: string[];
+    averageRating: number;
+    reviews: any;
+    isActive: boolean;
+    isFeatured: boolean;
+    overview?: {
+        title?: string;
+        description?: string;
+        overviewList?: string[];
+        specifications?: { title: string; specificationsList: { title: string; description: string }[] };
+        keyFeatures?: { title: string; keyFeaturesList: string[] };
+        dimensions?: { title: string; dimensionsList: { title: string; description: string }[] };
+        materialAndCare?: { title: string; description: string };
+        productSpecifications?: { highlight: string; title: string; image: string; specifications: { title: string; description: string }[] }[];
+        whatisInclueded?: string[];
+        items?: { image: string; title: string; description: string }[];
+        smartDesignAppearance?: {
+            highlight?: string;
+            title?: string;
+            woodFinish?: string[];
+            sizeOptions?: { title: string; description: string }[];
+        };
+        faqs?: { question: string; description: string }[];
+    };
+}
 
 export type ComponentContent<T> = {
     _id: string;

@@ -42,7 +42,7 @@ export default function ProductHeroBanner({
   return (
     <div className="w-full">
       {/* Full-bleed banner — images span the viewport */}
-      <section className="relative w-full h-[480px] md:h-[580px] overflow-hidden bg-white">
+      <section className="relative w-full h-120 md:h-145 overflow-hidden bg-white">
 
         {/* SLIDES — always full viewport width */}
         {slides.map((src, i) => (
@@ -97,7 +97,7 @@ export default function ProductHeroBanner({
             </h1>
 
             {product.description && (
-              <p className="text-sm leading-relaxed mb-6 max-w-[340px] text-white">
+              <p className="text-sm leading-relaxed mb-6 max-w-85 text-white">
                 {product.description}
               </p>
             )}
@@ -121,7 +121,7 @@ export default function ProductHeroBanner({
           </div>
 
           {/* RIGHT WHITE CARD — desktop only */}
-          <div className="hidden md:flex absolute top-8  bottom-8 rounded-lg w-[420px] max-w-[44%] bg-white shadow-2xl overflow-y-auto flex-col border border-[#f0e8d8] right-6 md:right-10">
+          <div className="hidden md:flex absolute top-8  bottom-8 rounded-lg w-105 max-w-[44%] bg-white shadow-2xl overflow-y-auto flex-col border border-[#f0e8d8] right-6 md:right-10">
             <div className="p-4 flex-1">
               <ProductPriceSection
                 shopProduct={shopProduct}

@@ -1,12 +1,8 @@
 import { EnquiryPageContent } from "@/types/enquary/enquaryBannerAndForm";
 import bannerImage from "@/assets/home/home_banner2.webp"
 export const fallbackEnquiryContent: EnquiryPageContent = {
-  brand: {
-    logoSrc: "/images/enquiry/ensis-logo.png",
-    logoAlt: "ENSIS Panchkarma and Spa Solutions logo",
-    tagline: "Panchkarma and Spa Solutions",
-  },
   hero: {
+    formImageSrc:"",
     heading: "Enquiry",
     subheading: "Let's Build Your Wellness Vision.",
     description:
