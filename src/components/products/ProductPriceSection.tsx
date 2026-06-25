@@ -15,7 +15,7 @@ import water_resitant from "@/assets/products/water_resitant.webp";
 import long_lasting from "@/assets/products/long_lasting.webp";
 import Image from "next/image";
 import { API_URL } from "@/lib/api/api";
-import { Product } from "@/app/lib/api";
+import { Product } from "@/constants";
 
 interface ProductPriceSectionProps {
   product: Product; // Use the Product interface from constants

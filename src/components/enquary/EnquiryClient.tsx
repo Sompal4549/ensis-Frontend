@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { API_URL } from '@/app/lib/api'
 import RenderEnquirySections from "@/components/enquary/RenderEnquirySections";
+import { API_URL } from '@/lib/api/api';
 
 const EnquiryClient = () => {
   const [sections, setSections] = useState<any[]>([]);

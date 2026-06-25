@@ -7,7 +7,7 @@ import { CheckboxOption, EnquiryFormData, EnquiryFormErrors, EnquiryPageContent,
 import { fallbackEnquiryContent } from "@/data/enquaryBannerAndForm";
 import { Container } from "../ui/Container";
 import enquaryBg from "@/assets/enquiry/formimage.webp"
-import { API_URL } from "@/app/lib/api";
+import { API_URL } from "@/lib/api/api";
 
 interface EnquiryPageProps {
   content?: EnquiryPageContent;

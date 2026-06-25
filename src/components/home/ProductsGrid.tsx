@@ -14,7 +14,8 @@ import img6 from '@/assets/home/img-6.webp';
 import img13 from '@/assets/home/img-13.webp';
 
 import SubHeading from './SubHeading';
-import { getImageUrl, getProducts, type Product } from '@/lib/api/api';
+import { getImageUrl, getProducts } from '@/lib/api/api';
+import { Product } from '@/constants';
 
 const fallbackImageMap: Record<string, any> = {
   "panchkarma-beds": img12,

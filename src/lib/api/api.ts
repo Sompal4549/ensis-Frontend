@@ -1,4 +1,4 @@
-
+import { Product } from "@/constants";
 import axios, { AxiosResponse } from "axios";
 import { StaticImageData } from "next/image";
 
@@ -14,9 +14,8 @@ export const BACKEND_URL = API_URL.replace(/\/api\/v1$/, "");
 
 const apiClient = axios.create({
     baseURL: API_URL,
-    validateStatus: () => true, // Handle status codes manually to match previous fetch logic
+    validateStatus: () => true,
 });
-
 
 const normalizePageResponse = (payload: any) => {
     if (!payload) return null;
@@ -48,47 +47,7 @@ export async function getPageComponent(slug: string) {
 
     return normalizePageResponse(payload);
 }
-export interface Product {
-    _id:string;
-    id:string;
-    title: string;
-    slug: string;
-    code?: string;
-    description: string;
-    shortDescription?: string;
-    price: number;
-    discountPrice?: number;
-    category: any;
-    subcategory?: string;
-    material?: string;
-    weight?: string;
-    images: string | StaticImageData[];
-    stock: number;
-    tags: string[];
-    averageRating: number;
-    reviews: any;
-    isActive: boolean;
-    isFeatured: boolean;
-    overview?: {
-        title?: string;
-        description?: string;
-        overviewList?: string[];
-        specifications?: { title: string; specificationsList: { title: string; description: string }[] };
-        keyFeatures?: { title: string; keyFeaturesList: string[] };
-        dimensions?: { title: string; dimensionsList: { title: string; description: string }[] };
-        materialAndCare?: { title: string; description: string };
-        productSpecifications?: { highlight: string; title: string; image: string; specifications: { title: string; description: string }[] }[];
-        whatisInclueded?: string[];
-        items?: { image: string; title: string; description: string }[];
-        smartDesignAppearance?: {
-            highlight?: string;
-            title?: string;
-            woodFinish?: string[];
-            sizeOptions?: { title: string; description: string }[];
-        };
-        faqs?: { question: string; description: string }[];
-    };
-}
+
 
 export type ComponentContent<T> = {
     _id: string;
@@ -114,7 +73,7 @@ const normalizeOtpResponse = (response: AxiosResponse) => {
     return {
         ...payload,
         success: isOk && (payload.success === true || payload.status === "success"),
-        message: payload.message || (isOk ? "OTP request successful" : "API request failed")
+        message: payload.message || (isOk ? "OTP request successful" : "API request failed"),
     };
 };
 
@@ -122,7 +81,6 @@ export const getImageUrl = (image?: any) => {
     if (!image || typeof image !== "string") return image || "";
     if (image.startsWith("http")) return image;
 
-    // Ensure we have a leading slash but no double slashes
     const cleanPath = image.startsWith("/") ? image : `/${image}`;
     if (cleanPath.startsWith("/uploads")) {
         return `${BACKEND_URL}${cleanPath}`;
@@ -139,33 +97,29 @@ export const productApi = {
         const response = await apiClient.get(`/products/${idOrSlug}`);
         return unwrap<Product>(response);
     },
-
 };
 
 export const categoryApi = {
     list: async () => {
         const response = await apiClient.get(`/categories`);
         return unwrap<any[]>(response);
-    }
+    },
 };
 
 export const verifyApi = {
-    sendEmailOtp: async (email: string, profile: string = 'SPEAKER') => {
-        const response = await apiClient.post(`/auth/send-email-otp`, {
-            email,
-            purpose: profile
-        });
+    sendEmailOtp: async (email: string, profile: string = "SPEAKER") => {
+        const response = await apiClient.post(`/auth/send-email-otp`, { email, purpose: profile });
         return normalizeOtpResponse(response);
     },
     verifyEmailOtp: async (email: string, otp: string) => {
         const response = await apiClient.post(`/auth/verify-email-otp`, { email, otp });
         return normalizeOtpResponse(response);
     },
-    sendPhoneOtp: async (phone: string, profile: string = 'CONTACT', name: string = '') => {
+    sendPhoneOtp: async (phone: string, profile: string = "CONTACT", name: string = "") => {
         const response = await apiClient.post(`/auth/send-phone-otp`, {
             phone,
             purpose: profile,
-            message: name ? `Dear ${name}, your IHWE OTP is {{code}}.` : undefined
+            message: name ? `Dear ${name}, your IHWE OTP is {{code}}.` : undefined,
         });
         return normalizeOtpResponse(response);
     },
@@ -187,5 +141,5 @@ export const getComponentContent = async <T>(key: string, fallback: T): Promise<
 
 export const getProducts = async () => {
     const response = await apiClient.get(`/products?limit=100`);
-    return response.data.data.products;
+    return response.data.data.products as Product[];
 };

@@ -9,7 +9,7 @@ import need_customization from "@/assets/products/need_customization.webp";
 import wallnut_finish from "@/assets/products/wallnut_finish.webp";
 import honey_oak from "@/assets/products/honey_oak.png";
 import mahogany from "@/assets/products/mahogany.png";
-import { Product } from "@/app/lib/api";
+import { Product } from "@/constants";
 
 const specs = [
   { label: "Material", value: "Premium Teak Wood" },

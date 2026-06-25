@@ -13,7 +13,7 @@ import {
 import { Container } from "../ui/Container";
 import img1 from '@/assets/home/img-1.webp';
 import Image from "next/image";
-import { Product } from "@/app/lib/api";
+import { Product } from "@/constants";
 
 const tabs = [
   { id: "overview", label: "OVERVIEW", icon: LayoutGrid },
@@ -117,16 +117,16 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                 </h3>
 
                 <div className="grid grid-cols-2 gap-x-12 gap-y-6 text-sm">
-                  {overview?.specifications?.specificationsList.map(
-                    (item: any, key: number) => {
-                      return (
-                        <div key={key}>
-                          <p className="font-medium text-[#8d6a3a]">{item.title}</p>
-                          <p>{item.description}</p>
-                        </div>
-                      );
-                    }
-                  )}
+                {(overview?.specifications?.specificationsList ?? []).map(
+  (item: any, key: number) => (
+    <div key={key}>
+      <p className="font-medium text-[#8d6a3a]">
+        {item.title}
+      </p>
+      <p>{item.description}</p>
+    </div>
+  )
+)}
                 </div>
               </div>
             )}
@@ -137,8 +137,8 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                   {overview?.keyFeatures?.title}
                 </h3>
 
-                <div className="grid grid-cols-2 gap-4">
-                  {overview?.keyFeatures?.keyFeaturesList.map((item) => (
+                         <div className="grid grid-cols-2 gap-4">
+                  {overview?.keyFeatures?.keyFeaturesList?.map((item) => (
                     <div
                       key={item}
                       className="flex items-center gap-3 rounded-lg border border-[#e8dfd0] p-4"

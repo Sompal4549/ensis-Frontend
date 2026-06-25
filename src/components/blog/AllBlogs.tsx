@@ -4,7 +4,7 @@ import BlogListItem from "./BlogListItem";
 import CategoryFilters from "./CategoryFilters";
 import SectionTitle from "./SectionTitle";
 import { useEffect } from "react";
-import { API_URL } from "@/app/lib/api";
+import { API_URL } from "@/lib/api/api";
 
 export default function AllBlogs({ sectionContent }: { sectionContent: any }) {
   const [selected, setSelected] = useState("All");

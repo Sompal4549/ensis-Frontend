@@ -32,8 +32,8 @@ const decorImages = [img16, img13, img9, img15];
 const brassImages = [img5, img9, img16, img3];
 
 export interface Product {
-  _id:string;
   id:string;
+  _id:string;
   title: string;
   slug: string;
   code?: string;
@@ -45,7 +45,7 @@ export interface Product {
   subcategory?: string;
   material?: string;
   weight?: string;
-  images: string | StaticImageData[];
+  images: string[];
   stock: number;
   tags: string[];
   averageRating: number;
@@ -56,8 +56,18 @@ export interface Product {
     title?: string;
     description?: string;
     overviewList?: string[];
-    specifications?: { title: string; specificationsList: { title: string; description: string }[] };
-    keyFeatures?: { title: string; keyFeaturesList: string[] };
+    specifications?: {
+      title?: string;
+      specificationsList?: { title: string; description: string }[];
+    };
+    seeItInRealSpaces:{title:string; image:string; imageAlt:string};
+    productPricingFeatures:{title:string; image:string};
+    emiOptions:boolean;
+    customSize:boolean;
+    keyFeatures?: {
+      title?: string;
+      keyFeaturesList?: string[];
+    };
     dimensions?: { title: string; dimensionsList: { title: string; description: string }[] };
     materialAndCare?: { title: string; description: string };
     productSpecifications?: { highlight: string; title: string; image: string; specifications: { title: string; description: string }[] }[];
@@ -66,7 +76,7 @@ export interface Product {
     smartDesignAppearance?: {
       highlight?: string;
       title?: string;
-      woodFinish?: string[];
+      woodFinish?: {image:string; title:string}[];
       sizeOptions?: { title: string; description: string }[];
     };
     faqs?: { question: string; description: string }[];

@@ -70,6 +70,21 @@ export const Footer = async () => {
               <Link href="#" aria-label="Youtube" className={linkClass}><FaYoutube size={18} /></Link>
               <Link href="#" aria-label="LinkedIn" className={linkClass}><FaLinkedin size={18} /></Link>
             </div>
+            <div className="mt-5">
+  <iframe
+    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d7000.624411489639!2d77.38796300000001!3d28.680306000000005!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cf1ead9e1d9e5%3A0x31a2384cd903039b!2sEnsis%20(Best%20Ayurvedic%2C%20Spa%20%26%20Panchkarma%20Equipment%20Manufacturer%20in%20Delhi%20NCR)!5e0!3m2!1sen!2sin!4v1782367991356!5m2!1sen!2sin"
+    width="full"
+    height="120"
+    loading="lazy"
+   className="rounded-xl border border-[#d0a965]/30 shadow-[0_8px_30px_rgba(0,0,0,0.35)] overflow-hidden"
+    style={{
+      border: 0,
+      filter: "saturate(1.2) contrast(1.05)",
+    }}
+    allowFullScreen
+    referrerPolicy="no-referrer-when-downgrade"
+  />
+</div>
           </div>
 
           <div>

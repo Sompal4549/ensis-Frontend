@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 import { Container } from "../ui/Container";
-import { Product } from "@/lib/api/api";
+import { Product } from "@/constants";
 
 const faqs = [
   {

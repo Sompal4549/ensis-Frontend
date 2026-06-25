@@ -2,9 +2,9 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
-import { API_URL } from "@/app/lib/api";
 import BookButton from "../ui/BookButton";
 import { Container } from "../ui/Container";
+import { API_URL } from "@/lib/api/api";
 
 export default function NewsletterCard({sectionContent} : {sectionContent: any}) {
   const [email, setEmail] = useState("");
