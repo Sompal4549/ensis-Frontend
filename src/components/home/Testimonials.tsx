@@ -64,7 +64,7 @@ export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
                     {/* ✅ backgroundImage se Image component pe switch karo */}
                     <div className="size-11 rounded-full overflow-hidden shrink-0 bg-[#e8e0d5]">
                       <Image
-                        src={item.image.imageUrl||item.image || userImage}
+                        src={item?.image?.imageUrl||item?.image || userImage}
                         alt={item.name||item.image.alt}
                         width={44}
                         height={44}
