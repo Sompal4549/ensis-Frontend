@@ -16,6 +16,7 @@ import long_lasting from "@/assets/products/long_lasting.webp";
 import Image from "next/image";
 import { API_URL } from "@/lib/api/api";
 import { Product } from "@/constants";
+import { nanoid } from "nanoid";
 
 interface ProductPriceSectionProps {
   product: Product; // Use the Product interface from constants
@@ -69,7 +70,7 @@ const ProductPriceSection = ({
             totalReviews: data.reviews.length,
             reviews: data.reviews
           });
-          
+
           const myReview = data.reviews.find((r: any) => r.isMine);
           if (myReview) {
             setUserReviewId(myReview._id);
@@ -99,8 +100,8 @@ const ProductPriceSection = ({
         const orders = Array.isArray(data.data)
           ? data.data
           : Array.isArray(data.orders)
-          ? data.orders
-          : [];
+            ? data.orders
+            : [];
 
         const bought = orders.some((order: any) =>
           order.items?.some((item: any) =>
@@ -128,8 +129,8 @@ const ProductPriceSection = ({
     setIsSubmitting(true);
     try {
       const method = userReviewId ? 'PUT' : 'POST';
-      const url = userReviewId 
-        ? `${API_URL}/reviews/${userReviewId}` 
+      const url = userReviewId
+        ? `${API_URL}/reviews/${userReviewId}`
         : `${API_URL}/reviews/${product._id}`;
 
       const res = await fetch(url, {
@@ -160,103 +161,108 @@ const ProductPriceSection = ({
     }
   };
 
-   const { addToCart, toggleLike, isLiked } = useShop();
-     const wished = isLiked(shopProduct?.id);
+  const { addToCart, toggleLike, isLiked } = useShop();
+  const wished = isLiked(shopProduct?.id);
   return (
-     <div className="min-w-0">
+    <div className="min-w-0">
       <div className="flex justify-between items-center w-full">
 
-            <span className="text-xs font-semibold uppercase text-[#F59E0B] ">
-              {typeof product.category === 'object' ? product.category.name : product.category}
-            </span>
-               <button
+        <span className="text-xs font-semibold uppercase text-[#F59E0B] ">
+          {typeof product.category === 'object' ? product.category.name : product.category}
+        </span>
+        <button
           suppressHydrationWarning
           type="button"
-         onClick={() => toggleLike(shopProduct)}
+          onClick={() => toggleLike(shopProduct)}
           className="mt-3 flex  items-center justify-center rounded-md bg-transparent text-xs font-semibold  transition-colors gap-2"
         >
-        <Heart size={13} className={mounted && wished ? "fill-red-500" : "text-red-500"} />
-            {mounted && wished ? "In wishlist" : "Add to wishlist"}
+          <Heart size={13} className={mounted && wished ? "fill-red-500" : "text-red-500"} />
+          {mounted && wished ? "In wishlist" : "Add to wishlist"}
         </button>
       </div>
-            <h2 className="mt-2 text-xl font-semibold leading-tight text-[#001b10] md:text-2xl max-w-60 line-clamp-2">
-              {product.title}
-            </h2>
+      <h2 className="mt-2 text-xl font-semibold leading-tight text-[#001b10] md:text-2xl max-w-60 line-clamp-2">
+        {product.title}
+      </h2>
 
-            <div className="mt-2 flex flex-wrap items-center gap-3 text-[10px]">
-              <button 
-                onClick={() => setIsReviewOpen(true)}
-                className="flex items-center gap-2 hover:opacity-70 transition-opacity"
-              >
-                <span className="flex items-center gap-1">
-                  {[...Array(5)].map((_, index) => (
-                    <Star
-                      key={index}
-                      size={15}
-                      className={index < Math.round(reviewData.averageRating) ? "fill-[#d5a642] text-[#d5a642]" : "text-gray-300"}
-                    />
-                  ))}
-                </span>
-                <span className="font-medium">{reviewData.averageRating || "0.0"}</span>
-                <span className="font-medium underline decoration-dotted decoration-gray-400 underline-offset-2">({reviewData.totalReviews} reviews)</span>
-              </button>
-              <span className="py-1 text-[11px] font-semibold pl-2 border-l border-gray-200">
-             SKU: {product.code || 'ENS-PT-001'}
-              </span>
-            </div>
+      <div className="mt-2 flex flex-wrap items-center gap-3 text-[10px]">
+        <button
+          onClick={() => setIsReviewOpen(true)}
+          className="flex items-center gap-2 hover:opacity-70 transition-opacity"
+        >
+          <span className="flex items-center gap-1">
+            {[...Array(5)].map((_, index) => (
+              <Star
+                key={index}
+                size={15}
+                className={index < Math.round(reviewData.averageRating) ? "fill-[#d5a642] text-[#d5a642]" : "text-gray-300"}
+              />
+            ))}
+          </span>
+          <span className="font-medium">{reviewData.averageRating || "0.0"}</span>
+          <span className="font-medium underline decoration-dotted decoration-gray-400 underline-offset-2">({reviewData.totalReviews} reviews)</span>
+        </button>
+        <span className="py-1 text-[11px] font-semibold pl-2 border-l border-gray-200">
+          {product.code || 'ENS-PT-001'}
+        </span>
+      </div>
 
-          
 
-            {/* <p className="mt-2 max-w-2xl text-xs">
+
+      {/* <p className="mt-2 max-w-2xl text-xs">
               {product.description}
             </p> */}
 
-            <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-5">
-              <FeaturePill icon={<Image alt="Premium Teak Wood" src={premium_teak} width={20}height={20} />} label="Premium Finish" />
-              <FeaturePill icon={<Image alt="Brass Fittings" src={brass_fitting} width={20}height={20} />} label="Brass Fittings" />
-              <FeaturePill icon={<Image alt="Ergonomic Design" src={erogonomic_design} width={20}height={20} />} label="Ergonomic Design" />
-              <FeaturePill icon={<Image alt="Water Resitant" src={water_resitant} width={20}height={20} />} label="Water Resitant" />
-               <FeaturePill icon={<Image alt="Long Lasting Durability" src={long_lasting} width={20}height={20} />} label="Long Lasting Durability" />
+      <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-5">
+        {product?.overview?.productPricingFeatures?.map((item, index) => (
+          <FeaturePill
+            key={nanoid()}
+            icon={<Image alt={item?.title} src={item?.image} width={20}height={20} />}
+            label={item?.title}
+          />
+        ))}
+      </div>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-t border-black/10 pt-4">
+        {/* Left */}
+        <div className="">
+          <p className="text-xs uppercase tracking-[0.12em] text-[#C08A2E] font-semibold">
+            Starting From
+          </p>
+
+          <h2 className="mt-1 text-2xl font-bold text-[#17231A] leading-none">
+            {formatPrice(product.price)}
+          </h2>
+
+          <p className="mt-2 text-xs font-medium">
+            (Inclusive of all taxes)
+          </p>
+        </div>
+
+        {/* Right */}
+        <div className="flex flex-col gap-3">
+          {product.overview?.customSize && (
+
+            <div className="flex items-center gap-2 text-[10px] ">
+              <CheckCircle2
+                size={12}
+                strokeWidth={1.8}
+                className="text-[#C08A2E]"
+              />
+              <span>Custom Sizes Available</span>
             </div>
-           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-t border-black/10 pt-4">
-  {/* Left */}
-  <div className="">
-    <p className="text-xs uppercase tracking-[0.12em] text-[#C08A2E] font-semibold">
-      Starting From
-    </p>
+          )}
 
-    <h2 className="mt-1 text-2xl font-bold text-[#17231A] leading-none">
-      {formatPrice(product.price)}
-    </h2>
+          {product?.overview?.emiOptions && <div className="flex items-center gap-2 text-[10px] ">
+            <CheckCircle2
+              size={12}
+              strokeWidth={1.8}
+              className="text-[#3c5a42]"
+            />
+            <span>EMI Options Available</span>
+          </div>}
+        </div>
+      </div>
 
-    <p className="mt-2 text-xs font-medium">
-      (Inclusive of all taxes)
-    </p>
-  </div>
-
-  {/* Right */}
-  <div className="flex flex-col gap-3">
-    <div className="flex items-center gap-2 text-[10px] ">
-      <CheckCircle2
-        size={12}
-        strokeWidth={1.8}
-        className="text-[#C08A2E]"
-      />
-      <span>Custom Sizes Available</span>
-    </div>
-
-    <div className="flex items-center gap-2 text-[10px] ">
-      <CheckCircle2
-        size={12}
-        strokeWidth={1.8}
-        className="text-[#3c5a42]"
-      />
-      <span>EMI Options Available</span>
-    </div>
-  </div>
-</div>
-
-            <ProductDetailActions product={shopProduct} />
+      <ProductDetailActions product={shopProduct} />
 
       {/* Reviews Popup Modal */}
       {isReviewOpen && (
@@ -274,14 +280,14 @@ const ProductPriceSection = ({
                   <span className="text-[10px] font-bold text-gray-500">{reviewData.averageRating}/5.0 average rating</span>
                 </div>
               </div>
-              <button 
+              <button
                 onClick={() => setIsReviewOpen(false)}
                 className="p-1.5 hover:bg-gray-200 rounded-full transition-colors text-gray-500"
               >
                 <X size={18} />
               </button>
             </div>
-            
+
             <div className="p-5 overflow-y-auto max-h-[60vh]">
               {isWritingReview ? (
                 <form onSubmit={handleReviewSubmit} className="space-y-4">
@@ -359,10 +365,10 @@ const ProductPriceSection = ({
                 </div>
               )}
             </div>
-            
+
             {hasPurchased && !isWritingReview && (
               <div className="p-4 bg-gray-50 border-t border-gray-100">
-                <button 
+                <button
                   onClick={() => setIsWritingReview(true)}
                   className="w-full py-2.5 text-[10px] font-bold uppercase tracking-widest text-[#8d6a3a] border border-[#8d6a3a] rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-all"
                 >
@@ -373,7 +379,7 @@ const ProductPriceSection = ({
           </div>
         </div>
       )}
-          </div>
+    </div>
   )
 }
 

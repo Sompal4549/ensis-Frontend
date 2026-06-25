@@ -1,54 +1,59 @@
-"use client"
-import { useState } from "react";
-import { FaFacebook, FaInstagram,FaTwitter,FaLinkedin, FaYoutube } from "react-icons/fa";
+"use client";
+
+import { useEffect, useState } from "react";
+import { socialApi } from "@/lib/api/api";
+import { SocialLink } from "@/constants";
+import {
+  FaFacebook,
+  FaInstagram,
+  FaTwitter,
+  FaLinkedin,
+  FaYoutube,
+} from "react-icons/fa";
+import type { IconType } from "react-icons";
+
+const iconMap: Record<string, IconType> = {
+  facebook: FaFacebook,
+  instagram: FaInstagram,
+  twitter: FaTwitter,
+  x: FaTwitter,
+  linkedin: FaLinkedin,
+  youtube: FaYoutube,
+};
+
+const colorMap: Record<string, string> = {
+  facebook: "#1877F2",
+  instagram: "#E4405F",
+  twitter: "#000000",
+  x: "#000000",
+  youtube: "#FF0000",
+  linkedin: "#0A66C2",
+};
 
 
 const SocialSidebar = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [socialLinks, setSocialLinks] = useState({
-    facebook: "https://www.facebook.com/EnsisPanchkarmaSpaSolutions",
-    instagram: "https://www.instagram.com/solutionensis/",
-    twitter: "https://x.com/Ensis9",
-    youtube: "https://www.youtube.com/channel/UCbREPw5Nyi0DqpByPdaS-3w",
-    linkedin: "https://www.linkedin.com/company/ensis-panchkarma-and-spa-solutions/",
-  });
+  const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
 
-  // Trigger animations after mount
- 
+  useEffect(() => {
+    setIsVisible(true);
 
-  // Static social media icons with dynamic links
-  const socialData = [
-    {
-      icon: FaFacebook,
-      url: socialLinks.facebook,
-      color: "#1877F2",
-      label: "Facebook",
-    },
-    {
-      icon: FaInstagram,
-      url: socialLinks.instagram,
-      color: "#E4405F",
-      label: "Instagram",
-    },
-    {
-      icon: FaTwitter,
-      url: socialLinks.twitter,
-      color: "#000000",
-      label: "Twitter",
-    },
-    {
-      icon: FaYoutube,
-      url: socialLinks.youtube,
-      color: "#FF0000",
-      label: "YouTube",
-    },
-    {
-      icon: FaLinkedin,
-      url: socialLinks.linkedin,
-      color: "#0A66C2",
-      label: "LinkedIn",
-    },
-  ];
+  const fetchSocialLinks = async () => {
+  try {
+    const data = await socialApi.getLinks();
+
+    setSocialLinks(
+      data
+        .filter((item) => item.isActive)
+        .sort((a, b) => a.order - b.order)
+    );
+  } catch (err) {
+    console.error("Failed to fetch social links", err);
+  }
+};
+
+    fetchSocialLinks();
+  }, []);
 
   return (
     <>
@@ -65,59 +70,60 @@ const SocialSidebar = () => {
         }
 
         @keyframes pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.2); }
+          0%,100% {
+            transform: scale(1);
+          }
+          50% {
+            transform: scale(1.2);
+          }
         }
 
         @keyframes ripple {
-          0% { 
-            transform: scale(1); 
-            opacity: 0.6; 
+          0% {
+            transform: scale(1);
+            opacity: 0.6;
           }
-          100% { 
-            transform: scale(1.5); 
-            opacity: 0; 
+          100% {
+            transform: scale(1.5);
+            opacity: 0;
           }
         }
 
         @keyframes iconSpin {
-          from { transform: rotate(0deg) scale(1); }
-          to { transform: rotate(360deg) scale(1.1); }
+          from {
+            transform: rotate(0deg) scale(1);
+          }
+          to {
+            transform: rotate(360deg) scale(1.1);
+          }
         }
 
         @keyframes buttonShake {
-          0%, 100% { transform: rotate(0deg) scale(1.1); }
-          25% { transform: rotate(-10deg) scale(1.1); }
-          50% { transform: rotate(10deg) scale(1.1); }
-          75% { transform: rotate(-10deg) scale(1.1); }
+          0%,100% {
+            transform: rotate(0deg) scale(1.1);
+          }
+          25% {
+            transform: rotate(-10deg) scale(1.1);
+          }
+          50% {
+            transform: rotate(10deg) scale(1.1);
+          }
+          75% {
+            transform: rotate(-10deg) scale(1.1);
+          }
         }
 
         @keyframes shine {
-          0% { left: -100%; }
-          100% { left: 200%; }
-        }
-
-        @keyframes tooltipBounce {
-          0%, 100% { transform: translateY(-50%) scale(1); }
-          50% { transform: translateY(-50%) scale(1.05); }
-        }
-
-        @keyframes particle {
-          0% { 
-            transform: translate(-50%, -50%) scale(0); 
-            opacity: 0; 
+          0% {
+            left: -100%;
           }
-          50% { 
-            opacity: 0.8; 
-          }
-          100% { 
-            transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.5);
-            opacity: 0; 
+          100% {
+            left: 200%;
           }
         }
 
         .social-item {
-          animation: fallIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          animation: fallIn 0.8s cubic-bezier(0.34,1.56,0.64,1) forwards;
           animation-delay: calc(var(--index) * 0.12s + 0.2s);
           opacity: 0;
         }
@@ -159,25 +165,26 @@ const SocialSidebar = () => {
           justify-content: center;
           width: 32px;
           height: 32px;
-          @media (min-width: 1024px) {
+          background: white;
+          border-radius: 9999px;
+          border: 2px solid;
+          overflow: hidden;
+          transition: all 0.3s;
+          box-shadow:
+            0 4px 6px -1px rgba(0,0,0,0.1),
+            0 2px 4px -1px rgba(0,0,0,0.06);
+        }
+
+        @media (min-width: 1024px) {
+          .social-button {
             width: 40px;
             height: 40px;
           }
-          background: white;
-          border-radius: 9999px;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-          border: 2px solid;
-          transition: all 0.3s;
-          overflow: hidden;
         }
 
         .social-button:hover {
           animation: buttonShake 0.5s ease-in-out;
           transform: scale(1.1);
-        }
-
-        .social-button:active {
-          transform: scale(0.9);
         }
 
         .icon-wrapper {
@@ -194,7 +201,12 @@ const SocialSidebar = () => {
           left: -100%;
           width: 50%;
           height: 100%;
-          background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.4), transparent);
+          background: linear-gradient(
+            to right,
+            transparent,
+            rgba(255,255,255,0.4),
+            transparent
+          );
           transform: rotate(45deg);
           opacity: 0;
         }
@@ -213,14 +225,13 @@ const SocialSidebar = () => {
           transform: translateY(-50%) translateX(10px) scale(0.8);
           opacity: 0;
           pointer-events: none;
-          transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+          transition: all 0.3s;
           white-space: nowrap;
         }
 
         .social-item:hover .tooltip {
           opacity: 1;
           transform: translateY(-50%) translateX(0) scale(1);
-          animation: tooltipBounce 0.8s ease-in-out infinite;
         }
 
         .tooltip-content {
@@ -229,7 +240,6 @@ const SocialSidebar = () => {
           color: white;
           font-size: 14px;
           font-weight: bold;
-          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
           position: relative;
         }
 
@@ -244,113 +254,74 @@ const SocialSidebar = () => {
           border-bottom: 6px solid transparent;
           border-left: 6px solid;
         }
-
-        .particle {
-          position: absolute;
-          width: 6px;
-          height: 6px;
-          border-radius: 9999px;
-          pointer-events: none;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          opacity: 0;
-        }
-
-        .social-item:hover .particle {
-          animation: particle 1s ease-out infinite;
-        }
-
-        .particle:nth-child(1) {
-          animation-delay: 0s;
-        }
-
-        .particle:nth-child(2) {
-          animation-delay: 0.1s;
-        }
-
-        .particle:nth-child(3) {
-          animation-delay: 0.2s;
-        }
       `}</style>
 
-      <div className="flex flex-col gap-2 lg:gap-3 fixed right-1 lg:right-1.5 top-[45%] lg:top-1/2 -translate-y-1/2 z-50 print:hidden">
-        {socialData.map((social, index) => {
-          const Icon = social.icon;
+      <div className="fixed right-1 lg:right-1.5 top-[45%] lg:top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2 lg:gap-3 print:hidden">
+        {socialLinks.map((social, index) => {
+          const platform = social.platform.toLowerCase();
+          const Icon = iconMap[platform];
+
+          if (!Icon) return null;
+
+          const color = colorMap[platform] || "#666";
 
           return (
             <div
-              key={index}
-              className={`social-item relative print:hidden ${isVisible ? "visible" : ""}`}
-              style={{ "--index": index } as React.CSSProperties}
+              key={social._id}
+              className={`social-item relative ${
+                isVisible ? "visible" : ""
+              }`}
+              style={
+                {
+                  "--index": index,
+                } as React.CSSProperties
+              }
             >
-              {/* Glow */}
               <div
                 className="glow-effect"
-                style={{ backgroundColor: social.color }}
+                style={{ backgroundColor: color }}
               />
 
-              {/* Ripple */}
               <div
                 className="ripple-effect"
-                style={{ borderColor: social.color }}
+                style={{ borderColor: color }}
               />
 
-              {/* Main Button */}
               <a
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-button"
-                style={{ borderColor: social.color }}
-               aria-label={social.url}
+                style={{ borderColor: color }}
+                aria-label={social.platform}
+             onClick={async () => {
+  await socialApi.trackClick(social.platform);
+}}
               >
                 <div className="icon-wrapper">
-                  <Icon className="w-3.5 h-3.5 lg:w-[18px] lg:h-[18px]" style={{ color: social.color }} />
+                  <Icon
+                    className="w-3.5 h-3.5 lg:w-[18px] lg:h-[18px]"
+                    style={{ color }}
+                  />
                 </div>
 
                 <div className="shine-effect" />
               </a>
 
-              {/* Tooltip */}
               <div className="tooltip">
                 <div
                   className="tooltip-content"
-                  style={{ backgroundColor: social.color }}
+                  style={{ backgroundColor: color }}
                 >
-                  {social.label}
+                  {social.platform}
                   <div
                     className="tooltip-arrow"
-                    style={{ borderLeftColor: social.color }}
-                  ></div>
+                    style={{
+                      borderLeftColor: color,
+                    }}
+                  />
                 </div>
               </div>
-
-              {/* Particles */}
-              <div
-                className="particle"
-                style={{
-                  backgroundColor: social.color,
-                  "--x": "30px",
-                  "--y": "0px",
-                } as React.CSSProperties}
-              />
-              <div
-                className="particle"
-                style={{
-                  backgroundColor: social.color,
-                  "--x": "-15px",
-                  "--y": "26px",
-                } as React.CSSProperties}
-              />
-              <div
-                className="particle"
-                style={{
-                  backgroundColor: social.color,
-                  "--x": "-15px",
-                  "--y": "-26px",
-                } as React.CSSProperties}
-              />
             </div>
           );
         })}

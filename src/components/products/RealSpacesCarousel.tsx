@@ -15,7 +15,7 @@ const spaceLabels = [
 ];
 
 type Props = {
-  images: (string | StaticImageData)[];
+  images: {image:(string | StaticImageData), imageAlt:string}[];
   title?: string;
 };
 
@@ -23,10 +23,7 @@ export default function RealSpacesCarousel({
   images,
   title,
 }: Props) {
-  const labeled = images.map((src, i) => ({
-    src,
-    label: spaceLabels[i % spaceLabels.length],
-  }));
+ 
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
@@ -86,7 +83,7 @@ export default function RealSpacesCarousel({
           {/* Embla */}
           <div className="overflow-hidden" ref={emblaRef}>
             <div className="flex -ml-3">
-              {labeled.map(({ src, label }, i) => (
+              {images.map(({ image, imageAlt }, i) => (
                 <div
                   key={i}
                   className="
@@ -99,8 +96,8 @@ export default function RealSpacesCarousel({
                 >
                   <div className="relative overflow-hidden rounded-xl group">
                     <Image
-                      src={src}
-                      alt={label}
+                      src={image}
+                      alt={imageAlt}
                       width={600}
                       height={400}
                       className="
@@ -119,7 +116,7 @@ export default function RealSpacesCarousel({
 
                     <div className="absolute bottom-3 left-3">
                       <p className="text-white text-sm font-medium">
-                        {label}
+                        {imageAlt}
                       </p>
                     </div>
                   </div>

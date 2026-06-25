@@ -1,4 +1,4 @@
-import { Product } from "@/constants";
+import { Product, SocialClick, SocialLink } from "@/constants";
 import axios, { AxiosResponse } from "axios";
 import { StaticImageData } from "next/image";
 
@@ -142,4 +142,73 @@ export const getComponentContent = async <T>(key: string, fallback: T): Promise<
 export const getProducts = async () => {
     const response = await apiClient.get(`/products?limit=100`);
     return response.data.data.products as Product[];
+};
+
+
+export const socialApi = {
+  // Fetch social links
+  getLinks: async (): Promise<SocialLink[]> => {
+    try {
+      const response = await apiClient.get("/social-clicks/links");
+
+      if (
+        response.status >= 200 &&
+        response.status < 300 &&
+        response.data.status === "success"
+      ) {
+        return response.data.data;
+      }
+
+      return [];
+    } catch (err) {
+      console.error("Failed to fetch social links", err);
+      return [];
+    }
+  },
+
+  // Track click
+  trackClick: async (platform: string) => {
+    try {
+      await apiClient.post("/social-clicks", {
+        platform: platform.toLowerCase(),
+      });
+    } catch (err) {
+      console.error("Failed to track social click", err);
+    }
+  },
+
+  // Analytics list
+  getClicks: async (
+    page = 1,
+    limit = 50,
+    platform?: string
+  ) => {
+    const params: any = { page, limit };
+    if (platform) params.platform = platform;
+
+    const response = await apiClient.get("/social-clicks", {
+      params,
+    });
+
+    return unwrap<{
+      clicks: SocialClick[];
+      total: number;
+      page: number;
+      limit: number;
+    }>(response);
+  },
+
+  // Stats
+  getStats: async () => {
+    const response = await apiClient.get(
+      "/social-clicks/stats"
+    );
+
+    return unwrap<
+      {
+        _id: string;
+        count: number;
+      }[]
+    >(response);
+  },
 };
