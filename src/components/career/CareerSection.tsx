@@ -1,4 +1,5 @@
 // app/careers/page.tsx
+"use client"
 import Image from "next/image";
 import { ArrowRight, ChevronDown, Upload } from "lucide-react";
 import { Container } from "../ui/Container";
@@ -8,6 +9,9 @@ import life3 from "@/assets/career/life3.webp"
 import life4 from "@/assets/career/life4.png"
 import life5 from "@/assets/career/life5.webp"
 import GreenButton from "../ui/GreenButton";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { applicationApi } from "@/lib/api/api";
 export interface CareerSectionProps{
     heading: string;
     titlePart1: string;
@@ -81,6 +85,103 @@ const steps = [
 ];
 
 export default function CareersSection({sectionContent}:CareerSectionComponentProps) {
+const [form, setForm] = useState({
+  fullName: "",
+  email: "",
+  phone: "",
+  currentLocation: "",
+  experience: "",
+  department: "",
+  coverLetter: "",
+});
+
+const [resume, setResume] = useState<File | null>(null);
+const [agreed, setAgreed] = useState(false);
+const [loading, setLoading] = useState(false);
+
+const handleSubmit = async (
+  e: React.FormEvent<HTMLFormElement>
+) => {
+  e.preventDefault();
+
+  if (
+    !form.fullName ||
+    !form.email ||
+    !form.phone ||
+    !form.currentLocation ||
+    !form.department||
+    !form.experience
+  ) {
+    toast.error("Please fill all required fields.");
+    return;
+  }
+
+  if (!resume) {
+    toast.error("Please upload your resume.");
+    return;
+  }
+
+  if (!agreed) {
+    toast.error("Please accept the terms.");
+    return;
+  }
+
+try {
+  setLoading(true);
+
+  const formData = new FormData();
+
+  formData.append("fullName", form.fullName);
+  formData.append("email", form.email);
+  formData.append("phone", form.phone);
+  formData.append(
+    "currentLocation",
+    form.currentLocation
+  );
+  formData.append(
+    "experience",
+    form.experience
+  );
+  formData.append(
+    "department",
+    form.department
+  );
+  formData.append(
+    "coverLetter",
+    form.coverLetter
+  );
+
+  if (resume) {
+    formData.append("resume", resume);
+  }
+
+  await applicationApi.create(formData);
+
+  toast.success(
+    "Application submitted successfully!"
+  );
+
+  setForm({
+    fullName: "",
+    email: "",
+    phone: "",
+    currentLocation: "",
+    experience: "",
+    department: "",
+    coverLetter: "",
+  });
+
+  setResume(null);
+  setAgreed(false);
+} catch (error: any) {
+  toast.error(
+    error.message ||
+      "Something went wrong"
+  );
+} finally {
+  setLoading(false);
+}
+};
   return (
     <section className="bg-[#f8f5f0]">
       <Container>
@@ -248,58 +349,169 @@ export default function CareersSection({sectionContent}:CareerSectionComponentPr
                   {sectionContent.description||`Send us your details and become part of the ENSIS family.`}
                 </p>
 
-                <form className="mt-4 space-y-5">
-                  <input
-                    placeholder="Full Name *"
-                    className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
-                  />
+                <form
+  className="mt-4 space-y-5"
+  onSubmit={handleSubmit}
+>
+                <input
+  value={form.fullName}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      fullName: e.target.value,
+    })
+  }
+  placeholder="Full Name *"
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+/>
 
-                  <input
-                    placeholder="Email Address *"
-                    className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
-                  />
+          <input
+  type="email"
+  value={form.email}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      email: e.target.value,
+    })
+  }
+  placeholder="Email Address *"
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+/>
 
-                  <input
-                    placeholder="Phone Number *"
-                    className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
-                  />
+        <input
+  value={form.phone}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      phone: e.target.value,
+    })
+  }
+  placeholder="Phone Number *"
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+/>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <select className="border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs">
-                      <option>Current Location</option>
-                    </select>
-
-                    <select className="border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs">
-                      <option>Experience</option>
-                    </select>
+                <input
+  value={form.currentLocation}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      currentLocation: e.target.value,
+    })
+  }
+  placeholder="Current Location *"
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+/>
+<select
+  value={form.experience}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      experience: e.target.value,
+    })
+  }
+  className="border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+>
+  <option value="">Experience</option>
+  <option value="Fresher">Fresher</option>
+  <option value="0-1 Years">0-1 Years</option>
+  <option value="1-3 Years">1-3 Years</option>
+  <option value="3-5 Years">3-5 Years</option>
+  <option value="5-8 Years">5-8 Years</option>
+  <option value="8+ Years">8+ Years</option>
+</select>
                   </div>
 
-                  <select className="w-full border-b border-[#b98b43]/40 bg-transparent pb-2 outline-none text-xs">
-                    <option>Department Interested In</option>
-                  </select>
+           <select
+  value={form.department}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      department: e.target.value,
+    })
+  }
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-2 outline-none text-xs"
+>
+  <option value="">
+    Department Interested In
+  </option>
+  <option value="Design">
+    Design
+  </option>
+  <option value="Engineering">
+    Engineering
+  </option>
+  <option value="Manufacturing">
+    Manufacturing
+  </option>
+  <option value="Sales & Marketing">
+    Sales & Marketing
+  </option>
+  <option value="Project Management">
+    Project Management
+  </option>
+</select>
+              <div className="rounded-xl border border-dashed border-[#b98b43] p-4 text-center text-xs">
+  <input
+    type="file"
+    accept=".pdf,.jpg,.jpeg,.png,.webp"
+    className="hidden"
+    id="resume"
+    onChange={(e) =>
+      setResume(
+        e.target.files?.[0] || null
+      )
+    }
+  />
 
-                  <div className="rounded-xl border border-dashed border-[#b98b43] p-2 text-center text-xs">
-                    <Upload className="mx-auto mb-4" />
-                    <p className="text-sm text-white/70">
-                      Drag & drop your file here
-                    </p>
-                  </div>
+  <label
+    htmlFor="resume"
+    className="cursor-pointer"
+  >
+    <Upload className="mx-auto mb-4" />
 
-                  <textarea
-                    rows={2}
-                    placeholder="Cover Letter / Message"
-                    className="w-full rounded-xl border border-[#b98b43]/30 bg-transparent p-4 outline-none text-xs"
-                  />
+    <p className="text-sm text-white/70">
+      {resume
+        ? resume.name
+        : "Upload Resume (PDF/Image)"}
+    </p>
+  </label>
+</div>
 
+             <textarea
+  rows={2}
+  value={form.coverLetter}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      coverLetter: e.target.value,
+    })
+  }
+  placeholder="Cover Letter / Message"
+  className="w-full rounded-xl border border-[#b98b43]/30 bg-transparent p-4 outline-none text-xs"
+/>
                   <label className="flex items-start gap-3 text-xs text-white">
-                    <input type="checkbox" />
+                   <input
+  type="checkbox"
+  checked={agreed}
+  onChange={(e) =>
+    setAgreed(e.target.checked)
+  }
+/>
                    {sectionContent.careerForm.termsText}
                   </label>
-
-                  <button className="flex w-full items-center justify-center gap-2 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-xs">
-                    {sectionContent.careerForm.buttonText||`SUBMIT APPLICATION`}
-                    <ArrowRight size={16} />
-                  </button>
+<button
+  type="submit"
+  disabled={loading}
+  className="flex w-full items-center justify-center gap-2 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-xs disabled:opacity-60"
+>
+  {loading
+    ? "SUBMITTING..."
+    : sectionContent.careerForm.buttonText}
+  {!loading && (
+    <ArrowRight size={16} />
+  )}
+</button>
                 </form>
               </div>
             </aside>
