@@ -72,8 +72,7 @@ sectionContent = {}
                 </span>
               </h1>
 
-              <p className="mt-5 max-w-[360px] text-xs tracking-wide leading-6 text-white">
-                {resolvedDescription}
+              <p className="mt-5 max-w-[360px] text-xs tracking-wide leading-6 text-white" dangerouslySetInnerHTML={{__html:resolvedDescription||""}}>
               </p>
 
               <div className="mt-8 flex flex-wrap gap-2">

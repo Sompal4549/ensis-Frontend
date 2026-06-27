@@ -96,8 +96,7 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
                   <td className="py-1.5 px-1.5 font-semibold align-top w-[44%] leading-snug">
                     {row.title}
                   </td>
-                  <td className="py-1.5 px-1.5 align-top leading-snug">
-                    {row.description}
+                  <td className="py-1.5 px-1.5 align-top leading-snug" dangerouslySetInnerHTML={{__html:row.description}}>
                   </td>
                 </tr>
               ))}
@@ -188,7 +187,7 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
                   // }
               >
                 <p className="text-[11px] font-semibold leading-tight">{s.title}</p>
-                <p className="text-[10px] mt-2">{s.description}</p>
+                <p className="text-[10px] mt-2" dangerouslySetInnerHTML={{__html:s.description}}></p>
               </div>
             ))}
           </div>

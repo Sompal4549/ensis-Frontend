@@ -279,8 +279,10 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                       <span className="text-[11px] font-bold text-[#1f2c25] sm:text-xs">
                         {therapy.title}
                       </span>
-                      <span className="text-[10px] leading-tight  sm:text-[11px]">
-                        {therapy.description}
+                      <span className="text-[10px] leading-tight  sm:text-[11px]"
+                        dangerouslySetInnerHTML={{__html:therapy.description}}
+                      
+                      >
                       </span>
                     </div>
                   );
@@ -402,7 +404,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                   <Download size={18} className="text-[#e8c766]" />
                 </span>
                 <h3 className="mt-4 font-serif text-base leading-snug text-white">{guide.heading}</h3>
-                <p className="mt-2 text-[11px] leading-relaxed text-white/70">{guide.description}</p>
+                <p className="mt-2 text-[11px] leading-relaxed text-white/70" dangerouslySetInnerHTML={{__html:guide.description||""}}></p>
                 <a
                   href={guide.href}
                   className="mt-4 inline-flex items-center gap-2 rounded-lg bg-[#e8c766] px-4 py-2.5 text-[11px] font-bold tracking-wide text-[#0f2e22] transition-colors hover:bg-[#dcb851]"

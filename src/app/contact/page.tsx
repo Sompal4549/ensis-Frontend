@@ -1,3 +1,4 @@
+import PremiumMap from '@/components/contact/ContactMap';
 import PageBuilder from '@/components/PageBuilder';
 import { generateSeo } from '@/lib/api/seo';
 import dynamic from 'next/dynamic'
@@ -8,6 +9,7 @@ const Page = () => {
   return (
     <div>
       <PageBuilder slug="contact"/>
+      <PremiumMap />
     </div>
   )
 }

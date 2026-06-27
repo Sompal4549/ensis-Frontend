@@ -128,8 +128,7 @@ export default function WhyPartnerBanner({ sectionContent }: WhyPartnerBannerPro
         <h3 className="mb-1 text-sm font-semibold text-white">
           {feature.title}
         </h3>
-        <p className="text-xs leading-snug text-[#CBD5C8] sm:text-sm">
-          {feature.description}
+        <p className="text-xs leading-snug text-[#CBD5C8] sm:text-sm" dangerouslySetInnerHTML={{__html:feature.description}}>
         </p>
       </div>
     </div>

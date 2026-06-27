@@ -55,8 +55,7 @@ const FounderSection: React.FC<FounderSectionProps> = ({ sectionContent }) => {
 
           {/* Body Copy */}
           <div className="text-black text-sm md:text-[13.5px] leading-relaxed space-y-3 max-w-xl">
-              <p>
-                {sectionContent.description}
+              <p dangerouslySetInnerHTML={{__html:sectionContent.description||""}}>
               </p>
           </div>
 

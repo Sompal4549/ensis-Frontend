@@ -88,8 +88,7 @@ const ExpertiseSection: React.FC<{ sectionContent: ExpertiseSectionContent }> = 
                                             <ArrowRight size={16} />
                                         </button>
                                     </div>
-                                    <p className="text-[12px] font-medium leading-relaxed mt-2">
-                                        {item.description}
+                                    <p className="text-[12px] font-medium leading-relaxed mt-2" dangerouslySetInnerHTML={{__html:item.description||""}}>
                                     </p>
                                 </div>
                             </div>

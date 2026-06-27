@@ -212,3 +212,19 @@ export const socialApi = {
     >(response);
   },
 };
+
+export const applicationApi = {
+  create: async (formData: FormData) => {
+    const response = await apiClient.post(
+      "/applications",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    return unwrap<any>(response);
+  },
+};

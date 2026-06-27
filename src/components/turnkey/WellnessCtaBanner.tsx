@@ -32,7 +32,7 @@ const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> 
         />
       </div>
 
-      <Container>
+      <Container className="z-20">
         {/* pl-[220px] pushes content past the absolute image on lg */}
         <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:pl-[220px] py-2">
           {/* Content */}
