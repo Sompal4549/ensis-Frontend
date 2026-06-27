@@ -199,9 +199,9 @@ try {
                 {sectionContent.titlePart2||'Meets Purpose'}
               </h2>
 
-              <p className="mt-2 text-sm leading-7 text-white/75">
-                {sectionContent.description||`From design studios to production units, every corner of ENSIS is
-                inspired by creativity, craftsmanship and care.`}
+              <p className="mt-2 text-sm leading-7 text-white/75"
+                dangerouslySetInnerHTML={{__html:sectionContent.description||`From design studios to production units, every corner of ENSIS is
+                inspired by creativity, craftsmanship and care.`}}>
               </p>
               <div className="mt-2 max-w-50">
                 <GreenButton text="VIEW LIFE AT ENSIS" path="/contact" />
@@ -264,8 +264,8 @@ try {
                 {sectionContent.leftSide.heading}
               </h3>
 
-              <p className="mt-2 text-sm">
-              {sectionContent.leftSide.description}
+              <p className="mt-2 text-sm" dangerouslySetInnerHTML={{__html:sectionContent.leftSide.description}}>
+
               </p>
 
               {/* Filters */}
@@ -313,8 +313,7 @@ try {
                   {sectionContent.ourHiringJourney.title||"Our Hiring Journey"}
                 </h3>
 
-                <p className="mt-2 text-sm text-[#666]">
-                  {sectionContent.description||`Our simple and transparent process to welcome you to ENSIS.`}
+                <p className="mt-2 text-sm text-[#666]" dangerouslySetInnerHTML={{__html:sectionContent.description||`Our simple and transparent process to welcome you to ENSIS.`}}>
                 </p>
 
                 <div className="mt-4 grid gap-6 md:grid-cols-5">

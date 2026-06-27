@@ -97,8 +97,7 @@ export default function ProductHeroBanner({
             </h1>
 
             {product.description && (
-              <p className="text-sm leading-relaxed mb-6 max-w-85 text-white">
-                {product.description}
+              <p className="text-sm leading-relaxed mb-6 max-w-85 text-white" dangerouslySetInnerHTML={{__html:product.description}}>
               </p>
             )}
 

@@ -93,8 +93,7 @@ const CareerBenefits = ({ sectionContent }: { sectionContent: CareerBenefitsProp
                 <h3 className="text-left text-xs font-semibold leading-6 text-[#222]">
                   {item.title}
                 </h3>
-                <h3 className="text-left text-xs font-semibold leading-6 text-[#222]">
-                  {item.description}
+                <h3 className="text-left text-xs font-semibold leading-6 text-[#222]" dangerouslySetInnerHTML={{__html:item.description}}>
                 </h3>
               </div>
             </div>

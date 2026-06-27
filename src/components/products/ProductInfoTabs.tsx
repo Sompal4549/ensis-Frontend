@@ -76,9 +76,9 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                 <h2 className="font-semibold text-2xl leading-tight">
                   {overview?.title}
                 </h2>
-                <p className="text-xs font-semibold">
-                  {overview?.description || `Every curve, every detail is crafted to support the therapist and
-                  ensure unmatched comfort for the patient.`}
+                <p className="text-xs font-semibold" 
+                  dangerouslySetInnerHTML={{__html:overview?.description || `Every curve, every detail is crafted to support the therapist and
+                  ensure unmatched comfort for the patient.`}}>
                 </p>
                 <ul className="mt-4 space-y-2">
                   {overview?.overviewList?.map((item: any) => (
@@ -99,8 +99,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                     </div>
                     <div className="p-4">
                       <p className="text-xs font-semibold">{h.title}</p>
-                      <p className="mt-1 text-xs">
-                        {h.description}
+                      <p className="mt-1 text-xs" dangerouslySetInnerHTML={{__html:h.description}}>
                       </p>
                     </div>
                   </div>
@@ -123,7 +122,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
       <p className="font-medium text-[#8d6a3a]">
         {item.title}
       </p>
-      <p>{item.description}</p>
+      <p dangerouslySetInnerHTML={{__html:item.description}}></p>
     </div>
   )
 )}
@@ -166,7 +165,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                       {overview?.dimensions?.dimensionsList?.map((item: any, index: number) => (
                         <tr className="border-b border-[#e8dfd0]" key={index}>
                           <td className="p-2 font-medium">{item.title}</td>
-                          <td className="p-2">{item.description}</td>
+                          <td className="p-2" dangerouslySetInnerHTML={{__html:item.description}}></td>
                         </tr>
                       ))}
                     </tbody>
@@ -198,8 +197,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                         <p className="font-semibold">
                           {item.question}
                         </p>
-                        <p className="mt-2 text-sm text-[#666]">
-                          {item.description}
+                        <p className="mt-2 text-sm text-[#666]" dangerouslySetInnerHTML={{__html:item.description}}>
                         </p>
                       </div>
                     ))

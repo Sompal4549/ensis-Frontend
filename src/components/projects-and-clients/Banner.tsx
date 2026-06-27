@@ -83,8 +83,7 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
           {sectionContent.subtitle}
         </h2>
 
-        <p className="max-w-xs leading-relaxed text-sm">
-          {sectionContent.description}
+        <p className="max-w-xs leading-relaxed text-sm" dangerouslySetInnerHTML={{__html:sectionContent.description}}>
         </p>
       </div>
     </div>

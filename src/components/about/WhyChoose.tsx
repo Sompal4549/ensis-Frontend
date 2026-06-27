@@ -110,8 +110,10 @@ const WhyChooseEnsis: React.FC<{ sectionContent: WhyChooseEnsisContent }> = ({ s
       <Container>
         <AboutTitle title={sectionContent.title || "Why Choose Ensis?"} />
 
-        <p className="text-center text-sm text-[#5e5a55] mb-[20px] max-w-3xl mx-auto font-semibold">
-         {sectionContent.description || " We don&apos;t just sell products, we create complete wellness experiences."}
+        <p className="text-center text-sm text-[#5e5a55] mb-[20px] max-w-3xl mx-auto font-semibold"
+         dangerouslySetInnerHTML={{__html:sectionContent.description || " We don&apos;t just sell products, we create complete wellness experiences."}}
+        
+        >
         </p>
 
         <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-[14px]">
@@ -126,8 +128,7 @@ const WhyChooseEnsis: React.FC<{ sectionContent: WhyChooseEnsisContent }> = ({ s
                 {feature.title}
               </b>
 
-              <p className="text-[14px] leading-[1.8] font-medium">
-                {feature.description}
+              <p className="text-[14px] leading-[1.8] font-medium" dangerouslySetInnerHTML={{__html:feature.description}}>
               </p>
             </div>
           ))}
