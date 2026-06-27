@@ -8,7 +8,6 @@ interface PageSeoData {
     metaTitle: string;
     metaDescription: string;
     metaKeywords?: string;
-    h1: string;
     canonical?: string;
     ogJson?: string;
     schema?: string;
@@ -16,10 +15,14 @@ interface PageSeoData {
   robots?: string;
 }
 
-export async function generateSeo(page: string): Promise<Metadata> {
+interface SeoResult {
+  metadata: Metadata;
+  schema: string | null;
+}
+
+export async function generateSeo(page: string): Promise<SeoResult> {
   try {
-    const slugName = page === "home" ? "home" : page;
-    const response = await fetch(`${API_URL}/pages/${slugName}`, {
+    const response = await fetch(`${API_URL}/pages/${page}`, {
       next: { revalidate: 3600 },
     });
 
@@ -35,7 +38,6 @@ export async function generateSeo(page: string): Promise<Metadata> {
       ? seo.metaKeywords.split(",").map((k) => k.trim()).filter(Boolean)
       : [];
 
-    // Parse ogJson
     let ogExtra: Record<string, string> = {};
     if (seo.ogJson) {
       try { ogExtra = JSON.parse(seo.ogJson); } catch { /* invalid json */ }
@@ -44,24 +46,30 @@ export async function generateSeo(page: string): Promise<Metadata> {
     const ogImage = ogExtra["og:image"] || "";
 
     return {
-      title: seo.metaTitle,
-      description: seo.metaDescription,
-      keywords: keywordsArray,
-      alternates: seo.canonical ? { canonical: seo.canonical } : undefined,
-      robots: robots || "index, follow",
-      openGraph: {
-        title: ogExtra["og:title"] || seo.metaTitle,
-        description: ogExtra["og:description"] || seo.metaDescription,
-        url: ogExtra["og:url"] || undefined,
-        siteName: ogExtra["og:site_name"] || undefined,
-        type: (ogExtra["og:type"] as "website" | "article") || "website",
-        images: ogImage ? [{ url: getImageUrl(ogImage) }] : [],
+      metadata: {
+        title: seo.metaTitle,
+        description: seo.metaDescription,
+        keywords: keywordsArray,
+        alternates: seo.canonical ? { canonical: seo.canonical } : undefined,
+        robots: robots || "index, follow",
+        openGraph: {
+          title: ogExtra["og:title"] || seo.metaTitle,
+          description: ogExtra["og:description"] || seo.metaDescription,
+          url: ogExtra["og:url"] || undefined,
+          siteName: ogExtra["og:site_name"] || undefined,
+          type: (ogExtra["og:type"] as "website" | "article") || "website",
+          images: ogImage ? [{ url: getImageUrl(ogImage) }] : [],
+        },
       },
+      schema: seo.schema || null,
     };
   } catch {
     return {
-      title: "Ensis - Premium Panchkarma & Wellness Spaces",
-      description: "Leading manufacturer of Ayurvedic, Spa & Wellness equipments. Crafting premium solutions.",
+      metadata: {
+        title: "Ensis - Premium Panchkarma & Wellness Spaces",
+        description: "Leading manufacturer of Ayurvedic, Spa & Wellness equipments. Crafting premium solutions.",
+      },
+      schema: null,
     };
   }
 }
