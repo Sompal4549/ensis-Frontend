@@ -43,7 +43,7 @@ export interface OurClients {
 }
 export const clientsBannerFallback: OurClients = {
   heading: "Our Clients",
-  subheading: "Trusted by Leading Wellness Brands Across India. (Dummy Images)",
+  subheading: "Trusted by Leading Wellness Brands Across India.",
   decorativeImageSrc:ourClients, // Dummy image for decorativeImageSrc
   decorativeImageAlt: "Ayurvedic spa items with diya, leaves and towels",
   clients: [

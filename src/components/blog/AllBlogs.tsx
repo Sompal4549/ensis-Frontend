@@ -9,7 +9,7 @@ import { API_URL } from "@/lib/api/api";
 export default function AllBlogs({ sectionContent }: { sectionContent: any }) {
   const [selected, setSelected] = useState("All");
   const [blogs, setBlogs] = useState<any[]>(sectionContent?.blogs || []);
-
+console.log(blogs, "all blogs")
   // Fetch blogs if not provided in props (for dynamic blogs page)
   useEffect(() => {
     if (!blogs || blogs.length === 0) {
