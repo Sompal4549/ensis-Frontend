@@ -31,7 +31,11 @@ const colorMap: Record<string, string> = {
 };
 
 
-const SocialSidebar = () => {
+interface SocialSidebarProps {
+  layout?: "horizontal" | "vertical";
+}
+
+const SocialSidebar = ({ layout = "vertical" }: SocialSidebarProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
 
@@ -256,7 +260,11 @@ const SocialSidebar = () => {
         }
       `}</style>
 
-      <div className="fixed right-1 lg:right-1.5 top-[45%] lg:top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2 lg:gap-3 print:hidden">
+    <div className={`
+  ${layout === "vertical" 
+    ? "fixed right-1 lg:right-1.5 top-[45%] lg:top-1/2 -translate-y-1/2 z-50 flex flex-col gap-2 lg:gap-3" 
+    : "flex flex-row gap-3"
+  } print:hidden`}>
         {socialLinks.map((social, index) => {
           const platform = social.platform.toLowerCase();
           const Icon = iconMap[platform];

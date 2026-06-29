@@ -8,6 +8,7 @@ import { fallbackEnquiryContent } from "@/data/enquaryBannerAndForm";
 import { Container } from "../ui/Container";
 import enquaryBg from "@/assets/enquiry/formimage.webp"
 import { API_URL } from "@/lib/api/api";
+import HtmlRenderer from "../layout/HtmlRender";
 
 interface EnquiryPageProps {
   content?: EnquiryPageContent;
@@ -199,9 +200,9 @@ const errorClass =
     {content.hero.subheading}
   </h2>
 
-  <p className="mt-3 max-w-md text-sm leading-relaxed sm:text-base font-semibold">
-    {content.hero.description}
-  </p>
+  <HtmlRenderer className="mt-3 max-w-md text-sm leading-relaxed sm:text-base font-semibold" content={content.hero.description}>
+    
+  </HtmlRenderer>
 </div>
   </Container>
 </section>

@@ -26,6 +26,7 @@ import SocialIconLink from './SocialLink';
 import footerTop from "@/assets/footer-top.webp"
 import footerBottom from "@/assets/footer-bottom.webp"
 import arrow from "@/assets/icons/arrow.png"
+import HtmlRenderer from './HtmlRender';
 
 const iconMap: Record<string, IconType> = {
   facebook: FaFacebook,
@@ -146,9 +147,9 @@ export const Footer = async () => {
                <Image src={arrow} alt='arrow' width={200} height={10} />
               </div>
 
-              <p className="text-[13px] leading-5 text-white text-center">
-                {content.company.description}
-              </p>
+              <HtmlRenderer content={content.company.description} className="text-[13px] leading-5 text-white text-center">
+                
+              </HtmlRenderer>
 
               {/* social icons */}
               <div className="mt-6 flex gap-3">

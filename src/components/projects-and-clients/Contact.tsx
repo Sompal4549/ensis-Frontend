@@ -101,7 +101,7 @@ interface Props {
   sectionContent?: ContactSection;
 }
 
-export default function ContactBanner({
+export default function ProjectsContactBanner({
   sectionContent = fallbackContactBanner,
 }: Props) {
   return (

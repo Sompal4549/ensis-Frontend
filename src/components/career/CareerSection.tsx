@@ -12,6 +12,7 @@ import GreenButton from "../ui/GreenButton";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { applicationApi } from "@/lib/api/api";
+import HtmlRenderer from "../layout/HtmlRender";
 export interface CareerSectionProps{
     heading: string;
     titlePart1: string;
@@ -328,9 +329,7 @@ try {
 
                       <h4 className="mt-4 font-medium">{step.label}</h4>
 
-                      <p className="mt-2 text-xs text-[#777]">
-                        {step.description}
-                      </p>
+                      <HtmlRenderer className="mt-2 text-xs text-[#777]" content={step.description}/>
                     </div>
                   ))}
                 </div>
@@ -344,9 +343,9 @@ try {
                   {sectionContent.careerForm.title}
                 </h3>
 
-                <p className="mt-3 text-sm text-white">
-                  {sectionContent.description||`Send us your details and become part of the ENSIS family.`}
-                </p>
+                <HtmlRenderer className="mt-3 text-sm text-white" content={sectionContent.description||`Send us your details and become part of the ENSIS family.`}
+                >
+                </HtmlRenderer>
 
                 <form
   className="mt-4 space-y-5"

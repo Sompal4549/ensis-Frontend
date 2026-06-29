@@ -2,9 +2,10 @@ import React from "react";
 
 import Image from "next/image";
 import { Container } from "../ui/Container";
-
+import banner from "@/assets/contact_banner.webp"
 import arrow from "@/assets/icons/arrow.png"
-
+import getInTouch from "@/assets/get_in_touch.webp"
+import HtmlRenderer from "../layout/HtmlRender";
 interface ContactHeroFeature {
   id: string;
   iconImage: string; // Assuming this is an image URL or path
@@ -61,7 +62,8 @@ const ContactHero: React.FC<{ sectionContent: ContactHeroContent }> = ({sectionC
           <div className="relative max-w-[600px] ">
 
             {/* Small Heading */}
-            <p className="uppercase tracking-[2px] text-[11px] font-semibold text-[#7b6d5d] mb-3">
+            <p className="uppercase tracking-[2px] text-[11px] font-semibold text-[#7b6d5d] mb-3 flex gap-2">
+              <Image src={getInTouch} width={30} height={15} alt="arrow image" />
               {sectionContent.heading}
             </p>
 
@@ -72,15 +74,15 @@ const ContactHero: React.FC<{ sectionContent: ContactHeroContent }> = ({sectionC
               <span className="text-[#b58a48] capitalize font-semibold">{sectionContent.highlightedText}</span>
             </h1>
 
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] font-semibold tracking-[0.16em] text-[#313628]">
+                    <HtmlRenderer content={sectionContent.description} className='font-semibold'></HtmlRenderer>
+                  </div>
             {/* Description */}
                  <div className="flex w-full py-4">
                     <Image src={arrow} alt='arrow' width={300} height={10} />
                   </div>
 
                   {/* Categories */}
-                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] font-semibold tracking-[0.16em] text-[#313628]">
-                    <span className='font-semibold'>{sectionContent.description}</span>
-                  </div>
 
             {/* Features */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-4">

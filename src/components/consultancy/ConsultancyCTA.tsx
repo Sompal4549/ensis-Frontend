@@ -4,6 +4,7 @@ import { Container } from "../ui/Container";
 import Image from "next/image";
 import HeadsetIcon from "@/assets/consultancy/headset.webp";
 import BookButton from "../ui/BookButton";
+import HtmlRenderer from "../layout/HtmlRender";
 
 
 interface ConsultancyCTAContent {
@@ -46,9 +47,10 @@ export default function ConsultancyCTA({ sectionContent }: { sectionContent: Con
               {sectionContent.title}
             </h2>
 
-            <p className="mt-2 text-[14px] text-white max-w-[450px]">
-              {sectionContent.description}
-            </p>
+            <HtmlRenderer className="mt-2 text-[14px] text-white max-w-[450px]"
+            content={sectionContent.description}>
+              
+            </HtmlRenderer>
           </div>
         </div>
 

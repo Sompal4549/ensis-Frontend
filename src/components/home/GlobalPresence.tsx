@@ -4,6 +4,7 @@ import Image from 'next/image';
 import globe from "@/assets/icons/globe.webp"
 import SubHeading from './SubHeading';
 import { getImageUrl } from '@/lib/api/api';
+import HtmlRenderer from '../layout/HtmlRender';
 
 type GlobalPresenceProps = {
   sectionData: {
@@ -37,9 +38,9 @@ export const GlobalPresence = async ({ sectionData }: GlobalPresenceProps) => {
           <div>
             <SubHeading className=' text-black' text={content.eyebrow} />
             <h2 className="mt-2 whitespace-pre-line font-serif text-3xl leading-[100%] text-[#1f261b] font-semibold">{content.heading}</h2>
-            <p className="mt-3 text-xs text-[#5f5a50]">
-              {content.description}
-            </p>
+            <HtmlRenderer className="mt-3 text-xs text-[#5f5a50]" content={content.description}>
+              
+            </HtmlRenderer>
           </div>
           
           <div className="relative overflow-hidden">

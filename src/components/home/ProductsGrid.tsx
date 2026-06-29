@@ -16,6 +16,7 @@ import img13 from '@/assets/home/img-13.webp';
 import SubHeading from './SubHeading';
 import { getImageUrl, getProducts } from '@/lib/api/api';
 import { Product } from '@/constants';
+import HtmlRenderer from '../layout/HtmlRender';
 
 const fallbackImageMap: Record<string, any> = {
   "panchkarma-beds": img12,
@@ -73,9 +74,9 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
           <div>
             <SubHeading text={content.subtitle} className='text-[#8d6a3a]' />
             <h2 className="font-serif text-3xl leading-tight text-[#0f2518] md:text-3xl font-semibold">{content.heading}</h2>
-            <p className="max-w-[380px] text-xs leading-4.5 text-[#0f2518]">
-              {content.description}
-            </p>
+            <HtmlRenderer className="max-w-[380px] text-xs leading-4.5 text-[#0f2518]" content={content.description}>
+              
+            </HtmlRenderer>
           </div>
           <Link href={content.buttonPath} className="inline-flex w-fit items-center gap-5 border border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#0f2518] transition-colors hover:bg-[#f3eee6] rounded-md">
             {content.buttonText} <ArrowRight size={16} />

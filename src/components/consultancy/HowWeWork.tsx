@@ -6,6 +6,7 @@ import { Container } from "../ui/Container";
 import Image from "next/image";
 import ourMission from "@/assets/consultancy/our-mission.webp"
 import BookButton from "../ui/BookButton";
+import HtmlRenderer from "../layout/HtmlRender";
 
 type Benefit = {
   text: string;
@@ -230,9 +231,9 @@ export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWor
                           {step.title}
                         </h3>
 
-                        <p className="mt-1 text-[12px] leading-5 text-[#667085]">
-                          {step.description}
-                        </p>
+                        <HtmlRenderer content={step.description}
+                         className="mt-1 text-[12px] leading-5 text-[#667085]">
+                        </HtmlRenderer>
                       </div>
 
                       <div className="ml-4 shrink-0">

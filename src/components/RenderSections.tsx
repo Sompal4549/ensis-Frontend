@@ -57,6 +57,9 @@ import WhyWorkSection from "./career/WhyWorkSection";
 import CareersSection from "./career/CareerSection";
 import TalentCommunityBanner from "./career/TalentCommunityBanner";
 import CareerBenefits from "./career/Benefits";
+import ContactCtaBanner, { ContactBannerProps } from "./contact/ContactBanner";
+import PremiumMap, { PremiumMapProps } from "./contact/ContactMap";
+import ProjectsContactBanner from "@/components/projects-and-clients/Contact";
 
 interface RenderSectionProps {
   componentKey: string;
@@ -154,11 +157,14 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
 
     case "contact.featuresStrip":
       return <SupportHighlights sectionContent={data as SupportHighlightsContent} />;
- case "projects.contactSection":
-return <ContactBanner sectionContent={data as any} />;
+ case "contact.getInTouch":
+return <ContactSection sectionContent={data as any} />;
     case "contact.hero":
       return <ContactHero sectionContent={data as ContactHeroContent} />;
-
+      case "contact.ctaBanner":
+        return <ContactCtaBanner sectionContent={data as ContactBannerProps}/>;
+case "contact.premiumMap":
+  return <PremiumMap sectionContent={data as PremiumMapProps}/>;
     case "blog.allBlogs":
       return <BlogSection sectionContent={data} />;
     case "blog.mediaResources":
@@ -183,10 +189,11 @@ return <ContactBanner sectionContent={data as any} />;
       return <Testimonials sectionContent={data as Testimonial} />
     case "product.productsection":
       return <Products {...(data as any)} />
+
     case "projects.banner":
       return <ProjectsBanner sectionContent={data as ProjectsBannerContent} />
     case "projects.contactSection":
-  return <ProjectsBanner  sectionContent={data as any}/> 
+  return <ProjectsContactBanner  sectionContent={data as any}/> 
   case "projects.ourClients":
     return <OurClients sectionContent={data} />
     case "projects.ourProjects":

@@ -10,6 +10,7 @@ import consultaion from "@/assets/home/consultation.webp";
 import Image from "next/image";
 import BookButton from "../ui/BookButton";
 import {  getImageUrl } from "@/lib/api/api";
+import HtmlRenderer from "../layout/HtmlRender";
 
 const fallbackImages: Record<string, any> = {
   "Panchkarma Suite Setup": panchkarma,
@@ -71,9 +72,9 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
               </React.Fragment>
             ))}
           </h2>
-            <p className="text-[#0f2518] text-xs mb-3">
-              {content.description}
-            </p>
+            <HtmlRenderer className="text-[#0f2518] text-xs mb-3" content={content.description}>
+              
+            </HtmlRenderer>
           <div className="max-w-[220px]">
             <BookButton text={content.buttonText} path={content.buttonPath} />
           </div>

@@ -6,6 +6,7 @@ import { Container } from "../ui/Container";
 import bgImage from "@/assets/career/career_banner.png"
 import BookButton from "../ui/BookButton";
 import GreenButton from "../ui/GreenButton";
+import HtmlRenderer from "../layout/HtmlRender";
 export interface CareersBannerProps {
   bgImage:{imageUrl:string; imageAlt:string};
   heading:string;
@@ -46,11 +47,12 @@ const CareersBanner = ({sectionContent }: {sectionContent:CareersBannerProps}) =
           </h1>
 
           {/* Description */}
-          <p className="mt-6 max-w-md text-sm text-white">
-          {sectionContent.description||`At ENSIS, we blend ancient wisdom with modern innovation to create
+          <HtmlRenderer className="mt-6 max-w-md text-sm text-white"
+          content={sectionContent.description||`At ENSIS, we blend ancient wisdom with modern innovation to create
             authentic wellness experiences. Join our passionate team and build a
-            career that makes a difference.`}
-          </p>
+            career that makes a difference.`}>
+        
+          </HtmlRenderer>
           <div className="w-[250px] mt-4">
 
 <GreenButton text={sectionContent.buttonText||"Explore Opportunities"} path={sectionContent.buttonPath||"/contact"}/>

@@ -14,6 +14,7 @@ import Image, { type StaticImageData } from 'next/image';
 import SubHeading from './SubHeading';
 import {  getImageUrl } from '@/lib/api/api';
 import GreenButton from '../ui/GreenButton';
+import HtmlRenderer from '../layout/HtmlRender';
 
 type ImageSource = string | StaticImageData;
 
@@ -59,9 +60,9 @@ export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) =
             <div className="">
               <SubHeading className=' text-[#d5ad6a]' text={content.eyebrow} />
               <h2 className="mt-2 text-xl md:text-3xl">{content.heading}</h2>
-              <p className="mt-2 max-w-[420px] text-xs leading-5 text-[#ddd6ca]">
-                {content.description}
-              </p>
+              <HtmlRenderer className="mt-2 max-w-[420px] text-xs leading-5 text-[#ddd6ca]" content={content.description}>
+                
+              </HtmlRenderer>
               <div className='mt-2 w-65'>
               <GreenButton text={content.buttonText} leftIcon={<MessageCircle className="text-[#050A1A]" size={16}/>} rightIcon={<ArrowRight className="text-[#050A1A]" size={16}/>} path={content.buttonHref || "tel:+919654900525"} />
               </div>

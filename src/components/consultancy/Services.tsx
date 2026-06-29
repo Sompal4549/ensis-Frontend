@@ -8,6 +8,7 @@ import equipment from "@/assets/consultancy/equipment.webp"
 import staff from "@/assets/consultancy/staff_recruitment.webp"
 import growth from "@/assets/consultancy/growth_strategy.webp"
 import Image from "next/image";
+import HtmlRenderer from "../layout/HtmlRender";
 
 type Service = {
   title: string;
@@ -129,9 +130,9 @@ export default function ConsultancyServices({ sectionContent }: { sectionContent
     {service.title}
   </h3>
 
-  <p className="mt-3 text-[12px] text-gray-500">
-    {service.description}
-  </p>
+  <HtmlRenderer content={service.description} className="mt-3 text-[12px] text-gray-500">
+    
+  </HtmlRenderer>
 
   {/* mt-auto yahan flex-grow wale div pe lagao */}
  <div className="mt-auto pt-5">
