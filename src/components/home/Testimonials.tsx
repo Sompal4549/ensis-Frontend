@@ -35,7 +35,6 @@ const breakpointsConfig = {
 };
 
 export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
-  console.log(sectionContent, "testimonial")
   return (
     <section className="bg-[#fbf8f2]">
       <Container>

@@ -144,7 +144,6 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
   ];
   const content = data||fallbackSlides;
   const heroSlides = content.slides?.length ? content.slides : fallbackSlides;
-  console.log(content, "content")
 
   return (
     <section className="bg-[#f7f2ea] relative z-20 mb-12">

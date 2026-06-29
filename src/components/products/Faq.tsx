@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Plus, Minus } from "lucide-react";
 import { Container } from "../ui/Container";
 import { Product } from "@/constants";
+import HtmlRenderer from "../layout/HtmlRender";
 
 const faqs = [
   {
@@ -73,7 +74,7 @@ export default function FaqSection({ product }: { product: Product }) {
         {/* Answer panel — appears below the row */}
         {open !== null && (
           <div className="border border-[#d4c4a8] rounded-md bg-white px-4 py-3">
-            <p className="text-[11px] leading-relaxed">{faqs[open].description}</p>
+            <HtmlRenderer className="text-[11px] leading-relaxed" content={faqs[open].description}></HtmlRenderer>
           </div>
         )}
       </div>

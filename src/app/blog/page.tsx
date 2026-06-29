@@ -3,7 +3,7 @@ import { generateSeo } from "@/lib/api/seo";
 import PageBuilder from '@/components/PageBuilder';
 
 export async function generateMetadata() {
-  return generateSeo("home");
+  return generateSeo("blog");
 }
 const Blog = () => {
   return (

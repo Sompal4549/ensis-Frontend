@@ -11,6 +11,7 @@ import brandingIcon from "@/assets/trunkey_solutions/branding_agency.webp";
 import trainingIcon from "@/assets/trunkey_solutions/training_consultant.webp";
 import ensisPlaque from "@/assets/trunkey_solutions/everything_under.webp";
 import { Container } from "../ui/Container";
+import HtmlRenderer from "../layout/HtmlRender";
 
 const VENDORS = [
   { icon: architectIcon,  label: "Architect" },
@@ -62,9 +63,9 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
             <h2 className="text-2xl font-semibold leading-tight">
               {sectionContent.title}
             </h2>
-            <p className="text-xs font-semibold leading-6">
-           {sectionContent.description}
-            </p>
+            <HtmlRenderer content={sectionContent.description} className="text-xs font-semibold leading-6">
+           
+            </HtmlRenderer>
           </div>
 
           {/* Divider */}

@@ -6,6 +6,7 @@ import timeless_care from "@/assets/home/timeless_care.webp";
 import Image from "next/image";
 import GreenButton from "../ui/GreenButton";
 import { getImageUrl } from "@/lib/api/api";
+import HtmlRenderer from "../layout/HtmlRender";
 
 
 const fallbackImages: Record<string, any> = {
@@ -58,9 +59,9 @@ export default async function FullWidthFeatures(data?: { features?: any[]; butto
                 <h3 className="text-[#f5e7c8] text-base font-semibold leading-tight font-serif">
                   {item.title}
                 </h3>
-                <p className="text-[#d2c3a1] text-xs mt-1 leading-snug">
-                  {item.description}
-                </p>
+                <HtmlRenderer className="text-[#d2c3a1] text-xs mt-1 leading-snug" content={item?.description||""}>
+                  
+                </HtmlRenderer>
               </div>
             </div>
           ))}

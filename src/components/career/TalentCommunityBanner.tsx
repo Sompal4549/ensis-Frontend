@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { CheckCircle2 } from "lucide-react";
 import talentBg from "@/assets/career/contact_banner.webp"
+import HtmlRenderer from "../layout/HtmlRender";
 
 const features = [
   "Be part of a purpose-driven team",
@@ -42,10 +43,10 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
             {sectionContent.heading||'Ready to Create Impact?'}
           </h2>
 
-          <p className="mt-4 text-sm text-white/80 max-w-105">
-            {sectionContent.description||`If you're passionate about wellness, design and innovation,
-            we'd love to hear from you.`}
-          </p>
+          <HtmlRenderer className="mt-4 text-sm text-white/80 max-w-105" content={sectionContent.description||`If you're passionate about wellness, design and innovation,
+            we'd love to hear from you.`}>
+            
+          </HtmlRenderer>
 
           <ul className="mt-6 space-y-4">
             {sectionContent.features.map((item, index) => (
@@ -73,9 +74,9 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
             {sectionContent.newsLetterCard.title||`Join Our Talent Community`}
           </h3>
 
-          <p className="mt-3 text-xs leading-6 text-white/70">
-            {sectionContent.description||"Receive updates on new openings and career opportunities."}
-          </p>
+          <HtmlRenderer className="mt-3 text-xs leading-6 text-white/70" content={sectionContent.description||"Receive updates on new openings and career opportunities."}>
+            
+          </HtmlRenderer>
 
           <form className="mt-6 space-y-4">
             <input

@@ -68,7 +68,6 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
     };
     fetchContent();
   }, []);
-console.log(content,"manufaturing and Projects")
   // Manufacturing images: use local fallbacks (admin doesn't send mfg images)
   const getMfgImage = (index: number) => {
     const cmsImg = content.mfgImages?.[index].image;

@@ -26,7 +26,9 @@ export default function SocialIconLink({
         void socialApi.trackClick(platform);
       }}
     >
+      <span className="hover:text-white md:text-white">
       {children}
+      </span>
     </a>
   );
 }

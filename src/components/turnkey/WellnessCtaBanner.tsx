@@ -4,6 +4,7 @@ import ready_to_build2 from "@/assets/trunkey_solutions/ready_to_build (2).webp"
 
 import { Container } from "../ui/Container";
 import Link from "next/link";
+import HtmlRenderer from "../layout/HtmlRender";
 
 
 export interface WellnessCtaBannerContent {
@@ -44,9 +45,9 @@ const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> 
             <p className="mt-1.5 text-sm text-white leading-relaxed max-w-[520px]">
               {sectionContent.heading}
             </p>
-            <p className="font-semibold text-[#E7C17A]">
-              {sectionContent.description}
-            </p>
+            <HtmlRenderer className="font-semibold text-[#E7C17A]" content={sectionContent.description}
+            >
+            </HtmlRenderer>
           </div>
 
           {/* Action Cards */}
@@ -69,9 +70,9 @@ const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> 
                   <div className="text-[12px] text-[#E7C17A] font-semibold leading-none">
                     {item.title}
                   </div>
-                  <div className="mt-0.5 text-[10px] leading-tight text-white  mt-1">
-                    {item.description}
-                  </div>
+                  <HtmlRenderer content={item.description}
+                   className="mt-0.5 text-[10px] leading-tight text-white  mt-1">
+                  </HtmlRenderer>
                 </div>
               </Link>
             ))}

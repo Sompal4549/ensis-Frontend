@@ -26,6 +26,7 @@ import SocialIconLink from './SocialLink';
 import footerTop from "@/assets/footer-top.webp"
 import footerBottom from "@/assets/footer-bottom.webp"
 import arrow from "@/assets/icons/arrow.png"
+import HtmlRenderer from './HtmlRender';
 
 const iconMap: Record<string, IconType> = {
   facebook: FaFacebook,
@@ -122,13 +123,25 @@ export const Footer = async () => {
 
       {/* ── MAIN SECTION ── full-width bg image */}
       <div
-        className="relative w-full bg-no-repeat bg-[#f8f6f2]"
-        style={{
-          backgroundImage: `url(${footerTop.src})`,
-          backgroundSize: "100% 100%",
-          backgroundPosition: "center left",
-        }}
+        className="relative w-full bg-no-repeat bg-[#f8f6f2] md:bg-[100%] bg-contain md:bg-cover bg-[bottom] md:bg-[left]"
       >
+         <div
+    className="absolute inset-0 md:hidden bg-no-repeat"
+    style={{
+      backgroundImage: `url(${footerTop.src})`,
+      backgroundSize: "contain",
+      backgroundPosition: "bottom",
+    }}
+  />
+  {/* Normal bg image — desktop */}
+  <div
+    className="absolute inset-0 hidden md:block bg-no-repeat"
+    style={{
+      backgroundImage: `url(${footerTop.src})`,
+      backgroundSize: "100% 100%",
+      backgroundPosition: "center left",
+    }}
+  />
         {/* subtle overlay so text stays readable */}
 
         <Container className="relative z-10 pt-12 pb-6">
@@ -146,9 +159,9 @@ export const Footer = async () => {
                <Image src={arrow} alt='arrow' width={200} height={10} />
               </div>
 
-              <p className="text-[13px] leading-5 text-white text-center">
-                {content.company.description}
-              </p>
+              <HtmlRenderer content={content.company.description} className="text-[13px] leading-5 md:text-white text-center">
+                
+              </HtmlRenderer>
 
               {/* social icons */}
               <div className="mt-6 flex gap-3">
@@ -160,7 +173,7 @@ export const Footer = async () => {
                       key={social._id}
                       href={social.url}
                       platform={social.platform}
-                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#0f2e22] text-[#0f2e22] transition hover:bg-[#0f2e22] hover:text-white"
+                      className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#d0a965] md:text-white transition hover:bg-[#0f2e22] hover:text-white"
                     >
                       <Icon size={16} />
                     </SocialIconLink>
@@ -282,13 +295,13 @@ export const Footer = async () => {
         }}
       >
         <Container className="relative z-10">
-          <div className="grid grid-cols-2 md:grid-cols-5 py-2">
+          <div className="grid grid-cols-2 md:grid-cols-5 py-2 gap-2">
             {features.map((item, i) => {
               const Icon = item.icon;
               return (
                 <div
                   key={item.title}
-                  className="flex items-center gap-4 border-r-2 border-white/10 px-5 py-0 last:border-r-0"
+                  className="flex items-center gap-4 md:border-r-2 border-white/10 px-2 md:px-5 py-0 last:border-r-0"
                 >
                   <div className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full border ${item.border} ${item.color}`}>
                     <Icon size={24} />
@@ -304,7 +317,7 @@ export const Footer = async () => {
         </Container>
 
       {/* ── COPYRIGHT BAR ── */}
-      <div className="px-8">
+      <div className="px-0 md:px-8">
         <Container>
           <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
             <p className="text-[13px] text-white/70">{content.copyright.text}</p>

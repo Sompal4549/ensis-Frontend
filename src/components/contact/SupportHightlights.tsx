@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { Container } from "../ui/Container";
 import Image from "next/image";
+import HtmlRenderer from "../layout/HtmlRender";
 
 const features = [
   {
@@ -75,9 +76,9 @@ const SupportHighlights = ({sectionContent}: { sectionContent: SupportHighlights
                       {item.title}
                     </p>
 
-                    <p className="text-[#2f2f2f] text-xs font-semibold leading-6">
-                      {item.description}
-                    </p>
+                    <HtmlRenderer className="text-[#2f2f2f] text-xs font-semibold leading-6" content={item.description}>
+                      
+                    </HtmlRenderer>
                   </div>
                 </div>
               );

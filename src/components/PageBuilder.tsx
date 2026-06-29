@@ -1,5 +1,6 @@
 import { getPageComponent } from "@/lib/api/api";
 import RenderSection from "./RenderSections";
+import { generateSchema } from "@/lib/api/seo";
 
 type PageBuilderProps = {
   slug: string;
@@ -14,7 +15,10 @@ type PageSection = {
 
 export default async function PageBuilder({ slug }: PageBuilderProps) {
   try {
-    const pageData = await getPageComponent(slug);
+    const [pageData, schema] = await Promise.all([
+      getPageComponent(slug),
+      generateSchema(slug),
+    ]);
     const sections = Array.isArray(pageData)
       ? pageData
       : Array.isArray(pageData?.sections)
@@ -34,27 +38,29 @@ export default async function PageBuilder({ slug }: PageBuilderProps) {
     if (sortedSections.length === 0) {
       return (
         <div className="p-20 text-center">
-          <p className="">No sections configured for the {slug} page.</p>
+          <p>No sections configured for the {slug} page.</p>
         </div>
       );
     }
+
     return (
       <main>
+        {schema && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: schema }}
+          />
+        )}
         {sortedSections.map((section: PageSection, index: number) => {
-            console.log(section, "sectiondata")
           const componentKey = section.key || section.componentKey;
           if (!componentKey) return null;
-        //   if(section.isActive){
-
-              return (
-                  <RenderSection
-                  key={`${componentKey}-${index}`}
-                  componentKey={componentKey}
-                  data={section.data || {}}
-                 
-                  />
-                );
-            // }
+          return (
+            <RenderSection
+              key={`${componentKey}-${index}`}
+              componentKey={componentKey}
+              data={section.data || {}}
+            />
+          );
         })}
       </main>
     );
@@ -62,7 +68,7 @@ export default async function PageBuilder({ slug }: PageBuilderProps) {
     console.error(`PageBuilder failed to load page content for "${slug}"`, error);
     return (
       <main className="flex min-h-screen items-center justify-center">
-        <p className="">Unable to load page content for {slug}. Please try again later.</p>
+        <p>Unable to load page content for {slug}. Please try again later.</p>
       </main>
     );
   }

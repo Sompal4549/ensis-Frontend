@@ -12,6 +12,7 @@ import expertReadyIcon from "@/assets/trunkey_solutions/expert_ready_solution.we
 import { Container } from "../ui/Container";
 import decorationLeft from "@/assets/icons/arrow_left2.png"
 import decorationRight from "@/assets/icons/arrow_right2.png"
+import HtmlRenderer from "../layout/HtmlRender";
 
 
 
@@ -80,9 +81,9 @@ export default function WhyChoose({sectionContent}: { sectionContent: TurnkeyWhy
                     <span className="text-[#c9972a] text-2xl sm:text-4xl font-semibold leading-none">
                       {s?.title||""}
                     </span>
-                    <span className="text-[#e8d9b5] text-[10px] sm:text-xs leading-snug whitespace-pre-line mt-1 font-medium">
-                      {s.description}
-                    </span>
+                    <HtmlRenderer content={s.description} className="text-[#e8d9b5] text-[10px] sm:text-xs leading-snug whitespace-pre-line mt-1 font-medium">
+                      
+                    </HtmlRenderer>
                   </div>
                 ))}
               </div>

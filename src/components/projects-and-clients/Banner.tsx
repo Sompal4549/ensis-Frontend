@@ -47,7 +47,7 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
   <div className="absolute inset-0 z-0">
     <Image
       src={banner}
-      alt={sectionContent.title.line1}
+      alt={sectionContent?.title?.line1}
       fill
       priority
       sizes="100vw"
@@ -67,11 +67,11 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
       <div className="w-full lg:max-w-[42%]">
         <h1 className="leading-loose">
           <span className="block text-[#1f2c25] text-4xl md:text-5xl lg:text-6xl">
-            {sectionContent.title.line1}
+            {sectionContent?.title?.line1}
           </span>
 
           <span className="block text-[#b1793d] text-4xl md:text-5xl lg:text-6xl italic">
-            {sectionContent.title.line2}
+            {sectionContent?.title?.line2}
           </span>
         </h1>
 
@@ -80,10 +80,10 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
         </div>
 
         <h2 className="mb-4 text-md font-medium">
-          {sectionContent.subtitle}
+          {sectionContent?.subtitle}
         </h2>
 
-        <p className="max-w-xs leading-relaxed text-sm" dangerouslySetInnerHTML={{__html:sectionContent.description}}>
+        <p className="max-w-xs leading-relaxed text-sm" dangerouslySetInnerHTML={{__html:sectionContent?.description}}>
         </p>
       </div>
     </div>

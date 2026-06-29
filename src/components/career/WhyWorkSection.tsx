@@ -3,6 +3,7 @@ import React from "react";
 import Image, { StaticImageData } from "next/image";
 import flower from "@/assets/about/lotus.png";
 import { Container } from "../ui/Container";
+import HtmlRenderer from "../layout/HtmlRender";
 interface CardItem {
   title: string;
   description: string;
@@ -79,12 +80,12 @@ const WhyWorkSection = ({sectionContent}:{sectionContent:WhyWorkProps}) => {
               {sectionContent.title2||"Beyond Profit"}
             </h2>
 
-            <p className="mt-2 text-[15px] text-[#555]">
-              {sectionContent.description||`We're not just creating interiors and equipment, we're
+            <HtmlRenderer className="mt-2 text-[15px] text-[#555]" content={sectionContent.description||`We're not just creating interiors and equipment, we're
               crafting experiences that transform lives. Join a team
               that believes in purpose over profit and wellness over
-              everything.`}
-            </p>
+              everything.`}>
+              
+            </HtmlRenderer>
           </div>
 
           {/* Cards */}
@@ -107,9 +108,9 @@ const WhyWorkSection = ({sectionContent}:{sectionContent:WhyWorkProps}) => {
                   {card.title}
                 </h3>
 
-                <p className="text-xs">
-                  {card.description}
-                </p>
+                <HtmlRenderer className="text-xs" content={card.description}>
+                  
+                </HtmlRenderer>
               </div>
             ))}
           </div>
