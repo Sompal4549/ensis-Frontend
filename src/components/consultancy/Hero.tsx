@@ -46,11 +46,10 @@ interface ConsultancyHeroContent {
 
 export default async function ConsultancyHero({ sectionContent }: { sectionContent: ConsultancyHeroContent }) { // Changed to async function
  const features = await getComponentContent("consultancy.features", {}) as { items: { title: string; image: string; heading: string; description: string }[] };
-  console.log(features, "features")
   return (
-  <section className="overflow-hidden bg-[#f7f5f2]">
+  <section className="bg-[#f7f5f2]">
       {/* BG IMAGE */}
-   <div className="relative z-0 h-[calc(100vh-96px)]">
+   <div className="relative z-0 md:h-[calc(100vh-146px)]">
     <div
       className="absolute inset-0 bg-cover bg-center bg-no-repeat"
       style={{
@@ -123,7 +122,7 @@ export default async function ConsultancyHero({ sectionContent }: { sectionConte
     
       </Container>
       </div>
-<Container className="relative z-20 md:-mt-[45px]">
+<Container className="relative z-20 -mt-4 md:-mt-8">
             {/* STATS CARD */}
         <div>
           <div className="rounded-[20px] bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)]">

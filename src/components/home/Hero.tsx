@@ -176,7 +176,7 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
 
             {/* Content */}
             <Container className="relative z-10">
-  <div className="flex md:h-[calc(100vh-96px)]">
+  <div className="flex md:h-[calc(100vh-146px)]">
   <div
     className={`max-w-175 w-full pt-8 md:pt-16 lg:pt-20 xl:pt-24 ${
       slide.isCenter && "flex flex-col items-center"

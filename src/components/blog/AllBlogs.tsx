@@ -3,51 +3,33 @@ import { useState } from "react";
 import BlogListItem from "./BlogListItem";
 import CategoryFilters from "./CategoryFilters";
 import SectionTitle from "./SectionTitle";
-import { useEffect } from "react";
 import { API_URL } from "@/lib/api/api";
 
-export default function AllBlogs({ sectionContent }: { sectionContent: any }) {
+export default function AllBlogs({ sectionContent, blogs }: { sectionContent: any, blogs: any }) {
   const [selected, setSelected] = useState("All");
-  const [blogs, setBlogs] = useState<any[]>(sectionContent?.blogs || []);
-  // Fetch blogs if not provided in props (for dynamic blogs page)
-  useEffect(() => {
-    if (!blogs || blogs.length === 0) {
-      const fetchBlogs = async () => {
-        try {
-          const res = await fetch(`${API_URL}/blogs`);
-          const json = await res.json();
-          if (json.status === "success") {
-            const data = json.data;
-            setBlogs(Array.isArray(data) ? data : (data?.blogs || []));
-          }
-        } catch (e) {
-          console.error("Error fetching all blogs:", e);
-        }
-      };
-      fetchBlogs();
-    }
-  }, []);
+
+  const categories = [
+    "All",
+    ...Array.from(new Set<string>(blogs.map((b: any) => b.category).filter(Boolean))),
+  ];
 
   const filtered = selected === "All"
     ? blogs
-    : blogs.filter((post: any) => 
-        post.category?.toLowerCase() === selected.toLowerCase() || 
-        post.tags?.includes(selected)
-      );
+    : blogs.filter((b: any) => b.category === selected);
 
   return (
     <div>
       <SectionTitle title="All Blogs" />
-      <CategoryFilters selected={selected} onSelect={setSelected} />
+      <CategoryFilters selected={selected} onSelect={setSelected} categories={categories} />
       <div className="space-y-2">
         {filtered.length > 0 ? (
           filtered.map((post: any, index: number) => (
-            <BlogListItem 
-              key={post.id || index} 
-              title={post.title} 
-              date={post.date} 
-              category={post.category} 
-              image={post.image} 
+            <BlogListItem
+              key={post.id || index}
+              title={post.title}
+              date={post.date}
+              category={post.category}
+              image={post.image}
               link={post.link || post.id}
             />
           ))

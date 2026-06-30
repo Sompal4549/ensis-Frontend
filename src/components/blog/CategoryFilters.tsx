@@ -1,14 +1,12 @@
 type Props = {
   selected: string;
   onSelect: (category: string) => void;
+   categories: string[];
 };
 
-const categories = [
-  "All", "Panchakarma", "Spa Design", "Ayurveda",
-  "Wellness", "Equipment", "Ingredients", "Business", "Trends",
-];
 
-export default function CategoryFilters({ selected, onSelect }: Props) {
+
+export default function CategoryFilters({ selected, onSelect,categories }: Props) {
   return (
     <div className="mb-3 flex flex-wrap gap-3">
       {categories.map((item, index) => (

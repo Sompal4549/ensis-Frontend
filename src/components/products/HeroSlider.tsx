@@ -32,7 +32,7 @@ export interface HeroSliderContent {
 // ─── Individual slide ─────────────────────────────────────────────────────────
 function SlideContent({ slide }: { slide: HeroSlide }) {
   return (
-    <div className="ws-banner ws-grain relative h-[82dvh] w-full overflow-hidden bg-[#f5efe6]">
+    <div className="ws-banner ws-grain relative md:h-[calc(100vh-146px)] w-full overflow-hidden bg-[#f5efe6]">
       
       {/* Background image */}
       <div className="absolute inset-0 z-0">
@@ -88,7 +88,7 @@ export default function HeroSlider({ sectionContent }: { sectionContent: HeroSli
     <>
       <section
         aria-label="Wellness product collection"
-        className="relative w-full h-[82dvh]"
+        className="relative w-full md:h-[calc(100vh-146px)]"
       >
         <Carousel autoplayDelay={5000}>
           {sectionContent.slides.map((slide) => (

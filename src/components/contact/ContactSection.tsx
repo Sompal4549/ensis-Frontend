@@ -136,7 +136,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
   const inputClass = "w-full rounded-xl px-4 py-3 text-sm text-white/90 bg-[#1e4434] border border-[#2d5a43] placeholder:text-white/40 outline-none focus:border-[#D9B25F] transition-all";
 
   return (
-    <section className="py-12 bg-[#faf6ef]">
+    <section className="bg-[#faf6ef]">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 

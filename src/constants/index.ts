@@ -179,3 +179,4 @@ export const idealFor = [
 
 
 export const PAGE_SIZE = 12;
+export const bannerHeight = "md:h-[calc(100vh-146px)]"
