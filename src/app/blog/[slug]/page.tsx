@@ -8,6 +8,8 @@ import BlogDetailBanner from "@/components/blog/BlogDetailBanner";
 import BlogDetailArticleLayout from "@/components/blog/BlogDetailArticleLayout";
 import BlogDetailNewsletter from "@/components/blog/BlogDetailNewsLetter";
 import { Metadata } from "next";
+import RelatedBlogs from "@/components/blog/Relatedblogs";
+import BlogDetailCtaBanner from "@/components/blog/BlogDetailCtaBanner";
 
 interface BlogDetailProps {
   params: Promise<{ slug: string }>;
@@ -95,7 +97,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
   const voiceOfExpertsBlogs = allBlogs.filter((b: any) => b.isVoiceOfExperts);
   const popularBlogs = allBlogs.filter((b: any) => b.isPopular);
 
-  const hasBanner = !!blog.banner?.bgImage;
+  const hasBanner = !!blog.banner;
   const hasArticle = !!blog.article?.heroImage;
   const hasNewsletter = !!blog.newsletter?.title;
 
@@ -111,7 +113,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
 
       {/* ── BANNER ── */}
       {hasBanner ? (
-        <BlogDetailBanner sectionContent={blog.banner} />
+        <BlogDetailBanner blog={blog} />
       ) : (
         // fallback — simple header agar banner data nahi hai
         <div className="py-12 md:py-20 bg-[#fdfaf5]">
@@ -164,7 +166,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                   className="prose prose-stone prose-lg max-w-none text-[#4a4036]
                   prose-headings:font-serif prose-headings:text-[#2b241f]
                   prose-p:leading-relaxed prose-strong:text-[#2b241f]"
-                  dangerouslySetInnerHTML={{ __html: decodeHtml(blog.content || blog.description || "") }}
+                  dangerouslySetInnerHTML={{ __html: decodeHtml(blog.article.content || blog.description || "") }}
                 />
 
                 {blog.tags && blog.tags.length > 0 && (
@@ -188,15 +190,16 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
           </Container>
         </div>
       )}
-
+<BlogDetailCtaBanner sectionContent={blog.ctaBanner} />
       {/* ── NEWSLETTER ── */}
-      {hasNewsletter ? (
-        <BlogDetailNewsletter sectionContent={blog.newsletter} />
-      ) : (
-        <div className="mt-16 md:mt-28">
-          <NewsletterCard sectionContent={newsletterData} />
-        </div>
-      )}
+ <RelatedBlogs allBlogs={allBlogs}  />
+ {hasNewsletter ? (
+   <BlogDetailNewsletter sectionContent={blog.newsletter} />
+ ) : (
+   <div className="mt-16 md:mt-28">
+     <NewsletterCard sectionContent={newsletterData} />
+   </div>
+ )}
     </main>
   );
 }

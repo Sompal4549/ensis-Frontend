@@ -12,6 +12,7 @@ import {
 import { Container } from "../ui/Container";
 import flower from "@/assets/about/lotus.png";
 import { API_URL } from "@/lib/api/api";
+import Link from "next/link";
 export interface BlogNewsLaterPropps{
   lotusImage:{image:string; alt:string;};
   title:string;
@@ -74,20 +75,19 @@ const BlogDetailNewsletter = ({sectionContent}:{sectionContent:any}) => {
         {/* Left */}
         <div className="flex items-center gap-4">
           <Image
-            src={flower}
-            alt="Lotus"
+            src={sectionContent.lotusImage.image}
+            alt={sectionContent.lotusImage.alt}
             width={50}
             height={50}
           />
 
           <div>
             <h3 className="font-serif text-md text-white">
-              Stay Updated
+              {sectionContent.title}
             </h3>
 
             <p className="mt-1 max-w-xs text-xs leading-4 text-white/80">
-              Subscribe to our newsletter for wellness insights and product
-              updates.
+              {sectionContent.description}
             </p>
           </div>
         </div>
@@ -112,7 +112,7 @@ const BlogDetailNewsletter = ({sectionContent}:{sectionContent:any}) => {
               disabled={loading}
               className="bg-[#B88A43] px-4 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-[#a97c39] disabled:opacity-70"
             >
-              {loading ? "..." : "Subscribe"}
+              {loading ? "..." :sectionContent.followText||"Subscribe"}
             </button>
           </form>
 
@@ -136,18 +136,18 @@ const BlogDetailNewsletter = ({sectionContent}:{sectionContent:any}) => {
           </span>
 
           <div className="flex items-center gap-3">
-            {[FaLinkedinIn, FaInstagram, FaFacebookF, FaYoutube].map(
-              (Icon, index) => (
-                <a
+            {sectionContent.socialLinks.map(
+              (link:any, index:number|string) => (
+                <Link 
                   key={index}
-                  href="#"
+                  href={link.path}
                   className="flex h-10 w-10 items-center justify-center rounded-full border border-[#B88A43] text-[#B88A43] transition hover:bg-[#B88A43] hover:text-white"
                 >
                   <span className="text-[#B88A43] ">
 
-                  <Icon size={16} />
+                  <Image src={link.image} alt="icon" width={16} height={16} />
                   </span>
-                </a>
+                </Link>
               )
             )}
           </div>

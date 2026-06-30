@@ -9,7 +9,6 @@ const BASE_API_URL = (
 ).replace(/\/$/, "");
 
 export const API_URL = BASE_API_URL.endsWith("/api/v1") ? BASE_API_URL : `${BASE_API_URL}/api/v1`;
-console.log("ensis API_URL is initialized to:", API_URL);
 export const BACKEND_URL = API_URL.replace(/\/api\/v1$/, "");
 
 const apiClient = axios.create({

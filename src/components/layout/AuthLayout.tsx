@@ -4,7 +4,7 @@ import lotus from "@/assets/about/lotus.png";
 import { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
 import { ArrowRight, Link } from "lucide-react";
-import logo from "@/assets/logo.png"
+import logo from "@/assets/logo.webp"
 interface AuthLayoutProps {
   title: string;
   subtitle: string;

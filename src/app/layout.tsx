@@ -1,17 +1,26 @@
+export const dynamic = 'force-dynamic';
+import nextDynamic from "next/dynamic";
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import Script from "next/script";
 import "./globals.css";
 import { Montserrat, Playfair_Display } from 'next/font/google';
 import { ShopProvider } from "@/context/ShopContext";
+import footerTop1 from "@/assets/footer-top.webp"
+import footerTop2 from "@/assets/footer-top2.webp"
+import footerTop3 from "@/assets/footer-top-3.webp"
+import footerTop4 from "@/assets/footer-bottom5.png"
+import footerTop5 from "@/assets/footer-top-6.png"
+import footerTop6 from "@/assets/footer-top-4.png"
+
 
 const montserrat = Montserrat({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-montserrat', display: "swap" });
 const cormorant = Playfair_Display({ subsets: ['latin'], weight: ['400', '600', '700'], variable: '--font-cormorant', display: "swap" });
 
 import { Header } from "@/components/layout/Header";
-const Footer = dynamic(() => import("@/components/layout/Footer").then((mod) => mod.Footer));
-const SocialSidebar = dynamic(() => import("@/components/layout/SocialSidebar").then((mod) => mod.default));
-const WhatsAppFloat = dynamic(() => import("@/components/ui/WhatsAppFloat").then((mod) => mod.default));
+const Footer = nextDynamic(() => import("@/components/layout/Footer").then((mod) => mod.Footer));
+const SocialSidebar = nextDynamic(() => import("@/components/layout/SocialSidebar").then((mod) => mod.default));
+const WhatsAppFloat = nextDynamic(() => import("@/components/ui/WhatsAppFloat").then((mod) => mod.default));
+
 
 // export const metadata: Metadata = {
 //   title: "Ensis - Premium Panchkarma & Wellness Spaces",
@@ -37,8 +46,6 @@ export default async function RootLayout({
 }>) {
   const advSeo = await getAdvancedSeo();
 
-  console.log("ADV SEO", advSeo);
-  console.log("Analytics", advSeo?.analytics);
   const analytics = advSeo?.analytics || {};
   const searchConsole = advSeo?.searchConsole || {};
 
@@ -123,6 +130,12 @@ export default async function RootLayout({
           <Header />
           <main className="pt-22">{children}</main>
           <Footer />
+          {/* <Footer image={footerTop1} />
+          <Footer image={footerTop2} />
+          <Footer image={footerTop3} />
+          <Footer image={footerTop4} />
+          <Footer image={footerTop5} />
+          <Footer image={footerTop6} /> */}
           <SocialSidebar />
           <WhatsAppFloat />
         </ShopProvider>

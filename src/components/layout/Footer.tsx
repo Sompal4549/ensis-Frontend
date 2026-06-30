@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { FaFacebook, FaInstagram, FaYoutube, FaLinkedin, FaWhatsapp, FaTwitter } from 'react-icons/fa';
 import { Container } from '../ui/Container';
-import logoImg from '@/assets/logo.png';
+import logoImg from '@/assets/logo.webp';
 import GlowLogo from './GlowLogo';
 import SparkleLogo from './SparkleLogo';
 import { getComponentContent, socialApi } from '@/lib/api/api';
@@ -113,8 +113,10 @@ const features = [
   { title: "PAN INDIA SERVICE", desc: "Delivering Wellness Across India", icon: Truck, color: "text-[#d0a965]", border: "border-[#d0a965]/40" },
 ];
 
+// export const Footer = async ({image:StaticImageData|string}) => {
 export const Footer = async () => {
   const content = await getComponentContent("layout.footer", defaultFooter);
+  console.log(content, "footer")
   const socialLinks = (await socialApi.getLinks())
     .filter((item) => item.isActive)
     .sort((a, b) => a.order - b.order);
@@ -129,7 +131,8 @@ export const Footer = async () => {
          <div
     className="absolute inset-0 md:hidden bg-no-repeat"
     style={{
-      backgroundImage: `url(${footerTop.src})`,
+      // backgroundImage: `url(${image.src})`,
+        backgroundImage: `url(${footerTop.src})`,
       backgroundSize: "contain",
       backgroundPosition: "bottom",
     }}
@@ -138,6 +141,7 @@ export const Footer = async () => {
   <div
     className="absolute inset-0 hidden md:block bg-no-repeat"
     style={{
+      // backgroundImage: `url(${image.src})`,
       backgroundImage: `url(${footerTop.src})`,
       backgroundSize: "100% 100%",
       backgroundPosition: "center left",
