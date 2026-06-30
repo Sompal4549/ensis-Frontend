@@ -5,6 +5,7 @@ import { Phone, MessageCircle } from "lucide-react";
 import { Container } from "../ui/Container";
 import Image, { StaticImageData } from "next/image";
 import HtmlRenderer from "../layout/HtmlRender";
+import BookButton from "../ui/BookButton";
 
 export interface ContactBannerProps {
   phone?: string;
@@ -17,11 +18,10 @@ export interface ContactBannerProps {
 
 const ContactCtaBanner = ({ sectionContent }: { sectionContent: ContactBannerProps }) => {
   return (
-    <section className="py-6 relative">
+    <section className="py-2 relative">
       <Container>
         <div
           className="
-            px-6 py-6 lg:px-10 lg:py-7
           "
         >
 
@@ -37,12 +37,12 @@ const ContactCtaBanner = ({ sectionContent }: { sectionContent: ContactBannerPro
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-[#D9B25F] md:text-3xl">
+                <h2 className="text-xl font-bold text-[#D9B25F] md:text-2xl">
                   {sectionContent?.title||'Need Immediate Assistance?'}
                 </h2>
 
                 <HtmlRenderer content={sectionContent?.description||`Call us now or send a message. Our team will get back to you
-                  shortly.`} className="mt-2 max-w-xl text-sm leading-7 text-white/90 md:text-base">
+                  shortly.`} className="mt-2 max-w-xl text-sm leading-7 text-white/90 md:text-base max-w-[400px]">
                   
                 </HtmlRenderer>
               </div>
@@ -73,22 +73,10 @@ const ContactCtaBanner = ({ sectionContent }: { sectionContent: ContactBannerPro
             <div className="hidden h-16 w-px bg-[#D9B25F]/40 lg:block" />
 
             {/* Button */}
-            <a
-              href={sectionContent?.whatsappLink}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="
-                inline-flex items-center justify-center gap-3
-                rounded-2xl bg-[#D9B25F]
-                px-7 py-4 font-semibold
-                text-[#0D3A2E]
-                transition duration-300
-                hover:scale-105 hover:bg-[#e8c16d]
-              "
-            >
-              <MessageCircle size={20} />
-              Chat on WhatsApp
-            </a>
+            <BookButton leftIcon={
+              <MessageCircle className="mr-2" size={15} />
+
+            } rightIcon text="&nbsp; Chat on WhatsApp" path={sectionContent?.whatsappLink}  />
           </div>
 
           {/* Right Decorative Image */}
@@ -101,7 +89,7 @@ const ContactCtaBanner = ({ sectionContent }: { sectionContent: ContactBannerPro
       fill
       src={sectionContent.image}
       alt="Spa"
-      className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+      className="absolute inset-0 h-full w-full object-cover pointer-events-none bg-fill"
     />
   )}
 

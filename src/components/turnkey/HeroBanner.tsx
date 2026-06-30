@@ -40,7 +40,7 @@ export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyH
         <Image src={sectionContent.backgroundImage.imageUrl} alt={sectionContent.backgroundImage.alt||sectionContent.title} fill className="object-fill z-0! absolute object-right" priority  />
       {/* ── HERO ── */}
       <Container className="relative z-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center min-h-[80vh]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center md:h-[calc(100vh-146px)]">
 
           {/* LEFT COLUMN */}
           <div className="flex flex-col gap-4 h-full justify-center">

@@ -22,7 +22,7 @@ export interface SeoResult extends Metadata {
 export async function generateSeo(page: string): Promise<SeoResult> {
   try {
     const response = await fetch(`${API_URL}/pages/${page}`, {
-      next: { revalidate: 3600 },
+      cache: "no-store",
     });
 
     const payload = await response.json();
@@ -72,7 +72,7 @@ export async function generateSeo(page: string): Promise<SeoResult> {
 export async function generateSchema(page: string): Promise<string | null> {
   try {
     const response = await fetch(`${API_URL}/pages/${page}`, {
-      next: { revalidate: 3600 },
+      cache: "no-store",
     });
     const payload = await response.json();
     if (!response.ok || !payload.success || !payload.data) return null;

@@ -26,7 +26,7 @@ import {
     FaLinkedin,
 } from "react-icons/fa";
 const Container = dynamic(() => import("../ui/Container").then((mod) => mod.Container));
-import logoImg from "@/assets/logo.png";
+import logoImg from "@/assets/logo.webp";
 import GreenButton from "../ui/GreenButton";
 import BookButton from "../ui/BookButton";
 import { useShop } from "@/context/ShopContext";
@@ -112,88 +112,93 @@ export const Header = () => {
     const mobileLink =
         "border-b border-[#e8e0d3] py-4 text-[12px] font-bold tracking-wide text-[#1f261b]";
 
+    // Default content shape matches the actual DB schema for "layout.header"
+    // (contactInfo + navigation), NOT the old badges/navLinks shape.
     const [headerContent, setHeaderContent] = useState({
         phone: "+91 9654900525",
         email: "info@ensis.in",
         brochureUrl: "https://ensis.in/pdf/e-broucher.pdf",
-        badges: ["Exporting Worldwide", "ISO 9001:2015 Certified", "Manufactured in India"],
-        navLinks: [
-            { label: "Home", href: "/" },
-            { label: "About Us", href: "/about" },
-            { label: "Products", href: "/products" },
-            { label: "Turnkey Solutions", href: "/turnkey" },
-            { label: "Consultancy", href: "/consultancy" },
-            { label: "Projects And Clients", href: "/projects-and-clients" },
-            { label: "Blog", href: "/blog" },
-            { label: "Enquiry", href: "/enquiry" },
-            { label: "Contact Us", href: "/contact" }
-        ]
+        contactInfo: [
+            {
+                image: { imageUrl: "/icons/factory.svg", alt: "Factory Icon" },
+                text: "Manufactured in India",
+            },
+            {
+                image: { imageUrl: "/icons/phone.svg", alt: "Phone Icon" },
+                text: "+91 9654900525",
+                href: "tel:+919654900525",
+            },
+            {
+                image: { imageUrl: "/icons/mail.svg", alt: "Mail Icon" },
+                text: "info@ensis.in",
+                href: "mailto:info@ensis.in",
+            },
+        ],
+        navigation: [
+            { title: "Home", slug: "/" },
+            { title: "About Us", slug: "/about" },
+            { title: "Products", slug: "/products" },
+            { title: "Turnkey Solutions", slug: "/turnkey" },
+            { title: "Consultancy", slug: "/consultancy" },
+            { title: "Projects And Clients", slug: "/projects-and-clients" },
+            { title: "Blog", slug: "/blog" },
+            { title: "Enquiry", slug: "/enquiry" },
+            { title: "Contact Us", slug: "/contact" },
+        ],
     });
 
     useEffect(() => {
         const fetchHeader = async () => {
             try {
                 const data = await getComponentContent("layout.header", headerContent);
-                console.log("Fetched header content:", data); // Debug log to check fetched data
                 setHeaderContent(data);
             } catch (err) {
                 // Keep default
             }
         };
         fetchHeader();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const navLinks = headerContent.navLinks;
-
-    // Social Links Array
-    const socialLinks = [
-        {
-            icon: <FaFacebook size={14} />,
-            href: "#",
-            label: "Facebook",
-        },
-        {
-            icon: <FaInstagram size={14} />,
-            href: "#",
-            label: "Instagram",
-        },
-        {
-            icon: <FaYoutube size={14} />,
-            href: "#",
-            label: "Youtube",
-        },
-        {
-            icon: <FaLinkedin size={14} />,
-            href: "#",
-            label: "LinkedIn",
-        },
-    ];
+    // Map DB's `navigation` (title/slug) to the {label, href} shape this component renders
+    const navLinks = (headerContent.navigation ?? []).map((n: any) => ({
+        label: n.title,
+        href: n.slug,
+    }));
 
     return (
         <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}>
             <div className={`bg-[#263016] text-white py-1`}>
                 <Container className="flex min-h-8 items-center justify-between gap-4 text-[11px] font-medium py-0!">
                     <div className="hidden items-center gap-6 md:flex">
-                        {headerContent.badges?.map((badge, index) => (
-                            <span key={index} className="flex items-center gap-2">
-                                {index === 0 && <Globe size={13} />}
-                                {index === 1 && <Award size={13} />}
-                                {index === 2 && <Factory size={13} />}
-                                {badge}
-                            </span>
-                        ))}
-                        <Link href={`tel:${headerContent.phone}`} className="flex items-center gap-2">
-                            <Phone size={13} />
-                            {headerContent.phone}
-                        </Link>
+                        {headerContent.contactInfo?.map((item: any, index: number) => {
+                            // Phone/email get clickable links; everything else is plain text with an icon
+                            const isPhone = item.href?.startsWith("tel:");
+                            const isEmail = item.href?.startsWith("mailto:");
 
-                        <Link
-                            href={`mailto:${headerContent.email}`}
-                            className="hidden items-center gap-2 sm:flex"
-                        >
-                            <Mail size={13} />
-                            {headerContent.email}
-                        </Link>
+                            const iconFor = (alt: string = "") => {
+                                if (alt.toLowerCase().includes("factory")) return <Factory size={13} />;
+                                if (alt.toLowerCase().includes("phone")) return <Phone size={13} />;
+                                if (alt.toLowerCase().includes("mail")) return <Mail size={13} />;
+                                return <Globe size={13} />;
+                            };
+
+                            if (item.href) {
+                                return (
+                                    <Link key={index} href={item.href} className="flex items-center gap-2">
+                                        {iconFor(item.image?.alt)}
+                                        {item.text}
+                                    </Link>
+                                );
+                            }
+
+                            return (
+                                <span key={index} className="flex items-center gap-2">
+                                    {iconFor(item.image?.alt)}
+                                    {item.text}
+                                </span>
+                            );
+                        })}
                     </div>
 
                     <div className="flex w-full items-center justify-end gap-4 md:w-auto">
@@ -215,32 +220,13 @@ export const Header = () => {
                         ) : (
                             <GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
                         ))}
-
-                        {/* <div className="hidden items-center gap-3 md:flex">
-              {socialLinks.map((item, index) => (
-                <Link
-                  key={index}
-                  href={item.href}
-                  aria-label={item.label}
-                >
-                  {item.icon}
-                </Link>
-              ))}
-            </div> */}
-                        {/* {user && (
-            <GreenButton text="Logout" onClick={handleLogout} leftIcon={<LogOut size={14} className="text-[#050A1A]" />} />
-            )} */}
                     </div>
                 </Container>
             </div>
 
-            <div
-                className={`bg-white`}
-
-            >
+            <div className={`bg-white`}>
                 <Container className="flex items-center justify-between gap-6 py-2! relative">
                     <Link href="/" className="absolute left-4 xl:left-6 top-[80%] -translate-y-[85%] shrink-0 z-10">
-
                         <Image
                             src={logoImg}
                             alt="ENSIS Logo"
@@ -248,7 +234,6 @@ export const Header = () => {
                             priority
                             style={{ width: "auto" }}
                         />
-
                     </Link>
 
                     {/* Spacer so nav doesn't go under the logo */}

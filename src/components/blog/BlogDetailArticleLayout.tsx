@@ -240,16 +240,6 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {/* ---------- Main article ---------- */}
           <article className="lg:col-span-2">
-            <div className="relative h-56 w-full overflow-hidden rounded-2xl sm:h-72 md:h-80">
-              <Image
-                src={heroImage}
-                alt={heroAlt}
-                fill
-                priority
-                sizes="(min-width: 1024px) 66vw, 100vw"
-                className="object-cover"
-              />
-            </div>
 
             <p className="mt-6 text-xs leading-relaxed sm:text-sm">
               {introBefore}

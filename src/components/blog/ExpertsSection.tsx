@@ -7,6 +7,7 @@ import SectionTitle from "./SectionTitle";
 import expert1 from "@/assets/home/testimonial1.webp";
 import expert2 from "@/assets/home/testimonial1.webp";
 import expert3 from "@/assets/home/testimonial1.webp";
+import Link from "next/link";
 
 const experts = [
   {
@@ -15,6 +16,7 @@ const experts = [
     image: expert1,
     quote:
       "True wellness is the harmony of body, mind and environment.",
+      slug:"/"
   },
   {
     name: "Ar. Rohan Mehta",
@@ -22,6 +24,7 @@ const experts = [
     image: expert2,
     quote:
       "Design is not just how it looks, it's how it heals.",
+      slug:"/"
   },
   {
     name: "Vaidya Priya Nair",
@@ -29,10 +32,11 @@ const experts = [
     image: expert3,
     quote:
       "Ayurveda offers timeless solutions for modern lifestyles.",
+      slug:"/"
   },
 ];
 
-export default function ExpertsSection() {
+export default function ExpertsSection({blogs}:any) {
   return (
     <div>
       <div className="mb-3 flex items-center justify-between">
@@ -46,12 +50,12 @@ export default function ExpertsSection() {
       </div>
 
       <div className="space-y-2">
-        {experts.map((expert, index) => (
-          <div key={index} className="flex gap-4">
+        {blogs?.map((blog:any, index:number|string) => (
+          <Link key={index} className="flex gap-4" href={`/blog/${blog?.slug||""}`}>
             <div className="relative h-20 w-20 overflow-hidden rounded-2xl">
               <Image
-                src={expert.image}
-                alt={expert.name}
+                src={blog?.expert?.image}
+                alt={blog?.expert?.name}
                 fill
                 className="object-cover"
               />
@@ -59,20 +63,20 @@ export default function ExpertsSection() {
 
             <div className="flex-1">
               <p className="text-xs text-[#3d3129]">
-                "{expert.quote}"
+                "{blog?.expert?.quote}"
               </p>
 
               <div className="mt-1">
                 <h4 className="font-medium text-[#2b241f]">
-                  {expert.name}
+                  {blog?.expert?.name}
                 </h4>
 
                 <p className="text-xs text-[#8f735d]">
-                  {expert.role}
+                  {blog?.expert?.role}
                 </p>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

@@ -165,6 +165,8 @@ return <ContactSection sectionContent={data as any} />;
         return <ContactCtaBanner sectionContent={data as ContactBannerProps}/>;
 case "contact.premiumMap":
   return <PremiumMap sectionContent={data as PremiumMapProps}/>;
+
+  
     case "blog.allBlogs":
       return <BlogSection sectionContent={data} />;
     case "blog.mediaResources":

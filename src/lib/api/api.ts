@@ -9,12 +9,21 @@ const BASE_API_URL = (
 ).replace(/\/$/, "");
 
 export const API_URL = BASE_API_URL.endsWith("/api/v1") ? BASE_API_URL : `${BASE_API_URL}/api/v1`;
-console.log("ensis API_URL is initialized to:", API_URL);
 export const BACKEND_URL = API_URL.replace(/\/api\/v1$/, "");
 
 const apiClient = axios.create({
     baseURL: API_URL,
     validateStatus: () => true,
+    headers: {
+        "Cache-Control": "no-cache, no-store, must-revalidate",
+        "Pragma": "no-cache",
+        "Expires": "0",
+    },
+});
+
+apiClient.interceptors.request.use((config) => {
+    config.params = { ...config.params, _t: Date.now() };
+    return config;
 });
 
 const normalizePageResponse = (payload: any) => {

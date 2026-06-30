@@ -16,7 +16,6 @@ async function getAllBlogs() {
 }
 export default async function BlogSection({ sectionContent }: { sectionContent: any }) {
   const allBlogs = await getAllBlogs();
-
   const featuredBlogs = allBlogs.filter((b: any) => b.isFeatured);
   const popularBlogs = allBlogs.filter((b: any) => b.isPopular);
   const voiceOfExpertsBlogs = allBlogs.filter((b: any) => b.isVoiceOfExperts);
@@ -25,11 +24,11 @@ export default async function BlogSection({ sectionContent }: { sectionContent: 
       <Container>
         <div className="grid grid-cols-1 gap-10 xl:grid-cols-[1fr_320px]">
           <div>
-            <FeaturedArticles  sectionContent={sectionContent} />
-            <AllBlogs sectionContent={sectionContent} />
+            <FeaturedArticles  sectionContent={sectionContent} blogs={featuredBlogs} />
+            <AllBlogs sectionContent={sectionContent} blogs={popularBlogs} />
           </div>
 
-          <BlogSidebar sectionContent={sectionContent} />
+          <BlogSidebar sectionContent={sectionContent} voiceBlogs={voiceOfExpertsBlogs} popularBlog={popularBlogs} />
         </div>
       </Container>
     </section>

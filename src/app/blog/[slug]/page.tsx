@@ -8,6 +8,8 @@ import BlogDetailBanner from "@/components/blog/BlogDetailBanner";
 import BlogDetailArticleLayout from "@/components/blog/BlogDetailArticleLayout";
 import BlogDetailNewsletter from "@/components/blog/BlogDetailNewsLetter";
 import { Metadata } from "next";
+import RelatedBlogs from "@/components/blog/Relatedblogs";
+import BlogDetailCtaBanner from "@/components/blog/BlogDetailCtaBanner";
 
 interface BlogDetailProps {
   params: Promise<{ slug: string }>;
@@ -36,25 +38,49 @@ async function getBlogBySlug(slug: string) {
   }
 }
 
+async function getAllBlogs() {
+  try {
+    const res = await fetch(`${API_URL}/blogs`, { next: { revalidate: 3600 } });
+    const json = await res.json();
+    return json.status === "success" ? json.data : [];
+  } catch {
+    return [];
+  }
+}
+
 export async function generateMetadata({ params }: BlogDetailProps): Promise<Metadata> {
   const { slug } = await params;
   const blog = await getBlogBySlug(slug);
 
   if (!blog?.seo) return { title: "Blog Detail" };
 
+  const { seo, title } = blog;
+
+  const keywordsArray = seo.metaKeywords
+    ? seo.metaKeywords.split(",").map((k: string) => k.trim()).filter(Boolean)
+    : [];
+
+  let ogExtra: Record<string, string> = {};
+  if (seo.ogJson) {
+    try { ogExtra = JSON.parse(seo.ogJson); } catch { }
+  }
+
+  const ogImage = ogExtra["og:image"] || blog.blogImage?.image || "";
+
   return {
-    title: blog.seo.metaTitle || blog.title,
-    description: blog.seo.metaDescription,
-    keywords: blog.seo.metaKeywords,
+    title: seo.metaTitle || title,
+    description: seo.metaDescription,
+    keywords: keywordsArray,
+    alternates: seo.canonical ? { canonical: seo.canonical } : undefined,
+    robots: "index, follow",
     openGraph: {
-      title: blog.seo.ogTitle || blog.title,
-      description: blog.seo.ogDescription,
-      images: [blog.seo.ogImage || blog.featureImage || blog.image],
+      title: ogExtra["og:title"] || seo.metaTitle || title,
+      description: ogExtra["og:description"] || seo.metaDescription,
+      url: ogExtra["og:url"] || undefined,
+      siteName: ogExtra["og:site_name"] || undefined,
+      type: (ogExtra["og:type"] as "website" | "article") || "article",
+      images: ogImage ? [{ url: getImageUrl(ogImage) }] : [],
     },
-    alternates: {
-      canonical: blog.seo.canonical,
-    },
-    robots: blog.robots || "index, follow",
   };
 }
 
@@ -67,16 +93,27 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
   const blogData: any = await getComponentContent("blog.allBlogs", { blogs: [] });
   const newsletterData: any = await getComponentContent("blog.stayInspired", {});
 
-  const hasBanner = !!blog.banner?.bgImage;
+  const allBlogs = await getAllBlogs();
+  const voiceOfExpertsBlogs = allBlogs.filter((b: any) => b.isVoiceOfExperts);
+  const popularBlogs = allBlogs.filter((b: any) => b.isPopular);
+
+  const hasBanner = !!blog.banner;
   const hasArticle = !!blog.article?.heroImage;
   const hasNewsletter = !!blog.newsletter?.title;
 
   return (
     <main className="bg-[#fdfaf5]">
 
+      {blog.seo?.schema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: blog.seo.schema }}
+        />
+      )}
+
       {/* ── BANNER ── */}
       {hasBanner ? (
-        <BlogDetailBanner sectionContent={blog.banner} />
+        <BlogDetailBanner blog={blog} />
       ) : (
         // fallback — simple header agar banner data nahi hai
         <div className="py-12 md:py-20 bg-[#fdfaf5]">
@@ -129,7 +166,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                   className="prose prose-stone prose-lg max-w-none text-[#4a4036]
                   prose-headings:font-serif prose-headings:text-[#2b241f]
                   prose-p:leading-relaxed prose-strong:text-[#2b241f]"
-                  dangerouslySetInnerHTML={{ __html: decodeHtml(blog.content || blog.description || "") }}
+                  dangerouslySetInnerHTML={{ __html: decodeHtml(blog.article.content || blog.description || "") }}
                 />
 
                 {blog.tags && blog.tags.length > 0 && (
@@ -147,21 +184,22 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
               </article>
 
               <aside className="hidden xl:block">
-                <BlogSidebar sectionContent={blogData} />
+                <BlogSidebar sectionContent={blogData} voiceBlogs={voiceOfExpertsBlogs} popularBlog={popularBlogs} />
               </aside>
             </div>
           </Container>
         </div>
       )}
-
+<BlogDetailCtaBanner sectionContent={blog.ctaBanner} />
       {/* ── NEWSLETTER ── */}
-      {hasNewsletter ? (
-        <BlogDetailNewsletter sectionContent={blog.newsletter} />
-      ) : (
-        <div className="mt-16 md:mt-28">
-          <NewsletterCard sectionContent={newsletterData} />
-        </div>
-      )}
+ <RelatedBlogs allBlogs={allBlogs}  />
+ {hasNewsletter ? (
+   <BlogDetailNewsletter sectionContent={blog.newsletter} />
+ ) : (
+   <div className="mt-16 md:mt-28">
+     <NewsletterCard sectionContent={newsletterData} />
+   </div>
+ )}
     </main>
   );
 }
