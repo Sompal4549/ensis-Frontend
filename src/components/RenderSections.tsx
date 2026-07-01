@@ -60,6 +60,7 @@ import CareerBenefits from "./career/Benefits";
 import ContactCtaBanner, { ContactBannerProps } from "./contact/ContactBanner";
 import PremiumMap, { PremiumMapProps } from "./contact/ContactMap";
 import ProjectsContactBanner from "@/components/projects-and-clients/Contact";
+import { Suspense } from "react";
 
 interface RenderSectionProps {
   componentKey: string;
@@ -190,7 +191,9 @@ case "contact.premiumMap":
     case "product.testimonials":
       return <Testimonials sectionContent={data as Testimonial} />
     case "product.productsection":
-      return <Products {...(data as any)} />
+      return    <Suspense fallback={<div>Loading...</div>}>
+      <Products {...(data as any)} />
+    </Suspense>
 
     case "projects.banner":
       return <ProjectsBanner sectionContent={data as ProjectsBannerContent} />

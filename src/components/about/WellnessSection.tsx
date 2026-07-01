@@ -24,6 +24,7 @@ interface WellnessData{
                         image: string;
                         "title": string;
                         "description":string;
+                        link:string;
                     }[]
             }
             interface WellnessSectionProps {
@@ -112,13 +113,13 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
                 <p className="text-[#0f2518] text-[12px] mt-3 min-h-[90px]" dangerouslySetInnerHTML={{__html:service.description}}/>
                 <div>
                   <div className="w-full h-[1px] bg-[#d5bc94] mx-auto mb-1.5" />
-                  <button className="group flex items-center justify-center gap-1 mx-auto text-[#0f2518] text-[10px] uppercase tracking-wide font-semibold">
+                  <Link href={service.link||"/products"} className="group flex items-center justify-center gap-1 mx-auto text-[#0f2518] text-[10px] uppercase tracking-wide font-semibold">
                     View Products
                     <ChevronRight
                       size={16}
                       className="text-[#b78942] transition-transform duration-300 group-hover:translate-x-1"
                     />
-                  </button>
+                  </Link>
                 </div>
               </div>
             );

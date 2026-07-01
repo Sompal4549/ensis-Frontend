@@ -1,5 +1,5 @@
 "use client";
-
+import { useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   LayoutGrid,
@@ -26,17 +26,35 @@ export const fmt = (n: number) => "₹" + n.toLocaleString("en-IN");
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 export default function Products() {
-  const [activeCategory, setActiveCategory] = useState("all"); // This state is not used in the provided snippet
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category");
+
+  const [activeCategory, setActiveCategory] = useState(categoryParam || "all");
   const [sortBy, setSortBy] = useState("Featured");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [priceRange, setPriceRange] = useState(150000);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", category: "", message: "", });
+  const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", category: "", message: "", });
   // Infinite scroll
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
+  const mainContentRef = useRef<HTMLDivElement | null>(null); // 👈 new ref
   const [products, setProducts] = useState<any[]>([]);
   const [apiCategories, setApiCategories] = useState<any[]>([]);
+
+  // Sync activeCategory whenever URL param changes (e.g. navigation from another page)
+  useEffect(() => {
+    if (categoryParam) {
+      setActiveCategory(categoryParam);
+    }
+  }, [categoryParam]);
+
+  // Scroll to products section if category param is present
+  useEffect(() => {
+    if (categoryParam && mainContentRef.current) {
+      mainContentRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [categoryParam]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -61,7 +79,6 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
     };
     loadData();
   }, []);
-
   const displayCategories = useMemo(() => {
     if (apiCategories.length === 0) return categories;
     return [
@@ -145,7 +162,7 @@ const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", categor
 
   return (
     <>
-      <div className="ws-body min-h-screen bg-[#faf6f1] text-[#1a1a1a]">
+       <div ref={mainContentRef} className="flex-1 min-w-0">
         <div className="max-w-[1340px] mx-auto px-3 sm:px-5 lg:px-8 py-5 sm:py-7">
 
           {/* Mobile Filter Toggle */}
