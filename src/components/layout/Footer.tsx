@@ -21,14 +21,43 @@ import { Container } from '../ui/Container';
 import logoImg from '@/assets/logo.webp';
 import GlowLogo from './GlowLogo';
 import SparkleLogo from './SparkleLogo';
-import { getComponentContent, socialApi } from '@/lib/api/api';
+import { getComponentContent, socialApi, categoryApi } from '@/lib/api/api';
 import type { IconType } from "react-icons";
 import SocialIconLink from './SocialLink';
-import footerTop from "@/assets/footer-top.webp"
+import footerTop2 from "@/assets/footer-top2.webp"
 import footerBottom from "@/assets/footer-bottom.webp"
 import arrow from "@/assets/icons/arrow.png"
 import HtmlRenderer from './HtmlRender';
 
+interface FooterNavLink {
+  label: string;
+  href: string;
+}
+
+interface FooterNavSection {
+  title: string;
+  links: FooterNavLink[];
+}
+
+interface FooterContent {
+  company: {
+    name: string;
+    description: string;
+    socialLinks: any[];
+    maplink: string;
+  };
+  navigation: FooterNavSection[];
+  contact: {
+    address: string;
+    phone: string;
+    email: string;
+    whatsappPhone: string;
+  };
+  copyright: {
+    text: string;
+    links: FooterNavLink[];
+  };
+}
 const iconMap: Record<string, IconType> = {
   facebook: FaFacebook,
   instagram: FaInstagram,
@@ -120,6 +149,21 @@ export const Footer = async () => {
   const socialLinks = (await socialApi.getLinks())
     .filter((item) => item.isActive)
     .sort((a, b) => a.order - b.order);
+  let apiCategories: any[] = [];
+  try {
+    apiCategories = await categoryApi.list();
+  } catch (e) {
+    console.error("Failed to fetch categories for footer", e);
+  }
+    const categoryLinks = apiCategories.slice(0, 5).map((cat: any) => ({
+    label: cat.name,
+    href: `/products?category=${cat.slug}`,
+  }));
+ const navigation = content.navigation.map((nav: FooterNavSection) =>
+  nav.title === "Product Categories" && categoryLinks.length > 0
+    ? { ...nav, links: categoryLinks }
+    : nav
+);
 
   return (
     <footer className="overflow-hidden bg-white">
@@ -132,7 +176,7 @@ export const Footer = async () => {
     className="absolute inset-0 md:hidden bg-no-repeat"
     style={{
       // backgroundImage: `url(${image.src})`,
-        backgroundImage: `url(${footerTop.src})`,
+        backgroundImage: `url(${footerTop2.src})`,
       backgroundSize: "contain",
       backgroundPosition: "bottom",
     }}
@@ -142,7 +186,7 @@ export const Footer = async () => {
     className="absolute inset-0 hidden md:block bg-no-repeat"
     style={{
       // backgroundImage: `url(${image.src})`,
-      backgroundImage: `url(${footerTop.src})`,
+      backgroundImage: `url(${footerTop2.src})`,
       backgroundSize: "100% 100%",
       backgroundPosition: "center left",
     }}
@@ -188,7 +232,7 @@ export const Footer = async () => {
             </div>
 </div>
             {/* ── NAV COLS ── */}
-            {content.navigation.map((nav, i) => {
+ {navigation.map((nav, i) => {
               const Icon = navIcons[i] ?? Link2;
               const color = navIconColors[i] ?? navIconColors[0];
               return (
@@ -222,7 +266,6 @@ export const Footer = async () => {
                 </div>
               );
             })}
-
             {/* ── CONTACT COL ── */}
             <div>
               <div className="flex items-center gap-2 mb-2">

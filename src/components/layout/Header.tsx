@@ -183,22 +183,30 @@ export const Header = () => {
                                 return <Globe size={13} />;
                             };
 
-                            if (item.href) {
-                                return (
-                                    <Link key={index} href={item.href} className="flex items-center gap-2">
-                                        {iconFor(item.image?.alt)}
-                                        {item.text}
-                                    </Link>
-                                );
-                            }
+                         if (item.href) {
+    return (
+      <Link key={index} href={item.href} className="flex items-center gap-2">
+        {item.image?.imageUrl ? (
+          <Image src={item.image.imageUrl} alt={item.image?.alt ?? ''} width={13} height={13} />
+        ) : (
+          iconFor(item.image?.alt)
+        )}
+        {item.text}
+      </Link>
+    );
+  }
 
-                            return (
-                                <span key={index} className="flex items-center gap-2">
-                                    {iconFor(item.image?.alt)}
-                                    {item.text}
-                                </span>
-                            );
-                        })}
+  return (
+    <span key={index} className="flex items-center gap-2">
+      {item.image?.imageUrl ? (
+        <Image src={item.image.imageUrl} alt={item.image?.alt ?? ''} width={13} height={13} />
+      ) : (
+        iconFor(item.image?.alt)
+      )}
+      {item.text}
+    </span>
+  );
+})}
                     </div>
 
                     <div className="flex w-full items-center justify-end gap-4 md:w-auto">

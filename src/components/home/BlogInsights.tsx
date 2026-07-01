@@ -11,33 +11,15 @@ import img16 from '@/assets/home/img-16.webp';
 import img6 from '@/assets/home/img-6.webp';
 import SubHeading from './SubHeading';
 import GreenButton from '../ui/GreenButton';
-import { getComponentContent, getImageUrl } from '@/lib/api/api';
+import { getComponentContent, getImageUrl, blogApi } from '@/lib/api/api';
 
 const blogFallbackImages = [panchkarma_2, img6, img16, img10];
-type BlogContent = {
-  id?: string;
-  subtitle: string;
-  heading: string;
-  buttonText: string;
-  buttonPath: string;
-  blogs: { id: string; title: string; date: string; description: string; link: string; image: string, ctaText: string }[];
-  ctaHeading: string;
-  ctaDescription: string;
-  ctaButtonText: string;
-  ctaButtonPath: string;
-  ctaBgImage: string;
-}
+
 const defaultContent = {
   subtitle: "FROM THE BLOG",
   heading: "Insights & Wellness Knowledge",
   buttonText: "VIEW ALL BLOGS",
   buttonPath: "/blog",
-  blogs: [
-    { id: "1", title: "Panchkarma Room Design Guide: Everything You Need to Know", image: "", date: "", description: "", link: "", ctaText: "" },
-    { id: "2", title: "How to Choose the Right Spa Equipment for Your Business", image: "", date: "", description: "", link: "", ctaText: "" },
-    { id: "3", title: "Steam Chamber Benefits for Detox & Relaxation Therapy", image: "", date: "", description: "", link: "", ctaText: "" },
-    { id: "4", title: "Top 7 Ayurveda Wellness Trends in 2024", image: "", date: "", description: "", link: "", ctaText: "" },
-  ],
   ctaHeading: "Ready to Build Your Dream Wellness Space?",
   ctaDescription: "Connect with our experts for personalized consultation and premium solutions.",
   ctaButtonText: "CONTACT US TODAY",
@@ -46,17 +28,10 @@ const defaultContent = {
 };
 
 export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }: { subtitle: string; heading: string; buttonText: string; buttonPath: string }) => {
-  // const content = await getComponentContent<BlogContent>("home.blogInsights", defaultContent);
-  const blogData: any = await getComponentContent("blog.allBlogs", defaultContent.blogs);
+  const allBlogs = await blogApi.list();
   const contactData = await getComponentContent("home.readyToBuild", { ctaHeading: defaultContent.ctaHeading, ctaDescription: defaultContent.ctaDescription, ctaButtonText: defaultContent.ctaButtonText, ctaButtonPath: defaultContent.ctaButtonPath, ctaBgImage: defaultContent.ctaBgImage });
-  console.log(contactData);
 
-  // const content = defaultContent;
-  // const blogData: any = defaultContent.blogs;
-
-  // Extract the actual blog array from the API response object
-  // Based on your console.log, it resides in 'blogData.blogs'
-  const displayBlogs = blogData?.blogs || (Array.isArray(blogData) ? blogData : defaultContent.blogs);
+  const displayBlogs = Array.isArray(allBlogs) ? allBlogs : [];
 
   return (
     <section className="bg-[#fbf8f2]">
@@ -66,18 +41,22 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
             <div>
               <SubHeading className=' text-black' text={subtitle} />
               <h2 className="mt-2 font-serif text-xl leading-tight text-[#1f261b] md:text-2xl font-semibold">{heading}</h2>
-              <Link href={buttonPath} className="mt-6 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6] rounded-md">
+            <Link href={buttonPath} className="mt-6 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6] rounded-md">
                 {buttonText} <ArrowRight size={16} />
               </Link>
             </div>
           </div>
           {displayBlogs.slice(0, 4).map((blog: any, index: number) => {
-            const blogImage = blog.image ? getImageUrl(blog.image) : blogFallbackImages[index] || panchkarma_2;
-            // Ensure the link is valid; if link is just "/" or empty, use the ID
-            const blogHref = blog.link && blog.link.length > 1 ? `/blog/${blog.link}` : `/blog/${blog.id}`;
+            const blogImage = blog.bannerImage
+              ? getImageUrl(blog.bannerImage)
+              : blog.image
+              ? getImageUrl(blog.image)
+              : blogFallbackImages[index] || panchkarma_2;
+
+            const blogHref = blog.slug ? `/blog/${blog.slug}` : `/blog/${blog._id || blog.id}`;
 
             return (
-              <Link href={blogHref} key={blog.id || index} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-lg">
+              <Link href={blogHref} key={blog._id || blog.id || index} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-lg">
                 <div className="relative aspect-[2.3/1] overflow-hidden bg-[#e5dccf]">
                   <Image src={blogImage} alt={blog.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" crossOrigin="anonymous" />
                 </div>

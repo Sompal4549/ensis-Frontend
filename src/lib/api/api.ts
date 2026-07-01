@@ -237,3 +237,39 @@ export const applicationApi = {
     return unwrap<any>(response);
   },
 };
+
+export const blogApi = {
+  list: async (): Promise<any[]> => {
+    try {
+      const response = await apiClient.get(`/blogs`);
+      if (
+        response.status >= 200 &&
+        response.status < 300 &&
+        response.data.status === "success"
+      ) {
+        return response.data.data;
+      }
+      return [];
+    } catch (err) {
+      console.error("Failed to fetch blogs", err);
+      return [];
+    }
+  },
+
+  detail: async (slug: string): Promise<any> => {
+    try {
+      const response = await apiClient.get(`/blogs/${slug}`);
+      if (
+        response.status >= 200 &&
+        response.status < 300 &&
+        response.data.status === "success"
+      ) {
+        return response.data.data;
+      }
+      return null;
+    } catch (err) {
+      console.error("Failed to fetch blog detail", err);
+      return null;
+    }
+  },
+};
