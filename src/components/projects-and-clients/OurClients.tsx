@@ -167,7 +167,9 @@ export default function WhyPartner({ sectionContent }: {sectionContent: OurClien
 
   return (
     <section className="relative w-full bg-[#FBF3E7]">
-      <Container className="rounded-2xl border border-[#E3D2B0] bg-[#FBF3E7] ">
+      <Container>
+        <div className="rounded-2xl border border-[#E3D2B0] bg-[#FBF3E7]  relative p-4">
+
         {/* Heading */}
         <div className="mb-2 text-center">
           <div className="mb-2 flex items-center justify-center gap-3">
@@ -236,7 +238,7 @@ export default function WhyPartner({ sectionContent }: {sectionContent: OurClien
             ))}
           </div>
 
-          <div className="absolute -right-10 -top-10 bottom-0 w-40 shrink-0 sm:h-28 sm:w-48 lg:h-24 lg:w-44">
+          <div className="absolute -right-4 -top-10 bottom-0 w-40 shrink-0 sm:h-28 sm:w-48 lg:h-24 lg:w-44">
             <Image
               src={ourClients}
               alt={"Image"}
@@ -246,6 +248,8 @@ export default function WhyPartner({ sectionContent }: {sectionContent: OurClien
             />
           </div>
         </div>
+        </div>
+
       </Container>
     </section>
   );

@@ -7,6 +7,7 @@ import pan_india from "@/assets/about_new/pan_india.webp"
 import Image from "next/image";
 import { Container } from "../ui/Container";
 import { getComponentContent, getImageUrl } from "@/lib/api/api";
+import StatsContainer from "../layout/StatsContainer";
 
 const defaultStats = [
   { image: twenty, number: "20+", subTitle: "Years Experience" },
@@ -46,6 +47,8 @@ const resolvedStats: StatItem[] = sectionContent.stats.map((item: StatItem, i: n
   return (
     <section className="bg-[#f2ede6]">
       <Container>
+        <StatsContainer>
+
         <div className="mx-auto grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 py-2">
           {resolvedStats.map((item, index) => (
             <div
@@ -73,6 +76,8 @@ const resolvedStats: StatItem[] = sectionContent.stats.map((item: StatItem, i: n
             </div>
           ))}
         </div>
+        </StatsContainer>
+
       </Container>
     </section>
   );

@@ -23,13 +23,6 @@ import wellness_assossries_icon from "@/assets/home/wellness_assossries_icon.web
 import table from "@/assets/home/table.webp";
 import shirodhara_eqipment from "@/assets/icons/shirodhara_eqipment.webp";
 
-const panchkarmaImages = [img12, img13, img14, img15];
-const steamImages = [img13, img4, img8, img12];
-const ayurvedicImages = [img1, img3, img8, img15];
-const oilImages = [img2, img4, img12, img13];
-const spaImages = [img14, img6, img7, img12];
-const decorImages = [img16, img13, img9, img15];
-const brassImages = [img5, img9, img16, img3];
 
 export type SocialLink = {
   _id?: string;

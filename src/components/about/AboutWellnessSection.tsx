@@ -96,7 +96,8 @@ const AboutWellnessSection = ({
             />
         </div>
   {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0)_0%,rgba(255,255,255,0.1)_20%,rgba(255,255,255,0.8)_50%,rgba(255,255,255,1)_100%)] z-10" /> */}
-      <Container className="relative z-20 md:p-0! md:pt-0 pt-[50%]  mb-12">
+      <Container>
+        <div  className="relative z-20 md:pt-0 pt-[50%]  mb-12">
        <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1.4fr_0.8fr] gap-4 items-stretch overflow-hidden h-full pb-10">
   {/* Gradient Overlay */}
 
@@ -175,6 +176,7 @@ const AboutWellnessSection = ({
               </div>
             ))}
           </div>
+        </div>
         </div>
       </Container>
     </section>

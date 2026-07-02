@@ -14,7 +14,7 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
     <div className="flex flex-col items-center justify-center ">
       {/* Top Line + Title + Top Line */}
       <div className="flex items-center gap-4">
-        <div className="w-15 h-[1px]" />
+        <div className="w-15 h-[1px] bg-[#d8cec0]" />
 
         <h2
             className={`

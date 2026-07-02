@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { nanoid } from 'nanoid'
 import Link from "next/link";
-import {  categories, idealFor, materials, PAGE_SIZE } from "@/constants";
+import {  idealFor , PAGE_SIZE } from "@/constants";
 import ProductCard, { Checkbox } from "./ProductCard";
 import BookButton from "../ui/BookButton";
 import Image from "next/image";
@@ -32,7 +32,7 @@ export default function Products() {
   const [activeCategory, setActiveCategory] = useState(categoryParam || "all");
   const [sortBy, setSortBy] = useState("Featured");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [priceRange, setPriceRange] = useState(150000);
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", category: "", message: "", });
   // Infinite scroll
@@ -41,7 +41,17 @@ export default function Products() {
   const mainContentRef = useRef<HTMLDivElement | null>(null); // 👈 new ref
   const [products, setProducts] = useState<any[]>([]);
   const [apiCategories, setApiCategories] = useState<any[]>([]);
+  const maxPrice = useMemo(() => {
+    return Math.max(...products.map((p) => p.price), 0);
+}, [products]);
 
+const [priceRange, setPriceRange] = useState(0);
+
+useEffect(() => {
+    if (maxPrice) {
+        setPriceRange(maxPrice);
+    }
+}, [maxPrice]);
   // Sync activeCategory whenever URL param changes (e.g. navigation from another page)
   useEffect(() => {
     if (categoryParam) {
@@ -63,6 +73,7 @@ export default function Products() {
           productApi.list(100),
           categoryApi.list()
         ]);
+        console.log(cRes, "cRes");
         const normalized = pRes.products.map((item: any) => ({
           ...item,
           id: item._id,
@@ -79,24 +90,41 @@ export default function Products() {
     };
     loadData();
   }, []);
-  const displayCategories = useMemo(() => {
-    if (apiCategories.length === 0) return categories;
-    return [
-      categories[0], // "All Products"
-      ...apiCategories.map(c => ({
+const displayCategories = useMemo(() => {
+  return [
+    {
+      key: "all",
+      label: "All",
+      icon: apiCategories.find(c => c.slug === "all")?.image || "",
+      count: products.length,
+    },
+
+    ...apiCategories
+      .filter((c) => c.slug !== "all")
+      .map((c) => ({
         key: c.slug,
         label: c.name,
-        icon: categories.find(cat => cat.key === c.slug)?.icon || categories[1]?.icon,
-        count: products.filter(p => p.categoryKey === c.slug).length
-      }))
+        icon: getImageUrl(c.image),
+        count: products.filter(
+          (p) => p.category?.slug === c.slug
+        ).length,
+      })),
+  ];
+}, [apiCategories, products]);
+const subcategoryOptions = useMemo(() => {
+    return [
+        ...new Set(
+            products
+                .map((p) => p.subcategory)
+                .filter(Boolean)
+        ),
     ];
-  }, [apiCategories, products]);
-
+}, [products]);
   const filtered = useMemo(() => {
     let data = products.filter((product) => {
       const matchesCategory =
         activeCategory === "all" ||
-        product.categoryKey === activeCategory;
+        product.category.slug === activeCategory;
 
       const matchesPrice = product.price <= priceRange;
 
@@ -159,10 +187,12 @@ export default function Products() {
   const selectedCategory =
     displayCategories.find((cat) => cat.key === activeCategory)?.label ||
     "All Products";
-
+  const materialOptions = useMemo(() => {
+  return [...new Set(products.map((p) => p.material).filter(Boolean))];
+}, [products]);
   return (
     <>
-       <div ref={mainContentRef} className="flex-1 min-w-0">
+      <div ref={mainContentRef} className="flex-1 min-w-0">
         <div className="max-w-[1340px] mx-auto px-3 sm:px-5 lg:px-8 py-5 sm:py-7">
 
           {/* Mobile Filter Toggle */}
@@ -179,9 +209,8 @@ export default function Products() {
 
             {/* ── LEFT SIDEBAR ── */}
             <aside
-              className={`shrink-0 w-[175px] xl:w-[188px] flex flex-col gap-5 transition-all duration-300 ${
-                sidebarOpen ? "block" : "hidden lg:flex"
-              } lg:sticky lg:top-5`}
+              className={`shrink-0 w-[175px] xl:w-[188px] flex flex-col gap-5 transition-all duration-300 ${sidebarOpen ? "block" : "hidden lg:flex"
+                } lg:sticky lg:top-5`}
             >
               {/* Categories */}
               <div className="bg-white rounded-2xl border border-[#ede8e0] p-4 overflow-hidden">
@@ -195,15 +224,14 @@ export default function Products() {
                       <button
                         suppressHydrationWarning
                         onClick={() => setActiveCategory(cat.key)}
-                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-[12px] transition-all ${
-                          activeCategory === cat.key
+                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-[12px] transition-all ${activeCategory === cat.key
                             ? "bg-[#183b17] text-white font-[600]"
                             : "font-medium hover:bg-[#f5ede0]"
-                        }`}
+                          }`}
                       >
                         <span className="flex items-center gap-2 truncate">
                           <span className="text-base leading-none">
-                           <Image src={cat.icon} alt={cat.label} width={20} height={15} className="object-fill object-center" />
+                            <Image src={cat.icon} alt={cat.label} width={20} height={15} className="object-fill object-center" />
                           </span>
 
                           <span className="truncate">
@@ -212,11 +240,10 @@ export default function Products() {
                         </span>
 
                         <span
-                          className={`shrink-0 text-[10px] font-[600] ml-1 ${
-                            activeCategory === cat.key
+                          className={`shrink-0 text-[10px] font-[600] ml-1 ${activeCategory === cat.key
                               ? "text-white/70"
                               : "text-[#c8a45d]"
-                          }`}
+                            }`}
                         >
                           {cat.count}
                         </span>
@@ -267,7 +294,7 @@ export default function Products() {
                   </p>
 
                   <div className="space-y-2">
-                    {materials.map((m) => (
+                    {materialOptions.map((m) => (
                       <Checkbox key={m} label={m} />
                     ))}
                   </div>
@@ -280,9 +307,12 @@ export default function Products() {
                   </p>
 
                   <div className="space-y-2">
-                    {idealFor.map((f) => (
-                      <Checkbox key={f} label={f} />
-                    ))}
+                  {subcategoryOptions.map((item) => (
+    <Checkbox
+        key={item}
+        label={item}
+    />
+))}
                   </div>
                 </div>
 
@@ -357,11 +387,10 @@ export default function Products() {
                     <button
                       suppressHydrationWarning
                       onClick={() => setViewMode("grid")}
-                      className={`p-1.5 rounded transition-colors ${
-                        viewMode === "grid"
+                      className={`p-1.5 rounded transition-colors ${viewMode === "grid"
                           ? "bg-[#183b17] text-white"
                           : "text-[#9a8870]"
-                      }`}
+                        }`}
                     >
                       <LayoutGrid size={14} />
                     </button>
@@ -369,11 +398,10 @@ export default function Products() {
                     <button
                       suppressHydrationWarning
                       onClick={() => setViewMode("list")}
-                      className={`p-1.5 rounded transition-colors ${
-                        viewMode === "list"
+                      className={`p-1.5 rounded transition-colors ${viewMode === "list"
                           ? "bg-[#183b17] text-white"
                           : "text-[#9a8870]"
-                      }`}
+                        }`}
                     >
                       <List size={14} />
                     </button>
@@ -383,11 +411,10 @@ export default function Products() {
 
               {/* Product Grid */}
               <div
-                className={`grid gap-3 sm:gap-4 ${
-                  viewMode === "grid"
+                className={`grid gap-3 sm:gap-4 ${viewMode === "grid"
                     ? "grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
                     : "grid-cols-1"
-                }`}
+                  }`}
               >
                 {visibleProducts.map((product) => (
                   <ProductCard
@@ -419,118 +446,118 @@ export default function Products() {
             <aside className="hidden xl:flex shrink-0 w-[210px] flex-col gap-4 sticky top-5">
 
               {/* Enquire */}
-           <div className="bg-white rounded-2xl border border-[#ede8e0] p-5">
-    
-    {/* Lotus icon */}
-    <div className="flex justify-center mb-1">
-      <Image width={35} height={20}
-        src={lotus}
-        alt="decoration"
-        className="object-contain opacity-90"
-      />
-    </div>
+              <div className="bg-white rounded-2xl border border-[#ede8e0] p-5">
 
-    <h3 className="text-xl font-semibold text-center text-[#1a1a1a] mb-1.5">
-      Enquire Now
-    </h3>
+                {/* Lotus icon */}
+                <div className="flex justify-center mb-1">
+                  <Image width={35} height={20}
+                    src={lotus}
+                    alt="decoration"
+                    className="object-contain opacity-90"
+                  />
+                </div>
 
-    <p className="text-xs font-medium text-center leading-relaxed mb-2">
-      Tell us about your requirements and our wellness experts
-      will contact you.
-    </p>
+                <h3 className="text-xl font-semibold text-center text-[#1a1a1a] mb-1.5">
+                  Enquire Now
+                </h3>
 
-   <div className="space-y-2.5">
-  {/* Name */}
-  <input
-    suppressHydrationWarning
-    type="text"
-    placeholder="Your Name"
-    value={enquiry.name}
-    onChange={(e) =>
-      setEnquiry((prev) => ({
-        ...prev,
-        name: e.target.value,
-      }))
-    }
-    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
-  />
+                <p className="text-xs font-medium text-center leading-relaxed mb-2">
+                  Tell us about your requirements and our wellness experts
+                  will contact you.
+                </p>
 
-  {/* Email */}
-  <input
-    suppressHydrationWarning
-    type="email"
-    placeholder="Email Address"
-    value={enquiry.email}
-    onChange={(e) =>
-      setEnquiry((prev) => ({
-        ...prev,
-        email: e.target.value,
-      }))
-    }
-    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
-  />
+                <div className="space-y-2.5">
+                  {/* Name */}
+                  <input
+                    suppressHydrationWarning
+                    type="text"
+                    placeholder="Your Name"
+                    value={enquiry.name}
+                    onChange={(e) =>
+                      setEnquiry((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
+                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
+                  />
 
-  {/* Phone */}
-  <input
-    suppressHydrationWarning
-    type="tel"
-    placeholder="Phone Number"
-    value={enquiry.phone}
-    onChange={(e) =>
-      setEnquiry((prev) => ({
-        ...prev,
-        phone: e.target.value,
-      }))
-    }
-    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
-  />
+                  {/* Email */}
+                  <input
+                    suppressHydrationWarning
+                    type="email"
+                    placeholder="Email Address"
+                    value={enquiry.email}
+                    onChange={(e) =>
+                      setEnquiry((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
+                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
+                  />
 
-  {/* Category Select */}
-  <div className="relative">
-    <select
-      suppressHydrationWarning
-      value={enquiry.category}
-      onChange={(e) =>
-        setEnquiry((prev) => ({
-          ...prev,
-          category: e.target.value,
-        }))
-      }
-      className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 pr-7 text-[12px] text-black outline-none focus:border-[#c8a45d] transition-colors appearance-none"
-    >
-      <option value="">Select Product Category</option>
+                  {/* Phone */}
+                  <input
+                    suppressHydrationWarning
+                    type="tel"
+                    placeholder="Phone Number"
+                    value={enquiry.phone}
+                    onChange={(e) =>
+                      setEnquiry((prev) => ({
+                        ...prev,
+                        phone: e.target.value,
+                      }))
+                    }
+                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
+                  />
 
-      {displayCategories.slice(1).map((c) => (
-        <option key={c.key} value={c.key}>
-          {c.label}
-        </option>
-      ))}
-    </select>
+                  {/* Category Select */}
+                  <div className="relative">
+                    <select
+                      suppressHydrationWarning
+                      value={enquiry.category}
+                      onChange={(e) =>
+                        setEnquiry((prev) => ({
+                          ...prev,
+                          category: e.target.value,
+                        }))
+                      }
+                      className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 pr-7 text-[12px] text-black outline-none focus:border-[#c8a45d] transition-colors appearance-none"
+                    >
+                      <option value="">Select Product Category</option>
 
-    <ChevronDown
-      size={11}
-      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9a8870] pointer-events-none"
-    />
-  </div>
+                      {displayCategories.slice(1).map((c) => (
+                        <option key={c.key} value={c.key}>
+                          {c.label}
+                        </option>
+                      ))}
+                    </select>
 
-  {/* Message */}
-  <textarea
-    rows={3}
-    placeholder="Your Message"
-    value={enquiry.message}
-    onChange={(e) =>
-      setEnquiry((prev) => ({
-        ...prev,
-        message: e.target.value,
-      }))
-    }
-    className="w-full rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 py-2 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors resize-none"
-  />
+                    <ChevronDown
+                      size={11}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#9a8870] pointer-events-none"
+                    />
+                  </div>
 
-  {/* Button */}
-  <BookButton text="Send Enquiry" />
-</div>
-  </div>
+                  {/* Message */}
+                  <textarea
+                    rows={3}
+                    placeholder="Your Message"
+                    value={enquiry.message}
+                    onChange={(e) =>
+                      setEnquiry((prev) => ({
+                        ...prev,
+                        message: e.target.value,
+                      }))
+                    }
+                    className="w-full rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 py-2 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors resize-none"
+                  />
+
+                  {/* Button */}
+                  <BookButton text="Send Enquiry" />
+                </div>
+              </div>
 
               {/* Contact */}
               <div className="bg-white rounded-2xl border border-[#ede8e0] p-4 space-y-3">
