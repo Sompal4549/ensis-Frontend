@@ -208,10 +208,10 @@ const errorClass =
 </section>
 
       {/* Form + Sidebar Section */}
-      <Container className="relative z-20 -mt-12 sm:-mt-10 bg-white rounded-xl p-0! border-[#e3d2b0] border">
+      <Container className="relative z-20 -mt-12 sm:-mt-10 rounded-xl">
         <form
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 lg:grid-cols-[1fr_380px]"
+          className="grid grid-cols-1 lg:grid-cols-[1fr_380px] border-[#e3d2b0] bg-white rounded-xl border shadow-md overflow-hidden"
         >
           {/* Form Card */}
           <div className="rounded-xl  bg-[#fdfaf3] p-5 sm:p-8">
@@ -552,10 +552,15 @@ const errorClass =
           </div>
 
           {/* Sidebar */}
-          <aside className="overflow-hidden rounded-xl ">
-            
-            <Image alt="enquary bg" src={content?.hero?.formImageSrc} width={400} height={1000} />
-          </aside>
+          <aside className="relative hidden lg:block h-full min-h-full overflow-hidden rounded-xl">
+  <Image
+    src={content?.hero?.formImageSrc}
+    alt="Enquiry"
+    fill
+    className="object-cover"
+    sizes="380px"
+  />
+</aside>
         </form>
       </Container>
     </div>

@@ -62,7 +62,9 @@ export default function GetInTouchBanner({
 
   return (
     <section className="w-full bg-[#f7f1e3]">
-      <Container className="rounded-2xl border border-[#e3d2b0]">
+      <Container>
+        <div className="rounded-2xl border border-[#e3d2b0]">
+
         {/* Heading */}
         <div className="mb-2 flex items-center justify-center gap-3">
           <span className="h-px w-10 bg-[#b1793d]/50 sm:w-16" />
@@ -119,6 +121,8 @@ export default function GetInTouchBanner({
             <span className="h-px w-12 bg-[#b1793d]/40" />
           </div>
         </div>
+        </div>
+
       </Container>
     </section>
   );
