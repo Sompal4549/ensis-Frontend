@@ -183,30 +183,30 @@ export const Header = () => {
                                 return <Globe size={13} />;
                             };
 
-                         if (item.href) {
-    return (
-      <Link key={index} href={item.href} className="flex items-center gap-2">
-        {item.image?.imageUrl ? (
-          <Image src={item.image.imageUrl} alt={item.image?.alt ?? ''} width={13} height={13} />
-        ) : (
-          iconFor(item.image?.alt)
-        )}
-        {item.text}
-      </Link>
-    );
-  }
+                            if (item.href) {
+                                return (
+                                    <Link key={index} href={item.href} className="flex items-center gap-2">
+                                        {item.image?.imageUrl ? (
+                                            <Image src={item.image.imageUrl} alt={item.image?.alt ?? ''} width={13} height={13} />
+                                        ) : (
+                                            iconFor(item.image?.alt)
+                                        )}
+                                        {item.text}
+                                    </Link>
+                                );
+                            }
 
-  return (
-    <span key={index} className="flex items-center gap-2">
-      {item.image?.imageUrl ? (
-        <Image src={item.image.imageUrl} alt={item.image?.alt ?? ''} width={13} height={13} />
-      ) : (
-        iconFor(item.image?.alt)
-      )}
-      {item.text}
-    </span>
-  );
-})}
+                            return (
+                                <span key={index} className="flex items-center gap-2">
+                                    {item.image?.imageUrl ? (
+                                        <Image src={item.image.imageUrl} alt={item.image?.alt ?? ''} width={13} height={13} />
+                                    ) : (
+                                        iconFor(item.image?.alt)
+                                    )}
+                                    {item.text}
+                                </span>
+                            );
+                        })}
                     </div>
 
                     <div className="flex w-full items-center justify-end gap-4 md:w-auto">
@@ -234,18 +234,18 @@ export const Header = () => {
 
             <div className={`bg-white`}>
                 <Container className="flex items-center justify-between gap-6 py-2! relative">
-                    <Link href="/" className="absolute left-4 xl:left-6 top-[80%] -translate-y-[85%] shrink-0 z-10">
+                    <Link href="/" className="absolute left-6 xl:left-6 top-[75%] md:top-[80%] -translate-y-[85%] shrink-0 z-10">
                         <Image
                             src={logoImg}
                             alt="ENSIS Logo"
-                            className="h-11.5 w-auto object-contain"
+                            className="h-8 md:h-11.5 w-auto object-contain"
                             priority
                             style={{ width: "auto" }}
                         />
                     </Link>
 
                     {/* Spacer so nav doesn't go under the logo */}
-                    <div className="w-[120px] shrink-0" />
+                    <div className="w-[40px] md:w-[120px] shrink-0" />
 
                     {/* Desktop Navigation */}
                     <nav className="hidden flex-1 justify-center xl:flex">

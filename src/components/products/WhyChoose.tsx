@@ -64,7 +64,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
 <Image src={whyChooseBg}  fill alt="why choose bg" className="object-center object-cover z-0" />
           {/* ── LEFT PANEL ── */}
           <div className="relative bg-[#183b17] flex flex-col justify-between p-5 sm:p-7 md:p-8 
-                          w-[30%] shrink-0 overflow-hidden">
+                          w-[80%] md:w-[30%] shrink-0 overflow-hidden">
             <div className="absolute -bottom-8 -left-8 w-40 h-40 rounded-full border border-white/5 pointer-events-none" />
             <div className="absolute -bottom-16 -left-16 w-64 h-64 rounded-full border border-white/5 pointer-events-none" />
 

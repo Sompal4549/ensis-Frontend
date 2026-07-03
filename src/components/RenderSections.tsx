@@ -1,5 +1,5 @@
 import AboutHero from "@/components/about/AboutBanner";
-import StatsStrip from "@/components/about/StatsStrip";
+
 import IndustriesWeServe from "@/components/about/Industries";
 import OurProductsSection from "@/components/about/OurProducts";
 import ExpertiseSection from "@/components/about/OurExperties";
@@ -38,7 +38,7 @@ import WellnessFeatureStrip, { WellnessFeatureStripContent } from "@/components/
 import ProductWhyChoose, { WhyChooseContent } from "@/components/products/WhyChoose";
 import { BlogInsights } from "./home/BlogInsights";
 import TurnkeyWhyChoose, { TurnkeyWhyChooseContent } from '@/components/turnkey/WhyChoose'
-import HeroSlider, { HeroSliderContent } from "@/components/products/HeroSlider"; // Already imported
+import HeroSlider from "@/components/products/HeroSlider"; // Already imported
 import Products from "@/components/products/Products"; // Removed invalid named import
 import TrunkeyMeaning, { TurnkeyMeaningContent } from '@/components/turnkey/TurnkeyMeaning' // Already imported
 import FeaturedProjects from '@/components/turnkey/FeaturedTrunkeyProjects' // Already imported
@@ -97,8 +97,6 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
     case "about.ourStory":
       return <AboutWellnessSection sectionContent={data as any} />;
 
-    case "about.statsStrip":
-      return <StatsStrip sectionContent={data as any} />;
 
     case "about.industriesWeServe":
       const IndustriesComp: any = IndustriesWeServe;
@@ -180,9 +178,9 @@ case "contact.premiumMap":
       return <WellnessResources sectionContent={data as any} />;
 
     case "product.hero":
-      return <HeroSlider sectionContent={data as HeroSliderContent} />
-    case "product.featureStrip":
-      return <WellnessFeatureStrip sectionContent={data as WellnessFeatureStripContent} />
+      return <HeroSlider />
+    // case "product.featureStrip":
+    //   return <WellnessFeatureStrip sectionContent={data as WellnessFeatureStripContent} />
     case "product.trustedBy":
       return <TrustedBrandsStrip sectionContent={data as TrustedBrandsStripContent} />
     case "product.whyChoose":
@@ -209,8 +207,8 @@ return<WhyPartner sectionContent={data as any}/>
 // career
 case "career.banner":
   return <CareersBanner sectionContent={data as any}/>
-  case "career.features":
-    return <WellnessFeatureStrip sectionContent={data as any}/>
+  // case "career.features":
+  //   return <WellnessFeatureStrip sectionContent={data as any}/>
   case "career.whyWork":
     return <WhyWorkSection sectionContent={data as any} />
   case "career.section":

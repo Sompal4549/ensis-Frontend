@@ -89,19 +89,41 @@ export default function ProductCard({ product }: { product: Product }) {
   );
 }
 
-export function Checkbox({ label }: { label: string }) {
-  const [checked, setChecked] = useState(false);
+export function Checkbox({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string;
+  checked?: boolean;
+  onChange?: () => void;
+}) {
+  const [internalChecked, setInternalChecked] = useState(false);
+
+  // Controlled mode: parent passes `checked` + `onChange` (used by the
+  // Products filter sidebar). Uncontrolled fallback: no props passed,
+  // keeps working exactly as before for any other usage.
+  const isControlled = checked !== undefined;
+  const isChecked = isControlled ? checked : internalChecked;
+
+  const handleClick = () => {
+    if (isControlled) {
+      onChange?.();
+    } else {
+      setInternalChecked((c) => !c);
+    }
+  };
 
   return (
     <label className="flex items-center gap-2.5 cursor-pointer group">
       <div
-        onClick={() => setChecked((c) => !c)}
-        className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${checked
+        onClick={handleClick}
+        className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${isChecked
             ? "bg-[#183b17] border-[#183b17]"
             : "bg-white"
           }`}
       >
-        {checked && (
+        {isChecked && (
           <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
             <path
               d="M1 3.5L3.5 6L8 1"

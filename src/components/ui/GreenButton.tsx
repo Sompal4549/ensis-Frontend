@@ -22,7 +22,7 @@ export default function GreenButton({ path = '/book-a-stand', variant = 'golden'
   const isGolden = variant === 'golden';
 
   return (
-    <div className="relative group/btn flex align-center justify-center">
+       <div className="relative group/btn">
       <Sparkle style={{ top: '-10px', left: '10%', animationDelay: '0s' }} color={isGolden ? '#f0c040' : '#2a6644'} />
       <Sparkle style={{ top: '-12px', left: '40%', animationDelay: '0.4s' }} color={isGolden ? '#f0c040' : '#2a6644'} />
       <Sparkle style={{ top: '-8px', right: '15%', animationDelay: '0.8s' }} color={isGolden ? '#f0c040' : '#2a6644'} />

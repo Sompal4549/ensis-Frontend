@@ -36,7 +36,7 @@ export default async function FullWidthFeatures(data?: { features?: any[]; butto
   return (
     <section className="w-full bg-[#0d2a17] border border-[#3d5c39]">
       <Container>
-        <StatsContainer className="grid grid-cols-1 sm:grid-cols-4 gap-6 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-4 gap-6 w-full">
           {content.features.map((item: { title: string; description?: string; image: any; tag?: string }, index: number) => (
             <div
               key={index}
@@ -70,7 +70,7 @@ export default async function FullWidthFeatures(data?: { features?: any[]; butto
           <div className="w-full lg:w-auto flex justify-center lg:justify-end font-semibold my-auto">
             <GreenButton text={content.buttonText} path={content.buttonPath} />
           </div>
-        </StatsContainer>
+        </div>
       </Container>
     </section>
   );

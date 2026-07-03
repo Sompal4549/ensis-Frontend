@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { nanoid } from 'nanoid'
 import Link from "next/link";
-import {  idealFor , PAGE_SIZE } from "@/constants";
+import { PAGE_SIZE } from "@/constants";
 import ProductCard, { Checkbox } from "./ProductCard";
 import BookButton from "../ui/BookButton";
 import Image from "next/image";
@@ -45,7 +45,14 @@ export default function Products() {
     return Math.max(...products.map((p) => p.price), 0);
 }, [products]);
 
+const minPrice = useMemo(() => {
+  if (!products.length) return 0;
+  return Math.min(...products.map((p) => p.price));
+}, [products]);
+
 const [priceRange, setPriceRange] = useState(0);
+const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+const [selectedIdealFor, setSelectedIdealFor] = useState<string[]>([]);
 
 useEffect(() => {
     if (maxPrice) {
@@ -74,15 +81,25 @@ useEffect(() => {
           categoryApi.list()
         ]);
         console.log(cRes, "cRes");
-        const normalized = pRes.products.map((item: any) => ({
+
+        // Actual API shape is { status, data: { products, total, page, limit } }.
+        // Fall back to pRes.products in case some other call site returns the
+        // unwrapped shape, so this doesn't silently break either way.
+        const productList = pRes.products ?? [];
+
+        // Categories may come back as a plain array, or wrapped the same way
+        // as products ({ status, data: [...] } or { status, data: { categories } }).
+        const categoryList = cRes;
+
+        const normalized = productList.map((item: any) => ({
           ...item,
           id: item._id,
           name: item.title,
           image: item.images?.[0] ? getImageUrl(item.images[0]) : "",
-          categoryKey: typeof item.category === 'object' ? item.category.slug : item.category
+          categoryKey: typeof item.category === 'object' ? item.category?.slug : item.category
         }));
         setProducts(normalized);
-        setApiCategories(cRes);
+        setApiCategories(categoryList);
       } catch (e) {
         console.error("Error loading products/categories:", e);
         // setProducts(allProducts);
@@ -111,24 +128,44 @@ const displayCategories = useMemo(() => {
       })),
   ];
 }, [apiCategories, products]);
-const subcategoryOptions = useMemo(() => {
-    return [
-        ...new Set(
-            products
-                .map((p) => p.subcategory)
-                .filter(Boolean)
-        ),
-    ];
+
+const materialOptions = useMemo(() => {
+  return [...new Set(products.map((p) => p.material).filter(Boolean))];
 }, [products]);
+
+const idealForOptions = useMemo(() => {
+  return [...new Set(products.map((p) => p.overview?.idealFor).filter(Boolean))];
+}, [products]);
+
+const toggleMaterial = (value: string) => {
+  setSelectedMaterials((prev) =>
+    prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+  );
+};
+
+const toggleIdealFor = (value: string) => {
+  setSelectedIdealFor((prev) =>
+    prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+  );
+};
+
   const filtered = useMemo(() => {
     let data = products.filter((product) => {
       const matchesCategory =
         activeCategory === "all" ||
-        product.category.slug === activeCategory;
+        product.category?.slug === activeCategory;
 
       const matchesPrice = product.price <= priceRange;
 
-      return matchesCategory && matchesPrice;
+      const matchesMaterial =
+        selectedMaterials.length === 0 ||
+        selectedMaterials.includes(product.material);
+
+      const matchesIdealFor =
+        selectedIdealFor.length === 0 ||
+        selectedIdealFor.includes(product.overview?.idealFor);
+
+      return matchesCategory && matchesPrice && matchesMaterial && matchesIdealFor;
     });
 
     if (sortBy === "Price: Low to High") {
@@ -144,12 +181,12 @@ const subcategoryOptions = useMemo(() => {
     }
 
     return data;
-  }, [products, activeCategory, priceRange, sortBy]);
+  }, [products, activeCategory, priceRange, sortBy, selectedMaterials, selectedIdealFor]);
 
   // Reset visible products on filter/category change
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [activeCategory, priceRange, sortBy]);
+  }, [activeCategory, priceRange, sortBy, selectedMaterials, selectedIdealFor]);
 
   // Infinite Scroll Observer
   useEffect(() => {
@@ -187,9 +224,7 @@ const subcategoryOptions = useMemo(() => {
   const selectedCategory =
     displayCategories.find((cat) => cat.key === activeCategory)?.label ||
     "All Products";
-  const materialOptions = useMemo(() => {
-  return [...new Set(products.map((p) => p.material).filter(Boolean))];
-}, [products]);
+
   return (
     <>
       <div ref={mainContentRef} className="flex-1 min-w-0">
@@ -231,7 +266,11 @@ const subcategoryOptions = useMemo(() => {
                       >
                         <span className="flex items-center gap-2 truncate">
                           <span className="text-base leading-none">
-                            <Image src={cat.icon} alt={cat.label} width={20} height={15} className="object-fill object-center" />
+                            {cat.icon ? (
+                              <Image src={cat.icon} alt={cat.label} width={20} height={15} className="object-fill object-center" />
+                            ) : (
+                              <span className="inline-block h-[15px] w-[20px]" />
+                            )}
                           </span>
 
                           <span className="truncate">
@@ -267,8 +306,8 @@ const subcategoryOptions = useMemo(() => {
 
                   <input
                     type="range"
-                    min={1000}
-                    max={150000}
+                    min={minPrice}
+                    max={maxPrice}
                     value={priceRange}
                     onChange={(e) =>
                       setPriceRange(Number(e.target.value))
@@ -278,7 +317,7 @@ const subcategoryOptions = useMemo(() => {
 
                   <div className="flex justify-between mt-1.5">
                     <span className="text-[10px] font-medium">
-                      ₹1,000
+                      {fmt(minPrice)}
                     </span>
 
                     <span className="text-[10px] font-medium">
@@ -294,8 +333,13 @@ const subcategoryOptions = useMemo(() => {
                   </p>
 
                   <div className="space-y-2">
-                    {materialOptions.map((m) => (
-                      <Checkbox key={m} label={m} />
+                    {materialOptions.slice(0, 5).map((m) => (
+                      <Checkbox
+                        key={m}
+                        label={m}
+                        checked={selectedMaterials.includes(m)}
+                        onChange={() => toggleMaterial(m)}
+                      />
                     ))}
                   </div>
                 </div>
@@ -307,18 +351,24 @@ const subcategoryOptions = useMemo(() => {
                   </p>
 
                   <div className="space-y-2">
-                  {subcategoryOptions.map((item) => (
-    <Checkbox
-        key={item}
-        label={item}
-    />
-))}
+                    {idealForOptions.slice(0, 5).map((item) => (
+                      <Checkbox
+                        key={item}
+                        label={item}
+                        checked={selectedIdealFor.includes(item)}
+                        onChange={() => toggleIdealFor(item)}
+                      />
+                    ))}
                   </div>
                 </div>
 
                 <button
                   suppressHydrationWarning
-                  onClick={() => setPriceRange(150000)}
+                  onClick={() => {
+                    setPriceRange(maxPrice);
+                    setSelectedMaterials([]);
+                    setSelectedIdealFor([]);
+                  }}
                   className="flex items-center gap-1.5 text-[11px] font-[600] text-[#183b17] border border-[#183b17] rounded-full px-3 py-1.5 hover:bg-[#183b17] hover:text-white transition-colors"
                 >
                   <RefreshCw size={11} />

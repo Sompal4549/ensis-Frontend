@@ -53,7 +53,7 @@ export const Features = async () => {
       key={index}
       className={`flex items-start gap-4 pr-6 ${
         index !== features.length - 1
-          ? "border-r border-[#d6c2a0]"
+          ? "md:border-r border-[#d6c2a0]"
           : ""
       }`}
     >
