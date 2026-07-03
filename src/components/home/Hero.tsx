@@ -224,7 +224,7 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
 </div>
 
                   {/* Icons / Features */}
-                  <div className="mt-4 md:mt-6 flex flex-wrap gap-5 overflow-x-auto no-scrollbar">
+                  <div className="mt-4 md:mt-6 flex flex-wrap gap-5">
                     <div className="flex items-center self-stretch">
                       {slide.features && Array.isArray(slide.features) && slide.features.length > 0 && slide.features[0]?.title ? (
                         /* Dynamic features from admin API */

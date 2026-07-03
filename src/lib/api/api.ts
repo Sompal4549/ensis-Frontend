@@ -1,6 +1,7 @@
 import { Product, SocialClick, SocialLink } from "@/constants";
 import axios, { AxiosResponse } from "axios";
 import { StaticImageData } from "next/image";
+import { cache } from "react";
 
 const BASE_API_URL = (
     process.env.NEXT_PUBLIC_API_URL ||
@@ -22,8 +23,15 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-    config.params = { ...config.params, _t: Date.now() };
-    return config;
+  // Component content requests ko cache hone do
+  if (!config.url?.startsWith("/component-content")) {
+    config.params = {
+      ...config.params,
+      _t: Date.now(),
+    };
+  }
+
+  return config;
 });
 
 const normalizePageResponse = (payload: any) => {
@@ -100,7 +108,9 @@ export const getImageUrl = (image?: any) => {
 export const productApi = {
     list: async (limit = 100) => {
         const response = await apiClient.get(`/products`, { params: { limit } });
-        return unwrap<{ products: Product[]; total: number; page: number; limit: number }>(response);
+        return unwrap<{
+          data: any; products: Product[]; total: number; page: number; limit: number 
+}>(response);
     },
     detail: async (idOrSlug: string) => {
         const response = await apiClient.get(`/products/${idOrSlug}`);
@@ -138,16 +148,29 @@ export const verifyApi = {
     },
 };
 
-export const getComponentContent = async <T>(key: string, fallback: T): Promise<T> => {
-    try {
-        const response = await apiClient.get(`/component-content/${key}`);
-        if (response.status < 200 || response.status >= 300 || response.data.status === "error") return fallback;
-        return { ...fallback, ...(response.data.data?.data || {}) };
-    } catch {
-        return fallback;
-    }
-};
 
+export const getComponentContent = cache(
+  async <T>(key: string, fallback: T): Promise<T> => {
+    try {
+      const response = await apiClient.get(`/component-content/${key}`);
+
+      if (
+        response.status < 200 ||
+        response.status >= 300 ||
+        response.data.status === "error"
+      ) {
+        return fallback;
+      }
+
+      return {
+        ...fallback,
+        ...(response.data.data?.data || {}),
+      };
+    } catch {
+      return fallback;
+    }
+  }
+);
 export const getProducts = async () => {
     const response = await apiClient.get(`/products?limit=100`);
     return response.data.data.products as Product[];

@@ -5,8 +5,8 @@ import BookButton from "../ui/BookButton";
 import GreenButton from "../ui/GreenButton";
 import lotus from "@/assets/about_new/about_lotus.png";
 import { Container } from "../ui/Container";
-import { getComponentContent, getImageUrl } from "@/lib/api/api";
-
+import {  getImageUrl } from "@/lib/api/api";
+import StatsStrip from "@/components/about/StatsStrip";
 export interface AboutBannerContent { // Renamed to AboutBannerContent
   title?: string;
   heading?: string;
@@ -42,19 +42,24 @@ sectionContent = {}
   const imageUrl = resolvedImage?.imageUrl;
 
   return (
-    <section className="relative overflow-hidden">
-      <Image 
-        priority 
-        alt={resolvedImage?.alt ?? "about banner"}
-        src={imageUrl ? getImageUrl(imageUrl) : banner_image} 
-        fill 
-        className="object-cover object-right absolute inset-0" 
-        crossOrigin="anonymous" 
-        sizes="100vw" 
-      />
+    <section className="relative overflow-visible mb-40 md:mb-20">
+      {/* Background image kept in its own overflow-hidden layer so it still
+          stays clipped to the hero, while the section itself stays
+          overflow-visible so StatsStrip's absolute+translate overlap below
+          isn't cut off on desktop. */}
+      <div className="absolute inset-0 overflow-hidden">
+        <Image
+          priority
+          alt={resolvedImage?.alt ?? "about banner"}
+          src={imageUrl ? getImageUrl(imageUrl) : banner_image}
+          fill
+          className="object-cover md:object-right"
+          crossOrigin="anonymous"
+          sizes="100vw"
+        />
+      </div>
       <Container className="bg-black md:bg-transparent">
         <div className="relative min-h-[470px] md:h-[calc(100vh-146px)] w-full">
-          <div className="absolute inset-0" />
           <div className="relative z-10 mx-auto flex min-h-[450px] max-w-[1500px] items-center h-full">
             <div className="max-w-[620px] pt-10 pb-12 md:pt-16 md:pb-16">
               <div className="mb-5 flex items-center gap-3">
@@ -87,6 +92,7 @@ sectionContent = {}
           </div>
         </div>
       </Container>
+      <StatsStrip/>
     </section>
   );
 }

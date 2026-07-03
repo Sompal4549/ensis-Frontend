@@ -99,7 +99,7 @@ const TurnkeyProcess: React.FC<TurnkeyProcessProps> = ({ sectionContent }) => {
       <Container>
         <div className="relative flex flex-col lg:flex-row items-stretch min-h-[200px]">
           {/* LEFT SIDE */}
-          <div className="w-full lg:w-[58%] px-6 md:px-10 py-4 flex flex-col justify-center relative z-10">
+          <div className="w-full lg:w-[58%] px-6 md:px-0 py-4 flex flex-col justify-center relative z-10">
             <h2 className="text-[#2d2a28] text-[18px] md:text-[24px] font-bold font-serif uppercase tracking-[0.4px] mb-6">
               {sectionContent.title}
             </h2>

@@ -9,7 +9,7 @@ import { Container } from "../ui/Container";
 import { getComponentContent, getImageUrl } from "@/lib/api/api";
 import StatsContainer from "../layout/StatsContainer";
 
-const defaultStats = [
+const defaultStats: StatItem[] = [
   { image: twenty, number: "20+", subTitle: "Years Experience" },
   { image: projects, number: "1000+", subTitle: "Projects Completed" },
   { image: twohundred, number: "200+", subTitle: "Happy Clients" },
@@ -22,63 +22,65 @@ interface StatItem {
   image: any;
   number: string;
   subTitle: string;
-  imageurl?: { imageUrl: string; alt: string; };
+  imageurl?: { imageUrl: string; alt: string };
 }
 
 interface StatsStripContent {
   stats: StatItem[];
 }
 
-function resolveImageSrc(image: any): string {
-  if (!image) return "";
-  if (typeof image === "string") return getImageUrl(image);
-  // API shape: { src, width, height, ... }
-  if (typeof image === "object" && image.src) return image.src;
-  // Next.js static import shape (already handled by next/image)
-  return image;
-}
+export default async function StatsStrip() {
+  const content = await getComponentContent<StatsStripContent>("about.statsStrip", {
+    stats: defaultStats,
+  });
 
-export default async function StatsStrip({ sectionContent }: { sectionContent: StatsStripContent }) {
-const resolvedStats: StatItem[] = sectionContent.stats.map((item: StatItem, i: number) => ({
-  ...defaultStats[i], // Fallback to defaultStats if API doesn't provide all fields
-  ...item,
-  image: item.imageurl?.imageUrl ? { src: getImageUrl(item.imageurl.imageUrl) } : (item.image ?? defaultStats[i].image),
-}));
+  const stats = content.stats?.length ? content.stats : defaultStats;
+
+  const resolvedStats: StatItem[] = stats.map((item: StatItem, i: number) => ({
+    ...defaultStats[i], // Fallback to defaultStats if API doesn't provide all fields
+    ...item,
+    image: item.imageurl?.imageUrl
+      ? { src: getImageUrl(item.imageurl.imageUrl) }
+      : item.image ?? defaultStats[i]?.image,
+  }));
+
   return (
-    <section className="bg-[#f2ede6]">
-      <Container>
-        <StatsContainer>
+<Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 py-0">
+  <div className="border-y border-[#e5dccf] bg-[#f3eee6] rounded-xl py-3 px-3">
+    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-6">
+      {resolvedStats.map((item, index) => (
+        <div
+          key={index}
+          className={`flex items-start gap-4 pr-6 ${
+            index !== resolvedStats.length - 1
+              ? "xl:border-r border-[#d6c2a0]"
+              : ""
+          }`}
+        >
+          <div className="mt-1 shrink-0 w-14 h-14  flex items-center justify-center">
+            <Image
+              src={item.image.src ?? item.image}
+              alt={item.image.alt || item.subTitle}
+              width={70}
+              height={50}
+              className="object-contain object-center"
+              style={{ height: "auto" }}
+            />
+          </div>
 
-        <div className="mx-auto grid gap-2 grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 py-2">
-          {resolvedStats.map((item, index) => (
-            <div
-              key={index}
-              className="flex flex-1 items-center gap-3 md:border-r border-black/10 px-4 last:border-r-0 md:min-w-0"
-            >
-              <div className="h-9 w-9">
-                <Image
-                  src={item.image.src} // Use item.image.src from resolvedStats
-                  alt={item.image.alt || item.subTitle} // Use item.image.alt from resolvedStats
-                  height={36}
-                  width={36}
-                  className="object-contain"
-                  style={{ height: "auto" }}
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs font-semibold leading-none text-black">
-                  {item.number}
-                </span>
-                <span className="mt-1 text-[10px] font-medium leading-[1.3] text-black/70">
-                  {item.subTitle}
-                </span>
-              </div>
-            </div>
-          ))}
+          <div>
+            <p className="text-xs font-semibold text-[#0f2518]">
+              {item.number}
+            </p>
+
+            <p className="mt-1 text-xs leading-4 text-[#0f2518] font-medium">
+              {item.subTitle}
+            </p>
+          </div>
         </div>
-        </StatsContainer>
-
-      </Container>
-    </section>
+      ))}
+    </div>
+  </div>
+</Container>
   );
 }
