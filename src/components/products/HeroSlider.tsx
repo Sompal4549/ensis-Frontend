@@ -235,13 +235,13 @@ export default async function ProductSlider() {
       aria-label="Wellness product collection"
       className="relative w-full md:h-[calc(100vh-146px)]"
     >
-      <WellnessFeatureStrip />
 
       <Carousel autoplayDelay={5000}>
         {products.map((product) => (
           <ProductSlideContent key={product._id} product={product} />
         ))}
       </Carousel>
+        <WellnessFeatureStrip />
     </section>
   );
 }
