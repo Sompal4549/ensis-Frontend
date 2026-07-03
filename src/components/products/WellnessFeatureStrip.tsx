@@ -57,9 +57,10 @@ interface Props {
 }
 
 export default async function WellnessFeatureStrip() {
-  const sectionContent = await getComponentContent<WellnessFeatureStripContent>("product.featureStrip", {
-    features: defaultFeatures,
-  });
+  const sectionContent = await getComponentContent<WellnessFeatureStripContent>(
+    "product.featureStrip",
+    { features: defaultFeatures }
+  );
 
   const count = sectionContent.features.length;
 
@@ -74,44 +75,41 @@ export default async function WellnessFeatureStrip() {
   };
 
   return (
- <section
-className="
-static md:absolute
-left-0
-right-0
-bottom-0
-md:translate-y-1/2
-z-30
-"
->
-<div className="w-full bg-gradient-to-r from-[#012c20] via-[#013727] to-[#012c20]">
+    <section
+      className="
+        static md:absolute
+        left-0
+        right-0
+        bottom-0
+        md:translate-y-1/2
+        z-30
+      "
+    >
+      <div className="w-full bg-gradient-to-r from-[#012c20] via-[#013727] to-[#012c20]">
         <Container className="py-3">
           <div className={`grid gap-6 ${getGridCols()}`}>
             {sectionContent.features.map((item, index) => (
-           <div
-  key={index}
-  className={`relative flex items-center gap-4 pr-6 ${
-    index !== count - 1
-      ? "xl:border-r border-[#9f7a43]/30"
-      : ""
-  }`}
->
+              <div
+                key={index}
+                className={`relative flex items-center gap-4 pr-6 ${
+                  index !== count - 1 ? "xl:border-r border-[#9f7a43]/30" : ""
+                }`}
+              >
                 {index % 2 === 0 && index !== count - 1 && (
                   <div className="absolute right-0 top-1/2 h-10 -translate-y-1/2 border-r border-[#9f7a43]/20 xl:hidden" />
                 )}
 
-     
-  <Image
-    src={
-      typeof item.image === "string"
-        ? getImageUrl(item.image)
-        : item.image
-    }
-    alt={item.title}
-    width={70}
-    height={50}
-    className="object-contain"
-  />
+                <Image
+                  src={
+                    typeof item.image === "string"
+                      ? getImageUrl(item.image)
+                      : item.image
+                  }
+                  alt={item.title}
+                  width={70}
+                  height={50}
+                  className="object-contain"
+                />
 
                 <div>
                   <p className="text-xs font-semibold text-[#f7f1e8]">
