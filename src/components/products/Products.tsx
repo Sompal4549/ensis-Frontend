@@ -19,6 +19,7 @@ import BookButton from "../ui/BookButton";
 import Image from "next/image";
 import lotus from "@/assets/about/lotus.png";
 import { categoryApi, getImageUrl, productApi } from "@/lib/api/api";
+import { Container } from "../ui/Container";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 export const fmt = (n: number) => "₹" + n.toLocaleString("en-IN");
@@ -80,7 +81,6 @@ useEffect(() => {
           productApi.list(100),
           categoryApi.list()
         ]);
-        console.log(cRes, "cRes");
 
         // Actual API shape is { status, data: { products, total, page, limit } }.
         // Fall back to pRes.products in case some other call site returns the
@@ -228,7 +228,7 @@ const toggleIdealFor = (value: string) => {
   return (
     <>
       <div ref={mainContentRef} className="flex-1 min-w-0">
-        <div className="max-w-[1340px] mx-auto px-3 sm:px-5 lg:px-8 py-5 sm:py-7">
+        <Container>
 
           {/* Mobile Filter Toggle */}
           <button
@@ -674,7 +674,7 @@ const toggleIdealFor = (value: string) => {
               </div>
             </aside>
           </div>
-        </div>
+        </Container>
       </div>
     </>
   );
