@@ -168,8 +168,8 @@ export const Header = () => {
 
     return (
         <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}>
-            <div className={`bg-[#263016] text-white py-1`}>
-                <Container className="flex min-h-8 items-center justify-between gap-4 text-[11px] font-medium py-0!">
+            <div className={`bg-[#263016] text-white py-1.5`}>
+                <Container className="flex min-h-10 items-center justify-between gap-4 text-[11px] font-medium py-0!">
                     <div className="hidden items-center gap-6 md:flex">
                         {headerContent.contactInfo?.map((item: any, index: number) => {
                             // Phone/email get clickable links; everything else is plain text with an icon
@@ -187,7 +187,7 @@ export const Header = () => {
                                 return (
                                     <Link key={index} href={item.href} className="flex items-center gap-2">
                                         {item.image?.imageUrl ? (
-                                            <Image src={item.image.imageUrl} alt={item.image?.alt ?? ''} width={13} height={13} />
+                                            <Image src={item.image.imageUrl} priority alt={item.image?.alt ?? ''} width={13} height={13} />
                                         ) : (
                                             iconFor(item.image?.alt)
                                         )}
@@ -209,61 +209,8 @@ export const Header = () => {
                         })}
                     </div>
 
-                    <div className="flex w-full items-center justify-end gap-4 md:w-auto">
-                        {mounted && (user ? (
-                            <div className="flex items-center gap-3">
-                                <div className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1">
-                                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d9c49d] text-[10px] font-black text-[#263016]">
-                                        {user.name?.charAt(0).toUpperCase() || "U"}
-                                    </div>
-                                    <span className="text-[10px] font-bold tracking-wide text-white">{user.name}</span>
-                                </div>
-                                <button
-                                    onClick={handleLogout}
-                                    className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#d9c49d] hover:text-white transition-colors"
-                                >
-                                    <LogOut size={12} /> Logout
-                                </button>
-                            </div>
-                        ) : (
-                            <GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
-                        ))}
-                    </div>
-                </Container>
-            </div>
-
-            <div className={`bg-white`}>
-                <Container className="flex items-center justify-between gap-6 py-2! relative">
-                    <Link href="/" className="absolute left-6 xl:left-6 top-[75%] md:top-[80%] -translate-y-[85%] shrink-0 z-10">
-                        <Image
-                            src={logoImg}
-                            alt="ENSIS Logo"
-                            className="h-8 md:h-11.5 w-auto object-contain"
-                            priority
-                            style={{ width: "auto" }}
-                        />
-                    </Link>
-
-                    {/* Spacer so nav doesn't go under the logo */}
-                    <div className="w-[40px] md:w-[120px] shrink-0" />
-
-                    {/* Desktop Navigation */}
-                    <nav className="hidden flex-1 justify-center xl:flex">
-                        <ul className="flex items-center gap-4">
-                            {navLinks.map((item, index) => (
-                                <li key={index}>
-                                    <Link
-                                        href={item.href}
-                                        className={`${navLink} uppercase font-semibold`}
-                                    >
-                                        {item.label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </nav>
-
-                    <div className="flex items-center gap-2 sm:gap-3">
+                    <div className="flex w-full items-center justify-end gap-3 md:w-auto">
+                        {/* Wishlist */}
                         <div ref={wishlistRef} className="relative hidden sm:block">
                             <button
                                 suppressHydrationWarning
@@ -271,18 +218,18 @@ export const Header = () => {
                                 aria-label="Open wishlist"
                                 aria-expanded={wishlistOpen}
                                 onClick={() => setWishlistOpen((open) => !open)}
-                                className="relative inline-flex size-10 items-center justify-center rounded-full border border-[#d8cbb9] text-[#263016] transition-colors hover:bg-[#fbf8f2]"
+                                className="relative inline-flex size-8 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/10"
                             >
-                                <Heart size={18} />
+                                <Heart size={15} />
                                 {mounted && (
-                                    <span className="absolute -right-1 -top-0.75 flex h-5 w-5 items-center justify-center rounded-full bg-[#c8a45d] text-[10px] font-bold text-white">
+                                    <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c8a45d] text-[9px] font-bold text-white">
                                         {likedCount}
                                     </span>
                                 )}
                             </button>
 
                             {wishlistOpen && (
-                                <div className="absolute right-0 top-12 z-50 w-[340px] overflow-hidden rounded-md border border-[#e2d8ca] bg-white shadow-[0_18px_45px_rgba(0,0,0,0.14)]">
+                                <div className="absolute right-0 top-10 z-50 w-[340px] overflow-hidden rounded-md border border-[#e2d8ca] bg-white text-left shadow-[0_18px_45px_rgba(0,0,0,0.14)]">
                                     <div className="flex items-center justify-between border-b border-[#eee6dc] px-4 py-3">
                                         <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#263016]">
                                             Wishlist
@@ -362,29 +309,90 @@ export const Header = () => {
                                 </div>
                             )}
                         </div>
+
+                        {/* Cart */}
                         <Link
                             href="/cart"
                             aria-label="Shopping cart"
-                            className="relative inline-flex size-10 items-center justify-center rounded-full border border-[#d8cbb9] text-[#263016] transition-colors hover:bg-[#fbf8f2]"
+                            className="relative inline-flex size-8 items-center justify-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/10"
                         >
-                            <ShoppingCart size={18} />
+                            <ShoppingCart size={15} />
                             {mounted && (
-                                <span className="absolute -right-1 -top-0.75 flex h-5 w-5 items-center justify-center rounded-full bg-[#263016] text-[10px] font-bold text-white">
+                                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c8a45d] text-[9px] font-bold text-white">
                                     {cartCount}
                                 </span>
                             )}
                         </Link>
-                        <BookButton text="E-Brochure" path={headerContent.brochureUrl} />
-                        <button
-                            suppressHydrationWarning
-                            className="inline-flex size-10 items-center justify-center border border-[#d8cbb9] text-[#263016] xl:hidden"
-                            aria-label="Open menu"
-                            aria-expanded={isMenuOpen}
-                            onClick={() => setIsMenuOpen(true)}
-                        >
-                            <Menu size={24} />
-                        </button>
+
+                        {/* E-Brochure */}
+                        <div className="hidden sm:block">
+                            <BookButton text="E-Brochure" path={headerContent.brochureUrl} />
+                        </div>
+
+                        {/* User / Login */}
+                        {mounted && (user ? (
+                            <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1">
+                                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d9c49d] text-[10px] font-black text-[#263016]">
+                                        {user.name?.charAt(0).toUpperCase() || "U"}
+                                    </div>
+                                    <span className="text-[10px] font-bold tracking-wide text-white">{user.name}</span>
+                                </div>
+                                <button
+                                    onClick={handleLogout}
+                                    className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#d9c49d] hover:text-white transition-colors"
+                                >
+                                    <LogOut size={12} /> Logout
+                                </button>
+                            </div>
+                        ) : (
+                            <GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
+                        ))}
+
+                        {/* Mobile menu trigger */}
+                    
                     </div>
+                </Container>
+            </div>
+
+            <div className={`bg-white`}>
+           <Container className="flex items-center justify-between gap-6 py-2!">
+        <Link href="/" className="shrink-0">
+            <Image
+                src={logoImg}
+                alt="ENSIS Logo"
+                className="h-10 md:h-11.5 w-auto object-contain"
+                priority
+                style={{ width: "auto" }}
+            />
+        </Link>
+
+                    {/* Spacer so nav doesn't go under the logo */}
+                    <div className="w-[40px] md:w-[120px] shrink-0" />
+      <nav className="hidden xl:flex">
+            <ul className="flex items-center gap-7">
+                            {navLinks.map((item, index) => (
+                                <li key={index}>
+                                    <Link
+                                        href={item.href}
+                                        className={`${navLink} uppercase font-semibold`}
+                                    >
+                                        {item.label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+       <button
+            suppressHydrationWarning
+            className="inline-flex size-10 items-center justify-center border border-[#d8cbb9] text-[#263016] xl:hidden"
+            aria-label="Open menu"
+            aria-expanded={isMenuOpen}
+            onClick={() => setIsMenuOpen(true)}
+        >
+            <Menu size={24} />
+        </button>
+                    {/* Right spacer for symmetry with logo/left spacer */}
                 </Container>
             </div>
 

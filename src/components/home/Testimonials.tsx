@@ -40,20 +40,19 @@ export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
       <Container>
         <SubHeading className='text-black' text={sectionContent.title} />
         <div className="mt-2">
-          <Swiper
-            modules={[Autoplay, Pagination]}
-            spaceBetween={20}
-            loop={true}
-            autoplay={autoplayConfig}
-            pagination={{ clickable: true }}
-            breakpoints={breakpointsConfig}
-            className="testimonial-swiper !pb-8"
-            watchSlidesProgress={false} // ✅ unnecessary DOM reads band
-            preventInteractionOnTransition={true} // ✅ transition mein reflow nahi
-          >
+        <Swiper
+  modules={[Autoplay]}
+  spaceBetween={16}
+  loop={true}
+  autoplay={autoplayConfig}
+  breakpoints={breakpointsConfig}
+  className="testimonial-swiper"
+  watchSlidesProgress={false}
+  preventInteractionOnTransition={true}
+>
             {sectionContent.testimonials.map((item, index) => (
               <SwiperSlide key={index}>
-                <div className="h-full border border-[#e1d7c9] bg-white p-3 rounded-md shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative">
+                <div className="h-full border border-[#e1d7c9] bg-white p-3 rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative">
                   <Image height={28} width={28} alt="quote" src={quote} />
                   <p className="mb-2 text-xs font-medium pl-6 line-clamp-3">{item.text}</p>
                   <div className='flex text-orange-400 items-center gap-2 my-2 pl-6'>

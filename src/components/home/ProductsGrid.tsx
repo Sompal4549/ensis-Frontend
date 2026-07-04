@@ -70,7 +70,7 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
   return (
     <section className="bg-[#fbf8f2] relative z-10">
       <Container>
-        <div className="mb-6 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div className="mb-2 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <SubHeading text={content.subtitle} className='text-[#8d6a3a]' />
             <h2 className="font-serif text-3xl leading-tight text-[#0f2518] md:text-3xl font-semibold">{content.heading}</h2>
@@ -78,12 +78,12 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
               
             </HtmlRenderer>
           </div>
-          <Link href={content.buttonPath} className="inline-flex w-fit items-center gap-5 border border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#0f2518] transition-colors hover:bg-[#f3eee6] rounded-md">
+          <Link href={content.buttonPath} className="inline-flex w-fit items-center gap-4 border border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#0f2518] transition-colors hover:bg-[#f3eee6] rounded-md">
             {content.buttonText} <ArrowRight size={16} />
           </Link>
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {products.slice(0, 8).map((product: Product) => {
             const imageUrl = product.images?.[0]
               ? getImageUrl(product.images[0])
@@ -91,7 +91,7 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
 
             return (
               <Link href={`/products/${product.slug}`} key={product._id} className="group overflow-hidden border border-[#ded3c4] bg-white transition-transform hover:-translate-y-1 rounded-xl">
-                <div className="relative aspect-[2/1] overflow-hidden bg-[#e5dccf] rounded-tl-xl rounded-tr-xl">
+                <div className="relative aspect-[2/1] overflow-hidden bg-[#e5dccf] rounded-tl-2xl rounded-tr-xl">
                   <Image
                     src={imageUrl}
                     alt={product.title}
@@ -101,7 +101,7 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   />
                 </div>
-                <div className="p-5">
+                <div className="p-4">
                   <p className="text-base font-semibold text-[#0f2518]">{product.title}</p>
                   <span className="inline-flex items-center gap-2 text-xs font-semibold text-[#0f2518]">Explore Now <ArrowRight size={14} /></span>
                 </div>

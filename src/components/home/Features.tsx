@@ -6,6 +6,7 @@ import trunkey from "@/assets/icons/trunkey.webp"
 import Image from 'next/image';
 import exportIcon from "@/assets/icons/export_quality.webp"
 import { getComponentContent, getImageUrl } from '@/lib/api/api';
+import { PremiumCard } from '../ui/PremiumCard';
 
 type FeatureItem = {
   imgUrl: any;
@@ -40,8 +41,10 @@ export const Features = async () => {
   const features = content.features?.length ? content.features : fallbackFeatures;
   return (
   <Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 py-0">
-      <div className=' border-y border-[#e5dccf] bg-[#f3eee6] rounded-xl py-3 px-3'>
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+    <PremiumCard>
+
+      <div className=' border-y border-[#e5dccf] bg-[#f3eee6] rounded-2xl py-3 px-3'>
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
          {features.map((feature, index) => {
   const fallbackIcon =
     fallbackFeatures[index % fallbackFeatures.length].imgUrl;
@@ -51,7 +54,7 @@ export const Features = async () => {
   return (
     <div
       key={index}
-      className={`flex items-start gap-4 pr-6 ${
+      className={`flex items-start gap-4 pr-4 ${
         index !== features.length - 1
           ? "md:border-r border-[#d6c2a0]"
           : ""
@@ -84,7 +87,7 @@ export const Features = async () => {
           {feature.title}
         </p>
 
-        <p className="mt-1 text-xs leading-4 text-[#0f2518] font-medium " dangerouslySetInnerHTML={{__html:feature.desc}}>
+        <p className="mt-2 text-xs leading-4 text-[#0f2518] font-medium " dangerouslySetInnerHTML={{__html:feature.desc}}>
         </p>
       </div>
     </div>
@@ -92,6 +95,8 @@ export const Features = async () => {
 })}
         </div>
       </div>
+    </PremiumCard>
+
     </Container>
   );
 };

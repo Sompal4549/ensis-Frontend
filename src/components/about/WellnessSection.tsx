@@ -36,13 +36,13 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
 
   return (
     <section>
-      <Container className="grid grid-cols-1 lg:grid-cols-[1.8fr_1.8fr] gap-8 items-stretch">
+      <Container className="grid grid-cols-1 lg:grid-cols-[1.8fr_1.8fr] gap-4 items-stretch pt-2">
         
         {/* Left Content */}
-        <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-4">
           
           {/* Image */}
-          <div className="overflow-hidden rounded-2xl shadow-md h-full min-h-[300px] relative">
+          <div className="overflow-hidden rounded-2xl shadow-md h-full min-h-[200px] relative">
             <Image 
               src={sectionContent.welcomeImage}
               alt="Ayurveda"
@@ -79,10 +79,10 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
 
             <p 
               dangerouslySetInnerHTML={{ __html: sectionContent.description || "" }} 
-              className="text-[#0f2518] mt-3 text-xs max-w-[480px] leading-6" 
+              className="text-[#0f2518] mt-2 text-xs max-w-[480px] leading-6" 
             />
 
-            <Link href={sectionContent.buttonHref || "/about"} className="group flex items-center gap-2 text-[#b78942] uppercase tracking-[1px] text-xs font-semibold mt-auto pt-4 w-fit">
+            <Link href={sectionContent.buttonHref || "/about"} className="group flex items-center gap-2 text-[#b78942] uppercase tracking-[1px] text-xs font-semibold pt-2 w-fit">
               {sectionContent.buttonText || "Know More"}
               <ChevronRight
                 size={18}
@@ -99,10 +99,10 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
             return (
               <div
                 key={index}
-                className="bg-[#f8f2ea] border border-[#e6d8c5] rounded-2xl px-4 py-6 text-center shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between items-stretch h-full"
+                className="bg-[#f8f2ea] border border-[#e6d8c5] rounded-2xl px-4 py-4 text-center shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col justify-between items-stretch h-full"
               >
                 {/* Icon Circle */}
-                <div className="w-16 h-16 p-2 mx-auto rounded-full border border-[2.5px] border-[#c9a870] flex items-center justify-center mb-6">
+                <div className="w-16 h-16 p-2 mx-auto rounded-full border border-[2.5px] border-[#c9a870] flex items-center justify-center mb-2">
                   <Image src={serviceImageSrc} alt={service.title} width={30} height={30} className="w-full h-full object-contain" crossOrigin="anonymous" />
                 </div>
 
@@ -110,9 +110,9 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
                   {service.title}
                 </p>
 
-                <p className="text-[#0f2518] text-[12px] mt-3 min-h-[90px]" dangerouslySetInnerHTML={{__html:service.description}}/>
+                <p className="text-[#0f2518] text-[11px] mt-2 min-h-[60px]" dangerouslySetInnerHTML={{__html:service.description}}/>
                 <div>
-                  <div className="w-full h-[1px] bg-[#d5bc94] mx-auto mb-1.5" />
+                  <div className="w-full h-[1px] bg-[#d5bc94] mx-auto my-2" />
                   <Link href={service.link||"/products"} className="group flex items-center justify-center gap-1 mx-auto text-[#0f2518] text-[10px] uppercase tracking-wide font-semibold">
                     View Products
                     <ChevronRight

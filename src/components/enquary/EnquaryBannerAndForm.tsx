@@ -168,7 +168,7 @@ const errorClass =
   return (
     <div className="w-full bg-[#f7f1e3]">
       {/* Hero Section */}
-<section className="relative overflow-hidden">
+<section className="relative h-[600px] md:h-[calc(100vh-146px)] overflow-hidden">
   {/* Background Image */}
   <div className="absolute inset-0">
     <Image
@@ -184,7 +184,7 @@ const errorClass =
   </div>
 
   {/* Content */}
-  <Container className="relative z-10 grid max-h-162.5 md:min-h-[calc(100vh-96px)] grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
+ <Container className="relative z-10 grid h-full grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
    <div className="flex flex-col items-center justify-center text-center rounded-2xl px-8 py-10 bg-linear-to-r from-white/40 via-white/5 to-white/5 backdrop-blur-[2px]">
   <h1 className="text-4xl sm:text-6xl">
     {content.hero.heading}

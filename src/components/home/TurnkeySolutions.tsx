@@ -55,11 +55,11 @@ export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) =
     <section className="relative overflow-hidden bg-cover bg-center text-white">
       <Image src={backgroundImage} alt="Background" fill className="object-cover z-0" crossOrigin="anonymous"/>
       <Container className="py-6 relative z-10">
-        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.6fr] lg:items-center md:w-[85%]">
+        <div className="grid gap-4 lg:grid-cols-[0.9fr_1.6fr] lg:items-center md:w-[85%]">
           <div className="flex">
             <div className="">
               <SubHeading className=' text-[#d5ad6a]' text={content.eyebrow} />
-              <h2 className="mt-2 text-xl md:text-3xl">{content.heading}</h2>
+              <h2 className="text-xl md:text-3xl">{content.heading}</h2>
               <HtmlRenderer className="mt-2 max-w-[420px] text-xs leading-5 text-[#ddd6ca]" content={content.description}>
                 
               </HtmlRenderer>
@@ -71,20 +71,20 @@ export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) =
   <div className="w-px bg-white/40 h-full" />
 </div>
           </div>
-          <div className="grid gap-6 lg:gap-8 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="grid gap-4 lg:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
             {content.solutions.map((solution, index) => {
               const fallbackIcon = fallback.solutions[index % fallback.solutions.length].imgUrl;
               const icon = solution.imgUrl || fallbackIcon;
               return (
                 <div key={index} className="text-center items-center sm:flex-row sm:items-center">
-                  <div className="mx-auto mb-2 flex size-14 items-center justify-center text-[#d5ad6a]">
+                  <div className="mx-auto  flex size-14 items-center justify-center text-[#d5ad6a]">
                     {typeof icon === "string" ? (
                       <Image src={getImageUrl(icon)} alt={solution.title} width={250} height={150} className="object-contain" crossOrigin="anonymous" />
                     ) : (
                       <Image src={icon||""} alt={solution.title} width={250} height={150} className="object-contain" crossOrigin="anonymous" />
                     )}
                   </div>
-                  <span className="text-xs font-semibold text-[#f3eee6] w-20!">{solution.title}</span>
+                  <span className="text-xs font-semibold text-[#f3eee6] w-20! leading-[10px]">{solution.title}</span>
                 </div>
               )
             })}
