@@ -99,10 +99,10 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
   return (
     <section className="border-b border-[#e7ddd1] bg-[#fbf8f2]">
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-10 items-stretch">
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-4 items-stretch">
 
           {/* LEFT SIDE */}
-          <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] h-full">
+          <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr] h-full">
 
             {/* Content */}
             <div className="flex flex-col justify-center">
@@ -132,7 +132,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                 </div>
               )} */}
 
-              <ul className="mt-6 space-y-2">
+              <ul className="mt-2 space-y-2">
                 {content.mfgFeatures.map((item: string) => (
                   <li
                     key={item}
@@ -152,10 +152,10 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
             </div>
 
             {/* Manufacturing Images */}
-            <div className="grid grid-cols-2 gap-1 self-start h-[100%]">
+            <div className="grid grid-cols-2 gap-2 self-start h-[100%]">
 
               {/* Top Large */}
-              <div className="relative col-span-2 h-[100%] overflow-hidden rounded-xl">
+              <div className="relative col-span-2 h-[100%] overflow-hidden rounded-2xl">
                 <Image
                   src={getMfgImage(0)}
                   alt={getMfgImageTitle(0)||"Manufacturing Excellence"}
@@ -179,7 +179,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
               </div>
 
               {/* Bottom Right */}
-              <div className="relative h-[100%] overflow-hidden rounded-xl">
+              <div className="relative h-[100%] overflow-hidden rounded-2xl">
                 <Image
                   src={getMfgImage(2)}
                   alt={getMfgImageTitle(0)||"Manufacturing Excellence"}
@@ -194,7 +194,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
           </div>
 
           {/* RIGHT SIDE */}
-          <div className="border-[#e7ddd1] lg:border-l lg:pl-12 h">
+          <div className="border-[#e7ddd1] lg:border-l lg:pl-4 h">
             <SubHeading className=' text-black font-normal' text={content.projSubtitle} />
             <h2 className="mt-2 font-serif text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
               {projHeadingLines.map((line: string, i: number) => (
@@ -217,7 +217,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
               <div className="grid h-50 grid-cols-3 grid-rows-[1fr_1fr] gap-2">
 
                 {/* Left Tall */}
-                <div className="relative row-span-2 h-full overflow-hidden rounded-xl group">
+                <div className="relative row-span-2 h-full overflow-hidden rounded-2xl group">
                   <Image
                     src={getProjImage(0)}
                     alt={projects[0]?.title || ""}
@@ -235,7 +235,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                 </div>
 
                 {/* Top Middle */}
-                <div className="relative h-full overflow-hidden rounded-xl group">
+                <div className="relative h-full overflow-hidden rounded-2xl group">
                   <Image
                     src={getProjImage(1)}
                     alt={projects[1]?.title || ""}
@@ -271,7 +271,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                 </div>
 
                 {/* Bottom Middle */}
-                <div className="relative h-full overflow-hidden rounded-xl group">
+                <div className="relative h-full overflow-hidden rounded-2xl group">
                   <Image
                     src={getProjImage(3)}
                     alt={projects[3]?.title || ""}
@@ -289,7 +289,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                 </div>
 
                 {/* Bottom Right */}
-                <div className="relative h-full overflow-hidden rounded-xl group">
+                <div className="relative h-full overflow-hidden rounded-2xl group">
                   <Image
                     src={getProjImage(4)}
                     alt={projects[4]?.title || ""}
