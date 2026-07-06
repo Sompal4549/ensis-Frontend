@@ -37,18 +37,18 @@ const FounderSection: React.FC<FounderSectionProps> = ({ sectionContent }) => {
         </div>
 
         {/* Right: Content */}
-        <div className="flex-1 flex flex-col justify-center px-0 md:px-10 lg:px-14 py-10 md:py-10">
+        <div className="flex-1 flex flex-col justify-center px-0 md:px-10 lg:px-14 py-4">
 
           {/* Label */}
           <p
-            className="font-medium text-sm uppercase text-black mb-3"
+            className="font-medium text-sm uppercase text-black mb-2"
           >
             {sectionContent?.heading}
           </p>
 
           {/* Heading */}
           <h2
-            className="text-2xl md:text-3xl lg:text-[2rem] font-semibold text-black leading-snug mb-4"
+            className="text-2xl md:text-3xl lg:text-[2rem] font-semibold text-black leading-snug mb-2"
           >
             {sectionContent.title}
           </h2>

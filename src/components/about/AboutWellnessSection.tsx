@@ -86,19 +86,19 @@ const AboutWellnessSection = ({
 
   return (
     <section className="w-full relative mt-2">
-        <div className="absolute left-0 w-[100%] md:w-[40%] top-0 h-50 md:h-full md:bottom-8 z-10">
-            <Image
-              src={getImageUrl(sectionContent.imageurl.imageUrl)}
-              alt={sectionContent.imageurl.alt}
-              className="w-full h-full object-cover"
-              crossOrigin="anonymous"
-              fill
-            />
-        </div>
+     <div className="relative md:absolute left-0 w-full md:w-[40%] top-0  md:h-full md:bottom-8 z-10">
+  <Image
+    src={getImageUrl(sectionContent.imageurl.imageUrl)}
+    alt={sectionContent.imageurl.alt}
+    className="w-full h-full object-cover"
+    crossOrigin="anonymous"
+    fill
+  />
+</div>
   {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0)_0%,rgba(255,255,255,0.1)_20%,rgba(255,255,255,0.8)_50%,rgba(255,255,255,1)_100%)] z-10" /> */}
       <Container>
-        <div  className="relative z-20 md:pt-0 pt-[60%]  mb-12">
-       <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1.4fr_0.8fr] gap-4 items-stretch overflow-hidden h-full pb-10">
+        <div  className="relative z-20 pt-0  md:mb-12">
+       <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1.4fr_0.8fr] gap-4 items-stretch overflow-hidden h-full md:pb-10">
   {/* Gradient Overlay */}
 
           {/* Left Image */}
@@ -107,7 +107,7 @@ const AboutWellnessSection = ({
           </div>
 
           {/* Center Content */}
-          <div className=" md:px-6 md:py-7 flex flex-col justify-center">
+          <div className=" md:px-4 md:py-4 flex flex-col justify-center">
             <span className="text-[10px] uppercase tracking-[2px] bg-[#e5c18e] border-[#e29222] border text-center rounded-2xl text-[#5e3b0a] inline-block font-semibold mb-2 w-25 ">
               {sectionContent.heading}
             </span>
@@ -126,7 +126,7 @@ const AboutWellnessSection = ({
           {/* Right Values Card */}
           <div>
 
-        <div className="bg-[#efe5d5] rounded-2xl px-5 py-6">
+        <div className="bg-[#efe5d5] rounded-2xl px-4 py-4">
             <h3 className="text-lg font-semibold mb-5">
               Our Core Values
             </h3>
@@ -152,7 +152,7 @@ const AboutWellnessSection = ({
         </div>
 
         {/* Bottom Stats Bar */}
-        <div className="mt-4 bg-[#03261b] rounded-2xl py-5 px-5 border-3 border-[#e8c37a] absolute -bottom-10 left-0 right-0">
+        <div className="mt-4 bg-[#03261b] rounded-2xl py-4 px-4 border-3 border-[#e8c37a] md:absolute -bottom-10 left-0 right-0">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-6">
             {sectionContent.stats.map((item, index) => (
               <div

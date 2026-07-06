@@ -100,35 +100,40 @@ const TurnkeyProcess: React.FC<TurnkeyProcessProps> = ({ sectionContent }) => {
         <div className="relative flex flex-col lg:flex-row items-stretch min-h-[200px]">
           {/* LEFT SIDE */}
           <div className="w-full lg:w-[58%] px-6 md:px-0 py-4 flex flex-col justify-center relative z-10">
-            <h2 className="text-[#2d2a28] text-[18px] md:text-[24px] font-bold font-serif uppercase tracking-[0.4px] mb-6">
+            <h2 className="text-[#2d2a28] text-[18px] md:text-[24px] font-semibold font-serif uppercase tracking-[0.4px] mb-6">
               {sectionContent.title}
             </h2>
             
-            <div className="flex items-start justify-between gap-2 md:gap-4 relative">
-              {sectionContent.steps.map((step, index) => (
-                <React.Fragment key={step.id}>
-                  <div className="flex flex-col items-center text-center max-w-[120px] relative z-10">
-                    <div className="text-[#b79a7a] mb-4 flex items-center justify-center">
-                      <Image src={step.imageurl.imageUrl} alt={step.imageurl.alt} width={35} height={35} className="text-[#b79a7a] mb-3" style={{ height: "auto" }}/>
-                    </div>
+         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
+  {sectionContent.steps.map((step, index) => (
+    <div key={step.id} className="flex items-start">
+      
+      <div className="flex flex-col items-center text-center max-w-[120px] mx-auto">
+        {/* fixed height box -> sab images same space lenge */}
+        <div className="h-[35px] flex items-center justify-center mb-2">
+          <Image
+            src={step.imageurl.imageUrl}
+            alt={step.imageurl.alt}
+            width={35}
+            height={35}
+            style={{ height: "auto", maxHeight: "35px", width: "auto" }}
+          />
+        </div>
 
-                    <p className="text-[10px] md:text-[11px] leading-[1.5] font-semibold tracking-[0.3px] text-[#3f3a36] uppercase">
-                      {step.title}
-                    </p>
-                  </div>
+        {/* min-height -> text 1-2 line ho phir bhi alignment nahi bigdegi */}
+        <p className="text-[10px] md:text-[11px] leading-[1.5] font-semibold tracking-[0.3px] text-[#3f3a36] uppercase min-h-[2.2em] flex items-center">
+          {step.title}
+        </p>
+      </div>
 
-                  {index !== steps.length - 1 && (
-                    <div className="flex-1 pt-3 hidden md:flex items-center justify-center">
-                      <div className="w-full border-t border-[#c9b39b] relative">
-                        <span className="absolute right-[-2px] top-[-6px] text-[#c9b39b] text-sm font-bold">
-                          →
-                        </span>
-                      </div>
-                    </div>
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
+      {index !== sectionContent.steps.length - 1 && (
+        <span className="hidden md:flex items-center text-[#c9b39b] text-sm font-bold mt-[14px]">
+          →
+        </span>
+      )}
+    </div>
+  ))}
+</div>
           </div>
 
           {/* RIGHT SIDE IMAGE */}

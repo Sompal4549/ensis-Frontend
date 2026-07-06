@@ -51,11 +51,11 @@ sectionContent
               {sectionContent.title}
             </h2>
 
-            <p className="mt-3 text-sm text-[#ddd1c1] md:text-[15px] " dangerouslySetInnerHTML={{__html:sectionContent.description||""}}>
+            <p className="mt-2 text-sm text-[#ddd1c1] md:text-[15px] " dangerouslySetInnerHTML={{__html:sectionContent.description||""}}>
             </p>
 
             {/* Buttons */}
-            <div className="mt-3 flex flex-wrap gap-4">
+            <div className="mt-2 flex flex-wrap gap-4">
 
 <GreenButton leftIcon={<Phone className="text-[#050A1A]" size={16} />} text={sectionContent.primaryAction.label} path={sectionContent.primaryAction.url} rightIcon={<FaArrowRightLong />} />
   <BookButton leftIcon={<GrCatalogOption className="text-white" size={16} />} text={sectionContent.secondaryAction.label} rightIcon={<Download size={16} className="text-white" />}  path={sectionContent.secondaryAction.url} />

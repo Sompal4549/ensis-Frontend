@@ -187,7 +187,7 @@ export const Header = () => {
                                 return (
                                     <Link key={index} href={item.href} className="flex items-center gap-2">
                                         {item.image?.imageUrl ? (
-                                            <Image src={item.image.imageUrl} priority alt={item.image?.alt ?? ''} width={13} height={13} />
+                                            <img src={item.image.imageUrl}  alt={item.image?.alt ?? ''} width={13} height={13} />
                                         ) : (
                                             iconFor(item.image?.alt)
                                         )}

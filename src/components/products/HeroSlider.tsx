@@ -165,22 +165,22 @@ function ProductSlideContent({ product }: { product: Product }) {
         <div className="max-w-full md:max-w-[620px]">
 
           {hasDiscount && (
-            <span className="mb-5 inline-flex rounded-full border border-[#b87333]/40 bg-[#b87333] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-white">
+            <span className="mb-2 inline-flex rounded-full border border-[#b87333]/40 bg-[#b87333] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-white">
               SALE
             </span>
           )}
 
-          <h1 className="mb-5 text-3xl font-medium leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
+          <h1 className="mb-2 text-3xl font-medium leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
             {product.title}
           </h1>
 
           {product.shortDescription && (
-            <p className="mb-8 max-w-[520px] text-sm leading-7 text-white/80 sm:text-base">
+            <p className="mb-2 max-w-[520px] text-sm leading-7 text-white/80 sm:text-base">
               {product.shortDescription}
             </p>
           )}
 
-          <div className="mb-8 flex flex-wrap items-end gap-4">
+          <div className="mb-4 flex flex-wrap items-end gap-4">
 
             <span className="text-2xl font-bold text-white sm:text-3xl md:text-4xl">
               ₹{price?.toLocaleString("en-IN")}
@@ -233,7 +233,7 @@ export default async function ProductSlider() {
   return (
     <section
       aria-label="Wellness product collection"
-      className="relative w-full md:h-[calc(100vh-146px)]"
+      className="relative w-full md:h-[calc(100vh-146px)] md:mb-16"
     >
 
       <Carousel autoplayDelay={5000}>

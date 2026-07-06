@@ -45,9 +45,9 @@ export default async function StatsStrip() {
   }));
 
   return (
-<Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 py-0">
+<Container className="relative z-10 md:absolute md:z-20 md:left-1/2 md:-translate-x-1/2 md:translate-y-1/2 md:bottom-0 py-0">
   <div className="border-y border-[#e5dccf] bg-[#f3eee6] rounded-xl py-3 px-3">
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-6">
+    <div className="grid gap-4 grid-cols-2 xl:grid-cols-6">
       {resolvedStats.map((item, index) => (
         <div
           key={index}

@@ -41,58 +41,54 @@ sectionContent = {}
 
   const imageUrl = resolvedImage?.imageUrl;
 
-  return (
-    <section className="relative overflow-visible mb-40 md:mb-20">
-      {/* Background image kept in its own overflow-hidden layer so it still
-          stays clipped to the hero, while the section itself stays
-          overflow-visible so StatsStrip's absolute+translate overlap below
-          isn't cut off on desktop. */}
-      <div className="absolute inset-0 overflow-hidden">
-        <Image
-          priority
-          alt={resolvedImage?.alt ?? "about banner"}
-          src={imageUrl ? getImageUrl(imageUrl) : banner_image}
-          fill
-          className="object-cover md:object-right"
-          crossOrigin="anonymous"
-          sizes="100vw"
-        />
-      </div>
-      <Container className="bg-black md:bg-transparent">
-        <div className="relative min-h-[470px] md:h-[calc(100vh-146px)] w-full">
-          <div className="relative z-10 mx-auto flex min-h-[450px] max-w-[1500px] items-center h-full">
-            <div className="max-w-[620px] pt-10 pb-12 md:pt-16 md:pb-16">
-              <div className="mb-5 flex items-center gap-3">
-                <Image alt="lotus" src={lotus} width={20} height={20} className="h-full object-contain" crossOrigin="anonymous" />
-                <span className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#d6a85f]">
-                  {resolvedSubtitle}
-                </span>
-                <div className="h-[1px] w-14 bg-[#d6a85f]" />
+return (
+  <section className="relative overflow-visible md:mb-16">
+    <div className="absolute inset-0 overflow-hidden z-0">
+      <Image
+        priority
+        alt={resolvedImage?.alt ?? "about banner"}
+        src={imageUrl ? getImageUrl(imageUrl) : banner_image}
+        fill
+        className="object-cover md:object-right"
+        crossOrigin="anonymous"
+        sizes="100vw"
+      />
+    </div>
+    <Container className="bg-black md:bg-transparent">
+      <div className="relative min-h-[380px] sm:min-h-[420px] md:h-[calc(100vh-146px)] w-full">
+        <div className="relative z-10 mx-auto flex min-h-[360px] sm:min-h-[400px] max-w-[1500px] items-center h-full">
+          <div className="max-w-[620px] pt-10 pb-12 md:pt-16 md:pb-16">
+            <div className="mb-2 flex items-center gap-3">
+              <Image alt="lotus" src={lotus} width={20} height={20} className="h-full object-contain" crossOrigin="anonymous" />
+              <span className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#d6a85f]">
+                {resolvedSubtitle}
+              </span>
+              <div className="h-[1px] w-14 bg-[#d6a85f]" />
+            </div>
+
+            <h1 className="text-[38px] font-medium leading-[1.08] text-white sm:text-[48px] md:text-5xl">
+              {resolvedTitle}
+              <span className="mt-2 block text-[#d6a85f]">
+                {resolvedHighlight}
+              </span>
+            </h1>
+
+            <p className="mt-2 max-w-[360px] text-xs tracking-wide leading-6 text-white" dangerouslySetInnerHTML={{ __html: resolvedDescription || "" }}>
+            </p>
+
+            <div className="mt-4 flex flex-wrap gap-2">
+              <div className="w-35">
+                <BookButton text={resolvedPrimaryBtnText} path={resolvedPrimaryBtnPath} />
               </div>
-
-              <h1 className="text-[38px] font-medium leading-[1.08] text-white sm:text-[48px] md:text-5xl">
-                {resolvedTitle}
-                <span className="mt-1 block text-[#d6a85f]">
-                  {resolvedHighlight}
-                </span>
-              </h1>
-
-              <p className="mt-5 max-w-[360px] text-xs tracking-wide leading-6 text-white" dangerouslySetInnerHTML={{__html:resolvedDescription||""}}>
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-2">
-                <div className="w-35">
-                  <BookButton text={resolvedPrimaryBtnText} path={resolvedPrimaryBtnPath} />
-                </div>
-                <div className="w-50">
-                  <GreenButton text={resolvedSecondaryBtnText} path={resolvedSecondaryBtnPath} />
-                </div>
+              <div className="w-50">
+                <GreenButton text={resolvedSecondaryBtnText} path={resolvedSecondaryBtnPath} />
               </div>
             </div>
           </div>
         </div>
-      </Container>
-      <StatsStrip/>
-    </section>
-  );
+      </div>
+    </Container>
+    <StatsStrip />
+  </section>
+);
 }

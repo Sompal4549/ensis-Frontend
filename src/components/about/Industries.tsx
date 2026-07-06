@@ -89,11 +89,11 @@ export default function IndustriesWeServe({ sectionContent }: { sectionContent: 
         </div> */}
 <AboutTitle title="Industries We Serve" />
         {/* Cards */}
-        <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 mt-2 divide-x divide-[#e7dfd5]">
+        <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 mt-2 divide-x divide-[#e7dfd5] gap-2">
   {sectionContent.industries.map((industry, index) => ( // Use sectionContent.items
     <div
       key={index}
-      className="group flex flex-col items-center justify-center px-3 py-4 text-center transition-all duration-300 hover:bg-[#fbf8f4]"
+      className="group flex flex-col items-center justify-center px-2 py-2 text-center transition-all duration-300 hover:bg-[#fbf8f4]"
     >
       {/* Icon */}
       <div className="mb-2 flex items-center justify-center text-[#b78a56] transition-all duration-300 group-hover:scale-105">
