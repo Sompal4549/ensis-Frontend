@@ -113,7 +113,7 @@ export const productApi = {
 }>(response);
     },
     detail: async (idOrSlug: string) => {
-        const response = await apiClient.get(`/products/${idOrSlug}`);
+        const response = await apiClient.get(`/products/${encodeURIComponent(idOrSlug)}`);
         return unwrap<Product>(response);
     },
 };

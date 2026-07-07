@@ -78,10 +78,16 @@ export default async function ProductPage({
 
   let apiProduct: any;
   try {
-    apiProduct = await productApi.detail(id);
-  } catch (err) {
-    console.log(err)
-    return notFound();
+    apiProduct = await productApi.detail(decodeURIComponent(id));
+  } catch (err: any) {
+    console.error("API Fetch Error:", err?.message || err);
+    return (
+      <div className="p-20 text-center text-red-500">
+        <h1>Failed to load product</h1>
+        <p>{err?.message || "Unknown error"}</p>
+        <p>Requested ID: {id}</p>
+      </div>
+    );
   }
 
   if (!apiProduct) return notFound();
