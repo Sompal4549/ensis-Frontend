@@ -78,16 +78,10 @@ export default async function ProductPage({
 
   let apiProduct: any;
   try {
-    apiProduct = await productApi.detail(decodeURIComponent(id));
-  } catch (err: any) {
-    console.error("API Fetch Error:", err?.message || err);
-    return (
-      <div className="p-20 text-center text-red-500">
-        <h1>Failed to load product</h1>
-        <p>{err?.message || "Unknown error"}</p>
-        <p>Requested ID: {id}</p>
-      </div>
-    );
+    apiProduct = await productApi.detail(id);
+  } catch (err) {
+    console.log(err)
+    return notFound();
   }
 
   if (!apiProduct) return notFound();
@@ -117,11 +111,15 @@ export default async function ProductPage({
 
   let suggestionsList: any[] = [];
   try {
-    const listRes = await productApi.list(100);
-    if (listRes && listRes.products && listRes.products.length > 0) {
-      suggestionsList = listRes.products.map((item: any) => ({
+    const listRes: any = await productApi.list(100);
+    const productsArray = Array.isArray(listRes) 
+      ? listRes 
+      : (listRes?.products || listRes?.data?.products || listRes?.data || []);
+      
+    if (productsArray && Array.isArray(productsArray) && productsArray.length > 0) {
+      suggestionsList = productsArray.map((item: any) => ({
         ...item,
-        id: item._id,
+        id: item._id || item.id,
         name: item.title,
         image: item.images?.[0] ? getImageUrl(item.images[0]) : "",
         images: item.images?.length
