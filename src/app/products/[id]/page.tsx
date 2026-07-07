@@ -86,6 +86,17 @@ export default async function ProductPage({
 
   if (!apiProduct) return notFound();
 
+  // Normalize category to string name/slug consistently, since API can return
+  // category either as a populated object ({ name, slug, ... }) or as a raw string/id.
+  const productCategoryName =
+    typeof apiProduct.category === "object"
+      ? apiProduct.category?.name
+      : apiProduct.category;
+  const productCategoryKey =
+    typeof apiProduct.category === "object"
+      ? apiProduct.category?.slug
+      : apiProduct.category;
+
   // Transform API data to component-friendly object
   const product: any = {
     ...apiProduct,
@@ -95,27 +106,31 @@ export default async function ProductPage({
     images: apiProduct.images?.length
       ? apiProduct.images.map((img: string) => getImageUrl(img))
       : [img6, img6, img6, img6],
-    categoryKey: apiProduct.category?.slug || apiProduct.category
+    categoryKey: productCategoryKey,
+    // NOTE: this overwrites the spread-in `category` (which could be an object)
+    // with a plain string so it matches the shape used in suggestionsList below.
+    category: productCategoryName,
   };
-
-  // const shopProduct = {
-  //   id: product.id,
-  //   slug: product.slug,
-  //   name: product.title,
-  //   category: typeof product.category === 'object' ? product.category.name : product.category,
-  //   price: product.price || 0,
-  //   image: product.image,
-  // };
 
   const originalPrice = product.price ? Math.round(product.price * 1.18) : 0;
 
   let suggestionsList: any[] = [];
   try {
     const listRes: any = await productApi.list(100);
-    const productsArray = Array.isArray(listRes) 
-      ? listRes 
+
+    // TEMP DEBUG — these print to your SERVER terminal (not browser console)
+    // since this is a Server Component. Remove once suggestions are confirmed working.
+    console.log(
+      "[ProductPage] listRes shape:",
+      Array.isArray(listRes) ? "array" : Object.keys(listRes || {})
+    );
+
+    const productsArray = Array.isArray(listRes)
+      ? listRes
       : (listRes?.products || listRes?.data?.products || listRes?.data || []);
-      
+
+    console.log("[ProductPage] productsArray length:", productsArray?.length);
+
     if (productsArray && Array.isArray(productsArray) && productsArray.length > 0) {
       suggestionsList = productsArray.map((item: any) => ({
         ...item,
@@ -125,23 +140,23 @@ export default async function ProductPage({
         images: item.images?.length
           ? item.images.map((img: string) => getImageUrl(img))
           : [img6, img6, img6, img6],
-        categoryKey: item.category?.slug || item.category,
-        category: typeof item.category === 'object' ? item.category.name : item.category
+        categoryKey: typeof item.category === 'object' ? item.category?.slug : item.category,
+        category: typeof item.category === 'object' ? item.category?.name : item.category
       }));
+    } else {
+      console.warn("[ProductPage] productsArray came back empty. Raw listRes:", listRes);
     }
   } catch (err) {
-    console.error("Failed to fetch suggestions from backend:", err);
+    // This was being silently swallowed before — now clearly logged.
+    // Check your SERVER terminal (where `next dev`/`next start` runs) for this.
+    console.error("[ProductPage] Failed to fetch suggestions from backend:", err);
   }
 
-  // Fallback to local allProducts if backend list fails or is empty
-  // if (suggestionsList.length === 0) {
-  //   suggestionsList = allProducts;
-  // }
-
+  // Match on categoryKey (slug) since it's a reliable string on both sides now.
   const suggestions = suggestionsList
     .filter((item) =>
       item.slug !== product.slug &&
-      (item.categoryKey === product.categoryKey || item.category === product.category)
+      item.categoryKey === product.categoryKey
     )
     .slice(0, 8);
 
@@ -163,118 +178,9 @@ export default async function ProductPage({
         <section className="grid lg:items-start xl:gap-8">
           {<ProductInfoSection product={product} />}
         </section>
-
-        {/* <section className="mt-10 border-t border-[#e5ded5] pt-6">
-          <div className="flex flex-wrap gap-6 text-xs font-bold text-[#313b30]">
-            {["Overview", "Reviews (126)", "Shipping & Returns", "Specifications"].map(
-              (tab, index) => (
-                <span
-                  key={tab}
-                  className={`border-b-2 pb-3 ${
-                    index === 0 ? "border-[#313b30]" : "border-transparent"
-                  }`}
-                >
-                  {tab}
-                </span>
-              )
-            )}
-          </div>
-        </section> */}
-
-        {/* <section className="mt-8 grid gap-4 lg:grid-cols-2">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="relative min-h-[260px] overflow-hidden rounded-lg bg-[#f7f3ec]">
-              <Image
-                src={gallery[1] || gallery[0]}
-                alt={`${product.title} detail`}
-                fill
-                sizes="(max-width: 1024px) 100vw, 280px"
-                className="object-cover"
-              />
-            </div>
-            <InfoCard title="How to Use">
-              <p className="font-medium">
-                Place the product in a stable, clean treatment area. Follow your therapy
-                workflow and wipe surfaces after each session with a mild cleaner.
-              </p>
-              <div className="mt-5 grid grid-cols-3 gap-3 text-center text-[11px] font-semibold text-[#313b30]">
-                {[
-                  ["Step 1", "Prepare"],
-                  ["Step 2", "Use"],
-                  ["Step 3", "Clean"],
-                ].map(([step, label]) => (
-                  <div key={step}>
-                    <Clock size={18} className="mx-auto mb-2 text-[#8d6a3a]" />
-                    <p>{step}</p>
-                    <p className="text-[#7d8378]">{label}</p>
-                  </div>
-                ))}
-              </div>
-            </InfoCard>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="relative min-h-[260px] overflow-hidden rounded-lg bg-[#f7f3ec]">
-              <Image
-                src={gallery[2] || gallery[0]}
-                alt={`${product.title} materials`}
-                fill
-                sizes="(max-width: 1024px) 100vw, 320px"
-                className="object-cover"
-              />
-            </div>
-            <InfoCard title="Why You Will Love It">
-              <ul className="space-y-2">
-                {[
-                  "Reliable for repeat professional use",
-                  "Looks refined in premium interiors",
-                  "Easy to coordinate with custom projects",
-                  "Backed by practical after-sales support",
-                ].map((item) => (
-                  <li key={item} className="flex gap-2">
-                    <HeartHandshake
-                      size={16}
-                      className="mt-1 shrink-0 text-[#8d6a3a]"
-                    />
-                    <span className="font-medium">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </InfoCard>
-          </div>
-        </section> */}
-
-
-        {/* <section className="mt-8 grid gap-3 rounded-lg border border-[#eee5d8] bg-white p-4 sm:grid-cols-4">
-          {[
-            [Leaf, "Clean Materials", "No harsh finishes"],
-            [BadgeCheck, "Quality Checked", "Safe and effective"],
-            [PackageCheck, "Secure Packing", "Protected dispatch"],
-            [Truck, "Project Shipping", "Pan-India delivery"],
-          ].map(([Icon, title, text]) => {
-            const DisplayIcon = Icon as typeof Leaf;
-            return (
-              <div
-                key={title as string}
-                className="flex items-center gap-3 border-[#eee5d8] sm:border-r sm:last:border-r-0"
-              >
-                <DisplayIcon size={24} className="text-[#313b30]" />
-                <div>
-                  <p className="text-xs font-bold text-[#1a1a1a]">{title as string}</p>
-                  <p className="text-[11px] text-[#6f756c]">{text as string}</p>
-                </div>
-              </div>
-            );
-          })}
-        </section> */}
       </Container>
 
       <RealSpacesCarousel images={product?.overview?.seeItInRealSpaces?.images||[]} title={product?.overview?.seeItInRealSpaces?.title||""} />
-      {/* <ReviewSection
-        productId={product.id}
-        productTitle={product.title}
-        productSlug={product.slug}
-      /> */}
       <Container>
 
         <section className="mt-2">
@@ -292,37 +198,6 @@ export default async function ProductPage({
       <Planning />
 
       <FaqSection product={product} />
-      {/* <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5ded5] bg-white/95 px-2 shadow-[0_-10px_30px_rgba(49,59,48,0.08)] backdrop-blur">
-        <Container>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex min-w-0 items-center gap-3">
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md bg-[#f7f3ec]">
-                <Image
-                  src={gallery[0]}
-                  alt={product.title}
-                  fill
-                  sizes="56px"
-                  className="object-cover"
-                />
-              </div>
-              <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-[#1a1a1a]">
-                  {product.title}
-                </p>
-                <p className="text-xs text-[#6f756c]">{product.category}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              <p className="hidden text-xl font-semibold text-[#1a1a1a] sm:block">
-                {formatPrice(product.price)}
-              </p>
-              <div className="min-w-[260px] flex-1 sm:w-[360px] sm:flex-none">
-                <ProductDetailActions product={shopProduct} compact />
-              </div>
-            </div>
-          </div>
-        </Container>
-      </div> */}
     </div>
   );
 }
