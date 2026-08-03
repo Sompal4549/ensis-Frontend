@@ -100,6 +100,7 @@ const BlogDetailNewsletter = ({sectionContent}:{sectionContent:any}) => {
           >
             <input
               type="email"
+              aria-label="Email address for newsletter subscription"
               placeholder="Enter your email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}

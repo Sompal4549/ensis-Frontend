@@ -6,6 +6,7 @@ import banner from "@/assets/contact_banner.webp"
 import arrow from "@/assets/icons/arrow.png"
 import getInTouch from "@/assets/get_in_touch.webp"
 import HtmlRenderer from "../layout/HtmlRender";
+import SupportHighlights from "./SupportHightlights";
 interface ContactHeroFeature {
   id: string;
   iconImage: string; // Assuming this is an image URL or path
@@ -25,7 +26,10 @@ export interface ContactHeroContent {
 
 const ContactHero: React.FC<{ sectionContent: ContactHeroContent }> = ({sectionContent}) => {
   return (
-    <section className="w-full bg-[#e9dfd3] overflow-hidden relative">
+    <section className="w-full bg-[#e9dfd3] overflow-visible relative mb-0 md:mb-16">
+      {/* Background image + gradients clipped in their own layer so the
+          outer section can stay overflow-visible for SupportHighlights overlap */}
+      <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none  z-30 w-[100%] block lg:hidden"
           style={{
             background: `
@@ -53,6 +57,8 @@ const ContactHero: React.FC<{ sectionContent: ContactHeroContent }> = ({sectionC
     `,
           }} />
       <Image src={sectionContent.bgImage} alt={sectionContent.title} className="w-full h-full object-cover absolute top-0 bottom-0 right-0 left-0 z-20" priority fill />
+      </div>
+
       <Container className="grid md:h-[calc(100vh-146px)] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-40 items-center">
       
 
@@ -104,6 +110,7 @@ const ContactHero: React.FC<{ sectionContent: ContactHeroContent }> = ({sectionC
           </div>
         </div>
       </Container>
+      <SupportHighlights/>
     </section>
   );
 };

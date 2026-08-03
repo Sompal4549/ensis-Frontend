@@ -63,12 +63,12 @@ export default function CartProductCard({ item }: { item: CartItem }) {
           type="button"
           aria-label={`Decrease ${item.name} quantity`}
           onClick={() => decreaseQuantity(item.id)}
-          className="inline-flex size-5 items-center justify-center border border-[#d8d0c4] text-[#101010] transition-colors hover:bg-[#f8f5f0]"
+          className="inline-flex size-6 items-center justify-center border border-[#d8d0c4] text-[#101010] transition-colors hover:bg-[#f8f5f0]"
         >
           <Minus size={13} />
         </button>
 
-        <span className="inline-flex h-5 min-w-[28px] items-center justify-center bg-[#101010] px-2 text-xs font-semibold text-white">
+        <span className="inline-flex h-6 min-w-[28px] items-center justify-center bg-[#101010] px-2 text-xs font-semibold text-white">
           {item.quantity}
         </span>
 
@@ -76,7 +76,7 @@ export default function CartProductCard({ item }: { item: CartItem }) {
           type="button"
           aria-label={`Increase ${item.name} quantity`}
           onClick={() => increaseQuantity(item.id)}
-          className="inline-flex size-5 items-center justify-center border border-[#d8d0c4] text-[#101010] transition-colors hover:bg-[#f8f5f0]"
+          className="inline-flex size-6 items-center justify-center border border-[#d8d0c4] text-[#101010] transition-colors hover:bg-[#f8f5f0]"
         >
           <Plus size={13} />
         </button>

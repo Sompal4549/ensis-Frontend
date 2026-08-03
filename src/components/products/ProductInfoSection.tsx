@@ -130,7 +130,7 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
                 <p className="text-[10px] mt-1 leading-snug">
                   We create custom Panchkarma tables as per your therapy requirements.
                 </p>
-                <button className="w-full flex items-center justify-center gap-1.5 border rounded-md py-1 text-[11px] font-bold uppercase tracking-wider transition-colors mt-2 cursor-pointer">
+                <button className="w-full flex items-center justify-center gap-1.5 border rounded-md py-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors mt-2 cursor-pointer">
                   Contact Our Experts <ArrowRight size={12} />
                 </button>
               </div>
@@ -220,7 +220,7 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
             <p className="text-[11px] leading-snug mb-4">
               We offer special pricing for bulk orders and turnkey wellness projects.
             </p>
-            <button className="w-full flex items-center justify-center gap-1.5 border border-[#8d6a3a] rounded-md py-1 text-[11px] font-bold uppercase tracking-wider text-[#8d6a3a] hover:bg-[#8d6a3a] hover:text-white transition-colors">
+            <button className="w-full flex items-center justify-center gap-1.5 border border-[#8d6a3a] rounded-md py-1.5 text-[11px] font-bold uppercase tracking-wider text-[#8d6a3a] hover:bg-[#8d6a3a] hover:text-white transition-colors">
               Get Bulk Quote <ArrowRight size={12} />
             </button>
           </div>

@@ -352,6 +352,7 @@ try {
   onSubmit={handleSubmit}
 >
                 <input
+  aria-label="Full name"
   value={form.fullName}
   onChange={(e) =>
     setForm({
@@ -365,6 +366,7 @@ try {
 
           <input
   type="email"
+  aria-label="Email address"
   value={form.email}
   onChange={(e) =>
     setForm({
@@ -377,6 +379,7 @@ try {
 />
 
         <input
+  aria-label="Phone number"
   value={form.phone}
   onChange={(e) =>
     setForm({
@@ -390,6 +393,7 @@ try {
 
                   <div className="grid grid-cols-2 gap-4">
                 <input
+  aria-label="Current location"
   value={form.currentLocation}
   onChange={(e) =>
     setForm({
@@ -401,6 +405,7 @@ try {
   className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
 />
 <select
+  aria-label="Years of experience"
   value={form.experience}
   onChange={(e) =>
     setForm({
@@ -421,6 +426,7 @@ try {
                   </div>
 
            <select
+  aria-label="Department interested in"
   value={form.department}
   onChange={(e) =>
     setForm({
@@ -478,6 +484,7 @@ try {
 
              <textarea
   rows={2}
+  aria-label="Cover letter or message"
   value={form.coverLetter}
   onChange={(e) =>
     setForm({
@@ -491,6 +498,7 @@ try {
                   <label className="flex items-start gap-3 text-xs text-white">
                    <input
   type="checkbox"
+  aria-label="I agree to the terms"
   checked={agreed}
   onChange={(e) =>
     setAgreed(e.target.checked)

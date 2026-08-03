@@ -2,6 +2,8 @@ export const dynamic = 'force-dynamic';
 import nextDynamic from "next/dynamic";
 import type { Metadata } from "next";
 import Script from "next/script";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 import { Montserrat, Playfair_Display } from 'next/font/google';
 import { ShopProvider } from "@/context/ShopContext";
@@ -129,8 +131,7 @@ export default async function RootLayout({
         <ShopProvider>
           <Header />
           <main className="pt-22">{children}</main>
-          <Footer />
-          {/* <Footer image={footerTop1} />
+          <Footer />          {/* <Footer image={footerTop1} />
           <Footer image={footerTop2} />
           <Footer image={footerTop3} />
           <Footer image={footerTop4} />
@@ -138,6 +139,7 @@ export default async function RootLayout({
           <Footer image={footerTop6} /> */}
           <SocialSidebar />
           <WhatsAppFloat />
+          <ToastContainer position="top-right" autoClose={4000} />
         </ShopProvider>
       </body>
     </html>

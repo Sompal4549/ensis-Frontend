@@ -81,6 +81,7 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
           <form className="mt-6 space-y-4">
             <input
               type="email"
+              aria-label="Email address to join the talent community"
               placeholder="Enter your email"
               className="h-12 w-full rounded-md border border-[#d7d7d7]/20 bg-white px-4 text-sm text-black outline-none placeholder:text-gray-400"
             />

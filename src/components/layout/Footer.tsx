@@ -145,7 +145,6 @@ const features = [
 // export const Footer = async ({image:StaticImageData|string}) => {
 export const Footer = async () => {
   const content = await getComponentContent("layout.footer", defaultFooter);
-  console.log(content, "footer")
   const socialLinks = (await socialApi.getLinks())
     .filter((item) => item.isActive)
     .sort((a, b) => a.order - b.order);

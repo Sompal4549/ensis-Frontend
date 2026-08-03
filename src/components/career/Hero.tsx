@@ -19,7 +19,6 @@ export interface CareersBannerProps {
 }
 
 const CareersBanner = ({sectionContent }: {sectionContent:CareersBannerProps}) => {
-  console.log(sectionContent,"banner")
   return (
     <section className="relative">
       {/* Background */}

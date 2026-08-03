@@ -81,12 +81,12 @@ export default async function WellnessFeatureStrip() {
         left-0
         right-0
         bottom-0
-        md:translate-y-1/2
+        md:translate-y-1/2 py-2
         z-30
       "
     >
-      <div className="w-full bg-gradient-to-r from-[#012c20] via-[#013727] to-[#012c20]">
-        <Container className="py-3">
+        <Container className="py-3 py-2">
+      <div className="w-full bg-gradient-to-r from-[#012c20] via-[#013727] to-[#012c20] rounded-xl px-4 py-2">
           <div className={`grid gap-6 ${getGridCols()}`}>
             {sectionContent.features.map((item, index) => (
               <div
@@ -123,8 +123,8 @@ export default async function WellnessFeatureStrip() {
               </div>
             ))}
           </div>
-        </Container>
       </div>
+        </Container>
     </section>
   );
 }

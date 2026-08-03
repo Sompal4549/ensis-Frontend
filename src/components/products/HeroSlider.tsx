@@ -128,7 +128,7 @@ function ProductSlideContent({ product }: { product: Product }) {
     product.discountPrice < product.price;
 
   return (
-    <div className="relative h-[600px] overflow-hidden bg-[#0b0b0b] md:h-[calc(100vh-146px)]">
+ <div className="relative h-full min-h-[470px] overflow-hidden bg-[#0b0b0b]">
 
       {/* Image */}
       <div className="absolute inset-0 md:left-[42%]">
@@ -221,27 +221,31 @@ export default async function ProductSlider() {
 
   try {
     const data = await productApi.list(5);
+
     if (data?.products?.length) {
-      products = (data.products.slice(0, 5) as unknown) as Product[];
+      products = data.products.slice(0, 5) as Product[];
     }
-    // API empty aaye toh dummyProducts already set hai, kuch nahi karna
   } catch (err) {
     console.error("Failed to fetch products, using dummy data", err);
-    // dummyProducts already set hai, fallback automatic
   }
 
   return (
     <section
       aria-label="Wellness product collection"
-      className="relative w-full md:h-[calc(100vh-146px)]"
+      className="relative w-full mb-28 md:mb-20"
     >
+<div className="relative min-h-[470px] md:h-[calc(100vh-146px)] w-full">
+  <Carousel autoplayDelay={5000}>
+    {products.map((product) => (
+      <ProductSlideContent
+        key={product._id}
+        product={product}
+      />
+    ))}
+  </Carousel>
+</div>
 
-      <Carousel autoplayDelay={5000}>
-        {products.map((product) => (
-          <ProductSlideContent key={product._id} product={product} />
-        ))}
-      </Carousel>
-        <WellnessFeatureStrip />
+      <WellnessFeatureStrip />
     </section>
   );
 }

@@ -131,6 +131,7 @@ const handleRequestOTP = async (e: React.FormEvent) => {
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]" size={18} />
             <input
               type="email"
+              aria-label="Email address"
               placeholder="Email Address"
               suppressHydrationWarning
               value={email}
@@ -146,6 +147,7 @@ const handleRequestOTP = async (e: React.FormEvent) => {
             <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]" size={18} />
             <input
               type="text"
+              aria-label="6-digit OTP"
               placeholder="Enter 6-digit OTP"
               suppressHydrationWarning
               maxLength={6}
@@ -163,6 +165,7 @@ const handleRequestOTP = async (e: React.FormEvent) => {
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]" size={18} />
               <input
                 type="password"
+                aria-label="New password"
                 placeholder="New Password"
                 suppressHydrationWarning
                 value={newPassword}
@@ -175,6 +178,7 @@ const handleRequestOTP = async (e: React.FormEvent) => {
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]" size={18} />
               <input
                 type="password"
+                aria-label="Confirm new password"
                 placeholder="Confirm New Password"
                 suppressHydrationWarning
                 value={confirmPassword}

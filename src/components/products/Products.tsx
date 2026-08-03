@@ -306,6 +306,7 @@ const toggleIdealFor = (value: string) => {
 
                   <input
                     type="range"
+                    aria-label="Price range filter"
                     min={minPrice}
                     max={maxPrice}
                     value={priceRange}
@@ -409,6 +410,7 @@ const toggleIdealFor = (value: string) => {
                     <div className="relative">
                       <select
                         suppressHydrationWarning
+                        aria-label="Sort products"
                         value={sortBy}
                         onChange={(e) =>
                           setSortBy(e.target.value)
@@ -436,6 +438,8 @@ const toggleIdealFor = (value: string) => {
                   <div className="flex items-center gap-1 bg-white border border-[#ede8e0] rounded-lg p-1">
                     <button
                       suppressHydrationWarning
+                      aria-label="Grid view"
+                      aria-pressed={viewMode === "grid"}
                       onClick={() => setViewMode("grid")}
                       className={`p-1.5 rounded transition-colors ${viewMode === "grid"
                           ? "bg-[#183b17] text-white"
@@ -447,6 +451,8 @@ const toggleIdealFor = (value: string) => {
 
                     <button
                       suppressHydrationWarning
+                      aria-label="List view"
+                      aria-pressed={viewMode === "list"}
                       onClick={() => setViewMode("list")}
                       className={`p-1.5 rounded transition-colors ${viewMode === "list"
                           ? "bg-[#183b17] text-white"
@@ -521,6 +527,7 @@ const toggleIdealFor = (value: string) => {
                   <input
                     suppressHydrationWarning
                     type="text"
+                    aria-label="Your name"
                     placeholder="Your Name"
                     value={enquiry.name}
                     onChange={(e) =>
@@ -536,6 +543,7 @@ const toggleIdealFor = (value: string) => {
                   <input
                     suppressHydrationWarning
                     type="email"
+                    aria-label="Email address"
                     placeholder="Email Address"
                     value={enquiry.email}
                     onChange={(e) =>
@@ -551,6 +559,7 @@ const toggleIdealFor = (value: string) => {
                   <input
                     suppressHydrationWarning
                     type="tel"
+                    aria-label="Phone number"
                     placeholder="Phone Number"
                     value={enquiry.phone}
                     onChange={(e) =>
@@ -566,6 +575,7 @@ const toggleIdealFor = (value: string) => {
                   <div className="relative">
                     <select
                       suppressHydrationWarning
+                      aria-label="Product category"
                       value={enquiry.category}
                       onChange={(e) =>
                         setEnquiry((prev) => ({
@@ -593,6 +603,7 @@ const toggleIdealFor = (value: string) => {
                   {/* Message */}
                   <textarea
                     rows={3}
+                    aria-label="Your message"
                     placeholder="Your Message"
                     value={enquiry.message}
                     onChange={(e) =>

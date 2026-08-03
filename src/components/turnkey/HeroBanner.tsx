@@ -1,5 +1,6 @@
 import { Container } from "../ui/Container";
 import Image from "next/image";
+import TurnkeyStatsStrip from "./TurnkeyStatsStrip";
 import banner_image from "@/assets/trunkey_solutions/turnkey.webp"
 import single_point from "@/assets/trunkey_solutions/single_point_banner.webp"
 import on_time from "@/assets/trunkey_solutions/on_time.webp"
@@ -36,11 +37,12 @@ export interface TurnkeyHeroContent {
 
 export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyHeroContent }) {
   return (
-    <div className="min-h-[80vh] relative">
+     <div className="relative overflow-visible mb-40 md:mb-20">
         <Image src={sectionContent.backgroundImage.imageUrl} alt={sectionContent.backgroundImage.alt||sectionContent.title} fill className="object-fill z-0! absolute object-right" priority  />
       {/* ── HERO ── */}
-      <Container className="relative z-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center md:h-[calc(100vh-146px)]">
+ <Container className="relative z-20">
+        <div className="relative min-h-[470px] md:h-[calc(100vh-146px)] w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center h-full">
 
           {/* LEFT COLUMN */}
           <div className="flex flex-col gap-4 h-full justify-center">
@@ -103,7 +105,9 @@ export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyH
           </div>
 
         </div>
+        </div>
       </Container>
+          <TurnkeyStatsStrip/>
     </div>
   );
 }

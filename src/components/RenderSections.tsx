@@ -154,8 +154,8 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       return <ConsultancyServices sectionContent={data as any} />
 
 
-    case "contact.featuresStrip":
-      return <SupportHighlights sectionContent={data as SupportHighlightsContent} />;
+    // case "contact.featuresStrip":
+    //   return <SupportHighlights sectionContent={data as SupportHighlightsContent} />;
  case "contact.getInTouch":
 return <ContactSection sectionContent={data as any} />;
     case "contact.hero":

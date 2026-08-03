@@ -115,10 +115,12 @@ export function Checkbox({
   };
 
   return (
-    <label className="flex items-center gap-2.5 cursor-pointer group">
+    <label
+      onClick={handleClick}
+      className="flex items-center gap-2.5 cursor-pointer group"
+    >
       <div
-        onClick={handleClick}
-        className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors ${isChecked
+        className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors pointer-events-none ${isChecked
             ? "bg-[#183b17] border-[#183b17]"
             : "bg-white"
           }`}
