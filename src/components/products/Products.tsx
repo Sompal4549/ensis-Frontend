@@ -631,8 +631,8 @@ const toggleIdealFor = (value: string) => {
                     >
                       <option value="">Select Product Category</option>
 
-                      {displayCategories.slice(1).map((c) => (
-                        <option key={c.key} value={c.key}>
+                      {displayCategories.slice(1).map((c, i) => (
+                        <option key={c.key || `cat-${i}`} value={c.key}>
                           {c.label}
                         </option>
                       ))}
@@ -661,6 +661,7 @@ const toggleIdealFor = (value: string) => {
 
                   {/* Button */}
                   <button
+                    suppressHydrationWarning
                     type="button"
                     disabled={enquiryLoading}
                     onClick={handleEnquirySubmit}

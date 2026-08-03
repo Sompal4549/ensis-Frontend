@@ -132,45 +132,45 @@ return (
           it land fully below the banner instead of half-overlapping it. */}
       <div className="hidden lg:block absolute left-0 right-0 bottom-0 translate-y-1/2 z-30">
         <Container>
-          <div className="rounded-[20px] bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
-            <div className="grid grid-cols-4">
-              {features.items.map((item, index) => (
-                <div
-                  key={item.title}
-                  className="relative flex items-center gap-5 px-8 py-5"
-                >
-                  {index !== 0 && (
-                    <div className="absolute left-0 top-1/2 h-[58px] -translate-y-1/2 border-l border-[#e6e8ee]" />
-                  )}
+ <div className="rounded-[20px] border-2 border-[#C7A55B] bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
+  <div className="grid grid-cols-4">
+    {features.items.map((item, index) => (
+      <div
+        key={item.title}
+        className="relative flex items-center gap-5 px-8 py-5"
+      >
+        {index !== 0 && (
+          <div className="absolute left-0 top-1/2 h-[58px] -translate-y-1/2 border-l border-[#E8DCC1]" />
+        )}
 
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    width={52}
-                    height={52}
-                    className="object-contain"
-                  />
+        <Image
+          src={item.image}
+          alt={item.title}
+          width={52}
+          height={52}
+          className="object-contain"
+        />
 
-                  <div>
-                    <div className="font-bold">
-                      {item.heading}
-                    </div>
-
-                    <div className="text-sm font-semibold mt-1">
-                      {item.title}
-                    </div>
-
-                    <div
-                      className="text-xs mt-1"
-                      dangerouslySetInnerHTML={{
-                        __html: item.description,
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+        <div>
+          <div className="font-bold text-[#1F3A2A]">
+            {item.heading}
           </div>
+
+          <div className="mt-1 text-sm font-semibold text-[#3B3B3B]">
+            {item.title}
+          </div>
+
+          <div
+            className="mt-1 text-xs text-[#6B6B6B]"
+            dangerouslySetInnerHTML={{
+              __html: item.description,
+            }}
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
         </Container>
       </div>
     </div>
