@@ -3,7 +3,7 @@ import nextDynamic from "next/dynamic";
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
-import { Montserrat, Playfair_Display } from 'next/font/google';
+import { Montserrat, Playfair_Display, Jost, Cormorant_Garamond } from 'next/font/google';
 import { ShopProvider } from "@/context/ShopContext";
 import footerTop1 from "@/assets/footer-top.webp"
 import footerTop2 from "@/assets/footer-top2.webp"
@@ -15,11 +15,14 @@ import footerTop6 from "@/assets/footer-top-4.png"
 
 const montserrat = Montserrat({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-montserrat', display: "swap" });
 const cormorant = Playfair_Display({ subsets: ['latin'], weight: ['400', '600', '700'], variable: '--font-cormorant', display: "swap" });
+const jost = Jost({ subsets: ['latin'], weight: ['300', '400', '500', '600'], variable: '--font-jost', display: "swap" });
+const cormorantGaramond = Cormorant_Garamond({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-cormorant-garamond', display: "swap" });
 
 import { Header } from "@/components/layout/Header";
 const Footer = nextDynamic(() => import("@/components/layout/Footer").then((mod) => mod.Footer));
 const SocialSidebar = nextDynamic(() => import("@/components/layout/SocialSidebar").then((mod) => mod.default));
 const WhatsAppFloat = nextDynamic(() => import("@/components/ui/WhatsAppFloat").then((mod) => mod.default));
+const ToastProvider = nextDynamic(() => import("@/components/ui/ToastProvider").then((mod) => mod.default));
 
 
 // export const metadata: Metadata = {
@@ -50,7 +53,7 @@ export default async function RootLayout({
   const searchConsole = advSeo?.searchConsole || {};
 
   return (
-    <html lang="en" className={`${montserrat.variable} ${cormorant.variable}`}>
+    <html lang="en" className={`${montserrat.variable} ${cormorant.variable} ${jost.variable} ${cormorantGaramond.variable}`}>
       <head>
         {/* Search Console Verification */}
         {searchConsole.googleVerification && (
@@ -120,6 +123,7 @@ export default async function RootLayout({
           <noscript>
             <iframe
               src={`https://www.googletagmanager.com/ns.html?id=${analytics.gtmId}`}
+              title="Google Tag Manager noscript fallback"
               height="0"
               width="0"
               style={{ display: "none", visibility: "hidden" }}
@@ -129,8 +133,7 @@ export default async function RootLayout({
         <ShopProvider>
           <Header />
           <main className="pt-22">{children}</main>
-          <Footer />
-          {/* <Footer image={footerTop1} />
+          <Footer />          {/* <Footer image={footerTop1} />
           <Footer image={footerTop2} />
           <Footer image={footerTop3} />
           <Footer image={footerTop4} />
@@ -138,6 +141,7 @@ export default async function RootLayout({
           <Footer image={footerTop6} /> */}
           <SocialSidebar />
           <WhatsAppFloat />
+          <ToastProvider />
         </ShopProvider>
       </body>
     </html>

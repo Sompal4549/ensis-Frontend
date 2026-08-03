@@ -25,6 +25,7 @@ const PremiumMap = ({ sectionContent }: { sectionContent: PremiumMapProps }) => 
           <div className="overflow-hidden rounded-[28px] border border-[#E7E7E7] bg-white shadow-sm">
             <iframe
               src={sectionContent?.mapUrl||"https://www.google.com/maps/dir/28.6654464,77.4012928/Ensis+(Best+Ayurvedic,+Spa+%26+Panchkarma+Equipment+Manufacturer+in+Delhi+NCR),+12%2F29+2nd+Floor,+Site-2,+Sunrise,+Industrial+Area,+Sahibabad,+Ghaziabad,+Uttar+Pradesh+201007/@28.6734721,77.3754897,14z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x390cf1ead9e1d9e5:0x31a2384cd903039b!2m2!1d77.3887281!2d28.6814285?entry=ttu&g_ep=EgoyMDI2MDYyNC4wIKXMDSoASAFQAw%3D%3D"}
+              title="Google Maps location of Ensis"
               className="h-[280px] w-full md:h-[350px] lg:h-[430px]"
               loading="lazy"
               allowFullScreen

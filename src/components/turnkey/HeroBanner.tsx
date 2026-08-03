@@ -1,5 +1,6 @@
 import { Container } from "../ui/Container";
 import Image from "next/image";
+import TurnkeyStatsStrip from "./TurnkeyStatsStrip";
 import banner_image from "@/assets/trunkey_solutions/turnkey.webp"
 import single_point from "@/assets/trunkey_solutions/single_point_banner.webp"
 import on_time from "@/assets/trunkey_solutions/on_time.webp"
@@ -36,11 +37,12 @@ export interface TurnkeyHeroContent {
 
 export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyHeroContent }) {
   return (
-    <div className="min-h-[80vh] relative">
+     <div className="relative overflow-visible mb-40 md:mb-20">
         <Image src={sectionContent.backgroundImage.imageUrl} alt={sectionContent.backgroundImage.alt||sectionContent.title} fill className="object-fill z-0! absolute object-right" priority  />
       {/* ── HERO ── */}
-      <Container className="relative z-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center md:h-[calc(100vh-146px)]">
+ <Container className="relative z-20">
+        <div className="relative min-h-[470px] md:h-[calc(100vh-146px)] w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center h-full">
 
           {/* LEFT COLUMN */}
           <div className="flex flex-col gap-4 h-full justify-center">
@@ -72,24 +74,24 @@ export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyH
             </div>
 
             {/* Body copy */}
-            <p className="text-sm  max-w-md leading-6 mb-4" dangerouslySetInnerHTML={{__html:sectionContent.description}}>
+            <p className="text-sm  max-w-md leading-6 mb-4" dangerouslySetInnerHTML={{__html:sectionContent.description || ""}}>
           
             </p>
 
             {/* Feature icons */}
             <div className="flex flex-wrap gap-4 sm:gap-6">
-          {sectionContent.features.map((f, index) => (
+          {(Array.isArray(sectionContent.features) ? sectionContent.features : []).map((f, index) => (
   <div
-    key={f.id || index}
+    key={f?.id || index}
     className={`flex flex-col items-center gap-2 text-center min-w-[64px] pr-3 ${
       index !== sectionContent.features.length - 1 ? "border-r border-[#7c5c18]" : ""
     }`}
   >
     <div className="w-12 h-12 text-[#d6a85f] flex items-center justify-center text-xl">
-      <Image src={f.image.imageUrl} alt={f.image.alt||f.title} width={40} height={40} className="object-fill" />
+      <Image src={f?.image?.imageUrl || ""} alt={f?.image?.alt || f?.title || ""} width={40} height={40} className="object-fill" />
     </div>
     <p className="text-[10px] sm:text-xs leading-snug whitespace-pre-line font-medium max-w-[90px]">
-      {f.title}
+      {f?.title}
     </p>
   </div>
 ))}
@@ -103,7 +105,9 @@ export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyH
           </div>
 
         </div>
+        </div>
       </Container>
+          <TurnkeyStatsStrip/>
     </div>
   );
 }

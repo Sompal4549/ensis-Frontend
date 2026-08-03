@@ -10,15 +10,16 @@ import {
   Globe,
   Package,
   RefreshCw,
+  ArrowRight,
 } from "lucide-react";
 import { nanoid } from 'nanoid'
 import Link from "next/link";
 import { PAGE_SIZE } from "@/constants";
 import ProductCard, { Checkbox } from "./ProductCard";
-import BookButton from "../ui/BookButton";
 import Image from "next/image";
 import lotus from "@/assets/about/lotus.png";
 import { categoryApi, getImageUrl, productApi } from "@/lib/api/api";
+import { API_URL } from "@/lib/api/api";
 import { Container } from "../ui/Container";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -36,6 +37,8 @@ export default function Products() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", category: "", message: "", });
+  const [enquiryStatus, setEnquiryStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [enquiryLoading, setEnquiryLoading] = useState(false);
   // Infinite scroll
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -107,17 +110,58 @@ useEffect(() => {
     };
     loadData();
   }, []);
-const displayCategories = useMemo(() => {
+
+  const handleEnquirySubmit = async () => {
+    setEnquiryStatus(null);
+
+    if (!enquiry.email.trim()) {
+      setEnquiryStatus({ type: "error", message: "Please enter your email address." });
+      return;
+    }
+
+    setEnquiryLoading(true);
+
+    try {
+      const res = await fetch(`${API_URL}/newsletter/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: enquiry.email.trim(), type: "product" }),
+      });
+
+      const payload = await res.json().catch(() => ({}));
+
+      if (res.ok && payload.status !== "error") {
+        setEnquiryStatus({ type: "success", message: "Thank you! Our wellness experts will contact you soon." });
+        setEnquiry({ name: "", email: "", phone: "", category: "", message: "" });
+      } else {
+        setEnquiryStatus({ type: "error", message: payload.message || "Something went wrong. Please try again." });
+      }
+    } catch {
+      setEnquiryStatus({ type: "error", message: "Failed to send enquiry. Please try again." });
+    } finally {
+      setEnquiryLoading(false);
+    }
+  };
+
+  const displayCategories = useMemo(() => {
+  if (!Array.isArray(apiCategories)) return [
+    {
+      key: "all",
+      label: "All",
+      icon: "",
+      count: products.length,
+    },
+  ];
   return [
     {
       key: "all",
       label: "All",
-      icon: apiCategories.find(c => c.slug === "all")?.image || "",
+      icon: apiCategories.find((c) => c?.slug === "all")?.image || "",
       count: products.length,
     },
 
     ...apiCategories
-      .filter((c) => c.slug !== "all")
+      .filter((c) => c && c.slug !== "all")
       .map((c) => ({
         key: c.slug,
         label: c.name,
@@ -306,6 +350,7 @@ const toggleIdealFor = (value: string) => {
 
                   <input
                     type="range"
+                    aria-label="Price range filter"
                     min={minPrice}
                     max={maxPrice}
                     value={priceRange}
@@ -409,6 +454,7 @@ const toggleIdealFor = (value: string) => {
                     <div className="relative">
                       <select
                         suppressHydrationWarning
+                        aria-label="Sort products"
                         value={sortBy}
                         onChange={(e) =>
                           setSortBy(e.target.value)
@@ -436,6 +482,8 @@ const toggleIdealFor = (value: string) => {
                   <div className="flex items-center gap-1 bg-white border border-[#ede8e0] rounded-lg p-1">
                     <button
                       suppressHydrationWarning
+                      aria-label="Grid view"
+                      aria-pressed={viewMode === "grid"}
                       onClick={() => setViewMode("grid")}
                       className={`p-1.5 rounded transition-colors ${viewMode === "grid"
                           ? "bg-[#183b17] text-white"
@@ -447,6 +495,8 @@ const toggleIdealFor = (value: string) => {
 
                     <button
                       suppressHydrationWarning
+                      aria-label="List view"
+                      aria-pressed={viewMode === "list"}
                       onClick={() => setViewMode("list")}
                       className={`p-1.5 rounded transition-colors ${viewMode === "list"
                           ? "bg-[#183b17] text-white"
@@ -521,6 +571,7 @@ const toggleIdealFor = (value: string) => {
                   <input
                     suppressHydrationWarning
                     type="text"
+                    aria-label="Your name"
                     placeholder="Your Name"
                     value={enquiry.name}
                     onChange={(e) =>
@@ -536,6 +587,7 @@ const toggleIdealFor = (value: string) => {
                   <input
                     suppressHydrationWarning
                     type="email"
+                    aria-label="Email address"
                     placeholder="Email Address"
                     value={enquiry.email}
                     onChange={(e) =>
@@ -551,6 +603,7 @@ const toggleIdealFor = (value: string) => {
                   <input
                     suppressHydrationWarning
                     type="tel"
+                    aria-label="Phone number"
                     placeholder="Phone Number"
                     value={enquiry.phone}
                     onChange={(e) =>
@@ -566,6 +619,7 @@ const toggleIdealFor = (value: string) => {
                   <div className="relative">
                     <select
                       suppressHydrationWarning
+                      aria-label="Product category"
                       value={enquiry.category}
                       onChange={(e) =>
                         setEnquiry((prev) => ({
@@ -593,6 +647,7 @@ const toggleIdealFor = (value: string) => {
                   {/* Message */}
                   <textarea
                     rows={3}
+                    aria-label="Your message"
                     placeholder="Your Message"
                     value={enquiry.message}
                     onChange={(e) =>
@@ -605,7 +660,25 @@ const toggleIdealFor = (value: string) => {
                   />
 
                   {/* Button */}
-                  <BookButton text="Send Enquiry" />
+                  <button
+                    type="button"
+                    disabled={enquiryLoading}
+                    onClick={handleEnquirySubmit}
+                    className="w-full flex items-center justify-center gap-1.5 px-4 h-8 rounded-lg bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)] text-white font-bold text-[10px] tracking-widest hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {enquiryLoading ? (
+                      <span className="inline-block w-3.5 h-3.5 border-2 border-[#c8a45d] border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <ArrowRight className="w-3 h-3" />
+                    )}
+                    {enquiryLoading ? "Sending..." : "Send Enquiry"}
+                  </button>
+
+                  {enquiryStatus && (
+                    <p className={`text-[11px] font-medium leading-snug ${enquiryStatus.type === "success" ? "text-green-700" : "text-red-600"}`}>
+                      {enquiryStatus.message}
+                    </p>
+                  )}
                 </div>
               </div>
 

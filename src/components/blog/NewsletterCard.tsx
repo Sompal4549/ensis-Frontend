@@ -19,7 +19,7 @@ export default function NewsletterCard({sectionContent} : {sectionContent: any})
     setStatus(null);
 
     try {
-      const response = await axios.post(`${API_URL}/newsletter/subscribe`, { email });
+      const response = await axios.post(`${API_URL}/newsletter/subscribe`, { email, type: "blog" });
       if (response.status === 200 || response.data.success) {
         setStatus({ type: "success", message: "Thank you for subscribing!" });
         setEmail("");
@@ -37,16 +37,16 @@ export default function NewsletterCard({sectionContent} : {sectionContent: any})
     <Container>
     <div className="rounded-xl border border-[#dcc9b5] bg-[#efe4d7] p-4">
       {/* Horizontal on desktop, vertical on mobile */}
-      <form onSubmit={handleSubscribe} className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
+      <form onSubmit={handleSubscribe} autoComplete="off" className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-8">
         
         {/* Text */}
         <div className="lg:shrink-0  flex-1">
           <h3 className="font-serif text-2xl text-[#2b241f] font-semibold lg:text-left text-center">
             {sectionContent?.heading || "Stay Inspired"}
           </h3>
-          <p className="text-[15px] text-[#6e5b4d] lg:text-left text-center" dangerouslySetInnerHTML={{__html:sectionContent?.description || "Subscribe for wellness insights, updates, and exclusive offers."}}>
+          <div className="text-[15px] text-[#6e5b4d] lg:text-left text-center" dangerouslySetInnerHTML={{__html:sectionContent?.description || "Subscribe for wellness insights, updates, and exclusive offers."}}>
             
-          </p>
+          </div>
         </div>
 
         {/* Input + Button */}
@@ -54,6 +54,7 @@ export default function NewsletterCard({sectionContent} : {sectionContent: any})
           <div className="flex flex-col gap-2 sm:flex-row justify-end items-center">
           <input
             type="email"
+            aria-label="Email address for newsletter subscription"
             placeholder="Enter your email"
             suppressHydrationWarning
             value={email}

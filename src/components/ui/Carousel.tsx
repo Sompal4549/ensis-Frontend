@@ -55,13 +55,13 @@ export const Carousel: React.FC<CarouselProps> = ({
   return (
     <div
       ref={emblaRef}
-      className="relative w-full overflow-hidden"
+      className="relative h-full w-full overflow-hidden"
     >
-      <div className="flex">
+      <div className="flex h-full">
         {children.map((child, index) => (
           <div
             key={index}
-            className="relative flex-[0_0_100%]"
+            className="relative h-full flex-[0_0_100%]"
           >
             {child}
           </div>

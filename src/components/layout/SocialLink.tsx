@@ -21,6 +21,7 @@ export default function SocialIconLink({
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      aria-label={`Follow us on ${platform}`}
       className={className}
       onClick={() => {
         void socialApi.trackClick(platform);

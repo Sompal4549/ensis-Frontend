@@ -148,7 +148,7 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
   return (
     <section className="bg-[#f7f2ea] relative z-20 mb-12">
       <Carousel autoplayDelay={6000}>
-        {heroSlides.map((slide) => (
+        {heroSlides.map((slide, slideIndex) => (
           <div
             key={slide.id || `${slide.title}-${slide.primaryBtn}`}
             className="relative"
@@ -156,18 +156,18 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
             {/* Background Image - full on desktop, fixed height on mobile */}
             <div className="absolute inset-0 hidden md:block">
               {typeof slide.image === "string" && slide.image ? (
-                <Image src={getImageUrl(slide.image)} alt="" fill className="object-fill" crossOrigin="anonymous" sizes="100vw" />
+                <Image src={getImageUrl(slide.image)} alt="" fill priority={slideIndex === 0} className="object-fill" crossOrigin="anonymous" sizes="100vw" />
               ) : (
-                <Image src={slide.image} alt="" fill priority className="object-fill" crossOrigin="anonymous" sizes="100vw" />
+                <Image src={slide.image} alt="" fill priority={slideIndex === 0} className="object-fill" crossOrigin="anonymous" sizes="100vw" />
               )}
             </div>
 
             {/* Mobile image - shown above content */}
             <div className="relative w-full h-55 sm:h-65 md:hidden overflow-hidden">
               {typeof slide.image === "string" && slide.image ? (
-                <Image src={getImageUrl(slide.image)} alt="" fill className="object-fill object-left" crossOrigin="anonymous" sizes="100vw" />
+                <Image src={getImageUrl(slide.image)} alt="" fill priority={slideIndex === 0} className="object-fill object-left" crossOrigin="anonymous" sizes="100vw" />
               ) : (
-                <Image src={slide.image} alt="" fill priority className="object-fill object-left" crossOrigin="anonymous" sizes="100vw" />
+                <Image src={slide.image} alt="" fill priority={slideIndex === 0} className="object-fill object-left" crossOrigin="anonymous" sizes="100vw" />
               )}
             </div>
 

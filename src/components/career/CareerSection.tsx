@@ -9,9 +9,9 @@ import life3 from "@/assets/career/life3.webp"
 import life4 from "@/assets/career/life4.png"
 import life5 from "@/assets/career/life5.webp"
 import GreenButton from "../ui/GreenButton";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { applicationApi } from "@/lib/api/api";
+import { applicationApi, careerApi, Career } from "@/lib/api/api";
 import HtmlRenderer from "../layout/HtmlRender";
 export interface CareerSectionProps{
     heading: string;
@@ -75,7 +75,7 @@ const jobs = [
     location: "Delhi",
     experience: "2-4 Yrs",
   },
-];
+] as Career[];
 
 const steps = [
   "Apply Online",
@@ -99,6 +99,39 @@ const [form, setForm] = useState({
 const [resume, setResume] = useState<File | null>(null);
 const [agreed, setAgreed] = useState(false);
 const [loading, setLoading] = useState(false);
+const [openings, setOpenings] = useState<Career[]>(jobs);
+const [appliedJob, setAppliedJob] = useState<Career | null>(null);
+const formRef = useRef<HTMLDivElement>(null);
+
+useEffect(() => {
+  let isMounted = true;
+  careerApi
+    .list()
+    .then((data) => {
+      if (!isMounted) return;
+      if (Array.isArray(data)) {
+        setOpenings(data.filter((job) => job.status !== "closed"));
+      }
+    })
+    .catch((err) => {
+      console.error("Failed to fetch career openings:", err);
+      if (isMounted) setOpenings(jobs);
+    });
+  return () => {
+    isMounted = false;
+  };
+}, []);
+
+const handleApply = (job: Career) => {
+  setAppliedJob(job);
+  setForm((prev) => ({
+    ...prev,
+    department: job.department,
+    experience: job.experience,
+  }));
+  formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  toast.info("We have filled the form, please upload your resume.");
+};
 
 const handleSubmit = async (
   e: React.FormEvent<HTMLFormElement>
@@ -174,6 +207,7 @@ try {
 
   setResume(null);
   setAgreed(false);
+  setAppliedJob(null);
 } catch (error: any) {
   toast.error(
     error.message ||
@@ -183,6 +217,30 @@ try {
   setLoading(false);
 }
 };
+
+const departmentOptions = Array.from(
+  new Set([
+    "Design",
+    "Engineering",
+    "Manufacturing",
+    "Sales & Marketing",
+    "Project Management",
+    ...openings.map((job) => job.department).filter(Boolean),
+  ])
+);
+
+const experienceOptions = Array.from(
+  new Set([
+    "Fresher",
+    "0-1 Years",
+    "1-3 Years",
+    "3-5 Years",
+    "5-8 Years",
+    "8+ Years",
+    ...openings.map((job) => job.experience).filter(Boolean),
+  ])
+);
+
   return (
     <section className="bg-[#f8f5f0]">
       <Container>
@@ -290,22 +348,32 @@ try {
 
               {/* Job Table */}
               <div className="mt-3 border border-[#e5dfd7] bg-white">
-                {jobs.map((job) => (
-                  <div
-                    key={job.title}
-                    className="grid gap-4 border-b border-[#f0ebe5] p-2 md:grid-cols-[2fr_1.5fr_1fr_1fr_auto]"
-                  >
-                    <div className="font-medium text-xs">{job.title}</div>
-                    <div className="text-xs">{job.department}</div>
-                    <div className="text-xs">{job.location}</div>
-                    <div className="text-xs">{job.experience}</div>
-
-                    <button className="flex items-center gap-2 text-[#c89a4b] text-xs">
-                      APPLY NOW
-                      <ArrowRight size={16} />
-                    </button>
+                {openings.length === 0 ? (
+                  <div className="p-6 text-center text-xs text-[#777]">
+                    No open positions right now. Please check back later.
                   </div>
-                ))}
+                ) : (
+                  openings.map((job) => (
+                    <div
+                      key={job._id || job.title}
+                      className="grid gap-4 border-b border-[#f0ebe5] p-2 md:grid-cols-[2fr_1.5fr_1fr_1fr_auto]"
+                    >
+                      <div className="font-medium text-xs">{job.title}</div>
+                      <div className="text-xs">{job.department}</div>
+                      <div className="text-xs">{job.location}</div>
+                      <div className="text-xs">{job.experience}</div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleApply(job)}
+                        className="flex items-center gap-2 text-[#c89a4b] text-xs"
+                      >
+                        APPLY NOW
+                        <ArrowRight size={16} />
+                      </button>
+                    </div>
+                  ))
+                )}
               </div>
 
               {/* Journey */}
@@ -337,7 +405,7 @@ try {
             </div>
 
             {/* RIGHT FORM */}
-            <aside className="relative z-10 lg:-mt-18 lg:sticky lg:top-10 lg:h-fit">
+            <aside ref={formRef} className="relative z-10 lg:-mt-18 lg:sticky lg:top-10 lg:h-fit scroll-mt-24">
               <div className=" bg-[#062017] p-8 text-white shadow-2xl">
                 <h3 className="font-serif text-lg uppercase">
                   {sectionContent.careerForm.title}
@@ -347,11 +415,27 @@ try {
                 >
                 </HtmlRenderer>
 
+                {appliedJob && (
+                  <div className="mt-4 flex items-center justify-between gap-2 rounded-md border border-[#c89a4b] bg-[#c89a4b]/10 px-3 py-2">
+                    <span className="text-xs font-semibold text-[#e8c766]">
+                      Applying for: {appliedJob.title}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setAppliedJob(null)}
+                      className="text-[10px] text-white/60 underline hover:text-white"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                )}
+
                 <form
   className="mt-4 space-y-5"
   onSubmit={handleSubmit}
 >
                 <input
+  aria-label="Full name"
   value={form.fullName}
   onChange={(e) =>
     setForm({
@@ -365,6 +449,7 @@ try {
 
           <input
   type="email"
+  aria-label="Email address"
   value={form.email}
   onChange={(e) =>
     setForm({
@@ -377,6 +462,7 @@ try {
 />
 
         <input
+  aria-label="Phone number"
   value={form.phone}
   onChange={(e) =>
     setForm({
@@ -390,6 +476,7 @@ try {
 
                   <div className="grid grid-cols-2 gap-4">
                 <input
+  aria-label="Current location"
   value={form.currentLocation}
   onChange={(e) =>
     setForm({
@@ -401,6 +488,7 @@ try {
   className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
 />
 <select
+  aria-label="Years of experience"
   value={form.experience}
   onChange={(e) =>
     setForm({
@@ -408,19 +496,17 @@ try {
       experience: e.target.value,
     })
   }
-  className="border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+  className="border-b border-[#b98b43]/40 bg-[#062017] text-white pb-1 outline-none text-xs"
 >
-  <option value="">Experience</option>
-  <option value="Fresher">Fresher</option>
-  <option value="0-1 Years">0-1 Years</option>
-  <option value="1-3 Years">1-3 Years</option>
-  <option value="3-5 Years">3-5 Years</option>
-  <option value="5-8 Years">5-8 Years</option>
-  <option value="8+ Years">8+ Years</option>
+  <option value="" className="text-black">Experience</option>
+  {experienceOptions.map((opt) => (
+    <option key={opt} value={opt}>{opt}</option>
+  ))}
 </select>
                   </div>
 
            <select
+  aria-label="Department interested in"
   value={form.department}
   onChange={(e) =>
     setForm({
@@ -428,26 +514,14 @@ try {
       department: e.target.value,
     })
   }
-  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-2 outline-none text-xs"
+  className="w-full border-b border-[#b98b43]/40 bg-[#062017] text-white pb-2 outline-none text-xs"
 >
   <option value="">
     Department Interested In
   </option>
-  <option value="Design">
-    Design
-  </option>
-  <option value="Engineering">
-    Engineering
-  </option>
-  <option value="Manufacturing">
-    Manufacturing
-  </option>
-  <option value="Sales & Marketing">
-    Sales & Marketing
-  </option>
-  <option value="Project Management">
-    Project Management
-  </option>
+  {departmentOptions.map((opt) => (
+    <option key={opt} value={opt}>{opt}</option>
+  ))}
 </select>
               <div className="rounded-xl border border-dashed border-[#b98b43] p-4 text-center text-xs">
   <input
@@ -478,6 +552,7 @@ try {
 
              <textarea
   rows={2}
+  aria-label="Cover letter or message"
   value={form.coverLetter}
   onChange={(e) =>
     setForm({
@@ -491,6 +566,7 @@ try {
                   <label className="flex items-start gap-3 text-xs text-white">
                    <input
   type="checkbox"
+  aria-label="I agree to the terms"
   checked={agreed}
   onChange={(e) =>
     setAgreed(e.target.checked)

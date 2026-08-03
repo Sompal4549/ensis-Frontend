@@ -9,10 +9,12 @@ import { Container } from "../ui/Container";
 import enquaryBg from "@/assets/enquiry/formimage.webp"
 import { API_URL } from "@/lib/api/api";
 import HtmlRenderer from "../layout/HtmlRender";
+import EnquaryStatsStrip from "./EnquaryStatsStrip";
 
 interface EnquiryPageProps {
   content?: EnquiryPageContent;
   onSubmit?: (data: EnquiryFormData) => void | Promise<void>;
+  statsStrip?: React.ReactNode;
 }
 
 const initialFormData: EnquiryFormData = {
@@ -36,25 +38,47 @@ const initialFormData: EnquiryFormData = {
 
 export default function EnquiryPage({
   content = fallbackEnquiryContent,
+  statsStrip,
 }: EnquiryPageProps) {
   const [formData, setFormData] = useState<EnquiryFormData>(initialFormData);
   const [errors, setErrors] = useState<EnquiryFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-const handleFormSubmit = async (data: any) => {
+
+  const handleFormSubmit = async (data: EnquiryFormData) => {
     try {
+      const payload = new FormData();
+
+      payload.append("fullName", data.fullName ?? "");
+      payload.append("mobileNumber", data.mobileNumber ?? "");
+      payload.append("email", data.email ?? "");
+      payload.append("companyOrganization", data.companyOrganization ?? "");
+      payload.append("cityAndState", data.cityAndState ?? "");
+      payload.append("projectType", data.projectType ?? "");
+      payload.append("state", data.state ?? "");
+      payload.append("city", data.city ?? "");
+      payload.append("projectSize", data.projectSize ?? "");
+      payload.append("budgetRange", data.budgetRange ?? "");
+      payload.append("servicesRequired", JSON.stringify(data.servicesRequired ?? []));
+      payload.append("timeline", data.timeline ?? "");
+      payload.append("message", data.message ?? "");
+      payload.append("preferredContact", data.preferredContact ?? "whatsapp");
+      payload.append("agreeToContact", String(Boolean(data.agreeToContact)));
+
+      if (data.file) {
+        payload.append("file", data.file);
+      }
+
       const response = await fetch(`${API_URL}/enquiry/submit`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        method: "POST",
+        body: payload,
       });
 
       if (!response.ok) {
-        throw new Error('Failed to submit enquiry');
+        const errorPayload = await response.json().catch(() => null);
+        throw new Error(errorPayload?.message || "Failed to submit enquiry");
       }
     } catch (error) {
-      console.error('Error submitting enquiry:', error);
+      console.error("Error submitting enquiry:", error);
       throw error;
     }
   };
@@ -154,61 +178,68 @@ const handleFormSubmit = async (data: any) => {
     }
   };
 
-const sectionHeadingClass =
-  "mb-2 font-serif text-xs font-semibold text-[#1f2c25]";
+  const sectionHeadingClass =
+    "mb-2 font-serif text-xs font-semibold text-[#1f2c25]";
 
-const labelBaseClass =
-  "mb-1 block text-xs font-medium text-[#5a5248]";
+  const labelBaseClass =
+    "mb-1 block text-xs font-medium text-[#5a5248]";
 
-const inputBaseClass =
-  "w-full rounded-md border border-[#d8cdb8] bg-white px-3 py-1 text-sm text-[#3a3a3a] placeholder:text-black outline-none transition focus:border-[#b1793d] focus:ring-1 focus:ring-[#b1793d]/20";
+  const inputBaseClass =
+    "w-full rounded-md border border-[#d8cdb8] bg-white px-3 py-1 text-sm text-[#3a3a3a] placeholder:text-black outline-none transition focus:border-[#b1793d] focus:ring-1 focus:ring-[#b1793d]/20";
 
-const errorClass =
-  "mt-1 text-[11px] text-red-600";
+  const errorClass =
+    "mt-1 text-[11px] text-red-600";
   return (
     <div className="w-full bg-[#f7f1e3]">
       {/* Hero Section */}
-<section className="relative h-[600px] md:h-[calc(100vh-146px)] overflow-hidden">
-  {/* Background Image */}
-  <div className="absolute inset-0">
-    <Image
-      src={content.hero.imageSrc}
-      alt={content.hero.imageAlt}
-      fill
-      className="object-cover"
-      sizes="100vw"
-      priority
-    />
-    {/* Optional overlay */}
-    <div className="absolute inset-0 bg-black/20" />
-  </div>
+      <section className="relative overflow-hidden">
+        <div className="relative h-[600px] md:h-[calc(100vh-146px)]">
+          {/* Background Image */}
+          <div className="absolute inset-0 overflow-hidden">
+            <Image
+              src={content.hero.imageSrc}
+              alt={content.hero.imageAlt}
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority
+            />
+            {/* Optional overlay */}
+            <div className="absolute inset-0 bg-black/20" />
+          </div>
 
-  {/* Content */}
- <Container className="relative z-10 grid h-full grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
-   <div className="flex flex-col items-center justify-center text-center rounded-2xl px-8 py-10 bg-linear-to-r from-white/40 via-white/5 to-white/5 backdrop-blur-[2px]">
-  <h1 className="text-4xl sm:text-6xl">
-    {content.hero.heading}
-  </h1>
+          {/* Content */}
+          <Container className="relative z-10 grid h-full grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
+            <div className="flex flex-col items-center justify-center text-center rounded-2xl px-8 py-10 bg-linear-to-r from-white/40 via-white/5 to-white/5 backdrop-blur-[2px]">
+              <h1 className="text-4xl sm:text-6xl">
+                {content.hero.heading}
+              </h1>
 
-  <div className="my-5 flex items-center gap-3">
-    <span className="h-px w-16 bg-[#b1793d]/80" />
-    <span className="h-2 w-2 rotate-45 bg-[#b1793d]/80" />
-    <span className="h-px w-16 bg-[#b1793d]/80" />
-  </div>
+              <div className="my-5 flex items-center gap-3">
+                <span className="h-px w-16 bg-[#b1793d]/80" />
+                <span className="h-2 w-2 rotate-45 bg-[#b1793d]/80" />
+                <span className="h-px w-16 bg-[#b1793d]/80" />
+              </div>
 
-  <h2 className="font-serif text-xl sm:text-2xl text-[#b1793d] font-semibold">
-    {content.hero.subheading}
-  </h2>
+              <h2 className="font-serif text-xl sm:text-2xl text-[#b1793d] font-semibold">
+                {content.hero.subheading}
+              </h2>
 
-  <HtmlRenderer className="mt-3 max-w-md text-sm leading-relaxed sm:text-base font-semibold" content={content.hero.description}>
-    
-  </HtmlRenderer>
-</div>
-  </Container>
-</section>
+              <HtmlRenderer
+                className="mt-3 max-w-md text-sm leading-relaxed sm:text-base font-semibold"
+                content={content.hero.description}
+              />
+            </div>
+          </Container>
+        </div>
+
+        <div className="relative z-10 mt-6 md:mt-0 md:-mt-28 xl:-mt-10">
+          <EnquaryStatsStrip />
+        </div>
+      </section>
 
       {/* Form + Sidebar Section */}
-      <Container className="relative z-20 -mt-12 sm:-mt-10 rounded-xl">
+      <Container className="relative z-20 mt-8 sm:mt-10 rounded-xl">
         <form
           onSubmit={handleSubmit}
           className="grid grid-cols-1 lg:grid-cols-[1fr_380px] border-[#e3d2b0] bg-white rounded-xl border shadow-md overflow-hidden"
@@ -439,6 +470,9 @@ const errorClass =
               {/* Timeline */}
               <div>
                 <h4 className={sectionHeadingClass}>Timeline</h4>
+                <label className={labelBaseClass} htmlFor="timeline">
+                  Timeline
+                </label>
                 <select
                   id="timeline"
                   className={inputBaseClass}
@@ -504,7 +538,7 @@ const errorClass =
                     <label
                       key={opt.id}
                       htmlFor={`contact-${opt.id}`}
-                     className={`${labelBaseClass} gap-2 flex`}
+                      className={`${labelBaseClass} gap-2 flex`}
                     >
                       <input
                         id={`contact-${opt.id}`}
@@ -553,14 +587,14 @@ const errorClass =
 
           {/* Sidebar */}
           <aside className="relative hidden lg:block h-full min-h-full overflow-hidden rounded-xl">
-  <Image
-    src={content?.hero?.formImageSrc}
-    alt="Enquiry"
-    fill
-    className="object-cover"
-    sizes="380px"
-  />
-</aside>
+            <Image
+              src={content?.hero?.formImageSrc}
+              alt="Enquiry"
+              fill
+              className="object-cover"
+              sizes="380px"
+            />
+          </aside>
         </form>
       </Container>
     </div>

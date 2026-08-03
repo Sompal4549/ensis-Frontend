@@ -1,6 +1,9 @@
 import { useState, useCallback } from "react";
 import { createPaymentOrder, verifyPayment, RazorpayOrderData } from "@/utils/payment";
 
+const ENSIS_LOGO_URL =
+  "https://res.cloudinary.com/ddjhixcwh/image/upload/v1785758490/ensis/hlirvxf09yovla9qu21n.webp";
+
 function loadRazorpayScript(): Promise<boolean> {
   return new Promise((resolve) => {
     if (typeof window === "undefined") return resolve(false);
@@ -83,8 +86,9 @@ export function useRazorpay({ onSuccess, onFailure }: UseRazorpayOptions = {}) {
           key: orderData.keyId,
           amount: orderData.amount, // amount in paise
           currency: orderData.currency,
-          name: "Ensis Wellness",
+          name: "Ensis",
           description: "Payment for Order #" + orderId.slice(-6).toUpperCase(),
+          image: ENSIS_LOGO_URL,
           order_id: orderData.razorpayOrderId,
           prefill,
           theme: {
