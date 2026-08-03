@@ -19,7 +19,7 @@ export default function NewsletterCard({sectionContent} : {sectionContent: any})
     setStatus(null);
 
     try {
-      const response = await axios.post(`${API_URL}/newsletter/subscribe`, { email });
+      const response = await axios.post(`${API_URL}/newsletter/subscribe`, { email, type: "blog" });
       if (response.status === 200 || response.data.success) {
         setStatus({ type: "success", message: "Thank you for subscribing!" });
         setEmail("");

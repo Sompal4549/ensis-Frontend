@@ -41,6 +41,7 @@ const BlogDetailNewsletter = ({sectionContent}:{sectionContent:any}) => {
         `${API_URL}/newsletter/subscribe`,
         {
           email,
+          type: "blog",
         }
       );
 

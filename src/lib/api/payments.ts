@@ -53,7 +53,7 @@ async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
 
 function getToken() {
   // swap with your auth store / cookie / localStorage
-  return localStorage.getItem("access_token") ?? "";
+  return localStorage.getItem("ensis_access_token") ?? "";
 }
 
 // ── Payment API calls ─────────────────────────────────────────────────────────

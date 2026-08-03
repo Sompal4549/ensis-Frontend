@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import twenty from "@/assets/about_new/years_experience.webp";
 import projects from "@/assets/about_new/project.webp";
 import twohundred from "@/assets/about_new/happy_clients.webp";
@@ -31,27 +34,42 @@ interface StatsStripContent {
   items: StatItem[];
 }
 
-export default async function ProjectsStatsStrip() {
-  const content = await getComponentContent<StatsStripContent>(
-    "projects.features_strip",
-    {
-      items: defaultStats,
-    }
-  );
-  const stats = content.items?.length ? content.items : defaultStats;
+export default function ProjectsStatsStrip() {
+  const [resolvedStats, setResolvedStats] = useState<StatItem[]>(defaultStats);
 
-  const resolvedStats: StatItem[] = stats.map(
-    (item: StatItem, i: number) => ({
-      ...defaultStats[i],
-      ...item,
-      image: item.imageurl?.imageUrl
-        ? {
-          src: getImageUrl(item.imageurl.imageUrl),
-          alt: item.imageurl.alt,
-        }
-        : item.image ?? defaultStats[i]?.image,
+  useEffect(() => {
+    let isMounted = true;
+
+    getComponentContent<StatsStripContent>("projects.features_strip", {
+      items: defaultStats,
     })
-  );
+      .then((content) => {
+        if (!isMounted) return;
+
+        const stats = content.items?.length ? content.items : defaultStats;
+
+        const resolved: StatItem[] = stats.map((item: StatItem, i: number) => ({
+          ...defaultStats[i],
+          ...item,
+          image: item.imageurl?.imageUrl
+            ? {
+                src: getImageUrl(item.imageurl.imageUrl),
+                alt: item.imageurl.alt,
+              }
+            : item.image ?? defaultStats[i]?.image,
+        }));
+
+        setResolvedStats(resolved);
+      })
+      .catch((err) => {
+        console.error("Error fetching stats strip content:", err);
+        if (isMounted) setResolvedStats(defaultStats);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 py-0">
@@ -76,8 +94,7 @@ export default async function ProjectsStatsStrip() {
             >
               <div className="mt-1 shrink-0 w-14 h-14 flex items-center justify-center">
                 <Image
-                  src={item.image.imageUrl
-                    ?? item.image}
+                  src={item.image.src ?? item.image}
                   alt={item.image.alt || item.title}
                   width={70}
                   height={50}

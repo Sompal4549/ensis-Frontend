@@ -192,7 +192,7 @@ export default function EnquiryPage({
   return (
     <div className="w-full bg-[#f7f1e3]">
       {/* Hero Section */}
-      <section className="relative overflow-hidden md:mb-16">
+      <section className="relative overflow-hidden">
         <div className="relative h-[600px] md:h-[calc(100vh-146px)]">
           {/* Background Image */}
           <div className="absolute inset-0 overflow-hidden">
@@ -233,7 +233,7 @@ export default function EnquiryPage({
           </Container>
         </div>
 
-        <div className="relative z-20 mt-0 md:mt-0">
+        <div className="relative z-10 mt-6 md:mt-0 md:-mt-28 xl:-mt-10">
           <EnquaryStatsStrip />
         </div>
       </section>

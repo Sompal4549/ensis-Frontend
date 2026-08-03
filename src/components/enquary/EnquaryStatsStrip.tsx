@@ -72,7 +72,7 @@ export default function EnquaryStatsStrip() {
   }, []);
 
   return (
-    <Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 py-0">
+    <Container className="relative z-10 py-0">
       <div
         className="
           rounded-xl

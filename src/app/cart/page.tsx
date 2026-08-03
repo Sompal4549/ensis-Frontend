@@ -166,7 +166,7 @@ export default function CartPage() {
   }, [cartItems]);
 
   return (
-    <div className="min-h-screen bg-[#fbfaf7] text-[#101010]">
+    <div className="min-h-screen bg-[#fbfaf7] text-[#101010] pt-10">
       <Container>
         <div className="">
           <div className="flex flex-wrap items-end justify-between gap-4">
@@ -230,7 +230,9 @@ export default function CartPage() {
                     <p className="mt-1 text-xs">Pay securely online or request support from our wellness equipment team.</p>
                   </div>
                   <Link href="/checkout" className="mt-2 py-2 w-full flex items-center justify-center gap-2 rounded-xl bg-[#313b30] text-base font-semibold text-white transition-colors hover:bg-[#172015]">
-                    <LockKeyhole size={16} /> Proceed to Checkout
+                    <div className="text-white flex items-center gap-2">
+                      <LockKeyhole size={16} /> Proceed to Checkout
+                    </div>
                   </Link>
                   <p className="mt-2 text-center text-[11px]">Guaranteed safe and secure checkout</p>
                 </section>

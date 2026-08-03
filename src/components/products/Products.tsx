@@ -10,15 +10,16 @@ import {
   Globe,
   Package,
   RefreshCw,
+  ArrowRight,
 } from "lucide-react";
 import { nanoid } from 'nanoid'
 import Link from "next/link";
 import { PAGE_SIZE } from "@/constants";
 import ProductCard, { Checkbox } from "./ProductCard";
-import BookButton from "../ui/BookButton";
 import Image from "next/image";
 import lotus from "@/assets/about/lotus.png";
 import { categoryApi, getImageUrl, productApi } from "@/lib/api/api";
+import { API_URL } from "@/lib/api/api";
 import { Container } from "../ui/Container";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -36,6 +37,8 @@ export default function Products() {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", category: "", message: "", });
+  const [enquiryStatus, setEnquiryStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [enquiryLoading, setEnquiryLoading] = useState(false);
   // Infinite scroll
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -107,17 +110,58 @@ useEffect(() => {
     };
     loadData();
   }, []);
-const displayCategories = useMemo(() => {
+
+  const handleEnquirySubmit = async () => {
+    setEnquiryStatus(null);
+
+    if (!enquiry.email.trim()) {
+      setEnquiryStatus({ type: "error", message: "Please enter your email address." });
+      return;
+    }
+
+    setEnquiryLoading(true);
+
+    try {
+      const res = await fetch(`${API_URL}/newsletter/subscribe`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: enquiry.email.trim(), type: "product" }),
+      });
+
+      const payload = await res.json().catch(() => ({}));
+
+      if (res.ok && payload.status !== "error") {
+        setEnquiryStatus({ type: "success", message: "Thank you! Our wellness experts will contact you soon." });
+        setEnquiry({ name: "", email: "", phone: "", category: "", message: "" });
+      } else {
+        setEnquiryStatus({ type: "error", message: payload.message || "Something went wrong. Please try again." });
+      }
+    } catch {
+      setEnquiryStatus({ type: "error", message: "Failed to send enquiry. Please try again." });
+    } finally {
+      setEnquiryLoading(false);
+    }
+  };
+
+  const displayCategories = useMemo(() => {
+  if (!Array.isArray(apiCategories)) return [
+    {
+      key: "all",
+      label: "All",
+      icon: "",
+      count: products.length,
+    },
+  ];
   return [
     {
       key: "all",
       label: "All",
-      icon: apiCategories.find(c => c.slug === "all")?.image || "",
+      icon: apiCategories.find((c) => c?.slug === "all")?.image || "",
       count: products.length,
     },
 
     ...apiCategories
-      .filter((c) => c.slug !== "all")
+      .filter((c) => c && c.slug !== "all")
       .map((c) => ({
         key: c.slug,
         label: c.name,
@@ -616,7 +660,25 @@ const toggleIdealFor = (value: string) => {
                   />
 
                   {/* Button */}
-                  <BookButton text="Send Enquiry" />
+                  <button
+                    type="button"
+                    disabled={enquiryLoading}
+                    onClick={handleEnquirySubmit}
+                    className="w-full flex items-center justify-center gap-1.5 px-4 h-8 rounded-lg bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)] text-white font-bold text-[10px] tracking-widest hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    {enquiryLoading ? (
+                      <span className="inline-block w-3.5 h-3.5 border-2 border-[#c8a45d] border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <ArrowRight className="w-3 h-3" />
+                    )}
+                    {enquiryLoading ? "Sending..." : "Send Enquiry"}
+                  </button>
+
+                  {enquiryStatus && (
+                    <p className={`text-[11px] font-medium leading-snug ${enquiryStatus.type === "success" ? "text-green-700" : "text-red-600"}`}>
+                      {enquiryStatus.message}
+                    </p>
+                  )}
                 </div>
               </div>
 

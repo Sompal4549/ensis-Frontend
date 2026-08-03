@@ -31,6 +31,7 @@ import GreenButton from "../ui/GreenButton";
 import BookButton from "../ui/BookButton";
 import { useShop } from "@/context/ShopContext";
 import { getComponentContent } from "@/lib/api/api";
+import { authStore } from "@/lib/auth";
 
 export const Header = () => {
     const [mounted, setMounted] = useState(false);
@@ -54,6 +55,11 @@ export const Header = () => {
 
     useEffect(() => {
         const syncUser = () => {
+            // Only show a user if there is a valid, non-expired token
+            if (!authStore.isLoggedIn()) {
+                setUser(null);
+                return;
+            }
             const storedUser = typeof window !== "undefined" ? localStorage.getItem("ensis_user") : null;
             if (!storedUser) {
                 setUser(null);

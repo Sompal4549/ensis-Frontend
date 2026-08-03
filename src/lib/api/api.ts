@@ -261,6 +261,23 @@ export const applicationApi = {
   },
 };
 
+export type Career = {
+  _id: string;
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  experience: string;
+  status: "active" | "closed";
+};
+
+export const careerApi = {
+  list: async (): Promise<Career[]> => {
+    const response = await apiClient.get(`/careers`);
+    return unwrap<Career[]>(response);
+  },
+};
+
 export const blogApi = {
   list: async (): Promise<any[]> => {
     try {

@@ -1,3 +1,4 @@
+import nextDynamic from "next/dynamic";
 import AboutHero from "@/components/about/AboutBanner";
 
 import IndustriesWeServe from "@/components/about/Industries";
@@ -10,18 +11,16 @@ import AboutEnsisSection from "@/components/about/AboutEnsis";
 import WhyChooseEnsis from "@/components/about/WhyChoose";
 import WellnessBanner from "@/components/about/WellnessBanner";
 import FounderSection from "@/components/about/FounderSection";
-import { Testimonial, Testimonials } from "@/components/home/Testimonials";
 import { Hero } from "@/components/home/Hero";
 import FullWidthFeatures from "@/components/home/FullWidthFeatures";
 import { TurnkeySolutions } from "@/components/home/TurnkeySolutions"
 import { GlobalPresence } from "@/components/home/GlobalPresence";
-import { ManufacturingAndProjects } from "@/components/home/ManufacturingAndProjects";
 import { ProductsGrid, ProductsGridContent } from "@/components/home/ProductsGrid";
-import WellnessRoomSetups from "@/components/home/WellnessRoomSetups";
 import ConsultancyCTA from "@/components/consultancy/ConsultancyCTA";
 import ConsultancyHero from "@/components/consultancy/Hero";
 import HowWeWork from "@/components/consultancy/HowWeWork";
 import ConsultancyServices from "@/components/consultancy/Services";
+import ConsultancyStatsStrip from "@/components/consultancy/ConsultancyStatsStrip";
 import ContactHero from "@/components/contact/ContactHero";
 import SupportHighlights from "@/components/contact/SupportHightlights";
 import FacilitiesWeBuild, { FacilitiesWeBuildContent } from "@/components/turnkey/FacilitiesWeBuild";
@@ -32,35 +31,39 @@ import BlogSection from "@/components/blog/BlogSection";
 import BlogHeroSection from "@/components/blog/HeroSection";
 import SupportSection from "@/components/blog/SupportSection";
 import WellnessResources from "@/components/blog/WellnessResource";
-import NewsletterCard from "@/components/blog/NewsletterCard";
 import TrustedBrandsStrip, { TrustedBrandsStripContent } from "@/components/products/TrustedBrandsStrip";
 import WellnessFeatureStrip, { WellnessFeatureStripContent } from "@/components/products/WellnessFeatureStrip";
 import ProductWhyChoose, { WhyChooseContent } from "@/components/products/WhyChoose";
 import { BlogInsights } from "./home/BlogInsights";
 import TurnkeyWhyChoose, { TurnkeyWhyChooseContent } from '@/components/turnkey/WhyChoose'
 import HeroSlider from "@/components/products/HeroSlider"; // Already imported
-import Products from "@/components/products/Products"; // Removed invalid named import
 import TrunkeyMeaning, { TurnkeyMeaningContent } from '@/components/turnkey/TurnkeyMeaning' // Already imported
 import FeaturedProjects from '@/components/turnkey/FeaturedTrunkeyProjects' // Already imported
 import { WellnessCtaBannerContent } from "@/components/turnkey/WellnessCtaBanner";
 import { SupportHighlightsContent } from "./contact/SupportHightlights"; // Added import
-import ContactSection, { ContactSectionContent } from "./contact/ContactSection"; // Added import
 import { ContactHeroContent } from "./contact/ContactHero"; // Added import
 import ProjectsBanner, { ProjectsBannerContent } from "@/components/projects-and-clients/Banner";
 import WhyPartner from "@/components/projects-and-clients/WhyPartnerSection";
 import OurClients from "@/components/projects-and-clients/OurClients";
-import ContactBanner, {
-  ContactSection as ProjectsContactSection,
-} from "@/components/projects-and-clients/Contact";
 import CareersBanner from "./career/Hero";
 import WhyWorkSection from "./career/WhyWorkSection";
-import CareersSection from "./career/CareerSection";
-import TalentCommunityBanner from "./career/TalentCommunityBanner";
 import CareerBenefits from "./career/Benefits";
+import CareerStatsStrip from "./career/StatsStrip";
 import ContactCtaBanner, { ContactBannerProps } from "./contact/ContactBanner";
 import PremiumMap, { PremiumMapProps } from "./contact/ContactMap";
-import ProjectsContactBanner from "@/components/projects-and-clients/Contact";
 import { Suspense } from "react";
+
+// Heavy client components are code-split so they only load on pages
+// that actually render them (reduces unused JS on every other page).
+const Testimonials = nextDynamic(() => import("@/components/home/Testimonials").then((m) => m.Testimonials));
+const Products = nextDynamic(() => import("@/components/products/Products").then((m) => m.default));
+const NewsletterCard = nextDynamic(() => import("@/components/blog/NewsletterCard").then((m) => m.default));
+const ContactSection = nextDynamic(() => import("@/components/contact/ContactSection").then((m) => m.default));
+const CareersSection = nextDynamic(() => import("@/components/career/CareerSection").then((m) => m.default));
+const TalentCommunityBanner = nextDynamic(() => import("@/components/career/TalentCommunityBanner").then((m) => m.default));
+const WellnessRoomSetups = nextDynamic(() => import("@/components/home/WellnessRoomSetups").then((m) => m.default));
+const ManufacturingAndProjects = nextDynamic(() => import("@/components/home/ManufacturingAndProjects").then((m) => m.ManufacturingAndProjects));
+const ProjectsContactBanner = nextDynamic(() => import("@/components/projects-and-clients/Contact").then((m) => m.default));
 
 interface RenderSectionProps {
   componentKey: string;
@@ -83,7 +86,7 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
     case "home.productsGrid":
       return <ProductsGrid sectionContent={data as ProductsGridContent} />;
     case "home.testimonials":
-      return <Testimonials sectionContent={data as Testimonial} />;
+      return <Testimonials sectionContent={data as any} />;
     case "home.turnkeySolutions":
       return <TurnkeySolutions sectionData={data} />;
     case "home.wellnessRoomSetups":
@@ -105,7 +108,7 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
     case "about.ourProducts":
       return <OurProductsSection sectionContent={data as any} />;
     case "about.testimonials":
-      return <Testimonials sectionContent={data as Testimonial} />;
+      return <Testimonials sectionContent={data as any} />;
     // case "about.ourExpertise":
     //   return <ExpertiseSection sectionContent={data as any} />;
 
@@ -152,6 +155,8 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       return <HowWeWork sectionContent={data as any} />
     case "consultancy.whatWeOffer":
       return <ConsultancyServices sectionContent={data as any} />
+    case "consultancy.features_strip":
+      return <ConsultancyStatsStrip />
 
 
     // case "contact.featuresStrip":
@@ -187,7 +192,7 @@ case "contact.premiumMap":
       const ProductWhyChooseComp: any = ProductWhyChoose;
       return <ProductWhyChooseComp sectionContent={data as WhyChooseContent} />
     case "product.testimonials":
-      return <Testimonials sectionContent={data as Testimonial} />
+      return <Testimonials sectionContent={data as any} />
     case "product.productsection":
       return    <Suspense fallback={<div>Loading...</div>}>
       <Products {...(data as any)} />
@@ -207,8 +212,8 @@ return<WhyPartner sectionContent={data as any}/>
 // career
 case "career.banner":
   return <CareersBanner sectionContent={data as any}/>
-  // case "career.features":
-  //   return <WellnessFeatureStrip sectionContent={data as any}/>
+  case "career.features":
+    return <CareerStatsStrip />
   case "career.whyWork":
     return <WhyWorkSection sectionContent={data as any} />
   case "career.section":
@@ -217,8 +222,8 @@ case "career.banner":
     return <CareerBenefits sectionContent={data as any}/>
   case "career.talentCommunity":
     return <TalentCommunityBanner sectionContent={data as any}/>
-  case "career.testimonials":
-    return <Testimonials sectionContent={data as Testimonial} />
+    case "career.testimonials":
+    return <Testimonials sectionContent={data as any} />
     default:
       return null;
   }

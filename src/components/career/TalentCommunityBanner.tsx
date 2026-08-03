@@ -1,9 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
-import { CheckCircle2 } from "lucide-react";
+import axios from "axios";
+import { CheckCircle2, Loader2 } from "lucide-react";
 import talentBg from "@/assets/career/contact_banner.webp"
 import HtmlRenderer from "../layout/HtmlRender";
+import { API_URL } from "@/lib/api/api";
 
 const features = [
   "Be part of a purpose-driven team",
@@ -23,6 +26,38 @@ export interface CareerTalentCommunity{
   button:string
 }
 const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentCommunity}) => {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setLoading(true);
+    setStatus(null);
+
+    try {
+      const response = await axios.post(`${API_URL}/newsletter/subscribe`, {
+        email,
+        type: "career",
+      });
+      if (response.status === 200 || response.data.success) {
+        setStatus({ type: "success", message: "Thank you for joining our talent community!" });
+        setEmail("");
+      } else {
+        setStatus({ type: "error", message: response.data.message || "Something went wrong." });
+      }
+    } catch (err: any) {
+      setStatus({
+        type: "error",
+        message: err.response?.data?.message || "Failed to subscribe. Please try again.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <section className="relative">
       {/* Background Image */}
@@ -49,7 +84,7 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
           </HtmlRenderer>
 
           <ul className="mt-6 space-y-4">
-            {sectionContent.features.map((item, index) => (
+            {(sectionContent.features || features).map((item, index) => (
               <li
                 key={index}
                 className="flex items-center gap-3 text-sm text-white/90"
@@ -78,20 +113,31 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
             
           </HtmlRenderer>
 
-          <form className="mt-6 space-y-4">
+          <form className="mt-6 space-y-4" onSubmit={handleSubscribe}>
             <input
               type="email"
               aria-label="Email address to join the talent community"
               placeholder="Enter your email"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="h-12 w-full rounded-md border border-[#d7d7d7]/20 bg-white px-4 text-sm text-black outline-none placeholder:text-gray-400"
             />
 
             <button
               type="submit"
-              className="flex h-12 w-full items-center justify-center rounded-md bg-[#c89a4b] text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-[#b48235]"
+              disabled={loading}
+              className="flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#c89a4b] text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-[#b48235] disabled:opacity-60"
             >
-              {sectionContent.button||"Subscribe"}
+              {loading && <Loader2 size={16} className="animate-spin" />}
+              {loading ? "Subscribing..." : (sectionContent.button||"Subscribe")}
             </button>
+
+            {status && (
+              <p className={`text-xs ${status.type === "success" ? "text-green-400" : "text-red-400"}`}>
+                {status.message}
+              </p>
+            )}
           </form>
         </div>
       </div>
