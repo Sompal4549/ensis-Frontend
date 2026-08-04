@@ -36,7 +36,7 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
 
   return (
     <section>
-      <Container className="grid grid-cols-1 lg:grid-cols-[1.8fr_1.8fr] gap-4 items-stretch pt-2">
+      <Container className="grid grid-cols-1 lg:grid-cols-[1.8fr_1.8fr] gap-4 items-stretch py-4">
         
         {/* Left Content */}
         <div className="grid grid-cols-1 md:grid-cols-[320px_1fr] gap-4">

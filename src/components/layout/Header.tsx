@@ -176,7 +176,7 @@ export const Header = () => {
         <header className={`fixed inset-x-0 top-0 z-[60] transition-all duration-300 ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}>
             <div className={`bg-[#263016] text-white py-1.5`}>
                 <Container className="flex min-h-10 items-center justify-between gap-4 text-[11px] font-medium py-0!">
-                    <div className="hidden items-center gap-6 md:flex">
+                    <div className="hidden items-center gap-6 2xl:flex">
                         {headerContent.contactInfo?.map((item: any, index: number) => {
                             // Phone/email get clickable links; everything else is plain text with an icon
                             const isPhone = item.href?.startsWith("tel:");
@@ -205,7 +205,7 @@ export const Header = () => {
                             return (
                                 <span key={index} className="flex items-center gap-4">
                                     {item.image?.imageUrl ? (
-                                        <Image src={item.image.imageUrl} alt={item.image?.alt ?? ''} width={13} height={13} />
+                                        <Image src={item.image.imageUrl} priority alt={item.image?.alt ?? ''} width={13} height={13} />
                                     ) : (
                                         iconFor(item.image?.alt)
                                     )}

@@ -10,6 +10,7 @@ import twohundred from "@/assets/about_new/happy_clients.webp";
 import states from "@/assets/about_new/states_served.webp";
 import in_house from "@/assets/about_new/in_house.webp";
 import pan_india from "@/assets/about_new/pan_india.webp";
+import { gridColsClass } from "@/constants/grid";
 
 interface FeatureItem {
   id?: string;
@@ -74,23 +75,13 @@ export default function CareerStatsStrip() {
     };
   }, []);
 
-  const gridCols =
-    {
-      1: "xl:grid-cols-1",
-      2: "xl:grid-cols-2",
-      3: "xl:grid-cols-3",
-      4: "xl:grid-cols-4",
-      5: "xl:grid-cols-5",
-      6: "xl:grid-cols-6",
-      7: "xl:grid-cols-7",
-      8: "xl:grid-cols-8",
-    }[resolvedFeatures.length] || "xl:grid-cols-6";
+  const gridCols = gridColsClass(resolvedFeatures.length);
 
   return (
     <div className="relative z-10 mt-6 md:mt-0 md:-mt-28 xl:-mt-10">
       <Container className="relative z-10 py-0">
         <div className="rounded-xl border border-[#C9972A] bg-[#0f2e22] py-3 px-3 ring-1 ring-[#C9972A]/50 ring-offset-2 ring-offset-transparent">
-          <div className={`grid gap-6 md:grid-cols-2 ${gridCols}`}>
+          <div className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${gridCols}`}>
             {resolvedFeatures.map((item, index) => (
               <div
                 key={item.id || index}

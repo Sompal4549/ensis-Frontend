@@ -249,21 +249,21 @@ export default function EnquiryPage({
               </div>
 
               {/* Main heading */}
-              <h1 className="mt-5 text-[#173A2B]">
+              <h1 className="mt-2 text-[#173A2B] max-w-100">
                 {content.hero.subheading}
               </h1>
 
               {/* Thin gold divider — expands on load */}
-              <div className="mt-6 h-px w-24 bg-[#B88A44]" />
+              <div className="mt-3 h-px w-24 bg-[#B88A44]" />
 
               {/* Description */}
               <HtmlRenderer
-                className="mt-6 max-w-[480px] text-sm leading-6 text-[#4D4D4D] md:text-base"
+                className="mt-3 max-w-100 text-sm leading-6 text-[#4D4D4D] md:text-base"
                 content={content.hero.description}
               />
 
               {/* CTA */}
-              <div className="mt-8 flex flex-wrap items-center gap-5">
+              <div className="mt-4 flex flex-wrap items-center gap-5">
                 <Link
                   href={content.hero.ctaPrimary?.href || "#enquiry-form"}
                   className="group inline-flex items-center gap-4 rounded-full bg-[#0f2e22] px-7 py-2 text-sm font-semibold uppercase tracking-wide text-[#e8c766] shadow-lg shadow-[#0f2e22]/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#143b2c] hover:shadow-[0_8px_30px_rgba(184,138,68,0.35)]"
@@ -282,7 +282,7 @@ export default function EnquiryPage({
               </div>
 
 {/* Trust indicators */}
-              <div className="mt-8 flex flex-wrap gap-x-7 gap-y-3">
+              <div className="mt-6 flex flex-wrap gap-x-7 gap-y-3">
                 {(content.hero.trustIndicators?.length
                   ? content.hero.trustIndicators
                   : [

@@ -14,6 +14,7 @@ import innovation from "@/assets/about_new/innovation.png"
 import customer_satisfaction from "@/assets/about_new/innovation.png"
 import integrity from "@/assets/about_new/integrity.png"
 import { getImageUrl } from "@/lib/api/api";
+import { gridColsClass } from "@/constants/grid";
 
 interface ImageUrlData {
   imageUrl: string;
@@ -84,17 +85,7 @@ const AboutWellnessSection = ({
 }) => {
   // direct use sectionContent
 
-  const gridCols =
-    {
-      1: "lg:grid-cols-1",
-      2: "lg:grid-cols-2",
-      3: "lg:grid-cols-3",
-      4: "lg:grid-cols-4",
-      5: "lg:grid-cols-5",
-      6: "lg:grid-cols-6",
-      7: "lg:grid-cols-7",
-      8: "lg:grid-cols-8",
-    }[sectionContent.stats?.length || 6] || "lg:grid-cols-6";
+  const gridCols = gridColsClass(sectionContent.stats?.length || 6);
 
   return (
     <section className="w-full relative mt-2">
@@ -165,7 +156,7 @@ const AboutWellnessSection = ({
 
         {/* Bottom Stats Bar */}
         <div className="mt-4 bg-[#03261b] rounded-2xl py-5 px-5 border-3 border-[#e8c37a] absolute -bottom-10 left-0 right-0">
-          <div className={`grid grid-cols-2 md:grid-cols-3 gap-y-6 ${gridCols}`}>
+          <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-x-4 gap-y-6 ${gridCols}`}>
             {sectionContent.stats.map((item, index) => (
               <div
                 key={index}

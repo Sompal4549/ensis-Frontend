@@ -206,7 +206,7 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
                   {/* Description */}
                   {slide.description && (
                     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-[#313628]">
-                      <span className='font-semibold' dangerouslySetInnerHTML={{ __html: slide.description }}></span>
+                      <div className='font-semibold' dangerouslySetInnerHTML={{ __html: slide.description }}></div>
                     </div>
                   )}
 

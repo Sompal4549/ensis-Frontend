@@ -42,7 +42,7 @@ sectionContent = {}
   const imageUrl = resolvedImage?.imageUrl;
 
   return (
-    <section className="relative overflow-visible mb-0 md:mb-20">
+    <section className="relative overflow-visible mb-0 md:mb-16">
       <div className="relative">
       {/* Background image kept in its own overflow-hidden layer so it still
           stays clipped to the hero, while the section itself stays
@@ -81,11 +81,11 @@ sectionContent = {}
               <p className="mt-5 max-w-[360px] text-sm md:text-base leading-6 text-white" dangerouslySetInnerHTML={{__html:resolvedDescription||""}}>
               </p>
 
-              <div className="mt-8 flex flex-wrap gap-4">
-                <div className="w-35">
+              <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-4">
+                <div className="w-full sm:w-auto">
                   <BookButton text={resolvedPrimaryBtnText} path={resolvedPrimaryBtnPath} />
                 </div>
-                <div className="w-50">
+                <div className="w-full sm:w-auto">
                   <GreenButton text={resolvedSecondaryBtnText} path={resolvedSecondaryBtnPath} />
                 </div>
               </div>

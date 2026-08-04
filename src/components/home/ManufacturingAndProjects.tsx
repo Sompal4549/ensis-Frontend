@@ -98,7 +98,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
 
   return (
     <section className="border-b border-[#e7ddd1] bg-[#fbf8f2]">
-      <Container>
+      <Container className="pb-4">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-4 items-stretch">
 
           {/* LEFT SIDE */}

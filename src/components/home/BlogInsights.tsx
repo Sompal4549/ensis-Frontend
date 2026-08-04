@@ -35,7 +35,7 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
 
   return (
     <section className="bg-[#fbf8f2]">
-      <Container>
+      <Container className="pb-4">
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
           <div className="grid gap-6 md:items-start">
             <div>

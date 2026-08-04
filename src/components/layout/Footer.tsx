@@ -175,9 +175,9 @@ export const Footer = async () => {
     className="absolute inset-0 md:hidden bg-no-repeat"
     style={{
       // backgroundImage: `url(${image.src})`,
-        backgroundImage: `url(${footerTop2.src})`,
-      backgroundSize: "contain",
-      backgroundPosition: "bottom",
+        backgroundImage: `url(${footerTop2.src}), url(${footerTop2.src})`,
+      backgroundSize: "auto 100%, auto 100%",
+      backgroundPosition: "left top, right bottom",
     }}
   />
   {/* Normal bg image — desktop */}
@@ -207,7 +207,7 @@ export const Footer = async () => {
                <Image src={arrow} alt='arrow' width={150} height={8} />
               </div>
 
-              <HtmlRenderer content={content.company.description} className="text-[12px] leading-4 md:text-white text-center">
+              <HtmlRenderer content={content.company.description} className="text-[12px] leading-4 text-white text-center">
                 
               </HtmlRenderer>
 
@@ -241,7 +241,7 @@ export const Footer = async () => {
                     <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${color.bg} ${color.text}`}>
                       <Icon size={14} />
                     </div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#122544]">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-white md:text-[#122544]">
                       {nav.title}
                     </h3>
                   </div>
@@ -254,9 +254,9 @@ export const Footer = async () => {
                       <li key={link.href}>
                         <Link
                           href={link.href}
-                          className="flex font-medium items-center gap-1 text-xs text-[#24334c] transition hover:text-[#d0a965]"
+                          className="flex font-medium items-center gap-1 text-xs text-white md:text-[#24334c] transition hover:text-[#d0a965]"
                         >
-                          <ChevronRight size={12} className="shrink-0 text-[#d0a965] font-semibold" />
+                          <ChevronRight size={12} className="shrink-0 text-white md:text-[#d0a965] font-semibold" />
                           {link.label}
                         </Link>
                       </li>
@@ -271,7 +271,7 @@ export const Footer = async () => {
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#d0a965] text-white">
                   <Phone size={14} />
                 </div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#122544]">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-white md:text-[#122544]">
                   Contact Us
                 </h3>
               </div>
@@ -284,7 +284,7 @@ export const Footer = async () => {
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#d0a965]">
                     <MapPin size={14} className="text-[#d0a965]" />
                   </div>
-                  <p className="text-xs leading-4 text-[#24334c] font-semibold">
+                  <p className="text-xs leading-4 text-white md:text-[#24334c] font-semibold">
                     {content.contact.address}
                   </p>
                 </div>
@@ -294,7 +294,7 @@ export const Footer = async () => {
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#d0a965]">
                     <Phone size={14} className="text-[#d0a965]" />
                   </div>
-                  <span className="text-xs text-[#24334c] hover:text-[#d0a965] font-semibold">
+                  <span className="text-xs text-white md:text-[#24334c] hover:text-[#d0a965] font-semibold">
                     {content.contact.phone}
                   </span>
                 </Link>
@@ -304,7 +304,7 @@ export const Footer = async () => {
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#d0a965]">
                     <Mail size={14} className="text-[#d0a965]" />
                   </div>
-                  <span className="text-xs text-[#24334c] hover:text-[#d0a965] font-semibold">
+                  <span className="text-xs text-white md:text-[#24334c] hover:text-[#d0a965] font-semibold">
                     {content.contact.email}
                   </span>
                 </Link>

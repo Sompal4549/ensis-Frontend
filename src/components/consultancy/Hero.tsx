@@ -66,8 +66,7 @@ return (
 
             <h1 className="max-w-[650px]">
               <span>
-                {sectionContent.title}
-                <br />
+                {sectionContent.title}{" "}
                 {sectionContent.titlepart1}{" "}
                 <span className="text-[#2563eb]">
                   {sectionContent.titleHighlight}

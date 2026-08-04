@@ -75,16 +75,16 @@ export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyH
             </div>
 
             {/* Body copy */}
-            <p className="text-sm md:text-base leading-6 max-w-md mb-4 line-clamp-4" dangerouslySetInnerHTML={{__html:sectionContent.description || ""}}>
+            <div className="text-sm md:text-base leading-6 max-w-md mb-4 line-clamp-4" dangerouslySetInnerHTML={{__html:sectionContent.description || ""}}>
           
-            </p>
+            </div>
 
             {/* Feature icons */}
             <div className="flex flex-wrap gap-4 sm:gap-6">
           {(Array.isArray(sectionContent.features) ? sectionContent.features : []).map((f, index) => (
   <div
     key={f?.id || index}
-    className={`flex flex-col items-center gap-4 text-center min-w-[64px] pr-3 ${
+    className={`flex flex-col items-center gap-3 text-center min-w-[64px] pr-3 ${
       index !== sectionContent.features.length - 1 ? "border-r border-[#7c5c18]" : ""
     }`}
   >

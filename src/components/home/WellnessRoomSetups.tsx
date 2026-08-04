@@ -57,7 +57,7 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
 
   return (
     <section className="w-full">
-      <Container className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-8 items-start">
+      <Container className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-8 items-start !py-4">
 
         {/* Left Content */}
         <div className="flex flex-col justify-center h-full">
