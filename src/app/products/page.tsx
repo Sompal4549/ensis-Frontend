@@ -2,7 +2,7 @@ import PageBuilder from "@/components/PageBuilder";
 import { generateSeo } from "@/lib/api/seo";
 
 export async function generateMetadata() {
-  return generateSeo("product");
+  return generateSeo("products");
 }
 export default async function ProductsPage() {
   // let products: Product[] = [];
@@ -16,7 +16,7 @@ export default async function ProductsPage() {
 
   return (
    <>
-<PageBuilder slug="product" />
+<PageBuilder slug="product" schemaSlug="products" />
    </>
   );
 }

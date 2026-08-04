@@ -43,7 +43,7 @@ export default function FacilitiesWeBuild({sectionContent}: { sectionContent: Fa
       <Container>
 
         {/* ── Section Title ── */}
-        <div className="flex items-center gap-3 mb-2">
+        <div className="flex items-center gap-4 mb-2">
           <div className="flex-1 h-px bg-[#c9972a] opacity-40" />
           <div className="text-[#c9972a] text-base"> <Image src={decorationLeft} width={30} height={30} alt="decoration" className="h-full object-contain" /></div>
              <h2 className="text-base font-semibold uppercase">
@@ -54,11 +54,11 @@ export default function FacilitiesWeBuild({sectionContent}: { sectionContent: Fa
         </div>
 
         {/* ── Facilities Grid ── */}
-        <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-10 gap-3">
+        <div className="grid grid-cols-3 sm:grid-cols-5 lg:grid-cols-10 gap-4">
           {sectionContent.cards.map((f, index) => (
             <div
               key={f.id || f.title} // Use f.id if available, fallback to f.title
-              className={`flex flex-col items-center gap-3 text-center px-2 py-4 border border-[#d6c5a0] rounded-sm bg-[#faf6ee] hover:border-[#c9972a] transition-colors duration-200 ${
+              className={`flex flex-col items-center gap-4 text-center px-2 py-4 border border-[#d6c5a0] rounded-sm bg-[#faf6ee] hover:border-[#c9972a] transition-colors duration-200 ${
                 index === FACILITIES.length - 1 && FACILITIES.length % 2 !== 0
                   ? "col-span-1 sm:col-span-1"
                   : ""

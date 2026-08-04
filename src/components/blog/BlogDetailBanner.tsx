@@ -44,8 +44,8 @@ const BlogDetailBanner: React.FC<BlogDetailBannerProps> = ({ blog }) => {
       {/* Content */}
       <Container className="relative z-20 mx-auto px-6 py-8 md:py-10">
         {/* Title */}
-        <h1 className="max-w-xl font-serif leading-snug text-white">
-          <span className="block text-2xl sm:text-3xl md:text-4xl">
+        <h1 className="max-w-xl text-white">
+          <span className="block">
             {blog?.banner?.title}
           </span>
           {blog?.banner?.highlight && (
@@ -56,7 +56,7 @@ const BlogDetailBanner: React.FC<BlogDetailBannerProps> = ({ blog }) => {
         {/* Meta row */}
         <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/85">
         {blog?.banner?.date && (
-  <span className="flex items-center gap-2">
+  <span className="flex items-center gap-4">
     <Calendar size={15} className="text-[#C9972A]" />
     {new Date(blog.banner.date).toLocaleDateString("en-US", {
       year: "numeric",
@@ -66,13 +66,13 @@ const BlogDetailBanner: React.FC<BlogDetailBannerProps> = ({ blog }) => {
   </span>
 )}
           {blog?.banner?.readingTime && (
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-4">
               <Clock size={15} className="text-[#C9972A]" />
               {blog.banner.readingTime}
             </span>
           )}
           {blog?.banner?.category && (
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-4">
               <Tag size={15} className="text-[#C9972A]" />
               {blog.banner.category}
             </span>

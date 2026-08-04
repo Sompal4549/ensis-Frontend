@@ -48,16 +48,21 @@ export default function ProjectsStatsStrip() {
 
         const stats = content.items?.length ? content.items : defaultStats;
 
-        const resolved: StatItem[] = stats.map((item: StatItem, i: number) => ({
-          ...defaultStats[i],
-          ...item,
-          image: item.imageurl?.imageUrl
-            ? {
-                src: getImageUrl(item.imageurl.imageUrl),
-                alt: item.imageurl.alt,
-              }
-            : item.image ?? defaultStats[i]?.image,
-        }));
+        const resolved: StatItem[] = stats.map((item: StatItem, i: number) => {
+          const imageUrl = item.imageurl?.imageUrl || (item.image as any)?.imageUrl;
+          const alt = item.imageurl?.alt || (item.image as any)?.alt || item.title;
+
+          return {
+            ...defaultStats[i],
+            ...item,
+            image: imageUrl
+              ? {
+                  src: getImageUrl(imageUrl, 200),
+                  alt,
+                }
+              : item.image ?? defaultStats[i]?.image,
+          };
+        });
 
         setResolvedStats(resolved);
       })
@@ -71,6 +76,18 @@ export default function ProjectsStatsStrip() {
     };
   }, []);
 
+  const gridCols =
+    {
+      1: "xl:grid-cols-1",
+      2: "xl:grid-cols-2",
+      3: "xl:grid-cols-3",
+      4: "xl:grid-cols-4",
+      5: "xl:grid-cols-5",
+      6: "xl:grid-cols-6",
+      7: "xl:grid-cols-7",
+      8: "xl:grid-cols-8",
+    }[resolvedStats.length] || "xl:grid-cols-6";
+
   return (
     <Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 py-0">
       <div
@@ -83,7 +100,7 @@ export default function ProjectsStatsStrip() {
           ring-offset-2 ring-offset-transparent
         "
       >
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-6">
+        <div className={`grid gap-6 md:grid-cols-2 ${gridCols}`}>
           {resolvedStats.map((item, index) => (
             <div
               key={index}

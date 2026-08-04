@@ -375,7 +375,7 @@ export default function OrderPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[70vh] flex-col items-center justify-center gap-3 bg-[#FCFAF6]" style={jost}>
+      <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4 bg-[#FCFAF6]" style={jost}>
         <Loader2 className="h-8 w-8 animate-spin text-[#1F3A2A]" />
         <p className="text-sm font-medium tracking-wide text-[#5f665b]">Loading your order...</p>
       </div>
@@ -384,7 +384,7 @@ export default function OrderPage() {
 
   if (error || !order) {
     return (
-      <div className="flex min-h-[70vh] flex-col items-center justify-center gap-3 bg-[#FCFAF6] px-6 text-center" style={jost}>
+      <div className="flex min-h-[70vh] flex-col items-center justify-center gap-4 bg-[#FCFAF6] px-6 text-center" style={jost}>
         <div className="flex size-14 items-center justify-center rounded-full border border-rose-200 bg-rose-50 text-rose-500">
           <AlertCircle size={26} />
         </div>
@@ -482,7 +482,7 @@ export default function OrderPage() {
               and will contact you shortly to confirm delivery and installation support.
             </p>
 
-            <div className="mt-4 flex flex-wrap items-center justify-center gap-2">
+            <div className="mt-4 flex flex-wrap items-center justify-center gap-4">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-[#EDE4D3] bg-[#FBF8F2] px-3 py-1.5 text-[11px] font-semibold tracking-wide text-[#1F3A2A]">
                 <ShoppingBag size={12} className="text-[#C7A55B]" />
                 {order.items.reduce((sum, item) => sum + item.quantity, 0)} item
@@ -497,7 +497,7 @@ export default function OrderPage() {
         </section>
 
         {/* === ORDER INFORMATION CARDS === */}
-        <section className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-5">
+        <section className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
           {infoCards.map((card) => (
             <div
               key={card.label}
@@ -515,11 +515,11 @@ export default function OrderPage() {
         </section>
 
         {/* === MAIN GRID: Summary + Shipping/Payment === */}
-        <div className="mt-4 grid gap-3 lg:grid-cols-[1.15fr_0.85fr]">
+        <div className="mt-4 grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
           {/* ORDER SUMMARY */}
           <section className="self-start rounded-[24px] border border-[#EDE4D3] bg-white shadow-[0_14px_36px_rgba(31,58,42,0.06)]">
             <div className="flex items-center justify-between border-b border-[#F0E8DC] px-4 py-3 md:px-5">
-              <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A]">
+              <h3 className="flex items-center gap-4 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A]">
                 <span className="flex size-7 items-center justify-center rounded-lg bg-[#1F3A2A] text-[#C7A55B]">
                   <ShoppingBag size={13} />
                 </span>
@@ -532,7 +532,7 @@ export default function OrderPage() {
 
             <div className="px-4 py-2 md:px-5">
               {/* Header row — flex with fixed column widths so it always aligns in one row */}
-              <div className="hidden items-center gap-3 px-1 pb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#a89a82] md:flex">
+              <div className="hidden items-center gap-4 px-1 pb-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#a89a82] md:flex">
                 <span className="w-[56px] shrink-0">Item</span>
                 <span className="flex-1">Product</span>
                 <span className="w-[48px] shrink-0 text-center">Qty</span>
@@ -544,7 +544,7 @@ export default function OrderPage() {
                 {order.items.map((item, index) => (
                   <div
                     key={`${itemName(item)}-${index}`}
-                    className="flex flex-wrap items-center gap-3 py-3 md:flex-nowrap md:px-1"
+                    className="flex flex-wrap items-center gap-4 py-3 md:flex-nowrap md:px-1"
                   >
                     <div className="flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[#F0E8DC] bg-[#FBF8F2] md:w-[56px]">
                       {itemImage(item) ? (
@@ -627,7 +627,7 @@ export default function OrderPage() {
           <div className="space-y-3">
             <section className="rounded-[24px] border border-[#EDE4D3] bg-white shadow-[0_14px_36px_rgba(31,58,42,0.06)]">
               <div className="border-b border-[#F0E8DC] px-4 py-3 md:px-5">
-                <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A]">
+                <h3 className="flex items-center gap-4 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A]">
                   <span className="flex size-7 items-center justify-center rounded-lg bg-[#1F3A2A] text-[#C7A55B]">
                     <MapPin size={13} />
                   </span>
@@ -635,7 +635,7 @@ export default function OrderPage() {
                 </h3>
               </div>
               <div className="px-4 py-3 md:px-5">
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-4.5">
                   <div className="flex size-9 items-center justify-center rounded-full bg-[#F2EDE2] text-[#8d6a3a]">
                     <MapPin size={15} strokeWidth={1.8} />
                   </div>
@@ -677,7 +677,7 @@ export default function OrderPage() {
 
             <section className="rounded-[24px] border border-[#EDE4D3] bg-white shadow-[0_14px_36px_rgba(31,58,42,0.06)]">
               <div className="border-b border-[#F0E8DC] px-4 py-3 md:px-5">
-                <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A]">
+                <h3 className="flex items-center gap-4 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A]">
                   <span className="flex size-7 items-center justify-center rounded-lg bg-[#1F3A2A] text-[#C7A55B]">
                     <CreditCard size={13} />
                   </span>
@@ -722,7 +722,7 @@ export default function OrderPage() {
         {/* === WHAT HAPPENS NEXT — Timeline === */}
         <section id="whats-next" className="mt-4 rounded-[24px] border border-[#EDE4D3] bg-white px-4 py-5 shadow-[0_14px_36px_rgba(31,58,42,0.06)] md:px-6">
           <div className="flex items-center justify-between">
-            <h3 className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A]">
+            <h3 className="flex items-center gap-4 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A]">
               <span className="flex size-7 items-center justify-center rounded-lg bg-[#1F3A2A] text-[#C7A55B]">
                 <Truck size={13} />
               </span>
@@ -734,7 +734,7 @@ export default function OrderPage() {
           <div className="relative mt-5 grid gap-5 md:grid-cols-5 md:gap-0">
             <div className="absolute top-4 right-[10%] left-[10%] hidden h-px bg-gradient-to-r from-[#D8C9A8] via-[#C7A55B]/60 to-[#D8C9A8] md:block" aria-hidden="true" />
             {TIMELINE_STEPS.map((step, index) => (
-              <div key={step.title} className="relative flex items-start gap-3 md:flex-col md:items-center md:gap-0 md:text-center">
+              <div key={step.title} className="relative flex items-start gap-4 md:flex-col md:items-center md:gap-0 md:text-center">
                 <div className="relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full border-2 border-[#D8C9A8] bg-white text-[#8d6a3a] shadow-sm transition-all duration-300 hover:border-[#C7A55B] hover:bg-[#1F3A2A] hover:text-[#C7A55B]">
                   <step.icon size={14} strokeWidth={1.8} />
                 </div>
@@ -751,11 +751,11 @@ export default function OrderPage() {
         </section>
 
         {/* === TRUST SECTION === */}
-        <section className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6">
+        <section className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
           {TRUST_ITEMS.map((item) => (
             <div
               key={item.label}
-              className="flex flex-col items-center gap-2 rounded-[20px] border border-[#EDE4D3] bg-white/80 px-3 py-4 text-center shadow-[0_10px_28px_rgba(31,58,42,0.04)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#D8C9A8] hover:shadow-[0_16px_36px_rgba(31,58,42,0.10)]"
+              className="flex flex-col items-center gap-4 rounded-[20px] border border-[#EDE4D3] bg-white/80 px-3 py-4 text-center shadow-[0_10px_28px_rgba(31,58,42,0.04)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#D8C9A8] hover:shadow-[0_16px_36px_rgba(31,58,42,0.10)]"
             >
               <div className="flex size-9 items-center justify-center rounded-full bg-[#F2EDE2] text-[#8d6a3a] transition-colors duration-300 group-hover:bg-[#1F3A2A]">
                 <item.icon size={16} strokeWidth={1.6} />
@@ -766,10 +766,10 @@ export default function OrderPage() {
         </section>
 
         {/* === ACTION BUTTONS === */}
-        <section className="mt-5 flex flex-col items-center gap-2.5 sm:flex-row sm:flex-wrap sm:justify-center">
+        <section className="mt-5 flex flex-col items-center gap-4.5 sm:flex-row sm:flex-wrap sm:justify-center">
           <Link
             href="/products"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#1F3A2A] px-6 text-xs font-bold uppercase tracking-[0.16em] text-white shadow-[0_12px_30px_rgba(31,58,42,0.28)] transition-all duration-300 hover:bg-[#2F4A3A] hover:shadow-[0_16px_38px_rgba(31,58,42,0.36)] active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-4 rounded-full bg-[#1F3A2A] px-6 text-xs font-bold uppercase tracking-[0.16em] text-white shadow-[0_12px_30px_rgba(31,58,42,0.28)] transition-all duration-300 hover:bg-[#2F4A3A] hover:shadow-[0_16px_38px_rgba(31,58,42,0.36)] active:scale-[0.98]"
           >
             <div className="flex items-center gap-1.5 text-white">
 
@@ -779,20 +779,20 @@ export default function OrderPage() {
           <button
             type="button"
             onClick={handleDownloadInvoice}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-[#1F3A2A]/20 bg-white px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A] shadow-[0_10px_26px_rgba(31,58,42,0.08)] transition-all duration-300 hover:border-[#C7A55B] hover:text-[#8d6a3a] hover:shadow-[0_14px_32px_rgba(31,58,42,0.14)] active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-4 rounded-full border border-[#1F3A2A]/20 bg-white px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A] shadow-[0_10px_26px_rgba(31,58,42,0.08)] transition-all duration-300 hover:border-[#C7A55B] hover:text-[#8d6a3a] hover:shadow-[0_14px_32px_rgba(31,58,42,0.14)] active:scale-[0.98]"
           >
             <Download size={13} /> Download Invoice
           </button>
           <button
             type="button"
             onClick={handleTrackOrder}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-[#1F3A2A]/20 bg-white px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A] shadow-[0_10px_26px_rgba(31,58,42,0.08)] transition-all duration-300 hover:border-[#C7A55B] hover:text-[#8d6a3a] hover:shadow-[0_14px_32px_rgba(31,58,42,0.14)] active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-4 rounded-full border border-[#1F3A2A]/20 bg-white px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A] shadow-[0_10px_26px_rgba(31,58,42,0.08)] transition-all duration-300 hover:border-[#C7A55B] hover:text-[#8d6a3a] hover:shadow-[0_14px_32px_rgba(31,58,42,0.14)] active:scale-[0.98]"
           >
             <Truck size={13} /> Track Order
           </button>
           <Link
             href="/"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-[#EDE4D3] bg-transparent px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#8d6a3a] transition-all duration-300 hover:border-[#D8C9A8] hover:bg-white hover:text-[#1F3A2A] hover:shadow-[0_10px_26px_rgba(31,58,42,0.08)] active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-4 rounded-full border border-[#EDE4D3] bg-transparent px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#8d6a3a] transition-all duration-300 hover:border-[#D8C9A8] hover:bg-white hover:text-[#1F3A2A] hover:shadow-[0_10px_26px_rgba(31,58,42,0.08)] active:scale-[0.98]"
           >
             <Home size={13} /> Return Home
           </Link>
@@ -804,7 +804,7 @@ export default function OrderPage() {
             <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: LOTUS_PATTERN }} aria-hidden="true" />
             <div className="absolute -top-24 -right-24 size-72 rounded-full bg-[radial-gradient(circle_at_center,rgba(199,165,91,0.15),transparent_70%)]" aria-hidden="true" />
             <div className="relative">
-              <div className="flex flex-col items-start justify-between gap-2 md:flex-row md:items-center">
+              <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
                 <div>
                   <h3 className="text-lg font-medium tracking-tight text-white">Need Help With Your Order?</h3>
                   <p className="mt-1 text-[11px] leading-5 text-white/60">
@@ -813,11 +813,11 @@ export default function OrderPage() {
                   </p>
                 </div>
               </div>
-              <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {HELP_CHANNELS.map((channel) => (
                   <div
                     key={channel.label}
-                    className="group flex items-center gap-2.5 rounded-2xl border border-white/10 bg-white/[0.06] px-3 py-2.5 backdrop-blur-sm transition-all duration-300 hover:border-[#C7A55B]/50 hover:bg-white/[0.10]"
+                    className="group flex items-center gap-4.5 rounded-2xl border border-white/10 bg-white/[0.06] px-3 py-2.5 backdrop-blur-sm transition-all duration-300 hover:border-[#C7A55B]/50 hover:bg-white/[0.10]"
                   >
                     <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#C7A55B]/15 text-[#C7A55B] transition-colors duration-300 group-hover:bg-[#C7A55B] group-hover:text-[#1F3A2A]">
                       <channel.icon size={14} strokeWidth={1.8} />
@@ -849,7 +849,7 @@ export default function OrderPage() {
               </Link>
             </div>
 
-            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {recommended.map((product) => (
                 <div
                   key={product._id}
@@ -888,7 +888,7 @@ export default function OrderPage() {
                         {product.averageRating.toFixed(1)}
                       </span>
                     </div>
-                    <div className="mt-2 flex items-center justify-between gap-2">
+                    <div className="mt-2 flex items-center justify-between gap-4">
                       <span className="text-sm font-semibold text-[#1F3A2A]">{formatCurrency(product.price)}</span>
                       <button
                         type="button"
@@ -909,7 +909,7 @@ export default function OrderPage() {
       {/* === Toast === */}
       {toast && (
         <div className="fixed bottom-6 left-1/2 z-[60] -translate-x-1/2">
-          <div className="flex items-center gap-2 rounded-full border border-[#D8C9A8] bg-[#1F3A2A] px-4 py-2 text-xs font-semibold tracking-wide text-white shadow-[0_16px_40px_rgba(31,58,42,0.35)]">
+          <div className="flex items-center gap-4 rounded-full border border-[#D8C9A8] bg-[#1F3A2A] px-4 py-2 text-xs font-semibold tracking-wide text-white shadow-[0_16px_40px_rgba(31,58,42,0.35)]">
             <BadgeCheck size={13} className="text-[#C7A55B]" />
             {toast}
           </div>

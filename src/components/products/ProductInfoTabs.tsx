@@ -52,7 +52,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
               <button
                 key={tab.id}
                 onClick={() => setActive(tab.id)}
-                className={`flex items-center gap-2.5 border-b border-[#e8dfd0] px-4 py-3.5 text-left text-[11px] font-semibold tracking-[0.12em] transition-colors last:border-b-0 ${isActive
+                className={`flex items-center gap-4.5 border-b border-[#e8dfd0] px-4 py-3.5 text-left text-[11px] font-semibold tracking-[0.12em] transition-colors last:border-b-0 ${isActive
                   ? " bg-white text-[#8d6a3a] font-bold"
                   : "text-[#6b6b6b] hover:bg-white/60 font-normal"
                   }`}
@@ -82,7 +82,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                 </p>
                 <ul className="mt-4 space-y-2">
                   {overview?.overviewList?.map((item: any) => (
-                    <li key={item} className="flex items-start gap-2 text-xs">
+                    <li key={item} className="flex items-start gap-4 text-xs">
                       <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-[#8d6a3a]" />
                       {item}
                     </li>
@@ -91,7 +91,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
               </div>
 
               {/* Right: 3 highlight cards */}
-              <div className="grid min-w-0 flex-1 gap-2 md:grid-cols-3 py-2">
+              <div className="grid min-w-0 flex-1 gap-4 md:grid-cols-3 py-2">
                 {overview?.items?.map((h) => (
                   <div key={h.title} className="flex flex-col">
                     <div className="h-[50%] w-full bg-[#e8dfd0] rounded-tr-md rounded-tl-md overflow-hidden relative">
@@ -140,7 +140,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                   {overview?.keyFeatures?.keyFeaturesList?.map((item) => (
                     <div
                       key={item}
-                      className="flex items-center gap-3 rounded-lg border border-[#e8dfd0] p-4"
+                      className="flex items-center gap-4 rounded-lg border border-[#e8dfd0] p-4"
                     >
                       <CheckCircle2
                         size={16}

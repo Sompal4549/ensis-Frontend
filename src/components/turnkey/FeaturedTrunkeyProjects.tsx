@@ -26,7 +26,7 @@ export default function FeaturedProjects({sectionContent}: { sectionContent: Fea
     <section className="w-full bg-[#f7f3eb]">
       <Container>
         {/* Heading */}
-        <div className="mb-2 flex items-center justify-center gap-3">
+        <div className="mb-2 flex items-center justify-center gap-4">
          <Image src={decorationLeft} width={30} height={30} alt="decoration" className="h-full object-contain" />
           <h2 className="text-base font-semibold uppercase">
             {sectionContent.title}
@@ -37,7 +37,7 @@ export default function FeaturedProjects({sectionContent}: { sectionContent: Fea
   {sectionContent.subtitle}
 </p>
         {/* Cards */}
- <div className="grid grid-cols-2 gap-2 md:grid-cols-3 lg:grid-cols-6">
+ <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
   {sectionContent.cards.map((project:any, index:number) => (
     <div
       key={project.id || index}

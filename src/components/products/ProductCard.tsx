@@ -3,6 +3,7 @@ import { fmt } from "./Products";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { useShop, type ShopProduct } from "@/context/ShopContext";
+import { getImageUrl } from "@/lib/api/api";
 import type { Product } from "@/constants"
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -23,11 +24,12 @@ export default function ProductCard({ product }: { product: Product }) {
       <Link href={`/products/${product.slug}`} className="block">
         <div className="relative h-32 sm:h-36 overflow-hidden bg-[#f8f3ec]">
           <Image
-            src={product.images[0]}
+            src={getImageUrl(product.images[0], 700)}
             alt={product.title}
             fill
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             crossOrigin="anonymous"
+            loading="lazy"
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </div>
@@ -117,7 +119,7 @@ export function Checkbox({
   return (
     <label
       onClick={handleClick}
-      className="flex items-center gap-2.5 cursor-pointer group"
+      className="flex items-center gap-4.5 cursor-pointer group"
     >
       <div
         className={`w-4 h-4 rounded border flex items-center justify-center shrink-0 transition-colors pointer-events-none ${isChecked

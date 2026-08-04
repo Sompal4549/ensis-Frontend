@@ -56,7 +56,7 @@ export default function ProductGallery({
       </div>
 
       {/* RIGHT column: Multiple Views */}
-      <div className="flex flex-col gap-2 -mt-15">
+      <div className="flex flex-col gap-4 -mt-15">
         <p className="text-[8px] font-bold uppercase tracking-[0.15em]">
           Multiple Views
         </p>

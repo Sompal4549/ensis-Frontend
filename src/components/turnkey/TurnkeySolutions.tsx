@@ -69,7 +69,7 @@ const Card = ({
               }`}
           >
               {item.details.map((point, index) => (
-              <li key={index} className="flex gap-2">
+              <li key={index} className="flex gap-4">
                 <span className="mt-[4px] h-[5px] w-[5px] rounded-full bg-[#b8892e]" />
                 <span>{point}</span>
               </li>
@@ -80,7 +80,7 @@ const Card = ({
 
       {/* Bottom Strap */}
       {item.bottomStrap && (
-        <div className="flex items-center justify-center gap-2 bg-[#b8892e] px-3 py-[6px] absolute bottom-0 left-0 right-0">
+        <div className="flex items-center justify-center gap-4 bg-[#b8892e] px-3 py-[6px] absolute bottom-0 left-0 right-0">
           <span className="text-white text-xs font-semibold tracking-wide text-center leading-none">
            {item.bottomStrapText}
           </span>
@@ -106,7 +106,7 @@ const TurnkeySolutions = ({sectionContent}: { sectionContent: TurnkeySolutionsCo
     <section className="w-full bg-[#f6f1e8]">
       <Container>
         {/* Heading */}
-        <div className="mb-2 flex items-center justify-center gap-3">
+        <div className="mb-2 flex items-center justify-center gap-4">
           <Image src={decorationLeft} width={30} height={30} alt="decoration" className="h-full object-contain" />
           <h2 className="text-base font-semibold uppercase">
            {sectionContent.title}
@@ -142,7 +142,7 @@ const TurnkeySolutions = ({sectionContent}: { sectionContent: TurnkeySolutionsCo
 
                 {/* Content */}
                 <div className="px-5 py-4 text-[#f4e8c9]">
-                  <div className="mb-3 flex items-center gap-3 text-[#d0a965]">
+                  <div className="mb-3 flex items-center gap-4 text-[#d0a965]">
                     {/* <div className="flex items-center justify-center text-md font-bold">
                       11
                     </div> */}
@@ -154,7 +154,7 @@ const TurnkeySolutions = ({sectionContent}: { sectionContent: TurnkeySolutionsCo
 
                   <ul className="space-y-[7px] text-xs">
                     {sectionContent.specialCard.details.map((point, index) => (
-                      <li key={index} className="flex gap-2">
+                      <li key={index} className="flex gap-4">
                         <span className="mt-[4px] h-[5px] w-[5px] rounded-full bg-[#d8b46d]" />
                         <span>{point}</span>
                       </li>

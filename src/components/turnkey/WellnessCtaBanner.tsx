@@ -35,9 +35,9 @@ const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> 
 
       <Container className="z-20">
         {/* pl-[220px] pushes content past the absolute image on lg */}
-        <div className="flex flex-col lg:flex-row lg:items-center gap-2 lg:pl-[220px] py-2">
+        <div className="flex flex-col lg:flex-row lg:items-center gap-4 lg:pl-[220px] py-2">
           {/* Content */}
-          <div className="px-4 pt-4 lg:pt-5 lg:flex-1 flex flex-col gap-2">
+          <div className="px-4 pt-4 lg:pt-5 lg:flex-1 flex flex-col gap-4">
             <h2 className="text-[#E7C17A] text-lg md:text-xl leading-none font-bold">
               {sectionContent.title}
             </h2>
@@ -51,11 +51,11 @@ const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> 
           </div>
 
           {/* Action Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 px-4 pb-4 lg:pb-0 lg:pr-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 px-4 pb-4 lg:pb-0 lg:pr-4">
             {sectionContent.buttons.map((item) => (
               <Link href={item.link || ""}
                 key={item.id || item.title}
-                className="group flex items-center gap-2 rounded border-2 border-[#8B6B2E] px-3 py-5 h-full text-left transition-all hover:bg-[#0B3A30]"
+                className="group flex items-center gap-4 rounded border-2 border-[#8B6B2E] px-3 py-5 h-full text-left transition-all hover:bg-[#0B3A30]"
               >
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded">
                   <Image

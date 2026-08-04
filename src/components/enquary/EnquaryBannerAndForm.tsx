@@ -2,11 +2,14 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { toast } from "react-toastify";
+import { ArrowRight, BadgeCheck, Compass, ShieldCheck } from "lucide-react";
 import { CheckboxOption, EnquiryFormData, EnquiryFormErrors, EnquiryPageContent, RadioOption, SelectOption, WhyChooseItem } from "@/types/enquary/enquaryBannerAndForm";
 import { fallbackEnquiryContent } from "@/data/enquaryBannerAndForm";
 import { Container } from "../ui/Container";
 import enquaryBg from "@/assets/enquiry/formimage.webp"
+import lotus from "@/assets/about/lotus.webp"
 import { API_URL } from "@/lib/api/api";
 import HtmlRenderer from "../layout/HtmlRender";
 import EnquaryStatsStrip from "./EnquaryStatsStrip";
@@ -192,9 +195,9 @@ export default function EnquiryPage({
   return (
     <div className="w-full bg-[#f7f1e3]">
       {/* Hero Section */}
-      <section className="relative overflow-hidden">
+      <section className="relative overflow-hidden bg-[#F8F5EF]">
         <div className="relative h-[600px] md:h-[calc(100vh-146px)]">
-          {/* Background Image */}
+          {/* Background Image — right-side spa image unchanged */}
           <div className="absolute inset-0 overflow-hidden">
             <Image
               src={content.hero.imageSrc}
@@ -204,31 +207,102 @@ export default function EnquiryPage({
               sizes="100vw"
               priority
             />
-            {/* Optional overlay */}
-            <div className="absolute inset-0 bg-black/20" />
           </div>
 
-          {/* Content */}
-          <Container className="relative z-10 grid h-full grid-cols-1 items-center gap-8 md:grid-cols-2 md:gap-10">
-            <div className="flex flex-col items-center justify-center text-center rounded-2xl px-8 py-10 bg-linear-to-r from-white/40 via-white/5 to-white/5 backdrop-blur-[2px]">
-              <h1 className="text-4xl sm:text-6xl">
-                {content.hero.heading}
-              </h1>
+          {/* Ivory → transparent gradient (fade into the image) */}
+          {/* <div className="absolute inset-0 bg-linear-to-r from-[#F8F5EF] via-[#F8F5EF]/85 to-transparent md:via-[#F8F5EF]/45" /> */}
 
-              <div className="my-5 flex items-center gap-3">
-                <span className="h-px w-16 bg-[#b1793d]/80" />
-                <span className="h-2 w-2 rotate-45 bg-[#b1793d]/80" />
-                <span className="h-px w-16 bg-[#b1793d]/80" />
+          {/* Soft radial glow behind heading */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-0 top-1/2 h-[420px] w-[540px] -translate-y-1/2 bg-[radial-gradient(circle_at_center,rgba(184,138,68,0.10),transparent_70%)]"
+          />
+
+          {/* Content */}
+          <Container className="relative z-10 flex h-full items-center">
+            <div className="relative w-full max-w-[550px] py-16 md:py-0">
+              {/* Thin vertical gold accent line beside content */}
+              {/* <div className="absolute left-0 top-8 hidden h-[calc(100%-4rem)] w-px bg-linear-to-b from-transparent via-[#B88A44]/60 to-transparent md:block" /> */}
+
+              {/* Large lotus behind heading (no blur) */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -top-16 -right-8 opacity-[0.05] select-none"
+              >
+                <Image src={lotus} alt="" width={300} height={300} className="object-contain" />
               </div>
 
-              <h2 className="font-serif text-xl sm:text-2xl text-[#b1793d] font-semibold">
-                {content.hero.subheading}
-              </h2>
+              {/* Subtle botanical pattern — corner only */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -bottom-10 -left-6 opacity-[0.04] select-none"
+              >
+                <Image src={lotus} alt="" width={140} height={140} className="object-contain" />
+              </div>
 
+              {/* Small gold lotus icon above section label */}
+              <div className="flex items-center gap-4.5">
+                <Image src={lotus} alt="" width={20} height={20} className="h-5 w-5 object-contain" />
+                <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#B88A44]">
+                  {content.hero.heading}
+                </span>
+              </div>
+
+              {/* Main heading */}
+              <h1 className="mt-5 text-[#173A2B]">
+                {content.hero.subheading}
+              </h1>
+
+              {/* Thin gold divider — expands on load */}
+              <div className="mt-6 h-px w-24 bg-[#B88A44]" />
+
+              {/* Description */}
               <HtmlRenderer
-                className="mt-3 max-w-md text-sm leading-relaxed sm:text-base font-semibold"
+                className="mt-6 max-w-[480px] text-sm leading-6 text-[#4D4D4D] md:text-base"
                 content={content.hero.description}
               />
+
+              {/* CTA */}
+              <div className="mt-8 flex flex-wrap items-center gap-5">
+                <Link
+                  href={content.hero.ctaPrimary?.href || "#enquiry-form"}
+                  className="group inline-flex items-center gap-4 rounded-full bg-[#0f2e22] px-7 py-2 text-sm font-semibold uppercase tracking-wide text-[#e8c766] shadow-lg shadow-[#0f2e22]/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#143b2c] hover:shadow-[0_8px_30px_rgba(184,138,68,0.35)]"
+                >
+                  <div className="flex items-center gap-4 text-white">
+                    {content.hero.ctaPrimary?.label || "Start Your Project"}
+                    <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </div>
+                </Link>
+                <Link
+                  href={content.hero.ctaSecondary?.href || "/consultancy"}
+                  className="text-sm font-semibold text-[#173A2B] underline-offset-4 hover:underline"
+                >
+                  {content.hero.ctaSecondary?.label || "Book Free Consultation"}
+                </Link>
+              </div>
+
+{/* Trust indicators */}
+              <div className="mt-8 flex flex-wrap gap-x-7 gap-y-3">
+                {(content.hero.trustIndicators?.length
+                  ? content.hero.trustIndicators
+                  : [
+                      { id: "confidential", label: "100% Confidential" },
+                      { id: "guidance", label: "Expert Guidance" },
+                      { id: "obligation", label: "No Obligation" },
+                    ]
+                ).map((item, index) => {
+                  const Icon = [ShieldCheck, Compass, BadgeCheck][index % 3];
+                  return (
+                    <div
+                      key={item.id || item.label}
+                      className="flex items-center gap-2 text-[#8a6a3a]"
+                    >
+                      <Icon size={16} strokeWidth={1.5} className="text-[#B88A44]" />
+                      <span className="text-sm font-medium">{item.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </Container>
         </div>
@@ -241,12 +315,13 @@ export default function EnquiryPage({
       {/* Form + Sidebar Section */}
       <Container className="relative z-20 mt-8 sm:mt-10 rounded-xl">
         <form
+          id="enquiry-form"
           onSubmit={handleSubmit}
           className="grid grid-cols-1 lg:grid-cols-[1fr_380px] border-[#e3d2b0] bg-white rounded-xl border shadow-md overflow-hidden"
         >
           {/* Form Card */}
           <div className="rounded-xl  bg-[#fdfaf3] p-5 sm:p-8">
-            <div className="mb-4 flex items-center justify-center gap-3">
+            <div className="mb-4 flex items-center justify-center gap-4">
               <span aria-hidden="true" className="h-px w-12 bg-[#b1793d]/50" />
               <h3 className="text-center font-serif text-xl text-[#1f2c25] sm:text-2xl font-semibold">
                 {content.formTitle}
@@ -365,7 +440,7 @@ export default function EnquiryPage({
 
                 <div className="mb-2">
                   <span className={labelBaseClass}>Project Location</span>
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="mb-1 block text-xs" htmlFor="state">
                         State
@@ -452,7 +527,7 @@ export default function EnquiryPage({
                     <label
                       key={service.id}
                       htmlFor={`service-${service.id}`}
-                      className={`${labelBaseClass} gap-2 flex`}
+                      className={`${labelBaseClass} gap-4 flex`}
                     >
                       <input
                         id={`service-${service.id}`}
@@ -508,7 +583,7 @@ export default function EnquiryPage({
                 <p className="mb-1 text-xs">
                   {content.upload.helperText}
                 </p>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                   <label
                     htmlFor="fileUpload"
                     className="cursor-pointer rounded-md border border-[#d8cdb8] bg-[#fdfaf3] px-4 py-2 text-sm text-[#3a3a3a] hover:bg-[#f3ead4]"
@@ -538,7 +613,7 @@ export default function EnquiryPage({
                     <label
                       key={opt.id}
                       htmlFor={`contact-${opt.id}`}
-                      className={`${labelBaseClass} gap-2 flex`}
+                      className={`${labelBaseClass} gap-4 flex`}
                     >
                       <input
                         id={`contact-${opt.id}`}
@@ -559,12 +634,12 @@ export default function EnquiryPage({
             <div className="mt-2 flex flex-col items-start gap-4 border-t border-[#e3d2b0] pt-2 sm:flex-row sm:items-center sm:justify-between">
               <label
                 htmlFor="agreeToContact"
-                className="flex items-start gap-2 text-sm text-[#3a3a3a]"
+                className="flex items-start gap-4 text-sm text-[#3a3a3a]"
               >
                 <input
                   id="agreeToContact"
                   type="checkbox"
-                  className="mt-0.5 h-4 w-4 rounded border-[#d8cdb8] text-[#b1793d] focus:ring-[#b1793d]/40"
+                  className="mt-0.5 h-4 w-4 rounded border-[#d8cdb8] text-[#b1793d] focus:ring-[#b1793d]/40 font-bold"
                   checked={formData.agreeToContact}
                   onChange={(e) => setField("agreeToContact", e.target.checked)}
                 />
@@ -574,7 +649,7 @@ export default function EnquiryPage({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-2 whitespace-nowrap rounded-md bg-[#0f2e22] px-6 py-3 text-sm font-semibold uppercase tracking-wide text-[#e8c766] transition hover:bg-[#143b2c] disabled:opacity-70 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-4 whitespace-nowrap rounded-md bg-[#0f2e22] px-6 py-2 text-sm font-semibold uppercase tracking-wide text-[#e8c766] transition hover:bg-[#143b2c] disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? "Submitting..." : content.submitButtonText}
                 {!isSubmitting && <span aria-hidden="true">→</span>}

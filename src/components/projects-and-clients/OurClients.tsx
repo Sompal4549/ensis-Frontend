@@ -172,7 +172,7 @@ export default function WhyPartner({ sectionContent }: {sectionContent: OurClien
 
         {/* Heading */}
         <div className="mb-2 text-center">
-          <div className="mb-2 flex items-center justify-center gap-3">
+          <div className="mb-2 flex items-center justify-center gap-4">
            <Image src={decorationLeft} width={30} height={30} alt="decoration" className="h-full object-contain" />
             <h2 className="text-xs font-semibold text-[#1F3325] sm:text-xl">
               {banner.heading}
@@ -183,7 +183,7 @@ export default function WhyPartner({ sectionContent }: {sectionContent: OurClien
         </div>
 
         {/* Client logos */}
-        <div className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-8">
+        <div className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-8">
           {banner.clients.map((client) => (
             <div
               key={client.id}
@@ -211,7 +211,7 @@ export default function WhyPartner({ sectionContent }: {sectionContent: OurClien
   {banner.stats.map((stat, index) => (
     <div
       key={stat.id}
-      className={`flex items-center gap-2 ${
+      className={`flex items-center gap-4 ${
         index !== banner.stats.length - 1
           ? "border-r border-[#d8d2c6]"
           : ""

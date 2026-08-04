@@ -4,6 +4,7 @@ import { generateSchema } from "@/lib/api/seo";
 
 type PageBuilderProps = {
   slug: string;
+  schemaSlug?: string;
 };
 
 type PageSection = {
@@ -13,11 +14,11 @@ type PageSection = {
   isActive?: boolean;
 };
 
-export default async function PageBuilder({ slug }: PageBuilderProps) {
+export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps) {
   try {
     const [pageData, schema] = await Promise.all([
       getPageComponent(slug),
-      generateSchema(slug),
+      generateSchema(schemaSlug || slug),
     ]);
     const sections = Array.isArray(pageData)
       ? pageData

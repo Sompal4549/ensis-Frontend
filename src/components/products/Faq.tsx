@@ -48,14 +48,14 @@ export default function FaqSection({ product }: { product: Product }) {
         Frequently Asked Questions
       </p>
 
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-4">
         {/* Question pills row — layout never shifts */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {overview?.faqs?.map((faq, i) => (
             <button
               key={i}
               onClick={() => setOpen(open === i ? null : i)}
-              className={`flex items-center justify-between gap-3 px-4 py-3 rounded-md border bg-[#f5f0ea] text-left transition-colors font-semibold ${open === i ? "border-[#8d6a3a]" : "border-[#d4c4a8]"
+              className={`flex items-center justify-between gap-4 px-4 py-3 rounded-md border bg-[#f5f0ea] text-left transition-colors font-semibold ${open === i ? "border-[#8d6a3a]" : "border-[#d4c4a8]"
                 }`}
             >
               <span className="text-xs font-semibold leading-snug">

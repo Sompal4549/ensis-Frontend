@@ -105,13 +105,13 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
 
           {/* ── COLUMN 3: With ENSIS You Get + Plaque ── */}
           <div className="flex flex-row justify-between gap-6 lg:pl-4">
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-4">
               <p className="text-sm sm:text-base font-semibold">
                 {sectionContent.withEnsis.title}
               </p>
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col gap-4">
                 {sectionContent.withEnsis.withEnsisList.map((b) => (
-                  <li key={b} className="flex items-center gap-2 text-sm">
+                  <li key={b} className="flex items-center gap-4 text-sm">
                     <Image alt="dot" src={withEnsis} height={20} width={20} />
                     {b}
                   </li>

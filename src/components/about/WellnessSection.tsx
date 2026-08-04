@@ -58,7 +58,7 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
               <span className="uppercase tracking-[2px] text-[#a9742a] text-sm font-semibold">
                 {sectionContent.eyebrow}
               </span>
-              <div className="flex gap-2 items-center">
+              <div className="flex gap-4 items-center">
                 <div className="w-16 h-[1px] bg-[#c9a870]" />
                 <Image 
                   src={flower} 
@@ -82,7 +82,7 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
               className="text-[#0f2518] mt-2 text-xs max-w-[480px] leading-6" 
             />
 
-            <Link href={sectionContent.buttonHref || "/about"} className="group flex items-center gap-2 text-[#b78942] uppercase tracking-[1px] text-xs font-semibold pt-2 w-fit py-2">
+            <Link href={sectionContent.buttonHref || "/about"} className="group flex items-center gap-4 text-[#b78942] uppercase tracking-[1px] text-xs font-semibold pt-2 w-fit py-2">
               {sectionContent.buttonText || "Know More"}
               <ChevronRight
                 size={18}
@@ -93,7 +93,7 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
         </div>
 
         {/* Right Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-3 h-full">
+        <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-4 h-full">
          {sectionContent.services.map((service, index) => {
   const serviceImageSrc =
     typeof service.image === "string" && service.image

@@ -3,8 +3,8 @@
 import Image, { StaticImageData } from "next/image";
 import { Container } from "../ui/Container";
 import flower from "@/assets/about/lotus.png";
-import left from "@/assets/icons/arrow_left.png"
-import right from "@/assets/icons/arrow_right.png"
+import left from "@/assets/icons/arrow_left.webp"
+import right from "@/assets/icons/arrow_right.webp"
 import Link from "next/link";
 import GreenButton from "../ui/GreenButton";
 import quote from '@/assets/icons/quote.webp';
@@ -105,7 +105,7 @@ export default function ProjectsContactBanner({
   sectionContent = fallbackContactBanner,
 }: Props) {
   return (
-    <section className="overflow-hidden border border-[#e3d4bf] bg-[#faf5ed]">
+    <section className="overflow-hidden bg-[#002112] ">
       <Container className="!py-0">
         <div className="flex">
           {/* Top */}
@@ -132,7 +132,7 @@ export default function ProjectsContactBanner({
                   <p className="max-w-md mb-6 text-sm">
                     {sectionContent.ctaDescription}
                   </p>
-                  <div>
+                  <div className="max-w-[200px]">
 
                     <GreenButton text={sectionContent.ctaButtonText} path="/projects-and-clients" />
                   </div>
@@ -140,7 +140,7 @@ export default function ProjectsContactBanner({
               </div>
 
               {/* Contact */}
-              <div className="relative bg-[#f8f2e8]">
+              <div className="relative bg-[#f8f2e8] flex">
 
                 <div className="relative z-10 py-4 pl-12">
                   <h3 className="text-xl font-serif font-semibold">
@@ -157,7 +157,7 @@ export default function ProjectsContactBanner({
 
                         <p>{sectionContent.contact.address}</p>
                       </div>
-                      <div className="flex gap-2 items-center justify-center">
+                      <div className="flex gap-4 items-center justify-center">
                          <Image src={arrow} alt='arrow' width={150} height={40} className="max-w-55 sm:max-w-75 md:max-w-87.5" crossOrigin="anonymous" />
                       </div>
                     </div>
@@ -179,19 +179,20 @@ export default function ProjectsContactBanner({
                     </div>
                   </div>
                 </div>
+          <Image src={contact} alt="contact" width={150} height={150} className="object-fill max-h-[100%]" />
+
               </div>
             </div>
           </div>
-          <Image src={contact} alt="contact" width={150} height={150} className="object-fill max-h-[100%]" />
         </div>
 
+      </Container>
         {/* Bottom Strip */}
         <div className="bg-[#032c22] px-4 py-4 text-center">
           <p className="text-sm md:text-lg text-[#e4c27c]">
             {sectionContent.bottomText}
           </p>
         </div>
-      </Container>
 
     </section>
   );

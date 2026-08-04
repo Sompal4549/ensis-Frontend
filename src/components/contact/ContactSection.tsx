@@ -181,7 +181,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
             <div className="w-8 h-[3px] bg-[#D9B25F] mt-1.5 mb-7 rounded-full" />
 
             <form className="space-y-3" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input name="fullName" aria-label="Your name" value={formData.fullName} onChange={handleChange} placeholder="Your Name" className={inputClass} />
                 <div className="relative">
                   <input name="mobile" aria-label="Mobile number" value={formData.mobile} onChange={handleChange} disabled={mobileVerified} placeholder="Mobile Number" className={`${inputClass} ${mobileVerified ? "border-green-500" : ""} pr-24`} />
@@ -195,7 +195,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
               </div>
 
               {mobileOtpSent && !mobileVerified && (
-                <div className="flex gap-2">
+                <div className="flex gap-4">
                   <input aria-label="Mobile OTP" value={mobileOtp} onChange={e => setMobileOtp(e.target.value)} placeholder="Enter Mobile OTP" maxLength={6} className={inputClass} />
                   <button type="button" onClick={verifyMobileOtp} disabled={verifyingMobile || !mobileOtp}
                     className="px-5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-bold text-sm whitespace-nowrap">
@@ -204,7 +204,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
                 </div>
               )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="relative">
                   <input name="email" type="email" aria-label="Email address" value={formData.email} onChange={handleChange} disabled={emailVerified} placeholder="Email Address" className={`${inputClass} ${emailVerified ? "border-green-500" : ""} pr-24`} />
                   {!emailVerified ? (
@@ -223,7 +223,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
               </div>
 
               {emailOtpSent && !emailVerified && (
-                <div className="flex gap-2">
+                <div className="flex gap-4">
                   <input aria-label="Email OTP" value={emailOtp} onChange={e => setEmailOtp(e.target.value)} placeholder="Enter Email OTP" maxLength={6} className={inputClass} />
                   <button type="button" onClick={verifyEmailOtp} disabled={verifyingEmail || !emailOtp}
                     className="px-5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-bold text-sm whitespace-nowrap">
@@ -235,7 +235,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
               <textarea name="message" rows={5} aria-label="Your message" value={formData.message} onChange={handleChange} placeholder="Your Message" className={`${inputClass} resize-none`} />
 
               <button type="submit" disabled={!isFormValid || isSubmitting}
-                className="w-full py-3.5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-bold text-sm flex items-center justify-center gap-2 hover:bg-[#e8c16d] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                className="w-full py-3.5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-bold text-sm flex items-center justify-center gap-4 hover:bg-[#e8c16d] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                 <Send size={16} />
                 {isSubmitting ? "Sending..." : "Send Message"}
               </button>

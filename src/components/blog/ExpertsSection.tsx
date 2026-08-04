@@ -42,8 +42,8 @@ export default function ExpertsSection({blogs}:any) {
       <div className="mb-3 flex items-center justify-between">
         <SectionTitle title="Voice of Experts" />
 
-        <div className="gap-2 flex items-center">
-          <button className="inline-flex items-center gap-2 px-1 py-1 text-sm text-[#8a6b47] transition-colors hover:text-[#6b5134]">
+        <div className="gap-4 flex items-center">
+          <button className="inline-flex items-center gap-4 px-1 py-1 text-sm text-[#8a6b47] transition-colors hover:text-[#6b5134]">
             View All <ArrowRight size={16} />
           </button>
         </div>

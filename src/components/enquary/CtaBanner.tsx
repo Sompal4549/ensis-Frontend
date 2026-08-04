@@ -31,13 +31,13 @@ const CtaBanner = ({ data }: CtaBannerProps) => {
           </h2>
 
           {/* Ornamental divider */}
-          <div className="my-4 flex items-center justify-center gap-3">
+          <div className="my-4 flex items-center justify-center gap-4">
             <span className="h-px w-10 bg-[#C9972A]/60 sm:w-14" />
             <span className="text-sm text-[#C9972A]">✦</span>
             <span className="h-px w-10 bg-[#C9972A]/60 sm:w-14" />
           </div>
 
-          <p className="mx-auto text-sm leading-relaxed text-[#EDE6D6]/90 sm:text-base md:mx-0 md:text-[1.05rem]" dangerouslySetInnerHTML={{__html:description}}>
+          <p className="mx-auto text-sm md:text-base leading-6 text-[#EDE6D6]/90 md:mx-0" dangerouslySetInnerHTML={{__html:description}}>
           </p>
 
           <div className="mt-2 flex justify-center">

@@ -104,7 +104,7 @@ const TurnkeyProcess: React.FC<TurnkeyProcessProps> = ({ sectionContent }) => {
               {sectionContent.title}
             </h2>
             
-            <div className="flex items-start justify-between gap-2 md:gap-4 relative">
+            <div className="flex items-start justify-between gap-4 md:gap-4 relative">
               {sectionContent.steps.map((step, index) => (
                 <React.Fragment key={step.id}>
                   <div className="flex flex-col items-center text-center max-w-[120px] relative z-10">

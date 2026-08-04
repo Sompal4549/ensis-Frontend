@@ -64,8 +64,8 @@ return (
               {sectionContent.heading}
             </p>
 
-            <h1 className="max-w-[650px] text-[34px] font-semibold leading-[1.1] lg:text-5xl">
-              <span className="font-sans">
+            <h1 className="max-w-[650px]">
+              <span>
                 {sectionContent.title}
                 <br />
                 {sectionContent.titlepart1}{" "}
@@ -77,13 +77,13 @@ return (
             </h1>
 
             <p
-              className="mt-4 max-w-[520px] text-[15px]"
+              className="mt-4 max-w-[520px] text-sm md:text-base leading-6"
               dangerouslySetInnerHTML={{
                 __html: sectionContent.description,
               }}
             />
 
-            <div className="mt-6 grid grid-cols-1 gap-3 md:grid-cols-3">
+            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
               {sectionContent.features.map((item) => (
                 <div key={item.title} className="flex gap-4">
                   <Image
@@ -108,7 +108,7 @@ return (
               ))}
             </div>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-6 flex flex-col gap-4 sm:flex-row">
               <BookButton
                 text={sectionContent.primaryButton.label}
                 path={sectionContent.primaryButton.href}

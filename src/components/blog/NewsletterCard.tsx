@@ -50,8 +50,8 @@ export default function NewsletterCard({sectionContent} : {sectionContent: any})
         </div>
 
         {/* Input + Button */}
-        <div className="flex flex-1 flex-col gap-2 justify-end">
-          <div className="flex flex-col gap-2 sm:flex-row justify-end items-center">
+        <div className="flex flex-1 flex-col gap-4 justify-end">
+          <div className="flex flex-col gap-4 sm:flex-row justify-end items-center">
           <input
             type="email"
             aria-label="Email address for newsletter subscription"

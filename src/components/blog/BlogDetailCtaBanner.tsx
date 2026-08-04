@@ -69,7 +69,7 @@ const BlogDetailCtaBanner: React.FC<CtaBannerProps> = ({ sectionContent }) => {
           {sectionContent.buttonText && (
             <Link
               href={sectionContent.buttonLink || "#"}
-              className="group inline-flex shrink-0 items-center gap-2 rounded-sm bg-[#C9972A] px-6 py-3 text-xs font-bold uppercase tracking-wider text-[#0f2e22] transition-colors hover:bg-[#e8c766]"
+              className="group inline-flex shrink-0 items-center gap-4 rounded-sm bg-[#C9972A] px-6 py-3 text-xs font-bold uppercase tracking-wider text-[#0f2e22] transition-colors hover:bg-[#e8c766]"
             >
               {sectionContent.buttonText}
               <ArrowRight

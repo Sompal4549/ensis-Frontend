@@ -40,14 +40,26 @@ export default async function StatsStrip() {
     ...defaultStats[i], // Fallback to defaultStats if API doesn't provide all fields
     ...item,
     image: item.imageurl?.imageUrl
-      ? { src: getImageUrl(item.imageurl.imageUrl) }
+      ? { src: getImageUrl(item.imageurl.imageUrl, 200) }
       : item.image ?? defaultStats[i]?.image,
   }));
+
+  const gridCols =
+    {
+      1: "xl:grid-cols-1",
+      2: "xl:grid-cols-2",
+      3: "xl:grid-cols-3",
+      4: "xl:grid-cols-4",
+      5: "xl:grid-cols-5",
+      6: "xl:grid-cols-6",
+      7: "xl:grid-cols-7",
+      8: "xl:grid-cols-8",
+    }[resolvedStats.length] || "xl:grid-cols-6";
 
   return (
 <Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 py-0">
   <div className="border-y border-[#e5dccf] bg-[#f3eee6] rounded-xl py-3 px-3">
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-6">
+    <div className={`grid gap-6 md:grid-cols-2 ${gridCols}`}>
       {resolvedStats.map((item, index) => (
         <div
           key={index}

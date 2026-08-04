@@ -48,7 +48,7 @@ const Planning = () => {
         <div className="flex flex-wrap gap-x-6 gap-y-3 mt-5">
           {features.map((feature, index)=>{
             return (
- <div className="flex items-center gap-2" key={index}>
+ <div className="flex items-center gap-4" key={index}>
             <Image src={feature.icon} width={30} height={30} className="object-contain" alt="expert_consultation" />
             <span className="text-white text-xs sm:text-sm">
              {feature.label}
@@ -57,13 +57,13 @@ const Planning = () => {
             )
           })}
 
-<div className=" flex gap-4 md:gap-2 mt-6 flex-wrap ">
+<div className=" flex gap-4 md:gap-4 mt-6 flex-wrap ">
 <div className='min-w-[220px] '>
 <GreenButton path="tel:+919654900525" text="TALK TO OUR EXPERT" rightIcon={<FaPhone/>}/>
 
 </div>
 <Link href="https://ensis.in/pdf/e-broucher.pdf" target='_blank'>
-        <button className="min-w-[220px] py-1 px-4 border border-white text-white text-xs font-semibold tracking-wide hover:bg-white/5 transition-all rounded-md flex items-center gap-2 justify-center">
+        <button className="min-w-[220px] py-1 px-4 border border-white text-white text-xs font-semibold tracking-wide hover:bg-white/5 transition-all rounded-md flex items-center gap-4 justify-center">
           DOWNLOAD CATALOGUE <DownloadIcon/>
         </button>
 </Link>

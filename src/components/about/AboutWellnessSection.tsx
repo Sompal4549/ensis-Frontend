@@ -84,6 +84,18 @@ const AboutWellnessSection = ({
 }) => {
   // direct use sectionContent
 
+  const gridCols =
+    {
+      1: "lg:grid-cols-1",
+      2: "lg:grid-cols-2",
+      3: "lg:grid-cols-3",
+      4: "lg:grid-cols-4",
+      5: "lg:grid-cols-5",
+      6: "lg:grid-cols-6",
+      7: "lg:grid-cols-7",
+      8: "lg:grid-cols-8",
+    }[sectionContent.stats?.length || 6] || "lg:grid-cols-6";
+
   return (
     <section className="w-full relative mt-2">
         <div className="absolute left-0 w-[100%] md:w-[40%] top-0 h-50 md:h-full md:bottom-8 z-10">
@@ -133,7 +145,7 @@ const AboutWellnessSection = ({
 
             <div className="space-y-2">
               {sectionContent.ourCoreValues.map((item, index) => (
-                <div key={index} className="flex items-center gap-3">
+                <div key={index} className="flex items-center gap-4">
                   {/* Icon Placeholder */}
                   <div className="w-9 h-9">
                     <Image alt={item.imageurl.alt} src={getImageUrl(item.imageurl.imageUrl)} width={30} height={30} className="object-contain"
@@ -153,23 +165,23 @@ const AboutWellnessSection = ({
 
         {/* Bottom Stats Bar */}
         <div className="mt-4 bg-[#03261b] rounded-2xl py-5 px-5 border-3 border-[#e8c37a] absolute -bottom-10 left-0 right-0">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-y-6">
+          <div className={`grid grid-cols-2 md:grid-cols-3 gap-y-6 ${gridCols}`}>
             {sectionContent.stats.map((item, index) => (
               <div
                 key={index}
-                className="flex items-center gap-3 md:border-r border-[#aa8f47] last:border-r-0 px-4"
+                className="flex items-start gap-4 pr-6 md:border-r border-[#aa8f47] last:border-r-0"
               >
                 {/* Icon Placeholder */}
-                <div className="w-10 h-10">
-                    <Image alt={item.imageurl.alt} src={getImageUrl(item.imageurl.imageUrl)} width={40} height={40} className="object-contain" crossOrigin="anonymous" style={{ height: "auto" }} />
+                <div className="mt-1 shrink-0 w-14 h-14 flex items-center justify-center">
+                    <Image alt={item.imageurl.alt} src={getImageUrl(item.imageurl.imageUrl)} width={70} height={50} className="object-contain" crossOrigin="anonymous" style={{ height: "auto" }} />
                 </div>
 
                 <div>
-                  <h4 className="text-[#e8c37a] text-lg font-semibold leading-none">
+                  <p className="text-xs font-semibold text-[#e8c37a]">
                     {item.title}
-                  </h4>
+                  </p>
 
-                  <p className="text-[10px] text-white mt-1 leading-4">
+                  <p className="mt-1 text-xs leading-4 text-white font-medium">
                     {item.subtitle}
                   </p>
                 </div>

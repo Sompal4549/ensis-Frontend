@@ -10,7 +10,7 @@ export async function generateMetadata() {
 export default function ProjectsPage() {
     return (
      <>
-  <PageBuilder slug="projects" />
+  <PageBuilder slug="projects" schemaSlug="projects-and-clients" />
      </>
     );
 }

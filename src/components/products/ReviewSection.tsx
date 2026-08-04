@@ -140,14 +140,14 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
         <div className="grid lg:grid-cols-[1fr_400px] gap-12">
           {/* Reviews List */}
           <div>
-            <h2 className="text-2xl font-semibold mb-8 flex items-center gap-2">
+            <h2 className="text-2xl font-semibold mb-8 flex items-center gap-4">
               Customer Reviews <span className="text-sm font-normal text-gray-500">({reviews.length})</span>
             </h2>
             
             <div className="space-y-8">
               {reviews.map((rev) => (
                 <div key={rev._id} className="border-b border-gray-100 pb-6">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-4 mb-2">
                     <div className="flex">
                       {[...Array(5)].map((_, i) => (
                         <Star

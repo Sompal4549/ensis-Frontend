@@ -31,7 +31,7 @@ export default function OurProjects({ sectionContent }: OurProjectsProps) {
     <section className="w-full bg-[#f7f3eb] py-10 sm:py-12">
       <Container>
         {/* Heading */}
-        <div className="mb-1 flex items-center justify-center gap-3">
+        <div className="mb-1 flex items-center justify-center gap-4">
           <Image
             src={decorationLeft}
             width={24}
@@ -55,7 +55,7 @@ export default function OurProjects({ sectionContent }: OurProjectsProps) {
         </p>
 
         {/* Cards */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {sectionContent.cards.map((project: ProjectCard, index: number) => (
             <div
               key={index}

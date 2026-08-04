@@ -34,7 +34,7 @@ export default function BlogListItem({
       </div>
 
       <div className="flex-1">
-        <div className="flex flex-wrap items-center gap-3 text-sm text-[#9d7f62]">
+        <div className="flex flex-wrap items-center gap-4 text-sm text-[#9d7f62]">
           <span>{date}</span>
           <span>•</span>
           <span>{category}</span>
@@ -44,7 +44,7 @@ export default function BlogListItem({
           {title}
         </h3>
 
-        <div className="mt-3 flex items-center gap-2 text-sm font-medium text-[#b36c2c] transition group-hover:gap-3">
+        <div className="mt-3 flex items-center gap-4 text-sm font-medium text-[#b36c2c] transition group-hover:gap-4">
           Read More
           <ArrowRight size={15} />
         </div>

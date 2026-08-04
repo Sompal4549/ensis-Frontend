@@ -76,7 +76,7 @@ const CareerBenefits = ({ sectionContent }: { sectionContent: CareerBenefitsProp
           {sectionContent.benefits.map((item, index) => (
             <div
               key={item.title}
-              className={`flex items-start gap-3 px-4 lg:px-6 ${index !== benefits.length - 1
+              className={`flex items-start gap-4 px-4 lg:px-6 ${index !== benefits.length - 1
                   ? "lg:border-r lg:border-[#E3DDD5]"
                   : ""
                 }`}

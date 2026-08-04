@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useShop, type CartItem } from "@/context/ShopContext";
 import { X } from "lucide-react";
+import { getImageUrl } from "@/lib/api/api";
 
 export default function CartProductCard({ item }: { item: CartItem }) {
   const {
@@ -23,9 +24,10 @@ export default function CartProductCard({ item }: { item: CartItem }) {
     className="relative h-[50px] overflow-hidden rounded-sm bg-[#eee7de] md:h-[70px]"
   >
     <Image
-      src={item.image}
+      src={getImageUrl(item.image, 200)}
       alt={item.name}
       fill
+      loading="lazy"
       sizes="(max-width: 768px) 50px, 50px"
       className="object-fill"
     />
@@ -56,9 +58,9 @@ export default function CartProductCard({ item }: { item: CartItem }) {
     </div>
 
     {/* Bottom Row */}
-    <div className="mt-1 flex items-center justify-between gap-3">
+    <div className="mt-1 flex items-center justify-between gap-4">
       {/* Quantity */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-4">
         <button
           type="button"
           aria-label={`Decrease ${item.name} quantity`}

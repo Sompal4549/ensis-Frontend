@@ -10,8 +10,8 @@ import traditionalModernIcon from "@/assets/trunkey_solutions/why_choose/traditi
 import wellnessIndustryIcon from "@/assets/trunkey_solutions/why_choose/wellness_industry.webp";
 import expertReadyIcon from "@/assets/trunkey_solutions/expert_ready_solution.webp";
 import { Container } from "../ui/Container";
-import decorationLeft from "@/assets/icons/arrow_left2.png"
-import decorationRight from "@/assets/icons/arrow_right2.png"
+import decorationLeft from "@/assets/icons/arrow_left2.webp"
+import decorationRight from "@/assets/icons/arrow_right2.webp"
 import HtmlRenderer from "../layout/HtmlRender";
 
 
@@ -29,7 +29,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: TurnkeyWhy
     <div className="w-full">
 
       {/* ── Top banner: "AND MANY MORE..." ── */}
-      <Container className="py-3 flex items-center gap-3">
+      <Container className="py-3 flex items-center gap-4">
        <Image src={decorationLeft}  height={30} alt="decoration" className="h-full object-contain flex-1" />
         <span className="text-[#d19f4f] text-base font-semibold uppercase whitespace-nowrap">
          {sectionContent.title}
@@ -61,7 +61,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: TurnkeyWhy
             <div className="flex flex-col gap-5  shrink-0">
 
               {/* Section title */}
-              <div className="flex items-center gap-2 ml-20">
+              <div className="flex items-center gap-4 ml-20">
                 <div className="h-px w-10 bg-[#c9972a] opacity-60" />
                 <p className="text-[#c9972a] text-sm tracking-[0.28em] font-semibold uppercase whitespace-nowrap ">
                   {sectionContent.statsTitle}
@@ -94,7 +94,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: TurnkeyWhy
               {sectionContent.features.map((f) => (
                 <div 
                   key={f.id || f.title} // Changed f.label to f.title
-                  className={`flex flex-col items-center gap-2 text-center px-2 lg:px-2`}
+                  className={`flex flex-col items-center gap-4 text-center px-2 lg:px-2`}
                 >
                   <div className="w-12 h-12 flex items-center justify-center">
                     <Image

@@ -57,7 +57,7 @@ export default function ProductFeatures() {
       {/* Feature list */}
       <ul className="flex flex-col gap-1.5">
         {features.map((feature, i) => (
-          <li key={i} className="flex items-center gap-2">
+          <li key={i} className="flex items-center gap-4">
             {/* Icon circle */}
             <div className="shrink-0 rounded-full border border-[#4a6741] flex items-center justify-center text-[#4a6741]">
               <Image src={feature.icon} width={20} height={20} alt={feature.title} className="object-contain"/>

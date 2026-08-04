@@ -53,7 +53,7 @@ export default function EnquaryStatsStrip() {
           ...item,
           image: item.imageurl?.imageUrl
             ? {
-                src: getImageUrl(item.imageurl.imageUrl),
+                src: getImageUrl(item.imageurl.imageUrl, 200),
                 alt: item.imageurl.alt,
               }
             : item.image ?? defaultStats[i]?.image,
@@ -71,6 +71,18 @@ export default function EnquaryStatsStrip() {
     };
   }, []);
 
+  const gridCols =
+    {
+      1: "xl:grid-cols-1",
+      2: "xl:grid-cols-2",
+      3: "xl:grid-cols-3",
+      4: "xl:grid-cols-4",
+      5: "xl:grid-cols-5",
+      6: "xl:grid-cols-6",
+      7: "xl:grid-cols-7",
+      8: "xl:grid-cols-8",
+    }[resolvedStats.length] || "xl:grid-cols-6";
+
   return (
     <Container className="relative z-10 py-0">
       <div
@@ -84,7 +96,7 @@ export default function EnquaryStatsStrip() {
           mt-0 md:mt-0
         "
       >
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-6">
+        <div className={`grid gap-6 md:grid-cols-2 ${gridCols}`}>
           {resolvedStats.map((item, index) => (
             <div
               key={index}

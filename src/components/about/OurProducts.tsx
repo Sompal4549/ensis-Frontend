@@ -30,7 +30,7 @@ export default function OurProductsSection({ sectionContent }: { sectionContent:
 
        <div className="relative flex items-center justify-center mb-4">
   <AboutTitle title="Our Products" />
-  <button className="group absolute right-0 inline-flex items-center gap-2 px-1 py-1 text-[13px] font-medium text-[#8a6b47] transition-colors hover:text-[#6b5134]">
+  <button className="group absolute right-0 inline-flex items-center gap-4 px-1 py-1 text-[13px] font-medium text-[#8a6b47] transition-colors hover:text-[#6b5134]">
     View All Products
     <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
   </button>
