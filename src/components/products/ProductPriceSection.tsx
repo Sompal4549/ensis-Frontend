@@ -174,7 +174,7 @@ const ProductPriceSection = ({
           suppressHydrationWarning
           type="button"
           onClick={() => toggleLike(shopProduct)}
-          className="mt-3 flex  items-center justify-center rounded-md bg-transparent text-xs font-semibold  transition-colors gap-2"
+          className="mt-3 flex  items-center justify-center rounded-md bg-transparent text-xs font-semibold  transition-colors gap-4"
         >
           <Heart size={13} className={mounted && wished ? "fill-red-500" : "text-red-500"} />
           {mounted && wished ? "In wishlist" : "Add to wishlist"}
@@ -184,10 +184,10 @@ const ProductPriceSection = ({
         {product.title}
       </h2>
 
-      <div className="mt-2 flex flex-wrap items-center gap-3 text-[10px]">
+      <div className="mt-2 flex flex-wrap items-center gap-4 text-[10px]">
         <button
           onClick={() => setIsReviewOpen(true)}
-          className="flex items-center gap-2 hover:opacity-70 transition-opacity"
+          className="flex items-center gap-4 hover:opacity-70 transition-opacity"
         >
           <span className="flex items-center gap-1">
             {[...Array(5)].map((_, index) => (
@@ -212,7 +212,7 @@ const ProductPriceSection = ({
               {product.description}
             </p> */}
 
-      <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-5">
+      <div className="mt-2 grid grid-cols-2 gap-4 sm:grid-cols-5">
         {product?.overview?.productPricingFeatures?.map((item, index) => (
           <FeaturePill
             key={nanoid()}
@@ -238,10 +238,10 @@ const ProductPriceSection = ({
         </div>
 
         {/* Right */}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-4">
           {product.overview?.customSize && (
 
-            <div className="flex items-center gap-2 text-[10px] ">
+            <div className="flex items-center gap-4 text-[10px] ">
               <CheckCircle2
                 size={12}
                 strokeWidth={1.8}
@@ -251,7 +251,7 @@ const ProductPriceSection = ({
             </div>
           )}
 
-          {product?.overview?.emiOptions && <div className="flex items-center gap-2 text-[10px] ">
+          {product?.overview?.emiOptions && <div className="flex items-center gap-4 text-[10px] ">
             <CheckCircle2
               size={12}
               strokeWidth={1.8}
@@ -271,7 +271,7 @@ const ProductPriceSection = ({
             <div className="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-[#fbfaf7]">
               <div>
                 <h3 className="font-bold text-[#313b30]">Customer Reviews</h3>
-                <div className="flex items-center gap-2 mt-0.5">
+                <div className="flex items-center gap-4 mt-0.5">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} size={10} className="fill-[#d5a642] text-[#d5a642]" />
@@ -323,7 +323,7 @@ const ProductPriceSection = ({
                       required
                     />
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-4">
                     <button
                       type="button"
                       onClick={() => setIsWritingReview(false)}
@@ -385,7 +385,7 @@ const ProductPriceSection = ({
 
 function FeaturePill({ icon, label }: { icon: ReactNode; label: string }) {
   return (
-    <div className="flex min-h-15 flex-col items-center justify-center gap-2 rounded-md px-2 py-2 text-center text-[11px] font-semibold text-[#313b30]">
+    <div className="flex min-h-15 flex-col items-center justify-center gap-4 rounded-md px-2 py-2 text-center text-[11px] font-semibold text-[#313b30]">
       <span className="text-[#8d6a3a]">{icon}</span>
       {label}
     </div>

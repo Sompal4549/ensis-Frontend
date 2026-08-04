@@ -42,7 +42,7 @@ const ContactCtaBanner = ({ sectionContent }: { sectionContent: ContactBannerPro
                 </h2>
 
                 <HtmlRenderer content={sectionContent?.description||`Call us now or send a message. Our team will get back to you
-                  shortly.`} className="mt-2 max-w-xl text-sm leading-7 text-white/90 md:text-base max-w-[400px]">
+                  shortly.`} className="mt-2 max-w-[400px] text-sm md:text-base leading-6 text-white/90">
                   
                 </HtmlRenderer>
               </div>

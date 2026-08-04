@@ -8,7 +8,7 @@ type Props = {
 
 export default function CategoryFilters({ selected, onSelect,categories }: Props) {
   return (
-    <div className="mb-3 flex flex-wrap gap-3">
+    <div className="mb-3 flex flex-wrap gap-4">
       {categories.map((item, index) => (
         <button
           key={index}

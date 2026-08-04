@@ -12,11 +12,8 @@ import wellness_spaces from '@/assets/bg/bg2.webp';
 import wooden_steam from '@/assets/bg/bg1.webp';
 import arrow from "@/assets/icons/arrow.png"
 import { Features } from './Features';
-import { getComponentContent, getImageUrl } from '@/lib/api/api';
-import premium_craftmanship from "@/assets/icons/premium_craftmanship.webp"
+import { getImageUrl } from '@/lib/api/api';
 import ayurvedic_wisdom from "@/assets/icons/ayurvedic_wisdom.webp"
-import durable from "@/assets/icons/durable.webp"
-import wellness_focused from "@/assets/icons/wellness_focused.webp"
 import GreenButton from '../ui/GreenButton';
 import BookButton from '../ui/BookButton';
 
@@ -144,6 +141,8 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
   ];
   const content = data||fallbackSlides;
   const heroSlides = content.slides?.length ? content.slides : fallbackSlides;
+  const visibleFeatures = (slide: HeroSlide) =>
+    (slide.features || []).filter((feat) => feat?.title || feat?.imgUrl);
 
   return (
     <section className="bg-[#f7f2ea] relative z-20 mb-12">
@@ -183,14 +182,14 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
     }`}
   >
                   {/* Main Heading */}
-                  <h1 className={`mt-4 md:mt-6 font-serif text-[28px] sm:text-[36px] leading-[0.96] tracking-[-0.02em] text-[#0e3d21] font-medium lg:text-[62px] ${slide.isCenter && "text-center"}`}>
+                  <h1 className={`mt-4 md:mt-6 text-[#0e3d21] ${slide.isCenter && "text-center"}`}>
                     {typeof slide.title === "string" ? (
                       <>
                         {slide.title}
                         {slide.highlight && (
                           <>
                             <br />
-                            <span className="font-medium italic text-[#c07d19] mt-2">{slide.highlight}</span>
+                            <span className="text-[#c07d19] mt-2">{slide.highlight}</span>
                           </>
                         )}
                       </>
@@ -207,7 +206,7 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
                   {/* Description */}
                   {slide.description && (
                     <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-[#313628]">
-                      <span className='font-semibold' dangerouslySetInnerHTML={{ __html: slide.description }}></span>
+                      <div className='font-semibold' dangerouslySetInnerHTML={{ __html: slide.description }}></div>
                     </div>
                   )}
 
@@ -226,11 +225,11 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
                   {/* Icons / Features */}
                   <div className="mt-4 md:mt-6 flex flex-wrap gap-5">
                     <div className="flex items-center self-stretch">
-                      {slide.features && Array.isArray(slide.features) && slide.features.length > 0 && slide.features[0]?.title ? (
+                      {visibleFeatures(slide).length > 0 ? (
                         /* Dynamic features from admin API */
-                        slide.features.map((feat: { imgUrl?: string; title?: string }, fi: number) => (
+                        visibleFeatures(slide).map((feat: { imgUrl?: string; title?: string }, fi: number) => (
                           <React.Fragment key={fi}>
-                            <div className="flex flex-col items-center gap-1 md:gap-2 px-3 md:px-6 first:pl-0 first:pr-3 first:md:pr-6">
+                            <div className="flex flex-col items-center gap-1 md:gap-4 px-3 md:px-6 first:pl-0 first:pr-3 first:md:pr-6">
                               <div
                                 className="w-9 h-9 md:w-14 md:h-14 rounded-full flex items-center justify-center"
                                 style={{ border: "2px solid #b89060" }}
@@ -253,80 +252,17 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
                                 ))}
                               </div>
                             </div>
-                            {fi < slide.features!.length - 1 && (
+                            {fi < visibleFeatures(slide).length - 1 && (
                               <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
                             )}
                           </React.Fragment>
                         ))
-                      ) : (
-                        /* Hardcoded fallback icons */
-                        <>
-                          <>
-                            <div className="flex flex-col items-center gap-1 md:gap-2 pr-3 md:pr-6">
-                              <div
-                                className="w-9 h-9 md:w-14 md:h-14 rounded-full flex items-center justify-center"
-                                style={{ border: "2px solid #b89060" }}
-                              >
-                                <Image src={ayurvedic_wisdom} alt="deep detox" width={18} height={18} className="object-contain md:w-[28px] md:h-[28px]" crossOrigin="anonymous" />
-                              </div>
-                              <div className="flex flex-col items-center">
-                                <span className="text-[8px] md:text-[11px] font-bold tracking-widest uppercase text-center leading-tight" style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}>Natural</span>
-                                <span className="text-[8px] md:text-[11px] font-bold tracking-widest uppercase text-center leading-tight" style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}>Wood</span>
-                              </div>
-                            </div>
-                            <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
-                          </>
-                          <>
-                            <div className="flex flex-col items-center gap-1 md:gap-2 px-3 md:px-6">
-                              <div
-                                className="w-9 h-9 md:w-14 md:h-14 rounded-full flex items-center justify-center"
-                                style={{ border: "2px solid #b89060" }}
-                              >
-                                <Image src={premium_craftmanship} alt="deep detox" width={18} height={18} className="object-contain md:w-[28px] md:h-[28px]" crossOrigin="anonymous"/>
-                              </div>
-                              <div className="flex flex-col items-center">
-                                <span className="text-[8px] md:text-[11px] font-bold tracking-widest uppercase text-center leading-tight" style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}>Deep</span>
-                                <span className="text-[8px] md:text-[11px] font-bold tracking-widest uppercase text-center leading-tight" style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}>Detox</span>
-                              </div>
-                            </div>
-                            <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
-                          </>
-                          <>
-                            <div className="flex flex-col items-center gap-1 md:gap-2 px-3 md:px-6">
-                              <div
-                                className="w-9 h-9 md:w-14 md:h-14 rounded-full flex items-center justify-center"
-                                style={{ border: "2px solid #b89060" }}
-                              >
-                                <Image src={durable} alt="deep detox" width={18} height={18} className="object-contain md:w-[28px] md:h-[28px]" crossOrigin="anonymous" />
-                              </div>
-                              <div className="flex flex-col items-center">
-                                <span className="text-[8px] md:text-[11px] font-bold tracking-widest uppercase text-center leading-tight" style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}>Premium</span>
-                                <span className="text-[8px] md:text-[11px] font-bold tracking-widest uppercase text-center leading-tight" style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}>Quality</span>
-                              </div>
-                            </div>
-                            <div className="w-px h-full flex-shrink-0 opacity-40" style={{ background: "#c8a97a" }} />
-                          </>
-                          <>
-                            <div className="flex flex-col items-center gap-1 md:gap-2 px-3 md:px-6">
-                              <div
-                                className="w-9 h-9 md:w-14 md:h-14 rounded-full flex items-center justify-center"
-                                style={{ border: "2px solid #b89060" }}
-                              >
-                                <Image src={wellness_focused} alt="deep detox" width={18} height={18} className="object-contain md:w-[28px] md:h-[28px]" crossOrigin="anonymous"/>
-                              </div>
-                              <div className="flex flex-col items-center">
-                                <span className="text-[8px] md:text-[11px] font-bold tracking-widest uppercase text-center leading-tight" style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}>Wellness</span>
-                                <span className="text-[8px] md:text-[11px] font-bold tracking-widest uppercase text-center leading-tight" style={{ color: "#4a3a28", fontFamily: "'Montserrat', sans-serif" }}>Focused</span>
-                              </div>
-                            </div>
-                          </>
-                        </>
-                      )}
+                      ) : null}
                     </div>
                   </div>
 
                   {/* Buttons */}
-                  <div className="mt-4 md:mt-6 flex flex-wrap gap-3 md:gap-5">
+                  <div className="mt-4 md:mt-6 flex flex-wrap gap-4 md:gap-5">
                     {slide.buttons && slide.buttons.length > 0 ? (
                       slide.buttons.map((button, index) => <div key={index}>{button}</div>)
                     ) : (

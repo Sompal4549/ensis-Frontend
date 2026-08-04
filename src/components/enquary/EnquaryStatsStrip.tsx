@@ -10,6 +10,7 @@ import pan_india from "@/assets/about_new/pan_india.webp";
 import Image from "next/image";
 import { Container } from "../ui/Container";
 import { getComponentContent, getImageUrl } from "@/lib/api/api";
+import { gridColsClass } from "@/constants/grid";
 
 const defaultStats: StatItem[] = [
   { image: twenty, title: "20+", description: "Years Experience" },
@@ -53,7 +54,7 @@ export default function EnquaryStatsStrip() {
           ...item,
           image: item.imageurl?.imageUrl
             ? {
-                src: getImageUrl(item.imageurl.imageUrl),
+                src: getImageUrl(item.imageurl.imageUrl, 200),
                 alt: item.imageurl.alt,
               }
             : item.image ?? defaultStats[i]?.image,
@@ -71,6 +72,8 @@ export default function EnquaryStatsStrip() {
     };
   }, []);
 
+  const gridCols = gridColsClass(resolvedStats.length);
+
   return (
     <Container className="relative z-10 py-0">
       <div
@@ -84,7 +87,7 @@ export default function EnquaryStatsStrip() {
           mt-0 md:mt-0
         "
       >
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-6">
+        <div className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${gridCols}`}>
           {resolvedStats.map((item, index) => (
             <div
               key={index}

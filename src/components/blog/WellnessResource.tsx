@@ -21,7 +21,7 @@ const Card = ({ title, description, linkText, image, icon }: CardProps) => {
           {description}
         </p>
 
-        <button className="mt-2 text-[#9c6427] text-sm font-medium flex items-center gap-2 hover:gap-3 transition-all">
+        <button className="mt-2 text-[#9c6427] text-sm font-medium flex items-center gap-4 hover:gap-4 transition-all">
           {linkText}
           <span>→</span>
         </button>

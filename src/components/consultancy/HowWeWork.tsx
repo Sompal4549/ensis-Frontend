@@ -149,7 +149,7 @@ export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWor
                   {whyChoose.chooseList.map((item, index) => (
                     <div
                       key={index}
-                      className="flex items-center gap-3"
+                      className="flex items-center gap-4"
                     >
                       {/* CHECK ICON */}
                       <div className="flex h-4 w-4 shrink-0 font-bold items-center justify-center rounded-full bg-[#2563EB]">

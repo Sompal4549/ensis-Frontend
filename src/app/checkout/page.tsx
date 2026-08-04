@@ -303,7 +303,7 @@ export default function CheckoutPage() {
         {/* Clearance below the fixed header */}
         <div className="pb-8">
           {/* Breadcrumb */}
-          <nav className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#a79a8c]">
+          <nav className="mb-4 flex items-center gap-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#a79a8c]">
             <Link
               href="/cart"
               className="flex items-center gap-1.5 transition-colors hover:text-[#8d6a3a]"
@@ -319,7 +319,7 @@ export default function CheckoutPage() {
               <div className="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-[#1F3A2A]/5">
                 <ShoppingBag size={28} className="text-[#c7a55b]" />
               </div>
-              <h1 className="text-3xl font-medium text-[#1F3A2A]" >
+              <h1 className="text-[#1F3A2A]" >
                 Your session is inactive
               </h1>
               <p className="mx-auto mt-2 max-w-xs text-sm leading-6 text-[#7a7062]">
@@ -327,7 +327,7 @@ export default function CheckoutPage() {
               </p>
               <Link
                 href="/products"
-                className="mt-4 inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#1F3A2A] px-6 text-xs font-bold uppercase tracking-[0.18em] text-white transition-all duration-300 hover:bg-[#c7a55b]"
+                className="mt-4 inline-flex h-10 items-center justify-center gap-4 rounded-full bg-[#1F3A2A] px-6 text-xs font-bold uppercase tracking-[0.18em] text-white transition-all duration-300 hover:bg-[#c7a55b]"
               >
                 Browse Products <ArrowRight size={14} />
               </Link>
@@ -336,7 +336,7 @@ export default function CheckoutPage() {
             <div className="grid items-start gap-4 lg:grid-cols-[1fr_380px] xl:grid-cols-[1fr_410px]">
               {/* ───────── Left Column : Shipping Form ───────── */}
               <div className="space-y-4">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
                   <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#1F3A2A]/8">
                     <LockKeyhole size={17} className="text-[#c7a55b]" />
                   </div>
@@ -352,7 +352,7 @@ export default function CheckoutPage() {
 
                 {/* Form Block */}
                 <div className="relative overflow-hidden rounded-3xl border border-[#ece3d2] bg-white/90 p-4 shadow-[0_20px_50px_-24px_rgba(31,58,42,0.28)] backdrop-blur-sm sm:p-5">
-                  <div className="mb-4 flex items-center gap-2 border-b border-[#ece3d2] pb-3">
+                  <div className="mb-4 flex items-center gap-4 border-b border-[#ece3d2] pb-3">
                     <MapPin size={16} className="text-[#c7a55b]" />
                     <h2 className="text-lg font-semibold uppercase tracking-[0.12em] text-[#1F3A2A]" >
                       Shipping Destination
@@ -361,7 +361,7 @@ export default function CheckoutPage() {
 
                   {!orderId ? (
                     <form onSubmit={handlePlaceOrder} className="space-y-3">
-                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
                           <label className={labelClass}>Address Label</label>
                           <input
@@ -388,7 +388,7 @@ export default function CheckoutPage() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
                           <label className={labelClass}>Phone Number *</label>
                           <input
@@ -415,7 +415,7 @@ export default function CheckoutPage() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
                           <label className={labelClass}>Street Address *</label>
                           <input
@@ -442,7 +442,7 @@ export default function CheckoutPage() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         <div>
                           <label className={labelClass}>Postal Code *</label>
                           <input
@@ -511,7 +511,7 @@ export default function CheckoutPage() {
                       <button
                         type="submit"
                         disabled={isPlacingOrder}
-                        className="group relative mt-1 flex w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-[#1F3A2A] px-5 py-2.5 text-sm font-bold uppercase tracking-[0.16em] text-white shadow-[0_20px_40px_-12px_rgba(31,58,42,0.6)] transition-all duration-300 hover:bg-[#18301f] hover:shadow-[0_24px_45px_-12px_rgba(199,165,91,0.45)] disabled:cursor-not-allowed disabled:opacity-60"
+                        className="group relative mt-1 flex w-full items-center justify-center gap-4 overflow-hidden rounded-full bg-[#1F3A2A] px-5 py-2.5 text-sm font-bold uppercase tracking-[0.16em] text-white shadow-[0_20px_40px_-12px_rgba(31,58,42,0.6)] transition-all duration-300 hover:bg-[#18301f] hover:shadow-[0_24px_45px_-12px_rgba(199,165,91,0.45)] disabled:cursor-not-allowed disabled:opacity-60"
                       >
                         {isPlacingOrder ? (
                           <>
@@ -529,7 +529,7 @@ export default function CheckoutPage() {
                   ) : (
                     <div className="space-y-3">
                       <div className="rounded-2xl border border-[#d8e3cf] bg-[#f2f7ee] p-3">
-                        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.14em] text-[#516a35]">
+                        <p className="flex items-center gap-4 text-xs font-bold uppercase tracking-[0.14em] text-[#516a35]">
                           <BadgeCheck size={15} /> Order created successfully
                         </p>
                         <p className="mt-1.5 text-xs text-[#5c6f50]">
@@ -573,7 +573,7 @@ export default function CheckoutPage() {
                 {/* Back button */}
                 <Link
                   href="/cart"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#5c5546] transition-colors hover:text-[#8d6a3a]"
+                  className="inline-flex items-center gap-4 text-sm font-semibold text-[#5c5546] transition-colors hover:text-[#8d6a3a]"
                 >
                   <ArrowLeft size={16} /> Return to Shopping Cart
                 </Link>
@@ -594,7 +594,7 @@ export default function CheckoutPage() {
 
                   <div className="max-h-52 space-y-2.5 overflow-y-auto pr-1">
                     {summary.items.map((item) => (
-                      <div key={item.id} className="flex items-center gap-2.5">
+                      <div key={item.id} className="flex items-center gap-4.5">
                         <div className="relative aspect-square h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-[#eee6d9] bg-[#f8f4ec]">
                           <Image
                             src={item.image}
@@ -684,10 +684,10 @@ export default function CheckoutPage() {
 
                 {/* Payment Methods */}
                 <div className="rounded-3xl border border-[#ece3d2] bg-white/90 p-4 shadow-[0_28px_50px_-24px_rgba(31,58,42,0.3)] backdrop-blur-sm">
-                  <h3 className="mb-3 flex items-center gap-2 text-sm font-bold uppercase tracking-[0.14em] text-[#1F3A2A]">
+                  <h3 className="mb-3 flex items-center gap-4 text-sm font-bold uppercase tracking-[0.14em] text-[#1F3A2A]">
                     <Wallet size={15} className="text-[#c7a55b]" /> Payment Methods
                   </h3>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-4">
                     {[
                       { icon: CreditCard, label: "Credit / Debit" },
                       { icon: Smartphone, label: "UPI" },
@@ -696,7 +696,7 @@ export default function CheckoutPage() {
                     ].map((m, i) => (
                       <div
                         key={i}
-                        className="group flex items-center gap-2 rounded-xl border border-[#e8dfce] bg-[#fdfcf9] px-2.5 py-2 text-[11px] font-semibold text-[#5c5546] transition-all hover:border-[#c7a55b] hover:text-[#1F3A2A]"
+                        className="group flex items-center gap-4 rounded-xl border border-[#e8dfce] bg-[#fdfcf9] px-2.5 py-2 text-[11px] font-semibold text-[#5c5546] transition-all hover:border-[#c7a55b] hover:text-[#1F3A2A]"
                       >
                         <m.icon size={13} className="text-[#c7a55b] transition-transform group-hover:scale-110" />
                         {m.label}
@@ -710,7 +710,7 @@ export default function CheckoutPage() {
 
                 {/* Trust badges */}
                 <div className="rounded-3xl border border-[#ece3d2] bg-white/90 p-3 shadow-[0_22px_45px_-24px_rgba(31,58,42,0.28)] backdrop-blur-sm">
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-3 gap-4">
                     {trustBadges.map((t, i) => (
                       <div key={i} className="flex flex-col items-center gap-1 text-center">
                         <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#1F3A2A]/5">
@@ -735,7 +735,7 @@ export default function CheckoutPage() {
                 Crafted for Wellness, Built to Last
               </h2>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {whyBuy.map((b, i) => (
                 <div
                   key={i}
@@ -765,11 +765,11 @@ export default function CheckoutPage() {
                   <p className="mt-1 max-w-md text-sm leading-6 text-[#d9d4c9]">
                     Speak with our design & order specialists for assistance with your purchase or installation.
                   </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="mt-3 flex flex-wrap gap-4">
                     {helpChannels.map((c, i) => (
                       <div
                         key={i}
-                        className="flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-3 py-2 text-[12px] font-semibold backdrop-blur-sm transition-colors hover:border-[#c7a55b]"
+                        className="flex items-center gap-4 rounded-2xl border border-white/15 bg-white/10 px-3 py-2 text-[12px] font-semibold backdrop-blur-sm transition-colors hover:border-[#c7a55b]"
                       >
                         <c.icon size={13} className="text-[#e9d7a8]" />
                         <span>
@@ -782,7 +782,7 @@ export default function CheckoutPage() {
                 </div>
                 <Link
                   href="/contact"
-                  className="inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-[#c7a55b] px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A] transition-all duration-300 hover:bg-[#e0b472]"
+                  className="inline-flex h-10 shrink-0 items-center gap-4 rounded-full bg-[#c7a55b] px-6 text-xs font-bold uppercase tracking-[0.16em] text-[#1F3A2A] transition-all duration-300 hover:bg-[#e0b472]"
                 >
                   Contact Us <ArrowRight size={14} />
                 </Link>

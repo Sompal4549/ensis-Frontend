@@ -137,7 +137,7 @@ const BlogDetailNewsletter = ({sectionContent}:{sectionContent:any}) => {
             Follow Us
           </span>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             {sectionContent.socialLinks.map(
               (link:any, index:number|string) => (
                 <Link 

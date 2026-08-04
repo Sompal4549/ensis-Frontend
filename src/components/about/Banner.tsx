@@ -59,10 +59,10 @@ const AboutHero: React.FC = () => {
             </p>
 
             {/* Main Heading */}
-            <h1 className="text-[42px] sm:text-[42px] leading-[1.05] font-serif font-semibold">
+            <h1>
               Crafted for Wellness.
               <br />
-              <span className="text-[#b58a48] font-semibold">Built for Life.</span>
+              <span className="text-[#b58a48]">Built for Life.</span>
             </h1>
 
             {/* Description */}

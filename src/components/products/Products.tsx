@@ -277,7 +277,7 @@ const toggleIdealFor = (value: string) => {
           {/* Mobile Filter Toggle */}
           <button
             suppressHydrationWarning
-            className="lg:hidden mb-4 flex items-center gap-2 px-4 py-2 bg-[#183b17] text-white rounded-full text-xs font-[600] tracking-wider"
+            className="lg:hidden mb-4 flex items-center gap-4 px-4 py-2 bg-[#183b17] text-white rounded-full text-xs font-[600] tracking-wider"
             onClick={() => setSidebarOpen((o) => !o)}
           >
             <Package size={14} />
@@ -308,7 +308,7 @@ const toggleIdealFor = (value: string) => {
                             : "font-medium hover:bg-[#f5ede0]"
                           }`}
                       >
-                        <span className="flex items-center gap-2 truncate">
+                        <span className="flex items-center gap-4 truncate">
                           <span className="text-base leading-none">
                             {cat.icon ? (
                               <Image src={cat.icon} alt={cat.label} width={20} height={15} className="object-fill object-center" />
@@ -433,7 +433,7 @@ const toggleIdealFor = (value: string) => {
               </div>
 
               {/* Toolbar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
                 {/* <p className="text-[12px] sm:text-[13px] text-[#7a6a55]">
                   Showing 1–
                   {visibleProducts.length} of{" "}
@@ -443,10 +443,10 @@ const toggleIdealFor = (value: string) => {
                   products
                 </p> */}
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4">
 
                   {/* Sort */}
-                  <div className="flex items-center gap-2 text-[12px] text-[#7a6a55]">
+                  <div className="flex items-center gap-4 text-[12px] text-[#7a6a55]">
                     <span className="hidden sm:inline">
                       Sort by:
                     </span>
@@ -511,7 +511,7 @@ const toggleIdealFor = (value: string) => {
 
               {/* Product Grid */}
               <div
-                className={`grid gap-3 sm:gap-4 ${viewMode === "grid"
+                className={`grid gap-4 sm:gap-4 ${viewMode === "grid"
                     ? "grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
                     : "grid-cols-1"
                   }`}
@@ -530,7 +530,7 @@ const toggleIdealFor = (value: string) => {
                 className="h-20 flex items-center justify-center"
               >
                 {visibleCount < filtered.length ? (
-                  <div className="flex items-center gap-2 text-[#8a7560] text-sm">
+                  <div className="flex items-center gap-4 text-[#8a7560] text-sm">
                     <div className="w-5 h-5 border-2 border-[#c8a45d] border-t-transparent rounded-full animate-spin" />
                     Loading more products...
                   </div>
@@ -631,8 +631,8 @@ const toggleIdealFor = (value: string) => {
                     >
                       <option value="">Select Product Category</option>
 
-                      {displayCategories.slice(1).map((c) => (
-                        <option key={c.key} value={c.key}>
+                      {displayCategories.slice(1).map((c, i) => (
+                        <option key={c.key || `cat-${i}`} value={c.key}>
                           {c.label}
                         </option>
                       ))}
@@ -661,6 +661,7 @@ const toggleIdealFor = (value: string) => {
 
                   {/* Button */}
                   <button
+                    suppressHydrationWarning
                     type="button"
                     disabled={enquiryLoading}
                     onClick={handleEnquirySubmit}
@@ -710,7 +711,7 @@ const toggleIdealFor = (value: string) => {
                 ].map(({ Icon, title, value, url }) => (
                   <div
                     key={title}
-                    className="flex items-start gap-3"
+                    className="flex items-start gap-4"
                   >
                     <div className="w-8 h-8 rounded-full border border-[#f0e8d8] flex items-center justify-center shrink-0 bg-[#faf6f1]">
                       <Icon

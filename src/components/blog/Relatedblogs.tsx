@@ -32,7 +32,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({ allBlogs }) => {
           </h2>
           <Link
             href="/blog"
-            className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#8d6a3a] transition-colors hover:text-[#C9972A]"
+            className="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-[#8d6a3a] transition-colors hover:text-[#C9972A]"
           >
             View All Articles
             <ArrowRight size={14} />

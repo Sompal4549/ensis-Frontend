@@ -28,11 +28,11 @@ export default function ProductDetailActions({
     <div
       className={`flex ${
         compact
-          ? "items-center gap-3"
-          : "mt-5 flex-col gap-3"
+          ? "items-center gap-4"
+          : "mt-5 flex-col gap-4"
       }`}
     >
-      <div className="flex gap-2">
+      <div className="flex gap-4">
 
       <div className="inline-flex h-10 w-[120px] items-center justify-between overflow-hidden rounded-md border border-[#e5ded5] bg-white">
         <button
@@ -59,7 +59,7 @@ export default function ProductDetailActions({
       <button
         type="button"
         onClick={addQuantityToCart}
-        className={`flex py-2.5 flex-1 items-center justify-center gap-2 rounded-md px-5 text-xs font-semibold uppercase tracking-wide text-white transition-colors ${
+        className={`flex py-2.5 flex-1 items-center justify-center gap-4 rounded-md px-5 text-xs font-semibold uppercase tracking-wide text-white transition-colors ${
           added ? "bg-[#313d1c]" : "bg-[#263016] hover:bg-[#101010]"
         }`}
       >
@@ -74,7 +74,7 @@ export default function ProductDetailActions({
           <Link
             href="/cart"
             onClick={addQuantityToCart}
-            className="flex py-2.5 items-center justify-center gap-2 rounded-md border border-[#c48734]  bg-[#c48734] px-5 text-xs font-semibold uppercase tracking-wide text-white transition-colors hover:bg-[#c48734] "
+            className="flex py-2.5 items-center justify-center gap-4 rounded-md border border-[#c48734]  bg-[#c48734] px-5 text-xs font-semibold uppercase tracking-wide text-white transition-colors hover:bg-[#c48734] "
             >
               <span className="text-white">
             Buy Now
@@ -82,10 +82,10 @@ export default function ProductDetailActions({
           </Link>
 
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-4">
           <Link
             type="button"
-            className={`flex flex-1 py-2.5 items-center justify-center gap-2 rounded-md border px-2 text-[10px] font-semibold uppercase tracking-wide transition-colors ${
+            className={`flex flex-1 py-2.5 items-center justify-center gap-4 rounded-md border px-2 text-[10px] font-semibold uppercase tracking-wide transition-colors ${
               liked
               ? "border-red-500 bg-red-50 text-red-600"
               : "border-[#d8cbb9] bg-white text-[#263016] hover:bg-[#fbf8f2]"
@@ -97,7 +97,7 @@ export default function ProductDetailActions({
           </Link>
         <Link
             type="button"
-            className={`flex flex-1 py-2.5 items-center justify-center gap-2 rounded-md border px-2 text-[10px] font-semibold uppercase tracking-wide transition-colors `}
+            className={`flex flex-1 py-2.5 items-center justify-center gap-4 rounded-md border px-2 text-[10px] font-semibold uppercase tracking-wide transition-colors `}
             href="tel:+919654900525"
             >
             <FaPhone size={15} className={liked ? "fill-red-500" : ""} />

@@ -33,7 +33,7 @@ export default function BlogCard({ title, image, link }: Props) {
           {title}
         </h3>
 
-        <div className="mt-2 flex items-center gap-2 text-xs font-medium text-[#b36c2c] transition group-hover:gap-3">
+        <div className="mt-2 flex items-center gap-4 text-xs font-medium text-[#b36c2c] transition group-hover:gap-4">
           Read More
           <ArrowRight size={15} />
         </div>

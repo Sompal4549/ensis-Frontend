@@ -119,7 +119,7 @@ const dummyProducts: Product[] = [
 
 // ─── Individual slide ─────────────────────────────────────────────────────────
 function ProductSlideContent({ product }: { product: Product }) {
-  const image = product.images?.[0] ? getImageUrl(product.images[0]) : "";
+  const image = product.images?.[0] ? getImageUrl(product.images[0], 1600) : "";
 
   const price = product.discountPrice ?? product.price;
 
@@ -160,7 +160,7 @@ function ProductSlideContent({ product }: { product: Product }) {
       <div className="absolute left-1/3 top-1/2 hidden h-[650px] w-[650px] -translate-y-1/2 rounded-full bg-[#0f6a4a]/10 blur-[140px] lg:block" />
 
       {/* Content */}
-      <Container className="relative z-20 flex h-full items-center">
+      <Container className="relative z-20 flex h-full items-center pt-10 md:pt-0">
 
         <div className="max-w-full md:max-w-[620px]">
 
@@ -170,12 +170,12 @@ function ProductSlideContent({ product }: { product: Product }) {
             </span>
           )}
 
-          <h1 className="mb-5 text-3xl font-medium leading-tight text-white sm:text-4xl md:text-5xl lg:text-6xl">
+          <h1 className="mb-5 text-white">
             {product.title}
           </h1>
 
           {product.shortDescription && (
-            <p className="mb-8 max-w-[520px] text-sm leading-7 text-white/80 sm:text-base">
+            <p className="mb-8 max-w-[520px] text-sm leading-7 text-white/80 line-clamp-3 sm:text-base">
               {product.shortDescription}
             </p>
           )}
@@ -232,9 +232,9 @@ export default async function ProductSlider() {
   return (
     <section
       aria-label="Wellness product collection"
-      className="relative w-full mb-28 md:mb-20"
+      className="relative w-full mb-0 md:mb-20"
     >
-<div className="relative min-h-[470px] md:h-[calc(100vh-146px)] w-full">
+<div className="relative h-[470px] md:h-[calc(100vh-146px)] w-full">
   <Carousel autoplayDelay={5000}>
     {products.map((product) => (
       <ProductSlideContent

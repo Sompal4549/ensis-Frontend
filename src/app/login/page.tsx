@@ -110,7 +110,7 @@ subtitle="Access your wellness projects and services"
       {step === "phone" ? (
         <form onSubmit={handleSendOTP}>
           <div className="mb-4">
-            <label className="flex items-center gap-2 cursor-pointer text-[10px] font-semibold text-[#8b6b35] uppercase tracking-[1px]">
+            <label className="flex items-center gap-4 cursor-pointer text-[10px] font-semibold text-[#8b6b35] uppercase tracking-[1px]">
               <input 
                 type="checkbox" 
                 checked={isAdmin} 
@@ -151,7 +151,7 @@ subtitle="Access your wellness projects and services"
               className={`${inputClass} tracking-[4px] text-center font-bold`}
             />
             {timer > 0 && (
-              <div className="mt-4 flex flex-col items-center justify-center gap-2">
+              <div className="mt-4 flex flex-col items-center justify-center gap-4">
                 <div className="relative flex items-center justify-center h-12 w-12">
                   <svg className="h-full w-full -rotate-90 transform" viewBox="0 0 40 40">
                     <circle

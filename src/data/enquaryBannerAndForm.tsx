@@ -9,6 +9,19 @@ export const fallbackEnquiryContent: EnquiryPageContent = {
       "Tell us about your project, and our experts will connect with you to create a wellness space that reflects your vision.",
     imageSrc: bannerImage.src,
     imageAlt: "Wooden Ayurvedic massage table with brass hanging diya in a spa setting",
+    ctaPrimary: {
+      label: "Start Your Project",
+      href: "#enquiry-form",
+    },
+    ctaSecondary: {
+      label: "Book Free Consultation",
+      href: "/consultancy",
+    },
+    trustIndicators: [
+      { id: "confidential", label: "100% Confidential" },
+      { id: "guidance", label: "Expert Guidance" },
+      { id: "obligation", label: "No Obligation" },
+    ],
   },
   formTitle: "Enquiry Form",
   projectTypeOptions: [

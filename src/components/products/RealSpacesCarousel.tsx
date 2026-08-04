@@ -151,7 +151,7 @@ export default function RealSpacesCarousel({
         </div>
 
         {/* Mobile Navigation */}
-        <div className="flex lg:hidden justify-center gap-3 mt-6">
+        <div className="flex lg:hidden justify-center gap-4 mt-6">
           <button
             onClick={scrollPrev}
             className="

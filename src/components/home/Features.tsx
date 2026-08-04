@@ -44,7 +44,7 @@ export const Features = async () => {
     <PremiumCard>
 
       <div className=' border-y border-[#e5dccf] bg-[#f3eee6] rounded-2xl py-3 px-3'>
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
          {features.map((feature, index) => {
   const fallbackIcon =
     fallbackFeatures[index % fallbackFeatures.length].imgUrl;

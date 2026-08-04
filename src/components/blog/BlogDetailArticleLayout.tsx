@@ -261,7 +261,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                   return (
                     <div
                       key={therapy.id}
-                      className="flex flex-col items-center gap-2 px-3 py-5 text-center"
+                      className="flex flex-col items-center gap-4 px-3 py-5 text-center"
                     >
                       <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[#e8d9bb] bg-[#f8f2e8]">
                         <Icon size={20} className="text-[#C9972A]" strokeWidth={1.5} />
@@ -284,7 +284,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
               <h2 className="text-sm text-[#1f2c25] font-semibold">{benefitsHeading}</h2>
               <div className="mt-4 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
                 {benefits.map((benefit) => (
-                  <div key={benefit.id} className="flex items-start gap-2">
+                  <div key={benefit.id} className="flex items-start gap-4">
                     <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-[#5c8a6b]" />
                     <span className="text-xs sm:text-sm">{benefit.text}</span>
                   </div>
@@ -312,7 +312,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
               <p className="mt-3 text-xs leading-relaxed sm:text-sm">{conclusion.body}</p>
             </section>
 
-            <div className="mt-10 flex flex-wrap items-center gap-3 border-t border-slate-200 pt-6">
+            <div className="mt-10 flex flex-wrap items-center gap-4 border-t border-slate-200 pt-6">
               <span className="text-xs font-bold text-[#1f2c25]">Tags :</span>
               {tags.map((tag) => (
                 <span
@@ -324,7 +324,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
               ))}
             </div>
 
-            <div className="mt-4 flex flex-wrap items-center gap-3">
+            <div className="mt-4 flex flex-wrap items-center gap-4">
               <span className="text-xs font-bold text-[#1f2c25]">Share :</span>
               {[FaFacebookF, FaXTwitter, FaLinkedinIn, FaWhatsapp].map((Icon, idx) => (
                 <a
@@ -344,7 +344,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
               {/* About the author */}
               <div className="rounded-2xl border border-slate-100 bg-white p-5">
                 <h3 className="font-serif text-base text-[#1f2c25]">About the Author</h3>
-                <div className="mt-4 flex items-center gap-3">
+                <div className="mt-4 flex items-center gap-4">
                   <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
                     <Image src={author.avatar} alt={author.name} fill className="object-cover" />
                   </div>
@@ -354,7 +354,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                   </div>
                 </div>
                 <p className="mt-4 text-[11px] leading-relaxed">{author.bio}</p>
-                <div className="mt-4 flex items-center gap-2">
+                <div className="mt-4 flex items-center gap-4">
                   {author.socials.map((social) => {
                     const Icon = socialIconMap[social.platform];
                     return (
@@ -378,7 +378,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                     <li key={item.id}>
                       <Link
                         href={item.href}
-                        className="flex items-center gap-2 text-[11px] transition-colors hover:text-[#C9972A]"
+                        className="flex items-center gap-4 text-[11px] transition-colors hover:text-[#C9972A]"
                       >
                         <Circle size={6} className="fill-[#C9972A] text-[#C9972A]" />
                         {item.label}
@@ -397,7 +397,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                 <p className="mt-2 text-[11px] leading-relaxed text-white/70" dangerouslySetInnerHTML={{__html:guide.description||""}}></p>
                 <a
                   href={guide.href}
-                  className="mt-4 inline-flex items-center gap-2 rounded-lg bg-[#e8c766] px-4 py-2.5 text-[11px] font-bold tracking-wide text-[#0f2e22] transition-colors hover:bg-[#dcb851]"
+                  className="mt-4 inline-flex items-center gap-4 rounded-lg bg-[#e8c766] px-4 py-2.5 text-[11px] font-bold tracking-wide text-[#0f2e22] transition-colors hover:bg-[#dcb851]"
                 >
                   {guide.buttonLabel}
                   <Download size={14} />
@@ -409,7 +409,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                 <h3 className="font-serif text-base text-[#1f2c25]">You May Also Like</h3>
                 <div className="mt-4 space-y-4">
                   {relatedArticles.map((item) => (
-                    <Link key={item.id} href={item.href} className="group flex gap-3">
+                    <Link key={item.id} href={item.href} className="group flex gap-4">
                       <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl">
                         <Image
                           src={item.image}

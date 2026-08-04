@@ -113,7 +113,7 @@ export const Header = () => {
     }, []);
 
     const navLink =
-        "inline-flex items-center border-b-2 border-transparent pt-0.5 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
+        "inline-flex items-center whitespace-nowrap border-b-2 border-transparent pt-0.5 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
 
     const mobileLink =
         "border-b border-[#e8e0d3] py-4 text-[12px] font-bold tracking-wide text-[#1f261b]";
@@ -173,10 +173,10 @@ export const Header = () => {
     }));
 
     return (
-        <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}>
+        <header className={`fixed inset-x-0 top-0 z-[60] transition-all duration-300 ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}>
             <div className={`bg-[#263016] text-white py-1.5`}>
                 <Container className="flex min-h-10 items-center justify-between gap-4 text-[11px] font-medium py-0!">
-                    <div className="hidden items-center gap-6 md:flex">
+                    <div className="hidden items-center gap-6 2xl:flex">
                         {headerContent.contactInfo?.map((item: any, index: number) => {
                             // Phone/email get clickable links; everything else is plain text with an icon
                             const isPhone = item.href?.startsWith("tel:");
@@ -191,7 +191,7 @@ export const Header = () => {
 
                             if (item.href) {
                                 return (
-                                    <Link key={index} href={item.href} className="flex items-center gap-2">
+                                    <Link key={index} href={item.href} className="flex items-center gap-4">
                                         {item.image?.imageUrl ? (
                                             <Image src={item.image.imageUrl} priority alt={item.image?.alt ?? ''} width={13} height={13} />
                                         ) : (
@@ -203,9 +203,9 @@ export const Header = () => {
                             }
 
                             return (
-                                <span key={index} className="flex items-center gap-2">
+                                <span key={index} className="flex items-center gap-4">
                                     {item.image?.imageUrl ? (
-                                        <Image src={item.image.imageUrl} alt={item.image?.alt ?? ''} width={13} height={13} />
+                                        <Image src={item.image.imageUrl} priority alt={item.image?.alt ?? ''} width={13} height={13} />
                                     ) : (
                                         iconFor(item.image?.alt)
                                     )}
@@ -215,7 +215,7 @@ export const Header = () => {
                         })}
                     </div>
 
-                    <div className="flex w-full items-center justify-end gap-3 md:w-auto">
+                    <div className="flex w-full items-center justify-end gap-4 md:w-auto">
                         {/* Wishlist */}
                         <div ref={wishlistRef} className="relative hidden sm:block">
                             <button
@@ -250,7 +250,7 @@ export const Header = () => {
                                             {likedItems.map((item) => (
                                                 <div
                                                     key={item.id}
-                                                    className="grid grid-cols-[64px_1fr] gap-3 border-b border-[#f0e8df] px-4 py-3 last:border-b-0"
+                                                    className="grid grid-cols-[64px_1fr] gap-4 border-b border-[#f0e8df] px-4 py-3 last:border-b-0"
                                                 >
                                                     <Link
                                                         href={`/products/${item.id}`}
@@ -279,7 +279,7 @@ export const Header = () => {
                                                             {item.price.toLocaleString("en-IN")}
                                                         </p>
 
-                                                        <div className="mt-3 flex items-center gap-2">
+                                                        <div className="mt-3 flex items-center gap-4">
                                                             <button
                                                                 type="button"
                                                                 onClick={() => addToCart(item)}
@@ -337,8 +337,8 @@ export const Header = () => {
 
                         {/* User / Login */}
                         {mounted && (user ? (
-                            <div className="flex items-center gap-3">
-                                <div className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1">
+                            <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-4 rounded-full border border-white/20 bg-white/10 px-3 py-1">
                                     <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d9c49d] text-[10px] font-black text-[#263016]">
                                         {user.name?.charAt(0).toUpperCase() || "U"}
                                     </div>
@@ -376,7 +376,7 @@ export const Header = () => {
                     {/* Spacer so nav doesn't go under the logo */}
                     <div className="w-[40px] md:w-[120px] shrink-0" />
       <nav className="hidden xl:flex">
-            <ul className="flex items-center gap-7">
+            <ul className="flex items-center gap-4 2xl:gap-7">
                             {navLinks.map((item, index) => (
                                 <li key={index}>
                                     <Link
@@ -457,12 +457,12 @@ export const Header = () => {
                             </span>
                         )}
                     </Link>
-                    <div className="mt-4 flex flex-col gap-3">
+                    <div className="mt-4 flex flex-col gap-4">
                         <GreenButton text={<span className="uppercase text-[#050A1A]">E-Brochure</span>} path={headerContent.brochureUrl} />
 
                         {mounted && (user ? (
                             <div className="mt-2 rounded-md border border-[#d8cbb9] bg-white p-4">
-                                <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-4">
                                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#263016] text-sm font-bold text-white">
                                         {user.name?.charAt(0).toUpperCase()}
                                     </div>

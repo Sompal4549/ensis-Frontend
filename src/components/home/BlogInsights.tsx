@@ -35,7 +35,7 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
 
   return (
     <section className="bg-[#fbf8f2]">
-      <Container>
+      <Container className="pb-4">
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-5">
           <div className="grid gap-6 md:items-start">
             <div>
@@ -62,7 +62,7 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
                 </div>
                 <div className="p-4 flex flex-col justify-between h-32">
                   <h3 className="text-lg font-bold text-[#1f261b] leading-[120%] line-clamp-2 font-serif">{blog.title}</h3>
-                  <div className="mt-3 flex items-center gap-2 text-xs font-semibold text-[#7c6a53]">
+                  <div className="mt-3 flex items-center gap-4 text-xs font-semibold text-[#7c6a53]">
                     Read More <ArrowRight size={14} />
                   </div>
                 </div>
@@ -74,7 +74,7 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
 
       <div className="relative overflow-hidden bg-[#1f261b] py-2 text-white">
         <Image src={contactData.ctaBgImage ? getImageUrl(contactData.ctaBgImage) : img7} alt="" fill style={{ objectFit: 'cover' }} className="opacity-25" />
-        <Container className="relative z-10 flex flex-col justify-center gap-20 md:flex-row md:items-center">
+        <Container className="relative z-10 flex flex-col justify-center gap-40 md:flex-row md:items-center">
           <div>
             <h2 className="font-serif text-2xl leading-tight font-semibold">{contactData.ctaHeading}</h2>
             <p className="mt-2 text-sm text-[#e5dccf]">{contactData.ctaDescription}</p>

@@ -138,7 +138,7 @@ export default function ConsultancyServices({ sectionContent }: { sectionContent
  <div className="mt-auto pt-5">
   <a
     href={`/${service.learnMoreLink}`}
-    className="flex items-center justify-center gap-2" // Removed Next/Link import, using <a>
+    className="flex items-center justify-center gap-4" // Removed Next/Link import, using <a>
   >
     <span style={{ fontSize: '12px', fontWeight: 600, color: '#2563EB' }}>
       {service.learnMoreText}

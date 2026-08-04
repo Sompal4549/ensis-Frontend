@@ -175,9 +175,9 @@ export const Footer = async () => {
     className="absolute inset-0 md:hidden bg-no-repeat"
     style={{
       // backgroundImage: `url(${image.src})`,
-        backgroundImage: `url(${footerTop2.src})`,
-      backgroundSize: "contain",
-      backgroundPosition: "bottom",
+        backgroundImage: `url(${footerTop2.src}), url(${footerTop2.src})`,
+      backgroundSize: "auto 100%, auto 100%",
+      backgroundPosition: "left top, right bottom",
     }}
   />
   {/* Normal bg image — desktop */}
@@ -193,7 +193,7 @@ export const Footer = async () => {
         {/* subtle overlay so text stays readable */}
 
         <Container className="relative z-10 pt-8 pb-4">
-          <div className="grid grid-cols-1 gap-3 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1.2fr]">
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1.5fr_1fr_1fr_1fr_1.2fr]">
 
             {/* ── BRAND COL ── */}
             <div>
@@ -203,16 +203,16 @@ export const Footer = async () => {
                 <SparkleLogo src={logoImg} alt="ENSIS" className="h-16 w-auto" />
 
               {/* lotus divider */}
-              <div className="my-2 flex items-center gap-2">
+              <div className="my-2 flex items-center gap-4">
                <Image src={arrow} alt='arrow' width={150} height={8} />
               </div>
 
-              <HtmlRenderer content={content.company.description} className="text-[12px] leading-4 md:text-white text-center">
+              <HtmlRenderer content={content.company.description} className="text-[12px] leading-4 text-white text-center">
                 
               </HtmlRenderer>
 
               {/* social icons */}
-              <div className="mt-3 flex gap-2">
+              <div className="mt-3 flex gap-4">
                 {socialLinks.map((social) => {
                   const Icon = iconMap[social.platform.toLowerCase()];
                   if (!Icon) return null;
@@ -237,11 +237,11 @@ export const Footer = async () => {
               return (
                 <div key={i} className='border-r-1 border-gray-300 pr-2'>
                   {/* heading with icon */}
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-4 mb-2">
                     <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${color.bg} ${color.text}`}>
                       <Icon size={14} />
                     </div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-[#122544]">
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-white md:text-[#122544]">
                       {nav.title}
                     </h3>
                   </div>
@@ -254,9 +254,9 @@ export const Footer = async () => {
                       <li key={link.href}>
                         <Link
                           href={link.href}
-                          className="flex font-medium items-center gap-1 text-xs text-[#24334c] transition hover:text-[#d0a965]"
+                          className="flex font-medium items-center gap-1 text-xs text-white md:text-[#24334c] transition hover:text-[#d0a965]"
                         >
-                          <ChevronRight size={12} className="shrink-0 text-[#d0a965] font-semibold" />
+                          <ChevronRight size={12} className="shrink-0 text-white md:text-[#d0a965] font-semibold" />
                           {link.label}
                         </Link>
                       </li>
@@ -267,11 +267,11 @@ export const Footer = async () => {
             })}
             {/* ── CONTACT COL ── */}
             <div>
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-4 mb-2">
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#d0a965] text-white">
                   <Phone size={14} />
                 </div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-[#122544]">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-white md:text-[#122544]">
                   Contact Us
                 </h3>
               </div>
@@ -280,31 +280,31 @@ export const Footer = async () => {
 
               <div className="space-y-2">
                 {/* address */}
-                <div className="flex gap-2">
+                <div className="flex gap-4">
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#d0a965]">
                     <MapPin size={14} className="text-[#d0a965]" />
                   </div>
-                  <p className="text-xs leading-4 text-[#24334c] font-semibold">
+                  <p className="text-xs leading-4 text-white md:text-[#24334c] font-semibold">
                     {content.contact.address}
                   </p>
                 </div>
 
                 {/* phone */}
-                <Link href={`tel:${content.contact.phone}`} className="flex items-center gap-2">
+                <Link href={`tel:${content.contact.phone}`} className="flex items-center gap-4">
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#d0a965]">
                     <Phone size={14} className="text-[#d0a965]" />
                   </div>
-                  <span className="text-xs text-[#24334c] hover:text-[#d0a965] font-semibold">
+                  <span className="text-xs text-white md:text-[#24334c] hover:text-[#d0a965] font-semibold">
                     {content.contact.phone}
                   </span>
                 </Link>
 
                 {/* email */}
-                <Link href={`mailto:${content.contact.email}`} className="flex items-center gap-2">
+                <Link href={`mailto:${content.contact.email}`} className="flex items-center gap-4">
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#d0a965]">
                     <Mail size={14} className="text-[#d0a965]" />
                   </div>
-                  <span className="text-xs text-[#24334c] hover:text-[#d0a965] font-semibold">
+                  <span className="text-xs text-white md:text-[#24334c] hover:text-[#d0a965] font-semibold">
                     {content.contact.email}
                   </span>
                 </Link>
@@ -314,9 +314,9 @@ export const Footer = async () => {
                   href={`https://wa.me/${content.contact.whatsappPhone}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-1 flex items-center justify-between gap-2 rounded-lg bg-[#0f7b3e] px-3 py-2 text-white transition hover:bg-[#0a5e2f]"
+                  className="mt-1 flex items-center justify-between gap-4 rounded-lg bg-[#0f7b3e] px-3 py-2 text-white transition hover:bg-[#0a5e2f]"
                 >
-                  <div className="flex items-center gap-2 text-white">
+                  <div className="flex items-center gap-4 text-white">
                     <FaWhatsapp size={18} color="white" />
                     <div>
                       <p className="text-xs font-bold leading-tight text-white">WHATSAPP CHAT</p>
@@ -348,7 +348,7 @@ export const Footer = async () => {
               return (
                 <div
                   key={item.title}
-                  className="flex items-center gap-2 md:border-r-2 border-white/10 px-2 md:px-3 py-0 last:border-r-0"
+                  className="flex items-center gap-4 md:border-r-2 border-white/10 px-2 md:px-3 py-0 last:border-r-0"
                 >
                   <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full border ${item.border} ${item.color}`}>
                     <Icon size={18} />
@@ -366,11 +366,11 @@ export const Footer = async () => {
       {/* ── COPYRIGHT BAR ── */}
       <div className="px-0 md:px-8">
         <Container>
-          <div className="flex flex-col items-center justify-between gap-2 py-2 md:flex-row">
+          <div className="flex flex-col items-center justify-between gap-4 py-2 md:flex-row">
             <p className="text-[12px] text-white/70">{content.copyright.text}</p>
 
             {/* lotus center */}
-            <div className="hidden items-center gap-2 md:flex">
+            <div className="hidden items-center gap-4 md:flex">
                 <Image src={arrow} alt='arrow' width={150} height={8} />
             </div>
 

@@ -5,8 +5,8 @@ import Image from "next/image";
 import banner from "@/assets/projects-and-clients/banner.webp";
 import { Container } from "../ui/Container";
 import flower from "@/assets/about/lotus.png";
-import left from "@/assets/icons/arrow_left.png"
-import right from "@/assets/icons/arrow_right.png"
+import left from "@/assets/icons/arrow_left.webp"
+import right from "@/assets/icons/arrow_right.webp"
 import arrow from "@/assets/icons/arrow.png"
 import ProjectsStatsStrip from "./ProjectsStatsStrip";
 
@@ -42,7 +42,8 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
   sectionContent = fallbackProjectsBanner,
 }) => {
   return (
-    <section className="relative overflow-visible bg-[#f8f2e8] mb-40 md:mb-20">
+    <section className="relative overflow-visible bg-[#f8f2e8] mb-0 md:mb-20">
+      <div className="relative">
       {/* Background Image — clipped in its own layer so the outer
           section can stay overflow-visible for StatsStrip overlap */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -62,17 +63,17 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
       <Container className="relative z-20">
         <div className="flex min-h-162.5 md:min-h-[calc(100vh-146px)] items-center">
           <div className="w-full lg:max-w-[42%]">
-            <h1 className="leading-loose">
-              <span className="block text-[#1f2c25] text-4xl md:text-5xl lg:text-6xl">
+            <h1>
+              <span className="block text-[#1f2c25]">
                 {sectionContent?.title?.line1}
               </span>
 
-              <span className="block text-[#b1793d] text-4xl md:text-5xl lg:text-6xl italic">
+              <span className="block text-[#b1793d] italic">
                 {sectionContent?.title?.line2}
               </span>
             </h1>
 
-            <div className="flex items-center gap-2 my-2">
+            <div className="flex items-center gap-4 my-2">
               <Image src={arrow} alt='arrow' width={350} height={10} className="max-w-55 sm:max-w-75 md:max-w-87.5" crossOrigin="anonymous" />
             </div>
 
@@ -80,11 +81,12 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
               {sectionContent?.subtitle}
             </h2>
 
-            <p className="max-w-xs leading-relaxed text-sm" dangerouslySetInnerHTML={{ __html: sectionContent?.description }}>
+            <p className="max-w-xs text-sm md:text-base leading-6" dangerouslySetInnerHTML={{ __html: sectionContent?.description }}>
             </p>
           </div>
         </div>
       </Container>
+      </div>
 
       <ProjectsStatsStrip />
     </section>

@@ -118,7 +118,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
         // fallback — simple header agar banner data nahi hai
         <div className="py-12 md:py-20 bg-[#fdfaf5]">
           <Container>
-            <div className="flex flex-wrap items-center gap-3 text-sm font-semibold uppercase tracking-wider text-[#9d7f62] mb-3">
+            <div className="flex flex-wrap items-center gap-4 text-sm font-semibold uppercase tracking-wider text-[#9d7f62] mb-3">
               <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
               <span className="h-1.5 w-1.5 rounded-full bg-[#dcc9b5]" />
               <span>By {blog.author || "Admin"}</span>
@@ -129,7 +129,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 </>
               )}
             </div>
-            <h1 className="font-serif text-3xl md:text-5xl lg:text-6xl font-bold text-[#2b241f] leading-[1.1]">
+            <h1 className="text-[#2b241f]">
               {blog.title}
             </h1>
           </Container>
@@ -172,7 +172,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 {blog.tags && blog.tags.length > 0 && (
                   <div className="mt-12 pt-8 border-t border-[#dcc9b5]">
                     <h4 className="text-sm font-bold text-[#2b241f] uppercase tracking-widest mb-4">Tags</h4>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-4">
                       {blog.tags.map((tag: string) => (
                         <span key={tag} className="px-4 py-1.5 bg-[#efe4d7] text-[#6e5b4d] rounded-full text-xs font-medium border border-[#dcc9b5]">
                           {tag}

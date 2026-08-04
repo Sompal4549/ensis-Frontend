@@ -94,9 +94,17 @@ const normalizeOtpResponse = (response: AxiosResponse) => {
     };
 };
 
-export const getImageUrl = (image?: any) => {
+export const getImageUrl = (image?: any, width?: number) => {
     if (!image || typeof image !== "string") return image || "";
-    if (image.startsWith("http")) return image;
+    if (image.startsWith("http")) {
+        if (image.includes("res.cloudinary.com") && image.includes("/image/upload/")) {
+            const transforms = `w_${width || 1600},f_auto,q_auto`;
+            if (!image.includes("f_auto")) {
+                return image.replace("/image/upload/", `/image/upload/${transforms}/`);
+            }
+        }
+        return image;
+    }
 
     const cleanPath = image.startsWith("/") ? image : `/${image}`;
     if (cleanPath.startsWith("/uploads")) {

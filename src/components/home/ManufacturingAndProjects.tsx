@@ -98,7 +98,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
 
   return (
     <section className="border-b border-[#e7ddd1] bg-[#fbf8f2]">
-      <Container>
+      <Container className="pb-4">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-4 items-stretch">
 
           {/* LEFT SIDE */}
@@ -122,7 +122,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
 
               {/* Stats from admin API */}
               {/* {stats.length > 0 && (
-                <div className="mt-4 grid grid-cols-3 gap-3">
+                <div className="mt-4 grid grid-cols-3 gap-4">
                   {stats.map((stat: { value: string; label: string }, i: number) => (
                     <div key={i} className="text-center">
                       <span className="block text-xl font-bold text-[#334022]">{stat.value}</span>
@@ -136,7 +136,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                 {content.mfgFeatures.map((item: string) => (
                   <li
                     key={item}
-                    className="flex items-center gap-3 text-[13px] text-[#3f3a32]"
+                    className="flex items-center gap-4 text-[13px] text-[#3f3a32]"
                   >
                     <CheckSquare2
                       size={16}
@@ -152,7 +152,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
             </div>
 
             {/* Manufacturing Images */}
-            <div className="grid grid-cols-2 gap-2 self-start h-[100%]">
+            <div className="grid grid-cols-2 gap-4 self-start h-[100%]">
 
               {/* Top Large */}
               <div className="relative col-span-2 h-[100%] overflow-hidden rounded-2xl">
@@ -214,7 +214,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
 
             {/* Project Grid — uses admin `projects` array */}
             <div className="mt-2">
-              <div className="grid h-50 grid-cols-3 grid-rows-[1fr_1fr] gap-2">
+              <div className="grid h-50 grid-cols-3 grid-rows-[1fr_1fr] gap-4">
 
                 {/* Left Tall */}
                 <div className="relative row-span-2 h-full overflow-hidden rounded-2xl group">

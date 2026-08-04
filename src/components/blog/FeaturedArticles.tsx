@@ -42,7 +42,7 @@ export default async function FeaturedArticles({ sectionContent, blogs }: { sect
   return (
     <div className="mb-3">
       <SectionTitle title="Featured Articles" />
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {blogs.map((article: any, index: number) => (
           <BlogCard 
             key={article.id || index} 

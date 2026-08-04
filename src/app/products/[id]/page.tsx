@@ -56,7 +56,7 @@ function RelatedProductCard({ product }: { product: Product }) {
       </div>
       <div className="px-1 py-3">
         <h3 className="line-clamp-2 text-xs font-semibold">{product.title}</h3>
-        <div className="mt-1 flex items-center justify-between gap-2">
+        <div className="mt-1 flex items-center justify-between gap-4">
           <span className="text-sm font-bold text-[#1a1a1a]">
             {formatPrice(product.price)}
           </span>
@@ -91,9 +91,9 @@ export default async function ProductPage({
     ...apiProduct,
     id: apiProduct._id ?? apiProduct.id ?? id,
     name: apiProduct.title,
-    image: apiProduct.images?.[0] ? getImageUrl(apiProduct.images[0]) : "",
+    image: apiProduct.images?.[0] ? getImageUrl(apiProduct.images[0], 1600) : "",
     images: apiProduct.images?.length
-      ? apiProduct.images.map((img: string) => getImageUrl(img))
+      ? apiProduct.images.map((img: string) => getImageUrl(img, 900))
       : [img6, img6, img6, img6],
     categoryKey: apiProduct.category?.slug || apiProduct.category
   };
@@ -193,7 +193,7 @@ export default async function ProductPage({
                 Place the product in a stable, clean treatment area. Follow your therapy
                 workflow and wipe surfaces after each session with a mild cleaner.
               </p>
-              <div className="mt-5 grid grid-cols-3 gap-3 text-center text-[11px] font-semibold text-[#313b30]">
+              <div className="mt-5 grid grid-cols-3 gap-4 text-center text-[11px] font-semibold text-[#313b30]">
                 {[
                   ["Step 1", "Prepare"],
                   ["Step 2", "Use"],
@@ -227,7 +227,7 @@ export default async function ProductPage({
                   "Easy to coordinate with custom projects",
                   "Backed by practical after-sales support",
                 ].map((item) => (
-                  <li key={item} className="flex gap-2">
+                  <li key={item} className="flex gap-4">
                     <HeartHandshake
                       size={16}
                       className="mt-1 shrink-0 text-[#8d6a3a]"
@@ -241,7 +241,7 @@ export default async function ProductPage({
         </section> */}
 
 
-        {/* <section className="mt-8 grid gap-3 rounded-lg border border-[#eee5d8] bg-white p-4 sm:grid-cols-4">
+        {/* <section className="mt-8 grid gap-4 rounded-lg border border-[#eee5d8] bg-white p-4 sm:grid-cols-4">
           {[
             [Leaf, "Clean Materials", "No harsh finishes"],
             [BadgeCheck, "Quality Checked", "Safe and effective"],
@@ -252,7 +252,7 @@ export default async function ProductPage({
             return (
               <div
                 key={title as string}
-                className="flex items-center gap-3 border-[#eee5d8] sm:border-r sm:last:border-r-0"
+                className="flex items-center gap-4 border-[#eee5d8] sm:border-r sm:last:border-r-0"
               >
                 <DisplayIcon size={24} className="text-[#313b30]" />
                 <div>
@@ -290,8 +290,8 @@ export default async function ProductPage({
       <FaqSection product={product} />
       {/* <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5ded5] bg-white/95 px-2 shadow-[0_-10px_30px_rgba(49,59,48,0.08)] backdrop-blur">
         <Container>
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex min-w-0 items-center gap-3">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex min-w-0 items-center gap-4">
               <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-md bg-[#f7f3ec]">
                 <Image
                   src={gallery[0]}

@@ -89,10 +89,10 @@ const WhyWorkSection = ({sectionContent}:{sectionContent:WhyWorkProps}) => {
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-5">
-            {sectionContent.cards.map((card) => (
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-5">
+            {sectionContent.cards.map((card, index) => (
               <div
-                key={card.title}
+                key={`${card.title}-${index}`}
                 className="rounded-2xl border border-[#E7E1D9] bg-white/70 p-6 text-center backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
               >
                 <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center">

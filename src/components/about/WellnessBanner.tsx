@@ -51,7 +51,7 @@ sectionContent
               {sectionContent.title}
             </h2>
 
-            <p className="mt-3 text-sm text-[#ddd1c1] md:text-[15px] " dangerouslySetInnerHTML={{__html:sectionContent.description||""}}>
+            <p className="mt-3 text-sm md:text-base leading-6 text-[#ddd1c1] " dangerouslySetInnerHTML={{__html:sectionContent.description||""}}>
             </p>
 
             {/* Buttons */}

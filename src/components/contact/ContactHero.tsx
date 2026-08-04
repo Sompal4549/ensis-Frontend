@@ -68,16 +68,16 @@ const ContactHero: React.FC<{ sectionContent: ContactHeroContent }> = ({sectionC
           <div className="relative max-w-[600px] ">
 
             {/* Small Heading */}
-            <p className="uppercase tracking-[2px] text-[11px] font-semibold text-[#7b6d5d] mb-3 flex gap-2">
+            <p className="uppercase tracking-[2px] text-[11px] font-semibold text-[#7b6d5d] mb-3 flex gap-4">
               <Image src={getInTouch} width={30} height={15} alt="arrow image" />
               {sectionContent.heading}
             </p>
 
             {/* Main Heading */}
-            <h1 className="text-[24px] lg:text-[62px] leading-[1.05] font-serif text-[#173128] font-semibold">
+            <h1 className="text-[#173128]">
              {sectionContent.title}
               <br />
-              <span className="text-[#b58a48] capitalize font-semibold">{sectionContent.highlightedText}</span>
+              <span className="text-[#b58a48] capitalize">{sectionContent.highlightedText}</span>
             </h1>
 
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] font-semibold  text-[#313628]">

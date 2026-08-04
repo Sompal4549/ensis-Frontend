@@ -60,7 +60,7 @@ export default function AuthLayout({
                 height={40}
               />
 
-              <h1 className="mt-5 text-2xl lg:text-4xl font-light leading-[1.1]">
+              <h1 className="mt-5">
                 Premium {" "}
                 <span className="text-[#d9c49d]">
                   Wellness
@@ -107,10 +107,10 @@ export default function AuthLayout({
               </div>
               {page === "login" && (
                 <div className="mt-3 flex flex-col">
-                  <a href="/register" className="inline-flex items-center gap-3 text-sm font-bold text-white hover:text-[#d9c49d] transition-colors mb-2">
+                  <a href="/register" className="inline-flex items-center gap-4 text-sm font-bold text-white hover:text-[#d9c49d] transition-colors mb-2">
                     Don't have an account? Register <ArrowRight size={16} />
                   </a>
-                  <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" className="inline-flex items-center gap-3 text-sm font-bold text-[#d9c49d] mt-1">
+                  <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" className="inline-flex items-center gap-4 text-sm font-bold text-[#d9c49d] mt-1">
                     Admin Login <ArrowRight size={16} />
                   </a>
                 </div>
@@ -118,7 +118,7 @@ export default function AuthLayout({
               {page === "register" && (
 
                 <div className="mt-8 flex flex-col gap-4">
-                  <a href="/login" className="inline-flex items-center justify-center gap-2 rounded-md border border-[#d9c49d]/30 bg-[#d9c49d]/10 px-3 py-3 text-xs font-bold uppercase tracking-wide text-[#d9c49d] transition-colors hover:bg-[#d9c49d]/20">
+                  <a href="/login" className="inline-flex items-center justify-center gap-4 rounded-md border border-[#d9c49d]/30 bg-[#d9c49d]/10 px-3 py-3 text-xs font-bold uppercase tracking-wide text-[#d9c49d] transition-colors hover:bg-[#d9c49d]/20">
                     Already have an account? Sign In <ArrowRight size={16} />
                   </a>
                 </div>

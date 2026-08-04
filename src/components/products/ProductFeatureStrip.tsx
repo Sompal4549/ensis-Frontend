@@ -51,7 +51,7 @@ export default function ProductFeatureStrip() {
               <div
                 key={index}
                 className={`
-    relative flex items-center justify-center gap-3
+    relative flex items-center justify-center gap-4
     w-1/2 md:w-1/3 xl:w-1/6 flex-1
     ${index !== features.length - 1 ? "xl:border-r border-[#9f7a43]/30" : ""}
   `}

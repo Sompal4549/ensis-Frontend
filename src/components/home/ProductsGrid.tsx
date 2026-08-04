@@ -86,7 +86,7 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {products.slice(0, 8).map((product: Product) => {
             const imageUrl = product.images?.[0]
-              ? getImageUrl(product.images[0])
+              ? getImageUrl(product.images[0], 900)
               : fallbackImageMap[product.slug] || img12;
 
             return (
@@ -96,6 +96,7 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
                     src={imageUrl}
                     alt={product.title}
                     fill
+                    loading="lazy"
                     className="object-cover"
                     crossOrigin="anonymous"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
@@ -103,7 +104,7 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
                 </div>
                 <div className="p-4">
                   <p className="text-base font-semibold text-[#0f2518]">{product.title}</p>
-                  <span className="inline-flex items-center gap-2 text-xs font-semibold text-[#0f2518]">Explore Now <ArrowRight size={14} /></span>
+                  <span className="inline-flex items-center gap-4 text-xs font-semibold text-[#0f2518]">Explore Now <ArrowRight size={14} /></span>
                 </div>
               </Link>
             )

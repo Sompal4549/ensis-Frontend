@@ -48,7 +48,7 @@ export function RazorpayCheckout({
           <span className="absolute inset-0 block bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] hover:animate-[shimmer_1.5s_infinite]" />
         )}
 
-        <div className="flex items-center justify-center gap-3">
+        <div className="flex items-center justify-center gap-4">
           {loading ? (
             <>
               <Loader2 className="h-5 w-5 animate-spin" />
@@ -69,21 +69,21 @@ export function RazorpayCheckout({
       </button>
 
       {/* Trust & Verification Badges */}
-      <div className="flex items-center justify-center gap-2 text-[11px]">
+      <div className="flex items-center justify-center gap-4 text-[11px]">
         <ShieldCheck className="h-4 w-4 text-[#516a35]" />
         <span className="font-semibold">Secured by Razorpay • 256-bit SSL Encryption</span>
       </div>
 
       {/* Visual State Indicators */}
       {verifying && (
-        <div className="animate-fade-in rounded-lg bg-indigo-500/10 border border-indigo-500/20 p-3 text-center text-xs font-semibold text-indigo-700 flex items-center justify-center gap-2">
+        <div className="animate-fade-in rounded-lg bg-indigo-500/10 border border-indigo-500/20 p-3 text-center text-xs font-semibold text-indigo-700 flex items-center justify-center gap-4">
           <Loader2 className="h-4 w-4 animate-spin text-indigo-600" />
           <span>Validating transactions securely with Ensis servers. Please do not close or refresh this window.</span>
         </div>
       )}
 
       {error && (
-        <div className="animate-shake rounded-lg bg-rose-50 border border-rose-200 p-3 text-xs font-medium text-rose-600 flex items-start gap-2">
+        <div className="animate-shake rounded-lg bg-rose-50 border border-rose-200 p-3 text-xs font-medium text-rose-600 flex items-start gap-4">
           <AlertCircle className="h-4 w-4 mt-0.5 shrink-0 text-rose-500" />
           <span className="leading-5">{error}</span>
         </div>

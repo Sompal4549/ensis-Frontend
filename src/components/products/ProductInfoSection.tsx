@@ -111,7 +111,7 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
             <h3 className="font-semibold text-sm mb-3 border-b pb-1 border-[#d4c4a8]">What's Included</h3>
             <ul className="space-y-2">
               {overview?.whatisInclueded?.map((item: string, i: number) => (
-                <li key={i} className="flex items-start gap-2 text-[11px] leading-snug text-black">
+                <li key={i} className="flex items-start gap-4 text-[11px] leading-snug text-black">
                   <Check size={14} className="shrink-0 mt-0.5 text-[#8d6a3a] font-semibold" />
                   {item}
                 </li>
@@ -121,7 +121,7 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
 
           {/* Need Customization */}
           <div className="rounded-lg border border-[#e2d8c8] p-4">
-            <div className="flex items-start gap-3">
+            <div className="flex items-start gap-4">
               <div className="w-25 h-15 flex items-center justify-center">
                 <Image src={need_customization} alt="customization" width={48} height={48} className="object-fill" />
               </div>
@@ -175,7 +175,7 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
         {/* Size Options */}
         <div className="px-5">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.15em] mb-4 text-[#8d6a3a]">Size Options</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {overview?.smartDesignAppearance?.sizeOptions?.map((s) => (
               <div
                 key={s.title}
@@ -229,8 +229,8 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
 
       {/* ── FOOTER ── */}
       {/* <div className="bg-[#d8d0bc] border-t border-[#c4b89a]">
-        <div className="px-6 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
+        <div className="px-6 py-2.5 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
             <div className="w-5 h-5 rounded-full border border-[#6a7c4a] flex items-center justify-center shrink-0">
               <svg viewBox="0 0 20 20" className="w-3 h-3" fill="none">
                 <circle cx="10" cy="10" r="8" stroke="#6a7c4a" strokeWidth="1.5" />

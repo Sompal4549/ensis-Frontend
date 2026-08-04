@@ -79,7 +79,7 @@ const ExpertiseSection: React.FC<{ sectionContent: ExpertiseSectionContent }> = 
                             </div>
 
                             {/* Content */}
-                            <div className="p-4 flex flex-col gap-3">
+                            <div className="p-4 flex flex-col gap-4">
                                 <div>
                                     <div className="flex justify-between items-center">
                                         <h3 className="text-base font-bold uppercase tracking-wide text-[#2d2d2d] leading-tight w-[65%]">

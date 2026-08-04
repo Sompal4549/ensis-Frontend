@@ -96,7 +96,7 @@ export default function WhyPartnerBanner({ sectionContent }: WhyPartnerBannerPro
 
       <Container className="relative pr-40!">
         {/* Heading */}
-        <div className="mb-2 flex items-center gap-3 pt-2">
+        <div className="mb-2 flex items-center gap-4 pt-2">
           <h2 className="font-serif text-xl font-semibold text-[#E8C766] sm:text-2xl">
             {banner.heading}
           </h2>

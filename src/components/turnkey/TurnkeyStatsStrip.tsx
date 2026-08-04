@@ -7,6 +7,7 @@ import pan_india from "@/assets/about_new/pan_india.webp";
 import Image from "next/image";
 import { Container } from "../ui/Container";
 import { getComponentContent, getImageUrl } from "@/lib/api/api";
+import { gridColsClass } from "@/constants/grid";
 
 const defaultStats: StatItem[] = [
   { image: twenty, title: "20+", description: "Years Experience" },
@@ -41,17 +42,23 @@ export default async function TurnkeyStatsStrip() {
   const stats = content.items?.length ? content.items : defaultStats;
 
   const resolvedStats: StatItem[] = stats.map(
-    (item: StatItem, i: number) => ({
-      ...defaultStats[i],
-      ...item,
-      image: item.imageurl?.imageUrl
-        ? {
-          src: getImageUrl(item.imageurl.imageUrl),
-          alt: item.imageurl.alt,
-        }
-        : item.image ?? defaultStats[i]?.image,
-    })
+    (item: StatItem, i: number) => {
+      const imageUrl = item.imageurl?.imageUrl || (item.image as any)?.imageUrl;
+      const alt = item.imageurl?.alt || (item.image as any)?.alt || item.title;
+      return {
+        ...defaultStats[i],
+        ...item,
+        image: imageUrl
+          ? {
+            src: getImageUrl(imageUrl, 200),
+            alt,
+          }
+          : item.image ?? defaultStats[i]?.image,
+      };
+    }
   );
+
+  const gridCols = gridColsClass(resolvedStats.length);
 
   return (
     <Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 py-0">
@@ -65,7 +72,7 @@ export default async function TurnkeyStatsStrip() {
           ring-offset-2 ring-offset-transparent
         "
       >
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-6">
+        <div className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${gridCols}`}>
           {resolvedStats.map((item, index) => (
             <div
               key={index}
@@ -76,7 +83,7 @@ export default async function TurnkeyStatsStrip() {
             >
               <div className="mt-1 shrink-0 w-14 h-14 flex items-center justify-center">
                 <Image
-                  src={item.image.imageUrl
+                  src={item.image.src
                     ?? item.image}
                   alt={item.image.alt || item.title}
                   width={70}

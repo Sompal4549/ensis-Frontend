@@ -87,7 +87,7 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
             {(sectionContent.features || features).map((item, index) => (
               <li
                 key={index}
-                className="flex items-center gap-3 text-sm text-white/90"
+                className="flex items-center gap-4 text-sm text-white/90"
               >
                 <CheckCircle2
                   size={18}
@@ -127,7 +127,7 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
             <button
               type="submit"
               disabled={loading}
-              className="flex h-12 w-full items-center justify-center gap-2 rounded-md bg-[#c89a4b] text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-[#b48235] disabled:opacity-60"
+              className="flex h-12 w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-[#b48235] disabled:opacity-60"
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
               {loading ? "Subscribing..." : (sectionContent.button||"Subscribe")}

@@ -66,7 +66,7 @@ export default function GetInTouchBanner({
         <div className="rounded-2xl border border-[#e3d2b0]">
 
         {/* Heading */}
-        <div className="mb-2 flex items-center justify-center gap-3">
+        <div className="mb-2 flex items-center justify-center gap-4">
           <span className="h-px w-10 bg-[#b1793d]/50 sm:w-16" />
           <h2 className="text-lg font-semibold uppercase text-[#1f2c25] sm:text-xl">
             {banner.heading}
@@ -111,7 +111,7 @@ export default function GetInTouchBanner({
 
         {/* Bottom Divider */}
         <div className="mt-2 flex justify-center">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <span className="h-px w-12 bg-[#b1793d]/40" />
             <Sparkles
               size={18}

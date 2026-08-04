@@ -38,7 +38,7 @@ const YouMightCarousel: React.FC<CarouselProps> = ({
 
       {/* Viewport */}
       <div className="overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-3">
+        <div className="flex gap-4">
           {children.map((child, index) => (
             <div
               key={index}

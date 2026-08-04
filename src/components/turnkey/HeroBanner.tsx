@@ -37,8 +37,9 @@ export interface TurnkeyHeroContent {
 
 export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyHeroContent }) {
   return (
-     <div className="relative overflow-visible mb-40 md:mb-20">
-        <Image src={sectionContent.backgroundImage.imageUrl} alt={sectionContent.backgroundImage.alt||sectionContent.title} fill className="object-fill z-0! absolute object-right" priority  />
+     <div className="relative overflow-visible mb-0 md:mb-20 pt-6">
+      <div className="relative">
+        <Image src={sectionContent.backgroundImage.imageUrl} alt={sectionContent.backgroundImage.alt||sectionContent.title} fill className="object-cover sm:object-fill z-0! absolute object-left sm:object-right" priority  />
       {/* ── HERO ── */}
  <Container className="relative z-20">
         <div className="relative min-h-[470px] md:h-[calc(100vh-146px)] w-full">
@@ -47,7 +48,7 @@ export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyH
           {/* LEFT COLUMN */}
           <div className="flex flex-col gap-4 h-full justify-center">
             {/* Eyebrow */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <span className="text-[#c38727] text-xs sm:text-sm font-semibold uppercase">
                 {sectionContent.subheading}
               </span>
@@ -58,32 +59,32 @@ export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyH
 
             {/* Headline */}
             <div>
-              <h1 className="text-[#1a2e1a] text-3xl lg:text-4xl  font-semibold leading-tight">
+              <h1 className="text-[#1a2e1a]">
                {sectionContent.title}
               </h1>
-              <h1 className="text-[#c38727] text-3xl sm:text-4xl lg:text-[42px] font-semibold leading-tight mt-1">
+              <h1 className="text-[#c38727] mt-1">
                 {sectionContent.highlight}
               </h1>
             </div>
 
             {/* Ornament divider */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-4">
               <div className="h-px flex-1 max-w-[120px] bg-[#d6a85f] opacity-50" />
              <Image alt="lotus" src={lotus} width={30} height={30} className="h-full object-contain" />
               <div className="h-px flex-1 max-w-[120px] bg-[#d6a85f] opacity-50" />
             </div>
 
             {/* Body copy */}
-            <p className="text-sm  max-w-md leading-6 mb-4" dangerouslySetInnerHTML={{__html:sectionContent.description || ""}}>
+            <div className="text-sm md:text-base leading-6 max-w-md mb-4 line-clamp-4" dangerouslySetInnerHTML={{__html:sectionContent.description || ""}}>
           
-            </p>
+            </div>
 
             {/* Feature icons */}
             <div className="flex flex-wrap gap-4 sm:gap-6">
           {(Array.isArray(sectionContent.features) ? sectionContent.features : []).map((f, index) => (
   <div
     key={f?.id || index}
-    className={`flex flex-col items-center gap-2 text-center min-w-[64px] pr-3 ${
+    className={`flex flex-col items-center gap-3 text-center min-w-[64px] pr-3 ${
       index !== sectionContent.features.length - 1 ? "border-r border-[#7c5c18]" : ""
     }`}
   >
@@ -98,7 +99,7 @@ export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyH
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-3">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-4 mt-3">
               <BookButton text={sectionContent.primaryButton.label} path={sectionContent.primaryButton.url}/>
                <GreenButton text={sectionContent.secondaryButton.label} path={sectionContent.secondaryButton.url} />
             </div>
@@ -107,6 +108,7 @@ export default function TurnkeyHero({sectionContent}: { sectionContent: TurnkeyH
         </div>
         </div>
       </Container>
+      </div>
           <TurnkeyStatsStrip/>
     </div>
   );

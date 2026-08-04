@@ -366,7 +366,7 @@ const experienceOptions = Array.from(
                       <button
                         type="button"
                         onClick={() => handleApply(job)}
-                        className="flex items-center gap-2 text-[#c89a4b] text-xs"
+                        className="flex items-center gap-4 text-[#c89a4b] text-xs"
                       >
                         APPLY NOW
                         <ArrowRight size={16} />
@@ -416,7 +416,7 @@ const experienceOptions = Array.from(
                 </HtmlRenderer>
 
                 {appliedJob && (
-                  <div className="mt-4 flex items-center justify-between gap-2 rounded-md border border-[#c89a4b] bg-[#c89a4b]/10 px-3 py-2">
+                  <div className="mt-4 flex items-center justify-between gap-4 rounded-md border border-[#c89a4b] bg-[#c89a4b]/10 px-3 py-2">
                     <span className="text-xs font-semibold text-[#e8c766]">
                       Applying for: {appliedJob.title}
                     </span>
@@ -563,7 +563,7 @@ const experienceOptions = Array.from(
   placeholder="Cover Letter / Message"
   className="w-full rounded-xl border border-[#b98b43]/30 bg-transparent p-4 outline-none text-xs"
 />
-                  <label className="flex items-start gap-3 text-xs text-white">
+                  <label className="flex items-start gap-4 text-xs text-white">
                    <input
   type="checkbox"
   aria-label="I agree to the terms"
@@ -577,7 +577,7 @@ const experienceOptions = Array.from(
 <button
   type="submit"
   disabled={loading}
-  className="flex w-full items-center justify-center gap-2 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-xs disabled:opacity-60"
+  className="flex w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-xs disabled:opacity-60"
 >
   {loading
     ? "SUBMITTING..."

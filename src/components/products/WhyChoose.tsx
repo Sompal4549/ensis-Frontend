@@ -5,7 +5,7 @@ import { Container } from "../ui/Container";
 import GreenButton from "../ui/GreenButton";
 import BookButton from "../ui/BookButton";
 import Image from "next/image";
-import whyChooseBg from "@/assets/products/whyChooseBg.png"
+import whyChooseBg from "@/assets/products/whyChooseBg.webp"
 import ayurvedic from "@/assets/icons/panchkarma_centers.webp"
 import customized from "@/assets/icons/customized.webp";
 import global from "@/assets/products/global_shippning.png"
@@ -74,7 +74,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
               </p>
               <ul className="space-y-4 mb-6">
                 {sectionContent.whyChoose.reasons.map((f) => (
-                  <li key={f} className="flex items-start gap-2">
+                  <li key={f} className="flex items-start gap-4">
                     <span className="mt-[2px] shrink-0 w-[15px] h-[15px] rounded-full border border-[#c8a45d]/60 flex items-center justify-center">
                       <svg width="7" height="7" viewBox="0 0 8 8" fill="none">
                         <circle cx="4" cy="4" r="2.5" fill="#c8a45d" opacity="0.85"/>
@@ -113,7 +113,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
             </p>
 
             {/* Stats row — icons only, no bg/border */}
-            <div className="grid grid-cols-4 gap-2 mb-4">
+            <div className="grid grid-cols-4 gap-4 mb-4">
               {sectionContent.welcomeToEnsis.features.map((s) => (
                 <div key={s.id} className="flex flex-col items-center gap-1 text-center">
                   <div className="flex items-center justify-center w-8 h-8">
