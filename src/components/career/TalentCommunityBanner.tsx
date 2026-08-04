@@ -121,13 +121,13 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-12 w-full rounded-md border border-[#d7d7d7]/20 bg-white px-4 text-sm text-black outline-none placeholder:text-gray-400"
+              className="h-9 w-full rounded-md border border-[#d7d7d7]/20 bg-white px-3 text-xs text-black outline-none placeholder:text-gray-400"
             />
 
             <button
               type="submit"
               disabled={loading}
-              className="flex h-12 w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] text-sm font-semibold uppercase tracking-wide text-white transition hover:bg-[#b48235] disabled:opacity-60"
+              className="flex h-9 w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-[#b48235] disabled:opacity-60"
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
               {loading ? "Subscribing..." : (sectionContent.button||"Subscribe")}
