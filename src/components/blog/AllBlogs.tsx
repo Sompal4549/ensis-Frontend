@@ -30,7 +30,7 @@ export default function AllBlogs({ sectionContent, blogs }: { sectionContent: an
               date={post.date}
               category={post.category}
               image={post.image}
-              link={post.link || post.id}
+              link={post.slug || post.link || post.id}
             />
           ))
         ) : (
