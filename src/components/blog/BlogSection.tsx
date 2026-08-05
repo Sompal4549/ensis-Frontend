@@ -4,9 +4,11 @@ import BlogSidebar from "@/components/blog/BlogSidebar";
 import { Container } from "../ui/Container";
 
 import { blogApi } from "@/lib/api/api";
+import { normalizeBlogs } from "@/utils/blog";
 
 export default async function BlogSection({ sectionContent }: { sectionContent: any }) {
-  const allBlogs = await blogApi.list();
+  const rawBlogs = await blogApi.list();
+  const allBlogs = normalizeBlogs(rawBlogs);
   const featuredBlogs = allBlogs.filter((b: any) => b.isFeatured);
   const popularBlogs = allBlogs.filter((b: any) => b.isPopular);
   const voiceOfExpertsBlogs = allBlogs.filter((b: any) => b.isVoiceOfExperts);

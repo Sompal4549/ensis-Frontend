@@ -41,7 +41,7 @@ const features = [
 
 export default function ProductFeatureStrip() {
   return (
-    <section className="w-full bg-gradient-to-r from-[#012c20] via-[#013727] to-[#012c20] border-y border-[#9f7a43]/20 py-2">
+    <section className="w-full bg-gradient-to-r from-[#012c20] via-[#013727] to-[#012c20] border-y-2 border-[#C9972A] py-2">
       <Container>
         <div className="flex flex-wrap xl:flex-nowrap justify-between ">
           {features.map((item, index) => {

@@ -114,8 +114,8 @@ export const getImageUrl = (image?: any, width?: number) => {
 };
 
 export const productApi = {
-    list: async (limit = 100) => {
-        const response = await apiClient.get(`/products`, { params: { limit } });
+    list: async (limit = 100, page = 1) => {
+        const response = await apiClient.get(`/products`, { params: { limit, page } });
         return unwrap<{
           data: any; products: Product[]; total: number; page: number; limit: number 
 }>(response);

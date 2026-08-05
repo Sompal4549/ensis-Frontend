@@ -18,18 +18,68 @@ import RealSpacesCarousel from "@/components/products/RealSpacesCarousel";
 import { generateSeo } from "@/lib/api/seo";
 import { productApi, getImageUrl } from "@/lib/api/api";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
+import type { Metadata } from "next";
+
+const FALLBACK_TITLE = "Ensis - Premium Panchkarma & Wellness Spaces";
 
 export async function generateMetadata({
   params
 }: {
   params: Promise<{ id: string }>
-}) {
+}): Promise<Metadata> {
   // Await the params promise to get the actual values
   const { id } = await params;
 
-  return generateSeo(
-    `products/${id}`
-  );
+  const base = await generateSeo(`products/${id}`);
+
+  // Pull the product so we can auto-populate the OG image / title even
+  // when no per-product SEO record has been configured in the admin.
+  let apiProduct: any = null;
+  try {
+    apiProduct = await productApi.detail(id);
+  } catch {
+    apiProduct = null;
+  }
+
+  const pageTitled = !!base.title && base.title !== FALLBACK_TITLE;
+  const title = pageTitled ? base.title : apiProduct?.title || base.title || FALLBACK_TITLE;
+
+  const description =
+    apiProduct?.shortDescription ||
+    apiProduct?.overview?.description ||
+    apiProduct?.description ||
+    (base.description as string) ||
+    "";
+
+  // Prefer an explicitly configured og:image from admin page SEO,
+  // otherwise fall back to the product's first image.
+  const adminOgImage = (base.openGraph?.images as { url?: string }[] | undefined)?.[0]?.url;
+  const ogImage =
+    adminOgImage ||
+    (apiProduct?.images?.[0] ? getImageUrl(apiProduct.images[0], 1200) : "");
+
+  return {
+    title,
+    description,
+    keywords: base.keywords,
+    alternates: base.alternates,
+    robots: base.robots,
+    openGraph: {
+      title: base.openGraph?.title || title,
+      description: base.openGraph?.description || description,
+      url: base.openGraph?.url,
+      siteName: base.openGraph?.siteName,
+      type: "website",
+      images: ogImage ? [{ url: ogImage }] : base.openGraph?.images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: ogImage ? [ogImage] : undefined,
+    },
+  };
 }
 
 
@@ -145,8 +195,63 @@ export default async function ProductPage({
     ? suggestions
     : suggestionsList.filter(i => i.slug !== product.slug).slice(0, 8);
 
+  const requestHeaders = await headers();
+  const host =
+    requestHeaders.get("x-forwarded-host") ||
+    requestHeaders.get("host") ||
+    "ensis.in";
+  const protocol = requestHeaders.get("x-forwarded-proto") || "https";
+  const productUrl = `${protocol}://${host}/products/${product.slug || id}`;
+
+  const productImages = product.images?.length ? product.images : [product.image];
+  const inStock = (product.stock ?? 0) > 0;
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": productUrl,
+    name: product.name || product.title,
+    description:
+      product.shortDescription ||
+      product.description ||
+      product.overview?.description ||
+      product.title,
+    sku: product.code || product.id,
+    image: productImages,
+    brand: { "@type": "Brand", name: "ENSIS" },
+    category:
+      typeof product.category === "object" && product.category
+        ? product.category.name
+        : product.categoryKey || product.category || undefined,
+    ...(product.averageRating
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: product.averageRating,
+            bestRating: 5,
+            ratingCount: product.reviews?.length || 1,
+          },
+        }
+      : {}),
+    offers: {
+      "@type": "Offer",
+      url: productUrl,
+      price: (product.price || 0).toString(),
+      priceCurrency: "INR",
+      availability: inStock
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      ...(product.discountPrice && product.discountPrice < product.price
+        ? { priceValidUntil: new Date(Date.now() + 60 * 86400000).toISOString().split("T")[0] }
+        : {}),
+    },
+  };
+
   return (
     <div className="min-h-screen bg-[#fbfaf7]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
+      />
       <CartAndDetailHeroBanner
         originalPrice={originalPrice}
         product={product}

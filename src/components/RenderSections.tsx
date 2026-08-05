@@ -174,13 +174,13 @@ case "contact.premiumMap":
     case "blog.allBlogs":
       return <BlogSection sectionContent={data} />;
     case "blog.mediaResources":
-      return <SupportSection sectionContent={data} />;
+      return <WellnessResources sectionContent={data as any} />;
     case 'blog.hero':
       return <BlogHeroSection sectionContent={data} />;
     case "blog.stayInspired":
       return <NewsletterCard sectionContent={data as any} />;
     case "blog.supportWellness":
-      return <WellnessResources sectionContent={data as any} />;
+      return <SupportSection sectionContent={data as any} />;
 
     case "product.hero":
       return <HeroSlider />

@@ -116,11 +116,11 @@ export default function ConsultancyServices({ sectionContent }: { sectionContent
           {sectionContent.serviceCards.map((service) => (
            <div
   key={service.title}
-  className="group flex min-h-[260px] flex-col rounded-[14px] border border-[#E9E9E9] bg-white px-5 py-5 transition-all duration-300 hover:shadow-md items-center text-center"
+  className="group flex flex-col rounded-[14px] border border-[#E9E9E9] bg-white px-4 py-4 transition-all duration-300 hover:shadow-md items-center text-center"
 >
   {/* ICON */}
   <div
-    className="flex h-[60px] w-[60px] items-center justify-center rounded-full"
+    className="flex w-15 items-center justify-center rounded-full"
     style={{ backgroundColor: service.iconBg }}
   >
     <Image src={service.image} alt={service.title} width={26} height={26} />
@@ -135,7 +135,7 @@ export default function ConsultancyServices({ sectionContent }: { sectionContent
   </HtmlRenderer>
 
   {/* mt-auto yahan flex-grow wale div pe lagao */}
- <div className="mt-auto pt-5">
+ <div className="mt-auto">
   <a
     href={`/${service.learnMoreLink}`}
     className="flex items-center justify-center gap-4" // Removed Next/Link import, using <a>

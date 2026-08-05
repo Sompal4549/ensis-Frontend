@@ -1,4 +1,5 @@
 import { getComponentContent, getImageUrl, getPageComponent, API_URL } from "@/lib/api/api";
+import { headers } from "next/headers";
 import { Container } from "@/components/ui/Container";
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -65,7 +66,11 @@ export async function generateMetadata({ params }: BlogDetailProps): Promise<Met
     try { ogExtra = JSON.parse(seo.ogJson); } catch { }
   }
 
-  const ogImage = ogExtra["og:image"] || blog.blogImage?.image || "";
+  const ogImage =
+    ogExtra["og:image"] ||
+    blog.blogImage?.image ||
+    blog.banner?.backgroundImage ||
+    "";
 
   return {
     title: seo.metaTitle || title,
@@ -81,6 +86,12 @@ export async function generateMetadata({ params }: BlogDetailProps): Promise<Met
       type: (ogExtra["og:type"] as "website" | "article") || "article",
       images: ogImage ? [{ url: getImageUrl(ogImage) }] : [],
     },
+    twitter: {
+      card: "summary_large_image",
+      title: ogExtra["og:title"] || seo.metaTitle || title,
+      description: ogExtra["og:description"] || seo.metaDescription,
+      images: ogImage ? [getImageUrl(ogImage)] : undefined,
+    },
   };
 }
 
@@ -93,7 +104,17 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
   const blogData: any = await getComponentContent("blog.allBlogs", { blogs: [] });
   const newsletterData: any = await getComponentContent("blog.stayInspired", {});
 
-  const allBlogs = await getAllBlogs();
+  const rawAllBlogs = await getAllBlogs();
+  const allBlogs = rawAllBlogs.map((b: any) => ({
+    ...b,
+    title: b.title || b.banner?.title,
+    image: b.blogImage?.image || b.banner?.backgroundImage || "",
+    date: b.createdAt
+      ? new Date(b.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+      : "",
+    category: b.category || b.banner?.category || "",
+    link: b.slug || b.id || "",
+  }));
   const voiceOfExpertsBlogs = allBlogs.filter((b: any) => b.isVoiceOfExperts);
   const popularBlogs = allBlogs.filter((b: any) => b.isPopular);
 
@@ -101,15 +122,62 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
   const hasArticle = !!blog.article?.heroImage;
   const hasNewsletter = !!blog.newsletter?.title;
 
+  // Schema: admin-provided sirf tabhi use karo jab wo is blog ka ho
+  // (slug ya title match kare), warna blog.title + URL se auto-generate.
+  const adminSchema = blog.seo?.schema || "";
+  const schemaMatchesBlog =
+    adminSchema.includes(blog.slug) || adminSchema.includes(blog.title);
+  const requestHeaders = await headers();
+  const host =
+    requestHeaders.get("x-forwarded-host") ||
+    requestHeaders.get("host") ||
+    "ensis.in";
+  const protocol = requestHeaders.get("x-forwarded-proto") || "https";
+  const blogUrl = `${protocol}://${host}/blog/${blog.slug}`;
+  const autoSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: blog.title,
+    description:
+      blog.seo?.metaDescription || blog.description || blog.banner?.title || "",
+    image: blog.blogImage?.image
+      ? getImageUrl(blog.blogImage.image)
+      : blog.banner?.backgroundImage
+      ? getImageUrl(blog.banner.backgroundImage)
+      : undefined,
+    datePublished: blog.createdAt,
+    dateModified: blog.updatedAt,
+    author: {
+      "@type": "Person",
+      name: blog.author || "ENSIS",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "ENSIS",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://ensis.in/logo.png",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": blogUrl,
+    },
+    url: blogUrl,
+    category: blog.category || undefined,
+    keywords: blog.tags?.join(", ") || undefined,
+  };
+  const schemaJson = schemaMatchesBlog
+    ? adminSchema
+    : JSON.stringify(autoSchema);
+
   return (
     <main className="bg-[#fdfaf5]">
 
-      {blog.seo?.schema && (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: blog.seo.schema }}
-        />
-      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: schemaJson }}
+      />
 
       {/* ── BANNER ── */}
       {hasBanner ? (
@@ -145,22 +213,18 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
           <Container>
             <div className="grid grid-cols-1 gap-12 xl:grid-cols-[1fr_320px]">
               <article className="max-w-4xl">
-                <div className="relative aspect-[21/10] w-full overflow-hidden rounded-[2.5rem] mb-12 shadow-sm">
-                  <Image
-                    src={
-                      blog.featureImage
-                        ? getImageUrl(blog.featureImage)
-                        : blog.image
-                        ? getImageUrl(blog.image)
-                        : "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?q=80&w=2070"
-                    }
-                    alt={blog.title}
-                    fill
-                    sizes="(max-width: 1280px) 100vw, 800px"
-                    className="object-cover"
-                    priority
-                  />
-                </div>
+                {blog.blogImage?.image && (
+                  <div className="relative aspect-[21/10] w-full overflow-hidden rounded-[2.5rem] mb-12 shadow-sm">
+                    <Image
+                      src={getImageUrl(blog.blogImage.image)}
+                      alt={blog.blogImage.alt || blog.title}
+                      fill
+                      sizes="(max-width: 1280px) 100vw, 800px"
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
+                )}
 
                 <div
                   className="prose prose-stone prose-lg max-w-none text-[#4a4036]

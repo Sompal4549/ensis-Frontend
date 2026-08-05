@@ -49,34 +49,33 @@ export default async function StatsStrip() {
 
   return (
 <Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 py-0">
-  <div className="border-y border-[#e5dccf] bg-[#f3eee6] rounded-xl py-3 px-3">
-    <div className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${gridCols}`}>
+  <div className="border border-[#C9972A] bg-[#f3eee6] rounded-xl py-2 px-3 ring-1 ring-[#C9972A]/50 ring-offset-2 ring-offset-transparent">
+    <div className={`grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${gridCols}`}>
       {resolvedStats.map((item, index) => (
         <div
           key={index}
-          className={`flex items-start gap-4 pr-6 ${
+          className={`flex items-center gap-4 pr-6 ${
             index !== resolvedStats.length - 1
               ? "xl:border-r border-[#d6c2a0]"
               : ""
           }`}
         >
-          <div className="mt-1 shrink-0 w-14 h-14  flex items-center justify-center">
+          <div className="shrink-0 w-14 h-14 flex items-center justify-center overflow-hidden">
             <Image
               src={item.image.src ?? item.image}
               alt={item.image.alt || item.subTitle}
-              width={70}
-              height={50}
+              width={44}
+              height={44}
               className="object-contain object-center"
-              style={{ height: "auto" }}
             />
           </div>
 
-          <div>
-            <p className="text-xs font-semibold text-[#0f2518]">
+          <div className="flex flex-col justify-center">
+            <p className="text-xs font-semibold text-[#0f2518] leading-tight">
               {item.number}
             </p>
 
-            <p className="mt-1 text-xs leading-4 text-[#0f2518] font-medium">
+            <p className="text-xs leading-4 text-[#0f2518] font-medium">
               {item.subTitle}
             </p>
           </div>

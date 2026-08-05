@@ -136,7 +136,7 @@ return (
     {features.items.map((item, index) => (
       <div
         key={item.title}
-        className="relative flex items-center gap-5 px-8 py-5"
+        className="relative flex items-center gap-5 px-8 py-2"
       >
         {index !== 0 && (
           <div className="absolute left-0 top-1/2 h-[58px] -translate-y-1/2 border-l border-[#E8DCC1]" />
@@ -145,8 +145,8 @@ return (
         <Image
           src={item.image}
           alt={item.title}
-          width={52}
-          height={52}
+         width={44}
+              height={44}
           className="object-contain"
         />
 
@@ -187,8 +187,8 @@ return (
                 <Image
                   src={item.image}
                   alt={item.title}
-                  width={52}
-                  height={52}
+                  width={44}
+              height={44}
                   className="object-contain"
                 />
 

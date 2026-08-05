@@ -158,7 +158,7 @@ export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWor
                       </div>
 
                       <span className="text-[13px]">
-                        {item.text}
+                        {typeof item === "string" ? item : item.text}
                       </span>
                     </div>
                   ))}
