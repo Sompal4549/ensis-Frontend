@@ -49,7 +49,7 @@ export default function TrustedBrandsStrip({sectionContent}: { sectionContent: T
   return (
     <section className="w-full bg-[#f8f3ec]">
       <Container>
-        <div className="border border-[#e6d6bf] rounded-2xl bg-[#faf6f1] px-3 py-3.5">
+        <div className="border border-[#C9972A] rounded-2xl bg-[#faf6f1] px-3 py-3.5 ring-1 ring-[#C9972A]/50 ring-offset-2 ring-offset-transparent">
 
           {/* Heading */}
           <div className="flex items-center justify-center mb-3.5">

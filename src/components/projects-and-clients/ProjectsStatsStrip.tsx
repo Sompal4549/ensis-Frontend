@@ -86,37 +86,36 @@ export default function ProjectsStatsStrip() {
           rounded-xl
           border border-[#C9972A]
           bg-[#0f2e22]
-          py-3 px-3
+          py-1.5 px-3
           ring-1 ring-[#C9972A]/50
           ring-offset-2 ring-offset-transparent
         "
       >
-        <div className={`grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${gridCols}`}>
+        <div className={`grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${gridCols}`}>
           {resolvedStats.map((item, index) => (
             <div
               key={index}
-              className={`flex items-start gap-4 pr-6 ${index !== resolvedStats.length - 1
+              className={`flex items-center gap-4 pr-6 ${index !== resolvedStats.length - 1
                   ? "xl:border-r border-[#C9972A]/40"
                   : ""
                 }`}
             >
-              <div className="mt-1 shrink-0 w-14 h-14 flex items-center justify-center">
+              <div className="shrink-0 w-14 h-14 flex items-center justify-center overflow-hidden">
                 <Image
                   src={item.image.src ?? item.image}
                   alt={item.image.alt || item.title}
-                  width={70}
-                  height={50}
+                  width={44}
+                  height={44}
                   className="object-contain object-center"
-                  style={{ height: "auto" }}
                 />
               </div>
 
-              <div>
-                <p className="text-xs font-semibold text-[#faf6ef]">
+              <div className="flex flex-col justify-center">
+                <p className="text-xs font-semibold text-[#faf6ef] leading-tight">
                   {item.title}
                 </p>
 
-                <p className="mt-1 text-xs leading-4 text-[#faf6ef]/90 font-medium">
+                <p className="text-xs leading-4 text-[#faf6ef]/90 font-medium">
                   {item.description}
                 </p>
               </div>

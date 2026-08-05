@@ -37,6 +37,7 @@ const experts = [
 ];
 
 export default function ExpertsSection({blogs}:any) {
+  console.log(blogs,"blogs")
   return (
     <div>
       <div className="mb-3 flex items-center justify-between">

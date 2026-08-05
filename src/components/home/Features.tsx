@@ -43,7 +43,7 @@ export const Features = async () => {
   <Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 py-0">
     <PremiumCard>
 
-      <div className=' border-y border-[#e5dccf] bg-[#f3eee6] rounded-2xl py-3 px-3'>
+      <div className=' border-y border-[#e5dccf] bg-[#f3eee6] rounded-2xl py-2 px-3'>
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
          {features.map((feature, index) => {
   const fallbackIcon =
