@@ -66,7 +66,11 @@ export async function generateMetadata({ params }: BlogDetailProps): Promise<Met
     try { ogExtra = JSON.parse(seo.ogJson); } catch { }
   }
 
-  const ogImage = ogExtra["og:image"] || blog.blogImage?.image || "";
+  const ogImage =
+    ogExtra["og:image"] ||
+    blog.blogImage?.image ||
+    blog.banner?.backgroundImage ||
+    "";
 
   return {
     title: seo.metaTitle || title,
@@ -81,6 +85,12 @@ export async function generateMetadata({ params }: BlogDetailProps): Promise<Met
       siteName: ogExtra["og:site_name"] || undefined,
       type: (ogExtra["og:type"] as "website" | "article") || "article",
       images: ogImage ? [{ url: getImageUrl(ogImage) }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: ogExtra["og:title"] || seo.metaTitle || title,
+      description: ogExtra["og:description"] || seo.metaDescription,
+      images: ogImage ? [getImageUrl(ogImage)] : undefined,
     },
   };
 }
