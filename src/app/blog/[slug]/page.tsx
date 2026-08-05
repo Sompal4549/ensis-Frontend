@@ -104,7 +104,17 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
   const blogData: any = await getComponentContent("blog.allBlogs", { blogs: [] });
   const newsletterData: any = await getComponentContent("blog.stayInspired", {});
 
-  const allBlogs = await getAllBlogs();
+  const rawAllBlogs = await getAllBlogs();
+  const allBlogs = rawAllBlogs.map((b: any) => ({
+    ...b,
+    title: b.title || b.banner?.title,
+    image: b.blogImage?.image || b.banner?.backgroundImage || "",
+    date: b.createdAt
+      ? new Date(b.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+      : "",
+    category: b.category || b.banner?.category || "",
+    link: b.slug || b.id || "",
+  }));
   const voiceOfExpertsBlogs = allBlogs.filter((b: any) => b.isVoiceOfExperts);
   const popularBlogs = allBlogs.filter((b: any) => b.isPopular);
 

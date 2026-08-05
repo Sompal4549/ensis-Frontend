@@ -54,7 +54,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({ allBlogs }) => {
                 >
                   <div className="relative h-44 w-full overflow-hidden md:h-48">
                     <Image
-                      src={blog?.banner?.backgroundImage}
+                      src={blog?.banner?.backgroundImage || (blog as any)?.blogImage?.image}
                       alt={blog?.banner?.backgroundImageAlt || blog.title}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
