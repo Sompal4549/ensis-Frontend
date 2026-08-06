@@ -59,7 +59,7 @@ const CareerBenefits = ({ sectionContent }: { sectionContent: CareerBenefitsProp
 
       <Container>
         {/* Heading */}
-        <div className="mb-10 flex items-center gap-5">
+        <div className="mb-4 flex items-center gap-5">
           <h2 className="shrink-0 font-serif text-lg font-semibold uppercase tracking-wide text-[#2A2A2A]">
             {sectionContent.title || `Benefits of Being an Ensisian`}
           </h2>

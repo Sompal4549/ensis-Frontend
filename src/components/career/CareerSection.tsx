@@ -315,7 +315,7 @@ const experienceOptions = Array.from(
         </div>
 
         <div>
-          <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
+          <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
             {/* LEFT SIDE */}
             <div>
               {/* Heading */}
@@ -385,7 +385,7 @@ const experienceOptions = Array.from(
                 <p className="mt-2 text-sm text-[#666]" dangerouslySetInnerHTML={{__html:sectionContent.description||`Our simple and transparent process to welcome you to ENSIS.`}}>
                 </p>
 
-                <div className="mt-4 grid gap-6 md:grid-cols-5">
+                <div className="mt-4 grid gap-4 md:grid-cols-5">
                   {sectionContent.ourHiringJourney.steps.map((step, index) => (
                     <div
                       key={step.label}
@@ -406,7 +406,7 @@ const experienceOptions = Array.from(
 
             {/* RIGHT FORM */}
             <aside ref={formRef} className="relative z-10 lg:-mt-18 lg:sticky lg:top-10 lg:h-fit scroll-mt-24">
-              <div className=" bg-[#062017] p-8 text-white shadow-2xl">
+              <div className=" bg-[#062017] p-4 text-white shadow-2xl">
                 <h3 className="font-serif text-lg uppercase">
                   {sectionContent.careerForm.title}
                 </h3>

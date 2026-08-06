@@ -235,7 +235,7 @@ export const Footer = async () => {
               const Icon = navIcons[i] ?? Link2;
               const color = navIconColors[i] ?? navIconColors[0];
               return (
-                <div key={i} className='border-r-1 border-gray-300 pr-2'>
+                <div key={i} className='md:border-r-1 border-gray-300 pr-2'>
                   {/* heading with icon */}
                   <div className="flex items-center gap-4 mb-2">
                     <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${color.bg} ${color.text}`}>

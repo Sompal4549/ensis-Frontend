@@ -13,6 +13,7 @@ import lotus from "@/assets/about/lotus.webp"
 import { API_URL } from "@/lib/api/api";
 import HtmlRenderer from "../layout/HtmlRender";
 import EnquaryStatsStrip from "./EnquaryStatsStrip";
+import BookButton from "../ui/BookButton";
 
 interface EnquiryPageProps {
   content?: EnquiryPageContent;
@@ -264,7 +265,10 @@ export default function EnquiryPage({
 
               {/* CTA */}
               <div className="mt-4 flex flex-wrap items-center gap-5">
-                <Link
+                <BookButton text={content.hero.ctaPrimary?.label || "Start Your Project"} path={content.hero.ctaPrimary?.href || "/consultancy"}>
+
+                </BookButton>
+                {/* <Link
                   href={content.hero.ctaPrimary?.href || "#enquiry-form"}
                   className="group inline-flex items-center gap-4 rounded-full bg-[#0f2e22] px-7 py-2 text-sm font-semibold uppercase tracking-wide text-[#e8c766] shadow-lg shadow-[#0f2e22]/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#143b2c] hover:shadow-[0_8px_30px_rgba(184,138,68,0.35)]"
                 >
@@ -272,10 +276,10 @@ export default function EnquiryPage({
                     {content.hero.ctaPrimary?.label || "Start Your Project"}
                     <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
-                </Link>
+                </Link> */}
                 <Link
                   href={content.hero.ctaSecondary?.href || "/consultancy"}
-                  className="text-sm font-semibold text-[#173A2B] underline-offset-4 hover:underline"
+                  className="text-xs font-semibold text-[#173A2B] underline-offset-4 hover:underline"
                 >
                   {content.hero.ctaSecondary?.label || "Book Free Consultation"}
                 </Link>

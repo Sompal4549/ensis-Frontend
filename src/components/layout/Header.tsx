@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
+import SparkleLogo from "./SparkleLogo";
 import {
     Phone,
     Mail,
@@ -215,7 +216,7 @@ export const Header = () => {
                         })}
                     </div>
 
-                    <div className="flex w-full items-center justify-end gap-4 md:w-auto">
+                    <div className="ml-auto flex items-center justify-end gap-4">
                         {/* Wishlist */}
                         <div ref={wishlistRef} className="relative hidden sm:block">
                             <button
@@ -362,15 +363,19 @@ export const Header = () => {
             </div>
 
             <div className={`bg-white`}>
-           <Container className="flex items-center justify-between gap-6 py-2!">
-        <Link href="/" className="shrink-0">
-            <Image
-                src={logoImg}
-                alt="ENSIS Logo"
-                className="h-10 md:h-11.5 w-auto object-contain"
-                priority
-                style={{ width: "auto" }}
-            />
+            <Container className="relative flex items-center justify-between gap-6 py-2!">
+        <Link
+            href="/"
+            className="relative block h-10 w-[150px] shrink-0 md:h-11.5"
+            aria-label="ENSIS Logo"
+        >
+            <div className="absolute left-0 top-1/2 z-10 -translate-y-[30%]">
+                <SparkleLogo
+                    src={logoImg}
+                    alt="ENSIS Logo"
+                    className="h-8 w-auto object-contain md:h-10"
+                />
+            </div>
         </Link>
 
                     {/* Spacer so nav doesn't go under the logo */}
@@ -418,11 +423,10 @@ export const Header = () => {
                 aria-hidden={!isMenuOpen}
             >
                 <div className="flex h-20 items-center justify-between border-b border-[#e8e0d3] px-4">
-                    <Image
+                    <SparkleLogo
                         src={logoImg}
                         alt="ENSIS Logo"
-                        className="h-10 w-auto object-contain"
-                        style={{ width: "auto" }}
+                        className="h-8 w-auto object-contain"
                     />
 
                     <button

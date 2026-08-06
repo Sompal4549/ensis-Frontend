@@ -57,14 +57,14 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
 
   return (
     <section className="w-full">
-      <Container className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-8 items-start !py-4">
+      <Container className="grid grid-cols-1 lg:grid-cols-[340px_1fr] gap-4 items-start !py-4">
 
         {/* Left Content */}
         <div className="flex flex-col justify-center h-full">
           <SubHeading text={content.subtitle} className="uppercase tracking-[4px] text-[#8f8777] text-xs font-semibold mb-2">
           </SubHeading>
 
-          <h2 className="text-[#0f2518] text-4xl md:text-3xl font-semibold mb-3">
+          <h2 className="text-[#0f2518] text-2xl md:text-3xl font-semibold mb-3">
             {headingLines.map((line: string, i: number) => (
               <React.Fragment key={i}>
                 {line}
@@ -86,7 +86,7 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
               key={card.id || index}
               onMouseEnter={() => setHovered(index)}
               onMouseLeave={() => setHovered(null)}
-              className="relative overflow-hidden rounded-2xl h-[100%] cursor-pointer group"
+              className="relative overflow-hidden rounded-2xl h-[220px] sm:h-[300px] md:h-[380px] lg:h-full cursor-pointer group"
             >
               {/* Image */}
               <Image width={250} height={500}
@@ -105,13 +105,13 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
               )} */}
 
               {/* Content */}
-              <div className="absolute bottom-0 left-0 w-full p-5 flex items-end justify-between">
-                <h3 className="text-white text-md font-semibold max-w-45 leading-5">
+              <div className="absolute bottom-0 left-0 w-full p-5 flex items-center justify-between">
+                <h3 className="text-white text-xs md:text-md font-semibold max-w-45 leading-5">
                   {card.title}
                 </h3>
 
                 <button
-                  className={`min-w-[36px] h-[36px] rounded-full border border-white/40 flex items-center justify-center backdrop-blur-md transition-all duration-300 ${hovered === index
+                  className={`w-7 md:min-w-[36px] h-7 md:h-[36px] rounded-full border border-white/40 flex items-center justify-center backdrop-blur-md transition-all duration-300 ${hovered === index
                     ? "bg-white text-black"
                     : "text-white"
                     }`}

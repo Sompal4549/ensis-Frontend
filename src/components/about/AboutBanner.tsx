@@ -54,7 +54,7 @@ sectionContent = {}
           alt={resolvedImage?.alt ?? "about banner"}
           src={imageUrl ? getImageUrl(imageUrl) : banner_image}
           fill
-          className="object-cover md:object-right"
+          className="object-cover object-left md:object-right"
           crossOrigin="anonymous"
           sizes="100vw"
         />
@@ -64,21 +64,21 @@ sectionContent = {}
           <div className="relative z-10 mx-auto flex min-h-[450px] max-w-[1500px] items-center h-full">
             <div className="max-w-[620px] pt-24 pb-12 md:pt-16 md:pb-16">
               <div className="mb-5 flex items-center gap-4">
-                <Image alt="lotus" src={lotus} width={20} height={20} className="h-full object-contain" crossOrigin="anonymous" />
-                <span className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#d6a85f]">
+                {/* <Image alt="lotus" src={lotus} width={20} height={20} className="h-full object-contain" crossOrigin="anonymous" /> */}
+                <span className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#c07d19]">
                   {resolvedSubtitle}
                 </span>
-                <div className="h-[1px] w-14 bg-[#d6a85f]" />
+                <div className="h-[1px] w-14 bg-[#c07d19]" />
               </div>
 
-              <h1 className="text-white">
+              <h1 className="text-[#0e3d21]">
                 {resolvedTitle}
-                <span className="mt-1 block text-[#d6a85f]">
+                <span className="mt-1 block text-[#c07d19]">
                   {resolvedHighlight}
                 </span>
               </h1>
 
-              <p className="mt-5 max-w-[360px] text-sm md:text-base leading-6 text-white" dangerouslySetInnerHTML={{__html:resolvedDescription||""}}>
+              <p className="mt-5 max-w-[360px] text-sm md:text-base leading-6 font-semibold text-[#313628]" dangerouslySetInnerHTML={{__html:resolvedDescription||""}}>
               </p>
 
               <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-4">
