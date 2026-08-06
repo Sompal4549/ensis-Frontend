@@ -32,12 +32,12 @@ const CareersBanner = ({sectionContent }: {sectionContent:CareersBannerProps}) =
       <div className="relative z-10 flex h-[600px] md:h-[calc(100vh-146px)] items-center px-6 py-12 sm:px-10 lg:px-14">
         <Container>
           {/* Eyebrow */}
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#c79b4f]">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#c07d19]">
             {sectionContent.heading||"Careers at ENSIS"}
           </p>
 
           {/* Heading */}
-          <h1 className="text-white">
+          <h1 className="text-[#0e3d21]">
             {sectionContent.titlePart1||"Build Spaces"}
             <br />
             {sectionContent.titlePart2||"That Heal."}
@@ -46,7 +46,7 @@ const CareersBanner = ({sectionContent }: {sectionContent:CareersBannerProps}) =
           </h1>
 
           {/* Description */}
-          <HtmlRenderer className="mt-6 max-w-md text-sm md:text-base leading-6 text-white"
+          <HtmlRenderer className="mt-6 max-w-md text-sm md:text-base font-semibold text-[#313628]"
           content={sectionContent.description||`At ENSIS, we blend ancient wisdom with modern innovation to create
             authentic wellness experiences. Join our passionate team and build a
             career that makes a difference.`}>

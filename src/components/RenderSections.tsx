@@ -183,7 +183,7 @@ case "contact.premiumMap":
       return <SupportSection sectionContent={data as any} />;
 
     case "product.hero":
-      return <HeroSlider />
+      return <HeroSlider sectionContent={data as any} />
     // case "product.featureStrip":
     //   return <WellnessFeatureStrip sectionContent={data as WellnessFeatureStripContent} />
     case "product.trustedBy":
