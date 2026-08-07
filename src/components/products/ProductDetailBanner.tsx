@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import ProductPriceSection from "@/components/products/ProductPriceSection";
@@ -35,25 +35,39 @@ export default function ProductHeroBanner({
     [animating, current]
   );
 
-
-  const visibleThumbs = slides.slice(0, 5);
-  const extraCount = slides.length > 5 ? slides.length - 5 : 0;
+  // Autoplay — same cadence as the hero slider
+  useEffect(() => {
+    if (slides.length <= 1) return;
+    const id = setInterval(() => {
+      setCurrent((c) => (c + 1) % slides.length);
+    }, 5000);
+    return () => clearInterval(id);
+  }, [slides.length]);
 
   return (
     <div className="w-full">
       {/* Full-bleed banner — images span the viewport */}
-      <section className="relative w-full h-120 md:h-145 overflow-hidden bg-white">
+      <section className="relative w-full h-72 md:h-145 overflow-hidden bg-white">
 
         {/* SLIDES — always full viewport width */}
         {slides.map((src, i) => (
           <div
             key={i}
-            className={`absolute left-0 top-0 bottom-0 right-0 md:right-[20%] transition-opacity duration-700 ease-in-out ${i === current ? "opacity-100 z-10" : "opacity-0 z-0"
+            className={`absolute left-0 top-0 bottom-0 right-0 transition-opacity duration-700 ease-in-out ${i === current ? "opacity-100 z-10" : "opacity-0 z-0"
               }`}
           >
+            {/* Blurred fill behind (no white gaps) */}
+            <div
+              className="absolute inset-0 bg-cover bg-center scale-110 blur-2xl"
+              style={{
+                backgroundImage: `url(${typeof src === "string" ? src : src.src
+                  })`,
+              }}
+            />
+
             {/* Background Image */}
             <div
-              className="absolute inset-0 bg-cover bg-center"
+              className="absolute inset-0 bg-contain bg-center bg-no-repeat"
               style={{
                 backgroundImage: `url(${typeof src === "string" ? src : src.src
                   })`,
@@ -81,23 +95,32 @@ export default function ProductHeroBanner({
         /> */}
         {/* <div className="absolute inset-0 z-20 pointer-events-none md:hidden" style={{ background: "rgba(10,8,4,0.55)" }} /> */}
 
+        {/* TEXT READABILITY SCRIM — keeps light text visible on light/white images */}
+        <div
+          className="absolute left-0 top-0 bottom-0 z-20 pointer-events-none w-full md:w-[58%]"
+          style={{
+            background:
+              "linear-gradient(to right, rgba(15,13,9,0.68) 0%, rgba(15,13,9,0.42) 35%, transparent 75%)",
+          }}
+        />
+
         {/* Container constrains all content */}
         <Container className="relative h-full z-30">
 
-          {/* LEFT TEXT */}
-          <div className="absolute inset-y-0 left-0 flex flex-col justify-center md:justify-start md:pt-20 w-full md:max-w-[52%] box-border pl-6 md:pl-10">
+          {/* LEFT TEXT — desktop only */}
+          <div className="hidden md:flex absolute inset-y-0 left-0 flex-col justify-center md:justify-start md:pt-20 w-full md:max-w-[55%] box-border pl-6 md:pl-10">
             {(product.subcategory || product.category?.name) && (
-              <span className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[#c8921a]">
+              <span className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[#e0b472]">
                 {product.subcategory || product.category?.name}
               </span>
             )}
 
-            <h1 className="mb-4 text-[#f5ede0] max-w-md">
+            <h1 className="mb-4 hidden text-[#f5ede0] md:block">
               {product.title ?? "Luxury Panchkarma Therapy Table"}
             </h1>
 
             {product.description && (
-              <p className="text-sm md:text-base leading-6 mb-6 max-w-85 text-white" dangerouslySetInnerHTML={{__html:product.description}}>
+              <p className="max-w-85 hidden text-sm md:text-base leading-6 mb-6 text-white/90 md:block" dangerouslySetInnerHTML={{__html:product.description}}>
               </p>
             )}
 
@@ -132,25 +155,21 @@ export default function ProductHeroBanner({
 
           {/* THUMBNAIL STRIP */}
           {slides.length > 1 && (
-            <div className="absolute bottom-4 left-0 flex gap-4 pl-6 md:pl-10">
-              {visibleThumbs.map((src, i) => (
-                <button
-                  key={i}
-                  onClick={() => goTo(i)}
-                  className={`relative w-12 h-9 md:w-16 md:h-12 rounded overflow-hidden border-2 transition-all duration-200 shrink-0 ${i === current
-                      ? "border-[#c8921a] opacity-100"
-                      : "border-white/30 opacity-60 hover:opacity-85"
-                    }`}
-                >
-                  <Image src={src} alt={`Thumbnail ${i + 1}`} fill sizes="64px" className="object-cover" />
-                </button>
-              ))}
-              {extraCount > 0 && (
-                <div className="w-12 h-9 md:w-16 md:h-12 rounded flex flex-col items-center justify-center text-white shrink-0 bg-[#1e3c28]/85">
-                  <span className="text-xs font-bold leading-none">+{extraCount}</span>
-                  <span className="text-[8px] uppercase tracking-wide opacity-80 mt-0.5">More</span>
-                </div>
-              )}
+            <div className="absolute bottom-4 left-0 flex items-center gap-4 pl-6 md:pl-10 w-full md:w-[55%]">
+              <div className="flex gap-4 overflow-x-auto no-scrollbar">
+                {slides.map((src, i) => (
+                  <button
+                    key={i}
+                    onClick={() => goTo(i)}
+                    className={`relative w-16 h-12 rounded overflow-hidden border-2 transition-all duration-200 shrink-0 ${i === current
+                        ? "border-[#c8921a] opacity-100"
+                        : "border-white/30 opacity-60 hover:opacity-85"
+                      }`}
+                  >
+                    <Image src={src} alt={`Thumbnail ${i + 1}`} fill sizes="64px" className="object-contain" />
+                  </button>
+                ))}
+              </div>
             </div>
           )}
 

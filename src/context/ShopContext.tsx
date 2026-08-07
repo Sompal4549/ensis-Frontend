@@ -17,6 +17,7 @@ export interface ShopProduct {
   category: string;
   price: number;
   image: string;
+  gstRate?: number;
 }
 
 export interface CartItem extends ShopProduct {

@@ -52,7 +52,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
               <button
                 key={tab.id}
                 onClick={() => setActive(tab.id)}
-                className={`flex items-center gap-4.5 border-b border-[#e8dfd0] px-4 py-3.5 text-left text-[11px] font-semibold tracking-[0.12em] transition-colors last:border-b-0 ${isActive
+                className={`flex items-center gap-4.5 border-b border-[#e8dfd0] px-4 py-3.5 text-left text-[10px] font-semibold tracking-[0.12em] transition-colors last:border-b-0 ${isActive
                   ? " bg-white text-[#8d6a3a] font-bold"
                   : "text-[#6b6b6b] hover:bg-white/60 font-normal"
                   }`}
@@ -110,12 +110,12 @@ export default function ProductInfoSection({ product }: { product: Product }) {
 
           <>
             {active === "specifications" && (
-              <div className="p-6">
-                <h3 className="mb-6 text-2xl font-semibold">
+              <div className="p-4">
+                <h3 className="mb-3 text-base font-semibold">
                   {overview?.specifications?.title}
                 </h3>
 
-                <div className="grid grid-cols-2 gap-x-12 gap-y-6 text-sm">
+                <div className="grid grid-cols-2 gap-x-8 gap-y-3 text-xs">
                 {(overview?.specifications?.specificationsList ?? []).map(
   (item: any, key: number) => (
     <div key={key}>
@@ -131,22 +131,22 @@ export default function ProductInfoSection({ product }: { product: Product }) {
             )}
 
             {active === "key-features" && (
-              <div className="p-6">
-                <h3 className="mb-6 text-2xl font-semibold">
+              <div className="p-4">
+                <h3 className="mb-3 text-base font-semibold">
                   {overview?.keyFeatures?.title}
                 </h3>
 
-                         <div className="grid grid-cols-2 gap-4">
+                         <div className="grid grid-cols-2 gap-3">
                   {overview?.keyFeatures?.keyFeaturesList?.map((item) => (
                     <div
                       key={item}
-                      className="flex items-center gap-4 rounded-lg border border-[#e8dfd0] p-4"
+                      className="flex items-center gap-3 rounded-lg border border-[#e8dfd0] p-2.5"
                     >
                       <CheckCircle2
-                        size={16}
+                        size={13}
                         className="text-[#8d6a3a]"
                       />
-                      <span className="text-sm">{item}</span>
+                      <span className="text-xs">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -154,18 +154,18 @@ export default function ProductInfoSection({ product }: { product: Product }) {
             )}
 
             {active === "dimensions" && (
-              <div className="p-2">
-                <h3 className="mb-2 text-2xl font-semibold">
+              <div className="p-4">
+                <h3 className="mb-3 text-base font-semibold">
                   {overview?.dimensions?.title || "Dimensions"}
                 </h3>
 
                 <div className="overflow-hidden rounded-lg border border-[#e8dfd0]">
-                  <table className="w-full text-sm">
+                  <table className="w-full text-xs">
                     <tbody>
                       {overview?.dimensions?.dimensionsList?.map((item: any, index: number) => (
                         <tr className="border-b border-[#e8dfd0]" key={index}>
-                          <td className="p-2 font-medium">{item.title}</td>
-                          <td className="p-2" dangerouslySetInnerHTML={{__html:item.description}}></td>
+                          <td className="px-3 py-1.5 font-medium">{item.title}</td>
+                          <td className="px-3 py-1.5" dangerouslySetInnerHTML={{__html:item.description}}></td>
                         </tr>
                       ))}
                     </tbody>
@@ -175,34 +175,34 @@ export default function ProductInfoSection({ product }: { product: Product }) {
             )}
 
             {active === "material" && (
-              <div className="p-2">
-                <h3 className="mb-2 text-2xl font-semibold">
+              <div className="p-4">
+                <h3 className="mb-3 text-base font-semibold">
                   {overview?.materialAndCare?.title}
                 </h3>
 
-                <div dangerouslySetInnerHTML={{ __html: overview?.materialAndCare?.description||"" }} />
+                <div className="text-xs" dangerouslySetInnerHTML={{ __html: overview?.materialAndCare?.description||"" }} />
               </div>
             )}
 
             {active === "faqs" && (
-              <div className="p-6">
-                <h3 className="mb-6 text-2xl font-semibold">
+              <div className="p-4">
+                <h3 className="mb-3 text-base font-semibold">
                   Frequently Asked Questions
                 </h3>
 
-                <div className="grid grid-cols-2 gap-6">
+                <div className="grid grid-cols-2 gap-x-6 gap-y-4">
                   {overview?.faqs?.length ? (
                     overview.faqs.map((item, index) => (
                       <div key={index}>
-                        <p className="font-semibold">
+                        <p className="text-xs font-semibold">
                           {item.question}
                         </p>
-                        <p className="mt-2 text-sm text-[#666]" dangerouslySetInnerHTML={{__html:item.description}}>
+                        <p className="mt-1 text-xs text-[#666]" dangerouslySetInnerHTML={{__html:item.description}}>
                         </p>
                       </div>
                     ))
                   ) : (
-                    <p className="text-sm text-gray-500">No FAQs available.</p>
+                    <p className="text-xs text-gray-500">No FAQs available.</p>
                   )}
                 </div>
               </div>

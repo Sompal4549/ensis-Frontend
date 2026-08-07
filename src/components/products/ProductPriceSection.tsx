@@ -174,9 +174,9 @@ const ProductPriceSection = ({
           suppressHydrationWarning
           type="button"
           onClick={() => toggleLike(shopProduct)}
-          className="mt-3 flex  items-center justify-center rounded-md bg-transparent text-xs font-semibold  transition-colors gap-4"
+          className="mt-3 flex items-center justify-center rounded-md bg-transparent text-xs font-semibold transition-colors gap-1.5"
         >
-          <Heart size={13} className={mounted && wished ? "fill-red-500" : "text-red-500"} />
+          <Heart size={13} className={mounted && wished ? "fill-red-500 text-red-500" : "text-red-500"} />
           {mounted && wished ? "In wishlist" : "Add to wishlist"}
         </button>
       </div>
@@ -228,13 +228,16 @@ const ProductPriceSection = ({
             Starting From
           </p>
 
-          <h2 className="mt-1 text-2xl font-bold text-[#17231A] leading-none">
-            {formatPrice(product.price)}
-          </h2>
-
-          <p className="mt-2 text-xs font-medium">
-            (Inclusive of all taxes)
-          </p>
+          <div className="mt-1 flex items-end gap-2">
+            <h2 className="text-2xl font-bold text-[#17231A] leading-none">
+              {formatPrice(product.price)}
+            </h2>
+            {product.price > 0 && (
+              <span className="pb-0.5 text-[10px] font-medium text-[#6f756c]">
+                (Incl. of {product.gstRate ?? 5}% GST)
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Right */}

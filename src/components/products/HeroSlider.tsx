@@ -109,7 +109,7 @@ const dummyProducts: Product[] = [
 ] as unknown as Product[];
 
 function toSlides(
-  items: { title: string; description?: string; price?: number; image?: string; slug?: string; productLayout: boolean }[],
+  items: { title: string; description?: string; price?: number; image?: string; slug?: string; productLayout: boolean; primaryButton?: { label?: string; url?: string } | null; secondaryButton?: { label?: string; url?: string } | null }[],
   withButtons: boolean
 ): ProductHeroSlideData[] {
   return items.map((item, i) => ({
@@ -119,8 +119,8 @@ function toSlides(
     price: item.price && item.price > 0 ? item.price : undefined,
     image: item.image || undefined,
     productLayout: item.productLayout,
-    primaryButton: withButtons ? { label: "Buy Now", url: `/products/${item.slug}` } : null,
-    secondaryButton: withButtons ? { label: "View Details", url: `/products/${item.slug}` } : null,
+    primaryButton: item.primaryButton?.label ? item.primaryButton : withButtons ? { label: "Buy Now", url: `/products/${item.slug}` } : null,
+    secondaryButton: item.secondaryButton?.label ? item.secondaryButton : withButtons ? { label: "View Details", url: `/products/${item.slug}` } : null,
   }));
 }
 
@@ -139,6 +139,8 @@ export default async function ProductSlider({ sectionContent }: { sectionContent
         price: Number(s.price) > 0 ? Number(s.price) : undefined,
         image: s.bgImage || s.image || undefined,
         productLayout: false,
+        primaryButton: s.primaryButton,
+        secondaryButton: s.secondaryButton,
       })),
       false
     );

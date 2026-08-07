@@ -132,7 +132,7 @@ export default function HeroSlideContent({
                   {slide.highlight && (
                     <>
                       <br />
-                      <span className="font-medium text-[#a9742a]">
+                      <span className="text-[#a9742a]">
                         {slide.highlight}
                       </span>
                     </>

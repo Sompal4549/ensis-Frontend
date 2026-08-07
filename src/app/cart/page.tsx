@@ -42,6 +42,7 @@ function productToShopProduct(product: Product): ShopProduct {
     category: product.category,
     price: product.price,
     image: imageSource(product.images[0]),
+    gstRate: product.gstRate,
   };
 }
 
@@ -145,8 +146,10 @@ export default function CartPage() {
   const amountToFreeShipping = Math.max(0, freeShippingAt - subtotal);
   const discount = hasItems ? Math.round(subtotal * 0.08) : 0;
   const shipping = subtotal >= freeShippingAt || !hasItems ? 0 : 999;
-  const estimatedTax = hasItems ? Math.round((subtotal - discount) * 0.05) : 0;
-  const total = Math.max(0, subtotal - discount + shipping + estimatedTax);
+  const gstTotal = hasItems
+    ? Math.round(cartItems.reduce((sum, item) => sum + (item.price * item.quantity * (item.gstRate ?? 5)) / 100, 0))
+    : 0;
+  const total = Math.max(0, subtotal - discount + shipping + gstTotal);
 
   const [suggestions, setSuggestions] = useState<any[]>([]);
 
@@ -220,7 +223,7 @@ export default function CartPage() {
                     <div className="flex justify-between gap-4"><span>Subtotal ({cartCount} items)</span><span className="font-semibold">{formatCurrency(subtotal)}</span></div>
                     <div className="flex justify-between gap-4"><span>Discount</span><span className="font-semibold text-[#3d7c39]">- {formatCurrency(discount)}</span></div>
                     <div className="flex justify-between gap-4"><span>Shipping</span><span className="font-semibold text-[#3d7c39]">{shipping === 0 ? "FREE" : formatCurrency(shipping)}</span></div>
-                    <div className="flex justify-between gap-4"><span>Estimated Tax</span><span className="font-semibold text-[#1a1a1a]">{formatCurrency(estimatedTax)}</span></div>
+                    <div className="flex justify-between gap-4"><span>GST</span><span className="font-semibold text-[#1a1a1a]">{formatCurrency(gstTotal)}</span></div>
                   </div>
                   <div className="mt-2 border-t border-[#eee5d8] pt-2">
                     <div className="flex items-center justify-between gap-4">
