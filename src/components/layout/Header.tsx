@@ -117,7 +117,7 @@ export const Header = () => {
         "inline-flex items-center whitespace-nowrap border-b-2 border-transparent pt-0.5 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
 
     const mobileLink =
-        "border-b border-[#e8e0d3] py-4 text-[12px] font-bold tracking-wide text-[#1f261b]";
+        "border-b border-[#e8e0d3] py-6 text-[12px] font-bold tracking-wide text-[#1f261b]";
 
     // Default content shape matches the actual DB schema for "layout.header"
     // (contactInfo + navigation), NOT the old badges/navLinks shape.
@@ -177,7 +177,7 @@ export const Header = () => {
         <header className={`fixed inset-x-0 top-0 z-[60] transition-all duration-300 ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}>
             <div className={`bg-[#263016] text-white py-1.5`}>
                 <Container className="flex min-h-10 items-center justify-between gap-4 text-[11px] font-medium py-0!">
-                    <div className="hidden items-center gap-6 2xl:flex">
+                    <div className="hidden items-center gap-6 xl:flex">
                         {headerContent.contactInfo?.map((item: any, index: number) => {
                             // Phone/email get clickable links; everything else is plain text with an icon
                             const isPhone = item.href?.startsWith("tel:");
@@ -381,7 +381,7 @@ export const Header = () => {
                     {/* Spacer so nav doesn't go under the logo */}
                     <div className="w-[40px] md:w-[120px] shrink-0" />
       <nav className="hidden xl:flex">
-            <ul className="flex items-center gap-4 2xl:gap-7">
+            <ul className="flex items-center gap-4.5 xl:gap-6.5 2xl:gap-7.5">
                             {navLinks.map((item, index) => (
                                 <li key={index}>
                                     <Link

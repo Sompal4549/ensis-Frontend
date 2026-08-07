@@ -30,10 +30,10 @@ body {
 h2, h3, h4, h5, h6{
     font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
-/* Use a consistent serif font-family for all headings */
+/* Use the same sans-serif font-family for all headings */
 h1 {
-  font-family: var(--font-cormorant), Georgia, "Times New Roman", serif;
-  font-weight: 500;
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
+  font-weight: 400;
   font-size: clamp(2rem, 3vw + 0.75rem, 2.875rem);
   line-height: 1.1;
   letter-spacing: -0.01em;
@@ -112,4 +112,13 @@ h1 {
 .ensis-gold-line {
   transform-origin: left;
   animation: ensis-gold-line 1.2s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+}
+
+/* Hide scrollbar for horizontal category bar */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }

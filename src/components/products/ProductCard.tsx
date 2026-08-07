@@ -22,7 +22,7 @@ export default function ProductCard({ product }: { product: Product }) {
   return (
     <div className="group relative bg-white rounded-[18px] overflow-hidden border border-[#ede8e0] hover:shadow-[0_4px_18px_rgba(0,0,0,0.07)] transition-all duration-300">
       <Link href={`/products/${product.slug}`} className="block">
-        <div className="relative h-32 sm:h-36 overflow-hidden bg-[#f8f3ec]">
+        <div className="relative h-28 sm:h-30 overflow-hidden bg-[#f8f3ec]">
           <Image
             src={getImageUrl(product.images[0], 700)}
             alt={product.title}
@@ -49,7 +49,7 @@ export default function ProductCard({ product }: { product: Product }) {
         />
       </button> */}
 
-      <div className="p-2.5 sm:p-3 h-22.5 flex flex-col justify-between">
+      <div className="p-2.5 sm:p-3">
         {/* <p
           className="text-[8px] sm:text-[9px] font-[600] tracking-[0.14em] mb-1 uppercase"
           style={{ color: "#c8a45d" }}
@@ -58,13 +58,13 @@ export default function ProductCard({ product }: { product: Product }) {
         </p> */}
 
         <Link href={`/products/${product.id}`} className="block">
-          <h3 className="ws-body text-[12px] sm:text-[13px] font-medium text-[#1a1a1a] leading-[1.35] mb-1 line-clamp-2">
+          <h3 className="ws-body text-[12px] sm:text-[13px] font-medium text-[#1a1a1a] leading-[1.35] line-clamp-1">
             {product.title}
           </h3>
         </Link>
 
-        <div className="mt-auto">
-          <span className="text-sm font-semibold text-[#1a1a1a]">
+        <div>
+          <span className="text-[13px] font-semibold text-[#1a1a1a] leading-none">
             {fmt(product.price)}
           </span>
 

@@ -174,9 +174,9 @@ const ProductPriceSection = ({
           suppressHydrationWarning
           type="button"
           onClick={() => toggleLike(shopProduct)}
-          className="mt-3 flex  items-center justify-center rounded-md bg-transparent text-xs font-semibold  transition-colors gap-4"
+          className="mt-3 flex items-center justify-center rounded-md bg-transparent text-xs font-semibold transition-colors gap-1.5"
         >
-          <Heart size={13} className={mounted && wished ? "fill-red-500" : "text-red-500"} />
+          <Heart size={13} className={mounted && wished ? "fill-red-500 text-red-500" : "text-red-500"} />
           {mounted && wished ? "In wishlist" : "Add to wishlist"}
         </button>
       </div>

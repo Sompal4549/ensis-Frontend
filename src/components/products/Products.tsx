@@ -12,7 +12,6 @@ import {
   RefreshCw,
   ArrowRight,
 } from "lucide-react";
-import { nanoid } from 'nanoid'
 import Link from "next/link";
 import { PAGE_SIZE } from "@/constants";
 import ProductCard, { Checkbox } from "./ProductCard";
@@ -27,7 +26,8 @@ export const fmt = (n: number) => "₹" + n.toLocaleString("en-IN");
 
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
-export default function Products() {
+export default function Products(props: any = {}) {
+  const { materials: adminMaterials, idealFor: adminIdealFor, priceRange: adminPriceRange } = props;
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category");
 
@@ -46,13 +46,15 @@ export default function Products() {
   const [products, setProducts] = useState<any[]>([]);
   const [apiCategories, setApiCategories] = useState<any[]>([]);
   const maxPrice = useMemo(() => {
-    return Math.max(...products.map((p) => p.price), 0);
-}, [products]);
+    const adminMax = adminPriceRange?.end && Number(adminPriceRange.end) > 0 ? Number(adminPriceRange.end) : 0;
+    return Math.max(adminMax, ...products.map((p) => p.price), 0);
+  }, [products, adminPriceRange]);
 
 const minPrice = useMemo(() => {
-  if (!products.length) return 0;
-  return Math.min(...products.map((p) => p.price));
-}, [products]);
+  const adminMin = adminPriceRange?.start && Number(adminPriceRange.start) >= 0 ? Number(adminPriceRange.start) : 0;
+  if (!products.length) return adminMin;
+  return Math.min(adminMin, ...products.map((p) => p.price));
+}, [products, adminPriceRange]);
 
 const [priceRange, setPriceRange] = useState(0);
 const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
@@ -174,12 +176,18 @@ useEffect(() => {
 }, [apiCategories, products]);
 
 const materialOptions = useMemo(() => {
+  if (Array.isArray(adminMaterials) && adminMaterials.length) {
+    return adminMaterials.map((m: any) => m.title).filter(Boolean);
+  }
   return [...new Set(products.map((p) => p.material).filter(Boolean))];
-}, [products]);
+}, [adminMaterials, products]);
 
 const idealForOptions = useMemo(() => {
+  if (Array.isArray(adminIdealFor) && adminIdealFor.length) {
+    return adminIdealFor.map((i: any) => i.title).filter(Boolean);
+  }
   return [...new Set(products.map((p) => p.overview?.idealFor).filter(Boolean))];
-}, [products]);
+}, [adminIdealFor, products]);
 
 const toggleMaterial = (value: string) => {
   setSelectedMaterials((prev) =>
@@ -291,51 +299,6 @@ const toggleIdealFor = (value: string) => {
               className={`shrink-0 w-[175px] xl:w-[188px] flex flex-col gap-5 transition-all duration-300 ${sidebarOpen ? "block" : "hidden lg:flex"
                 } lg:sticky lg:top-5`}
             >
-              {/* Categories */}
-              <div className="bg-white rounded-2xl border border-[#ede8e0] p-4 overflow-hidden">
-                <p className="text-xs font-semibold tracking-[0.18em] uppercase mb-3">
-                  Categories
-                </p>
-
-                <ul className="space-y-0.5">
-                  {displayCategories.map((cat) => (
-                    <li key={nanoid()}>
-                      <button
-                        suppressHydrationWarning
-                        onClick={() => setActiveCategory(cat.key)}
-                        className={`w-full flex items-center justify-between px-2.5 py-2 rounded-xl text-[12px] transition-all ${activeCategory === cat.key
-                            ? "bg-[#183b17] text-white font-[600]"
-                            : "font-medium hover:bg-[#f5ede0]"
-                          }`}
-                      >
-                        <span className="flex items-center gap-4 truncate">
-                          <span className="text-base leading-none">
-                            {cat.icon ? (
-                              <Image src={cat.icon} alt={cat.label} width={20} height={15} className="object-fill object-center" />
-                            ) : (
-                              <span className="inline-block h-[15px] w-[20px]" />
-                            )}
-                          </span>
-
-                          <span className="truncate">
-                            {cat.label}
-                          </span>
-                        </span>
-
-                        <span
-                          className={`shrink-0 text-[10px] font-[600] ml-1 ${activeCategory === cat.key
-                              ? "text-white/70"
-                              : "text-[#c8a45d]"
-                            }`}
-                        >
-                          {cat.count}
-                        </span>
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
               {/* Filters */}
               <div className="bg-white rounded-2xl border border-[#ede8e0] p-4">
                 <p className="text-xs font-medium tracking-[0.18em] uppercase mb-3">
@@ -430,6 +393,36 @@ const toggleIdealFor = (value: string) => {
                 <h2 className="text-lg text-center font-semibold text-[#1a1a1a] leading-none">
                   {selectedCategory}
                 </h2>
+              </div>
+
+              {/* Horizontal Categories Bar */}
+              <div className="mb-5">
+                <div className="flex items-center gap-2 overflow-x-auto pb-2 -mb-2 no-scrollbar">
+                  {displayCategories.map((cat) => (
+                    <button
+                      key={cat.key}
+                      suppressHydrationWarning
+                      onClick={() => setActiveCategory(cat.key)}
+                      className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border text-[12px] transition-all whitespace-nowrap ${
+                        activeCategory === cat.key
+                          ? "bg-[#183b17] text-white border-[#183b17] font-[600]"
+                          : "bg-white text-[#1a1a1a] border-[#ede8e0] font-medium hover:bg-[#f5ede0]"
+                      }`}
+                    >
+                      {cat.icon ? (
+                        <span className="h-[15px] w-[20px] overflow-hidden rounded-[3px]">
+                          <Image src={cat.icon} alt={cat.label} width={20} height={15} className="object-fill object-center" />
+                        </span>
+                      ) : (
+                        <span className="inline-block h-[15px] w-[20px]" />
+                      )}
+                      <span>{cat.label}</span>
+                      <span className={`text-[10px] font-[600] ${activeCategory === cat.key ? "text-white/70" : "text-[#c8a45d]"}`}>
+                        {cat.count}
+                      </span>
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Toolbar */}

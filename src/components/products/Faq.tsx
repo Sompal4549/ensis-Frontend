@@ -41,9 +41,10 @@ const faqs = [
 
 export default function FaqSection({ product }: { product: Product }) {
   const [open, setOpen] = useState<number | null>(null);
-  const overview = product?.overview
+  const overview = product?.overview;
+  const list = overview?.faqs?.length ? overview.faqs : faqs;
   return (
-    <Container className="py-12">
+    <Container className="py-2">
       <p className="text-sm font-bold uppercase  text-[#8d6a3a] mb-6 ">
         Frequently Asked Questions
       </p>
@@ -51,32 +52,36 @@ export default function FaqSection({ product }: { product: Product }) {
       <div className="flex flex-col gap-4">
         {/* Question pills row — layout never shifts */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {overview?.faqs?.map((faq, i) => (
-            <button
-              key={i}
-              onClick={() => setOpen(open === i ? null : i)}
-              className={`flex items-center justify-between gap-4 px-4 py-3 rounded-md border bg-[#f5f0ea] text-left transition-colors font-semibold ${open === i ? "border-[#8d6a3a]" : "border-[#d4c4a8]"
+          {list.map((faq, i) => (
+            <div key={i} className="flex flex-col">
+              <button
+                onClick={() => setOpen(open === i ? null : i)}
+                className={`flex items-center justify-between gap-4 px-4 py-3 border bg-[#f5f0ea] text-left transition-colors font-semibold ${
+                  open === i
+                    ? "rounded-t-md rounded-b-none border-[#8d6a3a] border-b-0"
+                    : "rounded-md border-[#d4c4a8]"
                 }`}
-            >
-              <span className="text-xs font-semibold leading-snug">
-                {faq.question}
-              </span>
+              >
+                <span className="text-xs font-semibold leading-snug">
+                  {faq.question}
+                </span>
 
-              {open === i ? (
-                <Minus size={13} className="shrink-0 text-[#8d6a3a]" />
-              ) : (
-                <Plus size={13} className="shrink-0" />
+                {open === i ? (
+                  <Minus size={13} className="shrink-0 text-[#8d6a3a]" />
+                ) : (
+                  <Plus size={13} className="shrink-0" />
+                )}
+              </button>
+
+              {/* Answer — opens right below its question */}
+              {open === i && (
+                <div className="border border-t-0 border-[#8d6a3a] rounded-b-md bg-white px-4 py-3">
+                  <HtmlRenderer className="text-[11px] leading-relaxed" content={faq.description}></HtmlRenderer>
+                </div>
               )}
-            </button>
+            </div>
           ))}
         </div>
-
-        {/* Answer panel — appears below the row */}
-        {open !== null && (
-          <div className="border border-[#d4c4a8] rounded-md bg-white px-4 py-3">
-            <HtmlRenderer className="text-[11px] leading-relaxed" content={faqs[open].description}></HtmlRenderer>
-          </div>
-        )}
       </div>
     </Container>
   );

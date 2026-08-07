@@ -31,11 +31,11 @@ const Planning = () => {
   {/* Blend Gradient */}
 </div>
   <Container className="relative z-10">
-    <div className="flex flex-col lg:flex-row lg:items-center py-16 lg:gap-40">
+    <div className="flex flex-col lg:flex-row lg:items-center py-2 lg:gap-40">
 
       {/* Left Content */}
-      <div className="max-w-xl">
-        <h2 className=" text-white text-3xl leading-tight font-medium">
+      <div className="max-w-2xl ">
+        <h2 className=" text-white text-2xl leading-tight font-medium">
           Planning a Wellness Center?
         </h2>
 
@@ -57,6 +57,8 @@ const Planning = () => {
             )
           })}
 
+        </div>
+      </div>
 <div className=" flex gap-4 md:gap-4 mt-6 flex-wrap ">
 <div className='min-w-[220px] '>
 <GreenButton path="tel:+919654900525" text="TALK TO OUR EXPERT" rightIcon={<FaPhone/>}/>
@@ -68,8 +70,6 @@ const Planning = () => {
         </button>
 </Link>
 
-      </div>
-        </div>
       </div>
 
       {/* Right Buttons */}

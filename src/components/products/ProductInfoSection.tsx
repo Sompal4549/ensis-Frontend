@@ -33,18 +33,11 @@ const whatsIncluded = [
   "1x User Manual & Care Instructions",
 ];
 
-const finishes = [
+const defaultFinishes = [
   { id: "teak", label: "Natural Teak", image: teak_and_finish },
   { id: "walnut", label: "Walnut", image: wallnut_finish },
   { id: "honey", label: "Honey Oak", image: honey_oak },
   { id: "mahogany", label: "Mahogany", image: mahogany },
-];
-
-const sizeOptions = [
-  { label: "Standard", desc: "78 x 30 x 30 in", active: true },
-  { label: "Resort Edition", desc: "84 x 30 x 30 in", active: false },
-  { label: "Luxury XL", desc: "84 x 36 x 30 in", active: false },
-  { label: "Custom Size", desc: "Any Size", active: false },
 ];
 
 const calloutLabels = [
@@ -151,7 +144,10 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
         <div className="border-r border-[#e2d8c8] px-5">
           <h3 className="text-[10px] font-bold uppercase tracking-[0.15em] mb-4">Wood Finish</h3>
           <div className="flex flex-wrap gap-4">
-            {finishes.map((f) => (
+            {(overview?.smartDesignAppearance?.woodFinish?.length
+              ? overview.smartDesignAppearance.woodFinish.map((f: any) => ({ id: f.id || f.title, label: f.title, image: f.image }))
+              : defaultFinishes
+            ).map((f) => (
               <button
                 key={f.id}
                 onClick={() => setFinish(f.id)}
