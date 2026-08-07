@@ -51,6 +51,7 @@ export interface Product {
   shortDescription?: string;
   price: number;
   discountPrice?: number;
+  gstRate?: number;
   category: any;
   subcategory?: string;
   material?: string;

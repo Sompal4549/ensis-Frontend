@@ -59,6 +59,7 @@ interface OrderItem {
   name?: string;
   price: number;
   quantity: number;
+  gstRate?: number;
 }
 
 interface Order {
@@ -155,6 +156,17 @@ function paymentBadgeClass(status: Order["paymentStatus"], verified: boolean) {
   return "border-[#ead28b] bg-[#fff6df] text-[#8d6a3a]";
 }
 
+function gstBreakdown(items: OrderItem[]): { rate: number; amount: number }[] {
+  const map = new Map<number, number>();
+  for (const item of items) {
+    const rate = item.gstRate ?? 5;
+    map.set(rate, (map.get(rate) ?? 0) + (item.price * item.quantity * rate) / 100);
+  }
+  return [...map.entries()]
+    .map(([rate, amount]) => ({ rate, amount: Math.round(amount) }))
+    .sort((a, b) => a.rate - b.rate);
+}
+
 function buildInvoice(order: Order, orderDate: string): string {
   const rows = order.items
     .map(
@@ -166,6 +178,16 @@ function buildInvoice(order: Order, orderDate: string): string {
       </tr>`
     )
     .join("");
+
+  const taxLines = gstBreakdown(order.items);
+  const taxHtml = taxLines.length
+    ? taxLines
+        .map((t) => `<p style="margin:4px 0">GST (${t.rate}%): ${formatCurrency(t.amount)}</p>`)
+        .join("") +
+      `<p style="margin:4px 0;font-weight:600">Total GST: ${formatCurrency(taxLines.reduce((s, t) => s + t.amount, 0))}</p>`
+    : order.tax
+      ? `<p style="margin:4px 0">GST: ${formatCurrency(order.tax)}</p>`
+      : "";
 
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>ENSIS Invoice ${order._id}</title></head>
 <body style="margin:0;font-family:Jost,Arial,sans-serif;background:#FCFAF6;color:#1F3A2A">
@@ -198,12 +220,12 @@ function buildInvoice(order: Order, orderDate: string): string {
 <tbody>${rows}</tbody>
 </table>
 <div style="margin-top:20px;text-align:right;font-size:13px">
-<p style="margin:4px 0">Subtotal: <strong>${formatCurrency(order.totalAmount)}</strong></p>
+<p style="margin:4px 0">Subtotal: <strong>${formatCurrency(order.items.reduce((s, i) => s + i.price * i.quantity, 0))}</strong></p>
 ${order.discount ? `<p style="margin:4px 0;color:#2F7D5A">Promo Discount: - ${formatCurrency(order.discount)}</p>` : ""}
 ${order.couponDiscount ? `<p style="margin:4px 0;color:#2F7D5A">Coupon Discount: - ${formatCurrency(order.couponDiscount)}</p>` : ""}
 ${order.shipping ? `<p style="margin:4px 0">Shipping: ${formatCurrency(order.shipping)}</p>` : '<p style="margin:4px 0">Shipping: FREE</p>'}
-${order.tax ? `<p style="margin:4px 0">GST (5%): ${formatCurrency(order.tax)}</p>` : ""}
-<p style="margin:10px 0 0;font-size:16px;border-top:1px solid #EDE4D3;padding-top:10px">Grand Total: <strong>${formatCurrency(order.totalAmount)}</strong></p>
+${taxHtml}
+<p style="margin:10px 0 0;font-size:16px;border-top:1px solid #EDE4D3;padding-top:10px">Grand Total (incl. GST): <strong>${formatCurrency(order.totalAmount)}</strong></p>
 </div>
 <p style="margin-top:28px;font-size:11px;color:#6c7068;text-align:center">Thank you for choosing ENSIS — Premium Wellness & Panchkarma Spaces.<br>This is a computer generated invoice.</p>
 </div></div></body></html>`;
@@ -589,7 +611,9 @@ export default function OrderPage() {
               <div className="mt-1 space-y-1.5 border-t border-[#F3EBDE] pt-3">
                 <div className="flex items-center justify-between text-xs">
                   <span className="text-[#5f665b]">Subtotal</span>
-                  <span className="font-semibold text-[#1F3A2A]">{formatCurrency(order.totalAmount)}</span>
+                  <span className="font-semibold text-[#1F3A2A]">
+                    {formatCurrency(order.items.reduce((s, i) => s + i.price * i.quantity, 0))}
+                  </span>
                 </div>
                 {order.discount ? (
                   <div className="flex items-center justify-between text-xs">
@@ -609,14 +633,35 @@ export default function OrderPage() {
                     {order.shipping && order.shipping > 0 ? formatCurrency(order.shipping) : "FREE"}
                   </span>
                 </div>
-                {order.tax ? (
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="text-[#5f665b]">GST (5%)</span>
-                    <span className="font-semibold text-[#1F3A2A]">{formatCurrency(order.tax)}</span>
-                  </div>
-                ) : null}
+                {(() => {
+                  const lines = gstBreakdown(order.items);
+                  if (!lines.length) {
+                    return order.tax ? (
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-[#5f665b]">GST</span>
+                        <span className="font-semibold text-[#1F3A2A]">{formatCurrency(order.tax)}</span>
+                      </div>
+                    ) : null;
+                  }
+                  return (
+                    <>
+                      {lines.map((t) => (
+                        <div key={t.rate} className="flex items-center justify-between text-xs">
+                          <span className="text-[#5f665b]">GST ({t.rate}%)</span>
+                          <span className="font-semibold text-[#1F3A2A]">{formatCurrency(t.amount)}</span>
+                        </div>
+                      ))}
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="font-semibold text-[#5f665b]">Total GST</span>
+                        <span className="font-semibold text-[#1F3A2A]">
+                          {formatCurrency(lines.reduce((s, t) => s + t.amount, 0))}
+                        </span>
+                      </div>
+                    </>
+                  );
+                })()}
                 <div className="flex items-center justify-between border-t border-[#F3EBDE] pt-2.5">
-                  <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#1F3A2A]">Grand Total</span>
+                  <span className="text-xs font-bold uppercase tracking-[0.14em] text-[#1F3A2A]">Grand Total (incl. GST)</span>
                   <span className="text-base font-semibold text-[#1F3A2A]">{formatCurrency(order.totalAmount)}</span>
                 </div>
               </div>

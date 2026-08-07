@@ -228,13 +228,16 @@ const ProductPriceSection = ({
             Starting From
           </p>
 
-          <h2 className="mt-1 text-2xl font-bold text-[#17231A] leading-none">
-            {formatPrice(product.price)}
-          </h2>
-
-          <p className="mt-2 text-xs font-medium">
-            (Inclusive of all taxes)
-          </p>
+          <div className="mt-1 flex items-end gap-2">
+            <h2 className="text-2xl font-bold text-[#17231A] leading-none">
+              {formatPrice(product.price)}
+            </h2>
+            {product.price > 0 && (
+              <span className="pb-0.5 text-[10px] font-medium text-[#6f756c]">
+                (Incl. of {product.gstRate ?? 5}% GST)
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Right */}

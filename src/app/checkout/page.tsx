@@ -56,6 +56,7 @@ interface CheckoutSnapshot {
     image: string;
     price: number;
     quantity: number;
+    gstRate?: number;
   }[];
   cartCount: number;
   subtotal: number;
@@ -148,18 +149,27 @@ export default function CheckoutPage() {
   const discount = hasItems ? Math.round(subtotal * 0.08) : 0;
   const couponDiscount = couponApplied ? Math.round(subtotal * 0.05) : 0;
   const shipping = subtotal >= freeShippingAt || !hasItems ? 0 : 999;
-  const estimatedTax = hasItems ? Math.round((subtotal - discount - couponDiscount) * 0.05) : 0;
-  const grandTotal = Math.max(0, subtotal - discount - couponDiscount + shipping + estimatedTax);
+  const gstTotal = hasItems
+    ? Math.round(cartItems.reduce((sum, item) => sum + (item.price * item.quantity * (item.gstRate ?? 5)) / 100, 0))
+    : 0;
+  const grandTotal = Math.max(0, subtotal - discount - couponDiscount + shipping + gstTotal);
   const summary = checkoutSnapshot ?? {
     items: cartItems,
     cartCount,
     subtotal,
     discount,
     shipping,
-    estimatedTax,
+    estimatedTax: gstTotal,
     couponDiscount,
     grandTotal,
   };
+  const gstSlabs = hasItems
+    ? cartItems.reduce<Record<number, number>>((acc, item) => {
+        const rate = item.gstRate ?? 5;
+        acc[rate] = (acc[rate] ?? 0) + (item.price * item.quantity * rate) / 100;
+        return acc;
+      }, {})
+    : {};
 
   const applyCoupon = () => {
     const code = coupon.trim();
@@ -204,6 +214,7 @@ export default function CheckoutPage() {
         name: item.name,
         quantity: item.quantity,
         price: item.price,
+        gstRate: item.gstRate ?? 5,
       }));
       const snapshot = {
         items: cartItems.map((item) => ({ ...item })),
@@ -211,7 +222,7 @@ export default function CheckoutPage() {
         subtotal,
         discount,
         shipping,
-        estimatedTax,
+        estimatedTax: gstTotal,
         couponDiscount,
         grandTotal,
       };
@@ -226,6 +237,10 @@ export default function CheckoutPage() {
           shippingAddress,
           items,
           totalAmount: grandTotal,
+          discount,
+          couponDiscount,
+          shipping,
+          tax: gstTotal,
         }),
       });
 
@@ -260,6 +275,7 @@ export default function CheckoutPage() {
         name: item.name,
         price: item.price,
         quantity: item.quantity,
+        gstRate: item.gstRate ?? 5,
       })),
       totalAmount: paidSnapshot.grandTotal,
       discount: paidSnapshot.discount,
@@ -668,10 +684,22 @@ export default function CheckoutPage() {
                         {summary.shipping === 0 ? "FREE" : formatCurrency(summary.shipping)}
                       </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#6f6658]">GST / Tax (5%)</span>
-                      <span className="font-semibold">{formatCurrency(summary.estimatedTax)}</span>
-                    </div>
+                    {Object.entries(gstSlabs).length > 0 && (
+                      <div className="border-t border-[#ece3d2] pt-1.5">
+                        <div className="space-y-1.5">
+                          {Object.entries(gstSlabs).map(([rate, amount]) => (
+                            <div key={rate} className="flex justify-between">
+                              <span className="text-[#6f6658]">GST ({rate}%)</span>
+                              <span className="font-semibold">{formatCurrency(Math.round(amount))}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="mt-1.5 flex justify-between border-t border-[#ece3d2] pt-1.5">
+                          <span className="font-semibold text-[#6f6658]">Total GST</span>
+                          <span className="font-semibold">{formatCurrency(summary.estimatedTax)}</span>
+                        </div>
+                      </div>
+                    )}
 
                     <div className="mt-2 flex items-center justify-between border-t-2 border-[#c7a55b]/60 pt-2.5">
                       <span className="text-base font-bold uppercase tracking-wide text-[#1F3A2A]">Grand Total</span>
