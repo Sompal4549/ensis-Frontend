@@ -124,7 +124,7 @@ export default function HeroSlideContent({
             {/* Main Heading */}
             <motion.h1
               variants={headingVariants}
-              className="mb-5 text-[#0e3d21]"
+              className="mb-4 text-[#0e3d21]"
             >
               {typeof slide.title === "string" ? (
                 <>

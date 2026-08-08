@@ -6,8 +6,7 @@ import {
 import { Container } from "@/components/ui/Container";
 import {  type Product } from "@/constants";
 import YouMightCarousel from "@/components/ui/YouMightCarousel";
-import CartAndDetailHeroBanner from "@/components/products/ProductDetailBanner";
-import ProductInfoSection from "@/components/products/ProductInfoSection";
+import ProductDetailClient from "@/components/products/ProductDetailClient";
 import { formatPrice } from "@/utils";
 import ProductFeatureStrip from "@/components/products/ProductFeatureStrip";
 import img6 from "@/assets/home/img-6.webp";
@@ -105,7 +104,8 @@ function RelatedProductCard({ product }: { product: Product }) {
         />
       </div>
       <div className="px-1 py-3">
-        <h3 className="line-clamp-2 text-xs font-semibold">{product.title}</h3>
+        {/* PREVIOUS: line-clamp-2 */}
+        <h3 className="line-clamp-1 text-xs font-semibold">{product.title}</h3>
         <div className="mt-1 flex items-center justify-between gap-4">
           <span className="text-sm font-bold text-[#1a1a1a]">
             {formatPrice(product.price)}
@@ -252,20 +252,17 @@ export default async function ProductPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }}
       />
-      <CartAndDetailHeroBanner
+      <ProductDetailClient
         originalPrice={originalPrice}
         product={product}
         shopProduct={product}
       />
-      <ProductFeatureStrip />
-      <ProductInfoTabs product={product} />
+      {/* moved inside ProductDetailClient (right after banner) */}
+      {/* <ProductFeatureStrip /> */}
+      {/* HIDDEN FOR NOW: overview tabs */}
+      {/* <ProductInfoTabs product={product} /> */}
 
-      <Container>
-        <section className="grid lg:items-start xl:gap-8">
-          {<ProductInfoSection product={product} />}
-        </section>
-
-        {/* <section className="mt-10 border-t border-[#e5ded5] pt-6">
+      {/* <section className="mt-10 border-t border-[#e5ded5] pt-6">
           <div className="flex flex-wrap gap-6 text-xs font-bold text-[#313b30]">
             {["Overview", "Reviews (126)", "Shipping & Returns", "Specifications"].map(
               (tab, index) => (
@@ -368,15 +365,16 @@ export default async function ProductPage({
             );
           })}
         </section> */}
-      </Container>
 
-      <RealSpacesCarousel images={product?.overview?.seeItInRealSpaces?.images||[]} title={product?.overview?.seeItInRealSpaces?.title||""} />
+      {/* HIDDEN FOR NOW: see it in real spaces */}
+      {/* <RealSpacesCarousel images={product?.overview?.seeItInRealSpaces?.images||[]} title={product?.overview?.seeItInRealSpaces?.title||""} /> */}
       {/* <ReviewSection
         productId={product.id}
         productTitle={product.title}
         productSlug={product.slug}
       /> */}
-      <Container>
+      {/* HIDDEN FOR NOW: you may also like */}
+      {/* <Container>
 
         <section className="mt-2">
           <h2 className="text-2xl font-semibold text-[#1a1a1a]">You May Also Like</h2>
@@ -389,10 +387,12 @@ export default async function ProductPage({
           </div>
         </section>
 
-      </Container>
-      <Planning />
+      </Container> */}
+      {/* HIDDEN FOR NOW: planning / wellness center */}
+      {/* <Planning /> */}
 
-      <FaqSection product={product} />
+      {/* HIDDEN FOR NOW: faqs */}
+      {/* <FaqSection product={product} /> */}
       {/* <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#e5ded5] bg-white/95 px-2 shadow-[0_-10px_30px_rgba(49,59,48,0.08)] backdrop-blur">
         <Container>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">

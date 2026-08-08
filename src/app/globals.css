@@ -33,7 +33,7 @@ h2, h3, h4, h5, h6{
 /* Use the same sans-serif font-family for all headings */
 h1 {
   font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
-  font-weight: 400;
+  font-weight: 500;
   font-size: clamp(2rem, 3vw + 0.75rem, 2.875rem);
   line-height: 1.1;
   letter-spacing: -0.01em;

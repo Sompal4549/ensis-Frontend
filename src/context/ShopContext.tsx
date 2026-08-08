@@ -22,6 +22,17 @@ export interface ShopProduct {
 
 export interface CartItem extends ShopProduct {
   quantity: number;
+  finish?: string;
+  size?: string;
+}
+
+export interface CartVariantOptions {
+  finish?: string;
+  size?: string;
+}
+
+export function cartItemKey(item: Pick<CartItem, "id" | "finish" | "size">) {
+  return `${item.id}|${item.finish ?? ""}|${item.size ?? ""}`;
 }
 
 interface ShopContextValue {
@@ -30,14 +41,14 @@ interface ShopContextValue {
   cartCount: number;
   likedCount: number;
   subtotal: number;
-  addToCart: (product: ShopProduct) => void;
-  removeFromCart: (productId: string) => void;
-  increaseQuantity: (productId: string) => void;
-  decreaseQuantity: (productId: string) => void;
+  addToCart: (product: ShopProduct, variant?: CartVariantOptions) => void;
+  removeFromCart: (itemKey: string) => void;
+  increaseQuantity: (itemKey: string) => void;
+  decreaseQuantity: (itemKey: string) => void;
   clearCart: () => void;
   toggleLike: (product: ShopProduct) => void;
   isLiked: (productId: string) => boolean;
-  isInCart: (productId: string) => boolean;
+  isInCart: (productId: string, variant?: CartVariantOptions) => boolean;
 }
 
 const CART_STORAGE_KEY = "ensis_cart";
@@ -74,41 +85,48 @@ export function ShopProvider({ children }: { children: ReactNode }) {
     window.localStorage.setItem(LIKES_STORAGE_KEY, JSON.stringify(likedItems));
   }, [likedItems]);
 
-  const addToCart = useCallback((product: ShopProduct) => {
+  const addToCart = useCallback((product: ShopProduct, variant?: CartVariantOptions) => {
     setCartItems((items) => {
-      const existing = items.find((item) => item.id === product.id);
+      const variantItem: CartItem = {
+        ...product,
+        finish: variant?.finish,
+        size: variant?.size,
+        quantity: 1,
+      };
+      const key = cartItemKey(variantItem);
+      const existing = items.find((item) => cartItemKey(item) === key);
 
       if (existing) {
         return items.map((item) =>
-          item.id === product.id
+          cartItemKey(item) === key
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
 
-      return [...items, { ...product, quantity: 1 }];
+      return [...items, variantItem];
     });
   }, []);
 
-  const removeFromCart = useCallback((productId: string) => {
-    setCartItems((items) => items.filter((item) => item.id !== productId));
+  const removeFromCart = useCallback((itemKey: string) => {
+    setCartItems((items) => items.filter((item) => cartItemKey(item) !== itemKey));
   }, []);
 
-  const increaseQuantity = useCallback((productId: string) => {
+  const increaseQuantity = useCallback((itemKey: string) => {
     setCartItems((items) =>
       items.map((item) =>
-        item.id === productId
+        cartItemKey(item) === itemKey
           ? { ...item, quantity: item.quantity + 1 }
           : item
       )
     );
   }, []);
 
-  const decreaseQuantity = useCallback((productId: string) => {
+  const decreaseQuantity = useCallback((itemKey: string) => {
     setCartItems((items) =>
       items
         .map((item) =>
-          item.id === productId
+          cartItemKey(item) === itemKey
             ? { ...item, quantity: Math.max(0, item.quantity - 1) }
             : item
         )
@@ -135,7 +153,17 @@ export function ShopProvider({ children }: { children: ReactNode }) {
   );
 
   const isInCart = useCallback(
-    (productId: string) => cartItems.some((item) => item.id === productId),
+    (productId: string, variant?: CartVariantOptions) =>
+      cartItems.some((item) => {
+        if (item.id !== productId) return false;
+        if (variant) {
+          return (
+            (item.finish ?? "") === (variant.finish ?? "") &&
+            (item.size ?? "") === (variant.size ?? "")
+          );
+        }
+        return true;
+      }),
     [cartItems]
   );
 

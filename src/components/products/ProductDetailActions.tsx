@@ -11,20 +11,24 @@ export default function ProductDetailActions({
   compact = false,
   twoRows = false,
   trailing,
+  finish,
+  size,
 }: {
   product: ShopProduct;
   compact?: boolean;
   twoRows?: boolean;
   trailing?: ReactNode;
+  finish?: string;
+  size?: string;
 }) {
    const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
   const { addToCart, isInCart, toggleLike } = useShop();
   const [quantity, setQuantity] = useState(1);
-  const added = mounted && isInCart(product.id);
+  const added = mounted && isInCart(product.id, { finish, size });
 
   const addQuantityToCart = () => {
-    Array.from({ length: quantity }).forEach(() => addToCart(product));
+    Array.from({ length: quantity }).forEach(() => addToCart(product, { finish, size }));
   };
 
   return (

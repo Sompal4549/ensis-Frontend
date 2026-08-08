@@ -109,8 +109,8 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
     ...b,
     title: b.title || b.banner?.title,
     image: b.blogImage?.image || b.banner?.backgroundImage || "",
-    date: b.createdAt
-      ? new Date(b.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+    date: (b.banner?.date || b.date || b.createdAt)
+      ? new Date(b.banner?.date || b.date || b.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
       : "",
     category: b.category || b.banner?.category || "",
     link: b.slug || b.id || "",
@@ -187,7 +187,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
         <div className="py-12 md:py-20 bg-[#fdfaf5]">
           <Container>
             <div className="flex flex-wrap items-center gap-4 text-sm font-semibold uppercase tracking-wider text-[#9d7f62] mb-3">
-              <span>{new Date(blog.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
+              <span>{new Date(blog.banner?.date || blog.date || blog.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
               <span className="h-1.5 w-1.5 rounded-full bg-[#dcc9b5]" />
               <span>By {blog.author || "Admin"}</span>
               {(blog.category || blog.tags?.[0]) && (
@@ -209,7 +209,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
         <BlogDetailArticleLayout sectionContent={blog.article} />
       ) : (
         // fallback — plain prose content agar article data nahi hai
-        <div className="py-12 md:py-20">
+        <div className="py-2">
           <Container>
             <div className="grid grid-cols-1 gap-12 xl:grid-cols-[1fr_320px]">
               <article className="max-w-4xl">

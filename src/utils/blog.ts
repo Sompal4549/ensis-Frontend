@@ -2,7 +2,9 @@ export function normalizeBlog(blog: any) {
   if (!blog) return blog;
 
   const image = blog.blogImage?.image || blog.banner?.backgroundImage || "";
-  const rawDate = blog.createdAt || blog.banner?.date || blog.date;
+  // PREVIOUS: const rawDate = blog.createdAt || blog.banner?.date || blog.date;
+  // Admin-controlled date gets priority over auto createdAt so edits reflect.
+  const rawDate = blog.banner?.date || blog.date || blog.createdAt;
 
   return {
     ...blog,

@@ -27,7 +27,8 @@ export default function ProductGallery({
   };
 
   return (
-    <div className="grid grid-cols-[180px_1.2fr_90px] gap-6 w-full bg-[#f5f0e8] items-start relative pt-20 px-5 rounded-md">
+    <div className="grid grid-cols-[180px_1.2fr_120px] gap-6 w-full bg-[#f5f0e8] items-start relative pt-20 px-5 rounded-md">
+      {/* PREVIOUS: grid-cols-[180px_1.2fr_130px] — thumb column 10px smaller */}
       <div className="absolute top-0 left-0 w-full h-auto pl-5 pt-5">
          <h2 className="text-xl uppercase font-semibold"
         >
@@ -77,7 +78,7 @@ export default function ProductGallery({
                   src={image}
                   alt={`${title} thumbnail ${index + 1}`}
                   fill
-                  sizes="90px"
+                  sizes="120px"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>

@@ -57,18 +57,19 @@ interface CheckoutSnapshot {
     price: number;
     quantity: number;
     gstRate?: number;
+    finish?: string;
+    size?: string;
   }[];
   cartCount: number;
   subtotal: number;
   discount: number;
   shipping: number;
   estimatedTax: number;
-  couponDiscount: number;
   grandTotal: number;
 }
 
 const serif = { fontFamily: "var(--font-cormorant-garamond), Georgia, serif" };
-const jost = { fontFamily: "var(--font-jost), var(--font-montserrat), sans-serif" };
+const jost = { fontFamily: "var(--font-montserrat), Arial, sans-serif" };
 
 // Compact local classes for this page only
 const inputClass =
@@ -106,9 +107,11 @@ export default function CheckoutPage() {
   const { cartItems, cartCount, subtotal, clearCart } = useShop();
 
   const [token, setToken] = useState<string>("");
-  const [coupon, setCoupon] = useState("");
-  const [couponApplied, setCouponApplied] = useState(false);
-  const [couponMessage, setCouponMessage] = useState("");
+  const [idempotencyKey] = useState<string>(() =>
+    typeof crypto !== "undefined" && "randomUUID" in crypto
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).slice(2)}`
+  );
   const [shippingAddress, setShippingAddress] = useState<ShippingAddress>({
     label: "Home",
     fullName: "",
@@ -143,16 +146,15 @@ export default function CheckoutPage() {
     setShippingAddress((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Cart calculations
+  // Cart calculations (mirror the server-side rules so the displayed total matches the charged amount)
   const hasItems = cartItems.length > 0;
   const freeShippingAt = 50000;
   const discount = hasItems ? Math.round(subtotal * 0.08) : 0;
-  const couponDiscount = couponApplied ? Math.round(subtotal * 0.05) : 0;
   const shipping = subtotal >= freeShippingAt || !hasItems ? 0 : 999;
   const gstTotal = hasItems
     ? Math.round(cartItems.reduce((sum, item) => sum + (item.price * item.quantity * (item.gstRate ?? 5)) / 100, 0))
     : 0;
-  const grandTotal = Math.max(0, subtotal - discount - couponDiscount + shipping + gstTotal);
+  const grandTotal = Math.max(0, subtotal - discount + shipping + gstTotal);
   const summary = checkoutSnapshot ?? {
     items: cartItems,
     cartCount,
@@ -160,7 +162,7 @@ export default function CheckoutPage() {
     discount,
     shipping,
     estimatedTax: gstTotal,
-    couponDiscount,
+    couponDiscount: 0,
     grandTotal,
   };
   const gstSlabs = hasItems
@@ -170,22 +172,6 @@ export default function CheckoutPage() {
         return acc;
       }, {})
     : {};
-
-  const applyCoupon = () => {
-    const code = coupon.trim();
-    if (!code) {
-      setCouponMessage("Enter a coupon code to apply.");
-      setCouponApplied(false);
-      return;
-    }
-    if (["ENSIS10", "WELLNESS", "PANCHKARMA"].includes(code.toUpperCase())) {
-      setCouponApplied(true);
-      setCouponMessage(`Coupon "${code.toUpperCase()}" applied — you saved 5%!`);
-    } else {
-      setCouponApplied(false);
-      setCouponMessage("Invalid coupon code.");
-    }
-  };
 
   // Place internal MongoDB Order
   const handlePlaceOrder = async (e: React.FormEvent) => {
@@ -215,6 +201,8 @@ export default function CheckoutPage() {
         quantity: item.quantity,
         price: item.price,
         gstRate: item.gstRate ?? 5,
+        finish: item.finish,
+        size: item.size,
       }));
       const snapshot = {
         items: cartItems.map((item) => ({ ...item })),
@@ -223,7 +211,7 @@ export default function CheckoutPage() {
         discount,
         shipping,
         estimatedTax: gstTotal,
-        couponDiscount,
+        couponDiscount: 0,
         grandTotal,
       };
 
@@ -236,11 +224,7 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           shippingAddress,
           items,
-          totalAmount: grandTotal,
-          discount,
-          couponDiscount,
-          shipping,
-          tax: gstTotal,
+          idempotencyKey,
         }),
       });
 
@@ -276,10 +260,11 @@ export default function CheckoutPage() {
         price: item.price,
         quantity: item.quantity,
         gstRate: item.gstRate ?? 5,
+        finish: item.finish,
+        size: item.size,
       })),
       totalAmount: paidSnapshot.grandTotal,
       discount: paidSnapshot.discount,
-      couponDiscount: paidSnapshot.couponDiscount,
       shipping: paidSnapshot.shipping,
       tax: paidSnapshot.estimatedTax,
       paymentStatus: "paid",
@@ -623,6 +608,13 @@ export default function CheckoutPage() {
                         </div>
                         <div className="min-w-0 flex-1">
                           <p className="truncate text-[12px] font-semibold text-[#2b2a26]">{item.name}</p>
+                          {item.finish || item.size ? (
+                            <p className="mt-0.5 text-[11px] font-semibold text-[#c7a55b]">
+                              {[item.finish && `Finish: ${item.finish}`, item.size && `Size: ${item.size}`]
+                                .filter(Boolean)
+                                .join("  |  ")}
+                            </p>
+                          ) : null}
                           <p className="mt-0.5 text-[11px] text-[#8a7c63]">
                             {formatCurrency(item.price)} × {item.quantity}
                           </p>
@@ -632,34 +624,6 @@ export default function CheckoutPage() {
                         </span>
                       </div>
                     ))}
-                  </div>
-
-                  {/* Coupon */}
-                  <div className="mt-3 border-t border-[#ece3d2] pt-3">
-                    <p className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#a79a8c]">
-                      Apply coupon
-                    </p>
-                    <div className="flex gap-1.5">
-                      <input
-                        className={inputClass}
-                        type="text"
-                        value={coupon}
-                        onChange={(e) => setCoupon(e.target.value)}
-                        placeholder="ENSIS10"
-                      />
-                      <button
-                        type="button"
-                        onClick={applyCoupon}
-                        className="shrink-0 rounded-xl bg-[#1F3A2A] px-3 text-[11px] font-bold uppercase tracking-wider text-[#e9d7a8] transition-colors hover:bg-[#18301f]"
-                      >
-                        Apply
-                      </button>
-                    </div>
-                    {couponMessage && (
-                      <p className={`mt-1.5 text-[11px] font-semibold ${couponApplied ? "text-[#4e7d3a]" : "text-rose-500"}`}>
-                        {couponMessage}
-                      </p>
-                    )}
                   </div>
 
                   {/* Pricing */}
@@ -672,12 +636,6 @@ export default function CheckoutPage() {
                       <span className="text-[#6f6658]">Promo Discount (8%)</span>
                       <span className="font-semibold text-[#4a7c3a]">- {formatCurrency(summary.discount)}</span>
                     </div>
-                    {summary.couponDiscount > 0 && (
-                      <div className="flex justify-between">
-                        <span className="text-[#6f6658]">Coupon savings</span>
-                        <span className="font-semibold text-[#4a7c3a]">- {formatCurrency(summary.couponDiscount)}</span>
-                      </div>
-                    )}
                     <div className="flex justify-between">
                       <span className="text-[#6f6658]">Shipping</span>
                       <span className="font-semibold text-[#4a7c3a]">

@@ -41,9 +41,10 @@ const features = [
 
 export default function ProductFeatureStrip() {
   return (
-    <section className="w-full bg-gradient-to-r from-[#012c20] via-[#013727] to-[#012c20] border-y-2 border-[#C9972A] py-2">
-      <Container>
-        <div className="flex flex-wrap xl:flex-nowrap justify-between ">
+    <section className="static md:absolute left-0 right-0 bottom-0 md:translate-y-1/2 z-30">
+      <Container className="py-0">
+        <div className="w-full bg-gradient-to-r from-[#012c20] via-[#013727] to-[#012c20] rounded-xl px-3 py-2 border border-[#C9972A] ring-1 ring-[#C9972A]/50 ring-offset-2 ring-offset-transparent">
+          <div className="flex flex-wrap xl:flex-nowrap justify-between">
           {features.map((item, index) => {
             const Icon = item.icon;
 
@@ -83,6 +84,7 @@ export default function ProductFeatureStrip() {
               </div>
             );
           })}
+        </div>
         </div>
       </Container>
     </section>

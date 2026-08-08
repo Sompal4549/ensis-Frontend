@@ -41,7 +41,7 @@ import { authStore } from "@/lib/auth";
 import { useShop, type ShopProduct } from "@/context/ShopContext";
 import type { Product } from "@/constants";
 
-const jost = { fontFamily: "var(--font-jost), var(--font-montserrat), sans-serif" };
+const jost = { fontFamily: "var(--font-montserrat), Arial, sans-serif" };
 
 const LOTUS_PATTERN = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='92' height='92' viewBox='0 0 92 92'%3E%3Cg fill='none' stroke='%231F3A2A' stroke-width='1'%3E%3Cpath d='M46 8 C28 20 28 40 46 58 C64 40 64 20 46 8Z'/%3E%3Cpath d='M46 20 C34 28 34 44 46 52 C58 44 58 28 46 20Z'/%3E%3Cpath d='M46 8 C30 34 30 62 46 84 C62 62 62 34 46 8Z' opacity='.5'/%3E%3C/g%3E%3C/svg%3E\")";
 
@@ -60,6 +60,8 @@ interface OrderItem {
   price: number;
   quantity: number;
   gstRate?: number;
+  finish?: string;
+  size?: string;
 }
 
 interface Order {
@@ -592,6 +594,13 @@ export default function OrderPage() {
                       {itemCode(item) && (
                         <p className="mt-0.5 text-[10px] font-medium tracking-wide text-[#a89a82]">
                           SKU: {itemCode(item)}
+                        </p>
+                      )}
+                      {(item.finish || item.size) && (
+                        <p className="mt-0.5 text-[10px] font-semibold text-[#8d6a3a]">
+                          {[item.finish && `Finish: ${item.finish}`, item.size && `Size: ${item.size}`]
+                            .filter(Boolean)
+                            .join("  |  ")}
                         </p>
                       )}
                       <p className="mt-0.5 text-[10px] text-[#8d6a3a] md:hidden">

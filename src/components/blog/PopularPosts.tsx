@@ -44,7 +44,9 @@ console.log(blogs, "popular")
                 {blog.title}
               </h4>
               <p className="mt-2 text-sm text-[#8d725f]">
-                {blog.createdAt ? new Date(blog.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : blog.date}
+                {blog.banner?.date || blog.date || blog.createdAt
+                  ? new Date(blog.banner?.date || blog.date || blog.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' })
+                  : blog.date}
               </p>
             </div>
           </Link>

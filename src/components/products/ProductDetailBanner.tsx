@@ -11,10 +11,14 @@ export default function ProductHeroBanner({
   product,
   originalPrice,
   shopProduct,
+  finish,
+  size,
 }: {
   product: ProductBase & { _id: string };
   originalPrice?: number;
   shopProduct?: any; // Changed to any for now, can be more specific if needed
+  finish?: string;
+  size?: string;
 }) {
   const [current, setCurrent] = useState(0);
   const [animating, setAnimating] = useState(false);
@@ -65,9 +69,9 @@ export default function ProductHeroBanner({
               }}
             />
 
-            {/* Background Image */}
+            {/* Background Image — fixed width, centered, responsive */}
             <div
-              className="absolute inset-0 bg-contain bg-center bg-no-repeat"
+              className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[70vw] md:w-[450px] bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: `url(${typeof src === "string" ? src : src.src
                   })`,
@@ -149,24 +153,26 @@ export default function ProductHeroBanner({
                 shopProduct={shopProduct}
                 product={product}
                 originalPrice={originalPrice ?? 0}
+                finish={finish}
+                size={size}
               />
             </div>
           </div>
 
           {/* THUMBNAIL STRIP */}
           {slides.length > 1 && (
-            <div className="absolute bottom-4 left-0 flex items-center gap-4 pl-6 md:pl-10 w-full md:w-[55%]">
+            <div className="absolute bottom-4 md:bottom-14 left-0 flex items-center gap-4 pl-6 md:pl-10 w-full md:w-[55%]">
               <div className="flex gap-4 overflow-x-auto no-scrollbar">
                 {slides.map((src, i) => (
                   <button
                     key={i}
                     onClick={() => goTo(i)}
-                    className={`relative w-16 h-12 rounded overflow-hidden border-2 transition-all duration-200 shrink-0 ${i === current
+                    className={`relative w-[100px] h-[75px] rounded overflow-hidden border-2 transition-all duration-200 shrink-0 bg-white ${i === current
                         ? "border-[#c8921a] opacity-100"
-                        : "border-white/30 opacity-60 hover:opacity-85"
+                        : "border-[#8d6a3a]/40 opacity-60 hover:opacity-85"
                       }`}
                   >
-                    <Image src={src} alt={`Thumbnail ${i + 1}`} fill sizes="64px" className="object-contain" />
+                    <Image src={src} alt={`Thumbnail ${i + 1}`} fill sizes="100px" className="object-cover" />
                   </button>
                 ))}
               </div>
@@ -183,6 +189,8 @@ export default function ProductHeroBanner({
             shopProduct={shopProduct}
             product={product}
             originalPrice={originalPrice ?? 0}
+            finish={finish}
+            size={size}
           />
         </div>
       </div>
