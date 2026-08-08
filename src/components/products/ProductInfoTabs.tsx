@@ -7,7 +7,6 @@ import {
   Zap,
   Ruler,
   Droplets,
-  HelpCircle,
   CheckCircle2,
 } from "lucide-react";
 import { Container } from "../ui/Container";
@@ -21,7 +20,6 @@ const tabs = [
   { id: "key-features", label: "KEY FEATURES", icon: Zap },
   { id: "dimensions", label: "DIMENSIONS", icon: Ruler },
   { id: "material", label: "MATERIAL & CARE", icon: Droplets },
-  { id: "faqs", label: "FAQS", icon: HelpCircle },
 ];
 
 const highlights = [
@@ -99,7 +97,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                     </div>
                     <div className="p-4">
                       <p className="text-xs font-semibold">{h.title}</p>
-                      <p className="mt-1 text-xs" dangerouslySetInnerHTML={{__html:h.description}}>
+                      <p className="mt-1 text-xs line-clamp-3" dangerouslySetInnerHTML={{__html:h.description}}>
                       </p>
                     </div>
                   </div>
@@ -181,30 +179,6 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                 </h3>
 
                 <div className="text-xs" dangerouslySetInnerHTML={{ __html: overview?.materialAndCare?.description||"" }} />
-              </div>
-            )}
-
-            {active === "faqs" && (
-              <div className="p-4">
-                <h3 className="mb-3 text-base font-semibold">
-                  Frequently Asked Questions
-                </h3>
-
-                <div className="grid grid-cols-2 gap-x-6 gap-y-4">
-                  {overview?.faqs?.length ? (
-                    overview.faqs.map((item, index) => (
-                      <div key={index}>
-                        <p className="text-xs font-semibold">
-                          {item.question}
-                        </p>
-                        <p className="mt-1 text-xs text-[#666]" dangerouslySetInnerHTML={{__html:item.description}}>
-                        </p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-xs text-gray-500">No FAQs available.</p>
-                  )}
-                </div>
               </div>
             )}
           </>

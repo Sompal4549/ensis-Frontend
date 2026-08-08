@@ -27,7 +27,8 @@ export default function SocialIconLink({
         void socialApi.trackClick(platform);
       }}
     >
-      <span className="hover:text-white md:text-white">
+      {/* PREVIOUS: <span className="hover:text-white md:text-white"> */}
+      <span className="text-inherit">
       {children}
       </span>
     </a>

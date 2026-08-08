@@ -20,7 +20,7 @@ import {
   Trash2,
   Truck,
 } from "lucide-react";
-import { useShop, type CartItem, type ShopProduct } from "@/context/ShopContext";
+import { useShop, cartItemKey, type CartItem, type ShopProduct } from "@/context/ShopContext";
 import { Container } from "@/components/ui/Container";
 import { type Product } from "@/constants";
 import { formatCurrency } from "@/utils";
@@ -64,11 +64,11 @@ function QuantityControl({ item }: { item: CartItem }) {
   const { decreaseQuantity, increaseQuantity } = useShop();
   return (
     <div className="inline-flex h-11 w-[118px] items-center justify-between overflow-hidden rounded-md border border-[#e5ded5] bg-white">
-      <button type="button" aria-label={`Decrease ${item.name} quantity`} onClick={() => decreaseQuantity(item.id)} className="flex h-full w-10 items-center justify-center text-[#313b30] transition-colors hover:bg-[#f6f0e8]">
+      <button type="button" aria-label={`Decrease ${item.name} quantity`} onClick={() => decreaseQuantity(cartItemKey(item))} className="flex h-full w-10 items-center justify-center text-[#313b30] transition-colors hover:bg-[#f6f0e8]">
         <Minus size={15} />
       </button>
       <span className="min-w-8 text-center text-sm font-semibold text-[#1a1a1a]">{item.quantity}</span>
-      <button type="button" aria-label={`Increase ${item.name} quantity`} onClick={() => increaseQuantity(item.id)} className="flex h-full w-10 items-center justify-center text-[#313b30] transition-colors hover:bg-[#f6f0e8]">
+      <button type="button" aria-label={`Increase ${item.name} quantity`} onClick={() => increaseQuantity(cartItemKey(item))} className="flex h-full w-10 items-center justify-center text-[#313b30] transition-colors hover:bg-[#f6f0e8]">
         <Plus size={15} />
       </button>
     </div>
@@ -94,6 +94,13 @@ function CartTableRow({ item }: { item: CartItem }) {
             <h2 className="line-clamp-2 text-sm font-bold leading-5 text-[#1a1a1a]">{item.name}</h2>
           </Link>
           <p className="mt-1 text-xs font-medium">{categoryName}</p>
+          {(item.finish || item.size) && (
+            <p className="mt-1 text-[11px] font-semibold text-[#8d6a3a]">
+              {[item.finish && `Finish: ${item.finish}`, item.size && `Size: ${item.size}`]
+                .filter(Boolean)
+                .join("  |  ")}
+            </p>
+          )}
           <button type="button" onClick={() => toggleLike(item)} className={`mt-3 inline-flex items-center gap-1.5 text-[11px] font-semibold transition-colors ${liked ? "text-red-600" : ""}`}>
             <Heart size={13} className={liked ? "fill-red-500" : ""} />
             {liked ? "In wishlist" : "Add to wishlist"}
@@ -106,7 +113,7 @@ function CartTableRow({ item }: { item: CartItem }) {
         <span className="text-xs font-semibold text-[#6c7068] md:hidden">Total</span>
         <span className="text-sm font-semibold text-[#1a1a1a]">{formatCurrency(item.price * item.quantity)}</span>
       </div>
-      <button type="button" aria-label={`Remove ${item.name}`} onClick={() => removeFromCart(item.id)} className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-md text-[#7d8378] transition-colors hover:bg-[#f6f0e8] hover:text-[#1a1a1a] md:static">
+      <button type="button" aria-label={`Remove ${item.name}`} onClick={() => removeFromCart(cartItemKey(item))} className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-md text-[#7d8378] transition-colors hover:bg-[#f6f0e8] hover:text-[#1a1a1a] md:static">
         <Trash2 size={16} />
       </button>
     </div>
@@ -199,7 +206,7 @@ export default function CartPage() {
                   <span>Product</span><span>Price</span><span>Quantity</span><span>Total</span><span />
                 </div>
                 <div className="relative">
-                  {cartItems.map((item) => (<CartTableRow key={item.id} item={item} />))}
+                  {cartItems.map((item) => (<CartTableRow key={cartItemKey(item)} item={item} />))}
                 </div>
                 <div className="grid gap-4 border-t border-[#eee5d8] p-2 md:grid-cols-[1fr_auto] md:items-center">
                   <div className="flex gap-4">

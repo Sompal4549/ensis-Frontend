@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
 import { ArrowRight, Check } from "lucide-react";
 import dimensions from "@/assets/products/product.webp";
 import teak_and_finish from "@/assets/products/teak_and_finish.webp";
@@ -47,9 +46,19 @@ const calloutLabels = [
   { text: "Sturdy Storage\nBeds", top: "78%", left: "28%" },
 ];
 
-export default function ProductInfoSection({ product }: { product: Product }) { // Ensure product is always passed and typed
-  const [finish, setFinish] = useState("teak");
-
+export default function ProductInfoSection({
+  product,
+  finish,
+  size,
+  onFinishChange,
+  onSizeChange,
+}: {
+  product: Product;
+  finish?: string;
+  size?: string;
+  onFinishChange?: (finish: string) => void;
+  onSizeChange?: (size: string) => void;
+}) { // Ensure product is always passed and typed
   const overview = product.overview
   const productOverview = product.overview?.productSpecifications;
   return (
@@ -63,12 +72,13 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
       </div>
 
       {/* ── SECTION 1: Product image + specs + what's included ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr_0.75fr] gap-0 border-b border-[#e2d8c8]">
+      {/* PREVIOUS: no pt — added pt-1 (4px) above the technical diagram highlight */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr_0.75fr] gap-0 border-b border-[#e2d8c8] pt-1">
 
         {/* Left: product image with callout labels */}
         <div className="">
           <h2 className="font-semibold text-2xl leading-tight mb-4">{productOverview?.[0]?.title || `Product Specifications`}</h2>
-          <div className="relative w-full">
+          <div className="relative w-full max-w-[80%]">
             <Image
               src={productOverview?.[0]?.image || ""}
               alt="Product dimensions diagram"
@@ -150,7 +160,7 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
             ).map((f) => (
               <button
                 key={f.id}
-                onClick={() => setFinish(f.id)}
+                onClick={() => onFinishChange?.(f.id)}
                 className="flex flex-col items-center gap-1.5"
               >
                 <div className={`rounded-full overflow-hidden border-2 transition-all ${finish === f.id ? "border-[#8d6a3a]" : "border-transparent opacity-60 hover:opacity-90"}`}>
@@ -175,12 +185,11 @@ export default function ProductInfoSection({ product }: { product: Product }) { 
             {overview?.smartDesignAppearance?.sizeOptions?.map((s) => (
               <div
                 key={s.title}
-                className={`rounded-lg border px-3 py-2.5 text-center cursor-pointer transition-colors 
-                  `}
-                  // ${s.active
-                  // ? "border-[#8d6a3a] bg-white"
-                  // : "border-[#d4c4a8] hover:border-[#8d6a3a]/50"
-                  // }
+                onClick={() => onSizeChange?.(s.title)}
+                className={`rounded-lg border px-3 py-2.5 text-center cursor-pointer transition-colors ${size === s.title
+                  ? "border-[#8d6a3a] bg-white shadow-sm"
+                  : "border-[#d4c4a8] hover:border-[#8d6a3a]/50"
+                  }`}
               >
                 <p className="text-[11px] font-semibold leading-tight">{s.title}</p>
                 <p className="text-[10px] mt-2" dangerouslySetInnerHTML={{__html:s.description}}></p>

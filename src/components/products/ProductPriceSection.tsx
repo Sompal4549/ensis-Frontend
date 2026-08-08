@@ -22,12 +22,16 @@ interface ProductPriceSectionProps {
   product: Product; // Use the Product interface from constants
   originalPrice: number;
   shopProduct: any;
+  finish?: string;
+  size?: string;
 }
 
 const ProductPriceSection = ({
   product,
   originalPrice,
   shopProduct,
+  finish,
+  size,
 }: ProductPriceSectionProps) => {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
@@ -265,7 +269,7 @@ const ProductPriceSection = ({
         </div>
       </div>
 
-      <ProductDetailActions product={shopProduct} />
+      <ProductDetailActions product={shopProduct} finish={finish} size={size} />
 
       {/* Reviews Popup Modal */}
       {isReviewOpen && (

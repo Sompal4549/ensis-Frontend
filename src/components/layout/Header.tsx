@@ -369,7 +369,8 @@ export const Header = () => {
             className="relative block h-10 w-[150px] shrink-0 md:h-11.5"
             aria-label="ENSIS Logo"
         >
-            <div className="absolute left-0 top-1/2 z-10 -translate-y-[30%]">
+            {/* PREVIOUS: absolute left-0 top-1/2 z-10 -translate-y-[30%] — static now */}
+            <div className="flex h-full items-center">
                 <SparkleLogo
                     src={logoImg}
                     alt="ENSIS Logo"
