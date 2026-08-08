@@ -11,10 +11,12 @@ export default function ProductDetailClient({
   product,
   originalPrice,
   shopProduct,
+  contactPhone,
 }: {
   product: Product;
   originalPrice: number;
   shopProduct: Product;
+  contactPhone?: string;
 }) {
   const [finish, setFinish] = useState<string>("");
   const [size, setSize] = useState<string>("");
@@ -38,6 +40,7 @@ export default function ProductDetailClient({
             product={product}
             finish={finish}
             size={size}
+            contactPhone={contactPhone}
             onFinishChange={setFinish}
             onSizeChange={setSize}
           />

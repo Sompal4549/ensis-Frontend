@@ -15,7 +15,7 @@ import Planning from "@/components/products/Planning";
 import FaqSection from "@/components/products/Faq";
 import RealSpacesCarousel from "@/components/products/RealSpacesCarousel";
 import { generateSeo } from "@/lib/api/seo";
-import { productApi, getImageUrl } from "@/lib/api/api";
+import { productApi, getImageUrl, getComponentContent } from "@/lib/api/api";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import type { Metadata } from "next";
@@ -203,6 +203,12 @@ export default async function ProductPage({
   const protocol = requestHeaders.get("x-forwarded-proto") || "https";
   const productUrl = `${protocol}://${host}/products/${product.slug || id}`;
 
+  const footerContent = await getComponentContent("layout.footer", {
+    contact: { phone: "+91 9654900525", whatsappPhone: "+919654900525" },
+  });
+  const contactPhone: string =
+    (footerContent as any)?.contact?.phone || "+91 9654900525";
+
   const productImages = product.images?.length ? product.images : [product.image];
   const inStock = (product.stock ?? 0) > 0;
   const productSchema = {
@@ -256,6 +262,7 @@ export default async function ProductPage({
         originalPrice={originalPrice}
         product={product}
         shopProduct={product}
+        contactPhone={contactPhone}
       />
       {/* moved inside ProductDetailClient (right after banner) */}
       {/* <ProductFeatureStrip /> */}
