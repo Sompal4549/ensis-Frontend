@@ -94,10 +94,10 @@ export default function ProductCard({
         type="button"
         aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
         onClick={() => toggleLike(shopProduct)}
-        className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-[#e6d6b9] bg-white/90 shadow-[0_2px_10px_rgba(139,107,55,0.12)] backdrop-blur-sm transition-transform duration-300 hover:scale-110"
+        className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-[#e6d6b9] bg-white/90 shadow-[0_2px_10px_rgba(139,107,55,0.12)] backdrop-blur-sm transition-transform duration-300 hover:scale-110"
       >
         <Heart
-          size={15}
+          size={16}
           className={
             wished
               ? "fill-[#b8863b] text-[#b8863b]"

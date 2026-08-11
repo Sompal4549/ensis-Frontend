@@ -187,7 +187,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                         {[...Array(5)].map((_, i) => {
                           const starValue = i + 1;
                           return (
-                            <button
+                            <button suppressHydrationWarning
                               type="button"
                               key={starValue}
                               onClick={() => setRating(starValue)}
@@ -207,7 +207,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
 
                     <div>
                       <label className="text-base font-bold uppercase mb-2 block">Your Experience</label>
-                      <textarea
+                      <textarea suppressHydrationWarning
                         rows={4}
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
@@ -217,7 +217,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                       />
                     </div>
 
-                    <button
+                    <button suppressHydrationWarning
                       type="submit"
                       className="w-full py-3 bg-[#313b30] text-white text-base font-bold uppercase tracking-widest rounded-lg hover:bg-black transition-colors"
                     >
@@ -234,7 +234,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                     {userReviewId ? "Review Updated!" : "Review Submitted!"}
                   </h3>
                   <p className="text-base text-emerald-600 mt-1 mb-4">Thank you for sharing your experience.</p>
-                  <button
+                  <button suppressHydrationWarning
                     onClick={() => setSubmitted(false)}
                     className="w-full py-2 border border-[#8d6a3a] text-[#8d6a3a] text-base font-bold uppercase tracking-widest rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-colors"
                   >

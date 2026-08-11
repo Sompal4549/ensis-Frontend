@@ -48,7 +48,7 @@ export default function WellnessBanner({
             font-semibold
             tracking-[2px] leading-[120%]
             uppercase
-            font-serif text-[#f5efe6]">
+             text-[#f5efe6]">
               {sectionContent.title}
             </h2>
 

@@ -6,6 +6,7 @@ import {
   X,
 } from "lucide-react";
 import React, { ReactNode, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import ProductDetailActions from "./ProductDetailActions";
 import { useShop } from "@/context/ShopContext";
 import premium_teak from "@/assets/products/premium_teak_wood.webp";
@@ -171,28 +172,25 @@ const ProductPriceSection = ({
     <div className="min-w-0">
       <div className="flex justify-between items-center w-full">
 
-        <span className="text-base font-semibold uppercase text-[#F59E0B] ">
+        <span className="text-xs font-semibold uppercase text-[#F59E0B] ">
           {typeof product.category === 'object' ? product.category.name : product.category}
         </span>
         <button
           suppressHydrationWarning
           type="button"
           onClick={() => toggleLike(shopProduct)}
-          className="mt-3 flex items-center justify-center rounded-md bg-transparent text-base font-semibold transition-colors gap-1.5"
+          className="mt-3 flex items-center justify-center rounded-md bg-transparent text-xs font-semibold transition-colors gap-1.5"
         >
           <Heart size={13} className={mounted && wished ? "fill-red-500 text-red-500" : "text-red-500"} />
           {mounted && wished ? "In wishlist" : "Add to wishlist"}
         </button>
       </div>
-      <h1 className="mt-2 text-xl font-medium leading-tight text-[#001b10] md:hidden">
+      <h2 className="mt-2 text-xl font-semibold leading-tight text-[#001b10] md:text-2xl max-w-60 line-clamp-2">
         {product.title}
-      </h1>
-      <p className="hidden md:block mt-2 text-xl font-semibold leading-tight text-[#001b10] md:text-2xl max-w-60 line-clamp-2">
-        {product.title}
-      </p>
+      </h2>
 
-      <div className="mt-2 flex flex-wrap items-center gap-4 text-base">
-        <button
+      <div className="mt-2 flex flex-wrap items-center gap-4 text-[10px]">
+        <button suppressHydrationWarning
           onClick={() => setIsReviewOpen(true)}
           className="flex items-center gap-4 hover:opacity-70 transition-opacity"
         >
@@ -208,14 +206,14 @@ const ProductPriceSection = ({
           <span className="font-medium">{reviewData.averageRating || "0.0"}</span>
           <span className="font-medium underline decoration-dotted decoration-gray-400 underline-offset-2">({reviewData.totalReviews} reviews)</span>
         </button>
-        <span className="py-1 text-base font-semibold pl-2 border-l border-gray-200">
+        <span className="py-1 text-[11px] font-semibold pl-2 border-l border-gray-200">
           {product.code || 'ENS-PT-001'}
         </span>
       </div>
 
 
 
-      {/* <p className="mt-2 max-w-2xl text-base">
+      {/* <p className="mt-2 max-w-2xl text-xs">
               {product.description}
             </p> */}
 
@@ -231,16 +229,16 @@ const ProductPriceSection = ({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-t border-black/10 pt-4">
         {/* Left */}
         <div className="">
-          <p className="text-base uppercase tracking-[0.12em] text-[#C08A2E] font-semibold">
+          <p className="text-xs uppercase tracking-[0.12em] text-[#C08A2E] font-semibold">
             Starting From
           </p>
 
           <div className="mt-1 flex items-end gap-2">
-            <h2 className="tabular-nums text-2xl font-bold text-[#17231A] leading-none">
+            <h2 className="text-2xl font-bold text-[#17231A] leading-none">
               {formatPrice(product.price)}
             </h2>
             {product.price > 0 && (
-              <span className="pb-0.5 text-base font-medium text-[#6f756c]">
+              <span className="pb-0.5 text-[10px] font-medium text-[#6f756c]">
                 (Incl. of {product.gstRate ?? 5}% GST)
               </span>
             )}
@@ -251,7 +249,7 @@ const ProductPriceSection = ({
         <div className="flex flex-col gap-4">
           {product.overview?.customSize && (
 
-            <div className="flex items-center gap-4 text-base ">
+            <div className="flex items-center gap-4 text-[10px] ">
               <CheckCircle2
                 size={12}
                 strokeWidth={1.8}
@@ -261,7 +259,7 @@ const ProductPriceSection = ({
             </div>
           )}
 
-          {product?.overview?.emiOptions && <div className="flex items-center gap-4 text-base ">
+          {product?.overview?.emiOptions && <div className="flex items-center gap-4 text-[10px] ">
             <CheckCircle2
               size={12}
               strokeWidth={1.8}
@@ -274,9 +272,9 @@ const ProductPriceSection = ({
 
       <ProductDetailActions product={shopProduct} finish={finish} size={size} />
 
-      {/* Reviews Popup Modal */}
-      {isReviewOpen && (
-        <div className="fixed inset-0 z-999 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+      {/* Reviews Popup Modal — portal to body taaki kisi bhi stacking context me atka na rahe */}
+      {mounted && isReviewOpen && createPortal(
+        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col">
             <div className="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-[#fbfaf7]">
               <div>
@@ -287,10 +285,10 @@ const ProductPriceSection = ({
                       <Star key={i} size={10} className="fill-[#d5a642] text-[#d5a642]" />
                     ))}
                   </div>
-                  <span className="text-base font-bold text-gray-500">{reviewData.averageRating}/5.0 average rating</span>
+                  <span className="text-[10px] font-bold text-gray-500">{reviewData.averageRating}/5.0 average rating</span>
                 </div>
               </div>
-              <button
+              <button suppressHydrationWarning
                 onClick={() => setIsReviewOpen(false)}
                 className="p-1.5 hover:bg-gray-200 rounded-full transition-colors text-gray-500"
               >
@@ -301,12 +299,12 @@ const ProductPriceSection = ({
             <div className="p-5 overflow-y-auto max-h-[60vh]">
               {isWritingReview ? (
                 <form onSubmit={handleReviewSubmit} className="space-y-4">
-                  <h4 className="text-base font-bold text-[#313b30]">{userReviewId ? "Edit Your Review" : "Write a Review"}</h4>
+                  <h4 className="text-sm font-bold text-[#313b30]">{userReviewId ? "Edit Your Review" : "Write a Review"}</h4>
                   <div className="flex gap-1">
                     {[...Array(5)].map((_, i) => {
                       const starValue = i + 1;
                       return (
-                        <button
+                        <button suppressHydrationWarning
                           type="button"
                           key={starValue}
                           onClick={() => setRating(starValue)}
@@ -323,28 +321,28 @@ const ProductPriceSection = ({
                     })}
                   </div>
                   <div>
-                    <label className="text-base font-bold uppercase mb-2 block">Your Experience</label>
-                    <textarea
+                    <label className="text-[11px] font-bold uppercase mb-2 block">Your Experience</label>
+                    <textarea suppressHydrationWarning
                       rows={4}
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
                       placeholder="What did you like or dislike about the product?"
-                      className="w-full p-3 text-base rounded-lg border border-[#eee5d8] outline-none focus:border-[#d5a642] bg-white"
+                      className="w-full p-3 text-xs rounded-lg border border-[#eee5d8] outline-none focus:border-[#d5a642] bg-white"
                       required
                     />
                   </div>
                   <div className="flex gap-4">
-                    <button
+                    <button suppressHydrationWarning
                       type="button"
                       onClick={() => setIsWritingReview(false)}
-                      className="flex-1 py-2.5 text-base font-bold uppercase tracking-widest text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all"
+                      className="flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all"
                     >
                       Cancel
                     </button>
-                    <button
+                    <button suppressHydrationWarning
                       type="submit"
                       disabled={isSubmitting}
-                      className="flex-1 py-2.5 text-base font-bold uppercase tracking-widest text-white bg-[#313b30] rounded-lg hover:bg-black transition-all disabled:opacity-50"
+                      className="flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest text-white bg-[#313b30] rounded-lg hover:bg-black transition-all disabled:opacity-50"
                     >
                       {isSubmitting ? "Submitting..." : (userReviewId ? "Update Review" : "Submit Review")}
                     </button>
@@ -356,21 +354,21 @@ const ProductPriceSection = ({
                     reviewData.reviews.map((rev) => (
                       <div key={rev._id} className="border-b border-gray-50 pb-5 last:border-0 last:pb-0">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-base font-bold text-[#1a1a1a]">{rev.user}</span>
-                          <span className="text-base text-gray-400">{new Date(rev.createdAt).toLocaleDateString()}</span>
+                          <span className="text-[11px] font-bold text-[#1a1a1a]">{rev.user}</span>
+                          <span className="text-[9px] text-gray-400">{new Date(rev.createdAt).toLocaleDateString()}</span>
                         </div>
                         <div className="flex mb-2">
                           {[...Array(5)].map((_, i) => (
                             <Star key={i} size={10} className={i < rev.rating ? "fill-[#d5a642] text-[#d5a642]" : "text-gray-200"} />
                           ))}
                         </div>
-                        <p className="text-base text-gray-600 leading-relaxed italic">
+                        <p className="text-[11px] text-gray-600 leading-relaxed italic">
                           &quot;{rev.comment}&quot;
                         </p>
                       </div>
                     ))
                   ) : (
-                    <p className="text-center text-base text-gray-500">No reviews yet. Be the first to review!</p>
+                    <p className="text-center text-xs text-gray-500">No reviews yet. Be the first to review!</p>
                   )}
                 </div>
               )}
@@ -378,9 +376,9 @@ const ProductPriceSection = ({
 
             {hasPurchased && !isWritingReview && (
               <div className="p-4 bg-gray-50 border-t border-gray-100">
-                <button
+                <button suppressHydrationWarning
                   onClick={() => setIsWritingReview(true)}
-                  className="w-full py-2.5 text-base font-bold uppercase tracking-widest text-[#8d6a3a] border border-[#8d6a3a] rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-all"
+                  className="w-full py-2.5 text-[10px] font-bold uppercase tracking-widest text-[#8d6a3a] border border-[#8d6a3a] rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-all"
                 >
                   {userReviewId ? "Edit Your Review" : "Write a Review"}
                 </button>
@@ -388,14 +386,14 @@ const ProductPriceSection = ({
             )}
           </div>
         </div>
-      )}
+      , document.body)}
     </div>
   )
 }
 
 function FeaturePill({ icon, label }: { icon: ReactNode; label: string }) {
   return (
-    <div className="flex min-h-15 flex-col items-center justify-center gap-4 rounded-md px-2 py-2 text-center text-base font-semibold text-[#313b30]">
+    <div className="flex min-h-15 flex-col items-center justify-center gap-4 rounded-md px-2 py-2 text-center text-[11px] font-semibold text-[#313b30]">
       <span className="text-[#8d6a3a]">{icon}</span>
       {label}
     </div>

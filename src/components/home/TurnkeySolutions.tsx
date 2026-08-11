@@ -63,7 +63,7 @@ export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) =
               <HtmlRenderer className="mt-2 max-w-[420px] text-base leading-relaxed text-[#ddd6ca]" content={content.description}>
                 
               </HtmlRenderer>
-              <div className='mt-2 w-[200px]'>
+              <div className='mt-2 w-[340px]'>
               <GreenButton text={content.buttonText} leftIcon={<MessageCircle className="text-[#050A1A]" size={16}/>} rightIcon={<ArrowRight className="text-[#050A1A]" size={16}/>} path={content.buttonHref || "tel:+919654900525"} />
               </div>
             </div>

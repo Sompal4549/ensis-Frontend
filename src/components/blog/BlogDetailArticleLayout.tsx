@@ -241,17 +241,17 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
           {/* ---------- Main article ---------- */}
           <article className="lg:col-span-2">
 
-            <p className="mt-6 text-xs leading-relaxed sm:text-sm">
+            <p className="mt-6 text-base leading-relaxed sm:text-sm">
               {introBefore}
               <span className="font-medium text-[#C9972A]">{introHighlight}</span>
               {introAfter}
             </p>
 
             <section id="what-is-panchakarma" className="mt-8 scroll-mt-24">
-              <h2 className="font-serif text-sm font-semibold text-[#1f2c25]">
+              <h2 className=" text-sm font-semibold text-[#1f2c25]">
                 {whatIsPanchakarma.heading}
               </h2>
-              <p className="mt-3 text-xs leading-relaxed sm:text-sm">
+              <p className="mt-3 text-base leading-relaxed sm:text-sm">
                 {whatIsPanchakarma.body}
               </p>
 
@@ -266,10 +266,10 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                       <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[#e8d9bb] bg-[#f8f2e8]">
                         <Icon size={20} className="text-[#C9972A]" strokeWidth={1.5} />
                       </span>
-                      <span className="text-[11px] font-bold text-[#1f2c25] sm:text-xs">
+                      <span className="text-base font-bold text-[#1f2c25] sm:text-base">
                         {therapy.title}
                       </span>
-                      <span className="text-[10px] leading-tight  sm:text-[11px]"
+                      <span className="text-base leading-tight  sm:text-base"
                         dangerouslySetInnerHTML={{__html:therapy.description}}
                       
                       >
@@ -286,7 +286,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                 {benefits.map((benefit) => (
                   <div key={benefit.id} className="flex items-start gap-4">
                     <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-[#5c8a6b]" />
-                    <span className="text-xs sm:text-sm">{benefit.text}</span>
+                    <span className="text-base sm:text-sm">{benefit.text}</span>
                   </div>
                 ))}
               </div>
@@ -294,30 +294,30 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
 
             <section id="modern-life" className="mt-2">
               <h2 className="text-sm text-[#1f2c25] font-semibold">{modernLife.heading}</h2>
-              <p className="mt-3 text-xs leading-relaxed sm:text-sm">{modernLife.body}</p>
+              <p className="mt-3 text-base leading-relaxed sm:text-sm">{modernLife.body}</p>
             </section>
 
             <section id="right-space" className="mt-2">
               <h2 className="text-sm text-[#1f2c25] font-semibold">{rightSpace.heading}</h2>
-              <p className="mt-3 text-xs leading-relaxed sm:text-sm">{rightSpace.body}</p>
+              <p className="mt-3 text-base leading-relaxed sm:text-sm">{rightSpace.body}</p>
             </section>
 
             <section id="ensis-approach" className="mt-2">
               <h2 className="text-sm text-[#1f2c25] font-semibold">{ensisApproach.heading}</h2>
-              <p className="mt-3 text-xs leading-relaxed sm:text-sm">{ensisApproach.body}</p>
+              <p className="mt-3 text-base leading-relaxed sm:text-sm">{ensisApproach.body}</p>
             </section>
 
             <section id="conclusion" className="mt-2">
               <h2 className="text-sm text-[#1f2c25] font-semibold">{conclusion.heading}</h2>
-              <p className="mt-3 text-xs leading-relaxed sm:text-sm">{conclusion.body}</p>
+              <p className="mt-3 text-base leading-relaxed sm:text-sm">{conclusion.body}</p>
             </section>
 
             <div className="mt-10 flex flex-wrap items-center gap-4 border-t border-slate-200 pt-6">
-              <span className="text-xs font-bold text-[#1f2c25]">Tags :</span>
+              <span className="text-base font-bold text-[#1f2c25]">Tags :</span>
               {tags.map((tag) => (
                 <span
                   key={tag}
-                  className="rounded-full border border-slate-200 bg-white px-4 py-1.5 text-[11px]"
+                  className="rounded-full border border-slate-200 bg-white px-4 py-1.5 text-base"
                 >
                   {tag}
                 </span>
@@ -325,7 +325,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
             </div>
 
             <div className="mt-4 flex flex-wrap items-center gap-4">
-              <span className="text-xs font-bold text-[#1f2c25]">Share :</span>
+              <span className="text-base font-bold text-[#1f2c25]">Share :</span>
               {[FaFacebookF, FaXTwitter, FaLinkedinIn, FaWhatsapp].map((Icon, idx) => (
                 <a
                   key={idx}
@@ -343,17 +343,17 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
             <div className="space-y-6 lg:sticky lg:top-6">
               {/* About the author */}
               <div className="rounded-2xl border border-slate-100 bg-white p-5">
-                <h3 className="font-serif text-base text-[#1f2c25]">About the Author</h3>
+                <h3 className=" text-base text-[#1f2c25]">About the Author</h3>
                 <div className="mt-4 flex items-center gap-4">
                   <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-full">
                     <Image src={author.avatar} alt={author.name} fill className="object-cover" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-[#1f2c25]">{author.name}</p>
-                    <p className="text-[11px]">{author.role}</p>
+                    <p className="text-base font-bold text-[#1f2c25]">{author.name}</p>
+                    <p className="text-base">{author.role}</p>
                   </div>
                 </div>
-                <p className="mt-4 text-[11px] leading-relaxed">{author.bio}</p>
+                <p className="mt-4 text-base leading-relaxed">{author.bio}</p>
                 <div className="mt-4 flex items-center gap-4">
                   {author.socials.map((social) => {
                     const Icon = socialIconMap[social.platform];
@@ -372,13 +372,13 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
 
               {/* On this page */}
               <div className="rounded-2xl border border-slate-100 bg-white p-5">
-                <h3 className="font-serif text-base text-[#1f2c25]">On This Page</h3>
+                <h3 className=" text-base text-[#1f2c25]">On This Page</h3>
                 <ul className="mt-3 space-y-2.5">
                   {toc.map((item) => (
                     <li key={item.id}>
                       <Link
                         href={item.href}
-                        className="flex items-center gap-4 text-[11px] transition-colors hover:text-[#C9972A]"
+                        className="flex items-center gap-4 text-base transition-colors hover:text-[#C9972A]"
                       >
                         <Circle size={6} className="fill-[#C9972A] text-[#C9972A]" />
                         {item.label}
@@ -393,11 +393,11 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                 <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1f3d2e]">
                   <Download size={18} className="text-[#e8c766]" />
                 </span>
-                <h3 className="mt-4 font-serif text-base leading-snug text-white">{guide.heading}</h3>
-                <p className="mt-2 text-[11px] leading-relaxed text-white/70" dangerouslySetInnerHTML={{__html:guide.description||""}}></p>
+                <h3 className="mt-4  text-base leading-snug text-white">{guide.heading}</h3>
+                <p className="mt-2 text-base leading-relaxed text-white/70" dangerouslySetInnerHTML={{__html:guide.description||""}}></p>
                 <a
                   href={guide.href}
-                  className="mt-4 inline-flex items-center gap-4 rounded-lg bg-[#e8c766] px-4 py-2.5 text-[11px] font-bold tracking-wide text-[#0f2e22] transition-colors hover:bg-[#dcb851]"
+                  className="mt-4 inline-flex items-center gap-4 rounded-lg bg-[#e8c766] px-4 py-2.5 text-base font-bold tracking-wide text-[#0f2e22] transition-colors hover:bg-[#dcb851]"
                 >
                   {guide.buttonLabel}
                   <Download size={14} />
@@ -406,7 +406,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
 
               {/* Related articles */}
               <div className="rounded-2xl border border-slate-100 bg-white p-5">
-                <h3 className="font-serif text-base text-[#1f2c25]">You May Also Like</h3>
+                <h3 className=" text-base text-[#1f2c25]">You May Also Like</h3>
                 <div className="mt-4 space-y-4">
                   {relatedArticles.map((item) => (
                     <Link key={item.id} href={item.href} className="group flex gap-4">
@@ -419,10 +419,10 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                         />
                       </div>
                       <div>
-                        <p className="text-[11px] font-bold leading-snug text-[#1f2c25] group-hover:text-[#C9972A]">
+                        <p className="text-base font-bold leading-snug text-[#1f2c25] group-hover:text-[#C9972A]">
                           {item.title}
                         </p>
-                        <p className="mt-1.5 text-[10px]">
+                        <p className="mt-1.5 text-base">
                           {item.date} • {item.readTime}
                         </p>
                       </div>

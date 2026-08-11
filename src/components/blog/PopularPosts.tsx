@@ -40,7 +40,7 @@ console.log(blogs, "popular")
               />
             </div>
             <div className="flex-1">
-              <h4 className="line-clamp-2 font-serif text-lg leading-7 text-[#2b241f] group-hover:text-[#a7652a] transition-colors">
+              <h4 className="line-clamp-2  text-lg leading-7 text-[#2b241f] group-hover:text-[#a7652a] transition-colors">
                 {blog.title}
               </h4>
               <p className="mt-2 text-sm text-[#8d725f]">

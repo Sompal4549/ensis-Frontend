@@ -80,7 +80,7 @@ export default function AboutEnsisSection() {
             font-semibold
             tracking-[2px]
             uppercase
-            font-serif
+            
           "
             >
               About ENSIS

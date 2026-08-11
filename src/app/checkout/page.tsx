@@ -365,7 +365,7 @@ export default function CheckoutPage() {
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
                           <label className={labelClass}>Address Label</label>
-                          <input
+                          <input suppressHydrationWarning
                             className={inputClass}
                             type="text"
                             name="label"
@@ -377,7 +377,7 @@ export default function CheckoutPage() {
                         </div>
                         <div>
                           <label className={labelClass}>Full Name *</label>
-                          <input
+                          <input suppressHydrationWarning
                             className={inputClass}
                             type="text"
                             name="fullName"
@@ -392,7 +392,7 @@ export default function CheckoutPage() {
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
                           <label className={labelClass}>Phone Number *</label>
-                          <input
+                          <input suppressHydrationWarning
                             className={inputClass}
                             type="tel"
                             name="phone"
@@ -404,7 +404,7 @@ export default function CheckoutPage() {
                         </div>
                         <div>
                           <label className={labelClass}>Email Address *</label>
-                          <input
+                          <input suppressHydrationWarning
                             className={inputClass}
                             type="email"
                             name="email"
@@ -419,7 +419,7 @@ export default function CheckoutPage() {
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
                           <label className={labelClass}>Street Address *</label>
-                          <input
+                          <input suppressHydrationWarning
                             className={inputClass}
                             type="text"
                             name="street"
@@ -432,7 +432,7 @@ export default function CheckoutPage() {
 
                         <div>
                           <label className={labelClass}>Landmark</label>
-                          <input
+                          <input suppressHydrationWarning
                             className={inputClass}
                             type="text"
                             name="landmark"
@@ -446,7 +446,7 @@ export default function CheckoutPage() {
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         <div>
                           <label className={labelClass}>Postal Code *</label>
-                          <input
+                          <input suppressHydrationWarning
                             className={inputClass}
                             type="text"
                             name="postalCode"
@@ -458,7 +458,7 @@ export default function CheckoutPage() {
                         </div>
                         <div>
                           <label className={labelClass}>City *</label>
-                          <input
+                          <input suppressHydrationWarning
                             className={inputClass}
                             type="text"
                             name="city"
@@ -470,7 +470,7 @@ export default function CheckoutPage() {
                         </div>
                         <div>
                           <label className={labelClass}>State *</label>
-                          <input
+                          <input suppressHydrationWarning
                             className={inputClass}
                             type="text"
                             name="state"
@@ -484,7 +484,7 @@ export default function CheckoutPage() {
 
                       <div>
                         <label className={labelClass}>Country *</label>
-                        <select
+                        <select suppressHydrationWarning
                           className={inputClass}
                           name="country"
                           value={shippingAddress.country}
@@ -509,7 +509,7 @@ export default function CheckoutPage() {
                         </div>
                       )}
 
-                      <button
+                      <button suppressHydrationWarning
                         type="submit"
                         disabled={isPlacingOrder}
                         className="group relative mt-1 flex w-full items-center justify-center gap-4 overflow-hidden rounded-full bg-[#1F3A2A] px-5 py-2.5 text-sm font-bold uppercase tracking-[0.16em] text-white shadow-[0_20px_40px_-12px_rgba(31,58,42,0.6)] transition-all duration-300 hover:bg-[#18301f] hover:shadow-[0_24px_45px_-12px_rgba(199,165,91,0.45)] disabled:cursor-not-allowed disabled:opacity-60"

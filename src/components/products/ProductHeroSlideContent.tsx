@@ -72,7 +72,7 @@ export default function ProductHeroSlideContent({
     : "absolute inset-0";
 
   return (
-    <div className="relative h-full min-h-[470px] overflow-hidden bg-[#0b0b0b]">
+    <div className="relative h-full min-h-[550px] overflow-hidden bg-[#0b0b0b]">
       {/* Image */}
       {slide.image && (
         <motion.div

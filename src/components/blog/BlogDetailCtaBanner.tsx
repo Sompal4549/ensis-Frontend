@@ -54,11 +54,11 @@ const BlogDetailCtaBanner: React.FC<CtaBannerProps> = ({ sectionContent }) => {
             )}
 
             <div>
-              <h2 className="font-serif text-lg leading-tight text-white sm:text-xl md:text-2xl">
+              <h2 className=" text-lg leading-tight text-white sm:text-xl md:text-2xl">
                 {sectionContent.title}
               </h2>
               {sectionContent.description && (
-                <p className="mt-1 max-w-md text-xs leading-snug text-white/70 sm:text-sm">
+                <p className="mt-1 max-w-md text-base leading-snug text-white/70 sm:text-sm">
                   {sectionContent.description}
                 </p>
               )}
@@ -69,7 +69,7 @@ const BlogDetailCtaBanner: React.FC<CtaBannerProps> = ({ sectionContent }) => {
           {sectionContent.buttonText && (
             <Link
               href={sectionContent.buttonLink || "#"}
-              className="group inline-flex shrink-0 items-center gap-4 rounded-sm bg-[#C9972A] px-6 py-3 text-xs font-bold uppercase tracking-wider text-[#0f2e22] transition-colors hover:bg-[#e8c766]"
+              className="group inline-flex shrink-0 items-center gap-4 rounded-sm bg-[#C9972A] px-6 py-3 text-base font-bold uppercase tracking-wider text-[#0f2e22] transition-colors hover:bg-[#e8c766]"
             >
               {sectionContent.buttonText}
               <ArrowRight

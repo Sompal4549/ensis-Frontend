@@ -29,11 +29,11 @@ export default function BlogCard({ title, image, link }: Props) {
       </div>
 
       <div className="p-2">
-        <h3 className="font-serif text-sm font-semibold leading-snug text-[#2d241d] line-clamp-2">
+        <h3 className=" text-sm font-semibold leading-snug text-[#2d241d] line-clamp-2">
           {title}
         </h3>
 
-        <div className="mt-2 flex items-center gap-4 text-xs font-medium text-[#b36c2c] transition group-hover:gap-4">
+        <div className="mt-2 flex items-center gap-4 text-base font-medium text-[#b36c2c] transition group-hover:gap-4">
           Read More
           <ArrowRight size={15} />
         </div>

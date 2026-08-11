@@ -174,12 +174,12 @@ export default function WhyPartner({ sectionContent }: {sectionContent: OurClien
         <div className="mb-2 text-center">
           <div className="mb-2 flex items-center justify-center gap-4">
            <Image src={decorationLeft} width={30} height={30} alt="decoration" className="h-full object-contain" />
-            <h2 className="text-xs font-semibold text-[#1F3325] sm:text-xl">
+            <h2 className="text-base font-semibold text-[#1F3325] sm:text-xl">
               {banner.heading}
             </h2>
            <Image src={decorationRight} width={30} height={30} alt="decoration" className="h-full object-contain" />
           </div>
-          <p className="text-sm  sm:text-base font-semibold">{banner.subheading}</p>
+          <p className="text-base font-semibold">{banner.subheading}</p>
         </div>
 
         {/* Client logos */}
@@ -228,10 +228,10 @@ export default function WhyPartner({ sectionContent }: {sectionContent: OurClien
                 </div>
                 <div>
                   <div>
-                <p className="font-serif text-lg font-semibold text-[#E8C766] sm:text-xl">
+                <p className=" text-lg font-semibold text-[#E8C766] sm:text-xl">
                   {stat.value}
                 </p>
-                <p className="text-xs">{stat.label}</p>
+                <p className="text-base">{stat.label}</p>
                 </div>
                 </div>
               </div>

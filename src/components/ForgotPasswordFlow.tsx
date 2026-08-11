@@ -93,9 +93,9 @@ const handleRequestOTP = async (e: React.FormEvent) => {
         <div className="flex justify-center mb-4">
           <CheckCircle2 className="text-green-500 w-16 h-16" />
         </div>
-        <h2 className="text-2xl font-serif font-bold text-[#20351f] mb-3">Successful!</h2>
+        <h2 className="text-2xl  font-bold text-[#20351f] mb-3">Successful!</h2>
         <p className="text-gray-600 mb-8">Password reset successfully. Now login with your new credentials.</p>
-        <button
+        <button suppressHydrationWarning
           onClick={onBackToLogin}
           className="w-full py-3 bg-[#183b17] text-white rounded-xl font-bold hover:shadow-lg transition-all"
         >
@@ -107,14 +107,14 @@ const handleRequestOTP = async (e: React.FormEvent) => {
 
   return (
     <div className="w-full max-w-md mx-auto p-6 md:p-8 bg-white rounded-3xl border border-[#ebe7df] shadow-sm">
-      <button 
+      <button  
         onClick={onBackToLogin}
         className="flex items-center text-sm font-semibold text-[#183b17] mb-6 hover:underline"
       >
         <ArrowLeft size={16} className="mr-2" /> Back to Login
       </button>
 
-      <h2 className="text-2xl md:text-3xl font-serif font-bold text-[#20351f] mb-2">
+      <h2 className="text-2xl md:text-3xl  font-bold text-[#20351f] mb-2">
         {step === "email" && "Find Account"}
         {step === "otp" && "Check Email"}
         {step === "reset" && "New Password"}
@@ -129,11 +129,11 @@ const handleRequestOTP = async (e: React.FormEvent) => {
         {step === "email" && (
           <div className="relative">
             <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]" size={18} />
-            <input
+            <input suppressHydrationWarning
               type="email"
               aria-label="Email address"
               placeholder="Email Address"
-              suppressHydrationWarning
+              
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full h-12 pl-12 pr-4 rounded-xl border border-[#183b17] focus:ring-1 focus:ring-[#c8a45d] outline-none"
@@ -145,11 +145,11 @@ const handleRequestOTP = async (e: React.FormEvent) => {
         {step === "otp" && (
           <div className="relative">
             <KeyRound className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]" size={18} />
-            <input
+            <input suppressHydrationWarning
               type="text"
               aria-label="6-digit OTP"
               placeholder="Enter 6-digit OTP"
-              suppressHydrationWarning
+              
               maxLength={6}
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
@@ -163,11 +163,11 @@ const handleRequestOTP = async (e: React.FormEvent) => {
           <>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]" size={18} />
-              <input
+              <input suppressHydrationWarning
                 type="password"
                 aria-label="New password"
                 placeholder="New Password"
-                suppressHydrationWarning
+                
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 className="w-full h-12 pl-12 pr-4 rounded-xl border border-[#183b17] focus:ring-1 focus:ring-[#c8a45d] outline-none"
@@ -176,11 +176,11 @@ const handleRequestOTP = async (e: React.FormEvent) => {
             </div>
             <div className="relative">
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-[#c8a45d]" size={18} />
-              <input
+              <input suppressHydrationWarning
                 type="password"
                 aria-label="Confirm new password"
                 placeholder="Confirm New Password"
-                suppressHydrationWarning
+                
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full h-12 pl-12 pr-4 rounded-xl border border-[#183b17] focus:ring-1 focus:ring-[#c8a45d] outline-none"
@@ -192,7 +192,7 @@ const handleRequestOTP = async (e: React.FormEvent) => {
 
         {error && <p className="text-sm text-red-500 font-semibold">{error}</p>}
 
-        <button
+        <button suppressHydrationWarning
           type="submit"
           disabled={loading}
           className="w-full py-3.5 bg-[#183b17] text-white rounded-xl font-bold shadow-md hover:bg-opacity-90 active:scale-95 transition-all disabled:opacity-50"

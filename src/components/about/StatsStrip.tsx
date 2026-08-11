@@ -45,17 +45,18 @@ export default async function StatsStrip() {
       : item.image ?? defaultStats[i]?.image,
   }));
 
-  const gridCols = gridColsClass(resolvedStats.length);
+  const displayStats = resolvedStats.slice(0, 5);
+  const gridCols = gridColsClass(displayStats.length);
 
   return (
 <Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 py-0">
   <div className="border border-[#C9972A] bg-[#f3eee6] rounded-xl py-2 px-3 ring-1 ring-[#C9972A]/50 ring-offset-2 ring-offset-transparent">
     <div className={`grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${gridCols}`}>
-      {resolvedStats.map((item, index) => (
+      {displayStats.map((item, index) => (
         <div
           key={index}
           className={`flex items-center gap-4 pr-6 ${
-            index !== resolvedStats.length - 1
+            index !== displayStats.length - 1
               ? "xl:border-r border-[#d6c2a0]"
               : ""
           }`}

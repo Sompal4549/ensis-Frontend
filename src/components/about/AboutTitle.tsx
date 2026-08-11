@@ -24,7 +24,7 @@ text-base
               font-extrabold
               tracking-[2px]
               uppercase
-              font-serif
+              
               text-center
              ${className || ''}`}
         >

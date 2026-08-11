@@ -29,7 +29,7 @@ const CareersBanner = ({sectionContent }: {sectionContent:CareersBannerProps}) =
         priority
         className="object-cover"
       />
-      <div className="relative z-10 flex h-[600px] md:h-[calc(100vh-146px)] items-center px-6 py-12 sm:px-10 lg:px-14">
+      <div className="relative z-10 flex min-h-[550px] md:h-[calc(100vh-146px)] items-center px-6 py-12 sm:px-10 lg:px-14">
         <Container>
           {/* Eyebrow */}
           <p className="mb-4 text-base font-semibold uppercase tracking-[0.2em] text-[#c07d19]">

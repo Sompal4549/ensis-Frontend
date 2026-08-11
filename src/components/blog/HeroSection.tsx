@@ -21,7 +21,7 @@ export default function BlogHeroSection({ sectionContent }: { sectionContent: an
         />
       </div>
 
-      <Container className="grid pt-24 md:pt-0 md:min-h-[calc(100vh-146px)] min-h-[600px] grid-cols-1 lg:grid-cols-2 relative z-20 items-center">
+      <Container className="grid pt-24 md:pt-0 md:min-h-[calc(100vh-146px)] min-h-[550px] grid-cols-1 lg:grid-cols-2 relative z-20 items-center">
         {/* Left Content */}
         <div className="sm:py-8 lg:py-14">
           <div className="max-w-[480px] flex flex-col items-center justify-center">
@@ -39,12 +39,12 @@ export default function BlogHeroSection({ sectionContent }: { sectionContent: an
             </div>
 
             {/* Subtitle */}
-            <h2 className="mt-4 font-serif text-[24px] italic leading-relaxed text-[#a7652a] sm:text-[30px]">
+            <h2 className="mt-4  text-[24px] italic leading-relaxed text-[#a7652a] sm:text-[30px]">
               {sectionContent.title}
             </h2>
 
             {/* Description */}
-            <p className="mt-4 max-w-[420px] text-sm md:text-base leading-6 text-[#2d2d2d]">
+            <p className="mt-4 max-w-[420px] text-base leading-6 text-[#2d2d2d]">
               Curated perspectives on spa, wellness,
               <br className="hidden sm:block" />
               and timeless healing traditions.

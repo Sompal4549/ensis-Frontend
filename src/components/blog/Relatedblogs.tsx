@@ -29,12 +29,12 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({ allBlogs }) => {
     <section className="bg-[#faf6ef] py-12 md:py-16">
       <Container>
         <div className="mb-8 flex items-center justify-between">
-          <h2 className="font-serif text-2xl text-[#1f2c25] md:text-3xl">
+          <h2 className=" text-2xl text-[#1f2c25] md:text-3xl">
             You May Also Like
           </h2>
           <Link
             href="/blog"
-            className="flex items-center gap-4 text-xs font-bold uppercase tracking-wider text-[#8d6a3a] transition-colors hover:text-[#C9972A]"
+            className="flex items-center gap-4 text-base font-bold uppercase tracking-wider text-[#8d6a3a] transition-colors hover:text-[#C9972A]"
           >
             View All Articles
             <ArrowRight size={14} />
@@ -63,7 +63,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({ allBlogs }) => {
                   </div>
 
                   <div className="p-4">
-                    <p className="text-[11px] font-bold uppercase tracking-wider text-[#C9972A]">
+                    <p className="text-base font-bold uppercase tracking-wider text-[#C9972A]">
                       {blog.category}
                       {blog.banner.readingTime && (
                         <>
@@ -77,7 +77,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({ allBlogs }) => {
                       )}
                     </p>
 
-                    <h3 className="mt-2 font-serif text-base leading-snug text-[#1f2c25] transition-colors group-hover:text-[#8d6a3a] md:text-lg">
+                    <h3 className="mt-2  text-base leading-snug text-[#1f2c25] transition-colors group-hover:text-[#8d6a3a] md:text-lg">
                       {blog.title}
                     </h3>
                   </div>

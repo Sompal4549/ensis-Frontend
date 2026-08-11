@@ -42,7 +42,7 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent: Turnke
         <Image src={sectionContent.backgroundImage.imageUrl} alt={sectionContent.backgroundImage.alt || sectionContent.title} fill className="object-cover sm:object-fill z-0! absolute object-left sm:object-right" priority />
         {/* ── HERO ── */}
         <Container className="relative z-20 !py-0">
-          <div className="relative min-h-[470px] md:h-[calc(100vh-146px)] w-full">
+          <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] w-full">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center h-full">
 
               {/* LEFT COLUMN */}

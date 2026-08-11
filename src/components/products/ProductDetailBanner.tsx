@@ -114,7 +114,7 @@ export default function ProductHeroBanner({
           {/* LEFT TEXT — desktop only */}
           <div className="hidden md:flex absolute inset-y-0 left-0 flex-col justify-center md:justify-start md:pt-20 w-full md:max-w-[55%] box-border pl-6 md:pl-10">
             {(product.subcategory || product.category?.name) && (
-              <span className="mb-3 text-base font-bold uppercase tracking-[0.22em] text-[#e0b472]">
+              <span className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[#e0b472]">
                 {product.subcategory || product.category?.name}
               </span>
             )}
@@ -124,19 +124,19 @@ export default function ProductHeroBanner({
             </h1>
 
             {product.description && (
-              <p className="max-w-85 hidden text-base md:text-base leading-6 mb-6 text-white/90 md:block" dangerouslySetInnerHTML={{__html:product.description}}>
+              <p className="max-w-85 hidden text-sm md:text-base leading-6 mb-6 text-white/90 md:block" dangerouslySetInnerHTML={{__html:product.description}}>
               </p>
             )}
 
             <div className="flex flex-wrap gap-4">
-              <button className="flex items-center gap-4 text-base font-medium text-[#f5ede0] transition-all duration-200 hover:bg-white/10">
+              <button className="flex items-center gap-4 text-xs font-medium text-[#f5ede0] transition-all duration-200 hover:bg-white/10">
                 <svg viewBox="0 0 16 16" className="w-3.5 h-3.5 fill-current">
                   <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.2" fill="none" />
                   <polygon points="6.5,5 11.5,8 6.5,11" fill="currentColor" />
                 </svg>
                 Watch Video
               </button>
-              <button className="flex items-center gap-4 text-base font-medium text-[#f5ede0] transition-all duration-200 hover:bg-white/10">
+              <button className="flex items-center gap-4 text-xs font-medium text-[#f5ede0] transition-all duration-200 hover:bg-white/10">
                 <svg viewBox="0 0 16 16" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="1.3">
                   <path d="M8 2l6 3.5v5L8 14l-6-3.5v-5L8 2z" />
                   <path d="M8 2v12M2 5.5l6 3.5 6-3.5" />
@@ -167,7 +167,7 @@ export default function ProductHeroBanner({
                   <button
                     key={i}
                     onClick={() => goTo(i)}
-                    className={`relative w-[100px] h-[75px] rounded overflow-hidden border-2 transition-all duration-200 shrink-0 bg-white ${i === current
+                    className={`relative w-[72px] h-[54px] md:w-[100px] md:h-[75px] rounded overflow-hidden border-2 transition-all duration-200 shrink-0 bg-white ${i === current
                         ? "border-[#c8921a] opacity-100"
                         : "border-[#8d6a3a]/40 opacity-60 hover:opacity-85"
                       }`}

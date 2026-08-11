@@ -74,7 +74,7 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
       <div className="relative z-10 grid min-h-[280px] lg:grid-cols-[1.2fr_300px] items-center gap-10 px-6 py-8 sm:px-8 lg:px-12">
         {/* Left Content */}
         <div className="max-w-md lg:ml-auto">
-          <h2 className="font-serif text-xl text-[#d4a35c] sm:text-2xl font-semibold">
+          <h2 className=" text-xl text-[#d4a35c] sm:text-2xl font-semibold">
             {sectionContent.heading||'Ready to Create Impact?'}
           </h2>
 
@@ -115,6 +115,7 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
 
           <form className="mt-6 space-y-4" onSubmit={handleSubscribe}>
             <input
+              suppressHydrationWarning
               type="email"
               aria-label="Email address to join the talent community"
               placeholder="Enter your email"
@@ -125,6 +126,7 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
             />
 
             <button
+              suppressHydrationWarning
               type="submit"
               disabled={loading}
               className="flex h-9 w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] text-base font-semibold uppercase tracking-wide text-white transition hover:bg-[#b48235] disabled:opacity-60"

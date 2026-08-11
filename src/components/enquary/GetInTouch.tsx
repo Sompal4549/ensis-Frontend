@@ -99,7 +99,7 @@ export default function GetInTouchBanner({
                 {item.lines.map((line, idx) => (
                   <p
                     key={idx}
-                    className="text-xs leading-snug text-[#5a5248] sm:text-sm"
+                    className="text-base leading-snug text-[#5a5248] sm:text-sm"
                   >
                     {line}
                   </p>

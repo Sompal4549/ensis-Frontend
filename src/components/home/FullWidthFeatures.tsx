@@ -57,7 +57,7 @@ export default async function FullWidthFeatures(data?: { features?: any[]; butto
 
               {/* Text */}
               <div className="min-w-0">
-                <h3 className="text-[#f5e7c8] text-base font-semibold leading-tight font-serif">
+                <h3 className="text-[#f5e7c8] text-base font-semibold leading-tight ">
                   {item.title}
                 </h3>
                 <HtmlRenderer className="text-[#d2c3a1] text-base mt-2 leading-relaxed" content={item?.description||""}>

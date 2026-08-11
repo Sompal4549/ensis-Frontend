@@ -75,7 +75,7 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
             <HtmlRenderer className="text-[#0f2518] text-base mb-3" content={content.description}>
               
             </HtmlRenderer>
-          <div className="max-w-[220px]">
+          <div className="max-w-[280px]">
             <BookButton text={content.buttonText} path={content.buttonPath} />
           </div>
         </div>

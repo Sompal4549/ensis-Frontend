@@ -72,7 +72,8 @@ export default function EnquaryStatsStrip() {
     };
   }, []);
 
-  const gridCols = gridColsClass(resolvedStats.length);
+const displayStats = resolvedStats.slice(0, 5);
+const gridCols = gridColsClass(displayStats.length);
 
   return (
     <Container className="relative z-10 py-0">
@@ -88,15 +89,15 @@ export default function EnquaryStatsStrip() {
         "
       >
         <div className={`grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${gridCols}`}>
-          {resolvedStats.map((item, index) => (
-            <div
-              key={index}
-              className={`flex items-center gap-4 pr-6 ${
-                index !== resolvedStats.length - 1
-                  ? "xl:border-r border-[#C9972A]/40"
-                  : ""
-              }`}
-            >
+     {displayStats.map((item, index) => (
+  <div
+    key={index}
+    className={`flex items-center gap-4 pr-6 ${
+      index !== displayStats.length - 1
+        ? "xl:border-r border-[#C9972A]/40"
+        : ""
+    }`}
+  >
               <div className="shrink-0 w-14 h-14 flex items-center justify-center overflow-hidden">
                 <Image
                   src={item.image.src ?? item.image}
@@ -108,11 +109,11 @@ export default function EnquaryStatsStrip() {
               </div>
 
               <div className="flex flex-col justify-center">
-                <p className="tabular-nums text-xs font-semibold text-[#faf6ef] leading-tight">
+                <p className="tabular-nums text-base font-semibold text-[#faf6ef] leading-tight">
                   {item.title}
                 </p>
 
-                <p className="text-xs leading-4 text-[#faf6ef]/90 font-medium">
+                <p className="text-base leading-4 text-[#faf6ef]/90 font-medium">
                   {item.description}
                 </p>
               </div>

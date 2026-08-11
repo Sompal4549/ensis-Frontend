@@ -60,7 +60,7 @@ sectionContent = {}
         />
       </div>
       <Container className="bg-black md:bg-transparent">
-        <div className="relative min-h-[470px] md:h-[calc(100vh-146px)] w-full">
+        <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] w-full">
           <div className="relative z-10 mx-auto flex min-h-[450px] max-w-[1500px] items-center h-full">
             <div className="max-w-[620px] pt-24 pb-12 md:pt-16 md:pb-16">
               <div className="mb-5 flex items-center gap-4">

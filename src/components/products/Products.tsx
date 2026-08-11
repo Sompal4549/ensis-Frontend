@@ -398,9 +398,9 @@ const toggleIdealFor = (value: string) => {
               {/* Horizontal Categories Bar */}
               <div className="mb-5">
                 <div className="flex items-center gap-2 overflow-x-auto pb-2 -mb-2 no-scrollbar">
-                  {displayCategories.map((cat) => (
+                  {displayCategories.map((cat, catIndex) => (
                     <button
-                      key={cat.key}
+                      key={`${cat.key}-${catIndex}`}
                       suppressHydrationWarning
                       onClick={() => setActiveCategory(cat.key)}
                       className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border text-base transition-all whitespace-nowrap ${
@@ -409,7 +409,9 @@ const toggleIdealFor = (value: string) => {
                           : "bg-white text-[#1a1a1a] border-[#ede8e0] font-medium hover:bg-[#f5ede0]"
                       }`}
                     >
-                      {cat.icon ? (
+                      {cat.key === "all" ? (
+                        <LayoutGrid size={18} className="shrink-0 text-[#B37E39]" strokeWidth={2} />
+                      ) : cat.icon ? (
                         <span className="h-[15px] w-[20px] overflow-hidden rounded-[3px]">
                           <Image src={cat.icon} alt={cat.label} width={20} height={15} className="object-fill object-center" />
                         </span>
@@ -625,7 +627,7 @@ const toggleIdealFor = (value: string) => {
                       <option value="">Select Product Category</option>
 
                       {displayCategories.slice(1).map((c, i) => (
-                        <option key={c.key || `cat-${i}`} value={c.key}>
+                        <option key={`${c.key}-${i}`} value={c.key}>
                           {c.label}
                         </option>
                       ))}

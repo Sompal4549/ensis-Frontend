@@ -49,7 +49,7 @@ export default function RealSpacesCarousel({
             See it in Real Spaces
           </p>
 
-          <h2 className="font-serif text-xl md:text-2xl text-white">
+          <h2 className=" text-xl md:text-2xl text-white">
             {title || "Perfect for Every Wellness Environment"}
           </h2>
         </div>

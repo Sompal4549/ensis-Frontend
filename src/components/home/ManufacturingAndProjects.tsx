@@ -107,7 +107,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
             {/* Content */}
             <div className="flex flex-col justify-center">
               <SubHeading className=' text-black font-normal' text={sectionSubtitle} />
-              <h2 className="mt-2 font-serif text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
+              <h2 className="mt-2  text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
                 {mfgHeadingLines.map((line: string, i: number) => (
                   <React.Fragment key={i}>
                     {line}
@@ -196,7 +196,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
           {/* RIGHT SIDE */}
           <div className="border-[#e7ddd1] lg:border-l lg:pl-4 h">
             <SubHeading className=' text-black font-normal' text={content.projSubtitle} />
-            <h2 className="mt-2 font-serif text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
+            <h2 className="mt-2  text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
               {projHeadingLines.map((line: string, i: number) => (
                 <React.Fragment key={i}>
                   {line}

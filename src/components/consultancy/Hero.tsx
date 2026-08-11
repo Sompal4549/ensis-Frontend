@@ -48,7 +48,7 @@ export default async function ConsultancyHero({ sectionContent }: { sectionConte
 return (
   <section className="relative bg-[#f7f5f2] md:pb-16">
     {/* Hero */}
-    <div className="relative h-auto md:h-[calc(100vh-146px)]">
+    <div className="relative min-h-[550px] md:h-[calc(100vh-146px)]">
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
@@ -60,7 +60,7 @@ return (
         <div className="grid h-full grid-cols-1 lg:grid-cols-2 items-start pt-10 md:pt-14 lg:pt-20 xl:pt-24 pb-10 lg:pb-24">
           {/* LEFT */}
           <div className="max-w-[700px] flex flex-col justify-center">
-            <p className="mb-4 text-[12px] font-bold tracking-[1.8px] uppercase text-[#d66a38]">
+            <p className="mb-2 text-base font-bold tracking-[1.8px] uppercase text-[#d66a38]">
               {sectionContent.heading}
             </p>
 
@@ -76,13 +76,13 @@ return (
             </h1>
 
             <p
-              className="mt-4 max-w-[520px] text-sm md:text-base leading-6"
+              className="mt-2 max-w-[520px] text-base leading-6"
               dangerouslySetInnerHTML={{
                 __html: sectionContent.description,
               }}
             />
 
-            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
               {sectionContent.features.map((item) => (
                 <div key={item.title} className="flex gap-4">
                   <Image
@@ -94,10 +94,10 @@ return (
                   />
 
                   <div>
-                    <h3 className="text-xs font-semibold line-clamp-3">{item.title}</h3>
+                    <h3 className="text-base font-semibold line-clamp-3">{item.title}</h3>
 
                     <p
-                      className="mt-1 text-[11px] line-clamp-3"
+                      className="mt-1 text-base line-clamp-3"
                       dangerouslySetInnerHTML={{
                         __html: item.description,
                       }}
@@ -107,7 +107,7 @@ return (
               ))}
             </div>
 
-            <div className="mt-6 flex flex-col gap-4 sm:flex-row">
+            <div className="mt-4 flex flex-col gap-4 sm:flex-row">
               <BookButton
                 text={sectionContent.primaryButton.label}
                 path={sectionContent.primaryButton.href}
@@ -155,12 +155,12 @@ return (
             {item.heading}
           </div>
 
-          <div className="mt-1 text-sm font-semibold text-[#3B3B3B]">
+          <div className="mt-1 text-base font-semibold text-[#3B3B3B]">
             {item.title}
           </div>
 
           <div
-            className="mt-1 text-xs text-[#6B6B6B]"
+            className="mt-1 text-base text-[#6B6B6B]"
             dangerouslySetInnerHTML={{
               __html: item.description,
             }}
@@ -197,12 +197,12 @@ return (
                     {item.heading}
                   </div>
 
-                  <div className="font-semibold text-sm">
+                  <div className="font-semibold text-base">
                     {item.title}
                   </div>
 
                   <div
-                    className="text-xs mt-1"
+                    className="text-base"
                     dangerouslySetInnerHTML={{
                       __html: item.description,
                     }}

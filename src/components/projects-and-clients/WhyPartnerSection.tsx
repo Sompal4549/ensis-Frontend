@@ -97,7 +97,7 @@ export default function WhyPartnerBanner({ sectionContent }: WhyPartnerBannerPro
       <Container className="relative pr-40!">
         {/* Heading */}
         <div className="mb-2 flex items-center gap-4 pt-2">
-          <h2 className="font-serif text-xl font-semibold text-[#E8C766] sm:text-2xl">
+          <h2 className=" text-xl font-semibold text-[#E8C766] sm:text-2xl">
             {banner.heading}
           </h2>
           <Image src={decorationRight} width={30} height={30} alt="decoration" className="h-full object-contain" />
@@ -125,10 +125,10 @@ export default function WhyPartnerBanner({ sectionContent }: WhyPartnerBannerPro
 
       {/* Content */}
       <div className="flex flex-1 flex-col">
-        <h3 className="mb-1 text-sm font-semibold text-white">
+        <h3 className="mb-1 text-base font-semibold text-white">
           {feature.title}
         </h3>
-        <p className="text-xs leading-snug text-[#CBD5C8] sm:text-sm" dangerouslySetInnerHTML={{__html:feature.description}}>
+        <p className="text-base leading-snug text-[#CBD5C8]" dangerouslySetInnerHTML={{__html:feature.description}}>
         </p>
       </div>
     </div>

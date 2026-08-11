@@ -73,7 +73,7 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
         <div className="mb-2 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <SubHeading text={content.subtitle} className='text-[#8d6a3a]' />
-            <h2 className="font-serif text-2xl leading-tight text-[#0f2518] md:text-3xl font-semibold">{content.heading}</h2>
+            <h2 className=" text-2xl leading-tight text-[#0f2518] md:text-3xl font-semibold">{content.heading}</h2>
             <HtmlRenderer className="max-w-[380px] text-base leading-relaxed text-[#0f2518] line-clamp-1" content={content.description}>
               
             </HtmlRenderer>

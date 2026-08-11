@@ -207,7 +207,7 @@ export const Footer = async () => {
                <Image src={arrow} alt='arrow' width={150} height={8} />
               </div>
 
-              <HtmlRenderer content={content.company.description} className="text-[15px] leading-relaxed text-[#122544] text-center font-semibold">
+              <HtmlRenderer content={content.company.description} className="text-[15px] leading-relaxed text-[#24334c] text-center font-semibold">
                 
               </HtmlRenderer>
 
@@ -221,7 +221,7 @@ export const Footer = async () => {
                       key={social._id}
                       href={social.url}
                       platform={social.platform}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#122544] text-[#122544] transition hover:bg-[#0f2e22] hover:text-white"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#24334c] text-[#24334c] transition hover:bg-[#0f2e22] hover:text-white"
                     >
                       <Icon size={14} />
                     </SocialIconLink>

@@ -252,7 +252,7 @@ const experienceOptions = Array.from(
                 {sectionContent.heading||"Life at ENSIS"}
               </p>
 
-              <h2 className="font-serif text-2xl leading-tight text-white font-medium">
+              <h2 className=" text-2xl leading-tight text-white font-medium">
                 {sectionContent.titlePart1||"Where Passion"}
                 <br />
                 {sectionContent.titlePart2||'Meets Purpose'}
@@ -319,7 +319,7 @@ const experienceOptions = Array.from(
             {/* LEFT SIDE */}
             <div>
               {/* Heading */}
-              <h3 className="font-serif text-2xl text-[#1d1d1d] font-semibold mt-2">
+              <h3 className=" text-2xl text-[#1d1d1d] font-semibold mt-2">
                 {sectionContent.leftSide.heading}
               </h3>
 
@@ -333,15 +333,16 @@ const experienceOptions = Array.from(
                   (item) => (
                     <button
                       key={item}
-                      className="flex min-w-[150px] items-center justify-between rounded-md border border-[#ddd] bg-white px-4 py-3 text-base"
+                      suppressHydrationWarning
+                      className="flex min-w-[130px] items-center justify-between rounded-md border border-[#ddd] bg-white px-3 py-2 text-base"
                     >
                       {item}
-                      <ChevronDown size={16} />
+                      <ChevronDown size={14} />
                     </button>
                   )
                 )}
 
-                <button className="ml-auto rounded-md border border-[#c89a4b] px-4 py-2 text-base text-[#c89a4b]">
+                <button suppressHydrationWarning className="ml-auto rounded-md border border-[#c89a4b] px-3 py-1.5 text-base text-[#c89a4b]">
                   {sectionContent.leftSide.buttonLabel}
                 </button>
               </div>
@@ -365,6 +366,7 @@ const experienceOptions = Array.from(
 
                       <button
                         type="button"
+                        suppressHydrationWarning
                         onClick={() => handleApply(job)}
                         className="flex items-center gap-4 text-[#c89a4b] text-base"
                       >
@@ -407,7 +409,7 @@ const experienceOptions = Array.from(
             {/* RIGHT FORM */}
             <aside ref={formRef} className="relative z-10 lg:-mt-18 lg:sticky lg:top-10 lg:h-fit scroll-mt-24">
               <div className=" bg-[#062017] p-4 text-white shadow-2xl">
-                <h3 className="font-serif text-lg uppercase">
+                <h3 className=" text-lg uppercase">
                   {sectionContent.careerForm.title}
                 </h3>
 
@@ -435,6 +437,7 @@ const experienceOptions = Array.from(
   onSubmit={handleSubmit}
 >
                 <input
+  suppressHydrationWarning
   aria-label="Full name"
   value={form.fullName}
   onChange={(e) =>
@@ -448,6 +451,7 @@ const experienceOptions = Array.from(
 />
 
           <input
+  suppressHydrationWarning
   type="email"
   aria-label="Email address"
   value={form.email}
@@ -462,6 +466,7 @@ const experienceOptions = Array.from(
 />
 
         <input
+  suppressHydrationWarning
   aria-label="Phone number"
   value={form.phone}
   onChange={(e) =>
@@ -476,6 +481,7 @@ const experienceOptions = Array.from(
 
                   <div className="grid grid-cols-2 gap-4">
                 <input
+  suppressHydrationWarning
   aria-label="Current location"
   value={form.currentLocation}
   onChange={(e) =>
@@ -488,6 +494,7 @@ const experienceOptions = Array.from(
   className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-base"
 />
 <select
+  suppressHydrationWarning
   aria-label="Years of experience"
   value={form.experience}
   onChange={(e) =>
@@ -496,7 +503,7 @@ const experienceOptions = Array.from(
       experience: e.target.value,
     })
   }
-  className="border-b border-[#b98b43]/40 bg-[#062017] text-white pb-1 outline-none text-base"
+  className="border-b border-[#b98b43]/40 bg-[#062017] text-white pb-1 pt-1 leading-none outline-none text-base"
 >
   <option value="" className="text-black">Experience</option>
   {experienceOptions.map((opt) => (
@@ -506,6 +513,7 @@ const experienceOptions = Array.from(
                   </div>
 
            <select
+  suppressHydrationWarning
   aria-label="Department interested in"
   value={form.department}
   onChange={(e) =>
@@ -514,7 +522,7 @@ const experienceOptions = Array.from(
       department: e.target.value,
     })
   }
-  className="w-full border-b border-[#b98b43]/40 bg-[#062017] text-white pb-2 outline-none text-base"
+  className="w-full border-b border-[#b98b43]/40 bg-[#062017] text-white pb-1.5 pt-1 leading-none outline-none text-base"
 >
   <option value="">
     Department Interested In
@@ -525,6 +533,7 @@ const experienceOptions = Array.from(
 </select>
               <div className="rounded-xl border border-dashed border-[#b98b43] p-4 text-center text-base">
   <input
+    suppressHydrationWarning
     type="file"
     accept=".pdf,.jpg,.jpeg,.png,.webp"
     className="hidden"
@@ -551,6 +560,7 @@ const experienceOptions = Array.from(
 </div>
 
              <textarea
+  suppressHydrationWarning
   rows={2}
   aria-label="Cover letter or message"
   value={form.coverLetter}
@@ -565,6 +575,7 @@ const experienceOptions = Array.from(
 />
                   <label className="flex items-start gap-4 text-base text-white">
                    <input
+  suppressHydrationWarning
   type="checkbox"
   aria-label="I agree to the terms"
   checked={agreed}
@@ -575,6 +586,7 @@ const experienceOptions = Array.from(
                    {sectionContent.careerForm.termsText}
                   </label>
 <button
+  suppressHydrationWarning
   type="submit"
   disabled={loading}
   className="flex w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-base disabled:opacity-60"

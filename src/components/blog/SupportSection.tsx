@@ -40,13 +40,13 @@ const SupportSection = ({ sectionContent }: { sectionContent: any }) => {
 
             {/* Text */}
             <div>
-              <h2 className="text-[#2e2318] text-2xl leading-tight font-serif font-semibold">
+              <h2 className="text-[#2e2318] text-2xl leading-tight  font-semibold">
                 {title}
               </h2>
 
               {description && (
                 <p
-                  className="text-[#4e4336] mt-2 text-sm"
+                  className="text-[#4e4336] mt-2 text-base"
                   dangerouslySetInnerHTML={{ __html: description }}
                 />
               )}
