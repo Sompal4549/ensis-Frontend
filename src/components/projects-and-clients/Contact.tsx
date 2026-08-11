@@ -132,7 +132,7 @@ export default function ProjectsContactBanner({
                   <p className="max-w-md mb-6 text-sm">
                     {sectionContent.ctaDescription}
                   </p>
-                  <div className="max-w-[200px]">
+                  <div className="max-w-62.5">
 
                     <GreenButton text={sectionContent.ctaButtonText} path="/projects-and-clients" />
                   </div>

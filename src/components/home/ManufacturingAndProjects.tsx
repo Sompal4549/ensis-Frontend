@@ -116,7 +116,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                 ))}
               </h2>
 <div
-  className="mt-2 text-xs text-[#5f5a50]"
+  className="mt-2 text-base text-[#5f5a50]"
   dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(sectionDescription || "") }}
 />
 
@@ -136,7 +136,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                 {content.mfgFeatures.map((item: string) => (
                   <li
                     key={item}
-                    className="flex items-center gap-4 text-[13px] text-[#3f3a32]"
+                    className="flex items-center gap-4 text-base font-bold text-[#3f3a32]"
                   >
                     <CheckSquare2
                       size={16}
@@ -146,13 +146,13 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                   </li>
                 ))}
               </ul>
-              <div className="w-50 mt-2">
+              <div className="w-60 mt-2">
                 <BookButton text={content.mfgButtonText} path={content.mfgButtonPath} />
               </div>
             </div>
 
             {/* Manufacturing Images */}
-            <div className="grid grid-cols-2 gap-4 self-start h-[100%]">
+            <div className="grid grid-cols-2 gap-4 self-start h-[240px] md:h-[320px] lg:h-full">
 
               {/* Top Large */}
               <div className="relative col-span-2 h-[100%] overflow-hidden rounded-2xl">
@@ -205,10 +205,10 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
               ))}
             </h2>
 
-            <p className="mt-2 max-w-[320px] text-xs text-[#5f5a50]">
+            <p className="mt-2 max-w-[320px] text-base text-[#5f5a50]">
               {content.projDescription}
             </p>
-            <div className="w-50 mt-2">
+            <div className="w-60 mt-2">
               <BookButton text={content.projButtonText} path={content.projButtonPath} />
             </div>
 
@@ -228,8 +228,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                   />
                   {(projects[0]?.title || projects[0]?.location) && (
                     <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
-                      {projects[0]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[0].title}</p>}
-                      {projects[0]?.location && <p className="text-white/80 text-[9px]">{projects[0].location}</p>}
+                      {projects[0]?.location && <p className="text-white/80 text-base">{projects[0].location}</p>}
                     </div>
                   )}
                 </div>
@@ -246,8 +245,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                   />
                   {(projects[1]?.title || projects[1]?.location) && (
                     <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
-                      {projects[1]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[1].title}</p>}
-                      {projects[1]?.location && <p className="text-white/80 text-[9px]">{projects[1].location}</p>}
+                      {projects[1]?.location && <p className="text-white/80 text-base">{projects[1].location}</p>}
                     </div>
                   )}
                 </div>
@@ -264,8 +262,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                   />
                   {(projects[2]?.title || projects[2]?.location) && (
                     <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
-                      {projects[2]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[2].title}</p>}
-                      {projects[2]?.location && <p className="text-white/80 text-[9px]">{projects[2].location}</p>}
+                      {projects[2]?.location && <p className="text-white/80 text-base">{projects[2].location}</p>}
                     </div>
                   )}
                 </div>
@@ -282,8 +279,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                   />
                   {(projects[3]?.title || projects[3]?.location) && (
                     <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
-                      {projects[3]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[3].title}</p>}
-                      {projects[3]?.location && <p className="text-white/80 text-[9px]">{projects[3].location}</p>}
+                      {projects[3]?.location && <p className="text-white/80 text-base">{projects[3].location}</p>}
                     </div>
                   )}
                 </div>
@@ -300,8 +296,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                   />
                   {(projects[4]?.title || projects[4]?.location) && (
                     <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
-                      {projects[4]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[4].title}</p>}
-                      {projects[4]?.location && <p className="text-white/80 text-[9px]">{projects[4].location}</p>}
+                      {projects[4]?.location && <p className="text-white/80 text-base">{projects[4].location}</p>}
                     </div>
                   )}
                 </div>

@@ -85,7 +85,7 @@ export default function CareerStatsStrip() {
             {resolvedFeatures.map((item, index) => (
               <div
                 key={item.id || index}
-                className={`flex items-center gap-4 pr-6 ${
+                className={`flex items-center gap-4 pr-4 ${
                   index !== resolvedFeatures.length - 1
                     ? "xl:border-r border-[#C9972A]/40"
                     : ""
@@ -102,11 +102,11 @@ export default function CareerStatsStrip() {
                 </div>
 
                 <div className="flex flex-col justify-center">
-                  <p className="text-xs font-semibold text-[#faf6ef] leading-tight">
+                  <p className="tabular-nums text-base font-semibold text-[#faf6ef] leading-tight">
                     {item.title}
                   </p>
 
-                  <p className="text-xs leading-4 text-[#faf6ef]/90 font-medium">
+                  <p className="text-base leading-4 text-[#faf6ef]/90 font-medium">
                     {item.subtitle || item.description}
                   </p>
                 </div>

@@ -57,13 +57,13 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
 
           {/* ── COLUMN 1: What does Turnkey mean ── */}
           <div className="flex flex-col gap-4 lg:pr-10">
-            <p className="text-[#d19f4f] text-xs sm:text-sm font-bold uppercase">
+            <p className="text-[#d19f4f] text-base font-bold uppercase">
               {sectionContent.subheading}
             </p>
             <h2 className="text-2xl font-semibold leading-tight">
               {sectionContent.title}
             </h2>
-            <HtmlRenderer content={sectionContent.description} className="text-xs font-semibold leading-6">
+            <HtmlRenderer content={sectionContent.description} className="text-base font-semibold leading-6">
            
             </HtmlRenderer>
           </div>
@@ -73,10 +73,10 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
 
           {/* ── COLUMN 2: Most Projects Need Multiple Vendors ── */}
           <div className="flex flex-col gap-5 lg:px-4">
-            <p className="text-sm font-semibold text-center lg:text-left">
+            <p className="text-base font-semibold text-center lg:text-left">
               {sectionContent.mostProjectsTitle}
             </p>
-            <div className="grid grid-cols-4 sm:grid-cols-6 lg:grid-cols-4 xl:grid-cols-6 gap-x-2 gap-y-5">
+            <div className="grid grid-cols-4 gap-x-2 gap-y-5">
               {sectionContent.mostProjects.map((v) => (
                 <div
                   key={v.id}
@@ -92,7 +92,7 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
                       className="object-contain"
                     />
                   </div>
-                  <p className="text-[9px] sm:text-[10px] leading-snug whitespace-pre-line font-semibold">
+                  <p className="text-base leading-snug whitespace-pre-line font-semibold">
                     {v.title}
                   </p>
                 </div>
@@ -106,12 +106,12 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
           {/* ── COLUMN 3: With ENSIS You Get + Plaque ── */}
           <div className="flex flex-row justify-between gap-6 lg:pl-4">
             <div className="flex flex-col gap-4">
-              <p className="text-sm sm:text-base font-semibold">
+              <p className="text-base font-semibold">
                 {sectionContent.withEnsis.title}
               </p>
               <ul className="flex flex-col gap-4">
                 {sectionContent.withEnsis.withEnsisList.map((b) => (
-                  <li key={b} className="flex items-center gap-4 text-sm">
+                  <li key={b} className="flex items-center gap-4 text-base">
                     <Image alt="dot" src={withEnsis} height={20} width={20} />
                     {b}
                   </li>

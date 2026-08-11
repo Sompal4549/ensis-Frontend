@@ -45,7 +45,7 @@ export default function RealSpacesCarousel({
       <Container>
         {/* Header */}
         <div className="mb-2">
-          <p className="text-sm font-bold uppercase tracking-[0.18em] text-[#b8922f] mb-2">
+          <p className="text-base font-bold uppercase tracking-[0.18em] text-[#b8922f] mb-2">
             See it in Real Spaces
           </p>
 
@@ -115,7 +115,7 @@ export default function RealSpacesCarousel({
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
                     <div className="absolute bottom-3 left-3">
-                      <p className="text-white text-sm font-medium">
+                      <p className="text-white text-base font-medium">
                         {imageAlt}
                       </p>
                     </div>

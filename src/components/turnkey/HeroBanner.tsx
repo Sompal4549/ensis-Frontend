@@ -49,7 +49,7 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent: Turnke
               <div className="flex flex-col gap-4 h-full justify-center">
                 {/* Eyebrow */}
                 <div className="flex items-center gap-4">
-                  <span className="text-[#c38727] text-xs sm:text-sm font-semibold uppercase">
+                  <span className="text-[#c38727] text-base font-semibold uppercase">
                     {sectionContent.subheading}
                   </span>
                   <div className="h-px w-8 bg-[#c38727]" />
@@ -58,14 +58,12 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent: Turnke
                 </div>
 
                 {/* Headline */}
-                <div>
-                  <h1 className="text-[#1a2e1a]">
-                    {sectionContent.title}
-                  </h1>
-                  <h1 className="text-[#c38727] mt-1">
-                    {sectionContent.highlight}
-                  </h1>
-                </div>
+                <h1 className="text-[#1a2e1a] text-3xl md:text-5xl font-light tracking-tight">
+                  {sectionContent.title}
+                  {sectionContent.highlight && (
+                    <span className="block mt-1 text-[#c38727] font-medium">{sectionContent.highlight}</span>
+                  )}
+                </h1>
 
                 {/* Ornament divider */}
                 {/* <div className="flex items-center gap-4">
@@ -75,7 +73,7 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent: Turnke
             </div> */}
 
                 {/* Body copy */}
-                <div className="text-sm md:text-base leading-6 max-w-md mb-4 line-clamp-4" dangerouslySetInnerHTML={{ __html: sectionContent.description || "" }}>
+                <div className="text-base leading-6 max-w-md mb-4 line-clamp-4" dangerouslySetInnerHTML={{ __html: sectionContent.description || "" }}>
 
                 </div>
 
@@ -90,7 +88,7 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent: Turnke
                       <div className="w-8 h-8 text-[#d6a85f] flex items-center justify-center text-xl">
                         <Image src={f?.image?.imageUrl || ""} alt={f?.image?.alt || f?.title || ""} width={40} height={40} className="object-fill" />
                       </div>
-                      <p className="text-[10px] sm:text-xs leading-snug whitespace-pre-line font-medium max-w-[90px]">
+                      <p className="text-base leading-snug whitespace-pre-line font-medium max-w-[90px]">
                         {f?.title}
                       </p>
                     </div>

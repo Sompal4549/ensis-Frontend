@@ -38,7 +38,7 @@ export const GlobalPresence = async ({ sectionData }: GlobalPresenceProps) => {
           <div>
             <SubHeading className=' text-black' text={content.eyebrow} />
             <h2 className="mt-2 whitespace-pre-line font-serif text-3xl leading-[100%] text-[#1f261b] font-semibold">{content.heading}</h2>
-            <HtmlRenderer className="mt-2 text-xs text-[#5f5a50]" content={content.description}>
+            <HtmlRenderer className="mt-2 text-base text-[#5f5a50]" content={content.description}>
               
             </HtmlRenderer>
           </div>
@@ -55,7 +55,7 @@ export const GlobalPresence = async ({ sectionData }: GlobalPresenceProps) => {
             {content.stats.map((stat, index) => (
               <div key={index}>
                 <span className="block text-3xl font-semibold text-[#334022]">{stat.value}</span>
-                <span className="mt-1 block text-xs font-semibold text-[#5f5a50]">{stat.label}</span>
+                <span className="mt-1 block text-base font-semibold text-[#5f5a50]">{stat.label}</span>
               </div>
             ))}
           </div>

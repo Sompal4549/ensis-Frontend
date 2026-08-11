@@ -39,11 +39,27 @@ h1 {
   letter-spacing: -0.01em;
 }
 
-/* Mobile: all h2 headings at text-2xl (1.5rem) */
-@media (max-width: 767px) {
-  h2 {
-    font-size: 1.5rem !important;
+/* ── Phase 2: Mobile body floor & typographic guardrails ──
+   Inside @layer base so explicit utilities (text-xs, leading-*, etc.)
+   keep precedence; these only raise unstyled elements. */
+@layer base {
+  @media (max-width: 767px) {
+    body {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    p, li, dd, td, figcaption, button, input, select, textarea, label, a {
+      font-size: 16px;
+    }
   }
+
+  /* Typographic Hierarchy Protection */
+  :is(h1, h2, h3, h4, h5, h6) {
+    text-wrap: balance;
+  }
+  h1 { line-height: 1.1; }
+  h2, h3 { line-height: 1.2; }
+  p, li { line-height: 1.6; }
 }
 
 
@@ -121,4 +137,11 @@ h1 {
 }
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+@layer utilities {
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
 }

@@ -71,11 +71,11 @@ export default async function StatsStrip() {
           </div>
 
           <div className="flex flex-col justify-center">
-            <p className="text-xs font-semibold text-[#0f2518] leading-tight">
+            <p className="text-base font-semibold text-[#0f2518] leading-tight">
               {item.number}
             </p>
 
-            <p className="text-xs leading-4 text-[#0f2518] font-medium">
+            <p className="text-base leading-6 text-[#0f2518] font-medium">
               {item.subTitle}
             </p>
           </div>

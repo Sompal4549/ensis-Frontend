@@ -68,7 +68,7 @@ interface CheckoutSnapshot {
   grandTotal: number;
 }
 
-const serif = { fontFamily: "var(--font-cormorant-garamond), Georgia, serif" };
+const serif = { fontFamily: "var(--font-cormorant), Georgia, serif" };
 const jost = { fontFamily: "var(--font-montserrat), Arial, sans-serif" };
 
 // Compact local classes for this page only
@@ -619,7 +619,7 @@ export default function CheckoutPage() {
                             {formatCurrency(item.price)} × {item.quantity}
                           </p>
                         </div>
-                        <span className="shrink-0 text-[12px] font-bold text-[#1F3A2A]">
+                        <span className="tabular-nums shrink-0 text-[12px] font-bold text-[#1F3A2A]">
                           {formatCurrency(item.price * item.quantity)}
                         </span>
                       </div>
@@ -630,7 +630,7 @@ export default function CheckoutPage() {
                   <div className="mt-3 space-y-1.5 text-sm">
                     <div className="flex justify-between">
                       <span className="text-[#6f6658]">Subtotal</span>
-                      <span className="font-semibold text-[#1F3A2A]">{formatCurrency(summary.subtotal)}</span>
+                      <span className="tabular-nums font-semibold text-[#1F3A2A]">{formatCurrency(summary.subtotal)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-[#6f6658]">Promo Discount (8%)</span>
@@ -661,7 +661,7 @@ export default function CheckoutPage() {
 
                     <div className="mt-2 flex items-center justify-between border-t-2 border-[#c7a55b]/60 pt-2.5">
                       <span className="text-base font-bold uppercase tracking-wide text-[#1F3A2A]">Grand Total</span>
-                      <span className="text-lg font-bold text-[#1F3A2A]" >
+                      <span className="tabular-nums font-semibold text-lg font-bold text-[#1F3A2A]" >
                         {formatCurrency(summary.grandTotal)}
                       </span>
                     </div>

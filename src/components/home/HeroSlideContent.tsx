@@ -164,7 +164,7 @@ export default function HeroSlideContent({
             {slide.description && (
               <motion.div
                 variants={itemVariants}
-                className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-[#313628]"
+                className="flex flex-wrap items-center gap-x-5 gap-y-2 text-base font-semibold text-[#313628]"
                 dangerouslySetInnerHTML={{ __html: slide.description }}
               />
             )}
@@ -173,7 +173,7 @@ export default function HeroSlideContent({
             {((slide.listItems || slide.listdesc) as string[])?.length > 0 && (
               <motion.div
                 variants={itemVariants}
-                className="flex flex-wrap items-center text-[12px] font-semibold text-[#313628]"
+                className="flex flex-wrap items-center text-base font-semibold text-[#313628]"
               >
                 {((slide.listItems || slide.listdesc) as string[])?.map(
                   (item, i, arr) => (
@@ -223,18 +223,22 @@ export default function HeroSlideContent({
                           )}
                         </div>
                         <div className="flex flex-col items-center">
-                          {(feat.title || "").split(" ").map((word, wi) => (
-                            <span
-                              key={wi}
-                              className="text-[8px] md:text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
-                              style={{
-                                color: "#4a3a28",
-                                fontFamily: "'Montserrat', sans-serif",
-                              }}
-                            >
-                              {word}
-                            </span>
-                          ))}
+                          {(() => {
+                            const words = (feat.title || "").split(" ");
+                            const lines = words.length === 3 ? [words.slice(0, 2).join(" "), words[2]] : words;
+                            return lines.map((line, wi) => (
+                              <span
+                                key={wi}
+                                className="text-base font-bold tracking-tight uppercase text-center leading-tight"
+                                style={{
+                                  color: "#4a3a28",
+                                  fontFamily: "var(--font-montserrat), sans-serif",
+                                }}
+                              >
+                                {line}
+                              </span>
+                            ));
+                          })()}
                         </div>
                       </div>
                       {fi < visibleFeatures.length - 1 && (

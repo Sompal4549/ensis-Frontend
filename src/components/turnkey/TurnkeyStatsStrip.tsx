@@ -94,11 +94,11 @@ export default async function TurnkeyStatsStrip() {
               </div>
 
               <div>
-                <p className="text-xs font-semibold text-[#faf6ef]">
+                <p className="tabular-nums text-base font-semibold text-[#faf6ef]">
                   {item.title}
                 </p>
 
-                <p className="mt-1 text-xs leading-4 text-[#faf6ef]/90 font-medium">
+                <p className="mt-1 text-base leading-4 text-[#faf6ef]/90 font-medium">
                   {item.description}
                 </p>
               </div>

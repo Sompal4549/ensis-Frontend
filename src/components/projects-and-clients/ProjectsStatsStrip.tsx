@@ -111,7 +111,7 @@ export default function ProjectsStatsStrip() {
               </div>
 
               <div className="flex flex-col justify-center">
-                <p className="text-xs font-semibold text-[#faf6ef] leading-tight">
+                <p className="tabular-nums text-xs font-semibold text-[#faf6ef] leading-tight">
                   {item.title}
                 </p>
 

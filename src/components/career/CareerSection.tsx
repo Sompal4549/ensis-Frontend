@@ -248,7 +248,7 @@ const experienceOptions = Array.from(
           {/* Left Content */}
           <div className="relative h-full overflow-hidden bg-[#062017] p-8 lg:p-10">
             <div className="relative z-10">
-              <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#c89a4b] font-semibold">
+              <p className="mb-4 text-base uppercase tracking-[0.25em] text-[#c89a4b] font-semibold">
                 {sectionContent.heading||"Life at ENSIS"}
               </p>
 
@@ -258,11 +258,11 @@ const experienceOptions = Array.from(
                 {sectionContent.titlePart2||'Meets Purpose'}
               </h2>
 
-              <p className="mt-2 text-sm leading-7 text-white/75"
+              <p className="mt-2 text-base leading-7 text-white/75"
                 dangerouslySetInnerHTML={{__html:sectionContent.description||`From design studios to production units, every corner of ENSIS is
                 inspired by creativity, craftsmanship and care.`}}>
               </p>
-              <div className="mt-2 max-w-50">
+              <div className="mt-2 max-w-[250px]">
                 <GreenButton text="VIEW LIFE AT ENSIS" path="/contact" />
               </div>
             </div>
@@ -323,7 +323,7 @@ const experienceOptions = Array.from(
                 {sectionContent.leftSide.heading}
               </h3>
 
-              <p className="mt-2 text-sm" dangerouslySetInnerHTML={{__html:sectionContent.leftSide.description}}>
+              <p className="mt-2 text-base" dangerouslySetInnerHTML={{__html:sectionContent.leftSide.description}}>
 
               </p>
 
@@ -333,7 +333,7 @@ const experienceOptions = Array.from(
                   (item) => (
                     <button
                       key={item}
-                      className="flex min-w-[150px] items-center justify-between rounded-md border border-[#ddd] bg-white px-4 py-3 text-xs"
+                      className="flex min-w-[150px] items-center justify-between rounded-md border border-[#ddd] bg-white px-4 py-3 text-base"
                     >
                       {item}
                       <ChevronDown size={16} />
@@ -341,7 +341,7 @@ const experienceOptions = Array.from(
                   )
                 )}
 
-                <button className="ml-auto rounded-md border border-[#c89a4b] px-4 py-2 text-xs text-[#c89a4b]">
+                <button className="ml-auto rounded-md border border-[#c89a4b] px-4 py-2 text-base text-[#c89a4b]">
                   {sectionContent.leftSide.buttonLabel}
                 </button>
               </div>
@@ -349,7 +349,7 @@ const experienceOptions = Array.from(
               {/* Job Table */}
               <div className="mt-3 border border-[#e5dfd7] bg-white">
                 {openings.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-[#777]">
+                  <div className="p-6 text-center text-base text-[#777]">
                     No open positions right now. Please check back later.
                   </div>
                 ) : (
@@ -358,15 +358,15 @@ const experienceOptions = Array.from(
                       key={job._id || job.title}
                       className="grid gap-4 border-b border-[#f0ebe5] p-2 md:grid-cols-[2fr_1.5fr_1fr_1fr_auto]"
                     >
-                      <div className="font-medium text-xs">{job.title}</div>
-                      <div className="text-xs">{job.department}</div>
-                      <div className="text-xs">{job.location}</div>
-                      <div className="text-xs">{job.experience}</div>
+                      <div className="font-medium text-base">{job.title}</div>
+                      <div className="text-base">{job.department}</div>
+                      <div className="text-base">{job.location}</div>
+                      <div className="text-base">{job.experience}</div>
 
                       <button
                         type="button"
                         onClick={() => handleApply(job)}
-                        className="flex items-center gap-4 text-[#c89a4b] text-xs"
+                        className="flex items-center gap-4 text-[#c89a4b] text-base"
                       >
                         APPLY NOW
                         <ArrowRight size={16} />
@@ -382,14 +382,14 @@ const experienceOptions = Array.from(
                   {sectionContent.ourHiringJourney.title||"Our Hiring Journey"}
                 </h3>
 
-                <p className="mt-2 text-sm text-[#666]" dangerouslySetInnerHTML={{__html:sectionContent.description||`Our simple and transparent process to welcome you to ENSIS.`}}>
+                <p className="mt-2 text-base text-[#666]" dangerouslySetInnerHTML={{__html:sectionContent.description||`Our simple and transparent process to welcome you to ENSIS.`}}>
                 </p>
 
                 <div className="mt-4 grid gap-4 md:grid-cols-5">
                   {sectionContent.ourHiringJourney.steps.map((step, index) => (
                     <div
                       key={step.label}
-                      className="rounded-2xl border border-[#e5dfd7] bg-white p-5 text-center"
+                      className="rounded-2xl border border-[#e5dfd7] bg-white p-4 text-center"
                     >
                       <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#062017] text-white">
                         {index + 1}
@@ -397,7 +397,7 @@ const experienceOptions = Array.from(
 
                       <h4 className="mt-4 font-medium">{step.label}</h4>
 
-                      <HtmlRenderer className="mt-2 text-xs text-[#777]" content={step.description}/>
+                      <HtmlRenderer className="mt-2 text-base text-[#777]" content={step.description}/>
                     </div>
                   ))}
                 </div>
@@ -411,19 +411,19 @@ const experienceOptions = Array.from(
                   {sectionContent.careerForm.title}
                 </h3>
 
-                <HtmlRenderer className="mt-3 text-sm text-white" content={sectionContent.description||`Send us your details and become part of the ENSIS family.`}
+                <HtmlRenderer className="mt-3 text-base text-white" content={sectionContent.description||`Send us your details and become part of the ENSIS family.`}
                 >
                 </HtmlRenderer>
 
                 {appliedJob && (
                   <div className="mt-4 flex items-center justify-between gap-4 rounded-md border border-[#c89a4b] bg-[#c89a4b]/10 px-3 py-2">
-                    <span className="text-xs font-semibold text-[#e8c766]">
+                    <span className="text-base font-semibold text-[#e8c766]">
                       Applying for: {appliedJob.title}
                     </span>
                     <button
                       type="button"
                       onClick={() => setAppliedJob(null)}
-                      className="text-[10px] text-white/60 underline hover:text-white"
+                      className="text-base text-white/60 underline hover:text-white"
                     >
                       Clear
                     </button>
@@ -444,7 +444,7 @@ const experienceOptions = Array.from(
     })
   }
   placeholder="Full Name *"
-  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-base"
 />
 
           <input
@@ -458,7 +458,7 @@ const experienceOptions = Array.from(
     })
   }
   placeholder="Email Address *"
-  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-base"
 />
 
         <input
@@ -471,7 +471,7 @@ const experienceOptions = Array.from(
     })
   }
   placeholder="Phone Number *"
-  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-base"
 />
 
                   <div className="grid grid-cols-2 gap-4">
@@ -485,7 +485,7 @@ const experienceOptions = Array.from(
     })
   }
   placeholder="Current Location *"
-  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-base"
 />
 <select
   aria-label="Years of experience"
@@ -496,7 +496,7 @@ const experienceOptions = Array.from(
       experience: e.target.value,
     })
   }
-  className="border-b border-[#b98b43]/40 bg-[#062017] text-white pb-1 outline-none text-xs"
+  className="border-b border-[#b98b43]/40 bg-[#062017] text-white pb-1 outline-none text-base"
 >
   <option value="" className="text-black">Experience</option>
   {experienceOptions.map((opt) => (
@@ -514,7 +514,7 @@ const experienceOptions = Array.from(
       department: e.target.value,
     })
   }
-  className="w-full border-b border-[#b98b43]/40 bg-[#062017] text-white pb-2 outline-none text-xs"
+  className="w-full border-b border-[#b98b43]/40 bg-[#062017] text-white pb-2 outline-none text-base"
 >
   <option value="">
     Department Interested In
@@ -523,7 +523,7 @@ const experienceOptions = Array.from(
     <option key={opt} value={opt}>{opt}</option>
   ))}
 </select>
-              <div className="rounded-xl border border-dashed border-[#b98b43] p-4 text-center text-xs">
+              <div className="rounded-xl border border-dashed border-[#b98b43] p-4 text-center text-base">
   <input
     type="file"
     accept=".pdf,.jpg,.jpeg,.png,.webp"
@@ -542,7 +542,7 @@ const experienceOptions = Array.from(
   >
     <Upload className="mx-auto mb-4" />
 
-    <p className="text-sm text-white/70">
+    <p className="text-base text-white/70">
       {resume
         ? resume.name
         : "Upload Resume (PDF/Image)"}
@@ -561,9 +561,9 @@ const experienceOptions = Array.from(
     })
   }
   placeholder="Cover Letter / Message"
-  className="w-full rounded-xl border border-[#b98b43]/30 bg-transparent p-4 outline-none text-xs"
+  className="w-full rounded-xl border border-[#b98b43]/30 bg-transparent p-4 outline-none text-base"
 />
-                  <label className="flex items-start gap-4 text-xs text-white">
+                  <label className="flex items-start gap-4 text-base text-white">
                    <input
   type="checkbox"
   aria-label="I agree to the terms"
@@ -577,7 +577,7 @@ const experienceOptions = Array.from(
 <button
   type="submit"
   disabled={loading}
-  className="flex w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-xs disabled:opacity-60"
+  className="flex w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-base disabled:opacity-60"
 >
   {loading
     ? "SUBMITTING..."

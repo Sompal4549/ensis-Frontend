@@ -24,7 +24,7 @@ const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> 
   return (
     <section className="relative overflow-hidden border border-[#8B6B2E] bg-[#062A22]">
       {/* Absolute Left Image */}
-      <div className="absolute left-0 top-0 h-full w-75 hidden lg:block z-10">
+      <div className="absolute left-0 top-0 h-full w-52 hidden lg:block z-10">
         <Image
           src={ready_to_build2}
           alt="Wellness Cta Banner"
@@ -34,8 +34,8 @@ const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> 
       </div>
 
       <Container className="z-20">
-        {/* pl-[220px] pushes content past the absolute image on lg */}
-        <div className="flex flex-col lg:flex-row lg:items-center gap-4 lg:pl-[220px] py-2">
+        {/* pl-[190px] pushes content past the absolute image on lg */}
+        <div className="flex flex-col lg:flex-row lg:items-center gap-4 lg:pl-[150px] py-2">
           {/* Content */}
           <div className="px-4 pt-4 lg:pt-5 lg:flex-1 flex flex-col gap-4">
             <h2 className="text-[#E7C17A] text-lg md:text-xl leading-none font-bold">
@@ -67,11 +67,11 @@ const WellnessCtaBanner: React.FC<{ sectionContent: WellnessCtaBannerContent }> 
                 </div>
 
                 <div>
-                  <div className="text-[12px] text-[#E7C17A] font-semibold leading-none">
+                  <div className="text-base text-[#E7C17A] font-semibold leading-none">
                     {item.title}
                   </div>
                   <HtmlRenderer content={item.description}
-                   className="mt-0.5 text-[10px] leading-tight text-white  mt-1">
+                   className="mt-0.5 text-base leading-tight text-white  mt-1">
                   </HtmlRenderer>
                 </div>
               </Link>

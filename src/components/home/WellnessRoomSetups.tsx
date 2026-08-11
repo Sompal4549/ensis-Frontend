@@ -61,7 +61,7 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
 
         {/* Left Content */}
         <div className="flex flex-col justify-center h-full">
-          <SubHeading text={content.subtitle} className="uppercase tracking-[4px] text-[#8f8777] text-xs font-semibold mb-2">
+          <SubHeading text={content.subtitle} className="uppercase tracking-[4px] text-[#8f8777] font-semibold mb-2">
           </SubHeading>
 
           <h2 className="text-[#0f2518] text-2xl md:text-3xl font-semibold mb-3">
@@ -72,7 +72,7 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
               </React.Fragment>
             ))}
           </h2>
-            <HtmlRenderer className="text-[#0f2518] text-xs mb-3" content={content.description}>
+            <HtmlRenderer className="text-[#0f2518] text-base mb-3" content={content.description}>
               
             </HtmlRenderer>
           <div className="max-w-[220px]">
@@ -106,7 +106,7 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
 
               {/* Content */}
               <div className="absolute bottom-0 left-0 w-full p-5 flex items-center justify-between">
-                <h3 className="text-white text-xs md:text-md font-semibold max-w-45 leading-5">
+                <h3 className="text-white text-base font-semibold max-w-45 leading-5">
                   {card.title}
                 </h3>
 

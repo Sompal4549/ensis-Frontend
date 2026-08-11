@@ -69,7 +69,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
             <div className="absolute -bottom-16 -left-16 w-64 h-64 rounded-full border border-white/5 pointer-events-none" />
 
             <div>
-              <p className="font-semibold tracking-[0.22em] text-[#c8a45d] uppercase mb-4 text-sm">
+              <p className="font-semibold tracking-[0.22em] text-[#c8a45d] uppercase mb-4 text-base">
                 {sectionContent.whyChoose.title}
               </p>
               <ul className="space-y-4 mb-6">
@@ -80,7 +80,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
                         <circle cx="4" cy="4" r="2.5" fill="#c8a45d" opacity="0.85"/>
                       </svg>
                     </span>
-                    <span className="text-sm text-white/85 leading-snug">{f}</span>
+                    <span className="text-base text-white/85 leading-snug">{f}</span>
                   </li>
                 ))}
               </ul>
@@ -101,7 +101,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
           {/* ── RIGHT PANEL ── */}
           <div className="bg-white/50 flex flex-col justify-center p-5 sm:p-7 md:p-8 flex-1 relative">
 
-            <p className="text-sm font-semibold tracking-[0.22em] text-[#a9742a] uppercase mb-2">
+            <p className="text-base font-semibold tracking-[0.22em] text-[#a9742a] uppercase mb-2">
               {sectionContent.welcomeToEnsis.highlight}
             </p>
 
@@ -109,7 +109,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
               {sectionContent.welcomeToEnsis.title}
             </h2>
 
-            <p className="text-[11px] sm:text-[12px] text-[#5a5040] leading-relaxed mb-4 max-w-[340px]" dangerouslySetInnerHTML={{__html:sectionContent.welcomeToEnsis.description}}>
+            <p className="text-base text-[#5a5040] leading-relaxed mb-4 max-w-[340px]" dangerouslySetInnerHTML={{__html:sectionContent.welcomeToEnsis.description}}>
             </p>
 
             {/* Stats row — icons only, no bg/border */}
@@ -119,14 +119,14 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
                   <div className="flex items-center justify-center w-8 h-8">
                     <Image src={s.image} alt={s.title} width={30} height={30} className="object-fill object-center" />
                   </div>
-                  <span className="text-xs whitespace-pre-line">
+                  <span className="text-base whitespace-pre-line">
                     {s.title}
                   </span>
                 </div>
               ))}
             </div>
 
-          <div className="w-46">
+          <div className="w-60">
             <BookButton text="Book a Consultation" rightIcon={<ArrowRight size={11} className="text-white" />} />
             </div>
           </div>

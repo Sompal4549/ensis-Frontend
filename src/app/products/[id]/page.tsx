@@ -7,6 +7,7 @@ import { Container } from "@/components/ui/Container";
 import {  type Product } from "@/constants";
 import YouMightCarousel from "@/components/ui/YouMightCarousel";
 import ProductDetailClient from "@/components/products/ProductDetailClient";
+import ProductCard from "@/components/products/ProductCard";
 import { formatPrice } from "@/utils";
 import ProductFeatureStrip from "@/components/products/ProductFeatureStrip";
 import img6 from "@/assets/home/img-6.webp";
@@ -85,38 +86,6 @@ export async function generateMetadata({
 export function getImageSource(image: string | StaticImageData | undefined) {
   if (!image) return img6;
   return typeof image === "string" ? image : image.src;
-}
-
-function RelatedProductCard({ product }: { product: Product }) {
-  return (
-    <Link
-      href={`/products/${product.slug}`}
-      className="group rounded-lg bg-white transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(49,59,48,0.08)]"
-    >
-      <div className="relative aspect-[2/1] overflow-hidden rounded-md bg-[#f7f3ec]">
-        <Image
-          src={product.images[0]}
-          alt={product.title}
-          crossOrigin="anonymous"
-          fill
-          sizes="(max-width: 768px) 45vw, 180px"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-      </div>
-      <div className="px-1 py-3">
-        {/* PREVIOUS: line-clamp-2 */}
-        <h3 className="line-clamp-1 text-xs font-semibold">{product.title}</h3>
-        <div className="mt-1 flex items-center justify-between gap-4">
-          <span className="text-sm font-bold text-[#1a1a1a]">
-            {formatPrice(product.price)}
-          </span>
-          <span className="flex h-8 w-8 items-center justify-center rounded-md border border-[#e2d6c7] text-[#313b30]">
-            <ShoppingCart size={12} />
-          </span>
-        </div>
-      </div>
-    </Link>
-  );
 }
 
 export default async function ProductPage({
@@ -381,7 +350,7 @@ export default async function ProductPage({
           <div className="mt-2">
             <YouMightCarousel>
               {finalSuggestions.map((item) => (
-                <RelatedProductCard key={item.id} product={item} />
+                <ProductCard key={item.id} product={item} />
               ))}
             </YouMightCarousel>
           </div>

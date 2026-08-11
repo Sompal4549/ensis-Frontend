@@ -56,7 +56,7 @@ const PremiumMap = ({ sectionContent }: { sectionContent: PremiumMapProps }) => 
 
             <div className="mt-3 mb-6 h-[3px] w-12 rounded-full bg-[#D9B25F]" />
 
-            <HtmlRenderer className="text-center lg:text-left text-[15px] leading-8 text-[#374151]" content={sectionContent?.description||""}>
+            <HtmlRenderer className="text-center lg:text-left text-base leading-8 text-[#374151]" content={sectionContent?.description||""}>
               
             </HtmlRenderer>
             <div className="max-w-[250px] mt-4">

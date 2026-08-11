@@ -80,7 +80,7 @@ const ContactHero: React.FC<{ sectionContent: ContactHeroContent }> = ({sectionC
               <span className="text-[#b58a48] capitalize">{sectionContent.highlightedText}</span>
             </h1>
 
-                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] font-semibold  text-[#313628]">
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-base font-semibold  text-[#313628]">
                     <HtmlRenderer content={sectionContent.description} className='font-semibold max-w-[300px] mt-4'></HtmlRenderer>
                   </div>
             {/* Description */}

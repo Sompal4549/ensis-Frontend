@@ -58,7 +58,7 @@ export default function ProductGallery({
 
       {/* RIGHT column: Multiple Views */}
       <div className="flex flex-col gap-4 -mt-15">
-        <p className="text-[8px] font-bold uppercase tracking-[0.15em]">
+        <p className="text-base font-bold uppercase tracking-[0.15em]">
           Multiple Views
         </p>
 
@@ -87,7 +87,7 @@ export default function ProductGallery({
                 className={`text-center transition-colors duration-200`}
               >
                 <span
-                  className={`text-[7px] font-bold uppercase tracking-[0.1em]`}
+                  className={`text-base font-bold uppercase tracking-[0.1em]`}
                 >
                   {index === 0 ? "Front View" : index === 1 ? "Side View" : "Rear View"}
                 </span>

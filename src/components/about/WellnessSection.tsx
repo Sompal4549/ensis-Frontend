@@ -55,7 +55,7 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
           {/* Text */}
           <div className="h-full flex flex-col py-5">
             <div className="flex gap-1 mb-2 flex-col">
-              <span className="uppercase tracking-[2px] text-[#a9742a] text-sm font-semibold">
+              <span className="uppercase tracking-[2px] text-[#a9742a] text-base font-semibold">
                 {sectionContent.eyebrow}
               </span>
               <div className="flex gap-4 items-center">
@@ -79,10 +79,10 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
 
             <p 
               dangerouslySetInnerHTML={{ __html: sectionContent.description || "" }} 
-              className="text-[#0f2518] mt-2 text-xs max-w-[480px] leading-6" 
+              className="text-[#0f2518] mt-2 text-base max-w-[480px] leading-6" 
             />
 
-            <Link href={sectionContent.buttonHref || "/about"} className="group flex items-center gap-4 text-[#b78942] uppercase tracking-[1px] text-xs font-semibold pt-2 w-fit py-2">
+            <Link href={sectionContent.buttonHref || "/about"} className="group flex items-center gap-4 text-[#b78942] uppercase tracking-[1px] text-sm font-semibold pt-2 w-fit py-2">
               {sectionContent.buttonText || "Know More"}
               <ChevronRight
                 size={18}
@@ -117,13 +117,13 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
       </div>
 
       {/* Title */}
-      <p className="text-[#0f2518] text-[14px] font-semibold uppercase tracking-wide">
+      <p className="text-[#0f2518] text-base font-semibold uppercase tracking-wide">
         {service.title}
       </p>
 
       {/* Description */}
       <div
-        className="text-[#0f2518] text-[11px] mt-2 min-h-[60px]"
+        className="text-[#0f2518] text-base mt-2 min-h-[60px]"
         dangerouslySetInnerHTML={{
           __html: service.description || "",
         }}
@@ -135,7 +135,7 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
 
         <Link
           href={service.link || "/products"}
-          className="group flex items-center justify-center gap-1 mx-auto text-[#0f2518] text-[10px] uppercase tracking-wide font-semibold py-2"
+          className="group flex items-center justify-center gap-1 mx-auto text-[#0f2518] text-sm uppercase tracking-wide font-semibold py-2 whitespace-nowrap"
         >
           View Products
 

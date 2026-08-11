@@ -45,17 +45,17 @@ const fallbackContent: AboutWellnessSectionContent = {
   heading: "Our Story",
   title: "Crafting Wellness Since 2003",
   description: `
-    <p class="text-xs font-semibold leading-6 mt-4">
+    <p class="text-base font-semibold leading-6 mt-4">
       ENSIS, the wellness division of Design House India Pvt. Ltd.,
       was established in 2003 with a vision to create authentic,
       durable and aesthetically superior wellness solutions.
     </p>
-    <p class="text-xs font-semibold leading-6 ">
+    <p class="text-base font-semibold leading-6 ">
       We combine the wisdom of Ayurveda with modern engineering to
       build products and spaces that deliver healing, comfort and
       long-term value.
     </p>
-    <p class="text-xs font-semibold leading-6 ">
+    <p class="text-base font-semibold leading-6 ">
       Today, ENSIS is a preferred partner for clinics, hospitals,
       resorts, spas and wellness entrepreneurs across India.
     </p>
@@ -101,7 +101,7 @@ const AboutWellnessSection = ({
   {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0)_0%,rgba(255,255,255,0.1)_20%,rgba(255,255,255,0.8)_50%,rgba(255,255,255,1)_100%)] z-10" /> */}
       <Container>
         <div  className="relative z-20 md:pt-0 pt-[60%]  mb-12">
-       <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1.4fr_0.8fr] gap-4 items-stretch overflow-hidden h-full pb-10">
+       <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1.4fr_0.8fr] gap-4 items-stretch overflow-hidden h-full md:pb-10">
   {/* Gradient Overlay */}
 
           {/* Left Image */}
@@ -111,7 +111,7 @@ const AboutWellnessSection = ({
 
           {/* Center Content */}
           <div className=" md:px-6 md:py-7 flex flex-col justify-center">
-            <span className="text-[10px] uppercase tracking-[2px] bg-[#e5c18e] border-[#e29222] border text-center rounded-2xl text-[#5e3b0a] inline-block font-semibold mb-2 w-25 ">
+            <span className="text-base uppercase tracking-[2px] bg-[#e5c18e] border-[#e29222] border text-center rounded-2xl text-[#5e3b0a] inline-block font-semibold mb-2 w-35 ">
               {sectionContent.heading}
             </span>
 
@@ -120,7 +120,7 @@ const AboutWellnessSection = ({
             </h2>
             <div className="max-w-[480px]">
               <div
-                className="text-xs font-semibold md:leading-6 mt-4"
+                className="text-base font-semibold md:leading-6 my-2"
                 dangerouslySetInnerHTML={{ __html: sectionContent.description }}
               />
              </div>
@@ -143,7 +143,7 @@ const AboutWellnessSection = ({
                     crossOrigin="anonymous" style={{ height: "auto" }} />
                   </div>
 
-                  <span className="text-xs  font-semibold">
+                  <span className="text-base  font-semibold">
                     {item.title}
                   </span>
                 </div>
@@ -155,8 +155,8 @@ const AboutWellnessSection = ({
         </div>
 
         {/* Bottom Stats Bar */}
-        <div className="mt-4 bg-[#03261b] rounded-2xl py-5 px-5 border-3 border-[#e8c37a] absolute -bottom-10 left-0 right-0">
-          <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-x-4 gap-y-6 ${gridCols}`}>
+        <div className="mt-4 bg-[#03261b] rounded-2xl py-5 px-5 border-3 border-[#e8c37a] md:absolute -bottom-10 left-0 right-0">
+          <div className={`grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-x-4 gap-y-6 ${gridCols}`}>
             {sectionContent.stats.map((item, index) => (
               <div
                 key={index}
@@ -168,11 +168,11 @@ const AboutWellnessSection = ({
                 </div>
 
                 <div>
-                  <p className="text-xs font-semibold text-[#e8c37a]">
+                  <p className="text-base font-semibold text-[#e8c37a]">
                     {item.title}
                   </p>
 
-                  <p className="mt-1 text-xs leading-4 text-white font-medium">
+                  <p className="mt-1 text-base leading-5 text-white font-medium">
                     {item.subtitle}
                   </p>
                 </div>

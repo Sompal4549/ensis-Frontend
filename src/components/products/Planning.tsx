@@ -39,7 +39,7 @@ const Planning = () => {
           Planning a Wellness Center?
         </h2>
 
-        <p className="mt-2 text-white text-sm font-normal max-w-sm">
+        <p className="mt-2 text-white text-base font-normal max-w-sm">
           We provide end-to-end solutions from concept to completion.
           Let's build your dream wellness space.
         </p>
@@ -50,7 +50,7 @@ const Planning = () => {
             return (
  <div className="flex items-center gap-4" key={index}>
             <Image src={feature.icon} width={30} height={30} className="object-contain" alt="expert_consultation" />
-            <span className="text-white text-xs sm:text-sm">
+            <span className="text-white text-base">
              {feature.label}
             </span>
           </div>
@@ -65,7 +65,7 @@ const Planning = () => {
 
 </div>
 <Link href="https://ensis.in/pdf/e-broucher.pdf" target='_blank'>
-        <button className="min-w-[220px] py-1 px-4 border border-white text-white text-xs font-semibold tracking-wide hover:bg-white/5 transition-all rounded-md flex items-center gap-4 justify-center">
+        <button className="min-w-[220px] py-1 px-4 border border-white text-white text-base font-semibold tracking-wide hover:bg-white/5 transition-all rounded-md flex items-center gap-4 justify-center">
           DOWNLOAD CATALOGUE <DownloadIcon/>
         </button>
 </Link>

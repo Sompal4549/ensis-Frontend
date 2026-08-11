@@ -27,8 +27,7 @@ import { formatCurrency } from "@/utils";
 import YouMightCarousel from "@/components/ui/YouMightCarousel";
 import { productApi, getImageUrl } from "@/lib/api/api";
 import { useEffect, useState } from "react";
-import { ShoppingCart } from "lucide-react";
-import { formatPrice } from "@/utils";
+import ProductCard from "@/components/products/ProductCard";
 
 function imageSource(image: string | StaticImageData) {
   return typeof image === "string" ? image : image.src;
@@ -120,32 +119,6 @@ function CartTableRow({ item }: { item: CartItem }) {
   );
 }
 
-function RelatedProductCard({ product }: { product: any }) {
-  return (
-    <Link href={`/products/${product.slug}`} className="group rounded-lg bg-white transition hover:-translate-y-0.5 hover:shadow-[0_10px_24px_rgba(49,59,48,0.08)]">
-      <div className="relative aspect-[2/1] overflow-hidden rounded-md bg-[#f7f3ec]">
-        <Image
-          src={product.image || product.images?.[0] || ""}
-          alt={product.title}
-          crossOrigin="anonymous"
-          fill
-          sizes="(max-width: 768px) 45vw, 180px"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-      </div>
-      <div className="px-1 py-3">
-        <h3 className="line-clamp-2 text-xs font-semibold">{product.title}</h3>
-        <div className="mt-1 flex items-center justify-between gap-4">
-          <span className="text-sm font-bold text-[#1a1a1a]">{formatPrice(product.price)}</span>
-          <span className="flex h-8 w-8 items-center justify-center rounded-md border border-[#e2d6c7] text-[#313b30]">
-            <ShoppingCart size={12} />
-          </span>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
 export default function CartPage() {
   const { cartItems, clearCart, cartCount, subtotal } = useShop();
   const hasItems = cartItems.length > 0;
@@ -227,15 +200,15 @@ export default function CartPage() {
                 <section className="rounded-lg border border-[#eee5d8] bg-white p-2 shadow-[0_8px_24px_rgba(49,59,48,0.04)]">
                   <h2 className="text-xl font-semibold">Order Summary</h2>
                   <div className="mt-2 space-y-2 text-xs">
-                    <div className="flex justify-between gap-4"><span>Subtotal ({cartCount} items)</span><span className="font-semibold">{formatCurrency(subtotal)}</span></div>
-                    <div className="flex justify-between gap-4"><span>Discount</span><span className="font-semibold text-[#3d7c39]">- {formatCurrency(discount)}</span></div>
-                    <div className="flex justify-between gap-4"><span>Shipping</span><span className="font-semibold text-[#3d7c39]">{shipping === 0 ? "FREE" : formatCurrency(shipping)}</span></div>
-                    <div className="flex justify-between gap-4"><span>GST</span><span className="font-semibold text-[#1a1a1a]">{formatCurrency(gstTotal)}</span></div>
+                    <div className="flex justify-between gap-4"><span>Subtotal ({cartCount} items)</span><span className="tabular-nums font-semibold">{formatCurrency(subtotal)}</span></div>
+                    <div className="flex justify-between gap-4"><span>Discount</span><span className="tabular-nums font-semibold text-[#3d7c39]">- {formatCurrency(discount)}</span></div>
+                    <div className="flex justify-between gap-4"><span>Shipping</span><span className="tabular-nums font-semibold text-[#3d7c39]">{shipping === 0 ? "FREE" : formatCurrency(shipping)}</span></div>
+                    <div className="flex justify-between gap-4"><span>GST</span><span className="tabular-nums font-semibold text-[#1a1a1a]">{formatCurrency(gstTotal)}</span></div>
                   </div>
                   <div className="mt-2 border-t border-[#eee5d8] pt-2">
                     <div className="flex items-center justify-between gap-4">
                       <span className="text-lg font-semibold">Total</span>
-                      <span className="text-2xl font-semibold">{formatCurrency(total)}</span>
+                      <span className="tabular-nums text-2xl font-semibold">{formatCurrency(total)}</span>
                     </div>
                     <p className="mt-1 text-xs">Pay securely online or request support from our wellness equipment team.</p>
                   </div>
@@ -276,7 +249,7 @@ export default function CartPage() {
               <div className="mt-2">
                 <YouMightCarousel>
                   {suggestions.map((product) => (
-                    <RelatedProductCard key={product._id} product={product} />
+                    <ProductCard key={product._id} product={product} />
                   ))}
                 </YouMightCarousel>
               </div>

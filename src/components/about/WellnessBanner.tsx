@@ -21,23 +21,23 @@ interface WellnessBannerProps { // Renamed to WellnessBannerProps for the compon
 }
 
 export default function WellnessBanner({
-sectionContent
+  sectionContent
 }: WellnessBannerProps) {
   return (
     <section className="w-full relative">
-          <div className="absolute inset-0">
-          <Image
-            src={sectionContent.imageurl ? getImageUrl(sectionContent?.imageurl?.imageUrl) : wellness}
-            alt={sectionContent.imageurl?.alt || sectionContent.title || "Wellness Banner"} // Added fallback for alt
-            className="h-full w-full object-cover"
-            fill
-            crossOrigin="anonymous"
-            sizes="100vw"
-          />
-        </div>
+      <div className="absolute inset-0">
+        <Image
+          src={sectionContent.imageurl ? getImageUrl(sectionContent?.imageurl?.imageUrl) : wellness}
+          alt={sectionContent.imageurl?.alt || sectionContent.title || "Wellness Banner"} // Added fallback for alt
+          className="h-full w-full object-cover"
+          fill
+          crossOrigin="anonymous"
+          sizes="100vw"
+        />
+      </div>
       <Container className="relative mx-auto overflow-hidden rounded-md py-4!">
         {/* Background Image */}
-      
+
 
         {/* Content */}
         <div className="relative z-10 grid min-h-[180px] grid-cols-1 items-center gap-8 px-0 md:grid-cols-2 md:px-0 lg:px-0">
@@ -52,15 +52,15 @@ sectionContent
               {sectionContent.title}
             </h2>
 
-            <p className="mt-3 text-sm md:text-base leading-6 text-[#ddd1c1] " dangerouslySetInnerHTML={{__html:sectionContent.description||""}}>
+            <p className="mt-3 text-base leading-6 text-[#ddd1c1] " dangerouslySetInnerHTML={{ __html: sectionContent.description || "" }}>
             </p>
 
             {/* Buttons */}
             <div className="mt-3 flex flex-wrap gap-4">
 
-<GreenButton leftIcon={<Phone className="text-[#050A1A]" size={16} />} text={sectionContent.primaryAction.label} path={sectionContent.primaryAction.url} rightIcon={<FaArrowRightLong />} />
-  <BookButton leftIcon={<GrCatalogOption className="text-white" size={16} />} text={sectionContent.secondaryAction.label} rightIcon={<Download size={16} className="text-white" />}  path={sectionContent.secondaryAction.url} />
-</div>
+              <GreenButton leftIcon={<Phone className="text-[#050A1A]" size={16} />} text={sectionContent.primaryAction.label} path={sectionContent.primaryAction.url} rightIcon={<FaArrowRightLong />} />
+              <BookButton leftIcon={<GrCatalogOption className="text-white" size={16} />} text={sectionContent.secondaryAction.label} rightIcon={<Download size={16} className="text-white" />} path={sectionContent.secondaryAction.url} />
+            </div>
           </div>
         </div>
       </Container>

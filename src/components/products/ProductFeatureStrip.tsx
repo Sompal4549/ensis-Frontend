@@ -73,11 +73,11 @@ export default function ProductFeatureStrip() {
                 </div>
 
                 <div className="leading-tight">
-                  <p className="text-xs font-semibold  text-white">
+                  <p className="text-base font-semibold  text-white">
                     {item.title}
                   </p>
 
-                  <p className="text-[10px] font-normal  text-white mt-1">
+                  <p className="text-base font-normal  text-white mt-1">
                     {item.subtitle}
                   </p>
                 </div>

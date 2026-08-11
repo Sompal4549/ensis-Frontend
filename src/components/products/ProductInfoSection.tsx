@@ -66,7 +66,7 @@ export default function ProductInfoSection({
 
       {/* ── TOP LABEL ── */}
       <div className="">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8d6a3a]">
+        <p className="text-base font-semibold uppercase tracking-[0.18em] text-[#8d6a3a]">
           {productOverview?.[0]?.highlight || ` Smart Design. Superior Functionality.`}
         </p>
       </div>
@@ -92,7 +92,7 @@ export default function ProductInfoSection({
 
         {/* Middle: specs table */}
         <div className="p-2">
-          <table className="w-full text-[11px]">
+          <table className="w-full text-base">
             <tbody>
               {productOverview?.[0]?.specifications?.map((row, i) => (
                 <tr key={i} className={`border-b border-[#d4c4a8] text-black`}>
@@ -111,10 +111,10 @@ export default function ProductInfoSection({
         <div className="flex flex-col gap-4 p-2">
           {/* What's Included */}
           <div className="rounded-lg border border-[#e2d8c8] p-4">
-            <h3 className="font-semibold text-sm mb-3 border-b pb-1 border-[#d4c4a8]">What's Included</h3>
+            <h3 className="font-semibold text-base mb-3 border-b pb-1 border-[#d4c4a8]">What's Included</h3>
             <ul className="space-y-2">
               {overview?.whatisInclueded?.map((item: string, i: number) => (
-                <li key={i} className="flex items-start gap-4 text-[11px] leading-snug text-black">
+                <li key={i} className="flex items-start gap-4 text-base leading-snug text-black">
                   <Check size={14} className="shrink-0 mt-0.5 text-[#8d6a3a] font-semibold" />
                   {item}
                 </li>
@@ -129,11 +129,11 @@ export default function ProductInfoSection({
                 <Image src={need_customization} alt="customization" width={48} height={48} className="object-fill" />
               </div>
               <div>
-                <h3 className="font-semibold text-sm leading-tight">Need Customization?</h3>
-                <p className="text-[10px] mt-1 leading-snug">
+                <h3 className="font-semibold text-base leading-tight">Need Customization?</h3>
+                <p className="text-base mt-1 leading-snug">
                   We create custom Panchkarma tables as per your therapy requirements.
                 </p>
-                <button className="w-full flex items-center justify-center gap-1.5 border rounded-md py-1.5 text-[11px] font-bold uppercase tracking-wider transition-colors mt-2 cursor-pointer">
+                <button className="w-full flex items-center justify-center gap-1.5 border rounded-md py-1.5 text-base font-bold uppercase tracking-wider transition-colors mt-2 cursor-pointer">
                   Contact Our Experts <ArrowRight size={12} />
                 </button>
               </div>
@@ -144,7 +144,7 @@ export default function ProductInfoSection({
 
       {/* ── SECTION 2: Wood finish + size options + bulk order ── */}
       <div className="px-1">
-        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#8d6a3a] px-4 pt-4">
+        <p className="text-base font-semibold uppercase tracking-[0.18em] text-[#8d6a3a] px-4 pt-4">
           {overview?.smartDesignAppearance?.highlight || "Smart Design Appearance."}
         </p>
       </div>
@@ -152,7 +152,7 @@ export default function ProductInfoSection({
       <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr_0.75fr] gap-0">
         {/* Wood Finish */}
         <div className="border-r border-[#e2d8c8] px-5">
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.15em] mb-4">Wood Finish</h3>
+          <h3 className="text-base font-bold uppercase tracking-[0.15em] mb-4">Wood Finish</h3>
           <div className="flex flex-wrap gap-4">
             {(overview?.smartDesignAppearance?.woodFinish?.length
               ? overview.smartDesignAppearance.woodFinish.map((f: any) => ({ id: f.id || f.title, label: f.title, image: f.image }))
@@ -172,7 +172,7 @@ export default function ProductInfoSection({
                     className="w-14 h-14 object-cover rounded-full"
                   />
                 </div>
-                <span className="text-[10px] font-medium">{f.label}</span>
+                <span className="text-base font-medium">{f.label}</span>
               </button>
             ))}
           </div>
@@ -180,7 +180,7 @@ export default function ProductInfoSection({
 
         {/* Size Options */}
         <div className="px-5">
-          <h3 className="text-[10px] font-bold uppercase tracking-[0.15em] mb-4 text-[#8d6a3a]">Size Options</h3>
+          <h3 className="text-base font-bold uppercase tracking-[0.15em] mb-4 text-[#8d6a3a]">Size Options</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {overview?.smartDesignAppearance?.sizeOptions?.map((s) => (
               <div
@@ -191,15 +191,15 @@ export default function ProductInfoSection({
                   : "border-[#d4c4a8] hover:border-[#8d6a3a]/50"
                   }`}
               >
-                <p className="text-[11px] font-semibold leading-tight">{s.title}</p>
-                <p className="text-[10px] mt-2" dangerouslySetInnerHTML={{__html:s.description}}></p>
+                <p className="text-base font-semibold leading-tight">{s.title}</p>
+                <p className="text-base mt-2" dangerouslySetInnerHTML={{__html:s.description}}></p>
               </div>
             ))}
           </div>
 
           {/* Ideal For row */}
           {/* <div className="mt-5">
-            <h3 className="text-[10px] font-bold uppercase tracking-[0.15em] mb-3">Ideal For</h3>
+            <h3 className="text-base font-bold uppercase tracking-[0.15em] mb-3">Ideal For</h3>
             <div className="flex flex-wrap gap-5">
               {[
                 { label: "Panchkarma\nRoom", icon: panchkarma_rooms },
@@ -211,7 +211,7 @@ export default function ProductInfoSection({
                   <div className="w-10 h-10 flex items-center justify-center">
                     <Image src={item.icon} alt={item.label} width={36} height={36} className="object-contain" />
                   </div>
-                  <span className="text-[10px] leading-tight whitespace-pre-line">{item.label}</span>
+                  <span className="text-base leading-tight whitespace-pre-line">{item.label}</span>
                 </div>
               ))}
             </div>
@@ -221,11 +221,11 @@ export default function ProductInfoSection({
         {/* Bulk Order */}
         <div className="px-5 flex flex-col justify-center">
           <div className="rounded-lg border border-[#e2d8c8] p-4">
-            <h3 className="font-semibold text-sm leading-tight mb-1">Bulk Order / Project?</h3>
-            <p className="text-[11px] leading-snug mb-4">
+            <h3 className="font-semibold text-base leading-tight mb-1">Bulk Order / Project?</h3>
+            <p className="text-base leading-snug mb-4">
               We offer special pricing for bulk orders and turnkey wellness projects.
             </p>
-            <button className="w-full flex items-center justify-center gap-1.5 border border-[#8d6a3a] rounded-md py-1.5 text-[11px] font-bold uppercase tracking-wider text-[#8d6a3a] hover:bg-[#8d6a3a] hover:text-white transition-colors">
+            <button className="w-full flex items-center justify-center gap-1.5 border border-[#8d6a3a] rounded-md py-1.5 text-base font-bold uppercase tracking-wider text-[#8d6a3a] hover:bg-[#8d6a3a] hover:text-white transition-colors">
               Get Bulk Quote <ArrowRight size={12} />
             </button>
           </div>
@@ -242,13 +242,13 @@ export default function ProductInfoSection({
                 <path d="M6 10l3 3 5-5" stroke="#6a7c4a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <span className="text-[10px] font-bold uppercase tracking-widest">Made in India</span>
+            <span className="text-base font-bold uppercase tracking-widest">Made in India</span>
           </div>
-          <p className="text-[11px] italic">Custom sizes and finishes available on request.</p>
+          <p className="text-base italic">Custom sizes and finishes available on request.</p>
           <div className="flex items-center gap-1">
             <span className="text-2xl font-black leading-none">F</span>
-            <sup className="text-[8px] font-bold -ml-0.5 mt-0.5">i</sup>
-            <span className="text-[11px] font-bold uppercase tracking-widest ml-0.5">Ensis Solutions</span>
+            <sup className="text-base font-bold -ml-0.5 mt-0.5">i</sup>
+            <span className="text-base font-bold uppercase tracking-widest ml-0.5">Ensis Solutions</span>
           </div>
         </div>
       </div> */}

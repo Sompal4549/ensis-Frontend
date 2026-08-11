@@ -86,12 +86,12 @@ const SupportHighlights = async () => {
 
                   {/* Content */}
                   <div>
-                    <h3 className="mb-1 text-[15px] font-semibold uppercase tracking-wide text-[#1d4d22]">
+                    <h3 className="mb-1 text-base font-semibold uppercase tracking-wide text-[#1d4d22]">
                       {item.title}
                     </h3>
 
                     <HtmlRenderer
-                      className="text-xs leading-6 text-[#4a4a4a]"
+                      className="text-base leading-6 text-[#4a4a4a]"
                       content={item.description}
                     />
                   </div>

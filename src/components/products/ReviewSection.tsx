@@ -141,7 +141,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
           {/* Reviews List */}
           <div>
             <h2 className="text-2xl font-semibold mb-8 flex items-center gap-4">
-              Customer Reviews <span className="text-sm font-normal text-gray-500">({reviews.length})</span>
+              Customer Reviews <span className="text-base font-normal text-gray-500">({reviews.length})</span>
             </h2>
             
             <div className="space-y-8">
@@ -157,10 +157,10 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                         />
                       ))}
                     </div>
-                    <span className="text-xs font-bold">{rev.user}</span>
-                    <span className="text-[10px] text-gray-400">{new Date(rev.createdAt).toLocaleDateString()}</span>
+                    <span className="text-base font-bold">{rev.user}</span>
+                    <span className="text-base text-gray-400">{new Date(rev.createdAt).toLocaleDateString()}</span>
                   </div>
-                  <p className="text-sm text-gray-700 leading-relaxed">{rev.comment}</p>
+                  <p className="text-base text-gray-700 leading-relaxed">{rev.comment}</p>
                 </div>
               ))}
             </div>
@@ -174,7 +174,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                   <h3 className="text-lg font-semibold mb-2">
                     {userReviewId ? "Edit Your Review" : "Write a Review"}
                   </h3>
-                  <p className="text-xs text-gray-600 mb-6">
+                  <p className="text-base text-gray-600 mb-6">
                     {userReviewId 
                       ? "Update your existing rating and experience below." 
                       : "As a verified buyer, your feedback helps others choose wisely."}
@@ -182,7 +182,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                   
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                      <label className="text-xs font-bold uppercase mb-2 block">Rating</label>
+                      <label className="text-base font-bold uppercase mb-2 block">Rating</label>
                       <div className="flex gap-1">
                         {[...Array(5)].map((_, i) => {
                           const starValue = i + 1;
@@ -206,20 +206,20 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                     </div>
 
                     <div>
-                      <label className="text-xs font-bold uppercase mb-2 block">Your Experience</label>
+                      <label className="text-base font-bold uppercase mb-2 block">Your Experience</label>
                       <textarea
                         rows={4}
                         value={comment}
                         onChange={(e) => setComment(e.target.value)}
                         placeholder="What did you like or dislike about the product?"
-                        className="w-full p-3 text-sm rounded-lg border border-[#eee5d8] outline-none focus:border-[#d5a642] bg-white"
+                        className="w-full p-3 text-base rounded-lg border border-[#eee5d8] outline-none focus:border-[#d5a642] bg-white"
                         required
                       />
                     </div>
 
                     <button
                       type="submit"
-                      className="w-full py-3 bg-[#313b30] text-white text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-black transition-colors"
+                      className="w-full py-3 bg-[#313b30] text-white text-base font-bold uppercase tracking-widest rounded-lg hover:bg-black transition-colors"
                     >
                       {userReviewId ? "Update Review" : "Submit Review"}
                     </button>
@@ -233,10 +233,10 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                   <h3 className="font-semibold text-emerald-800">
                     {userReviewId ? "Review Updated!" : "Review Submitted!"}
                   </h3>
-                  <p className="text-xs text-emerald-600 mt-1 mb-4">Thank you for sharing your experience.</p>
+                  <p className="text-base text-emerald-600 mt-1 mb-4">Thank you for sharing your experience.</p>
                   <button
                     onClick={() => setSubmitted(false)}
-                    className="w-full py-2 border border-[#8d6a3a] text-[#8d6a3a] text-xs font-bold uppercase tracking-widest rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-colors"
+                    className="w-full py-2 border border-[#8d6a3a] text-[#8d6a3a] text-base font-bold uppercase tracking-widest rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-colors"
                   >
                     Edit Review Again
                   </button>
@@ -245,8 +245,8 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
             ) : (
               <div className="text-center py-4">
                 <MessageSquare className="mx-auto text-gray-300 mb-3" size={32} />
-                <h3 className="text-sm font-semibold text-gray-800">Review restricted</h3>
-                <p className="text-[11px] text-gray-500 mt-2">
+                <h3 className="text-base font-semibold text-gray-800">Review restricted</h3>
+                <p className="text-base text-gray-500 mt-2">
                   Only customers who have purchased this product can leave a review.
                 </p>
               </div>

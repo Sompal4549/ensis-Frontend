@@ -41,7 +41,7 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
             <div>
               <SubHeading className=' text-black' text={subtitle} />
               <h2 className="mt-2 font-serif text-xl leading-tight text-[#1f261b] md:text-2xl font-semibold">{heading}</h2>
-            <Link href={buttonPath} className="mt-2 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6] rounded-md">
+            <Link href={buttonPath} className="mt-2 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-base font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6] rounded-md">
                 {buttonText} <ArrowRight size={16} />
               </Link>
             </div>
@@ -62,7 +62,7 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
                 </div>
                 <div className="p-4 flex flex-col justify-between h-32">
                   <h3 className="text-lg font-bold text-[#1f261b] leading-[120%] line-clamp-2 font-serif">{blog.title}</h3>
-                  <div className="mt-3 flex items-center gap-4 text-xs font-semibold text-[#7c6a53]">
+                  <div className="mt-3 flex items-center gap-4 text-base font-semibold text-[#7c6a53]">
                     Read More <ArrowRight size={14} />
                   </div>
                 </div>
@@ -77,7 +77,7 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
         <Container className="relative z-10 flex flex-col justify-center gap-40 md:flex-row md:items-center">
           <div>
             <h2 className="font-serif text-2xl leading-tight font-semibold">{contactData.ctaHeading}</h2>
-            <p className="mt-2 text-sm text-[#e5dccf]">{contactData.ctaDescription}</p>
+            <p className="mt-2 text-base text-[#e5dccf]">{contactData.ctaDescription}</p>
           </div>
           <GreenButton path={contactData.ctaButtonPath} text={contactData.ctaButtonText} />
         </Container>
