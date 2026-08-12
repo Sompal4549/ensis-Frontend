@@ -45,7 +45,7 @@ export default function FaqSection({ product }: { product: Product }) {
   const list = overview?.faqs?.length ? overview.faqs : faqs;
   return (
     <Container className="py-4">
-      <p className="text-sm font-bold uppercase  text-[#8d6a3a] mb-4 ">
+      <p className="text-base font-bold uppercase  text-[#8d6a3a] mb-4 ">
         Frequently Asked Questions
       </p>
 
@@ -62,7 +62,7 @@ export default function FaqSection({ product }: { product: Product }) {
                     : "rounded-md border-[#d4c4a8]"
                 }`}
               >
-                <span className="text-xs font-semibold leading-snug">
+                <span className="text-base font-semibold leading-snug">
                   {faq.question}
                 </span>
 
@@ -76,7 +76,7 @@ export default function FaqSection({ product }: { product: Product }) {
               {/* Answer — opens right below its question */}
               {open === i && (
                 <div className="border border-t-0 border-[#8d6a3a] rounded-b-md bg-white px-4 py-3">
-                  <HtmlRenderer className="text-[11px] leading-relaxed" content={faq.description}></HtmlRenderer>
+                  <HtmlRenderer className="text-base leading-relaxed" content={faq.description}></HtmlRenderer>
                 </div>
               )}
             </div>

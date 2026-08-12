@@ -60,10 +60,10 @@ export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) =
             <div className="">
               <SubHeading className=' text-[#d5ad6a]' text={content.eyebrow} />
               <h2 className="text-xl md:text-3xl">{content.heading}</h2>
-              <HtmlRenderer className="mt-2 max-w-[420px] text-xs leading-5 text-[#ddd6ca]" content={content.description}>
+              <HtmlRenderer className="mt-2 max-w-[420px] text-base leading-relaxed text-[#ddd6ca]" content={content.description}>
                 
               </HtmlRenderer>
-              <div className='mt-2 w-65'>
+              <div className='mt-2 w-[340px]'>
               <GreenButton text={content.buttonText} leftIcon={<MessageCircle className="text-[#050A1A]" size={16}/>} rightIcon={<ArrowRight className="text-[#050A1A]" size={16}/>} path={content.buttonHref || "tel:+919654900525"} />
               </div>
             </div>
@@ -84,7 +84,7 @@ export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) =
                       <Image src={icon||""} alt={solution.title} width={250} height={150} className="object-contain" crossOrigin="anonymous" />
                     )}
                   </div>
-                  <span className="text-xs font-semibold text-[#f3eee6] w-20! leading-[10px]">{solution.title}</span>
+                  <span className="text-base font-semibold text-[#f3eee6] w-20! leading-snug">{solution.title}</span>
                 </div>
               )
             })}

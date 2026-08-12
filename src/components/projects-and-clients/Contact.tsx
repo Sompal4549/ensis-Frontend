@@ -125,14 +125,14 @@ export default function ProjectsContactBanner({
                 {/* <div className="absolute inset-0 bg-[#002112] z-20" /> */}
 
                 <div className="absolute inset-0 flex flex-col justify-center  text-white z-20 pl-50">
-                  <h3 className="text-lg font-serif mb-4">
+                  <h3 className="text-lg  mb-4">
                     {sectionContent.ctaTitle}
                   </h3>
 
-                  <p className="max-w-md mb-6 text-sm">
+                  <p className="max-w-md mb-6 text-base">
                     {sectionContent.ctaDescription}
                   </p>
-                  <div className="max-w-[200px]">
+                  <div className="max-w-62.5">
 
                     <GreenButton text={sectionContent.ctaButtonText} path="/projects-and-clients" />
                   </div>
@@ -143,7 +143,7 @@ export default function ProjectsContactBanner({
               <div className="relative bg-[#f8f2e8] flex">
 
                 <div className="relative z-10 py-4 pl-12">
-                  <h3 className="text-xl font-serif font-semibold">
+                  <h3 className="text-xl  font-semibold">
                     Get in Touch
                   </h3>
 
@@ -189,7 +189,7 @@ export default function ProjectsContactBanner({
       </Container>
         {/* Bottom Strip */}
         <div className="bg-[#032c22] px-4 py-4 text-center">
-          <p className="text-sm md:text-lg text-[#e4c27c]">
+          <p className="text-base md:text-lg text-[#e4c27c]">
             {sectionContent.bottomText}
           </p>
         </div>

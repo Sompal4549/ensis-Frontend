@@ -40,7 +40,7 @@ export default function BlogListItem({
           <span>{category}</span>
         </div>
 
-        <h3 className="max-w-[700px] font-serif text-xl leading-snug text-[#2b241f] font-semibold">
+        <h3 className="max-w-[700px]  text-xl leading-snug text-[#2b241f] font-semibold">
           {title}
         </h3>
 

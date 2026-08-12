@@ -134,7 +134,7 @@ export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWor
               />
               {/* CONTENT */}
               <div className="flex flex-col justify-center p-6 lg:p-7 z-10">
-                <p className="text-sm font-semibold uppercase tracking-[2px] text-[#D66A38]">
+                <p className="text-base font-semibold uppercase tracking-[2px] text-[#D66A38]">
                   {whyChoose.heading}
                 </p>
 
@@ -142,7 +142,7 @@ export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWor
                   {whyChoose.title}
                 </h2>
 
-                <p className="mt-4 text-[13px] leading-6" dangerouslySetInnerHTML={{ __html: whyChoose.description }}>
+                <p className="mt-4 text-base leading-6" dangerouslySetInnerHTML={{ __html: whyChoose.description }}>
                 </p>
 
                 <div className="mt-5 space-y-3">
@@ -157,13 +157,13 @@ export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWor
                         <Check size={10} strokeWidth={2} color="#fff" />
                       </div>
 
-                      <span className="text-[13px]">
+                      <span className="text-base">
                         {typeof item === "string" ? item : item.text}
                       </span>
                     </div>
                   ))}
                 </div>
-                <div className="w-50 h-10 mt-4">
+                <div className="w-60 h-10 mt-4">
 
                   <BookButton text={whyChoose.primaryButton.label} path={whyChoose.primaryButton.href} />
                 </div>
@@ -179,7 +179,7 @@ export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWor
           {/* RIGHT SIDE */}
           <div className="flex flex-col">
             <div>
-              <p className="text-sm font-semibold uppercase tracking-[2px] text-[#D66A38]">
+              <p className="text-base font-semibold uppercase tracking-[2px] text-[#D66A38]">
                 {ourProcess.heading}
               </p>
 
@@ -200,7 +200,7 @@ export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWor
                     {/* NUMBER COLUMN */}
                     <div className="relative flex w-[36px] shrink-0 flex-col items-center self-stretch">
                       <div
-                        className="flex h-[36px] w-[36px] items-center justify-center rounded-full border bg-white text-[13px] font-semibold"
+                        className="flex h-[36px] w-[36px] items-center justify-center rounded-full border bg-white text-base font-semibold"
                         style={{
                           borderColor: step.color,
                           color: step.color,
@@ -227,12 +227,12 @@ export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWor
                       <div className="absolute -left-[8px] top-[18px] h-4 w-4 rotate-45 border-b border-l border-[#ECECEC] bg-white" />
 
                       <div className="flex-1">
-                        <h3 className="text-[13px] font-semibold leading-5">
+                        <h3 className="text-base font-semibold leading-5">
                           {step.title}
                         </h3>
 
                         <HtmlRenderer content={step.description}
-                         className="mt-1 text-[12px] leading-5 text-[#667085]">
+                         className="mt-1 text-base leading-5 text-[#667085]">
                         </HtmlRenderer>
                       </div>
 

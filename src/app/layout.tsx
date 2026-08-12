@@ -3,7 +3,7 @@ import nextDynamic from "next/dynamic";
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
-import { Montserrat, Playfair_Display, Jost, Cormorant_Garamond } from 'next/font/google';
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import { ShopProvider } from "@/context/ShopContext";
 // import footerTop1 from "@/assets/footer-top.webp"
 // import footerTop2 from "@/assets/footer-top2.webp"
@@ -13,10 +13,18 @@ import { ShopProvider } from "@/context/ShopContext";
 // import footerTop6 from "@/assets/footer-top-4.png"
 
 
-const montserrat = Montserrat({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-montserrat', display: "swap" });
-const cormorant = Playfair_Display({ subsets: ['latin'], weight: ['400', '600', '700'], variable: '--font-cormorant', display: "swap" });
-const jost = Jost({ subsets: ['latin'], weight: ['300', '400', '500', '600'], variable: '--font-jost', display: "swap" });
-const cormorantGaramond = Cormorant_Garamond({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-cormorant-garamond', display: "swap" });
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-montserrat',
+  display: 'swap',
+});
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '600'],
+  variable: '--font-cormorant', // Maintained for Tailwind variable binding
+  display: 'swap',
+});
 
 import { Header } from "@/components/layout/Header";
 import { getAdvancedSeo } from "@/lib/api/seo";
@@ -42,7 +50,7 @@ export default async function RootLayout({
   const searchConsole = advSeo?.searchConsole || {};
 
   return (
-    <html lang="en" className={`${montserrat.variable} ${cormorant.variable} ${jost.variable} ${cormorantGaramond.variable}`}>
+    <html lang="en" className={`${dmSans.variable} ${playfair.variable}`}>
       <head>
         {/* Preload top-header icons so they paint with the first frame */}
         <link rel="preload" as="image" href="/icons/factory.svg" />

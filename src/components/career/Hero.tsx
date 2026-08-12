@@ -29,10 +29,10 @@ const CareersBanner = ({sectionContent }: {sectionContent:CareersBannerProps}) =
         priority
         className="object-cover"
       />
-      <div className="relative z-10 flex h-[600px] md:h-[calc(100vh-146px)] items-center px-6 py-12 sm:px-10 lg:px-14">
+      <div className="relative z-10 flex min-h-[550px] md:h-[calc(100vh-146px)] items-center px-6 py-12 sm:px-10 lg:px-14">
         <Container>
           {/* Eyebrow */}
-          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#c07d19]">
+          <p className="mb-4 text-base font-semibold uppercase tracking-[0.2em] text-[#c07d19]">
             {sectionContent.heading||"Careers at ENSIS"}
           </p>
 
@@ -46,13 +46,13 @@ const CareersBanner = ({sectionContent }: {sectionContent:CareersBannerProps}) =
           </h1>
 
           {/* Description */}
-          <HtmlRenderer className="mt-6 max-w-md text-sm md:text-base font-semibold text-[#313628]"
+          <HtmlRenderer className="mt-6 max-w-md text-base font-semibold text-[#313628]"
           content={sectionContent.description||`At ENSIS, we blend ancient wisdom with modern innovation to create
             authentic wellness experiences. Join our passionate team and build a
             career that makes a difference.`}>
         
           </HtmlRenderer>
-          <div className="w-[250px] mt-4">
+          <div className="w-[310px] mt-4">
 
 <GreenButton text={sectionContent.buttonText||"Explore Opportunities"} path={sectionContent.buttonPath||"/contact"}/>
           </div>

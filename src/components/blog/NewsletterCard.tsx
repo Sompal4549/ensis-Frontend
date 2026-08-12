@@ -41,10 +41,10 @@ export default function NewsletterCard({sectionContent} : {sectionContent: any})
         
         {/* Text */}
         <div className="lg:shrink-0  flex-1">
-          <h3 className="font-serif text-2xl text-[#2b241f] font-semibold lg:text-left text-center">
+          <h3 className=" text-2xl text-[#2b241f] font-semibold lg:text-left text-center">
             {sectionContent?.heading || "Stay Inspired"}
           </h3>
-          <div className="text-[15px] text-[#6e5b4d] lg:text-left text-center" dangerouslySetInnerHTML={{__html:sectionContent?.description || "Subscribe for wellness insights, updates, and exclusive offers."}}>
+          <div className="text-base text-[#6e5b4d] lg:text-left text-center" dangerouslySetInnerHTML={{__html:sectionContent?.description || "Subscribe for wellness insights, updates, and exclusive offers."}}>
             
           </div>
         </div>
@@ -52,18 +52,18 @@ export default function NewsletterCard({sectionContent} : {sectionContent: any})
         {/* Input + Button */}
         <div className="flex flex-1 flex-col gap-4 justify-end">
           <div className="flex flex-col gap-4 sm:flex-row justify-end items-center">
-          <input
+          <input suppressHydrationWarning
             type="email"
             aria-label="Email address for newsletter subscription"
             placeholder="Enter your email"
-            suppressHydrationWarning
+            
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
             className="rounded-lg border border-[#d9c5b1] bg-white text-sm outline-none w-full sm:w-[50%] px-3 py-2"
           />
           <div className="shrink-0 sm:w-auto w-full">
-            <button type="submit" disabled={loading} className="w-full text-white py-2 px-3 rounded-lg bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)]">
+            <button suppressHydrationWarning type="submit" disabled={loading} className="w-full text-white py-2 px-3 rounded-lg bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)]">
               {/* <BookButton tvext={loading ? "..." : "Subscribe"} /> */}
               Subscribe
             </button>
@@ -71,7 +71,7 @@ export default function NewsletterCard({sectionContent} : {sectionContent: any})
           </div>
           </div>
           {status && (
-            <p className={`text-xs mt-1 ${status.type === "success" ? "text-green-700" : "text-red-600"} text-center lg:text-right`}>
+            <p className={`text-base mt-1 ${status.type === "success" ? "text-green-700" : "text-red-600"} text-center lg:text-right`}>
               {status.message}
             </p>
           )}

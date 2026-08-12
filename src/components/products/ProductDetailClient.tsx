@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import CartAndDetailHeroBanner from "@/components/products/ProductDetailBanner";
-import ProductInfoSection from "@/components/products/ProductInfoSection";
 import ProductFeatureStrip from "@/components/products/ProductFeatureStrip";
+import PremiumProductInfo from "@/components/products/PremiumProductInfo";
 import { Container } from "@/components/ui/Container";
 import { Product } from "@/constants";
 
@@ -33,15 +33,13 @@ export default function ProductDetailClient({
         <ProductFeatureStrip />
       </section>
       <Container>
-        <section className="grid lg:items-start xl:gap-8">
-          <ProductInfoSection
-            product={product}
-            finish={finish}
-            size={size}
-            onFinishChange={setFinish}
-            onSizeChange={setSize}
-          />
-        </section>
+        <PremiumProductInfo
+          product={product}
+          finish={finish}
+          size={size}
+          onFinishChange={setFinish}
+          onSizeChange={setSize}
+        />
       </Container>
     </>
   );

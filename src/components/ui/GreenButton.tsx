@@ -9,6 +9,7 @@ type BookStallButtonProps = {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
+  fontSize?: string;
 };
 
 const Sparkle = ({ style, color }: { style: React.CSSProperties; color: string }) => (
@@ -18,7 +19,7 @@ const Sparkle = ({ style, color }: { style: React.CSSProperties; color: string }
   />
 );
 
-export default function GreenButton({ path = '/book-a-stand', variant = 'golden', text, leftIcon, rightIcon, onClick }: BookStallButtonProps) {
+export default function GreenButton({ path = '/book-a-stand', variant = 'golden', text, leftIcon, rightIcon, onClick, fontSize = 'text-base' }: BookStallButtonProps) {
   const isGolden = variant === 'golden';
 
   return (
@@ -40,7 +41,7 @@ export default function GreenButton({ path = '/book-a-stand', variant = 'golden'
           }`}
       >
         <span className={`w-[14px] h-[14px] shrink-0 ${'text-white'}`}>{leftIcon}</span>
-        <span className={`font-bold text-[10px] tracking-widest ${isGolden ? 'text-[#050A1A]' : 'text-white'}`}>
+        <span className={`font-bold ${fontSize} tracking-widest ${isGolden ? 'text-[#050A1A]' : 'text-white'}`}>
           {text || 'BOOK A STALL'}
         </span>
         {rightIcon || <ArrowRight className={`w-3 h-3 group-hover/btn:translate-x-1 transition-transform ${isGolden ? 'text-[#050A1A]' : 'text-white'}`} />}

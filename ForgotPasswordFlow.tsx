@@ -96,7 +96,7 @@ const ForgotPasswordFlow: React.FC<ForgotPasswordFlowProps> = ({ onBackToLogin }
         <div className="flex justify-center mb-4">
           <CheckCircle2 className="text-green-500 w-16 h-16" />
         </div>
-        <h2 className="text-2xl font-serif font-bold text-[#20351f] mb-3">Successful!</h2>
+        <h2 className="text-2xl  font-bold text-[#20351f] mb-3">Successful!</h2>
         <p className="text-gray-600 mb-8">Password reset successfully. Now login with your new credentials.</p>
         <button
           onClick={onBackToLogin}
@@ -117,7 +117,7 @@ const ForgotPasswordFlow: React.FC<ForgotPasswordFlowProps> = ({ onBackToLogin }
         <ArrowLeft size={16} className="mr-2" /> Back to Login
       </button>
 
-      <h2 className="text-2xl md:text-3xl font-serif font-bold text-[#20351f] mb-2">
+      <h2 className="text-2xl md:text-3xl  font-bold text-[#20351f] mb-2">
         {step === "email" && "Find Account"}
         {step === "otp" && "Check Email"}
         {step === "reset" && "New Password"}

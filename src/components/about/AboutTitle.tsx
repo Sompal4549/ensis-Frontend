@@ -19,12 +19,12 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
         <h2
             className={`
               text-[#4a4036]
-text-sm
+text-base
               md:text-[24px]
               font-extrabold
               tracking-[2px]
               uppercase
-              font-serif
+              
               text-center
              ${className || ''}`}
         >

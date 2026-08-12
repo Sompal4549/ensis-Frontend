@@ -74,7 +74,7 @@ export default function FacilitiesWeBuild({sectionContent}: { sectionContent: Fa
                   className="object-contain w-full h-full"
                 />
               </div>
-              <p className="text-[10px] sm:text-[11px] leading-snug whitespace-pre-line font-medium">
+              <p className="text-base leading-snug whitespace-pre-line font-medium">
                 {f.title}
               </p>
             </div>

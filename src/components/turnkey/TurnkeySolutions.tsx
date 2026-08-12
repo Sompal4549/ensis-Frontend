@@ -50,7 +50,7 @@ const Card = ({
           </div>
 
           {/* Number Badge */}
-          <div className="absolute -right-5 top-0 flex rounded-bl-md h-[36px] w-[36px] items-center justify-center bg-[#b8892e] text-[15px] font-semibold text-white">
+          <div className="absolute -right-5 top-0 flex rounded-bl-md h-[36px] w-[36px] items-center justify-center bg-[#b8892e] text-base font-semibold text-white">
             {index}
           </div>
         </div>
@@ -58,20 +58,20 @@ const Card = ({
         {/* Content */}
         <div className="px-4 py-3">
           <h3
-            className={`text-sm font-bold leading-[1.15] pl-3 ${dark ? "text-[#f4e8c9]" : ""
+            className={`text-base font-bold leading-[1.15] pl-3 ${dark ? "text-[#f4e8c9]" : ""
               }`}
           >
             {item.title}
           </h3>
 
           <ul
-            className={`mt-3 space-y-[5px] text-xs leading-[1.25] font-semibold ${dark ? "text-[#f4e8c9]" : ""
+            className={`mt-3 space-y-[5px] text-base leading-[1.25] font-semibold line-clamp-6 ${dark ? "text-[#f4e8c9]" : ""
               }`}
           >
               {item.details.map((point, index) => (
-              <li key={index} className="flex gap-4">
-                <span className="mt-[4px] h-[5px] w-[5px] rounded-full bg-[#b8892e]" />
-                <span>{point}</span>
+              <li key={index} className="flex items-center gap-2">
+                <span className="h-[5px] w-[5px] shrink-0 rounded-full bg-[#b8892e]" />
+                <span className="line-clamp-1">{point}</span>
               </li>
             ))}
           </ul>
@@ -81,7 +81,7 @@ const Card = ({
       {/* Bottom Strap */}
       {item.bottomStrap && (
         <div className="flex items-center justify-center gap-4 bg-[#b8892e] px-3 py-[6px] absolute bottom-0 left-0 right-0">
-          <span className="text-white text-xs font-semibold tracking-wide text-center leading-none">
+          <span className="text-white text-base font-semibold tracking-wide text-center leading-none">
            {item.bottomStrapText}
           </span>
         </div>
@@ -133,10 +133,10 @@ const TurnkeySolutions = ({sectionContent}: { sectionContent: TurnkeySolutionsCo
           {/* Bottom Row */}
           <div className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-[1fr_2fr]"> {/* Removed the extra Card component here */}
 <Card index={sectionContent.cards.length} item={sectionContent.cards[sectionContent.cards.length-1]} />
-            <div className="overflow-hidden rounded-[10px] border border-[#1c5d4b] bg-[#063d30] max-h-53.25">
-              <div className="grid h-full grid-cols-[200px_1fr_1fr]">
+            <div className="h-full overflow-hidden rounded-[10px] border border-[#1c5d4b] bg-[#063d30]">
+              <div className="grid h-full grid-cols-1 md:grid-cols-[200px_1fr_1fr]">
                 {/* Left Image Placeholder */}
-                <div className="relative flex items-center justify-center border-r  border-[#d0a965] py-5">
+                <div className="relative flex items-center justify-center border-b border-[#d0a965] py-5 md:border-b-0 md:border-r">
                   <Image src={sectionContent.specialCard.leftImage.imageUrl} alt={sectionContent.specialCard.leftImage.alt||""} className="object-contain" width={120} height={120} />
                 </div>
 
@@ -152,10 +152,10 @@ const TurnkeySolutions = ({sectionContent}: { sectionContent: TurnkeySolutionsCo
                     </h3>
                   </div>
 
-                  <ul className="space-y-[7px] text-xs">
+                  <ul className="space-y-[7px] text-base">
                     {sectionContent.specialCard.details.map((point, index) => (
-                      <li key={index} className="flex gap-4">
-                        <span className="mt-[4px] h-[5px] w-[5px] rounded-full bg-[#d8b46d]" />
+                      <li key={index} className="flex items-center gap-2">
+                        <span className="h-[5px] w-[5px] shrink-0 rounded-full bg-[#d8b46d]" />
                         <span>{point}</span>
                       </li>
                     ))}
@@ -163,7 +163,7 @@ const TurnkeySolutions = ({sectionContent}: { sectionContent: TurnkeySolutionsCo
                 </div>
 
                 {/* Right Image Placeholder */}
-                <div className="relative bg-[#0b4b3a]">
+                <div className="relative hidden bg-[#0b4b3a] md:block">
                   <Image src={sectionContent.specialCard.rightImage.imageUrl} alt={sectionContent.specialCard.rightImage.alt||""} className="object-fill" fill />
                 </div>
               </div>

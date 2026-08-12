@@ -58,30 +58,30 @@ export default function WhyChoose({sectionContent}: { sectionContent: TurnkeyWhy
           <div className="flex flex-col lg:flex-row items-start lg:items-center gap-6 lg:gap-0">
 
             {/* ── LEFT: Section title + stats ── */}
-            <div className="flex flex-col gap-5  shrink-0">
+            <div className="flex flex-col gap-5 w-full lg:w-[40%] shrink-0">
 
               {/* Section title */}
-              <div className="flex items-center gap-4 ml-20">
-                <div className="h-px w-10 bg-[#c9972a] opacity-60" />
-                <p className="text-[#c9972a] text-sm tracking-[0.28em] font-semibold uppercase whitespace-nowrap ">
+              <div className="flex items-center gap-3 ml-0 lg:ml-20">
+                <div className="h-px w-6 lg:w-10 bg-[#c9972a] opacity-60" />
+                <p className="text-[#c9972a] text-base tracking-[0.28em] font-semibold uppercase whitespace-normal lg:whitespace-nowrap">
                   {sectionContent.statsTitle}
                 </p>
-                <div className="h-px w-10 bg-[#c9972a] opacity-60" />
+                <div className="h-px w-6 lg:w-10 bg-[#c9972a] opacity-60" />
               </div>
 
               {/* Stats row */}
-              <div className="flex items-stretch gap-0 lg:border-r-2 lg:border-[#c9972a]/30 lg:pr-8 pt-2">
+              <div className="flex flex-wrap items-stretch gap-y-3 gap-x-0 lg:border-r-2 lg:border-[#c9972a]/30 lg:pr-8 pt-2">
                 {sectionContent.stats.map((s, index) => (
                   <div
                     key={s.id || index}
-                    className={`flex flex-col items-start justify-center px-5 first:pl-0 ${
+                    className={`flex flex-col items-start justify-center px-3 sm:px-5 first:pl-0 ${
                       index !== sectionContent.stats.length - 1 ? "border-r border-[#c9972a]/40" : ""
                     }`}
                   >
                     <span className="text-[#c9972a] text-2xl sm:text-4xl font-semibold leading-none">
                       {s?.title||""}
                     </span>
-                    <HtmlRenderer content={s.description} className="text-[#e8d9b5] text-[10px] sm:text-xs leading-snug whitespace-pre-line mt-1 font-medium">
+                    <HtmlRenderer content={s.description} className="text-[#e8d9b5] text-base leading-snug whitespace-pre-line mt-1 font-medium">
                       
                     </HtmlRenderer>
                   </div>
@@ -90,11 +90,11 @@ export default function WhyChoose({sectionContent}: { sectionContent: TurnkeyWhy
             </div>
 
             {/* ── RIGHT: Feature icons ── */}
-            <div className="flex flex-wrap lg:flex-nowrap items-center justify-start lg:justify-around gap-4 lg:gap-0 lg:pl-8 w-full">
+            <div className="grid grid-cols-2 sm:grid-cols-4 w-full lg:w-[70%] lg:grid-cols-3 xl:grid-cols-6 items-start justify-items-center gap-4 lg:gap-5 lg:pl-8">
               {sectionContent.features.map((f) => (
                 <div 
                   key={f.id || f.title} // Changed f.label to f.title
-                  className={`flex flex-col items-center gap-4 text-center px-2 lg:px-2`}
+                  className={`flex flex-col items-center gap-4 text-center px-2 lg:px-2 w-full`}
                 >
                   <div className="w-12 h-12 flex items-center justify-center">
                     <Image
@@ -105,7 +105,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: TurnkeyWhy
                       className="object-contain w-full h-full"
                     />
                   </div>
-                  <p className="text-[#e8d9b5] text-[9px] sm:text-[10px] leading-snug whitespace-pre-line">
+                  <p className="text-[#e8d9b5] text-base leading-snug whitespace-pre-line font-medium">
                     {f.title}
                   </p>
                 </div>

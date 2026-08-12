@@ -7,6 +7,7 @@ import learning from "@/assets/career/learning.webp"
 import workLife from "@/assets/career/work_life_balance.webp"
 import celebration from "@/assets/career/celebration.webp"
 import growth from "@/assets/career/growth.webp"
+import { getImageUrl } from "@/lib/api/api";
 
 interface Benefit {
   title: string;
@@ -60,7 +61,7 @@ const CareerBenefits = ({ sectionContent }: { sectionContent: CareerBenefitsProp
       <Container>
         {/* Heading */}
         <div className="mb-4 flex items-center gap-5">
-          <h2 className="shrink-0 font-serif text-lg font-semibold uppercase tracking-wide text-[#2A2A2A]">
+          <h2 className="shrink-0  text-lg font-semibold uppercase tracking-wide text-[#2A2A2A]">
             {sectionContent.title || `Benefits of Being an Ensisian`}
           </h2>
 
@@ -82,7 +83,7 @@ const CareerBenefits = ({ sectionContent }: { sectionContent: CareerBenefitsProp
                 }`}
             >
               <Image
-                src={item.icon}
+                src={typeof item.icon === "string" ? getImageUrl(item.icon) : item.icon}
                 alt={item.title}
                 width={48}
                 height={48}
@@ -90,10 +91,10 @@ const CareerBenefits = ({ sectionContent }: { sectionContent: CareerBenefitsProp
               />
               <div>
 
-                <h3 className="text-left text-xs font-semibold leading-6 text-[#222]">
+                <h3 className="text-left text-base font-semibold leading-6 text-[#222]">
                   {item.title}
                 </h3>
-                <h3 className="text-left text-xs font-semibold leading-6 text-[#222]" dangerouslySetInnerHTML={{__html:item.description}}>
+                <h3 className="text-left text-base font-semibold leading-6 text-[#222]" dangerouslySetInnerHTML={{__html:item.description}}>
                 </h3>
               </div>
             </div>

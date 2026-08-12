@@ -1,91 +1,141 @@
+"use client";
+
 import { useState } from "react";
-import { fmt } from "./Products";
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { ArrowRight, Heart } from "lucide-react";
 import { useShop, type ShopProduct } from "@/context/ShopContext";
 import { getImageUrl } from "@/lib/api/api";
-import type { Product } from "@/constants"
 
-export default function ProductCard({ product }: { product: Product }) {
-  const { isInCart, isLiked } = useShop();
+export const formatPrice = (n: number | string | undefined) =>
+  "₹" + Number(n || 0).toLocaleString("en-IN");
+
+function categoryLabel(category: any): string {
+  if (!category) return "";
+  if (typeof category === "string") return category;
+  return category?.name || category?.label || category?.slug || "";
+}
+
+function resolveBadge(product: any): string | null {
+  const tags: string[] = Array.isArray(product?.tags)
+    ? product.tags.map((t: any) => String(t || "").trim().toUpperCase())
+    : [];
+  if (tags.includes("NEW")) return "NEW";
+  if (tags.includes("BESTSELLER") || tags.includes("BEST SELLER"))
+    return "BESTSELLER";
+  if (product?.isFeatured || tags.includes("PREMIUM")) return "PREMIUM";
+  return null;
+}
+
+export default function ProductCard({
+  product,
+  badge,
+}: {
+  product: any;
+  badge?: string;
+}) {
+  const { toggleLike, isLiked, addToCart } = useShop();
+  const router = useRouter();
+
+  const id = String(product?.id ?? product?._id ?? "");
+  const slug = product?.slug || id;
+  const title = product?.title || product?.name || "";
+  const category = categoryLabel(product?.category);
+  const imageSrc = product?.images?.[0] || product?.image || "";
+  const displayBadge = badge || resolveBadge(product);
+
   const shopProduct: ShopProduct = {
-    id: product.id.toString(),
-    slug: product.slug,
-    name:  product.title, // Use product.title as fallback for name
-    category: product.category,
-    price: product.price,
-    image: typeof product.images[0],
+    id,
+    slug,
+    name: title,
+    category,
+    price: Number(product?.price || 0),
+    image:
+      typeof imageSrc === "string"
+        ? imageSrc.startsWith("data:")
+          ? imageSrc
+          : getImageUrl(imageSrc, 700)
+        : "",
   };
   const wished = isLiked(shopProduct.id);
-  const added = isInCart(shopProduct.id);
 
   return (
-    <div className="group relative bg-white rounded-[18px] overflow-hidden border border-[#ede8e0] hover:shadow-[0_4px_18px_rgba(0,0,0,0.07)] transition-all duration-300">
-      <Link href={`/products/${product.slug}`} className="block">
-        <div className="relative h-28 sm:h-30 overflow-hidden bg-[#f8f3ec]">
+    <div className="group relative flex h-full w-full max-w-[312px] flex-col overflow-hidden rounded-[20px] border border-[#e6d6b9] bg-[#fdfaf3] shadow-[0_8px_24px_rgba(139,107,55,0.08)] transition-all duration-500 hover:-translate-y-[3px] hover:shadow-[0_18px_44px_rgba(139,107,55,0.16)] mx-auto">
+      {/* Image */}
+      <Link
+        href={`/products/${slug}`}
+        className="relative block aspect-[4/3] w-full overflow-hidden bg-[#f3ecdc]"
+      >
+        {imageSrc ? (
           <Image
-            src={getImageUrl(product.images[0], 700)}
-            alt={product.title}
+            src={shopProduct.image}
+            alt={title}
             fill
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
             crossOrigin="anonymous"
             loading="lazy"
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
           />
-        </div>
+        ) : (
+          <div className="h-full w-full bg-[#f3ecdc]" />
+        )}
       </Link>
 
-      {/* <button
+      {/* Badge */}
+      {displayBadge && (
+        <span className="absolute left-4 top-4 z-10 rounded-full bg-[#173A2B] px-3 py-1 text-[9px] font-semibold uppercase tracking-[0.18em] text-[#E4C37F] shadow-[0_2px_10px_rgba(23,58,43,0.25)]">
+          {displayBadge}
+        </span>
+      )}
+
+      {/* Wishlist */}
+      <button
         type="button"
         aria-label={wished ? "Remove from wishlist" : "Add to wishlist"}
         onClick={() => toggleLike(shopProduct)}
-        className="absolute top-2.5 right-2.5 w-7 h-7 rounded-full bg-white/85 backdrop-blur-sm flex items-center justify-center shadow-sm hover:scale-110 transition-transform"
+        className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-[#e6d6b9] bg-white/90 shadow-[0_2px_10px_rgba(139,107,55,0.12)] backdrop-blur-sm transition-transform duration-300 hover:scale-110"
       >
         <Heart
-          size={13}
+          size={16}
           className={
-            wished ? "fill-red-500 text-red-500" : "text-[#9a8870]"
+            wished
+              ? "fill-[#b8863b] text-[#b8863b]"
+              : "text-[#8a6a3a]"
           }
         />
-      </button> */}
+      </button>
 
-      <div className="p-2.5 sm:p-3">
-        {/* <p
-          className="text-[8px] sm:text-[9px] font-[600] tracking-[0.14em] mb-1 uppercase"
-          style={{ color: "#c8a45d" }}
-        >
-          {product.category}
-        </p> */}
+      {/* Content */}
+      <div className="flex flex-1 flex-col px-4 pb-4 pt-3">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-[#c8a45d]">
+          {category || "ENSIS WELLNESS"}
+        </p>
 
-        <Link href={`/products/${product.id}`} className="block">
-          <h3 className="ws-body text-[12px] sm:text-[13px] font-medium text-[#1a1a1a] leading-[1.35] line-clamp-1">
-            {product.title}
+        <Link href={`/products/${slug}`} className="mt-1 block">
+          <h3 className="line-clamp-1 text-[15px] font-semibold leading-snug text-[#173A2B] transition-colors duration-300 group-hover:text-[#b8863b]">
+            {title}
           </h3>
         </Link>
 
-        <div>
-          <span className="text-[13px] font-semibold text-[#1a1a1a] leading-none">
-            {fmt(product.price)}
-          </span>
+        <p className="mt-1.5 text-[17px] font-bold text-[#b8863b]">
+          {formatPrice(product?.price)}
+        </p>
 
-          {/* <button
-            type="button"
-            aria-label={added ? "Add one more to cart" : "Add to cart"}
-            onClick={() => addToCart(shopProduct)}
-            className={`w-7 h-7 rounded-full border border-[#c8a45d] flex items-center justify-center transition-colors group/cart ${
-              added ? "bg-[#c8a45d]" : "hover:bg-[#c8a45d]"
-            }`}
-          >
-            <ShoppingCart
-              size={13}
-              className={`transition-colors ${
-                added
-                  ? "text-white"
-                  : "text-[#c8a45d] group-hover/cart:text-white"
-              }`}
-            />
-          </button> */}
-        </div>
+        <button
+          type="button"
+          onClick={() => {
+            addToCart(shopProduct);
+            router.push("/checkout");
+          }}
+          className="mt-auto inline-flex w-fit items-center gap-1.5 border-b border-[#173A2B]/25 pt-2.5 pb-0.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#173A2B] transition-colors duration-300 hover:border-[#b8863b] hover:text-[#b8863b]"
+        >
+          Buy Now
+          <ArrowRight
+            size={12}
+            className="transition-transform duration-300 group-hover:translate-x-1"
+          />
+        </button>
       </div>
     </div>
   );
@@ -140,7 +190,7 @@ export function Checkbox({
         )}
       </div>
 
-      <span className="text-[12px] font-medium group-hover:text-[#1a1a1a] transition-colors">
+      <span className="text-base font-medium group-hover:text-[#1a1a1a] transition-colors">
         {label}
       </span>
     </label>

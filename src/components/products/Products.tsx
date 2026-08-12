@@ -285,7 +285,7 @@ const toggleIdealFor = (value: string) => {
           {/* Mobile Filter Toggle */}
           <button
             suppressHydrationWarning
-            className="lg:hidden mb-4 flex items-center gap-4 px-4 py-2 bg-[#183b17] text-white rounded-full text-xs font-[600] tracking-wider"
+            className="lg:hidden mb-4 flex items-center gap-4 px-4 py-2 bg-[#183b17] text-white rounded-full text-base font-[600] tracking-wider"
             onClick={() => setSidebarOpen((o) => !o)}
           >
             <Package size={14} />
@@ -301,13 +301,13 @@ const toggleIdealFor = (value: string) => {
             >
               {/* Filters */}
               <div className="bg-white rounded-2xl border border-[#ede8e0] p-4">
-                <p className="text-xs font-medium tracking-[0.18em] uppercase mb-3">
+                <p className="text-base font-medium tracking-[0.18em] uppercase mb-3">
                   Filter By
                 </p>
 
                 {/* Price */}
                 <div className="mb-5">
-                  <p className="text-[11px] font-[600] text-[#1a1a1a] mb-3">
+                  <p className="text-base font-[600] text-[#1a1a1a] mb-3">
                     Price Range
                   </p>
 
@@ -324,11 +324,11 @@ const toggleIdealFor = (value: string) => {
                   />
 
                   <div className="flex justify-between mt-1.5">
-                    <span className="text-[10px] font-medium">
+                    <span className="text-base font-medium">
                       {fmt(minPrice)}
                     </span>
 
-                    <span className="text-[10px] font-medium">
+                    <span className="text-base font-medium">
                       {fmt(priceRange)}+
                     </span>
                   </div>
@@ -336,7 +336,7 @@ const toggleIdealFor = (value: string) => {
 
                 {/* Material */}
                 <div className="mb-5">
-                  <p className="text-xs font-[600] text-[#1a1a1a] mb-3">
+                  <p className="text-base font-[600] text-[#1a1a1a] mb-3">
                     Material
                   </p>
 
@@ -354,7 +354,7 @@ const toggleIdealFor = (value: string) => {
 
                 {/* Ideal */}
                 <div className="mb-5">
-                  <p className="text-xs font-[600] text-[#1a1a1a] mb-3">
+                  <p className="text-base font-[600] text-[#1a1a1a] mb-3">
                     Ideal For
                   </p>
 
@@ -377,7 +377,7 @@ const toggleIdealFor = (value: string) => {
                     setSelectedMaterials([]);
                     setSelectedIdealFor([]);
                   }}
-                  className="flex items-center gap-1.5 text-[11px] font-[600] text-[#183b17] border border-[#183b17] rounded-full px-3 py-1.5 hover:bg-[#183b17] hover:text-white transition-colors"
+                  className="flex items-center gap-1.5 text-base font-[600] text-[#183b17] border border-[#183b17] rounded-full px-3 py-1.5 hover:bg-[#183b17] hover:text-white transition-colors"
                 >
                   <RefreshCw size={11} />
                   Reset Filters
@@ -398,26 +398,28 @@ const toggleIdealFor = (value: string) => {
               {/* Horizontal Categories Bar */}
               <div className="mb-5">
                 <div className="flex items-center gap-2 overflow-x-auto pb-2 -mb-2 no-scrollbar">
-                  {displayCategories.map((cat) => (
+                  {displayCategories.map((cat, catIndex) => (
                     <button
-                      key={cat.key}
+                      key={`${cat.key}-${catIndex}`}
                       suppressHydrationWarning
                       onClick={() => setActiveCategory(cat.key)}
-                      className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border text-[12px] transition-all whitespace-nowrap ${
+                      className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border text-base transition-all whitespace-nowrap ${
                         activeCategory === cat.key
                           ? "bg-[#183b17] text-white border-[#183b17] font-[600]"
                           : "bg-white text-[#1a1a1a] border-[#ede8e0] font-medium hover:bg-[#f5ede0]"
                       }`}
                     >
-                      {cat.icon ? (
+                      {cat.key === "all" ? (
+                        <LayoutGrid size={18} className="shrink-0 text-[#B37E39]" strokeWidth={2} />
+                      ) : cat.icon ? (
                         <span className="h-[15px] w-[20px] overflow-hidden rounded-[3px]">
                           <Image src={cat.icon} alt={cat.label} width={20} height={15} className="object-fill object-center" />
                         </span>
                       ) : (
-                        <span className="inline-block h-[15px] w-[20px]" />
+                        <LayoutGrid size={16} className="shrink-0 text-[#183b17]" />
                       )}
                       <span>{cat.label}</span>
-                      <span className={`text-[10px] font-[600] ${activeCategory === cat.key ? "text-white/70" : "text-[#c8a45d]"}`}>
+                      <span className={`text-base font-[600] ${activeCategory === cat.key ? "text-white/70" : "text-[#c8a45d]"}`}>
                         {cat.count}
                       </span>
                     </button>
@@ -427,7 +429,7 @@ const toggleIdealFor = (value: string) => {
 
               {/* Toolbar */}
               <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
-                {/* <p className="text-[12px] sm:text-[13px] text-[#7a6a55]">
+                {/* <p className="text-base text-[#7a6a55]">
                   Showing 1–
                   {visibleProducts.length} of{" "}
                   <span className="font-[600] text-[#1a1a1a]">
@@ -439,7 +441,7 @@ const toggleIdealFor = (value: string) => {
                 <div className="flex items-center gap-4">
 
                   {/* Sort */}
-                  <div className="flex items-center gap-4 text-[12px] text-[#7a6a55]">
+                  <div className="flex items-center gap-4 text-base text-[#7a6a55]">
                     <span className="hidden sm:inline">
                       Sort by:
                     </span>
@@ -452,7 +454,7 @@ const toggleIdealFor = (value: string) => {
                         onChange={(e) =>
                           setSortBy(e.target.value)
                         }
-                        className="appearance-none bg-white border border-[#ede8e0] rounded-lg px-3 py-1.5 pr-7 text-[12px] text-[#1a1a1a] outline-none cursor-pointer"
+                        className="appearance-none bg-white border border-[#ede8e0] rounded-lg px-3 py-1.5 pr-7 text-base text-[#1a1a1a] outline-none cursor-pointer"
                       >
                         {[
                           "Featured",
@@ -523,12 +525,12 @@ const toggleIdealFor = (value: string) => {
                 className="h-20 flex items-center justify-center"
               >
                 {visibleCount < filtered.length ? (
-                  <div className="flex items-center gap-4 text-[#8a7560] text-sm">
+                  <div className="flex items-center gap-4 text-[#8a7560] text-base">
                     <div className="w-5 h-5 border-2 border-[#c8a45d] border-t-transparent rounded-full animate-spin" />
                     Loading more products...
                   </div>
                 ) : (
-                  <p className="text-sm text-[#9a8870]">
+                  <p className="text-base text-[#9a8870]">
                     You’ve reached the end
                   </p>
                 )}
@@ -536,7 +538,7 @@ const toggleIdealFor = (value: string) => {
             </div>
 
             {/* ── RIGHT SIDEBAR ── */}
-            <aside className="hidden xl:flex shrink-0 w-[210px] flex-col gap-4 sticky top-5">
+            <aside className="hidden xl:flex shrink-0 w-[280px] flex-col gap-4 sticky top-5">
 
               {/* Enquire */}
               <div className="bg-white rounded-2xl border border-[#ede8e0] p-5">
@@ -554,7 +556,7 @@ const toggleIdealFor = (value: string) => {
                   Enquire Now
                 </h3>
 
-                <p className="text-xs font-medium text-center leading-relaxed mb-2">
+                <p className="text-base font-medium text-center leading-relaxed mb-2">
                   Tell us about your requirements and our wellness experts
                   will contact you.
                 </p>
@@ -573,7 +575,7 @@ const toggleIdealFor = (value: string) => {
                         name: e.target.value,
                       }))
                     }
-                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
+                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-base text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
                   />
 
                   {/* Email */}
@@ -589,7 +591,7 @@ const toggleIdealFor = (value: string) => {
                         email: e.target.value,
                       }))
                     }
-                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
+                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-base text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
                   />
 
                   {/* Phone */}
@@ -605,7 +607,7 @@ const toggleIdealFor = (value: string) => {
                         phone: e.target.value,
                       }))
                     }
-                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
+                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-base text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
                   />
 
                   {/* Category Select */}
@@ -620,12 +622,12 @@ const toggleIdealFor = (value: string) => {
                           category: e.target.value,
                         }))
                       }
-                      className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 pr-7 text-[12px] text-black outline-none focus:border-[#c8a45d] transition-colors appearance-none"
+                      className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 pr-7 text-base text-black outline-none focus:border-[#c8a45d] transition-colors appearance-none"
                     >
                       <option value="">Select Product Category</option>
 
                       {displayCategories.slice(1).map((c, i) => (
-                        <option key={c.key || `cat-${i}`} value={c.key}>
+                        <option key={`${c.key}-${i}`} value={c.key}>
                           {c.label}
                         </option>
                       ))}
@@ -649,7 +651,7 @@ const toggleIdealFor = (value: string) => {
                         message: e.target.value,
                       }))
                     }
-                    className="w-full rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 py-2 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors resize-none"
+                    className="w-full rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 py-2 text-base text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors resize-none"
                   />
 
                   {/* Button */}
@@ -658,7 +660,7 @@ const toggleIdealFor = (value: string) => {
                     type="button"
                     disabled={enquiryLoading}
                     onClick={handleEnquirySubmit}
-                    className="w-full flex items-center justify-center gap-1.5 px-4 h-8 rounded-lg bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)] text-white font-bold text-[10px] tracking-widest hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full flex items-center justify-center gap-1.5 px-4 h-8 rounded-lg bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)] text-white font-bold text-base tracking-widest hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {enquiryLoading ? (
                       <span className="inline-block w-3.5 h-3.5 border-2 border-[#c8a45d] border-t-transparent rounded-full animate-spin" />
@@ -669,7 +671,7 @@ const toggleIdealFor = (value: string) => {
                   </button>
 
                   {enquiryStatus && (
-                    <p className={`text-[11px] font-medium leading-snug ${enquiryStatus.type === "success" ? "text-green-700" : "text-red-600"}`}>
+                    <p className={`text-base font-medium leading-snug ${enquiryStatus.type === "success" ? "text-green-700" : "text-red-600"}`}>
                       {enquiryStatus.message}
                     </p>
                   )}
@@ -716,21 +718,21 @@ const toggleIdealFor = (value: string) => {
                     <div>
                       {url ? (
                         <Link href={url}>
-                          <p className="text-[11px] font-[600] text-[#1a1a1a] leading-none mb-0.5">
+                          <p className="text-base font-[600] text-[#1a1a1a] leading-none mb-0.5">
                             {title}
                           </p>
 
-                          <p className="text-[10px] font-medium leading-snug">
+                          <p className="text-base font-medium leading-snug">
                             {value}
                           </p>
                         </Link>
                       ) : (
                         <>
-                          <p className="text-[11px] font-[600] text-[#1a1a1a] leading-none mb-0.5">
+                          <p className="text-base font-[600] text-[#1a1a1a] leading-none mb-0.5">
                             {title}
                           </p>
 
-                          <p className="text-[10px] font-medium leading-snug">
+                          <p className="text-base font-medium leading-snug">
                             {value}
                           </p>
                         </>

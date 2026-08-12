@@ -39,7 +39,7 @@ export default function OurProjects({ sectionContent }: OurProjectsProps) {
             alt="decoration"
             className="h-4 w-auto object-contain"
           />
-          <h2 className="font-serif text-2xl sm:text-3xl text-[#1f2c25]">
+          <h2 className=" text-2xl sm:text-3xl text-[#1f2c25]">
             {sectionContent.title}
           </h2>
           <Image
@@ -50,7 +50,7 @@ export default function OurProjects({ sectionContent }: OurProjectsProps) {
             className="h-4 w-auto object-contain"
           />
         </div>
-        <p className="mb-6 text-center text-xs sm:text-sm text-[#5a5248]">
+        <p className="mb-6 text-center text-base text-[#5a5248]">
           {sectionContent.subtitle}
         </p>
 
@@ -74,10 +74,10 @@ export default function OurProjects({ sectionContent }: OurProjectsProps) {
 
               {/* Content */}
               <div className="px-2.5 py-2 text-center">
-                <h3 className="text-[13px] font-semibold leading-tight text-[#1f2c25]">
+                <h3 className="text-base font-semibold leading-tight text-[#1f2c25]">
                   {project.title}
                 </h3>
-                <p className="mt-1 flex items-center justify-center gap-1 text-[11px] leading-none text-[#5a5248]">
+                <p className="mt-1 flex items-center justify-center gap-1 text-base leading-none text-[#5a5248]">
                   <MapPin className="h-3 w-3 text-[#b1793d]" />
                   {project.location}
                 </p>

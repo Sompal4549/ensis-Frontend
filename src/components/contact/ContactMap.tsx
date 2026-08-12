@@ -39,7 +39,7 @@ const PremiumMap = ({ sectionContent }: { sectionContent: PremiumMapProps }) => 
         
 
             {/* Icon */}
-            <div className="mb-8 flex justify-center lg:justify-start">
+            <div className="mb-4 flex justify-center lg:justify-start">
               <div className="flex h-16 w-16 items-center justify-center rounded-full border border-[#D9B25F] bg-white shadow-sm">
                 <MapPin
                   className="text-[#D9B25F]"
@@ -50,13 +50,13 @@ const PremiumMap = ({ sectionContent }: { sectionContent: PremiumMapProps }) => 
             </div>
 
             {/* Content */}
-            <h2 className="text-center lg:text-left text-3xl font-serif font-semibold text-[#0D3A2E]">
+            <h2 className="text-center lg:text-left text-3xl  font-semibold text-[#0D3A2E]">
               {sectionContent?.title||""}
             </h2>
 
-            <div className="mt-3 mb-6 h-[3px] w-12 rounded-full bg-[#D9B25F]" />
+            <div className="mt-3 mb-4 h-[3px] w-12 rounded-full bg-[#D9B25F]" />
 
-            <HtmlRenderer className="text-center lg:text-left text-[15px] leading-8 text-[#374151]" content={sectionContent?.description||""}>
+            <HtmlRenderer className="text-center lg:text-left text-base leading-8 text-[#374151]" content={sectionContent?.description||""}>
               
             </HtmlRenderer>
             <div className="max-w-[250px] mt-4">

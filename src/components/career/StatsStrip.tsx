@@ -75,18 +75,19 @@ export default function CareerStatsStrip() {
     };
   }, []);
 
-  const gridCols = gridColsClass(resolvedFeatures.length);
+const displayFeatures = resolvedFeatures.slice(0, 5);
+const gridCols = gridColsClass(displayFeatures.length);
 
   return (
     <div className="relative z-10 mt-6 md:mt-0 md:-mt-28 xl:-mt-10">
       <Container className="relative z-10 py-2">
         <div className="rounded-xl border border-[#C9972A] bg-[#0f2e22] py-2 px-3 ring-1 ring-[#C9972A]/50 ring-offset-2 ring-offset-transparent">
           <div className={`grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${gridCols}`}>
-            {resolvedFeatures.map((item, index) => (
+            {displayFeatures.map((item, index) => (
               <div
                 key={item.id || index}
-                className={`flex items-center gap-4 pr-6 ${
-                  index !== resolvedFeatures.length - 1
+                className={`flex items-center gap-4 pr-4 ${
+                  index !== displayFeatures.length - 1
                     ? "xl:border-r border-[#C9972A]/40"
                     : ""
                 }`}
@@ -102,11 +103,11 @@ export default function CareerStatsStrip() {
                 </div>
 
                 <div className="flex flex-col justify-center">
-                  <p className="text-xs font-semibold text-[#faf6ef] leading-tight">
+                  <p className="tabular-nums text-base font-semibold text-[#faf6ef] leading-tight">
                     {item.title}
                   </p>
 
-                  <p className="text-xs leading-4 text-[#faf6ef]/90 font-medium">
+                  <p className="text-base leading-4 text-[#faf6ef]/90 font-medium">
                     {item.subtitle || item.description}
                   </p>
                 </div>

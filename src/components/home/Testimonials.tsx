@@ -58,7 +58,7 @@ export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
               <SwiperSlide key={index}>
                 <div className="h-full border border-[#e1d7c9] bg-white p-3 rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative">
                   <Image height={28} width={28} alt="quote" src={quote} />
-                  <p className="mb-2 text-xs font-medium pl-6 line-clamp-3" dangerouslySetInnerHTML={{ __html: item.text || item.description || "" }} />
+                  <p className="mb-2 text-base font-medium pl-6 line-clamp-3" dangerouslySetInnerHTML={{ __html: item.text || item.description || "" }} />
                   <div className='flex text-orange-400 items-center gap-4 my-2 pl-6'>
                     {[...Array(Math.round(item.rating ?? 5))].map((_, i) => <FaStar key={i} />)}
                   </div>
@@ -75,8 +75,8 @@ export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
                       />
                     </div>
                     <div className="py-1">
-                      <p className="text-xs font-bold text-[#1f261b] leading-5">{item.name}</p>
-                      <span className="text-xs font-medium leading-4">{item.role ?? item.designation}</span>
+                      <p className="text-base font-bold text-[#1f261b] leading-5">{item.name}</p>
+                      <span className="text-base font-medium leading-5">{item.role ?? item.designation}</span>
                     </div>
                   </div>
                 </div>

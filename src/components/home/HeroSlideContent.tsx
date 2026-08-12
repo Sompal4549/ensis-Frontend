@@ -102,11 +102,23 @@ export default function HeroSlideContent({
           alt=""
           fill
           priority={slideIndex === 0}
-          className="object-cover object-left md:object-center md:object-fill"
+          className="object-cover object-center md:object-fill"
           crossOrigin="anonymous"
           sizes="100vw"
         />
       </motion.div>
+
+      {/* Mobile overlay - top se bottom tak taaki text readable rahe */}
+      <motion.div
+        className="absolute inset-0 md:hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(247,242,234,0.82), rgba(247,242,234,0.35) 45%, rgba(247,242,234,0.78))",
+        }}
+      />
 
       {/* Content - image ke baad staggered */}
       <motion.div
@@ -164,7 +176,7 @@ export default function HeroSlideContent({
             {slide.description && (
               <motion.div
                 variants={itemVariants}
-                className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-[#313628]"
+                className="flex flex-wrap items-center gap-x-5 gap-y-2 text-base font-semibold text-[#313628]"
                 dangerouslySetInnerHTML={{ __html: slide.description }}
               />
             )}
@@ -173,7 +185,7 @@ export default function HeroSlideContent({
             {((slide.listItems || slide.listdesc) as string[])?.length > 0 && (
               <motion.div
                 variants={itemVariants}
-                className="flex flex-wrap items-center text-[12px] font-semibold text-[#313628]"
+                className="flex flex-wrap items-center text-base font-semibold text-[#313628]"
               >
                 {((slide.listItems || slide.listdesc) as string[])?.map(
                   (item, i, arr) => (
@@ -192,12 +204,12 @@ export default function HeroSlideContent({
             {visibleFeatures.length > 0 && (
               <motion.div
                 variants={itemVariants}
-                className="mt-4 md:mt-6 flex flex-wrap gap-5"
+                className="mt-4 md:mt-6 grid grid-cols-2 gap-x-2 gap-y-4 md:flex md:flex-wrap md:gap-5"
               >
                 <div className="flex items-center self-stretch">
                   {visibleFeatures.map((feat, fi) => (
                     <React.Fragment key={fi}>
-                      <div className="flex flex-col items-center gap-1 md:gap-4 px-3 md:px-6 first:pl-0 first:pr-3 first:md:pr-6">
+                      <div className="flex flex-col items-center gap-1 md:gap-4 px-1 md:px-6 first:md:pl-0 first:md:pr-6">
                         <div
                           className="w-9 h-9 md:w-14 md:h-14 rounded-full flex items-center justify-center"
                           style={{ border: "2px solid #b89060" }}
@@ -223,23 +235,27 @@ export default function HeroSlideContent({
                           )}
                         </div>
                         <div className="flex flex-col items-center">
-                          {(feat.title || "").split(" ").map((word, wi) => (
-                            <span
-                              key={wi}
-                              className="text-[8px] md:text-[11px] font-bold tracking-widest uppercase text-center leading-tight"
-                              style={{
-                                color: "#4a3a28",
-                                fontFamily: "'Montserrat', sans-serif",
-                              }}
-                            >
-                              {word}
-                            </span>
-                          ))}
+                          {(() => {
+                            const words = (feat.title || "").split(" ");
+                            const lines = words.length === 3 ? [words.slice(0, 2).join(" "), words[2]] : words;
+                            return lines.map((line, wi) => (
+                              <span
+                                key={wi}
+                                className="text-[11px] sm:text-sm md:text-base font-bold tracking-tight uppercase text-center leading-tight"
+                                style={{
+                                  color: "#4a3a28",
+                                  fontFamily: "var(--font-montserrat), sans-serif",
+                                }}
+                              >
+                                {line}
+                              </span>
+                            ));
+                          })()}
                         </div>
                       </div>
                       {fi < visibleFeatures.length - 1 && (
                         <div
-                          className="w-px h-full flex-shrink-0 opacity-40"
+                          className="hidden md:block w-px h-full flex-shrink-0 opacity-40"
                           style={{ background: "#c8a97a" }}
                         />
                       )}

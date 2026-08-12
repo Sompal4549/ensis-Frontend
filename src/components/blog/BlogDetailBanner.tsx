@@ -42,7 +42,7 @@ const BlogDetailBanner: React.FC<BlogDetailBannerProps> = ({ blog }) => {
       <div className="absolute inset-0 z-10 w-[68%] bg-gradient-to-r from-[#0f2e22] from-40% via-[#0f2e22]/90 via-70% to-transparent" />
 
       {/* Content */}
-      <Container className="relative z-20 mx-auto px-6 py-8 md:py-10">
+      <Container className="relative z-20 mx-auto flex min-h-[550px] items-center px-6 py-8 md:min-h-[calc(100vh-146px)] md:py-10">
         {/* Title */}
         <h1 className="max-w-xl text-white">
           <span className="block">

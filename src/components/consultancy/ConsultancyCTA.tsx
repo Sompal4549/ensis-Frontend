@@ -39,7 +39,7 @@ export default function ConsultancyCTA({ sectionContent }: { sectionContent: Con
           </div>
 
           <div className="max-w-[520px]">
-            <p className="text-sm font-semibold uppercase tracking-[1.8px] text-[#F4B16A]">
+            <p className="text-base font-semibold uppercase tracking-[1.8px] text-[#F4B16A]">
               {sectionContent.heading}
             </p>
 
@@ -47,7 +47,7 @@ export default function ConsultancyCTA({ sectionContent }: { sectionContent: Con
               {sectionContent.title}
             </h2>
 
-            <HtmlRenderer className="mt-2 text-[14px] text-white max-w-[450px]"
+            <HtmlRenderer className="mt-2 text-base text-white max-w-[450px]"
             content={sectionContent.description}>
               
             </HtmlRenderer>

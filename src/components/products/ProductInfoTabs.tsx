@@ -50,7 +50,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
               <button
                 key={tab.id}
                 onClick={() => setActive(tab.id)}
-                className={`flex items-center gap-4.5 border-b border-[#e8dfd0] px-4 py-3.5 text-left text-[10px] font-semibold tracking-[0.12em] transition-colors last:border-b-0 ${isActive
+                className={`flex items-center gap-4.5 border-b border-[#e8dfd0] px-4 py-3.5 text-left text-base font-semibold tracking-[0.12em] transition-colors last:border-b-0 ${isActive
                   ? " bg-white text-[#8d6a3a] font-bold"
                   : "text-[#6b6b6b] hover:bg-white/60 font-normal"
                   }`}
@@ -68,19 +68,19 @@ export default function ProductInfoSection({ product }: { product: Product }) {
             <div className="flex h-full">
               {/* Left: heading + bullets */}
               <div className="flex w-87.5 shrink-0 flex-col px-6 py-2">
-                <p className="text-sm font-bold uppercase tracking-[0.15em] text-[#8d6a3a]">
+                <p className="text-base font-bold uppercase tracking-[0.15em] text-[#8d6a3a]">
                   Overview
                 </p>
                 <h2 className="font-semibold text-2xl leading-tight">
                   {overview?.title}
                 </h2>
-                <p className="text-xs font-semibold" 
+                <p className="text-base font-semibold" 
                   dangerouslySetInnerHTML={{__html:overview?.description || `Every curve, every detail is crafted to support the therapist and
                   ensure unmatched comfort for the patient.`}}>
                 </p>
                 <ul className="mt-4 space-y-2">
                   {overview?.overviewList?.map((item: any) => (
-                    <li key={item} className="flex items-start gap-4 text-xs">
+                    <li key={item} className="flex items-start gap-4 text-base">
                       <CheckCircle2 size={14} className="mt-0.5 shrink-0 text-[#8d6a3a]" />
                       {item}
                     </li>
@@ -96,8 +96,8 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                       <Image src={h.image} alt={h.title} fill className="object-cover" />
                     </div>
                     <div className="p-4">
-                      <p className="text-xs font-semibold">{h.title}</p>
-                      <p className="mt-1 text-xs line-clamp-3" dangerouslySetInnerHTML={{__html:h.description}}>
+                      <p className="text-base font-semibold">{h.title}</p>
+                      <p className="mt-1 text-base line-clamp-3" dangerouslySetInnerHTML={{__html:h.description}}>
                       </p>
                     </div>
                   </div>
@@ -113,7 +113,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                   {overview?.specifications?.title}
                 </h3>
 
-                <div className="grid grid-cols-2 gap-x-8 gap-y-3 text-xs">
+                <div className="grid grid-cols-2 gap-x-8 gap-y-3 text-base">
                 {(overview?.specifications?.specificationsList ?? []).map(
   (item: any, key: number) => (
     <div key={key}>
@@ -144,7 +144,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                         size={13}
                         className="text-[#8d6a3a]"
                       />
-                      <span className="text-xs">{item}</span>
+                      <span className="text-base">{item}</span>
                     </div>
                   ))}
                 </div>
@@ -158,7 +158,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                 </h3>
 
                 <div className="overflow-hidden rounded-lg border border-[#e8dfd0]">
-                  <table className="w-full text-xs">
+                  <table className="w-full text-base">
                     <tbody>
                       {overview?.dimensions?.dimensionsList?.map((item: any, index: number) => (
                         <tr className="border-b border-[#e8dfd0]" key={index}>
@@ -178,7 +178,7 @@ export default function ProductInfoSection({ product }: { product: Product }) {
                   {overview?.materialAndCare?.title}
                 </h3>
 
-                <div className="text-xs" dangerouslySetInnerHTML={{ __html: overview?.materialAndCare?.description||"" }} />
+                <div className="text-base" dangerouslySetInnerHTML={{ __html: overview?.materialAndCare?.description||"" }} />
               </div>
             )}
           </>

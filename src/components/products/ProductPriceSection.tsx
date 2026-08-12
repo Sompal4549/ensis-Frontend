@@ -6,6 +6,7 @@ import {
   X,
 } from "lucide-react";
 import React, { ReactNode, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import ProductDetailActions from "./ProductDetailActions";
 import { useShop } from "@/context/ShopContext";
 import premium_teak from "@/assets/products/premium_teak_wood.webp";
@@ -189,7 +190,7 @@ const ProductPriceSection = ({
       </h2>
 
       <div className="mt-2 flex flex-wrap items-center gap-4 text-[10px]">
-        <button
+        <button suppressHydrationWarning
           onClick={() => setIsReviewOpen(true)}
           className="flex items-center gap-4 hover:opacity-70 transition-opacity"
         >
@@ -271,9 +272,9 @@ const ProductPriceSection = ({
 
       <ProductDetailActions product={shopProduct} finish={finish} size={size} />
 
-      {/* Reviews Popup Modal */}
-      {isReviewOpen && (
-        <div className="fixed inset-0 z-999 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+      {/* Reviews Popup Modal — portal to body taaki kisi bhi stacking context me atka na rahe */}
+      {mounted && isReviewOpen && createPortal(
+        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col">
             <div className="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-[#fbfaf7]">
               <div>
@@ -287,7 +288,7 @@ const ProductPriceSection = ({
                   <span className="text-[10px] font-bold text-gray-500">{reviewData.averageRating}/5.0 average rating</span>
                 </div>
               </div>
-              <button
+              <button suppressHydrationWarning
                 onClick={() => setIsReviewOpen(false)}
                 className="p-1.5 hover:bg-gray-200 rounded-full transition-colors text-gray-500"
               >
@@ -303,7 +304,7 @@ const ProductPriceSection = ({
                     {[...Array(5)].map((_, i) => {
                       const starValue = i + 1;
                       return (
-                        <button
+                        <button suppressHydrationWarning
                           type="button"
                           key={starValue}
                           onClick={() => setRating(starValue)}
@@ -321,7 +322,7 @@ const ProductPriceSection = ({
                   </div>
                   <div>
                     <label className="text-[11px] font-bold uppercase mb-2 block">Your Experience</label>
-                    <textarea
+                    <textarea suppressHydrationWarning
                       rows={4}
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
@@ -331,14 +332,14 @@ const ProductPriceSection = ({
                     />
                   </div>
                   <div className="flex gap-4">
-                    <button
+                    <button suppressHydrationWarning
                       type="button"
                       onClick={() => setIsWritingReview(false)}
                       className="flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all"
                     >
                       Cancel
                     </button>
-                    <button
+                    <button suppressHydrationWarning
                       type="submit"
                       disabled={isSubmitting}
                       className="flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest text-white bg-[#313b30] rounded-lg hover:bg-black transition-all disabled:opacity-50"
@@ -375,7 +376,7 @@ const ProductPriceSection = ({
 
             {hasPurchased && !isWritingReview && (
               <div className="p-4 bg-gray-50 border-t border-gray-100">
-                <button
+                <button suppressHydrationWarning
                   onClick={() => setIsWritingReview(true)}
                   className="w-full py-2.5 text-[10px] font-bold uppercase tracking-widest text-[#8d6a3a] border border-[#8d6a3a] rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-all"
                 >
@@ -385,7 +386,7 @@ const ProductPriceSection = ({
             )}
           </div>
         </div>
-      )}
+      , document.body)}
     </div>
   )
 }

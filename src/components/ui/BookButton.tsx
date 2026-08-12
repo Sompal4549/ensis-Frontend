@@ -8,6 +8,7 @@ type BookStallButtonProps = {
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
   variant?: 'golden' | 'green';
+  fontSize?: string;
 };
 
 const Sparkle = ({ style, color }: { style: React.CSSProperties; color: string }) => (
@@ -17,7 +18,7 @@ const Sparkle = ({ style, color }: { style: React.CSSProperties; color: string }
   />
 );
 
-export default function BookButton({ path, text,leftIcon, rightIcon, variant = 'golden' }: BookStallButtonProps) {
+export default function BookButton({ path, text,leftIcon, rightIcon, variant = 'golden', fontSize = 'text-base' }: BookStallButtonProps) {
   const isGolden = variant === 'golden';
 
   return (
@@ -37,7 +38,7 @@ export default function BookButton({ path, text,leftIcon, rightIcon, variant = '
             : 'bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)]'
           }`}
       >{leftIcon&&<span className={`w-[14px] h-[14px] shrink-0 text-white`}>{leftIcon}</span>}
-             <span className={`font-bold text-[10px] tracking-widest text-white`}>
+             <span className={`font-bold ${fontSize} tracking-widest text-white`}>
                   {text || 'BOOK A STALL'}
                 </span>
                {rightIcon|| <ArrowRight className={`w-3 h-3 group-hover/btn:translate-x-1 transition-transform text-white`} />}

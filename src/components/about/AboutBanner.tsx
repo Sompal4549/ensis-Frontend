@@ -42,7 +42,7 @@ sectionContent = {}
   const imageUrl = resolvedImage?.imageUrl;
 
   return (
-    <section className="relative overflow-visible mb-0 md:mb-16">
+    <section className="relative z-20 overflow-visible mb-0 lg:mb-16">
       <div className="relative">
       {/* Background image kept in its own overflow-hidden layer so it still
           stays clipped to the hero, while the section itself stays
@@ -60,12 +60,12 @@ sectionContent = {}
         />
       </div>
       <Container className="bg-black md:bg-transparent">
-        <div className="relative min-h-[470px] md:h-[calc(100vh-146px)] w-full">
+        <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] w-full">
           <div className="relative z-10 mx-auto flex min-h-[450px] max-w-[1500px] items-center h-full">
             <div className="max-w-[620px] pt-24 pb-12 md:pt-16 md:pb-16">
               <div className="mb-5 flex items-center gap-4">
                 {/* <Image alt="lotus" src={lotus} width={20} height={20} className="h-full object-contain" crossOrigin="anonymous" /> */}
-                <span className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#c07d19]">
+                <span className="text-base font-semibold uppercase tracking-[0.18em] text-[#c07d19]">
                   {resolvedSubtitle}
                 </span>
                 <div className="h-[1px] w-14 bg-[#c07d19]" />
@@ -78,7 +78,7 @@ sectionContent = {}
                 </span>
               </h1>
 
-              <p className="mt-5 max-w-[360px] text-sm md:text-base leading-6 font-semibold text-[#313628]" dangerouslySetInnerHTML={{__html:resolvedDescription||""}}>
+              <p className="mt-5 max-w-[360px] text-base leading-6 font-semibold text-[#313628]" dangerouslySetInnerHTML={{__html:resolvedDescription||""}}>
               </p>
 
               <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-4">

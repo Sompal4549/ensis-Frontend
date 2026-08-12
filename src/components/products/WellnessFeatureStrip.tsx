@@ -65,11 +65,11 @@ export default async function WellnessFeatureStrip() {
   const count = sectionContent.features.length;
 
   const getGridCols = () => {
-    if (count <= 2) return "grid-cols-2";
-    if (count === 3) return "grid-cols-3";
-    if (count === 4) return "grid-cols-2 md:grid-cols-4";
+    if (count <= 2) return "grid-cols-2 mdgrid-cols-2";
+    if (count === 3) return "grid-cols-2 mdgrid-cols-3";
+    if (count === 4) return "grid-cols-1 md:grid-cols-4";
     if (count === 5)
-      return "grid-cols-2 md:grid-cols-5 [&>*:last-child]:col-span-2 md:[&>*:last-child]:col-span-1";
+      return "grid-cols-1 md:grid-cols-5 [&>*:last-child]:col-span-2 md:[&>*:last-child]:col-span-1";
 
     return "grid-cols-2 md:grid-cols-3 xl:grid-cols-6";
   };
@@ -116,11 +116,11 @@ export default async function WellnessFeatureStrip() {
                 </div>
 
                 <div className="flex flex-col justify-center">
-                  <p className="text-xs font-semibold text-[#f7f1e8] leading-tight">
+                  <p className="text-base font-semibold text-[#f7f1e8] leading-tight">
                     {item.title}
                   </p>
 
-                  <p className="text-xs font-medium leading-4 text-[#f7f1e8]">
+                  <p className="text-base font-medium leading-4 text-[#f7f1e8]">
                     {item.subtitle}
                   </p>
                 </div>

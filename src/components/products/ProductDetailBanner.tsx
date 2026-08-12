@@ -167,7 +167,7 @@ export default function ProductHeroBanner({
                   <button
                     key={i}
                     onClick={() => goTo(i)}
-                    className={`relative w-[100px] h-[75px] rounded overflow-hidden border-2 transition-all duration-200 shrink-0 bg-white ${i === current
+                    className={`relative w-[72px] h-[54px] md:w-[100px] md:h-[75px] rounded overflow-hidden border-2 transition-all duration-200 shrink-0 bg-white ${i === current
                         ? "border-[#c8921a] opacity-100"
                         : "border-[#8d6a3a]/40 opacity-60 hover:opacity-85"
                       }`}

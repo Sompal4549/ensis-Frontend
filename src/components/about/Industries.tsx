@@ -89,7 +89,7 @@ export default function IndustriesWeServe({ sectionContent }: { sectionContent: 
         </div> */}
 <AboutTitle title="Industries We Serve" />
         {/* Cards */}
-        <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 mt-2 divide-x divide-[#e7dfd5]">
+        <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8 mt-2 divide-x divide-y sm:divide-y-0 divide-[#e7dfd5]">
   {sectionContent.industries.map((industry, index) => ( // Use sectionContent.items
     <div
       key={index}
@@ -101,7 +101,7 @@ export default function IndustriesWeServe({ sectionContent }: { sectionContent: 
       </div>
 
       {/* Title */}
-      <p className="text-[11px] font-medium leading-4 tracking-wide">
+      <p className="text-base font-medium leading-5 tracking-wide">
         {industry.title}
       </p>
     </div>

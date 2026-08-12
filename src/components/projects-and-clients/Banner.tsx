@@ -61,7 +61,7 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
 
       {/* Content */}
       <Container className="relative z-20">
-        <div className="flex min-h-162.5 md:min-h-[calc(100vh-146px)] items-center">
+        <div className="flex min-h-[550px] md:min-h-[calc(100vh-146px)] items-center">
           <div className="w-full lg:max-w-[42%]">
             <h1>
               <span className="block text-[#1f2c25]">
@@ -81,7 +81,7 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
               {sectionContent?.subtitle}
             </h2>
 
-            <p className="max-w-xs text-sm md:text-base leading-6" dangerouslySetInnerHTML={{ __html: sectionContent?.description }}>
+            <p className="max-w-xs text-base leading-6" dangerouslySetInnerHTML={{ __html: sectionContent?.description }}>
             </p>
           </div>
         </div>

@@ -63,20 +63,20 @@ const inputClass =
           <form onSubmit={onSubmit}>     
             <label className={labelClass}>
               Full Name
-              <input className={inputClass} type="text" value={name} onChange={(event) => setName(event.target.value)} required />
+              <input suppressHydrationWarning className={inputClass} type="text" value={name} onChange={(event) => setName(event.target.value)} required />
             </label>
             
             <label className={labelClass}>
               Email
-              <input className={inputClass} type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
+              <input suppressHydrationWarning className={inputClass} type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
             </label>
             
             <label className={labelClass}>
               Phone Number
-              <input className={inputClass} type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required placeholder="91XXXXXXXXXX" />
+              <input suppressHydrationWarning className={inputClass} type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required placeholder="91XXXXXXXXXX" />
             </label>
             
-            <button className={buttonClass} type="submit" disabled={isLoading}>
+            <button suppressHydrationWarning className={buttonClass} type="submit" disabled={isLoading}>
               {isLoading ? "Registering..." : "Create Account"}
             </button>
             {message && <p className="mt-4 text-sm font-semibold text-[#334022]">{message}</p>}

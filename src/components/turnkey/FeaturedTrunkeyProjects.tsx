@@ -33,7 +33,7 @@ export default function FeaturedProjects({sectionContent}: { sectionContent: Fea
           </h2>
           <Image src={decorationRight} width={30} height={30} alt="decoration" className="h-full object-contain" />
         </div>
-<p className="mb-6 text-center text-xs sm:text-sm font-semibold">
+<p className="mb-6 text-center text-base font-semibold">
   {sectionContent.subtitle}
 </p>
         {/* Cards */}
@@ -55,10 +55,10 @@ export default function FeaturedProjects({sectionContent}: { sectionContent: Fea
 
       {/* Content */}
       <div className="px-2 py-2 mt-2">
-        <h3 className="text-sm font-semibold leading-[1.2]">
+        <h3 className="text-base font-semibold leading-[1.2]">
           {project.title}
         </h3>
-        <p className="mt-1 text-xs leading-none">
+        <p className="mt-1 text-base leading-none">
           {project.location}
         </p>
       </div>

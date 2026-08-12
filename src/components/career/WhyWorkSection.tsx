@@ -4,6 +4,7 @@ import Image, { StaticImageData } from "next/image";
 import flower from "@/assets/about/lotus.png";
 import { Container } from "../ui/Container";
 import HtmlRenderer from "../layout/HtmlRender";
+import { getImageUrl } from "@/lib/api/api";
 interface CardItem {
   title: string;
   description: string;
@@ -70,7 +71,7 @@ const WhyWorkSection = ({sectionContent}:{sectionContent:WhyWorkProps}) => {
         <div className="grid gap-12 lg:grid-cols-[380px_1fr] items-start">
           {/* Left Content */}
           <div className="max-w-sm">
-            <p className="mb-2 text-xs font-semibold uppercase tracking-[2px] text-[#2C2C2C] font-semibold">
+            <p className="mb-2 text-base font-semibold uppercase tracking-[2px] text-[#2C2C2C] font-semibold">
               {sectionContent.heading||"Why Work At Ensis?"}
             </p>
 
@@ -80,7 +81,7 @@ const WhyWorkSection = ({sectionContent}:{sectionContent:WhyWorkProps}) => {
               {sectionContent.title2||"Beyond Profit"}
             </h2>
 
-            <HtmlRenderer className="mt-2 text-[15px] text-[#555]" content={sectionContent.description||`We're not just creating interiors and equipment, we're
+            <HtmlRenderer className="mt-2 text-base text-[#555]" content={sectionContent.description||`We're not just creating interiors and equipment, we're
               crafting experiences that transform lives. Join a team
               that believes in purpose over profit and wellness over
               everything.`}>
@@ -93,22 +94,22 @@ const WhyWorkSection = ({sectionContent}:{sectionContent:WhyWorkProps}) => {
             {sectionContent.cards.map((card, index) => (
               <div
                 key={`${card.title}-${index}`}
-                className="rounded-2xl border border-[#E7E1D9] bg-white/70 p-6 text-center backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+                className="rounded-2xl border border-[#E7E1D9] bg-white/70 p-4 text-center backdrop-blur-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
               >
                 <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center">
                   <Image
-                    src={card.icon}
+                    src={typeof card.icon === "string" ? getImageUrl(card.icon) : card.icon}
                     alt={card.title}
                     width={48}
                     height={48}
                   />
                 </div>
 
-                <h3 className="mb-2 text-sm font-semibold text-[#222]">
+                <h3 className="mb-2 text-base font-semibold text-[#222]">
                   {card.title}
                 </h3>
 
-                <HtmlRenderer className="text-xs" content={card.description}>
+                <HtmlRenderer className="text-base" content={card.description}>
                   
                 </HtmlRenderer>
               </div>

@@ -72,7 +72,7 @@ export default function ProductHeroSlideContent({
     : "absolute inset-0";
 
   return (
-    <div className="relative h-full min-h-[470px] overflow-hidden bg-[#0b0b0b]">
+    <div className="relative h-full min-h-[550px] overflow-hidden bg-[#0b0b0b]">
       {/* Image */}
       {slide.image && (
         <motion.div
@@ -114,8 +114,8 @@ export default function ProductHeroSlideContent({
                 variants={itemVariants}
                 className={
                   productLayout
-                    ? "mb-8 max-w-[520px] text-sm leading-7 text-white/80 line-clamp-3 sm:text-base font-semibold text-[#313628]"
-                    : "mb-8 max-w-[520px] text-sm sm:text-base font-medium text-[#313628] line-clamp-6"
+                    ? "mb-8 max-w-[520px] text-base leading-7 text-white/80 line-clamp-3 sm:text-base font-semibold text-[#313628]"
+                    : "mb-8 max-w-[520px] text-base sm:text-base font-medium text-[#313628] line-clamp-6"
                 }
                 dangerouslySetInnerHTML={{ __html: slide.description }}
               />
@@ -124,7 +124,7 @@ export default function ProductHeroSlideContent({
             {typeof slide.price === "number" && slide.price > 0 && (
               <motion.div variants={itemVariants} className="mb-8">
                 <span
-                  className={`text-2xl font-bold sm:text-3xl md:text-4xl ${
+                  className={`tabular-nums text-2xl font-bold sm:text-3xl md:text-4xl ${
                     productLayout ? "text-white" : "text-[#c07d19]"
                   }`}
                 >

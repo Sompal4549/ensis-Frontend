@@ -44,7 +44,7 @@ export default function ProductFeatureStrip() {
     <section className="static md:absolute left-0 right-0 bottom-0 md:translate-y-1/2 z-30">
       <Container className="py-0">
         <div className="w-full bg-gradient-to-r from-[#012c20] via-[#013727] to-[#012c20] rounded-xl px-3 py-2 border border-[#C9972A] ring-1 ring-[#C9972A]/50 ring-offset-2 ring-offset-transparent">
-          <div className="flex flex-wrap xl:flex-nowrap justify-between">
+          <div className="flex flex-wrap gap-y-4 md:gap-y-0 xl:flex-nowrap justify-between">
           {features.map((item, index) => {
             const Icon = item.icon;
 
@@ -52,14 +52,15 @@ export default function ProductFeatureStrip() {
               <div
                 key={index}
                 className={`
-    relative flex items-center justify-center gap-4
-    w-1/2 md:w-1/3 xl:w-1/6 flex-1
+    relative flex items-center justify-start gap-4 md:justify-center
+    w-full md:w-1/3 xl:w-1/5 flex-none
+    px-4 md:py-2
     ${index !== features.length - 1 ? "xl:border-r border-[#9f7a43]/30" : ""}
   `}
               >
                 {/* Vertical Divider for smaller screens */}
-                {index % 2 === 0 && index !== features.length - 1 && (
-                  <div className="absolute right-0 top-1/2 h-6 -translate-y-1/2 border-r border-[#9f7a43]/20 xl:hidden" />
+                {index !== features.length - 1 && (
+                  <div className="absolute right-0 top-1/2 h-6 -translate-y-1/2 border-r border-[#9f7a43]/20 hidden md:block xl:hidden" />
                 )}
 
                 <div className="shrink-0">
@@ -73,11 +74,11 @@ export default function ProductFeatureStrip() {
                 </div>
 
                 <div className="leading-tight">
-                  <p className="text-xs font-semibold  text-white">
+                  <p className="text-base font-semibold  text-white">
                     {item.title}
                   </p>
 
-                  <p className="text-[10px] font-normal  text-white mt-1">
+                  <p className="text-base font-normal  text-white mt-1">
                     {item.subtitle}
                   </p>
                 </div>

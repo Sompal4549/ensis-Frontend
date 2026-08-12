@@ -41,7 +41,7 @@ const FounderSection: React.FC<FounderSectionProps> = ({ sectionContent }) => {
 
           {/* Label */}
           <p
-            className="font-medium text-sm uppercase text-black mb-3"
+            className="font-medium text-base uppercase text-black mb-3"
           >
             {sectionContent?.heading}
           </p>
@@ -54,7 +54,7 @@ const FounderSection: React.FC<FounderSectionProps> = ({ sectionContent }) => {
           </h2>
 
           {/* Body Copy */}
-          <div className="text-black text-sm md:text-[13.5px] leading-relaxed space-y-3 max-w-xl">
+          <div className="text-black text-base leading-relaxed space-y-3 max-w-xl">
               <p dangerouslySetInnerHTML={{__html:sectionContent.description||""}}>
               </p>
           </div>
@@ -74,13 +74,13 @@ const FounderSection: React.FC<FounderSectionProps> = ({ sectionContent }) => {
             {/* Name & Title */}
             <div>
              
-              <p className="text-black text-xs mb-1">
+              <p className="text-black text-base mb-1">
                 {sectionContent.aboutFounder.title}
               </p>
-              <p className="text-black text-xs md:text-[12px] leading-snug mb-1">
+              <p className="text-black text-base leading-snug mb-1">
                 {sectionContent.aboutFounder.company}
               </p>
-              <p className="text-black text-xs md:text-[12px] leading-snug mb-1">
+              <p className="text-black text-base leading-snug mb-1">
                 {sectionContent.aboutFounder.division}
               </p>
             </div>

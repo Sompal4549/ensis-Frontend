@@ -52,10 +52,10 @@ export default function AboutEnsisSection() {
   ];
 
   return (
-    <section className="w-full bg-[#f7f3ee]">
+    <section className="w-full bg-[#f7f3ee] pb-8 md:pb-10">
       <Container className="overflow-hidden rounded-2xl bg-gray">
         {/* Top Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.15fr_1fr_0.9fr]">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.6fr_1fr]">
           {/* Left Image */}
           <div className="relative min-h-[320px] overflow-hidden">
             <Image
@@ -80,14 +80,14 @@ export default function AboutEnsisSection() {
             font-semibold
             tracking-[2px]
             uppercase
-            font-serif
+            
           "
             >
               About ENSIS
             </h2>
             <div className="h-[1px] w-25 bg-[#ca8e42] mb-5 rounded-full"></div>
 
-            <div className="space-y-4 text-xs font-medium md:text-[15px]">
+            <div className="space-y-4 text-base font-medium">
               <p>
                 ENSIS is the wellness division of <b>Design House India Pvt.
                   Ltd.</b>, a trusted name in turnkey interiors and manufacturing
@@ -115,9 +115,9 @@ export default function AboutEnsisSection() {
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="flex items-start gap-4 text-sm font-medium text-[#3d3a36] md:text-[15px]"
+                  className="flex items-start gap-4 text-base font-medium text-[#3d3a36]"
                 >
-                  <div className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-[#123f2d] text-xs text-white shadow-sm">
+                  <div className="mt-0.5 flex h-6 w-6 items-center justify-center rounded-full bg-[#123f2d] text-white shadow-sm">
                     ✓
                   </div>
 
@@ -160,7 +160,7 @@ export default function AboutEnsisSection() {
                   {item.value}
                 </p>
 
-                <p className="mt-1 text-xs md:text-sm leading-snug text-[#d8d2ca]">
+                <p className="mt-1 text-base leading-snug text-[#d8d2ca]">
                   {item.label}
                 </p>
               </div>

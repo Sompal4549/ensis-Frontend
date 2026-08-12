@@ -111,7 +111,7 @@ subtitle="Access your wellness projects and services"
         <form onSubmit={handleSendOTP}>
           <div className="mb-4">
             <label className="flex items-center gap-4 cursor-pointer text-[10px] font-semibold text-[#8b6b35] uppercase tracking-[1px]">
-              <input 
+              <input suppressHydrationWarning 
                 type="checkbox" 
                 checked={isAdmin} 
                 onChange={(e) => setIsAdmin(e.target.checked)} 
@@ -123,7 +123,7 @@ subtitle="Access your wellness projects and services"
 
           <div>
             <label className={labelClass}>Mobile Number</label>
-            <input
+            <input suppressHydrationWarning
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -133,7 +133,7 @@ subtitle="Access your wellness projects and services"
             />
           </div>
 
-          <button type="submit" disabled={isLoading} className={buttonClass}>
+          <button suppressHydrationWarning type="submit" disabled={isLoading} className={buttonClass}>
             {isLoading ? "Sending Code..." : "Get OTP"}
           </button>
         </form>
@@ -141,7 +141,7 @@ subtitle="Access your wellness projects and services"
         <form onSubmit={handleLogin}>
           <div>
             <label className={labelClass}>6-Digit WhatsApp Code</label>
-            <input
+            <input suppressHydrationWarning
               type="text"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
@@ -183,7 +183,7 @@ subtitle="Access your wellness projects and services"
               </div>
             )}
             {showResendButton && (
-              <button
+              <button suppressHydrationWarning
                 type="button"
                 onClick={handleSendOTP}
                 disabled={isLoading}
@@ -195,7 +195,7 @@ subtitle="Access your wellness projects and services"
 
           </div>
 
-          <button type="submit" disabled={isLoading} className={buttonClass}>
+          <button suppressHydrationWarning type="submit" disabled={isLoading} className={buttonClass}>
             {isLoading ? "Verifying..." : "Sign In"}
           </button>
         </form>

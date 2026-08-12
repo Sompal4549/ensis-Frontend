@@ -59,7 +59,7 @@ const ContactHero: React.FC<{ sectionContent: ContactHeroContent }> = ({sectionC
       <Image src={sectionContent.bgImage} alt={sectionContent.title} className="w-full h-full object-cover absolute top-0 bottom-0 right-0 left-0 z-20" priority fill />
       </div>
 
-      <Container className="grid md:h-[calc(100vh-146px)] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-40 items-center">
+      <Container className="grid min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-40 items-center">
       
 
         {/* LEFT CONTENT */}
@@ -80,7 +80,7 @@ const ContactHero: React.FC<{ sectionContent: ContactHeroContent }> = ({sectionC
               <span className="text-[#b58a48] capitalize">{sectionContent.highlightedText}</span>
             </h1>
 
-                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] font-semibold  text-[#313628]">
+                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-base font-semibold  text-[#313628]">
                     <HtmlRenderer content={sectionContent.description} className='font-semibold max-w-[300px] mt-4'></HtmlRenderer>
                   </div>
             {/* Description */}
@@ -95,7 +95,7 @@ const ContactHero: React.FC<{ sectionContent: ContactHeroContent }> = ({sectionC
               {sectionContent.features.map((feature, index) => (
                 <div key={feature.id} className="flex flex-col items-center text-center relative">
                   <Image src={feature.iconImage} alt={feature.title} width={26} height={26} className="text-[#b58a48] mb-3" />
-                  <p className="text-[11px] leading-[17px] text-[#4e463d] font-semibold">
+                  <p className="text-base leading-[17px] text-[#4e463d] font-semibold">
                     {feature.title}
                   </p>
 

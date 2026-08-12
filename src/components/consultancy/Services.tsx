@@ -98,7 +98,7 @@ export default function ConsultancyServices({ sectionContent }: { sectionContent
       <Container>
         {/* HEADER */}
         <div className="mx-auto max-w-[540px] text-center">
-          <p className="text-sm font-semibold uppercase tracking-[2px] text-[#D66736]">
+          <p className="text-base font-semibold uppercase tracking-[2px] text-[#D66736]">
             {sectionContent.subheading}
           </p>
 
@@ -106,7 +106,7 @@ export default function ConsultancyServices({ sectionContent }: { sectionContent
             {sectionContent.title}
           </h2>
 
-          <p className="mx-auto mt-3 max-w-[500px] text-[13px] font-medium" dangerouslySetInnerHTML={{__html:sectionContent.description}}>
+          <p className="mx-auto mt-3 max-w-[500px] text-base font-medium" dangerouslySetInnerHTML={{__html:sectionContent.description}}>
             
           </p>
         </div>
@@ -126,11 +126,11 @@ export default function ConsultancyServices({ sectionContent }: { sectionContent
     <Image src={service.image} alt={service.title} width={26} height={26} />
   </div>
 
-  <h3 className="mt-3 text-xs font-bold leading-[1.45]">
+  <h3 className="mt-3 text-base font-bold leading-[1.45]">
     {service.title}
   </h3>
 
-  <HtmlRenderer content={service.description} className="mt-3 text-[12px] text-gray-500">
+  <HtmlRenderer content={service.description} className="mt-3 text-base text-gray-500">
     
   </HtmlRenderer>
 

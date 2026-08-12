@@ -228,7 +228,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
 
                 <div
                   className="prose prose-stone prose-lg max-w-none text-[#4a4036]
-                  prose-headings:font-serif prose-headings:text-[#2b241f]
+                  prose-headings: prose-headings:text-[#2b241f]
                   prose-p:leading-relaxed prose-strong:text-[#2b241f]"
                   dangerouslySetInnerHTML={{ __html: decodeHtml(blog.article.content || blog.description || "") }}
                 />

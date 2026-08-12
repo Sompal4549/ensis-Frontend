@@ -23,7 +23,7 @@ export default function SparkleLogo({
   return (
     <div className="logo-wrap relative inline-block">
       {/* Royal Card */}
-      <div className="logo-card relative overflow-hidden rounded-[24px] px-3 py-2 md:px-4 md:py-3">
+      <div className="logo-card relative overflow-hidden">
 
         {/* Logo */}
         <div className="relative z-10 flex items-center justify-center">
@@ -63,8 +63,7 @@ export default function SparkleLogo({
         }
 
         .logo-card {
-          background: #ffffff;
-          box-shadow: 0 6px 18px rgba(80, 60, 10, 0.14);
+          background: transparent;
         }
 
         /* Sparkle Shape */

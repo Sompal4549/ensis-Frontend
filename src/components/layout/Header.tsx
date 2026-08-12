@@ -114,10 +114,10 @@ export const Header = () => {
     }, []);
 
     const navLink =
-        "inline-flex items-center whitespace-nowrap border-b-2 border-transparent pt-0.5 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
+        "inline-flex items-center whitespace-nowrap border-b-2 border-transparent pt-0.5 text-sm font-bold tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
 
     const mobileLink =
-        "border-b border-[#e8e0d3] py-6 text-[12px] font-bold tracking-wide text-[#1f261b]";
+        "border-b border-[#e8e0d3] py-6 text-sm font-bold tracking-wide text-[#1f261b]";
 
     // Default content shape matches the actual DB schema for "layout.header"
     // (contactInfo + navigation), NOT the old badges/navLinks shape.
@@ -380,9 +380,9 @@ export const Header = () => {
         </Link>
 
                     {/* Spacer so nav doesn't go under the logo */}
-                    <div className="w-[40px] md:w-[120px] shrink-0" />
+                    <div className="w-[40px] md:w-[120px] xl:w-[80px] 2xl:w-[120px] shrink-0" />
       <nav className="hidden xl:flex">
-            <ul className="flex items-center gap-4.5 xl:gap-6.5 2xl:gap-7.5">
+            <ul className="flex items-center gap-4.5 xl:gap-3.5 2xl:gap-6.5">
                             {navLinks.map((item, index) => (
                                 <li key={index}>
                                     <Link

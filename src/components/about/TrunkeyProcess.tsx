@@ -100,25 +100,25 @@ const TurnkeyProcess: React.FC<TurnkeyProcessProps> = ({ sectionContent }) => {
         <div className="relative flex flex-col lg:flex-row items-stretch min-h-[200px]">
           {/* LEFT SIDE */}
           <div className="w-full lg:w-[58%] px-6 md:px-0 py-4 flex flex-col justify-center relative z-10">
-            <h2 className="text-[#2d2a28] text-[18px] md:text-[24px] font-bold font-serif uppercase tracking-[0.4px] mb-6">
+            <h2 className="text-[#2d2a28] text-[18px] md:text-[24px] font-bold  uppercase tracking-[0.4px] mb-6">
               {sectionContent.title}
             </h2>
             
-            <div className="flex items-start justify-between gap-4 md:gap-4 relative">
+            <div className="grid grid-cols-2 gap-4 md:flex md:flex-nowrap md:items-start md:justify-between relative">
               {sectionContent.steps.map((step, index) => (
                 <React.Fragment key={step.id}>
-                  <div className="flex flex-col items-center text-center max-w-[120px] relative z-10">
-                    <div className="text-[#b79a7a] mb-4 flex items-center justify-center">
-                      <Image src={step.imageurl.imageUrl} alt={step.imageurl.alt} width={35} height={35} className="text-[#b79a7a] mb-3" style={{ height: "auto" }}/>
+                  <div className="flex flex-col items-center text-center w-full md:w-auto md:max-w-[120px] relative z-10">
+                    <div className="text-[#b79a7a] mb-4 flex items-center justify-center h-[35px]">
+                      <Image src={step.imageurl.imageUrl} alt={step.imageurl.alt} width={35} height={35} className="text-[#b79a7a] object-contain" />
                     </div>
 
-                    <p className="text-[10px] md:text-[11px] leading-[1.5] font-semibold tracking-[0.3px] text-[#3f3a36] uppercase">
+                    <p className="text-base leading-[1.5] font-semibold tracking-[0.3px] text-[#3f3a36] uppercase flex items-center min-h-[32px]">
                       {step.title}
                     </p>
                   </div>
 
-                  {index !== steps.length - 1 && (
-                    <div className="flex-1 pt-3 hidden md:flex items-center justify-center">
+                  {index !== sectionContent.steps.length - 1 && (
+                    <div className="flex-1 pt-[17px] hidden md:flex items-start justify-center">
                       <div className="w-full border-t border-[#c9b39b] relative">
                         <span className="absolute right-[-2px] top-[-6px] text-[#c9b39b] text-sm font-bold">
                           →
