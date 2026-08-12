@@ -73,7 +73,7 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent: Turnke
             </div> */}
 
                 {/* Body copy */}
-                <div className="text-base leading-6 max-w-md mb-4 line-clamp-4" dangerouslySetInnerHTML={{ __html: sectionContent.description || "" }}>
+                <div className="text-base leading-6 max-w-lg mb-4 line-clamp-4" dangerouslySetInnerHTML={{ __html: sectionContent.description || "" }}>
 
                 </div>
 
