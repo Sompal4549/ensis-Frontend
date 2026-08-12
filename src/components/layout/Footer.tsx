@@ -207,7 +207,7 @@ export const Footer = async () => {
                <Image src={arrow} alt='arrow' width={150} height={8} />
               </div>
 
-              <HtmlRenderer content={content.company.description} className="text-sm leading-relaxed text-[#24334c] text-center font-semibold">
+              <HtmlRenderer content={content.company.description} className="text-sm leading-[1.5] text-[#24334c] text-center font-semibold">
                 
               </HtmlRenderer>
 
@@ -284,7 +284,7 @@ export const Footer = async () => {
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white md:border-[#d0a965]">
                     <MapPin size={14} className="text-white md:text-[#d0a965]" />
                   </div>
-                  <p className="text-sm leading-relaxed text-white md:text-[#24334c] font-semibold">
+                  <p className="text-sm leading-[1.5] text-white md:text-[#24334c] font-semibold">
                     {content.contact.address}
                   </p>
                 </div>
@@ -319,7 +319,7 @@ export const Footer = async () => {
                   <div className="flex items-center gap-4 text-white">
                     <FaWhatsapp size={18} color="white" />
                     <div>
-                      <p className="text-sm font-bold leading-tight text-white">WHATSAPP CHAT</p>
+                      <p className="text-sm font-bold leading-[1.4] tracking-wider text-white">WHATSAPP CHAT</p>
                       <p className="text-sm text-white/80 font-semibold">Chat with our experts</p>
                     </div>
                   </div>
@@ -354,7 +354,7 @@ export const Footer = async () => {
                     <Icon size={18} />
                   </div>
                   <div>
-                    <h4 className={`${item.color} text-sm font-bold leading-tight`}>{item.title}</h4>
+                    <h4 className={`${item.color} text-sm font-bold leading-[1.4] tracking-wider`}>{item.title}</h4>
                     <p className="mt-0.5 text-sm text-white/80">{item.desc}</p>
                   </div>
                 </div>
