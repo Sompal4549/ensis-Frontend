@@ -97,10 +97,6 @@ export default async function ConsultancyStatsStrip () {
                 <p className="tabular-nums text-base font-semibold text-[#faf6ef] leading-tight">
                   {item.title}
                 </p>
-
-                <p className="text-base leading-4 text-[#faf6ef]/90 font-medium">
-                  {item.description}
-                </p>
               </div>
             </div>
           ))}

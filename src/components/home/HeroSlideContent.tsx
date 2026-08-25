@@ -102,7 +102,7 @@ export default function HeroSlideContent({
           alt=""
           fill
           priority={slideIndex === 0}
-          className="object-cover object-center md:object-fill"
+          className="object-cover object-center xl:object-center xl:object-fill"
           crossOrigin="anonymous"
           sizes="100vw"
         />

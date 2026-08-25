@@ -119,7 +119,7 @@ const TurnkeyProcess: React.FC<TurnkeyProcessProps> = ({ sectionContent }) => {
 
                   {index !== sectionContent.steps.length - 1 && (
                     <div className="flex-1 pt-[17px] hidden md:flex items-start justify-center">
-                      <div className="w-full border-t border-[#c9b39b] relative">
+                      <div className="w-full relative">
                         <span className="absolute right-[-2px] top-[-6px] text-[#c9b39b] text-sm font-bold">
                           →
                         </span>

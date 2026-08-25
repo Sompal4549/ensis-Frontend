@@ -80,7 +80,7 @@ const defaultFooter = {
       "title": "Quick Links",
       "links": [
         { "label": "Home", "href": "/" },
-        { "label": "About Us", "href": "/about" },
+        { "label": "About Us", "href": "/about-us" },
         { "label": "Products", "href": "/products" },
         { "label": "Turnkey Solutions", "href": "/turnkey-solutions" },
         { "label": "Projects", "href": "/projects" },
@@ -207,7 +207,7 @@ export const Footer = async () => {
                <Image src={arrow} alt='arrow' width={150} height={8} />
               </div>
 
-              <HtmlRenderer content={content.company.description} className="text-sm leading-[1.5] text-[#24334c] text-center font-semibold">
+              <HtmlRenderer content={content.company.description} className="text-sm leading-[1.5] text-white md:text-[#24334c] text-center font-semibold">
                 
               </HtmlRenderer>
 
@@ -221,7 +221,7 @@ export const Footer = async () => {
                       key={social._id}
                       href={social.url}
                       platform={social.platform}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#24334c] text-[#24334c] transition hover:bg-[#0f2e22] hover:text-white"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white text-white transition hover:bg-[#0f2e22] hover:text-white md:border-[#24334c] md:text-[#24334c]"
                     >
                       <Icon size={14} />
                     </SocialIconLink>
@@ -354,8 +354,8 @@ export const Footer = async () => {
                     <Icon size={18} />
                   </div>
                   <div>
-                    <h4 className={`${item.color} text-sm font-bold leading-[1.4] tracking-wider`}>{item.title}</h4>
-                    <p className="mt-0.5 text-sm text-white/80">{item.desc}</p>
+                    <h4 className={`${item.color} text-[14px] font-bold leading-[1.4] tracking-wider`}>{item.title}</h4>
+                    <p className="mt-0.5 text-[14px] text-white/80">{item.desc}</p>
                   </div>
                 </div>
               );

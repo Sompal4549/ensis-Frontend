@@ -59,7 +59,7 @@ const ContactHero: React.FC<{ sectionContent: ContactHeroContent }> = ({sectionC
       <Image src={sectionContent.bgImage} alt={sectionContent.title} className="w-full h-full object-cover absolute top-0 bottom-0 right-0 left-0 z-20" priority fill />
       </div>
 
-      <Container className="grid min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] grid-cols-1 lg:grid-cols-2 relative z-40 items-center">
+      <Container         className="grid min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none grid-cols-1 lg:grid-cols-2 relative z-40 items-center">
       
 
         {/* LEFT CONTENT */}

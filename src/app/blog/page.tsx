@@ -2,6 +2,7 @@ import { generateSeo } from "@/lib/api/seo";
 import PageBuilder from '@/components/PageBuilder';
 import { headers } from "next/headers";
 import { API_URL, getImageUrl } from "@/lib/api/api";
+import { SITE_HOST } from "@/lib/site";
 
 export async function generateMetadata() {
   return generateSeo("blog");
@@ -22,7 +23,7 @@ const Blog = async () => {
   const host =
     requestHeaders.get("x-forwarded-host") ||
     requestHeaders.get("host") ||
-    "ensis.in";
+    SITE_HOST;
   const protocol = requestHeaders.get("x-forwarded-proto") || "https";
   const baseUrl = `${protocol}://${host}`;
 

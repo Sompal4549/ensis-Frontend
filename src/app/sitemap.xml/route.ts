@@ -1,9 +1,8 @@
 import { getAdvancedSeo } from "@/lib/api/seo";
 import { blogApi, productApi } from "@/lib/api/api";
+import { SITE_URL } from "@/lib/site";
 
 export const revalidate = 3600;
-
-const DEFAULT_SITE_URL = "https://ensis.in";
 
 const MAX_PER_PAGE = 100;
 
@@ -80,7 +79,7 @@ export async function GET() {
   const advSeo = await getAdvancedSeo();
   const sitemapConfig = advSeo?.sitemap || {};
 
-  let siteUrl = DEFAULT_SITE_URL;
+  let siteUrl = SITE_URL;
   try {
     if (sitemapConfig.url) {
       siteUrl = new URL(sitemapConfig.url).origin;

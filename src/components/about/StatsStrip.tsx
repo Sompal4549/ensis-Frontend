@@ -37,9 +37,10 @@ export default async function StatsStrip() {
 
   const stats = content.stats?.length ? content.stats : defaultStats;
 
-  const resolvedStats: StatItem[] = stats.map((item: StatItem, i: number) => ({
-    ...defaultStats[i], // Fallback to defaultStats if API doesn't provide all fields
-    ...item,
+  const resolvedStats: StatItem[] = stats.map((item: any, i: number) => ({
+    ...defaultStats[i],
+    number: item.number || item.label || defaultStats[i]?.number,
+    subTitle: item.subTitle || item.subtitle || defaultStats[i]?.subTitle,
     image: item.imageurl?.imageUrl
       ? { src: getImageUrl(item.imageurl.imageUrl, 200) }
       : item.image ?? defaultStats[i]?.image,

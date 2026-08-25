@@ -82,7 +82,7 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
               className="text-[#0f2518] mt-2 text-base max-w-[480px] leading-6" 
             />
 
-            <Link href={sectionContent.buttonHref || "/about"} className="group flex items-center gap-4 text-[#b78942] uppercase tracking-[1px] text-sm font-semibold pt-2 w-fit py-2">
+            <Link href={sectionContent.buttonHref || "/about-us"} className="group flex items-center gap-4 text-[#b78942] uppercase tracking-[1px] text-sm font-semibold pt-2 w-fit py-2">
               {sectionContent.buttonText || "Know More"}
               <ChevronRight
                 size={18}

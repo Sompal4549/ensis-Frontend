@@ -113,7 +113,7 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
   const heroSlides = content.slides?.length ? content.slides : fallbackSlides;
 
   return (
-    <section className="bg-[#f7f2ea] relative z-20 lg:mb-12">
+    <section className="bg-[#f7f2ea] relative z-20 mb-12 md:mb-22 xl:mb-12">
       <HeroCarousel slides={heroSlides} />
       <Features />
     </section>

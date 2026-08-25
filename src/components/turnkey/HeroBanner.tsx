@@ -39,11 +39,11 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent: Turnke
   return (
     <div className="relative overflow-visible mb-0 md:mb-20 pt-6">
       <div className="relative">
-        <Image src={sectionContent.backgroundImage.imageUrl} alt={sectionContent.backgroundImage.alt || sectionContent.title} fill className="object-cover sm:object-fill z-0! absolute object-left sm:object-right" priority />
+        <Image src={sectionContent.backgroundImage.imageUrl} alt={sectionContent.backgroundImage.alt || sectionContent.title} fill className="object-cover xl:object-fill z-0! absolute object-left xl:object-right" priority />
         {/* ── HERO ── */}
-        <Container className="relative z-20 !py-0">
-          <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center h-full">
+        <Container className="relative z-20 !py-0 !max-w-none xl:!max-w-[1400px]">
+          <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none w-full">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 xl:gap-8 items-center h-full">
 
               {/* LEFT COLUMN */}
               <div className="flex flex-col gap-4 h-full justify-center">
@@ -78,7 +78,7 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent: Turnke
                 </div>
 
                 {/* Feature icons */}
-                <div className="flex flex-wrap gap-4 sm:gap-6">
+                <div className="flex flex-wrap md:flex-nowrap gap-4 sm:gap-6">
                   {(Array.isArray(sectionContent.features) ? sectionContent.features : []).map((f, index) => (
                     <div
                       key={f?.id || index}
@@ -88,7 +88,7 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent: Turnke
                       <div className="w-8 h-8 text-[#d6a85f] flex items-center justify-center text-xl">
                         <Image src={f?.image?.imageUrl || ""} alt={f?.image?.alt || f?.title || ""} width={40} height={40} className="object-fill" />
                       </div>
-                      <p className="text-base leading-snug whitespace-pre-line font-medium max-w-[90px]">
+                      <p className="text-sm md:text-xs leading-snug whitespace-pre-line font-medium max-w-[90px]">
                         {f?.title}
                       </p>
                     </div>

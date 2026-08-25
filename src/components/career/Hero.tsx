@@ -27,9 +27,9 @@ const CareersBanner = ({sectionContent }: {sectionContent:CareersBannerProps}) =
         alt={sectionContent.bgImage.imageAlt||"Careers at ENSIS"}
         fill
         priority
-        className="object-cover"
+        className="object-left xl:object-center object-cover"
       />
-      <div className="relative z-10 flex min-h-[550px] md:h-[calc(100vh-146px)] items-center px-6 py-12 sm:px-10 lg:px-14">
+      <div className="relative z-10 flex min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none items-center px-6 py-12 sm:px-10 lg:px-14">
         <Container>
           {/* Eyebrow */}
           <p className="mb-4 text-base font-semibold uppercase tracking-[0.2em] text-[#c07d19]">

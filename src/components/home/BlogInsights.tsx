@@ -79,7 +79,10 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
             <h2 className=" text-2xl leading-tight font-semibold">{contactData.ctaHeading}</h2>
             <p className="mt-2 text-base text-[#e5dccf]">{contactData.ctaDescription}</p>
           </div>
+          <div className='w-[300px]'>
+
           <GreenButton path={contactData.ctaButtonPath} text={contactData.ctaButtonText} />
+          </div>
         </Container>
       </div>
     </section>

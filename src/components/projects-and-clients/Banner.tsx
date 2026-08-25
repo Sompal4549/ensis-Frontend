@@ -53,15 +53,15 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="md:object-center object-left object-cover"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#f8f2e8] from-10% via-[#f8f2e8]/80 via-50% to-transparent w-[60%] h-full" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#f8f2e8] from-10% via-[#f8f2e8]/80 via-50% to-transparent w-[100%] md:w-[60%] h-full" />
       </div>
 
       {/* Content */}
       <Container className="relative z-20">
-        <div className="flex min-h-[550px] md:min-h-[calc(100vh-146px)] items-center">
+        <div className="flex min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none items-center">
           <div className="w-full lg:max-w-[42%]">
             <h1>
               <span className="block text-[#1f2c25]">

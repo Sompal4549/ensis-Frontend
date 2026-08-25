@@ -197,14 +197,14 @@ export default function EnquiryPage({
     <div className="w-full bg-[#f7f1e3]">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-[#F8F5EF]">
-        <div className="relative min-h-[550px] md:h-[calc(100vh-146px)]">
+        <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none">
           {/* Background Image — right-side spa image unchanged */}
           <div className="absolute inset-0 overflow-hidden">
             <Image
               src={content.hero.imageSrc}
               alt={content.hero.imageAlt}
               fill
-              className="object-cover"
+              className="object-left xl:object-center object-cover"
               sizes="100vw"
               priority
             />

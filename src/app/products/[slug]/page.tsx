@@ -1,4 +1,4 @@
-import Image, { type StaticImageData } from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import {
   ShoppingCart,
@@ -20,24 +20,25 @@ import { productApi, getImageUrl } from "@/lib/api/api";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import type { Metadata } from "next";
+import { SITE_HOST } from "@/lib/site";
 
 const FALLBACK_TITLE = "Ensis - Premium Panchkarma & Wellness Spaces";
 
 export async function generateMetadata({
   params
 }: {
-  params: Promise<{ id: string }>
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
   // Await the params promise to get the actual values
-  const { id } = await params;
+  const { slug } = await params;
 
-  const base = await generateSeo(`products/${id}`);
+  const base = await generateSeo(`products/${slug}`);
 
   // Pull the product so we can auto-populate the OG image / title even
   // when no per-product SEO record has been configured in the admin.
   let apiProduct: any = null;
   try {
-    apiProduct = await productApi.detail(id);
+    apiProduct = await productApi.detail(slug);
   } catch {
     apiProduct = null;
   }
@@ -77,27 +78,31 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: ogImage ? [ogImage] : undefined,
+      images: ogImage
+        ? [ogImage]
+        : Array.isArray(base.openGraph?.images) && base.openGraph.images[0]
+          ? [
+              typeof base.openGraph.images[0] === "string"
+                ? base.openGraph.images[0]
+                : "url" in base.openGraph.images[0]
+                  ? (base.openGraph.images[0] as { url: string }).url
+                  : base.openGraph.images[0].toString(),
+            ]
+          : undefined,
     },
   };
 }
 
 
-export function getImageSource(image: string | StaticImageData | undefined) {
-  if (!image) return img6;
-  return typeof image === "string" ? image : image.src;
-}
-
 export default async function ProductPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }) {
-  const { id } = await params;
-
+  const { slug } = await params;
   let apiProduct: any;
   try {
-    apiProduct = await productApi.detail(id);
+    apiProduct = await productApi.detail(slug);
   } catch (err) {
     console.log(err)
     return notFound();
@@ -108,7 +113,7 @@ export default async function ProductPage({
   // Transform API data to component-friendly object
   const product: any = {
     ...apiProduct,
-    id: apiProduct._id ?? apiProduct.id ?? id,
+    id: apiProduct._id ?? apiProduct.id ?? slug,
     name: apiProduct.title,
     image: apiProduct.images?.[0] ? getImageUrl(apiProduct.images[0], 1600) : "",
     images: apiProduct.images?.length
@@ -168,9 +173,9 @@ export default async function ProductPage({
   const host =
     requestHeaders.get("x-forwarded-host") ||
     requestHeaders.get("host") ||
-    "ensis.in";
+    SITE_HOST;
   const protocol = requestHeaders.get("x-forwarded-proto") || "https";
-  const productUrl = `${protocol}://${host}/products/${product.slug || id}`;
+  const productUrl = `${protocol}://${host}/products/${product.slug || slug}`;
 
   const productImages = product.images?.length ? product.images : [product.image];
   const inStock = (product.stock ?? 0) > 0;
