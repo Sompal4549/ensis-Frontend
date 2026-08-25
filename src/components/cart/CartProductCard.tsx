@@ -47,9 +47,9 @@ export default function CartProductCard({ item }: { item: CartItem }) {
 
     <div className="pr-8">
       <Link href={`/products/${item.slug}`}>
-        <h2 className="max-w-[420px] text-xs font-black uppercase leading-[1.35] text-[#101010] md:text-xs">
+        <h3 className="max-w-[420px] text-xs font-black uppercase leading-[1.35] text-[#101010] md:text-xs">
           {item.name}
-        </h2>
+        </h3>
       </Link>
 
       <p className="mt-2 text-xs text-[#4f4941]">

@@ -51,7 +51,7 @@ export default function ProductHeroBanner({
   return (
     <div className="w-full">
       {/* Full-bleed banner — images span the viewport */}
-      <section className="relative w-full h-72 md:h-145 overflow-hidden bg-white">
+      <section className="relative w-full h-72 md:h-145 max-h-[650px] xl:max-h-none overflow-hidden bg-white">
 
         {/* SLIDES — always full viewport width */}
         {slides.map((src, i) => (

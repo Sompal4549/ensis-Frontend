@@ -195,7 +195,7 @@ function buildInvoice(order: Order, orderDate: string): string {
 <body style="margin:0;font-family:Jost,Arial,sans-serif;background:#FCFAF6;color:#1F3A2A">
 <div style="max-width:760px;margin:40px auto;background:#fff;border:1px solid #EDE4D3;border-radius:20px;overflow:hidden">
 <div style="background:#1F3A2A;padding:32px 40px;color:#fff">
-<h1 style="margin:0;font-size:22px;letter-spacing:.14em;text-transform:uppercase">ENSIS</h1>
+<div style="margin:0;font-size:22px;letter-spacing:.14em;text-transform:uppercase;font-weight:700">ENSIS</div>
 <p style="margin:6px 0 0;font-size:12px;color:#C7A55B;letter-spacing:.1em">TAX INVOICE</p>
 </div>
 <div style="padding:32px 40px">
@@ -412,7 +412,7 @@ export default function OrderPage() {
         <div className="flex size-14 items-center justify-center rounded-full border border-rose-200 bg-rose-50 text-rose-500">
           <AlertCircle size={26} />
         </div>
-        <h2 className="text-xl font-semibold text-[#1F3A2A]">Unable to load order</h2>
+        <h1 className="text-xl font-semibold text-[#1F3A2A]">Unable to load order</h1>
         <p className="max-w-md text-sm leading-6 text-[#5f665b]">
           {error || "The requested order details could not be found."}
         </p>
@@ -498,9 +498,9 @@ export default function OrderPage() {
               {isPaid ? "Payment Successful" : "Order Received"}
             </span>
 
-            <h2 className="mt-3 text-2xl font-medium tracking-tight text-[#1F3A2A] md:text-4xl">
+            <h1 className="mt-3 text-2xl font-medium tracking-tight text-[#1F3A2A] md:text-4xl">
               Thank You for Your Order
-            </h2>
+            </h1>
             <p className="mt-2 max-w-2xl text-xs leading-6 text-[#5f665b] md:text-sm">
               Your ENSIS wellness order has been received. Our dedicated team is reviewing the details
               and will contact you shortly to confirm delivery and installation support.
@@ -586,7 +586,10 @@ export default function OrderPage() {
                     </div>
 
                     <div className="min-w-0 flex-1">
-                      <Link href={`/products/${typeof item.product === "object" ? item.product._id : ""}`} className="block">
+                      <Link
+                          href={`/products/${typeof item.product === "object" ? item.product._id : ""}`}
+                          className="block"
+                        >
                         <p className="truncate text-xs font-semibold text-[#1F3A2A] transition-colors hover:text-[#8d6a3a]">
                           {itemName(item)}
                         </p>

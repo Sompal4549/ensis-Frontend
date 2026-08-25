@@ -53,10 +53,10 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
   return (
     <section className="bg-[#f5efe0] w-full py-4 border-t border-[#d78c2f] border-b">
       <Container className="">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-8 lg:gap-0 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[0.7fr_auto_1fr_auto_0.7fr] gap-8 lg:gap-0 items-stretch">
 
           {/* ── COLUMN 1: What does Turnkey mean ── */}
-          <div className="flex flex-col gap-4 lg:pr-10">
+          <div className="flex flex-col gap-4 xl:pr-10">
             <p className="text-[#d19f4f] text-base font-bold uppercase">
               {sectionContent.subheading}
             </p>
@@ -76,7 +76,7 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
             <p className="text-base font-semibold text-center lg:text-left">
               {sectionContent.mostProjectsTitle}
             </p>
-            <div className="grid grid-cols-4 gap-x-2 gap-y-5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-5">
               {sectionContent.mostProjects.map((v) => (
                 <div
                   key={v.id}
@@ -124,8 +124,8 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
               <Image
                 src={sectionContent.withEnsis.image.imageUrl}
                 alt="ENSIS — Everything Under One Roof"
-                width={144}
-                height={160}
+                width={124}
+                height={140}
                 className="object-contain w-full h-auto"
               />
             </div>

@@ -4,6 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { SITE_URL } from "@/lib/site";
 import SparkleLogo from "./SparkleLogo";
 import {
     Phone,
@@ -35,6 +37,7 @@ import { getComponentContent } from "@/lib/api/api";
 import { authStore } from "@/lib/auth";
 
 export const Header = () => {
+    const pathname = usePathname();
     const [mounted, setMounted] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [wishlistOpen, setWishlistOpen] = useState(false);
@@ -117,33 +120,33 @@ export const Header = () => {
         "inline-flex items-center whitespace-nowrap border-b-2 border-transparent pt-0.5 text-sm font-bold tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
 
     const mobileLink =
-        "border-b border-[#e8e0d3] py-6 text-sm font-bold tracking-wide text-[#1f261b]";
+        "border-b border-[#e8e0d3] py-3 text-sm font-bold tracking-wide text-[#1f261b]";
 
     // Default content shape matches the actual DB schema for "layout.header"
     // (contactInfo + navigation), NOT the old badges/navLinks shape.
     const [headerContent, setHeaderContent] = useState({
         phone: "+91 9654900525",
         email: "info@ensis.in",
-        brochureUrl: "https://ensis.in/pdf/e-broucher.pdf",
+        brochureUrl: `${SITE_URL}/pdf/e-broucher.pdf`,
         contactInfo: [
             {
-                image: { imageUrl: "/icons/factory.svg", alt: "Factory Icon" },
+                image: { imageUrl: "https://res.cloudinary.com/ddjhixcwh/image/upload/v1782895454/ensis/hiiaox1cxbhqitgl398r.webp", alt: "Factory Icon" },
                 text: "Manufactured in India",
             },
             {
-                image: { imageUrl: "/icons/phone.svg", alt: "Phone Icon" },
+                image: { imageUrl: "https://res.cloudinary.com/ddjhixcwh/image/upload/v1782895338/ensis/o9uoqux6pxhfkqvetosb.webp", alt: "Phone Icon" },
                 text: "+91 9654900525",
                 href: "tel:+919654900525",
             },
             {
-                image: { imageUrl: "/icons/mail.svg", alt: "Mail Icon" },
+                image: { imageUrl: "https://res.cloudinary.com/ddjhixcwh/image/upload/v1782895404/ensis/bfzklxvkqlxinbj4uuhw.webp", alt: "Mail Icon" },
                 text: "info@ensis.in",
                 href: "mailto:info@ensis.in",
             },
         ],
         navigation: [
             { title: "Home", slug: "/" },
-            { title: "About Us", slug: "/about" },
+            { title: "About Us", slug: "/about-us" },
             { title: "Products", slug: "/products" },
             { title: "Turnkey Solutions", slug: "/turnkey" },
             { title: "Consultancy", slug: "/consultancy" },
@@ -254,7 +257,7 @@ export const Header = () => {
                                                     className="grid grid-cols-[64px_1fr] gap-4 border-b border-[#f0e8df] px-4 py-3 last:border-b-0"
                                                 >
                                                     <Link
-                                                        href={`/products/${item.id}`}
+                                                        href={`/products/${item.slug || item.id}`}
                                                         onClick={() => setWishlistOpen(false)}
                                                         className="relative block aspect-square overflow-hidden bg-[#f8f3ec]"
                                                     >
@@ -269,7 +272,7 @@ export const Header = () => {
 
                                                     <div className="min-w-0">
                                                         <Link
-                                                            href={`/products/${item.id}`}
+                                                            href={`/products/${item.slug || item.id}`}
                                                             onClick={() => setWishlistOpen(false)}
                                                             className="line-clamp-2 text-[12px] font-bold leading-snug text-[#1f261b] hover:text-[#8d6a3a]"
                                                         >
@@ -387,7 +390,7 @@ export const Header = () => {
                                 <li key={index}>
                                     <Link
                                         href={item.href}
-                                        className={`${navLink} uppercase font-semibold`}
+                                        className={`${navLink} uppercase font-semibold ${pathname === item.href ? "border-[#8d6a3a]! text-[#8d6a3a]!" : ""}`}
                                     >
                                         {item.label}
                                     </Link>
@@ -419,11 +422,11 @@ export const Header = () => {
 
             {/* Mobile Menu */}
             <aside
-                className={`fixed right-0 top-0 z-50 h-screen w-[60%] min-w-[190px] max-w-[320px] bg-[#fbf8f2] shadow-2xl transition-transform duration-300 ease-out xl:hidden ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+                className={`fixed right-0 top-0 z-50 flex h-screen w-[60%] min-w-[190px] max-w-[320px] flex-col bg-[#fbf8f2] shadow-2xl transition-transform duration-300 ease-out xl:hidden ${isMenuOpen ? "translate-x-0" : "translate-x-full"
                     }`}
                 aria-hidden={!isMenuOpen}
             >
-                <div className="flex h-20 items-center justify-between border-b border-[#e8e0d3] px-4">
+                <div className="flex h-14 items-center justify-between border-b border-[#e8e0d3] px-4">
                     <SparkleLogo
                         src={logoImg}
                         alt="ENSIS Logo"
@@ -439,12 +442,12 @@ export const Header = () => {
                     </button>
                 </div>
 
-                <nav className="flex flex-col px-5 py-3">
+                <nav className="flex flex-1 flex-col overflow-y-auto px-5 py-3">
                     {navLinks.map((item, index) => (
                         <Link
                             key={index}
                             href={item.href}
-                            className={`${mobileLink}`}
+                            className={`${mobileLink} ${pathname === item.href ? "text-[#8d6a3a]!" : ""}`}
                             onClick={() => setIsMenuOpen(false)}
                         >
                             {item.label}
@@ -462,13 +465,13 @@ export const Header = () => {
                             </span>
                         )}
                     </Link>
-                    <div className="mt-4 flex flex-col gap-4">
-                        <GreenButton text={<span className="uppercase text-[#050A1A]">E-Brochure</span>} path={headerContent.brochureUrl} />
+                    <div className="mt-3 flex flex-col gap-3">
+                        <GreenButton text={<span className="uppercase text-[10px] font-bold tracking-wider text-[#050A1A]">E-Brochure</span>} path={headerContent.brochureUrl} />
 
                         {mounted && (user ? (
-                            <div className="mt-2 rounded-md border border-[#d8cbb9] bg-white p-4">
+                            <div className="mt-2 rounded-md border border-[#d8cbb9] bg-white p-3">
                                 <div className="flex items-center gap-4">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#263016] text-sm font-bold text-white">
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#263016] text-xs font-bold text-white">
                                         {user.name?.charAt(0).toUpperCase()}
                                     </div>
                                     <div>
@@ -480,7 +483,7 @@ export const Header = () => {
                                 </div>
                             </div>
                         ) : (
-                            <GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
+                            <GreenButton path="/login" leftIcon={<LogIn size={12} className="text-[#050A1A]" />} text={<span className="text-[10px]">User Login</span>} />
                         ))}
                     </div>
                 </nav>

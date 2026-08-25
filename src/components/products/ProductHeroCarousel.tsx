@@ -25,7 +25,7 @@ export default function ProductHeroCarousel({
   if (!slides.length) return null;
 
   return (
-    <div className="relative min-h-[550px] md:h-[calc(100vh-146px)]">
+    <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none">
       <AnimatePresence>
         <motion.div
           key={activeIndex}

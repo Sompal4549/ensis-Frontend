@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { cache } from "react";
 import { API_URL, getImageUrl } from "@/lib/api/api";
+import { SITE_URL } from "@/lib/site";
 
 interface PageSeoData {
   pageName: string;
@@ -18,6 +19,30 @@ interface PageSeoData {
 
 export interface SeoResult extends Metadata {
   schema: string | null;
+}
+
+const DEFAULT_SITE_NAME = "ENSIS";
+const DEFAULT_OG_IMAGE = `${SITE_URL}/og-image.webp`;
+
+const PAGE_PATHS: Record<string, string> = {
+  home: "/",
+  about: "/about-us",
+  products: "/products",
+  turnkey: "/turnkey",
+  contact: "/contact",
+  blog: "/blog",
+  career: "/career",
+  consultancy: "/consultancy",
+  enquiry: "/enquiry",
+  "projects-and-clients": "/projects-and-clients",
+};
+
+function canonicalFor(page: string): string {
+  if (page.startsWith("products/")) {
+    return `${SITE_URL}/products/${page.slice("products/".length)}`;
+  }
+  const path = PAGE_PATHS[page] ?? `/${page}`;
+  return `${SITE_URL}${path}`;
 }
 
 // Single source of truth — fetched once per request (React cache dedupes
@@ -57,16 +82,33 @@ export async function generateSeo(page: string): Promise<SeoResult> {
       title: fallbackTitle,
       description: fallbackDescription,
       robots: "index, follow",
+      alternates: { canonical: canonicalFor(page) },
       openGraph: {
         title: fallbackTitle,
         description: fallbackDescription,
+        url: canonicalFor(page),
+        siteName: DEFAULT_SITE_NAME,
+        images: [{ url: DEFAULT_OG_IMAGE }],
         type: "website",
+        locale: "en_IN",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: fallbackTitle,
+        description: fallbackDescription,
+        images: [DEFAULT_OG_IMAGE],
       },
       schema: null,
     };
   }
 
   const { seo, robots } = pageData;
+
+  const computedCanonical = canonicalFor(page);
+  const isKnownStaticPage = page in PAGE_PATHS || page.startsWith("products/");
+  const canonical = isKnownStaticPage
+    ? computedCanonical
+    : seo.canonical || computedCanonical;
 
   const keywordsArray = seo.metaKeywords
     ? seo.metaKeywords.split(",").map((k) => k.trim()).filter(Boolean)
@@ -88,21 +130,22 @@ export async function generateSeo(page: string): Promise<SeoResult> {
     title: seo.metaTitle,
     description: seo.metaDescription,
     keywords: keywordsArray,
-    alternates: seo.canonical ? { canonical: seo.canonical } : undefined,
+    alternates: { canonical },
     robots: robots || "index, follow",
     openGraph: {
       title: ogExtra["og:title"] || seo.metaTitle,
       description: ogExtra["og:description"] || seo.metaDescription,
-      url: ogExtra["og:url"] || undefined,
-      siteName: ogExtra["og:site_name"] || undefined,
+      url: ogExtra["og:url"] || canonical,
+      siteName: ogExtra["og:site_name"] || DEFAULT_SITE_NAME,
       type: (ogExtra["og:type"] as "website" | "article") || "website",
-      images: ogImage ? [{ url: getImageUrl(ogImage) }] : undefined,
+      locale: "en_IN",
+      images: [{ url: ogImage ? getImageUrl(ogImage) : DEFAULT_OG_IMAGE }],
     },
     twitter: {
       card: "summary_large_image",
       title: ogExtra["twitter:title"] || seo.metaTitle,
       description: ogExtra["twitter:description"] || seo.metaDescription,
-      images: ogImage ? [getImageUrl(ogImage)] : undefined,
+      images: [ogImage ? getImageUrl(ogImage) : DEFAULT_OG_IMAGE],
     },
     schema: seo.schema || null,
   };

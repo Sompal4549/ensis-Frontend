@@ -19,7 +19,7 @@ const Sparkle = ({ style, color }: { style: React.CSSProperties; color: string }
   />
 );
 
-export default function GreenButton({ path = '/book-a-stand', variant = 'golden', text, leftIcon, rightIcon, onClick, fontSize = 'text-base' }: BookStallButtonProps) {
+export default function GreenButton({ path = '/contact', variant = 'golden', text, leftIcon, rightIcon, onClick, fontSize = 'text-base' }: BookStallButtonProps) {
   const isGolden = variant === 'golden';
 
   return (

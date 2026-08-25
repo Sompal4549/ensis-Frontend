@@ -17,7 +17,7 @@ export default function BlogHeroSection({ sectionContent }: { sectionContent: an
           alt="Spa wellness"
           fill
           priority
-          className="object-fill object-center"
+          className="object-cover object-center"
         />
       </div>
 

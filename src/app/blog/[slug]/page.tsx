@@ -11,6 +11,7 @@ import BlogDetailNewsletter from "@/components/blog/BlogDetailNewsLetter";
 import { Metadata } from "next";
 import RelatedBlogs from "@/components/blog/Relatedblogs";
 import BlogDetailCtaBanner from "@/components/blog/BlogDetailCtaBanner";
+import { SITE_URL, SITE_HOST } from "@/lib/site";
 
 interface BlogDetailProps {
   params: Promise<{ slug: string }>;
@@ -72,25 +73,33 @@ export async function generateMetadata({ params }: BlogDetailProps): Promise<Met
     blog.banner?.backgroundImage ||
     "";
 
+  const dbCanonical = seo.canonical;
+  const canonical = dbCanonical
+    ? dbCanonical.startsWith("http")
+      ? dbCanonical
+      : `${SITE_URL}${dbCanonical.startsWith("/") ? dbCanonical : "/" + dbCanonical}`
+    : `${SITE_URL}/blog/${slug}`;
+
   return {
     title: seo.metaTitle || title,
     description: seo.metaDescription,
     keywords: keywordsArray,
-    alternates: seo.canonical ? { canonical: seo.canonical } : undefined,
+    alternates: { canonical },
     robots: "index, follow",
     openGraph: {
       title: ogExtra["og:title"] || seo.metaTitle || title,
       description: ogExtra["og:description"] || seo.metaDescription,
-      url: ogExtra["og:url"] || undefined,
-      siteName: ogExtra["og:site_name"] || undefined,
+      url: ogExtra["og:url"] || canonical,
+      siteName: ogExtra["og:site_name"] || "ENSIS",
       type: (ogExtra["og:type"] as "website" | "article") || "article",
-      images: ogImage ? [{ url: getImageUrl(ogImage) }] : [],
+      locale: "en_IN",
+      images: [{ url: ogImage ? getImageUrl(ogImage) : `${SITE_URL}/og-image.webp` }],
     },
     twitter: {
       card: "summary_large_image",
       title: ogExtra["og:title"] || seo.metaTitle || title,
       description: ogExtra["og:description"] || seo.metaDescription,
-      images: ogImage ? [getImageUrl(ogImage)] : undefined,
+      images: [ogImage ? getImageUrl(ogImage) : `${SITE_URL}/og-image.webp`],
     },
   };
 }
@@ -131,7 +140,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
   const host =
     requestHeaders.get("x-forwarded-host") ||
     requestHeaders.get("host") ||
-    "ensis.in";
+    SITE_HOST;
   const protocol = requestHeaders.get("x-forwarded-proto") || "https";
   const blogUrl = `${protocol}://${host}/blog/${blog.slug}`;
   const autoSchema = {
@@ -156,7 +165,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
       name: "ENSIS",
       logo: {
         "@type": "ImageObject",
-        url: "https://ensis.in/logo.png",
+        url: `${SITE_URL}/logo.png`,
       },
     },
     mainEntityOfPage: {

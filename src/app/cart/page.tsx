@@ -85,12 +85,12 @@ function CartTableRow({ item }: { item: CartItem }) {
   return (
     <div className="grid gap-4 border-t border-[#eee5d8] p-2 md:grid-cols-[1fr_110px_150px_110px_34px] md:items-center md:px-5">
       <div className="grid grid-cols-[86px_1fr] gap-4">
-        <Link href={`/products/${item.id}`} className="relative aspect-square overflow-hidden rounded-md bg-[#f7f3ec]">
+        <Link href={`/products/${item.slug || item.id}`} className="relative aspect-square overflow-hidden rounded-md bg-[#f7f3ec]">
           <Image src={item.image} alt={item.name} fill sizes="86px" className="object-cover" crossOrigin="anonymous" />
         </Link>
         <div className="min-w-0 py-1">
-          <Link href={`/products/${item.id}`}>
-            <h2 className="line-clamp-2 text-sm font-bold leading-5 text-[#1a1a1a]">{item.name}</h2>
+          <Link href={`/products/${item.slug || item.id}`}>
+            <h3 className="line-clamp-2 text-sm font-bold leading-5 text-[#1a1a1a]">{item.name}</h3>
           </Link>
           <p className="mt-1 text-xs font-medium">{categoryName}</p>
           {(item.finish || item.size) && (
@@ -154,9 +154,9 @@ export default function CartPage() {
         <div className="">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <h2 className="text-xl font-semibold leading-tight md:text-2xl">
+            <h1 className="text-xl font-semibold leading-tight md:text-2xl">
                 Your Cart {hasItems ? `(${cartCount})` : ""}
-              </h2>
+              </h1>
             </div>
             {hasItems && (
               <button type="button" onClick={clearCart} className="inline-flex h-10 items-center gap-4 rounded-md border border-[#d8d0c4] bg-white px-4 text-xs font-bold transition-colors hover:bg-[#f2ebe1]">

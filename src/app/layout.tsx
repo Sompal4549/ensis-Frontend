@@ -52,11 +52,6 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${dmSans.variable} ${playfair.variable}`}>
       <head>
-        {/* Preload top-header icons so they paint with the first frame */}
-        <link rel="preload" as="image" href="/icons/factory.svg" />
-        <link rel="preload" as="image" href="/icons/phone.svg" />
-        <link rel="preload" as="image" href="/icons/mail.svg" />
-
         {/* Search Console Verification */}
         {searchConsole.googleVerification && (
           <meta name="google-site-verification" content={searchConsole.googleVerification} />

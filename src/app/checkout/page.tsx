@@ -342,9 +342,9 @@ export default function CheckoutPage() {
                     <LockKeyhole size={17} className="text-[#c7a55b]" />
                   </div>
                   <div>
-                    <h2 className="text-3xl font-bold leading-none text-[#1F3A2A]" >
+                    <h1 className="text-3xl font-bold leading-none text-[#1F3A2A]" >
                       Checkout
-                    </h2>
+                    </h1>
                     <p className="mt-1 text-xs uppercase tracking-[0.2em] text-[#a79a8c]">
                       Complete your secure wellness order
                     </p>

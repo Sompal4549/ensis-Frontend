@@ -10,6 +10,7 @@ import { DownloadIcon } from 'lucide-react'
 import { FaPhone } from 'react-icons/fa'
 import Link from 'next/link'
 import GreenButton from '../ui/GreenButton'
+import { SITE_URL } from "@/lib/site"
 const features = [
   { icon: expert_consultation, label: "Expert Consultation" },
   { icon: custom_design, label: "Custom Design" },
@@ -64,7 +65,7 @@ const Planning = () => {
 <GreenButton path="tel:+919654900525" text="TALK TO OUR EXPERT" rightIcon={<FaPhone/>}/>
 
 </div>
-<Link href="https://ensis.in/pdf/e-broucher.pdf" target='_blank'>
+<Link href={`${SITE_URL}/pdf/e-broucher.pdf`} target='_blank'>
         <button className="min-w-[220px] py-1 px-4 border border-white text-white text-base font-semibold tracking-wide hover:bg-white/5 transition-all rounded-md flex items-center gap-4 justify-center">
           DOWNLOAD CATALOGUE <DownloadIcon/>
         </button>

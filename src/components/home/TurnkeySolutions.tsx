@@ -55,7 +55,7 @@ export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) =
     <section className="relative overflow-hidden bg-cover bg-center text-white">
       <Image src={backgroundImage} alt="Background" fill className="object-cover z-0" crossOrigin="anonymous"/>
       <Container className="py-6 relative z-10">
-        <div className="grid gap-4 lg:grid-cols-[0.9fr_1.6fr] lg:items-center md:w-[85%]">
+        <div className="grid gap-4 lg:grid-cols-[0.9fr_1.6fr] lg:items-center xl:w-[85%]">
           <div className="flex">
             <div className="">
               <SubHeading className=' text-[#d5ad6a]' text={content.eyebrow} />

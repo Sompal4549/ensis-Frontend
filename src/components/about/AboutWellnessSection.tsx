@@ -155,7 +155,7 @@ const AboutWellnessSection = ({
         </div>
 
         {/* Bottom Stats Bar */}
-        <div className="mt-4 bg-[#03261b] rounded-2xl py-5 px-5 border-3 border-[#e8c37a] md:absolute -bottom-10 left-0 right-0">
+        <div className="mt-4 bg-[#03261b] rounded-2xl py-4 px-5 border-3 border-[#e8c37a] md:absolute -bottom-10 left-0 right-0">
           <div className={`grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-x-4 gap-y-6 ${gridCols}`}>
             {sectionContent.stats.map((item, index) => (
               <div
@@ -163,7 +163,7 @@ const AboutWellnessSection = ({
                 className="flex items-start gap-4 pr-6 md:border-r border-[#aa8f47] last:border-r-0"
               >
                 {/* Icon Placeholder */}
-                <div className="mt-1 shrink-0 w-14 h-14 flex items-center justify-center">
+                <div className="mt-1 shrink-0 w-10 h-10 flex items-center justify-center">
                     <Image alt={item.imageurl.alt} src={getImageUrl(item.imageurl.imageUrl)} width={70} height={50} className="object-contain" crossOrigin="anonymous" style={{ height: "auto" }} />
                 </div>
 

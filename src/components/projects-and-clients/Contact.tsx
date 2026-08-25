@@ -1,6 +1,7 @@
 "use client";
 
 import Image, { StaticImageData } from "next/image";
+import { SITE_HOST } from "@/lib/site";
 import { Container } from "../ui/Container";
 import flower from "@/assets/about/lotus.png";
 import left from "@/assets/icons/arrow_left.webp"
@@ -85,7 +86,7 @@ const fallbackContactBanner: ContactSection = {
     address: "ENSIS Head Office, Kochi, Kerala, India",
     phone: "+91 73560 55555",
     email: "info@ensis.in",
-    website: "www.ensis.in",
+    website: SITE_HOST,
     workingDays: "Mon - Sat",
     workingHours: "9:00 AM - 6:00 PM",
   },
