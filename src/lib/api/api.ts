@@ -209,9 +209,18 @@ export const socialApi = {
   // Track click
   trackClick: async (platform: string) => {
     try {
-      await apiClient.post("/social-clicks", {
-        platform: platform.toLowerCase(),
-      });
+      let clientIp = "";
+      try {
+        const ipRes = await fetch("https://api.ipify.org?format=json");
+        const ipData = await ipRes.json();
+        clientIp = ipData.ip || "";
+      } catch {}
+
+      await apiClient.post(
+        "/social-clicks",
+        { platform: platform.toLowerCase() },
+        { headers: clientIp ? { "x-client-ip": clientIp } : {} }
+      );
     } catch (err) {
       console.error("Failed to track social click", err);
     }
