@@ -19,6 +19,7 @@ interface WellnessData{
                 description: string;
                 buttonText: string;
                 buttonHref: string;
+                highlight:string;
                 services:
                     {
                         image: string;
@@ -27,12 +28,32 @@ interface WellnessData{
                         link:string;
                     }[]
             }
-            interface WellnessSectionProps {
-  sectionContent: WellnessData;
+            const fallbackContent: WellnessData = {
+  welcomeImage: welcome.src,
+  eyebrow: "WELCOME TO ENSIS",
+  heading: "Building Wellness",
+  highlight:"Spaces That Heal",
+  description: "<p>We design and deliver complete wellness environments — from Ayurvedic clinics and spa rooms to turnkey hospital wellness floors — combining traditional wisdom with modern engineering.</p>",
+  buttonText: "Know More",
+  buttonHref: "/about-us",
+  services: [
+    { image: shirodhara_eqipment.src, title: "Shirodhara Equipment", description: "Traditional oil therapy equipment for authentic Ayurvedic treatments.", link: "/products" },
+    { image: steam_sauna.src, title: "Steam & Sauna", description: "Complete steam and sauna room solutions for spas and wellness centers.", link: "/products" },
+    { image: wellness_assossries.src, title: "Wellness Accessories", description: "Premium accessories to complete your wellness space setup.", link: "/products" },
+    { image: table.src, title: "Treatment Tables", description: "Ergonomic treatment tables designed for comfort and durability.", link: "/products" },
+  ],
+};
+
+interface WellnessSectionProps {
+  sectionContent?: WellnessData;
 }
 const WellnessSection: React.FC<WellnessSectionProps> = async ({
-  sectionContent,
+  sectionContent = {} as WellnessData,
 }) => {
+  const resolved = { ...fallbackContent, ...sectionContent };
+  if (!resolved.services || resolved.services.length === 0) {
+    resolved.services = fallbackContent.services;
+  }
 
   return (
     <section>
@@ -44,7 +65,7 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
           {/* Image */}
           <div className="overflow-hidden rounded-2xl shadow-md h-full min-h-[200px] relative">
             <Image 
-              src={sectionContent.welcomeImage}
+              src={resolved.welcomeImage}
               alt="Ayurveda"
               fill
               className="object-cover"
@@ -56,7 +77,7 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
           <div className="h-full flex flex-col py-5">
             <div className="flex gap-1 mb-2 flex-col">
               <span className="uppercase tracking-[2px] text-[#a9742a] text-base font-semibold">
-                {sectionContent.eyebrow}
+                {resolved.eyebrow}
               </span>
               <div className="flex gap-4 items-center">
                 <div className="w-16 h-[1px] bg-[#c9a870]" />
@@ -74,16 +95,16 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
             </div>
 
             <h2 className="text-[#0f2518] text-[24px] leading-[1.2] max-w-[450px] font-semibold">
-              {sectionContent.heading}
+              {resolved.heading}
             </h2>
 
             <p 
-              dangerouslySetInnerHTML={{ __html: sectionContent.description || "" }} 
+              dangerouslySetInnerHTML={{ __html: resolved.description || "" }} 
               className="text-[#0f2518] mt-2 text-base max-w-[480px] leading-6" 
             />
 
-            <Link href={sectionContent.buttonHref || "/about-us"} className="group flex items-center gap-4 text-[#b78942] uppercase tracking-[1px] text-sm font-semibold pt-2 w-fit py-2">
-              {sectionContent.buttonText || "Know More"}
+            <Link href={resolved.buttonHref || "/about-us"} className="group flex items-center gap-4 text-[#b78942] uppercase tracking-[1px] text-sm font-semibold pt-2 w-fit py-2">
+              {resolved.buttonText || "Know More"}
               <ChevronRight
                 size={18}
                 className="transition-transform duration-300 group-hover:translate-x-1"
@@ -94,7 +115,7 @@ const WellnessSection: React.FC<WellnessSectionProps> = async ({
 
         {/* Right Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-4 h-full">
-         {sectionContent.services.map((service, index) => {
+         {resolved.services.map((service, index) => {
   const serviceImageSrc =
     typeof service.image === "string" && service.image
       ? getImageUrl(service.image)

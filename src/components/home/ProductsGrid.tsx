@@ -14,7 +14,7 @@ import img6 from '@/assets/home/img-6.webp';
 import img13 from '@/assets/home/img-13.webp';
 
 import SubHeading from './SubHeading';
-import { getImageUrl, getProducts } from '@/lib/api/api';
+import { getComponentContent, getImageUrl, getProducts } from '@/lib/api/api';
 import { Product } from '@/constants';
 import HtmlRenderer from '../layout/HtmlRender';
 
@@ -63,7 +63,8 @@ type ProductsGridProps = { // Renamed to ProductsGridProps for the component
 };
 
 export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
-  const content = sectionContent || defaultContent;
+  const fallbackContent = sectionContent || defaultContent;
+  const content = await getComponentContent("home.productsGrid", fallbackContent);
   const products = await getProducts()
   // console.log(products, "products")
   // Use the CMS products list (which doubles as fallback category cards)

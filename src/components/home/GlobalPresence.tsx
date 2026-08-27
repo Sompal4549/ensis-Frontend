@@ -3,7 +3,7 @@ import { Container } from '../ui/Container';
 import Image from 'next/image';
 import globe from "@/assets/icons/globe.webp"
 import SubHeading from './SubHeading';
-import { getImageUrl } from '@/lib/api/api';
+import { getComponentContent, getImageUrl } from '@/lib/api/api';
 import HtmlRenderer from '../layout/HtmlRender';
 
 type GlobalPresenceProps = {
@@ -29,7 +29,7 @@ export const GlobalPresence = async ({ sectionData }: GlobalPresenceProps) => {
     { value: "100%", label: "Customer Satisfaction" }
     ],
   };
-  const content =  fallback;
+  const content = await getComponentContent<typeof fallback>("home.globalPresence", fallback);
 
   return (
     <section className="bg-[#f3eee6]">

@@ -51,18 +51,25 @@ const normalizePageResponse = (payload: any) => {
 };
 
 export async function getPageComponent(slug: string) {
-    const response = await apiClient.get(`/component-content/page/${slug}`);
+    try {
+        const response = await apiClient.get(`/component-content/page/${slug}`);
 
-    if (response.status < 200 || response.status >= 300) {
-        throw new Error(`Failed to fetch page content for: ${slug}`);
+        if (response.status < 200 || response.status >= 300) {
+            console.error(`Failed to fetch page content for: ${slug} (status ${response.status})`);
+            return null;
+        }
+
+        const payload = response.data;
+        if (payload?.status === "error") {
+            console.error(`API error for page "${slug}":`, payload.message);
+            return null;
+        }
+
+        return normalizePageResponse(payload);
+    } catch (error) {
+        console.error(`Error fetching page content for "${slug}":`, error);
+        return null;
     }
-
-    const payload = response.data;
-    if (payload?.status === "error") {
-        throw new Error(payload.message || `Failed to fetch page content for: ${slug}`);
-    }
-
-    return normalizePageResponse(payload);
 }
 
 
@@ -180,8 +187,13 @@ export const getComponentContent = cache(
   }
 );
 export const getProducts = async () => {
-    const response = await apiClient.get(`/products?limit=100`);
-    return response.data.data.products as Product[];
+    try {
+        const response = await apiClient.get(`/products?limit=100`);
+        return (response.data.data.products || []) as Product[];
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        return [] as Product[];
+    }
 };
 
 

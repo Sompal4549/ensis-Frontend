@@ -1,5 +1,5 @@
 "use client";
-import React, {  useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { Container } from "../ui/Container";
 import SubHeading from "./SubHeading";
@@ -9,7 +9,7 @@ import steam from "@/assets/home/panchkarma.webp";
 import consultaion from "@/assets/home/consultation.webp";
 import Image from "next/image";
 import BookButton from "../ui/BookButton";
-import {  getImageUrl } from "@/lib/api/api";
+import { getComponentContent, getImageUrl } from "@/lib/api/api";
 import HtmlRenderer from "../layout/HtmlRender";
 
 const fallbackImages: Record<string, any> = {
@@ -48,7 +48,19 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
 };
 
   const [hovered, setHovered] = useState<number | null>(null);
-  const content = defaultContent;
+  const [content, setContent] = useState(defaultContent);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const data = await getComponentContent("home.wellnessRoomSetups", defaultContent);
+        setContent(data);
+      } catch {
+        // Keep defaults
+      }
+    };
+    fetchContent();
+  }, []);
 
 
   const headingLines = (content.heading || "").split("\n");

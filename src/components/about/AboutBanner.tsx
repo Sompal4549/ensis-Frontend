@@ -29,14 +29,14 @@ sectionContent = {}
 
 
   // Merge API data over prop defaults
-  const resolvedTitle = sectionContent?.title;
-  const resolvedSubtitle = sectionContent?.heading;
-  const resolvedDescription = sectionContent?.description;
-  const resolvedHighlight = sectionContent?.highlight;
-  const resolvedPrimaryBtnText = sectionContent?.primaryBtnText;
-  const resolvedPrimaryBtnPath = sectionContent?.primaryBtnPath;
-  const resolvedSecondaryBtnText = sectionContent?.secondaryBtnText;
-  const resolvedSecondaryBtnPath = sectionContent?.secondaryBtnPath;
+  const resolvedTitle = sectionContent?.title || "Building Wellness";
+  const resolvedSubtitle = sectionContent?.heading || "ABOUT ENSIS";
+  const resolvedDescription = sectionContent?.description || "<p>We design and deliver complete wellness environments — from Ayurvedic clinics and spa rooms to turnkey hospital wellness floors — combining traditional wisdom with modern engineering.</p>";
+  const resolvedHighlight = sectionContent?.highlight || "Spaces That Heal";
+  const resolvedPrimaryBtnText = sectionContent?.primaryBtnText || "Get a Free Consultation";
+  const resolvedPrimaryBtnPath = sectionContent?.primaryBtnPath || "/contact";
+  const resolvedSecondaryBtnText = sectionContent?.secondaryBtnText || "View Our Products";
+  const resolvedSecondaryBtnPath = sectionContent?.secondaryBtnPath || "/products";
   const resolvedImage = sectionContent?.image;
 
   const imageUrl = resolvedImage?.imageUrl;

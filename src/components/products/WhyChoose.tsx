@@ -68,8 +68,36 @@ const sanitizeDescription = (html: string): string => {
   return html;
 };
 
-export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseContent }) {
-  console.log(sectionContent, "why choose")
+const fallbackContent: WhyChooseContent = {
+  whyChoose: {
+    title: "WHY CHOOSE ENSIS",
+    reasons: [
+      "Authentic Ayurvedic Design",
+      "Premium Quality Materials",
+      "Custom Solutions for Every Space",
+      "Expert Guidance & Support",
+      "Timely Delivery Worldwide",
+    ],
+    button: { label: "View All Products", url: "/products" },
+  },
+  welcomeToEnsis: {
+    highlight: "WELCOME TO ENSIS",
+    title: "Crafting Wellness Spaces That Heal",
+    description: "<p>We combine Ayurvedic wisdom with modern engineering to deliver complete wellness environments across India and worldwide.</p>",
+    features: [
+      { id: "1", image: customized.src, title: "Custom\nManufacturing" },
+      { id: "2", image: premium_quality.src, title: "Premium\nQuality" },
+      { id: "3", image: ayurvedic.src, title: "Ayurvedic\nExpertise" },
+      { id: "4", image: global.src, title: "Global\nSupport" },
+    ],
+  },
+};
+
+export default function WhyChoose({sectionContent}: { sectionContent?: WhyChooseContent }) {
+  const resolved = { ...fallbackContent, ...sectionContent };
+  if (!resolved.whyChoose) resolved.whyChoose = fallbackContent.whyChoose;
+  if (!resolved.welcomeToEnsis) resolved.welcomeToEnsis = fallbackContent.welcomeToEnsis;
+  console.log(resolved, "why choose")
   return (
     <section className="wca-body w-full bg-[#f5efe6]">
       <Container>
@@ -83,10 +111,10 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
 
             <div>
               <p className="font-semibold tracking-[0.22em] text-[#c8a45d] uppercase mb-4 text-base">
-                {sectionContent.whyChoose.title}
+                {resolved.whyChoose.title}
               </p>
               <ul className="space-y-4 mb-6">
-                {sectionContent.whyChoose.reasons.map((f) => (
+                {resolved.whyChoose.reasons.map((f) => (
                   <li key={f} className="flex items-start gap-4">
                     <span className="mt-[2px] shrink-0 w-[15px] h-[15px] rounded-full border border-[#c8a45d]/60 flex items-center justify-center">
                       <svg width="7" height="7" viewBox="0 0 8 8" fill="none">
@@ -98,7 +126,7 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
                 ))}
               </ul>
             </div>
-            <GreenButton rightIcon={<ArrowRight size={11} className="text-[#c8a45d]" />} text={sectionContent.whyChoose.button.label} path={sectionContent.whyChoose.button.url}/>
+            <GreenButton rightIcon={<ArrowRight size={11} className="text-[#c8a45d]" />} text={resolved.whyChoose.button.label} path={resolved.whyChoose.button.url}/>
           </div>
 
           {/* ── CENTRE — image ── */}
@@ -115,19 +143,19 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
           <div className="bg-white/50 flex flex-col justify-center p-5 sm:p-7 md:p-8 flex-1 relative">
 
             <p className="text-base font-semibold tracking-[0.22em] text-[#a9742a] uppercase mb-2">
-              {sectionContent.welcomeToEnsis.highlight}
+              {resolved.welcomeToEnsis.highlight}
             </p>
 
             <h2 className="wca-serif text-[1.35rem] sm:text-[1.6rem] lg:text-[1.85rem] leading-[1.1] font-[600] text-[#1a1a1a] mb-2.5">
-              {sectionContent.welcomeToEnsis.title}
+              {resolved.welcomeToEnsis.title}
             </h2>
 
-            <p className="text-base text-[#5a5040] leading-relaxed mb-4 max-w-[340px]" dangerouslySetInnerHTML={{__html: sanitizeDescription(sectionContent.welcomeToEnsis.description)}}>
+            <p className="text-base text-[#5a5040] leading-relaxed mb-4 max-w-[340px]" dangerouslySetInnerHTML={{__html: sanitizeDescription(resolved.welcomeToEnsis.description)}}>
             </p>
 
             {/* Stats row — icons only, no bg/border */}
             <div className="grid grid-cols-4 gap-4 mb-4">
-              {sectionContent.welcomeToEnsis.features.map((s) => (
+              {resolved.welcomeToEnsis.features.map((s) => (
                 <div key={s.id} className="flex flex-col items-center gap-1 text-center">
                   <div className="flex items-center justify-center w-8 h-8">
                     <Image src={s.image} alt={s.title} width={30} height={30} className="object-fill object-center" />
