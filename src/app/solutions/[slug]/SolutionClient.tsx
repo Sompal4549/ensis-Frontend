@@ -132,7 +132,7 @@ export default function SolutionClient({ slug }: { slug: string }) {
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-left"
           crossOrigin="anonymous"
         />
 
@@ -188,17 +188,19 @@ export default function SolutionClient({ slug }: { slug: string }) {
               <BookButton
                 text={solution.hero.primaryCta}
                 path="/contact"
+                fontSize="text-xs md:text-base"
               />
               <GreenButton
                 text={solution.hero.secondaryCta}
                 path="#approach"
+                fontSize="text-xs md:text-base"
               />
             </div>
           </Reveal>
         </Container>
 
         {/* Stats strip — overlapping hero bottom */}
-        <Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 !py-0">
+        <Container className="static lg:absolute lg:z-20 lg:left-1/2 lg:-translate-x-1/2 lg:translate-y-1/2 lg:bottom-0 !py-0 -mt-10 md:mt-0">
           <Reveal
             className="
               rounded-2xl
@@ -208,7 +210,7 @@ export default function SolutionClient({ slug }: { slug: string }) {
               shadow-[0_10px_30px_rgba(95,68,22,0.10)]
               backdrop-blur-sm
               grid
-              grid-cols-2
+              grid-cols-1
               md:grid-cols-4
               py-2
             "
@@ -228,7 +230,7 @@ export default function SolutionClient({ slug }: { slug: string }) {
                     py-2
                     ${
                       index < solution.stats.length - 1
-                        ? "md:border-r md:border-[#c39a5c]"
+                        ? "border-b border-[#c39a5c] md:border-b-0 md:border-r md:border-[#c39a5c]"
                         : ""
                     }
                   `}
@@ -274,7 +276,7 @@ export default function SolutionClient({ slug }: { slug: string }) {
           APPROACH
       ========================================================= */}
 
-      <section id="approach" className="bg-[#0f2518] border-b border-[#e6d6b9] pt-14 pb-4">
+      <section id="approach" className="bg-[#0f2518] border-b border-[#e6d6b9] pt-28 md:pt-14 pb-4">
         <Container className="py-4">
           <div className="grid items-center gap-10 lg:grid-cols-2">
             <Reveal>
@@ -615,6 +617,7 @@ export default function SolutionClient({ slug }: { slug: string }) {
               className="
                 relative
                 grid
+                grid-cols-2
                 gap-8
                 md:grid-cols-6
                 md:gap-2
@@ -858,7 +861,7 @@ export default function SolutionClient({ slug }: { slug: string }) {
           alt={solution.cta.imageAlt}
           fill
           sizes="100vw"
-          className="object-cover object-left"
+          className="object-cover"
           crossOrigin="anonymous"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-[#fdfaf3]/40 to-transparent md:w-1/2" />
@@ -867,7 +870,8 @@ export default function SolutionClient({ slug }: { slug: string }) {
           <Reveal className="max-w-[540px]">
             <p
               className="
-                text-base
+                text-sm
+                md:text-base
                 font-semibold
                 tracking-[0.16em]
                 text-[#a9742a]
@@ -880,7 +884,7 @@ export default function SolutionClient({ slug }: { slug: string }) {
               className="
                 mt-2
                 font-serif
-                text-3xl
+                text-2xl
                 leading-[1.1]
                 text-[#0f2518]
                 md:text-[40px]
@@ -898,7 +902,8 @@ export default function SolutionClient({ slug }: { slug: string }) {
               className="
                 mt-4
                 max-w-[480px]
-                text-base
+                text-sm
+                md:text-base
                 leading-6
                 text-[#333]
               "
@@ -910,6 +915,7 @@ export default function SolutionClient({ slug }: { slug: string }) {
               <BookButton
                 text={solution.cta.buttonText}
                 path="/contact"
+                fontSize="text-xs md:text-base"
               />
             </div>
           </Reveal>

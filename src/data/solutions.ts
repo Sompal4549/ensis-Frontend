@@ -173,7 +173,7 @@ export const solutions: SolutionData[] = [
       heading: ["Where Ayurveda Meets", "The Art Of Healing."],
       description:
         "From concept and space planning to interiors, equipment and operational readiness, ENSIS creates thoughtfully planned Ayurveda hospitals that bring traditional healing practices into contemporary healthcare environments.",
-      primaryCta: "DISCUSS YOUR HOSPITAL PROJECT",
+      primaryCta: "DISCUSS YOUR PROJECT",
       secondaryCta: "EXPLORE OUR APPROACH",
       image: heroAyurveda,
       imageAlt: "ENSIS Ayurveda Hospital",
@@ -249,7 +249,7 @@ export const solutions: SolutionData[] = [
       heading: ["Where Traditional Healing", "Meets Modern Clinic Design."],
       description:
         "From therapy room planning to equipment selection and interior design, ENSIS creates authentic Panchkarma clinics that deliver transformative healing experiences.",
-      primaryCta: "DISCUSS YOUR CLINIC PROJECT",
+      primaryCta: "DISCUSS YOUR PROJECT",
       secondaryCta: "EXPLORE OUR APPROACH",
       image: heroPanchkarma,
       imageAlt: "ENSIS Panchkarma Clinic",
@@ -310,7 +310,7 @@ export const solutions: SolutionData[] = [
     },
     cta: {
       eyebrow: "LET'S BUILD A HEALING SPACE TOGETHER",
-      heading: ["Your Vision. Our Expertise.", "Better Panchkarma Experiences."],
+      heading: ["Your Vision.", "Our Expertise."],
       description:
         "Partner with ENSIS to create a Panchkarma clinic that heals, inspires and stands the test of time.",
       buttonText: "DISCUSS YOUR CLINIC PROJECT",
@@ -325,7 +325,7 @@ export const solutions: SolutionData[] = [
       heading: ["Where Luxury Meets", "Wellness And Transformation."],
       description:
         "From hydrotherapy pool design to treatment suite planning, ENSIS creates resort spas that blend luxury hospitality with holistic wellness experiences.",
-      primaryCta: "DISCUSS YOUR RESORT PROJECT",
+      primaryCta: "DISCUSS YOUR PROJECT",
       secondaryCta: "EXPLORE OUR APPROACH",
       image: heroResort,
       imageAlt: "ENSIS Resort & Spa",
@@ -401,7 +401,7 @@ export const solutions: SolutionData[] = [
       heading: ["Where Nature Meets", "Mindful Healing."],
       description:
         "From meditation hall design to holistic space planning, ENSIS creates wellness retreats that connect people with nature, stillness and inner balance.",
-      primaryCta: "DISCUSS YOUR RETREAT PROJECT",
+      primaryCta: "DISCUSS YOUR PROJECT",
       secondaryCta: "EXPLORE OUR APPROACH",
       image: heroWellness,
       imageAlt: "ENSIS Wellness Retreat",
