@@ -14,6 +14,20 @@ type PageSection = {
   isActive?: boolean;
 };
 
+const fallbackPageSections: Record<string, PageSection[]> = {
+  home: [
+    { key: "home.hero", data: {} },
+    { key: "home.fullWidthFeatures", data: {} },
+    { key: "home.turnkeySolutions", data: {} },
+    { key: "home.productsGrid", data: {} },
+    { key: "home.globalPresence", data: {} },
+    { key: "home.wellnessRoomSetups", data: {} },
+    { key: "home.manufacturingAndProjects", data: {} },
+    { key: "home.testimonials", data: {} },
+    { key: "home.blogInsights", data: {} },
+  ],
+};
+
 export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps) {
   try {
     const [pageData, schema] = await Promise.all([
@@ -28,7 +42,7 @@ export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps
       ? pageData.data.sections
       : Array.isArray(pageData?.page?.sections)
       ? pageData.page.sections
-      : [];
+      : fallbackPageSections[slug] || [];
 
     const sortedSections = [...sections].sort((a: any, b: any) => {
       const ai = typeof a?.index === "number" ? a.index : Number.MAX_SAFE_INTEGER;

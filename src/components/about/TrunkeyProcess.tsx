@@ -79,17 +79,35 @@ type SectionContent = {
   steps: SectionStep[];
 };
 
-type TurnkeyProcessProps = {
-  sectionContent: SectionContent;
+const fallbackSteps: SectionStep[] = [
+  { id: 1, title: "CONSULTATION & PLANNING", imageurl: { imageUrl: design.src, alt: "Consultation & Planning" } },
+  { id: 2, title: "DESIGN & 3D VISUALIZATION", imageurl: { imageUrl: design.src, alt: "Design & Visualization" } },
+  { id: 3, title: "MANUFACTURING & PRODUCTION", imageurl: { imageUrl: manufacturing.src, alt: "Manufacturing & Production" } },
+  { id: 4, title: "INSTALLATION & EXECUTION", imageurl: { imageUrl: installation.src, alt: "Installation & Execution" } },
+  { id: 5, title: "HANDOVER & SUPPORT", imageurl: { imageUrl: after_sales_support.src, alt: "After Sales Support" } },
+];
+
+const fallbackContent: SectionContent = {
+  title: "OUR TURNKEY PROCESS",
+  imageurl: { imageUrl: trunkry.src, alt: "Turnkey Process" },
+  steps: fallbackSteps,
 };
 
-const TurnkeyProcess: React.FC<TurnkeyProcessProps> = ({ sectionContent }) => {
+type TurnkeyProcessProps = {
+  sectionContent?: SectionContent;
+};
+
+const TurnkeyProcess: React.FC<TurnkeyProcessProps> = ({ sectionContent = {} as SectionContent }) => {
+  const resolved = { ...fallbackContent, ...sectionContent };
+  if (!resolved.steps || resolved.steps.length === 0) {
+    resolved.steps = fallbackSteps;
+  }
   return (
     <section className="w-full bg-[#f8f5f1] overflow-hidden relative">
         <div className="absolute inset-0">
           <Image
-            src={sectionContent.imageurl.imageUrl}
-            alt={sectionContent.imageurl.alt}
+            src={resolved.imageurl.imageUrl}
+            alt={resolved.imageurl.alt}
             className="h-full w-full object-cover"
             fill
             crossOrigin="anonymous"
@@ -101,11 +119,11 @@ const TurnkeyProcess: React.FC<TurnkeyProcessProps> = ({ sectionContent }) => {
           {/* LEFT SIDE */}
           <div className="w-full lg:w-[58%] px-6 md:px-0 py-4 flex flex-col justify-center relative z-10">
             <h2 className="text-[#2d2a28] text-[18px] md:text-[24px] font-bold  uppercase tracking-[0.4px] mb-6">
-              {sectionContent.title}
+              {resolved.title}
             </h2>
             
             <div className="grid grid-cols-2 gap-4 md:flex md:flex-nowrap md:items-start md:justify-between relative">
-              {sectionContent.steps.map((step, index) => (
+              {resolved.steps.map((step, index) => (
                 <React.Fragment key={step.id}>
                   <div className="flex flex-col items-center text-center w-full md:w-auto md:max-w-[120px] relative z-10">
                     <div className="text-[#b79a7a] mb-4 flex items-center justify-center h-[35px]">
@@ -117,7 +135,7 @@ const TurnkeyProcess: React.FC<TurnkeyProcessProps> = ({ sectionContent }) => {
                     </p>
                   </div>
 
-                  {index !== sectionContent.steps.length - 1 && (
+                  {index !== resolved.steps.length - 1 && (
                     <div className="flex-1 pt-[17px] hidden md:flex items-start justify-center">
                       <div className="w-full relative">
                         <span className="absolute right-[-2px] top-[-6px] text-[#c9b39b] text-sm font-bold">

@@ -241,7 +241,7 @@ export const Footer = async () => {
                     <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${color.bg} ${color.text}`}>
                       <Icon size={14} />
                     </div>
-<h3 className="text-sm font-bold uppercase tracking-wider text-white md:text-[#122544]">
+<h3 className="text-sm font-semibold uppercase tracking-wider text-white md:text-[#122544]">
                       {nav.title}
                     </h3>
                   </div>
@@ -354,7 +354,7 @@ export const Footer = async () => {
                     <Icon size={18} />
                   </div>
                   <div>
-                    <h4 className={`${item.color} text-[14px] font-bold leading-[1.4] tracking-wider`}>{item.title}</h4>
+                    <h4 className={`${item.color} text-[14px] font-semibold leading-[1.4] tracking-wider`}>{item.title}</h4>
                     <p className="mt-0.5 text-[14px] text-white/80">{item.desc}</p>
                   </div>
                 </div>

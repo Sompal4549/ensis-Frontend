@@ -79,20 +79,20 @@ const fallbackContent: AboutWellnessSectionContent = {
 };
 
 const AboutWellnessSection = ({
-  sectionContent,
+  sectionContent = {} as AboutWellnessSectionContent,
 }: {
-  sectionContent: AboutWellnessSectionContent;
+  sectionContent?: AboutWellnessSectionContent;
 }) => {
-  // direct use sectionContent
+  const resolved = { ...fallbackContent, ...sectionContent };
 
-  const gridCols = gridColsClass(sectionContent.stats?.length || 6);
+  const gridCols = gridColsClass(resolved.stats?.length || 6);
 
   return (
     <section className="w-full relative mt-2">
         <div className="absolute left-0 w-[100%] md:w-[40%] top-0 h-50 md:h-full md:bottom-8 z-10">
             <Image
-              src={getImageUrl(sectionContent.imageurl.imageUrl)}
-              alt={sectionContent.imageurl.alt}
+              src={getImageUrl(resolved.imageurl.imageUrl)}
+              alt={resolved.imageurl.alt}
               className="w-full h-full object-cover"
               crossOrigin="anonymous"
               fill
@@ -112,16 +112,16 @@ const AboutWellnessSection = ({
           {/* Center Content */}
           <div className=" md:px-6 md:py-7 flex flex-col justify-center">
             <span className="text-base uppercase tracking-[2px] bg-[#e5c18e] border-[#e29222] border text-center rounded-2xl text-[#5e3b0a] inline-block font-semibold mb-2 w-35 ">
-              {sectionContent.heading}
+              {resolved.heading}
             </span>
 
             <h2 className="text-xl md:text-[28px] leading-[1.15] font-semibold ">
-            {sectionContent.title}
+            {resolved.title}
             </h2>
             <div className="max-w-[480px]">
               <div
                 className="text-base font-semibold md:leading-6 my-2"
-                dangerouslySetInnerHTML={{ __html: sectionContent.description }}
+                dangerouslySetInnerHTML={{ __html: resolved.description }}
               />
              </div>
           </div>
@@ -135,7 +135,7 @@ const AboutWellnessSection = ({
             </h3>
 
             <div className="space-y-2">
-              {sectionContent.ourCoreValues.map((item, index) => (
+              {resolved.ourCoreValues.map((item, index) => (
                 <div key={index} className="flex items-center gap-4">
                   {/* Icon Placeholder */}
                   <div className="w-9 h-9">
@@ -157,7 +157,7 @@ const AboutWellnessSection = ({
         {/* Bottom Stats Bar */}
         <div className="mt-4 bg-[#03261b] rounded-2xl py-4 px-5 border-3 border-[#e8c37a] md:absolute -bottom-10 left-0 right-0">
           <div className={`grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-x-4 gap-y-6 ${gridCols}`}>
-            {sectionContent.stats.map((item, index) => (
+            {resolved.stats.map((item, index) => (
               <div
                 key={index}
                 className="flex items-start gap-4 pr-6 md:border-r border-[#aa8f47] last:border-r-0"

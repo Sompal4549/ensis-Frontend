@@ -12,7 +12,7 @@ import interior from '@/assets/icons/interior.webp';
 
 import Image, { type StaticImageData } from 'next/image';
 import SubHeading from './SubHeading';
-import {  getImageUrl } from '@/lib/api/api';
+import { getComponentContent, getImageUrl } from '@/lib/api/api';
 import GreenButton from '../ui/GreenButton';
 import HtmlRenderer from '../layout/HtmlRender';
 
@@ -38,7 +38,7 @@ export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) =
     eyebrow: sectionData?.eyebrow || "TURNKEY WELLNESS SOLUTIONS",
     heading: sectionData?.heading || "From Concept to\nComplete Wellness Setup",
     description: sectionData?.description || "We provide end-to-end solutions for Panchkarma Clinics, Resorts, Hospitals & Wellness Centers.",
-    buttonText: sectionData?.buttonText || "BOOK DESIGN CONSULTATION",
+    buttonText: sectionData?.buttonText || "BOOK CONSULTATION",
     buttonHref: sectionData?.buttonHref || "/contact",
     backgroundImage: sectionData?.backgroundImage || img15,
     solutions: sectionData?.solutions || [
@@ -49,7 +49,7 @@ export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) =
       { imgUrl: interior, title: "Interior & Equipment Integration" }
     ],
   };
-  const content = fallback;
+  const content = await getComponentContent<typeof fallback>("home.turnkeySolutions", fallback);
   const backgroundImage = typeof content.backgroundImage === "string" && content.backgroundImage ? getImageUrl(content.backgroundImage) : img15.src;
   return (
     <section className="relative overflow-hidden bg-cover bg-center text-white">

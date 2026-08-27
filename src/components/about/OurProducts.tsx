@@ -18,9 +18,25 @@ export interface OurProductsSectionContent {
   products: ProductItem[];
 }
 
-export default function OurProductsSection({ sectionContent }: { sectionContent: OurProductsSectionContent }) {
-  const products = sectionContent.products; // Use products from sectionContent
-  const title = sectionContent.title; // Use title from sectionContent
+const fallbackContent: OurProductsSectionContent = {
+  title: "Our Products",
+  products: [
+    { title: "Steam & Sauna", subtitle: "Room", image: steam.src },
+    { title: "Panchkarma", subtitle: "Equipment", image: panchkarma_2.src },
+    { title: "Wellness", subtitle: "Accessories", image: wellness_assosries.src },
+    { title: "Wellness", subtitle: "Furniture", image: wellness_furniture.src },
+    { title: "Wellness", subtitle: "Interiors", image: wellnessInteriors.src },
+    { title: "Treatment", subtitle: "Tables", image: img12.src },
+  ],
+};
+
+export default function OurProductsSection({ sectionContent = {} as OurProductsSectionContent }: { sectionContent?: OurProductsSectionContent }) {
+  const resolved = { ...fallbackContent, ...sectionContent };
+  if (!resolved.products || resolved.products.length === 0) {
+    resolved.products = fallbackContent.products;
+  }
+  const products = resolved.products;
+  const title = resolved.title;
 
 
   return (

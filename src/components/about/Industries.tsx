@@ -69,28 +69,34 @@ export interface IndustriesWeServeContent {
   industries: IndustryItemContent[];
 }
 
-export default function IndustriesWeServe({ sectionContent }: { sectionContent: IndustriesWeServeContent }) {
+const fallbackIndustries: IndustryItemContent[] = [
+  { title: "Ayurveda Hospitals", imageurl: { imageUrl: ayurveda.src, alt: "Ayurveda Hospitals" } },
+  { title: "Wellness Resorts", imageurl: { imageUrl: wellness.src, alt: "Wellness Resorts" } },
+  { title: "Luxury Spas", imageurl: { imageUrl: luxury.src, alt: "Luxury Spas" } },
+  { title: "Panchkarma Centers", imageurl: { imageUrl: panchkarma.src, alt: "Panchkarma Centers" } },
+  { title: "Yoga Retreats", imageurl: { imageUrl: yoga.src, alt: "Yoga Retreats" } },
+  { title: "Wellness Clinics", imageurl: { imageUrl: wellness_clinic.src, alt: "Wellness Clinics" } },
+  { title: "Hotels & Retreats", imageurl: { imageUrl: hotels.src, alt: "Hotels & Retreats" } },
+  { title: "Naturopathy Centers", imageurl: { imageUrl: naturopathy.src, alt: "Naturopathy Centers" } },
+];
+
+const fallbackContent: IndustriesWeServeContent = {
+  title: "Industries We Serve",
+  industries: fallbackIndustries,
+};
+
+export default function IndustriesWeServe({ sectionContent = {} as IndustriesWeServeContent }: { sectionContent?: IndustriesWeServeContent }) {
+  const resolved = { ...fallbackContent, ...sectionContent };
+  if (!resolved.industries || resolved.industries.length === 0) {
+    resolved.industries = fallbackIndustries;
+  }
   return (
     <section className="w-full bg-[#f8f5f1] px-4 md:px-8">
       <Container>
-        {/* Heading */}
-        {/* <div className="mb-8 flex items-center justify-center gap-4">
-          <div className="h-px flex-1 bg-[#e5ddd2]" />
-
-          <div className="flex flex-col items-center">
-            <h2 className="text-[18px] md:text-[24px] font-semibold tracking-wide text-[#2e2a26] uppercase">
-              Industries We Serve
-            </h2>
-
-            <div className="mt-2 h-[2px] w-10 rounded-full bg-[#c8a16a]" />
-          </div>
-
-          <div className="h-px flex-1 bg-[#e5ddd2]" />
-        </div> */}
-<AboutTitle title="Industries We Serve" />
+        <AboutTitle title="Industries We Serve" />
         {/* Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 xl:grid-cols-8 mt-2 divide-x divide-y sm:divide-y-0 divide-[#e7dfd5]">
-  {sectionContent.industries.map((industry, index) => ( // Use sectionContent.items
+  {resolved.industries.map((industry, index) => (
     <div
       key={index}
       className="group flex flex-col items-center justify-center px-3 py-4 text-center transition-all duration-300 hover:bg-[#fbf8f4]"

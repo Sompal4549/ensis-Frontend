@@ -37,7 +37,7 @@ export const ManufacturingAndProjects: React.FC<{ sectionContent?: any }> = ({ s
     "Multi-Level Quality Testing",
     "International Export Packing",
   ],
-  mfgButtonText: sectionContent.mfgButtonText||"OUR MANUFACTURING",
+  mfgButtonText: sectionContent.mfgButtonText||"Our Manufacturing",
   mfgButtonPath: sectionContent.mfgButtonHref||"/manufacturing",
   
 mfgImages: sectionContent.mfgImages||["", "", ""],
