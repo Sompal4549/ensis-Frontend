@@ -41,8 +41,9 @@ export const Header = () => {
     const [mounted, setMounted] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [wishlistOpen, setWishlistOpen] = useState(false);
+    const [userMenuOpen, setUserMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    const [user, setUser] = useState<{ name?: string; email?: string } | null>(null);
+    const [user, setUser] = useState<{ name?: string; firstName?: string; lastName?: string; email?: string } | null>(null);
     const { addToCart, cartCount, likedCount, likedItems, toggleLike } = useShop();
     const wishlistRef = useRef<HTMLDivElement | null>(null);
     const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001";
@@ -106,6 +107,11 @@ export const Header = () => {
                 !wishlistRef.current.contains(event.target as Node)
             ) {
                 setWishlistOpen(false);
+            }
+            // Close user menu if clicked outside
+            const userMenu = document.getElementById("user-menu-wrapper");
+            if (userMenu && !userMenu.contains(event.target as Node)) {
+                setUserMenuOpen(false);
             }
         };
 
@@ -341,22 +347,61 @@ export const Header = () => {
 
                         {/* User / Login */}
                         {mounted && (user ? (
-                            <div className="flex items-center gap-4">
-                                <div className="flex items-center gap-4 rounded-full border border-white/20 bg-white/10 px-3 py-1">
-                                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d9c49d] text-[10px] font-black text-[#263016]">
-                                        {user.name?.charAt(0).toUpperCase() || "U"}
-                                    </div>
-                                    <span className="text-[10px] font-bold tracking-wide text-white">{user.name}</span>
+                            <div className="flex items-center gap-3">
+                                {/* Name pill + dropdown */}
+                                <div id="user-menu-wrapper" className="relative flex items-center">
+                                    <button
+                                        type="button"
+                                        onClick={() => setUserMenuOpen((o) => !o)}
+                                        className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 transition-colors hover:bg-white/20"
+                                    >
+                                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d9c49d] text-[10px] font-black text-[#263016]">
+                                            {(() => {
+                                              const displayName = user.name || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email || "U";
+                                              return displayName.charAt(0).toUpperCase();
+                                            })()}
+                                        </div>
+                                        <span className="text-[10px] font-bold tracking-wide text-white">
+                                          {user.name || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email}
+                                        </span>
+                                        <ChevronDown
+                                            size={12}
+                                            className={`text-white/70 transition-transform duration-200 ${userMenuOpen ? "rotate-180" : ""}`}
+                                        />
+                                    </button>
+
+                                    {/* Dropdown — only Logout */}
+                                    {userMenuOpen && (
+                                        <div className="absolute right-0 top-full mt-2 z-[100] w-40 overflow-hidden rounded-xl border border-[#e2d8ca] bg-white shadow-[0_12px_36px_rgba(0,0,0,0.14)]">
+                                            <button
+                                                type="button"
+                                                onClick={() => { setUserMenuOpen(false); handleLogout(); }}
+                                                className="flex w-full items-center gap-2.5 px-4 py-3 text-[11px] font-bold uppercase tracking-wide text-red-600 transition-colors hover:bg-red-50"
+                                            >
+                                                <LogOut size={13} />
+                                                Logout
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
-                                <button
-                                    onClick={handleLogout}
-                                    className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#d9c49d] hover:text-white transition-colors"
+
+                                {/* Login as Super Admin — standalone right */}
+                                <a
+                                    href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-1.5 rounded-md bg-[#d9c49d] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#263016] hover:bg-[#c8a45d] transition-colors"
                                 >
-                                    <LogOut size={12} /> Logout
-                                </button>
+                                    <ShieldCheck size={12} /> Super Admin
+                                </a>
                             </div>
                         ) : (
-                            <GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
+                            <div className="flex items-center gap-2">
+                              <GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
+                              <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 rounded-md bg-[#d9c49d] px-3 h-8 text-[10px] font-bold uppercase tracking-wider text-[#263016] hover:bg-[#c8a45d] transition-colors">
+                                <ShieldCheck size={12} /> Login as Superadmin
+                              </a>
+                            </div>
                         ))}
 
                         {/* Mobile menu trigger */}
@@ -483,7 +528,12 @@ export const Header = () => {
                                 </div>
                             </div>
                         ) : (
-                            <GreenButton path="/login" leftIcon={<LogIn size={12} className="text-[#050A1A]" />} text={<span className="text-[10px]">User Login</span>} />
+                            <div className="flex flex-col gap-2">
+                              <GreenButton path="/login" leftIcon={<LogIn size={12} className="text-[#050A1A]" />} text={<span className="text-[10px]">User Login</span>} />
+                              <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 rounded-md bg-[#263016] px-3 h-8 text-[10px] font-bold uppercase tracking-wider text-[#d9c49d] hover:bg-[#1a2010] transition-colors">
+                                <ShieldCheck size={12} /> Login as Superadmin
+                              </a>
+                            </div>
                         ))}
                     </div>
                 </nav>

@@ -130,8 +130,9 @@ export default function CheckoutPage() {
   const [error, setError] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [checkoutSnapshot, setCheckoutSnapshot] = useState<CheckoutSnapshot | null>(null);
+  const [editingAddress, setEditingAddress] = useState(false);
 
-  // Authentication check / session validity (redirect if token missing / expired)
+  // Authentication check / pre-fill address from user data
   useEffect(() => {
     queueMicrotask(() => setIsMounted(true));
     if (!authStore.isLoggedIn()) {
@@ -139,6 +140,43 @@ export default function CheckoutPage() {
       return;
     }
     queueMicrotask(() => setToken(authStore.getToken()));
+
+    // Pre-fill address from registered user/lead data
+    try {
+      const userData = authStore.getUser<{ name?: string; firstName?: string; lastName?: string; email?: string; phone?: string; addressLine?: string; city?: string; state?: string; country?: string; zipCode?: string; postalCode?: string }>();
+      console.log("Checkout userData:", userData);
+      if (userData) {
+        const fullName = userData.name || [userData.firstName, userData.lastName].filter(Boolean).join(" ") || "";
+        const rawPostal = userData.zipCode || userData.postalCode || "";
+
+        setShippingAddress((prev) => {
+          let street = userData.addressLine || prev.street;
+          let postalCode = rawPostal;
+
+          if (!postalCode && street) {
+            const m = street.match(/(\d{6})\s*,?\s*(India)?\s*$/);
+            if (m) {
+              postalCode = m[1];
+              street = street.replace(/\s*\d{6}\s*,?\s*(India)?\s*$/, "").trim();
+            }
+          }
+
+          return {
+            ...prev,
+            fullName: fullName || prev.fullName,
+            email: userData.email || prev.email,
+            phone: userData.phone
+              ? (userData.phone.startsWith("+") ? userData.phone : `+91${userData.phone}`.replace(/\D/g, '').replace(/^(\d{2})(\d+)$/, '+$1 $2'))
+              : prev.phone,
+            street,
+            city: userData.city || prev.city,
+            state: userData.state || prev.state,
+            country: userData.country || prev.country,
+            postalCode: postalCode || prev.postalCode,
+          };
+        });
+      }
+    } catch {}
   }, [router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -361,7 +399,61 @@ export default function CheckoutPage() {
                   </div>
 
                   {!orderId ? (
-                    <form onSubmit={handlePlaceOrder} className="space-y-3">
+                    <div className="space-y-3">
+                      {!editingAddress ? (
+                        /* Read-only address display */
+                        <div className="space-y-3">
+                          <div className="rounded-xl border border-[#e4dccb] bg-[#faf8f4] p-4 space-y-2">
+                            <div className="flex items-center justify-between mb-2">
+                              <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8a7c63]">{shippingAddress.label || "Address"}</span>
+                              <button type="button" onClick={() => setEditingAddress(true)} className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#c7a55b] hover:underline">
+                                Change
+                              </button>
+                            </div>
+                            <p className="text-[13px] font-semibold text-[#1F3A2A]">{shippingAddress.fullName}</p>
+                            <p className="text-[12px] text-[#7a7062]">{shippingAddress.street}{shippingAddress.landmark ? `, ${shippingAddress.landmark}` : ""}</p>
+                            <p className="text-[12px] text-[#7a7062]">{shippingAddress.city}, {shippingAddress.state} - {shippingAddress.postalCode}</p>
+                            <p className="text-[12px] text-[#7a7062]">{shippingAddress.country}</p>
+                            <div className="pt-2 border-t border-[#e4dccb] flex gap-4">
+                              <span className="text-[11px] text-[#7a7062]">{shippingAddress.phone}</span>
+                              <span className="text-[11px] text-[#7a7062]">{shippingAddress.email}</span>
+                            </div>
+                          </div>
+
+                          {error && (
+                            <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs font-semibold text-rose-600">
+                              {error}
+                            </div>
+                          )}
+
+                          <button suppressHydrationWarning
+                            type="button"
+                            disabled={isPlacingOrder}
+                            onClick={handlePlaceOrder}
+                            className="group relative mt-1 flex w-full items-center justify-center gap-4 overflow-hidden rounded-full bg-[#1F3A2A] px-5 py-2.5 text-sm font-bold uppercase tracking-[0.16em] text-white shadow-[0_20px_40px_-12px_rgba(31,58,42,0.6)] transition-all duration-300 hover:bg-[#18301f] hover:shadow-[0_24px_45px_-12px_rgba(199,165,91,0.45)] disabled:cursor-not-allowed disabled:opacity-60"
+                          >
+                            {isPlacingOrder ? (
+                              <>
+                                <Loader2 size={15} className="animate-spin" />
+                                Placing Order...
+                              </>
+                            ) : (
+                              <>
+                                <LockKeyhole size={15} className="text-[#e9d7a8] transition-transform group-hover:scale-110" />
+                                Proceed to Secure Payment
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      ) : (
+                        /* Editable address form */
+                        <>
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-[#8a7c63]">Editing Address</span>
+                            <button type="button" onClick={() => setEditingAddress(false)} className="text-[10px] font-semibold uppercase tracking-[0.1em] text-[#c7a55b] hover:underline">
+                              Cancel
+                            </button>
+                          </div>
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div>
                           <label className={labelClass}>Address Label</label>
@@ -526,7 +618,9 @@ export default function CheckoutPage() {
                           </>
                         )}
                       </button>
-                    </form>
+                    </>
+                    )}
+                  </div>
                   ) : (
                     <div className="space-y-3">
                       <div className="rounded-2xl border border-[#d8e3cf] bg-[#f2f7ee] p-3">

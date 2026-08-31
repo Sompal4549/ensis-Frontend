@@ -20,91 +20,119 @@ import { Container } from "@/components/ui/Container";
 import MobileScrollSpy from "@/components/ui/MobileScrollSpy";
 import privacyBg from "@/assets/privacy-terms/privacy_bg.png";
 import privacyCta from "@/assets/privacy-terms/privacy_cta.png";
-import onThisPageDecoration from "@/assets/privacy-terms/on_this_page_decoration.png";
 
-/* =========================================================
-   DATA
-========================================================= */
+interface PolicySection {
+  id: string;
+  number: string;
+  title: string;
+  text: string;
+  bullets?: string[];
+  extra?: string;
+  extra2?: string;
+  link?: { href: string; label: string };
+}
 
-const sections = [
-  {
-    id: "information-we-collect",
-    number: "01",
-    title: "Information We Collect",
-    text: "We collect personal information that you voluntarily provide when you contact us, fill out a form or interact with our website. This may include:",
-    bullets: [
-      "Name, phone number, email address",
-      "Company or organization details",
-      "Enquiry details and messages",
-      "Any other information you choose to provide",
-    ],
-  },
-  {
-    id: "how-we-use",
-    number: "02",
-    title: "How We Use Your Information",
-    text: "We use the information we collect to:",
-    bullets: [
-      "Respond to your enquiries and provide requested information",
-      "Share updates about our products, services and offers (with your consent)",
-      "Improve our website, products and services",
-      "Manage and administer our business operations",
-    ],
-  },
-  {
-    id: "cookies",
-    number: "03",
-    title: "Cookies & Analytics",
-    text: "Our website uses cookies and similar technologies to understand how visitors use our site. This helps us analyze website performance and improve your browsing experience. You can manage cookie preferences in your browser.",
-  },
-  {
-    id: "information-sharing",
-    number: "04",
-    title: "Information Sharing",
-    text: "We do not sell, rent or trade your personal information. We may share information only when necessary for business operations, service delivery or when required by law.",
-  },
-  {
-    id: "data-security",
-    number: "05",
-    title: "Data Security",
-    text: "We implement reasonable administrative, technical and physical measures to protect your information from unauthorized access, misuse, alteration or disclosure.",
-  },
-  {
-    id: "rights",
-    number: "06",
-    title: "Your Rights & Choices",
-    text: "You have the right to request access to your information, update or correct it, or request its deletion. You can also opt out of marketing communications at any time.",
-  },
-  {
-    id: "updates",
-    number: "07",
-    title: "Policy Updates",
-    text: "We may update this Privacy Policy from time to time to reflect changes in our practices or legal requirements. The latest version will always be available on our website.",
-  },
-  {
-    id: "contact",
-    number: "08",
-    title: "Contact Us",
-    text: "If you have any questions, concerns or requests regarding your privacy, we are here to help.",
-  },
-];
+interface PolicyStat { number: string; label: string; }
 
-const navItems = sections.map((section) => ({
-  id: section.id,
-  number: section.number,
-  title: section.title,
-}));
+interface PolicyHero {
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+  lastUpdated?: string;
+  stats?: PolicyStat[];
+}
+
+interface PolicyIntro {
+  heading?: string;
+  description?: string;
+  features?: { title: string; subtitle: string }[];
+}
+
+interface PolicyContact {
+  heading?: string;
+  subheading?: string;
+  description?: string;
+  phone?: string;
+  email?: string;
+  website?: string;
+}
 
 /* =========================================================
    MAIN PAGE
 ========================================================= */
 
 export default function PrivacyPolicyPage() {
-  const [activeSection, setActiveSection] = useState(
-    "information-we-collect"
-  );
-
+  const [sections, setSections] = useState<PolicySection[]>([]);
+  const [hero, setHero] = useState<PolicyHero>({
+    eyebrow: "ENSIS LEGAL & PRIVACY",
+    title: "Privacy Policy",
+    subtitle: "Your privacy and trust matter to us. Learn how ENSIS collects, uses and protects your information.",
+    lastUpdated: "20 May 2025",
+    stats: [
+      { number: "100%", label: "Data Protection" },
+      { number: "24/7", label: "Support Available" },
+      { number: "1000+", label: "Clients Trust Us" },
+      { number: "20+", label: "Years Experience" },
+    ],
+  });
+  const [intro, setIntro] = useState<PolicyIntro>({
+    heading: "Your Privacy, Handled with Care",
+    description: "ENSIS respects the privacy of every visitor, customer and business partner. This Privacy Policy explains how we collect, use, store and protect information when you interact with our website, products and services.",
+    features: [
+      { title: "Privacy &", subtitle: "Transparency" },
+      { title: "Secure Information", subtitle: "Handling" },
+      { title: "Responsible", subtitle: "Communication" },
+    ],
+  });
+  const [contact, setContact] = useState<PolicyContact>({
+    heading: "Have a Privacy Question?",
+    subheading: "Contact Our Team",
+    description: "We are committed to protecting your information and resolving any concerns you may have.",
+    phone: "+91 9654900525",
+    email: "info@ensis.in",
+    website: "www.ensis.in",
+  });
+  const [loading, setLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState<string>("");
   const [mobileMenu, setMobileMenu] = useState(false);
+
+  // Fetch policy data from API
+  React.useEffect(() => {
+    const fetchPolicyData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/component-content/policy.privacy`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          const policyData = data.data;
+          if (policyData && policyData.data) {
+            const d = policyData.data;
+            if (d.sections) {
+              setSections(d.sections);
+              if (d.sections.length > 0) setActiveSection(d.sections[0].id);
+            }
+            if (d.hero) setHero(d.hero);
+            if (d.intro) setIntro(d.intro);
+            if (d.contact) setContact(d.contact);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch privacy policy:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPolicyData();
+  }, []);
+
+  const navItems = sections.map((section) => ({
+    id: section.id,
+    number: section.number,
+    title: section.title,
+  }));
 
   const handleSectionChange = useCallback((id: string) => {
     setActiveSection(id);
@@ -446,7 +474,7 @@ function PolicySection({
   isLast,
   isActive,
 }: {
-  section: (typeof sections)[number];
+  section: PolicySection;
   isLast: boolean;
   isActive: boolean;
 }) {

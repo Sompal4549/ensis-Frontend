@@ -15,7 +15,6 @@ export default function LoginPage() {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState<"phone" | "otp">("phone");
-  const [isAdmin, setIsAdmin] = useState(false);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -29,7 +28,6 @@ export default function LoginPage() {
 
     try {
       const payload: any = { phone };
-      if (isAdmin) payload.purpose = "admin-login";
 
       const response = await axios.post(`${API_URL}/auth/whatsapp-otp/send`, payload);
       
@@ -52,7 +50,7 @@ export default function LoginPage() {
     setMessage("");
 
     try {
-      const endpoint = isAdmin ? "/admin/login" : "/auth/login";
+      const endpoint = "/auth/login";
       const response = await axios.post(`${API_URL}${endpoint}`, { phone, otp });
 
       const payload = response.data;
@@ -61,7 +59,17 @@ export default function LoginPage() {
       }
       
       localStorage.setItem("ensis_access_token", payload.data.accessToken);
-      localStorage.setItem("ensis_user", JSON.stringify(payload.data.user));
+      const rawUser = payload.data.user || payload.data.lead;
+      // Lead model has firstName+lastName, normalize to name for header display
+      const userData = {
+        ...rawUser,
+        name: rawUser?.name || 
+              [rawUser?.firstName, rawUser?.lastName].filter(Boolean).join(" ") || 
+              rawUser?.email || "",
+      };
+      console.log("Login response payload.data:", payload.data);
+      console.log("Login userData stored:", userData);
+      localStorage.setItem("ensis_user", JSON.stringify(userData));
       window.dispatchEvent(new Event("ensis-auth-change"));
       router.push("/");
     } catch (error: any) {
@@ -109,18 +117,6 @@ subtitle="Access your wellness projects and services"
     >
       {step === "phone" ? (
         <form onSubmit={handleSendOTP}>
-          <div className="mb-4">
-            <label className="flex items-center gap-4 cursor-pointer text-[10px] font-semibold text-[#8b6b35] uppercase tracking-[1px]">
-              <input suppressHydrationWarning 
-                type="checkbox" 
-                checked={isAdmin} 
-                onChange={(e) => setIsAdmin(e.target.checked)} 
-                className="accent-[#b88b3d]"
-              />
-              Login as Admin / Expert
-            </label>
-          </div>
-
           <div>
             <label className={labelClass}>Mobile Number</label>
             <input suppressHydrationWarning
