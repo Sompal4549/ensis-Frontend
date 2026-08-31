@@ -17,6 +17,11 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [addressLine, setAddressLine] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("India");
+  const [zipCode, setZipCode] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,7 +34,7 @@ export default function RegisterPage() {
       const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone }),
+        body: JSON.stringify({ name, email, phone, addressLine, city, state, country, zipCode }),
       });
       const payload = await response.json();
       if (!response.ok || payload.status === "error") {
@@ -62,19 +67,46 @@ const inputClass =
 
           <form onSubmit={onSubmit}>     
             <label className={labelClass}>
-              Full Name
+              Full Name *
               <input suppressHydrationWarning className={inputClass} type="text" value={name} onChange={(event) => setName(event.target.value)} required />
             </label>
             
             <label className={labelClass}>
-              Email
+              Email *
               <input suppressHydrationWarning className={inputClass} type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
             </label>
             
             <label className={labelClass}>
-              Phone Number
+              Phone Number *
               <input suppressHydrationWarning className={inputClass} type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required placeholder="91XXXXXXXXXX" />
             </label>
+
+            <label className={labelClass}>
+              Address *
+              <input suppressHydrationWarning className={inputClass} type="text" value={addressLine} onChange={(event) => setAddressLine(event.target.value)} required placeholder="Street address" />
+            </label>
+
+            <div className="grid grid-cols-2 gap-3">
+              <label className={labelClass}>
+                City *
+                <input suppressHydrationWarning className={inputClass} type="text" value={city} onChange={(event) => setCity(event.target.value)} required />
+              </label>
+              <label className={labelClass}>
+                State *
+                <input suppressHydrationWarning className={inputClass} type="text" value={state} onChange={(event) => setState(event.target.value)} required />
+              </label>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <label className={labelClass}>
+                Country *
+                <input suppressHydrationWarning className={inputClass} type="text" value={country} onChange={(event) => setCountry(event.target.value)} required />
+              </label>
+              <label className={labelClass}>
+                ZIP Code *
+                <input suppressHydrationWarning className={inputClass} type="text" value={zipCode} onChange={(event) => setZipCode(event.target.value)} required />
+              </label>
+            </div>
             
             <button suppressHydrationWarning className={buttonClass} type="submit" disabled={isLoading}>
               {isLoading ? "Registering..." : "Create Account"}

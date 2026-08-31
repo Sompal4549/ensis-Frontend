@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -37,6 +37,7 @@ export default function ProductCard({
 }) {
   const { toggleLike, isLiked, addToCart } = useShop();
   const router = useRouter();
+  const addingRef = useRef(false);
 
   const id = String(product?.id ?? product?._id ?? "");
   const slug = product?.slug || id;
@@ -125,8 +126,11 @@ export default function ProductCard({
         <button
           type="button"
           onClick={() => {
+            if (addingRef.current) return;
+            addingRef.current = true;
             addToCart(shopProduct);
             router.push("/checkout");
+            setTimeout(() => { addingRef.current = false; }, 1000);
           }}
           className="mt-auto inline-flex w-fit items-center gap-1.5 border-b border-[#173A2B]/25 pt-2.5 pb-0.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-[#173A2B] transition-colors duration-300 hover:border-[#b8863b] hover:text-[#b8863b]"
         >

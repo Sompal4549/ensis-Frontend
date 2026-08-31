@@ -4,17 +4,40 @@ import { solutions, solutionsMap } from "@/data/solutions";
 import { SITE_URL } from "@/lib/site";
 import SolutionClient from "./SolutionClient";
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  process.env.NEXT_PUBLIC_API_BASE_URL ||
+  "http://localhost:5000/api/v1";
+
 interface SolutionPageProps {
   params: Promise<{ slug: string }>;
+}
+
+async function getSolutionFromApi(slug: string) {
+  try {
+    const res = await fetch(`${API_URL}/solutions/${slug}`, {
+      next: { revalidate: 60 },
+    });
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data) return json.data;
+    }
+  } catch {}
+  return null;
 }
 
 export async function generateStaticParams() {
   return solutions.map((s) => ({ slug: s.slug }));
 }
 
-export async function generateMetadata({ params }: SolutionPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: SolutionPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const solution = solutionsMap[slug];
+
+  const apiSolution = await getSolutionFromApi(slug);
+  const staticSolution = solutionsMap[slug];
+  const solution = apiSolution || staticSolution;
 
   if (!solution) return { title: "Solution Not Found" };
 
@@ -63,7 +86,10 @@ export async function generateMetadata({ params }: SolutionPageProps): Promise<M
 
 export default async function SolutionPage({ params }: SolutionPageProps) {
   const { slug } = await params;
-  const solution = solutionsMap[slug];
+
+  const apiSolution = await getSolutionFromApi(slug);
+  const staticSolution = solutionsMap[slug];
+  const solution = apiSolution || staticSolution;
 
   if (!solution) {
     notFound();

@@ -31,8 +31,27 @@ apiClient.interceptors.request.use((config) => {
     };
   }
 
+  const token = typeof window !== "undefined" ? localStorage.getItem("ensis_access_token") : null;
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
   return config;
 });
+
+apiClient.interceptors.response.use(
+  (response) => {
+    if (response.status === 401 && typeof window !== "undefined") {
+      localStorage.removeItem("ensis_access_token");
+      localStorage.removeItem("ensis_user");
+      window.location.href = "/login";
+    }
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 const normalizePageResponse = (payload: any) => {
     if (!payload) return null;

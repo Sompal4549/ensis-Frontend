@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ArrowRight,
-  CircleCheck,
   Globe,
   Headphones,
   Mail,
-  MessageCircle,
   Phone,
   Shield,
   Clock,
@@ -19,169 +17,59 @@ import { Container } from "@/components/ui/Container";
 import MobileScrollSpy from "@/components/ui/MobileScrollSpy";
 import termsBg from "@/assets/privacy-terms/terms_bg.png";
 import privacyCta from "@/assets/privacy-terms/privacy_cta.png";
-import onThisPageDecoration from "@/assets/privacy-terms/on_this_page_decoration.png";
 
-/* =========================================================
-   DATA
-========================================================= */
-
-const sections = [
-  {
-    id: "introduction",
-    number: "01",
-    title: "Introduction",
-    text: "These Terms & Conditions govern your access to and use of the ENSIS website and all services, products, equipment, consultancy and solutions provided by ENSIS.",
-    extra: "By using our website or engaging with our services, you agree to be bound by these Terms.",
-  },
-  {
-    id: "acceptance",
-    number: "02",
-    title: "Acceptance of Terms",
-    text: "By accessing or using our website, submitting an enquiry, placing an order or availing any of our services, you acknowledge that you have read, understood and agreed to these Terms & Conditions.",
-  },
-  {
-    id: "use-of-website",
-    number: "03",
-    title: "Use of Website",
-    text: "You agree to use this website only for lawful purposes and in a manner that does not infringe the rights of others or restrict or inhibit anyone else's use of the website.",
-    bullets: [
-      "You shall not use the website for fraudulent or unauthorized purposes.",
-      "You shall not attempt to gain unauthorized access to any part of the website.",
-      "You shall not upload or transmit harmful code, malware or disruptive material.",
-      "All website content is provided for general information and business purposes.",
-    ],
-  },
-  {
-    id: "products-services",
-    number: "04",
-    title: "Products & Services",
-    text: "ENSIS provides Panchkarma equipment, Ayurveda equipment, spa equipment, wellness furniture, custom manufacturing, consultancy, project planning, installation and turnkey wellness solutions for residential, commercial and institutional clients.",
-    extra: "All services are subject to availability, project assessment, feasibility and mutual agreement.",
-  },
-  {
-    id: "product-information",
-    number: "05",
-    title: "Product Information",
-    text: "We aim to ensure that product descriptions, images and specifications are as accurate as reasonably possible.",
-    extra: "However, actual products may vary slightly in colour, finish, dimensions or appearance due to natural materials, handcrafted processes, customization and photography.",
-    extra2: "ENSIS reserves the right to modify product specifications where required without prior notice.",
-  },
-  {
-    id: "orders-enquiries",
-    number: "06",
-    title: "Orders & Enquiries",
-    text: "All enquiries are subject to project evaluation and feasibility.",
-    bullets: [
-      "An enquiry or quotation does not constitute a confirmed order.",
-      "Orders are confirmed only after written confirmation from ENSIS.",
-      "We reserve the right to accept or decline any enquiry or order at our discretion.",
-    ],
-  },
-  {
-    id: "pricing-payments",
-    number: "07",
-    title: "Pricing & Payments",
-    text: "Product and service pricing is communicated through applicable quotations, proposals or commercial documents issued by ENSIS.",
-    bullets: [
-      "Quotation validity will be as specified in the applicable quotation.",
-      "Applicable taxes and statutory charges may apply.",
-      "Payment schedules will be mutually agreed between ENSIS and the client.",
-      "Custom orders may involve additional costs based on specifications.",
-    ],
-  },
-  {
-    id: "customization",
-    number: "08",
-    title: "Customization",
-    text: "Customized Panchkarma, Ayurveda and spa equipment may differ from standard product representations depending on client requirements, dimensions, materials, finishes, technical specifications and agreed design details.",
-  },
-  {
-    id: "delivery-installation",
-    number: "09",
-    title: "Delivery & Installation",
-    text: "Delivery and installation timelines may depend on product availability, customization, production requirements, logistics, location, site readiness and installation requirements.",
-    extra: "Any applicable timeline will be communicated as part of the project or commercial agreement.",
-  },
-  {
-    id: "warranty-service",
-    number: "10",
-    title: "Warranty & Service",
-    text: "Applicable warranty and after-sales support may vary depending on the product, quotation, invoice, project agreement or other commercial terms agreed with the client.",
-    extra: "Clients should refer to the applicable documentation for product-specific warranty and service conditions.",
-  },
-  {
-    id: "intellectual-property",
-    number: "11",
-    title: "Intellectual Property",
-    text: "The ENSIS brand identity, logo, product photography, product designs, website content, graphics, written material and catalogue or brochure content are protected intellectual property.",
-    extra: "Unauthorized reproduction, modification, distribution or commercial use of ENSIS intellectual property is prohibited unless prior written permission has been obtained.",
-  },
-  {
-    id: "user-responsibilities",
-    number: "12",
-    title: "User Responsibilities",
-    text: "Users are responsible for providing accurate information when submitting enquiries, requesting quotations or communicating with ENSIS.",
-    bullets: [
-      "Do not provide misleading or fraudulent information.",
-      "Do not misuse website functionality.",
-      "Do not attempt to interfere with website security or operation.",
-    ],
-  },
-  {
-    id: "third-party-links",
-    number: "13",
-    title: "Third-Party Links",
-    text: "The ENSIS website may contain links to third-party websites or services. ENSIS does not control those external platforms and is not responsible for their content, availability, policies or practices.",
-  },
-  {
-    id: "limitation-liability",
-    number: "14",
-    title: "Limitation of Liability",
-    text: "ENSIS makes reasonable efforts to maintain accurate and available website content. However, website availability, third-party services, technical interruptions or informational inaccuracies may occur.",
-    extra: "To the extent permitted by applicable law, ENSIS shall not be liable for indirect or consequential losses arising from use of the website or reliance on general website information.",
-  },
-  {
-    id: "privacy",
-    number: "15",
-    title: "Privacy",
-    text: "Personal information submitted through the ENSIS website is handled in accordance with the applicable ENSIS Privacy Policy.",
-    link: { href: "/privacy-policy", label: "READ OUR PRIVACY POLICY" },
-  },
-  {
-    id: "changes-terms",
-    number: "16",
-    title: "Changes to Terms",
-    text: "ENSIS may update these Terms & Conditions from time to time. The latest version will be published on the website.",
-    extra: "Continued use of the website following an update indicates acceptance of the revised Terms.",
-  },
-  {
-    id: "governing-law",
-    number: "17",
-    title: "Governing Law",
-    text: "These Terms & Conditions shall be governed by and interpreted in accordance with the applicable laws of India.",
-  },
-  {
-    id: "contact",
-    number: "18",
-    title: "Contact Us",
-    text: "If you have questions regarding these Terms & Conditions, products, quotations, customization, consultancy or services, please contact ENSIS.",
-  },
-];
-
-const navItems = sections.map((section) => ({
-  id: section.id,
-  number: section.number,
-  title: section.title,
-}));
+interface PolicySection {
+  id: string;
+  number: string;
+  title: string;
+  text: string;
+  bullets?: string[];
+  extra?: string;
+  extra2?: string;
+  link?: { href: string; label: string };
+}
 
 /* =========================================================
    MAIN PAGE
 ========================================================= */
 
 export default function TermsConditionsPage() {
-  const [activeSection, setActiveSection] = useState("introduction");
-
+  const [sections, setSections] = useState<PolicySection[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [activeSection, setActiveSection] = useState<string>("");
   const [mobileMenu, setMobileMenu] = useState(false);
+
+  useEffect(() => {
+    const fetchTermsData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/component-content/policy.terms`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          const termsData = data.data;
+          if (termsData && termsData.data && termsData.data.sections) {
+            setSections(termsData.data.sections);
+            if (termsData.data.sections.length > 0) {
+              setActiveSection(termsData.data.sections[0].id);
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch terms:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTermsData();
+  }, []);
+
+  const navItems = sections.map((section) => ({
+    id: section.id,
+    number: section.number,
+    title: section.title,
+  }));
 
   const handleSectionChange = useCallback((id: string) => {
     setActiveSection(id);
@@ -502,7 +390,7 @@ function PolicySection({
   isLast,
   isActive,
 }: {
-  section: (typeof sections)[number];
+  section: PolicySection;
   isLast: boolean;
   isActive: boolean;
 }) {
