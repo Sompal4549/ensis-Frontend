@@ -361,3 +361,81 @@ export const blogApi = {
     }
   },
 };
+
+export type InvoiceItem = {
+  product?: string;
+  name: string;
+  description?: string;
+  quantity: number;
+  unitPrice: number;
+  gstRate: number;
+  amount: number;
+};
+
+export type InvoiceAddress = {
+  name: string;
+  email?: string;
+  phone?: string;
+  addressLine?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  country?: string;
+  gstNumber?: string;
+};
+
+export type Invoice = {
+  _id: string;
+  invoiceNumber: string;
+  type: "proforma" | "tax" | "credit_note" | "debit_note" | "delivery_challan";
+  lead: string;
+  order?: string;
+  items: InvoiceItem[];
+  billingAddress: InvoiceAddress;
+  shippingAddress?: InvoiceAddress;
+  subtotal: number;
+  discount: number;
+  tax: number;
+  shipping: number;
+  totalAmount: number;
+  status: "draft" | "sent" | "paid" | "partial" | "overdue" | "cancelled";
+  paymentReceived: number;
+  paymentDate?: string;
+  dueDate?: string;
+  notes?: string;
+  termsAndConditions?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export const invoiceApi = {
+  createFromOrder: async (orderId: string): Promise<Invoice> => {
+    const response = await apiClient.post(`/invoices/from-order/${orderId}`);
+    return unwrap<Invoice>(response);
+  },
+
+  getById: async (id: string): Promise<Invoice> => {
+    const response = await apiClient.get(`/invoices/${id}`);
+    return unwrap<Invoice>(response);
+  },
+
+  getHtml: async (id: string): Promise<string> => {
+    const response = await apiClient.get(`/invoices/${id}/html`, {
+      responseType: "text",
+    });
+    if (response.status >= 200 && response.status < 300) {
+      return response.data;
+    }
+    throw new Error(response.data?.message || "Failed to fetch invoice HTML");
+  },
+
+  sendEmail: async (id: string) => {
+    const response = await apiClient.post(`/invoices/${id}/send-email`);
+    return unwrap<{ success: boolean; message: string }>(response);
+  },
+
+  sendWhatsApp: async (id: string) => {
+    const response = await apiClient.post(`/invoices/${id}/send-whatsapp`);
+    return unwrap<{ success: boolean; message: string }>(response);
+  },
+};
