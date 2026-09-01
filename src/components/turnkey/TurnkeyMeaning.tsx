@@ -51,12 +51,12 @@ export interface TurnkeyMeaningContent {
 
 export default function TurnkeyMeaning({ sectionContent }: { sectionContent: TurnkeyMeaningContent }) {
   return (
-    <section className="bg-[#f5efe0] w-full py-4 border-t border-[#d78c2f] border-b">
+    <section className="bg-[#f5efe0] w-full py-2 border-t border-[#d78c2f] border-b">
       <Container className="">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[0.7fr_auto_1fr_auto_0.7fr] gap-8 lg:gap-0 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[0.7fr_auto_1fr_auto_0.7fr] gap-4 lg:gap-0 items-stretch">
 
           {/* ── COLUMN 1: What does Turnkey mean ── */}
-          <div className="flex flex-col gap-4 xl:pr-10">
+          <div className="flex flex-col gap-2 xl:pr-6">
             <p className="text-[#d19f4f] text-base font-bold uppercase">
               {sectionContent.subheading}
             </p>
@@ -69,18 +69,18 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
           </div>
 
           {/* Divider */}
-          <div className="hidden lg:block w-px bg-[#d6c5a0] mx-8 self-stretch" />
+          <div className="hidden lg:block w-px bg-[#d6c5a0] mx-4 self-stretch" />
 
           {/* ── COLUMN 2: Most Projects Need Multiple Vendors ── */}
-          <div className="flex flex-col gap-5 lg:px-4">
+          <div className="flex flex-col gap-3 lg:px-3">
             <p className="text-base font-semibold text-center lg:text-left">
               {sectionContent.mostProjectsTitle}
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-2 gap-y-5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-x-1 gap-y-3">
               {sectionContent.mostProjects.map((v) => (
                 <div
                   key={v.id}
-                  className="flex flex-col items-center gap-1.5 text-center"
+                  className="flex flex-col items-center gap-1 text-center"
                 >
                   {/* Icon slot — replace div with your Image when ready */}
                   <div className="w-10 h-10 flex items-center justify-center">
@@ -101,17 +101,17 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
           </div>
 
           {/* Divider */}
-          <div className="hidden lg:block w-px bg-[#d6c5a0] mx-8 self-stretch" />
+          <div className="hidden lg:block w-px bg-[#d6c5a0] mx-4 self-stretch" />
 
           {/* ── COLUMN 3: With ENSIS You Get + Plaque ── */}
-          <div className="flex flex-row justify-between gap-6 lg:pl-4">
-            <div className="flex flex-col gap-4">
+          <div className="flex flex-row justify-between gap-4 lg:pl-3">
+            <div className="flex flex-col gap-2">
               <p className="text-base font-semibold">
                 {sectionContent.withEnsis.title}
               </p>
-              <ul className="flex flex-col gap-4">
+              <ul className="flex flex-col gap-2">
                 {sectionContent.withEnsis.withEnsisList.map((b) => (
-                  <li key={b} className="flex items-center gap-4 text-base">
+                  <li key={b} className="flex items-center gap-3 text-base">
                     <Image alt="dot" src={withEnsis} height={20} width={20} />
                     {b}
                   </li>
