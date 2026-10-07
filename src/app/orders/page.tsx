@@ -318,9 +318,10 @@ export default function OrdersPage() {
                               )}
                             </div>
                             <div className="min-w-0 flex-1">
-                              <p className="truncate text-xs font-semibold text-[#2b2a26]">
-                                {itemName(item)}
-                              </p>
+                              <p
+                                className="truncate text-xs font-semibold text-[#2b2a26]"
+                                dangerouslySetInnerHTML={{ __html: itemName(item) }}
+                              />
                               <p className="text-[11px] text-[#8a7c63]">
                                 {formatCurrency(item.price)} × {item.quantity}
                                 {item.finish ? ` | ${item.finish}` : ""}

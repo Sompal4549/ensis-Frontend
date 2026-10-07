@@ -119,31 +119,16 @@ export default function ProductHeroBanner({
               </span>
             )}
 
-            <h1 className="mb-4 hidden text-[#f5ede0] md:block">
-              {product.title ?? "Luxury Panchkarma Therapy Table"}
-            </h1>
+            <h1
+              className="mb-4 hidden text-[#f5ede0] md:block"
+              dangerouslySetInnerHTML={{ __html: product.title ?? "Luxury Panchkarma Therapy Table" }}
+            />
 
             {product.description && (
               <p className="max-w-85 hidden text-sm md:text-base leading-6 mb-6 text-white/90 md:block" dangerouslySetInnerHTML={{__html:product.description}}>
               </p>
             )}
 
-            <div className="flex flex-wrap gap-4">
-              <button className="flex items-center gap-4 text-xs font-medium text-[#f5ede0] transition-all duration-200 hover:bg-white/10">
-                <svg viewBox="0 0 16 16" className="w-3.5 h-3.5 fill-current">
-                  <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.2" fill="none" />
-                  <polygon points="6.5,5 11.5,8 6.5,11" fill="currentColor" />
-                </svg>
-                Watch Video
-              </button>
-              <button className="flex items-center gap-4 text-xs font-medium text-[#f5ede0] transition-all duration-200 hover:bg-white/10">
-                <svg viewBox="0 0 16 16" className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth="1.3">
-                  <path d="M8 2l6 3.5v5L8 14l-6-3.5v-5L8 2z" />
-                  <path d="M8 2v12M2 5.5l6 3.5 6-3.5" />
-                </svg>
-                View in Your Space
-              </button>
-            </div>
           </div>
 
           {/* RIGHT WHITE CARD — desktop only */}

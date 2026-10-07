@@ -73,9 +73,10 @@ export default function OurProductsSection({ sectionContent = {} as OurProductsS
               {/* Content */}
               <div className="flex items-end justify-between p-3">
                 <div>
-                  <p className="text-base font-bold tracking-[0.08em] text-[#3d3227] uppercase leading-tight">
-                    {product.title}
-                  </p>
+                  <p
+                    className="text-base font-bold tracking-[0.08em] text-[#3d3227] uppercase leading-tight"
+                    dangerouslySetInnerHTML={{ __html: product.title }}
+                  />
 
                   <p className="mt-1 text-base font-bold tracking-[0.08em] text-[#5b524a] uppercase leading-tight">
                     {product.subtitle}

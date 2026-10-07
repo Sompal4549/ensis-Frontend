@@ -720,7 +720,7 @@ export default function CheckoutPage() {
                           />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-[#2b2a26]">{item.name}</p>
+                          <p className="truncate text-sm font-semibold text-[#2b2a26]" dangerouslySetInnerHTML={{ __html: item.name }} />
                           {item.finish || item.size ? (
                             <p className="mt-0.5 text-xs font-semibold text-[#c7a55b]">
                               {[item.finish && `Finish: ${item.finish}`, item.size && `Size: ${item.size}`]

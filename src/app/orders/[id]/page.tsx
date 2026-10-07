@@ -468,9 +468,7 @@ export default function OrderPage() {
                         href={`/products/${typeof item.product === "object" ? item.product._id : ""}`}
                         className="block"
                       >
-                        <p className="text-base font-semibold text-[#1F3A2A] transition-colors hover:text-[#8d6a3a]">
-                          {itemName(item)}
-                        </p>
+                        <p className="text-base font-semibold text-[#1F3A2A] transition-colors hover:text-[#8d6a3a]" dangerouslySetInnerHTML={{ __html: itemName(item) }} />
                       </Link>
                       {(item.finish || item.size) && (
                         <p className="mt-0.5 text-base text-[#8d6a3a]">

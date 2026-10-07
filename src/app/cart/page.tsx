@@ -92,7 +92,10 @@ function CartTableRow({ item }: { item: CartItem }) {
         </Link>
         <div className="min-w-0 py-1">
           <Link href={`/products/${item.slug || item.id}`}>
-            <h3 className="line-clamp-2 text-sm font-bold leading-5 text-[#1F3A2A]">{item.name}</h3>
+            <h3
+              className="line-clamp-2 text-sm font-bold leading-5 text-[#1F3A2A]"
+              dangerouslySetInnerHTML={{ __html: item.name }}
+            />
           </Link>
           <p className="mt-1 text-xs font-medium text-[#8a7c63]">{categoryName}</p>
           {(item.finish || item.size) && (

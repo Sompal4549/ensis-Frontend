@@ -104,7 +104,7 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
                   />
                 </div>
                 <div className="p-4">
-                  <p className="text-base font-semibold text-[#0f2518] line-clamp-1">{product.title}</p>
+                  <p className="text-base font-semibold text-[#0f2518] line-clamp-1" dangerouslySetInnerHTML={{ __html: product.title }} />
                   <span className="inline-flex items-center gap-4 text-base font-semibold text-[#0f2518]">Explore Now <ArrowRight size={14} /></span>
                 </div>
               </Link>

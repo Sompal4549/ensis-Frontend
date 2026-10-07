@@ -114,9 +114,10 @@ export default function ProductCard({
         </p>
 
         <Link href={`/products/${slug}`} className="mt-1 block">
-          <h3 className="line-clamp-1 text-[15px] font-semibold leading-snug text-[#173A2B] transition-colors duration-300 group-hover:text-[#b8863b]">
-            {title}
-          </h3>
+          <h3
+            className="line-clamp-1 text-[15px] font-semibold leading-snug text-[#173A2B] transition-colors duration-300 group-hover:text-[#b8863b]"
+            dangerouslySetInnerHTML={{ __html: title }}
+          />
         </Link>
 
         <p className="mt-1.5 text-[17px] font-bold text-[#b8863b]">

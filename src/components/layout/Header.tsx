@@ -281,9 +281,8 @@ export const Header = () => {
                                                             href={`/products/${item.slug || item.id}`}
                                                             onClick={() => setWishlistOpen(false)}
                                                             className="line-clamp-2 text-[12px] font-bold leading-snug text-[#1f261b] hover:text-[#8d6a3a]"
-                                                        >
-                                                            {item.name}
-                                                        </Link>
+                                                            dangerouslySetInnerHTML={{ __html: item.name }}
+                                                        />
                                                         <p className="mt-1 text-[11px] font-semibold text-[#8d6a3a]">
                                                             {"\u20b9"}
                                                             {item.price.toLocaleString("en-IN")}
