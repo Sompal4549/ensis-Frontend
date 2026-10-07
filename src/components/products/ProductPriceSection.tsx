@@ -185,9 +185,10 @@ const ProductPriceSection = ({
           {mounted && wished ? "In wishlist" : "Add to wishlist"}
         </button>
       </div>
-      <h2 className="mt-2 text-xl font-semibold leading-tight text-[#001b10] md:text-2xl max-w-60 line-clamp-2">
-        {product.title}
-      </h2>
+      <h2
+        className="mt-2 text-xl font-semibold leading-tight text-[#001b10] md:text-2xl line-clamp-2"
+        dangerouslySetInnerHTML={{ __html: product.title }}
+      />
 
       <div className="mt-2 flex flex-wrap items-center gap-4 text-[10px]">
         <button suppressHydrationWarning
@@ -239,7 +240,7 @@ const ProductPriceSection = ({
             </h2>
             {product.price > 0 && (
               <span className="pb-0.5 text-[10px] font-medium text-[#6f756c]">
-                (Incl. of {product.gstRate ?? 5}% GST)
+                (Excl. of {product.gstRate ?? 5}% GST)
               </span>
             )}
           </div>

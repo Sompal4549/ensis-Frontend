@@ -47,9 +47,10 @@ export default function CartProductCard({ item }: { item: CartItem }) {
 
         <div className="pr-8">
           <Link href={`/products/${item.slug}`}>
-            <h3 className="max-w-[420px] text-xs font-black uppercase leading-[1.35] text-[#1F3A2A] md:text-xs">
-              {item.name}
-            </h3>
+            <h3
+              className="max-w-[420px] text-xs font-black uppercase leading-[1.35] text-[#1F3A2A] md:text-xs"
+              dangerouslySetInnerHTML={{ __html: item.name }}
+            />
           </Link>
 
           <p className="mt-2 text-xs font-medium text-[#8a7c63]">

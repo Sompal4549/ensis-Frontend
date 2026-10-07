@@ -11,6 +11,8 @@ import {
   Package,
   RefreshCw,
   ArrowRight,
+  Search,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { PAGE_SIZE } from "@/constants";
@@ -34,6 +36,7 @@ export default function Products(props: any = {}) {
   const [activeCategory, setActiveCategory] = useState(categoryParam || "all");
   const [sortBy, setSortBy] = useState("Featured");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", category: "", message: "", });
@@ -101,7 +104,8 @@ useEffect(() => {
           id: item._id,
           name: item.title,
           image: item.images?.[0] ? getImageUrl(item.images[0]) : "",
-          categoryKey: typeof item.category === 'object' ? item.category?.slug : item.category
+          categoryKey: typeof item.category === 'object' ? item.category?.slug : item.category,
+          orderBy: typeof item.orderBy === "number" ? item.orderBy : (Number(item.orderBy) || 0),
         }));
         setProducts(normalized);
         setApiCategories(categoryList);
@@ -116,18 +120,35 @@ useEffect(() => {
   const handleEnquirySubmit = async () => {
     setEnquiryStatus(null);
 
+    if (!enquiry.name.trim()) {
+      setEnquiryStatus({ type: "error", message: "Please enter your name." });
+      return;
+    }
+
     if (!enquiry.email.trim()) {
       setEnquiryStatus({ type: "error", message: "Please enter your email address." });
+      return;
+    }
+
+    if (!enquiry.phone.trim()) {
+      setEnquiryStatus({ type: "error", message: "Please enter your phone number." });
       return;
     }
 
     setEnquiryLoading(true);
 
     try {
-      const res = await fetch(`${API_URL}/newsletter/subscribe`, {
+      const res = await fetch(`${API_URL}/enquiry/submit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: enquiry.email.trim(), type: "product" }),
+        body: JSON.stringify({
+          fullName: enquiry.name.trim(),
+          email: enquiry.email.trim(),
+          mobileNumber: enquiry.phone.trim(),
+          projectType: enquiry.category.trim() || "Product Enquiry",
+          message: enquiry.message.trim() || "Enquiry submitted from products catalog page.",
+          agreeToContact: true,
+        }),
       });
 
       const payload = await res.json().catch(() => ({}));
@@ -202,10 +223,23 @@ const toggleIdealFor = (value: string) => {
 };
 
   const filtered = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
     let data = products.filter((product) => {
+      const matchesSearch = !q || (
+        (product.title && product.title.toLowerCase().includes(q)) ||
+        (product.name && product.name.toLowerCase().includes(q)) ||
+        (product.code && product.code.toLowerCase().includes(q)) ||
+        (product.material && product.material.toLowerCase().includes(q)) ||
+        (product.description && product.description.toLowerCase().includes(q)) ||
+        (product.shortDescription && product.shortDescription.toLowerCase().includes(q)) ||
+        (typeof product.category === 'object' && product.category?.name?.toLowerCase().includes(q)) ||
+        (product.categoryKey && product.categoryKey.toLowerCase().includes(q))
+      );
+
       const matchesCategory =
         activeCategory === "all" ||
-        product.category?.slug === activeCategory;
+        product.category?.slug === activeCategory ||
+        product.categoryKey === activeCategory;
 
       const matchesPrice = product.price <= priceRange;
 
@@ -217,28 +251,34 @@ const toggleIdealFor = (value: string) => {
         selectedIdealFor.length === 0 ||
         selectedIdealFor.includes(product.overview?.idealFor);
 
-      return matchesCategory && matchesPrice && matchesMaterial && matchesIdealFor;
+      return matchesSearch && matchesCategory && matchesPrice && matchesMaterial && matchesIdealFor;
     });
 
     if (sortBy === "Price: Low to High") {
       data = [...data].sort((a, b) => a.price - b.price);
-    }
-
-    if (sortBy === "Price: High to Low") {
+    } else if (sortBy === "Price: High to Low") {
       data = [...data].sort((a, b) => b.price - a.price);
-    }
-
-    if (sortBy === "Newest") {
-      data = [...data].reverse();
+    } else if (sortBy === "Newest") {
+      data = [...data].sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+    } else {
+      // Default (Featured / catalog order): Sort by orderBy ascending (1, 2, 3...)
+      data = [...data].sort((a, b) => {
+        const orderA = typeof a.orderBy === "number" ? a.orderBy : (Number(a.orderBy) || 0);
+        const orderB = typeof b.orderBy === "number" ? b.orderBy : (Number(b.orderBy) || 0);
+        if (orderA !== orderB) {
+          return orderA - orderB;
+        }
+        return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+      });
     }
 
     return data;
-  }, [products, activeCategory, priceRange, sortBy, selectedMaterials, selectedIdealFor]);
+  }, [products, activeCategory, priceRange, sortBy, selectedMaterials, selectedIdealFor, searchQuery]);
 
-  // Reset visible products on filter/category change
+  // Reset visible products on filter/category/search change
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [activeCategory, priceRange, sortBy, selectedMaterials, selectedIdealFor]);
+  }, [activeCategory, priceRange, sortBy, selectedMaterials, selectedIdealFor, searchQuery]);
 
   // Infinite Scroll Observer
   useEffect(() => {
@@ -428,23 +468,40 @@ const toggleIdealFor = (value: string) => {
               </div>
 
               {/* Toolbar */}
-              <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
-                {/* <p className="text-base text-[#7a6a55]">
-                  Showing 1–
-                  {visibleProducts.length} of{" "}
-                  <span className="font-[600] text-[#1a1a1a]">
-                    {filtered.length}
-                  </span>{" "}
-                  products
-                </p> */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-5">
+                {/* Search Bar */}
+                <div className="relative flex-1 max-w-md">
+                  <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9a8870]" />
+                  <input
+                    suppressHydrationWarning
+                    autoComplete="off"
+                    type="text"
+                    placeholder="Search products by name, code, material..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-9 pr-8 py-2 bg-white border border-[#ede8e0] rounded-xl text-sm text-[#1a1a1a] placeholder:text-[#9a8870] outline-none focus:border-[#183b17] focus:ring-1 focus:ring-[#183b17] transition-all shadow-sm"
+                  />
+                  {searchQuery && (
+                    <button
+                      suppressHydrationWarning
+                      type="button"
+                      aria-label="Clear search"
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded-full"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+                </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                  <span className="text-xs text-[#7a6a55] font-semibold hidden md:inline">
+                    {filtered.length} {filtered.length === 1 ? "Product" : "Products"}
+                  </span>
 
                   {/* Sort */}
-                  <div className="flex items-center gap-4 text-base text-[#7a6a55]">
-                    <span className="hidden sm:inline">
-                      Sort by:
-                    </span>
+                  <div className="flex items-center gap-2 text-sm text-[#7a6a55]">
+                    <span className="hidden sm:inline">Sort:</span>
 
                     <div className="relative">
                       <select
@@ -454,7 +511,7 @@ const toggleIdealFor = (value: string) => {
                         onChange={(e) =>
                           setSortBy(e.target.value)
                         }
-                        className="appearance-none bg-white border border-[#ede8e0] rounded-lg px-3 py-1.5 pr-7 text-base text-[#1a1a1a] outline-none cursor-pointer"
+                        className="appearance-none bg-white border border-[#ede8e0] rounded-lg px-3 py-1.5 pr-7 text-sm text-[#1a1a1a] outline-none cursor-pointer shadow-sm"
                       >
                         {[
                           "Featured",
@@ -474,7 +531,7 @@ const toggleIdealFor = (value: string) => {
                   </div>
 
                   {/* View */}
-                  <div className="flex items-center gap-1 bg-white border border-[#ede8e0] rounded-lg p-1">
+                  <div className="flex items-center gap-1 bg-white border border-[#ede8e0] rounded-lg p-1 shadow-sm">
                     <button
                       suppressHydrationWarning
                       aria-label="Grid view"
@@ -504,20 +561,45 @@ const toggleIdealFor = (value: string) => {
                 </div>
               </div>
 
-              {/* Product Grid */}
-              <div
-                className={`grid gap-4 sm:gap-4 ${viewMode === "grid"
-                    ? "grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
-                    : "grid-cols-1"
-                  }`}
-              >
-                {visibleProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                  />
-                ))}
-              </div>
+              {/* Product Grid or Empty State */}
+              {filtered.length === 0 ? (
+                <div className="text-center py-16 px-4 bg-white rounded-2xl border border-[#ede8e0] shadow-sm">
+                  <Package size={42} className="mx-auto text-[#c8a45d] mb-3 opacity-80" />
+                  <h3 className="text-lg font-semibold text-[#1a1a1a]">No Products Found</h3>
+                  <p className="text-sm text-[#7a6a55] mt-1 max-w-sm mx-auto">
+                    {searchQuery
+                      ? `No products match "${searchQuery}". Try a different keyword or reset filters.`
+                      : "No products match the selected filters."}
+                  </p>
+                  {(searchQuery || selectedMaterials.length > 0 || selectedIdealFor.length > 0 || activeCategory !== "all") && (
+                    <button
+                      onClick={() => {
+                        setSearchQuery("");
+                        setActiveCategory("all");
+                        setSelectedMaterials([]);
+                        setSelectedIdealFor([]);
+                      }}
+                      className="mt-4 px-4 py-2 bg-[#183b17] text-white text-xs font-semibold rounded-lg hover:bg-[#133012] transition-colors"
+                    >
+                      Reset All Filters
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div
+                  className={`grid gap-4 sm:gap-4 ${viewMode === "grid"
+                      ? "grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+                      : "grid-cols-1"
+                    }`}
+                >
+                  {visibleProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                    />
+                  ))}
+                </div>
+              )}
 
               {/* Infinite Scroll Loader */}
               <div
