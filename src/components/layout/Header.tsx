@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { SITE_URL } from "@/lib/site";
 import SparkleLogo from "./SparkleLogo";
 import {
     Phone,
@@ -133,7 +132,7 @@ export const Header = () => {
     const [headerContent, setHeaderContent] = useState({
         phone: "+91 9654900525",
         email: "info@ensis.in",
-        brochureUrl: `${SITE_URL}/pdf/e-broucher.pdf`,
+        brochureUrl: "/pdf/e-brochure.pdf",
         contactInfo: [
             {
                 image: { imageUrl: "https://res.cloudinary.com/ddjhixcwh/image/upload/v1782895454/ensis/hiiaox1cxbhqitgl398r.webp", alt: "Factory Icon" },
@@ -181,6 +180,15 @@ export const Header = () => {
         label: n.title,
         href: n.slug,
     }));
+
+    const brochureUrl =
+        (headerContent as any)?.actions?.brochureButton?.href ||
+        (headerContent as any)?.brochureUrl ||
+        "/pdf/e-brochure.pdf";
+
+    const brochureText =
+        (headerContent as any)?.actions?.brochureButton?.text ||
+        "E-Brochure";
 
     return (
         <header className={`fixed inset-x-0 top-0 z-[60] transition-all duration-300 ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}>
@@ -341,7 +349,7 @@ export const Header = () => {
 
                         {/* E-Brochure */}
                         <div className="hidden sm:block">
-                            <BookButton text="E-Brochure" path={headerContent.brochureUrl} />
+                            <BookButton text={brochureText} path={brochureUrl} />
                         </div>
 
                         {/* User / Login */}
@@ -510,7 +518,7 @@ export const Header = () => {
                         )}
                     </Link>
                     <div className="mt-3 flex flex-col gap-3">
-                        <GreenButton text={<span className="uppercase text-[10px] font-bold tracking-wider text-[#050A1A]">E-Brochure</span>} path={headerContent.brochureUrl} />
+                        <GreenButton text={<span className="uppercase text-[10px] font-bold tracking-wider text-[#050A1A]">{brochureText}</span>} path={brochureUrl} />
 
                         {mounted && (user ? (
                             <div className="mt-2 rounded-md border border-[#d8cbb9] bg-white p-3">

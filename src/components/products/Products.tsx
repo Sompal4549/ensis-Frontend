@@ -225,6 +225,9 @@ const toggleIdealFor = (value: string) => {
   const filtered = useMemo(() => {
     const q = searchQuery.toLowerCase().trim();
     let data = products.filter((product) => {
+      // Exclude inactive products
+      if (product.isActive === false) return false;
+
       const matchesSearch = !q || (
         (product.title && product.title.toLowerCase().includes(q)) ||
         (product.name && product.name.toLowerCase().includes(q)) ||
@@ -232,6 +235,7 @@ const toggleIdealFor = (value: string) => {
         (product.material && product.material.toLowerCase().includes(q)) ||
         (product.description && product.description.toLowerCase().includes(q)) ||
         (product.shortDescription && product.shortDescription.toLowerCase().includes(q)) ||
+        (Array.isArray(product.tags) && product.tags.some((t: string) => typeof t === 'string' && t.toLowerCase().includes(q))) ||
         (typeof product.category === 'object' && product.category?.name?.toLowerCase().includes(q)) ||
         (product.categoryKey && product.categoryKey.toLowerCase().includes(q))
       );
