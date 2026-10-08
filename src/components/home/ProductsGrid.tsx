@@ -85,7 +85,7 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {products.slice(0, 8).map((product: Product) => {
+          {products.filter((p: Product) => p.isActive !== false).slice(0, 8).map((product: Product) => {
             const imageUrl = product.images?.[0]
               ? getImageUrl(product.images[0], 900)
               : fallbackImageMap[product.slug] || img12;
