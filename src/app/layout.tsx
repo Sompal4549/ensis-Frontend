@@ -31,6 +31,7 @@ import { getAdvancedSeo } from "@/lib/api/seo";
 const Footer = nextDynamic(() => import("@/components/layout/Footer").then((mod) => mod.Footer));
 const SocialSidebar = nextDynamic(() => import("@/components/layout/SocialSidebar").then((mod) => mod.default));
 const WhatsAppFloat = nextDynamic(() => import("@/components/ui/WhatsAppFloat").then((mod) => mod.default));
+const EnsisChatbot = nextDynamic(() => import("@/components/ui/EnsisChatbot").then((mod) => mod.default));
 const ToastProvider = nextDynamic(() => import("@/components/ui/ToastProvider").then((mod) => mod.default));
 
 
@@ -138,6 +139,7 @@ export default async function RootLayout({
           <Footer image={footerTop6} /> */}
           <SocialSidebar />
           <WhatsAppFloat />
+          <EnsisChatbot />
           <ToastProvider />
         </ShopProvider>
       </body>

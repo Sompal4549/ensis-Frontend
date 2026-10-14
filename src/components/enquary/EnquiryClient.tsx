@@ -17,7 +17,7 @@ const EnquiryClient = () => {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const json = await response.json();
-        if (json.status === "success" && Array.isArray(json.data)) {
+        if (Boolean(json.success || json.status === "success") && Array.isArray(json.data)) {
           // Sort sections by index if available, otherwise maintain original order
           const sortedData = json.data.sort((a: any, b: any) => (a.index || 0) - (b.index || 0));
           setSections(sortedData);

@@ -153,7 +153,7 @@ useEffect(() => {
 
       const payload = await res.json().catch(() => ({}));
 
-      if (res.ok && payload.status !== "error") {
+      if (res.ok && payload.status !== "error" && payload.success !== false) {
         setEnquiryStatus({ type: "success", message: "Thank you! Our wellness experts will contact you soon." });
         setEnquiry({ name: "", email: "", phone: "", category: "", message: "" });
       } else {

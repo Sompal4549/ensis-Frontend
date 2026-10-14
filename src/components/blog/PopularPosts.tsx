@@ -9,7 +9,7 @@ async function getPopularPosts() {
     const res = await fetch(`${API_URL}/blogs/popular`, { next: { revalidate: 3600 } });
     const json = await res.json();
     
-    if (json.status !== "success") return [];
+    if (!json.success && json.status !== "success") return [];
     
     const data = json.data;
     return data?.blogs || (Array.isArray(data) ? data : []);

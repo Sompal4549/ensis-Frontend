@@ -43,10 +43,26 @@ export async function generateMetadata({
     adminOgImage ||
     (apiProduct?.images?.[0] ? getImageUrl(apiProduct.images[0], 1200) : "");
 
+  // Prefer base SEO keywords, otherwise auto-populate from product search tags
+  const productTags = Array.isArray(apiProduct?.tags)
+    ? apiProduct.tags.map((t: any) => String(t).trim()).filter(Boolean)
+    : [];
+
+  let keywords: string | undefined = undefined;
+  if (base.keywords) {
+    const baseList = Array.isArray(base.keywords)
+      ? base.keywords
+      : String(base.keywords).split(",").map((k) => k.trim()).filter(Boolean);
+    const combined = Array.from(new Set([...baseList, ...productTags]));
+    keywords = combined.length > 0 ? combined.join(", ") : undefined;
+  } else if (productTags.length > 0) {
+    keywords = productTags.join(", ");
+  }
+
   return {
     title,
     description,
-    keywords: base.keywords,
+    keywords,
     alternates: base.alternates,
     robots: base.robots,
     openGraph: {
@@ -129,6 +145,9 @@ export default async function ProductPage({
     sku: product.code || product.id,
     image: productImages,
     brand: { "@type": "Brand", name: "ENSIS" },
+    ...(product.tags && product.tags.length > 0
+      ? { keywords: product.tags.filter(Boolean).join(", ") }
+      : {}),
     category:
       typeof product.category === "object" && product.category
         ? product.category.name

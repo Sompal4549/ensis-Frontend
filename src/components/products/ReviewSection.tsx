@@ -74,12 +74,15 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
         }
         const res = await fetch(`${API_URL}/reviews/${productId}`, { headers });
         const data = await res.json();
-        if (data.success) {
-          setReviews(data.reviews);
-          setAverageRating(data.averageRating);
+        // Handle both old format ({success/status}) and new/enveloped format ({data: {...}})
+        const isSuccess = Boolean(data.success || data.status === "success" || data?.data !== undefined);
+        const body = data?.data ?? data;
+        if (isSuccess) {
+          setReviews(body.reviews || []);
+          setAverageRating(body.averageRating || 0);
           
           // If user has already reviewed, store the ID for updates
-          const myReview = data.reviews.find((r: any) => r.isMine); 
+          const myReview = (body.reviews || []).find((r: any) => r.isMine); 
           if (myReview) {
             setUserReviewId(myReview._id);
             setRating(myReview.rating);
@@ -125,7 +128,8 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
           headers["Authorization"] = `Bearer ${token}`;
         }
         const updated = await fetch(`${API_URL}/reviews/${productId}`, { headers }).then(r => r.json());
-        setReviews(updated.reviews);
+        const isUpdatedSuccess = Boolean(updated.success || updated.status === "success" || updated?.data !== undefined);
+        setReviews(isUpdatedSuccess ? (updated?.data?.reviews || updated?.reviews || []) : []);
       } else {
         alert("Failed to submit review. Please try again.");
       }

@@ -37,7 +37,7 @@ export default function RegisterPage() {
         body: JSON.stringify({ name, email, phone, addressLine, city, state, country, zipCode }),
       });
       const payload = await response.json();
-      if (!response.ok || payload.status === "error") {
+      if (!response.ok || payload.status === "error" || payload.success === false) {
         throw new Error(payload.message || "Registration failed");
       }
       

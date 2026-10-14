@@ -276,7 +276,7 @@ export default function CheckoutPage() {
       });
 
       const payload = await res.json();
-      if (!res.ok || payload.status === "error") {
+      if (!res.ok || payload.status === "error" || payload.success === false) {
         if (res.status === 401 || res.status === 403) {
           authStore.clear();
         }

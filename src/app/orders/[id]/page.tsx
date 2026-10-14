@@ -190,7 +190,7 @@ export default function OrderPage() {
           headers: { Authorization: `Bearer ${savedToken}` },
         });
         const orderPayload = await orderRes.json();
-        if (!orderRes.ok || orderPayload.status === "error") {
+        if (!orderRes.ok || orderPayload.status === "error" || orderPayload.success === false) {
           throw new Error(orderPayload.message || "Failed to retrieve order details.");
         }
         const snapshot = readOrderSnapshot(orderId);
@@ -212,7 +212,7 @@ export default function OrderPage() {
         if (isPaymentSuccess) {
           try {
             const statusRes = await getPaymentStatus(orderId, savedToken);
-            if (statusRes.status === "success") {
+            if (Boolean(statusRes.success || statusRes.status === "success")) {
               setPaymentVerified(true);
             }
           } catch (paymentError) {

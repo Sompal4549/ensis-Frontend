@@ -1,4 +1,5 @@
 import { Product, SocialClick, SocialLink } from "@/constants";
+import { authStore } from "@/lib/auth";
 import axios, { AxiosResponse } from "axios";
 import { StaticImageData } from "next/image";
 import { cache } from "react";
@@ -22,7 +23,62 @@ const apiClient = axios.create({
     },
 });
 
-apiClient.interceptors.request.use((config) => {
+// ─── Silent dual-token refresh (access 15m / refresh 7d) ─────────────────────
+const REFRESH_TOKEN_KEY = "ensis_refresh_token";
+const ACCESS_TOKEN_KEY = "ensis_access_token";
+
+// Single-flight: concurrent 401s share one refresh round-trip
+let refreshInFlight: Promise<string | null> | null = null;
+
+const refreshAccessToken = (): Promise<string | null> => {
+  if (typeof window === "undefined") return Promise.resolve(null);
+
+  if (!refreshInFlight) {
+    refreshInFlight = (async () => {
+      try {
+        const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+        if (!refreshToken) return null;
+
+        // Plain axios so the refresh call never re-enters apiClient interceptors
+        const response = await axios.post(
+          `${API_URL}/auth/refresh`,
+          { refreshToken },
+          { withCredentials: true, headers: { "Content-Type": "application/json" } }
+        );
+
+        const payload = response.data;
+        if (!payload || payload?.success === false || payload?.status === "error") return null;
+
+        const nextAccess = payload?.data?.accessToken ?? payload?.accessToken;
+        if (!nextAccess) return null;
+
+        const nextRefresh =
+          payload?.data?.refreshToken ?? payload?.refreshToken ?? refreshToken;
+
+        localStorage.setItem(ACCESS_TOKEN_KEY, nextAccess);
+        localStorage.setItem(REFRESH_TOKEN_KEY, nextRefresh);
+        window.dispatchEvent(new Event("ensis-auth-change"));
+        return nextAccess;
+      } catch {
+        return null;
+      } finally {
+        refreshInFlight = null;
+      }
+    })();
+  }
+
+  return refreshInFlight;
+};
+
+const forceLogout = () => {
+  localStorage.removeItem(ACCESS_TOKEN_KEY);
+  localStorage.removeItem(REFRESH_TOKEN_KEY);
+  localStorage.removeItem("ensis_user");
+  window.dispatchEvent(new Event("ensis-auth-change"));
+  window.location.href = "/login";
+};
+
+apiClient.interceptors.request.use(async (config) => {
   // Component content requests ko cache hone do
   if (!config.url?.startsWith("/component-content")) {
     config.params = {
@@ -31,22 +87,65 @@ apiClient.interceptors.request.use((config) => {
     };
   }
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("ensis_access_token") : null;
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+    if (token) {
+      if (authStore.isTokenExpired(token)) {
+        // Access token expired → rotate silently instead of losing the session
+        const refreshed = await refreshAccessToken();
+        if (refreshed) {
+          config.headers.Authorization = `Bearer ${refreshed}`;
+        } else {
+          forceLogout();
+          return config;
+        }
+      } else {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
   }
 
   return config;
 });
 
 apiClient.interceptors.response.use(
-  (response) => {
-    if (response.status === 401 && typeof window !== "undefined") {
-      localStorage.removeItem("ensis_access_token");
-      localStorage.removeItem("ensis_user");
-      window.location.href = "/login";
+  async (response) => {
+    if (response.status !== 401 || typeof window === "undefined") {
+      return response;
     }
-    return response;
+
+    const url = String(response.config?.url || "");
+    const isAuthRequest =
+      url.includes("/auth/login") ||
+      url.includes("/auth/register") ||
+      url.includes("/auth/refresh") ||
+      url.includes("/auth/whatsapp-otp");
+
+    if (isAuthRequest) return response;
+
+    const config = response.config as typeof response.config & { _retry?: boolean };
+    if (config._retry) {
+      forceLogout();
+      return response;
+    }
+    config._retry = true;
+
+    const refreshed = await refreshAccessToken();
+    if (!refreshed) {
+      forceLogout();
+      return response;
+    }
+
+    const headers = config.headers as unknown as
+      | { set?: (k: string, v: string) => void; Authorization?: string }
+      | undefined;
+    if (headers && typeof headers.set === "function") {
+      headers.set("Authorization", `Bearer ${refreshed}`);
+    } else if (headers) {
+      headers.Authorization = `Bearer ${refreshed}`;
+    }
+
+    return apiClient.request(config);
   },
   (error) => {
     return Promise.reject(error);
@@ -58,6 +157,11 @@ const normalizePageResponse = (payload: any) => {
     if (Array.isArray(payload)) return payload;
     if (Array.isArray(payload?.data)) return payload.data;
     if (Array.isArray(payload?.data?.data)) return payload.data.data;
+
+    // Handle Organic Envelope format: { success: true, statusCode: 200, data: { ... } }
+    if (payload && payload.success !== undefined && payload.data !== undefined) {
+        return payload.data;
+    }
 
     const direct = payload?.data?.data ?? payload?.data ?? payload;
     if (Array.isArray(direct?.sections)) return direct;
@@ -79,7 +183,7 @@ export async function getPageComponent(slug: string) {
         }
 
         const payload = response.data;
-        if (payload?.status === "error") {
+        if (payload?.status === "error" || payload?.success === false) {
             console.error(`API error for page "${slug}":`, payload.message);
             return null;
         }
@@ -104,7 +208,17 @@ export type ComponentContent<T> = {
 
 const unwrap = <T>(response: AxiosResponse): T => {
     const payload = response.data;
-    if (response.status < 200 || response.status >= 300 || payload.status === "error") {
+    const isOk = response.status >= 200 && response.status < 300;
+
+    // Handle new Organic Envelope format: { success: true, statusCode: 200, data: { ... } }
+    if (payload && payload.success !== undefined) {
+        if (!payload.success) {
+            throw new Error(payload.message || "API request failed");
+        }
+        return payload.data as T;
+    }
+
+    if (!isOk || payload.status === "error" || payload.success === false) {
         throw new Error(payload.message || "API request failed");
     }
     return payload.data as T;
@@ -187,18 +301,19 @@ export const getComponentContent = cache(
   async <T>(key: string, fallback: T): Promise<T> => {
     try {
       const response = await apiClient.get(`/component-content/${key}`);
-
+      const payload = response.data;
       if (
         response.status < 200 ||
         response.status >= 300 ||
-        response.data.status === "error"
+        payload?.status === "error" ||
+        payload?.success === false
       ) {
         return fallback;
       }
 
       return {
         ...fallback,
-        ...(response.data.data?.data || {}),
+        ...(payload?.data?.data ?? payload?.data ?? {}),
       };
     } catch {
       return fallback;
@@ -221,16 +336,19 @@ export const socialApi = {
   getLinks: async (): Promise<SocialLink[]> => {
     try {
       const response = await apiClient.get("/social-clicks/links");
-
-      if (
-        response.status >= 200 &&
-        response.status < 300 &&
-        response.data.status === "success"
-      ) {
-        return response.data.data;
+      const payload = response.data;
+      const isOk = response.status >= 200 && response.status < 300;
+      
+      // Handle Organic Envelope format: { success: true, statusCode: 200, data: { ... } }
+      if (payload && payload.success !== undefined && payload.data !== undefined) {
+        return payload.data;
       }
 
-      return [];
+      if (!isOk || payload.status === "error" || payload.success === false) {
+        return [];
+      }
+
+      return payload.data || [];
     } catch (err) {
       console.error("Failed to fetch social links", err);
       return [];
@@ -330,14 +448,19 @@ export const blogApi = {
   list: async (): Promise<any[]> => {
     try {
       const response = await apiClient.get(`/blogs`);
-      if (
-        response.status >= 200 &&
-        response.status < 300 &&
-        response.data.status === "success"
-      ) {
-        return response.data.data;
+      const payload = response.data;
+      const isOk = response.status >= 200 && response.status < 300;
+      
+      // Handle Organic Envelope format: { success: true, statusCode: 200, data: { ... } }
+      if (payload && payload.success !== undefined && payload.data !== undefined) {
+        return payload.data;
       }
-      return [];
+
+      if (!isOk || payload.status === "error" || payload.success === false) {
+        return [];
+      }
+
+      return payload.data || [];
     } catch (err) {
       console.error("Failed to fetch blogs", err);
       return [];
@@ -347,14 +470,19 @@ export const blogApi = {
   detail: async (slug: string): Promise<any> => {
     try {
       const response = await apiClient.get(`/blogs/${slug}`);
-      if (
-        response.status >= 200 &&
-        response.status < 300 &&
-        response.data.status === "success"
-      ) {
-        return response.data.data;
+      const payload = response.data;
+      const isOk = response.status >= 200 && response.status < 300;
+      
+      // Handle Organic Envelope format: { success: true, statusCode: 200, data: { ... } }
+      if (payload && payload.success !== undefined && payload.data !== undefined) {
+        return payload.data;
       }
-      return null;
+
+      if (!isOk || payload.status === "error" || payload.success === false) {
+        return null;
+      }
+
+      return payload.data || null;
     } catch (err) {
       console.error("Failed to fetch blog detail", err);
       return null;

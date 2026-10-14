@@ -116,7 +116,7 @@ export default function OrdersPage() {
           headers: { Authorization: `Bearer ${token}` },
         });
         const payload = await res.json();
-        if (!res.ok || payload.status === "error") {
+        if (!res.ok || payload.status === "error" || payload.success === false) {
           throw new Error(payload.message || "Failed to load orders.");
         }
         setOrders(payload.data as Order[]);

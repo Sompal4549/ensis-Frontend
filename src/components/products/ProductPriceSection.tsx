@@ -69,14 +69,17 @@ const ProductPriceSection = ({
         }
         const res = await fetch(`${API_URL}/reviews/${product._id}`, { headers });
         const data = await res.json();
-        if (data.success) {
+        // Handle both old format ({success/status}) and new/enveloped format ({data: {...}})
+        const isSuccess = Boolean(data.success || data.status === "success" || data?.data !== undefined);
+        const body = data?.data ?? data;
+        if (isSuccess) {
           setReviewData({
-            averageRating: data.averageRating,
-            totalReviews: data.reviews.length,
-            reviews: data.reviews
+            averageRating: body.averageRating,
+            totalReviews: body.reviews?.length || 0,
+            reviews: body.reviews || []
           });
 
-          const myReview = data.reviews.find((r: any) => r.isMine);
+          const myReview = (body.reviews || []).find((r: any) => r.isMine);
           if (myReview) {
             setUserReviewId(myReview._id);
             if (!isWritingReview) {
@@ -153,8 +156,11 @@ const ProductPriceSection = ({
         // Force refresh reviews
         const refreshRes = await fetch(`${API_URL}/reviews/${product._id}`);
         const refreshData = await refreshRes.json();
-        if (refreshData.success) {
-          setReviewData({ averageRating: refreshData.averageRating, totalReviews: refreshData.reviews.length, reviews: refreshData.reviews });
+        // Handle both old format and new/enveloped format
+        const isRefreshSuccess = Boolean(refreshData.success || refreshData.status === "success" || refreshData?.data !== undefined);
+        const refreshed = isRefreshSuccess ? (refreshData?.data ?? refreshData) : refreshData;
+        if (isRefreshSuccess) {
+          setReviewData({ averageRating: refreshed.averageRating, totalReviews: refreshed.reviews?.length || 0, reviews: refreshed.reviews || [] });
         }
       } else {
         alert("Failed to submit review. Please try again.");

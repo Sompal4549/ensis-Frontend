@@ -6,7 +6,7 @@ const WhatsAppFloat: React.FC = () => {
     const phoneNumber = "+919654900525";
 
     const message =
-        "Hello! I would like to know more about the International Health & Wellness Expo 2026.";
+        "Hello! I would like to know more about Ensis Ayurvedic & Panchkarma wellness solutions.";
 
     const cleanPhoneNumber = phoneNumber.replace(/\D/g, "");
 

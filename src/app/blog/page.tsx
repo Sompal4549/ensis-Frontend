@@ -12,7 +12,7 @@ async function getAllBlogs() {
   try {
     const res = await fetch(`${API_URL}/blogs`, { next: { revalidate: 3600 } });
     const json = await res.json();
-    return json.status === "success" ? json.data : [];
+    return Boolean(json.success || json.status === "success") ? json.data : [];
   } catch {
     return [];
   }

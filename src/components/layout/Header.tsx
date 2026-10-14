@@ -51,6 +51,7 @@ export const Header = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("ensis_access_token");
+        localStorage.removeItem("ensis_refresh_token");
         localStorage.removeItem("ensis_user");
         window.dispatchEvent(new Event("ensis-auth-change"));
         setUser(null);

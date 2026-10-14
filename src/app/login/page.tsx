@@ -54,11 +54,14 @@ export default function LoginPage() {
       const response = await axios.post(`${API_URL}${endpoint}`, { phone, otp });
 
       const payload = response.data;
-      if (payload.status === "error") {
+      if (payload.status === "error" || payload.success === false) {
         throw new Error(payload.message || "Login failed");
       }
       
       localStorage.setItem("ensis_access_token", payload.data.accessToken);
+      if (payload.data.refreshToken) {
+        localStorage.setItem("ensis_refresh_token", payload.data.refreshToken);
+      }
       const rawUser = payload.data.user || payload.data.lead;
       // Lead model has firstName+lastName, normalize to name for header display
       const userData = {
