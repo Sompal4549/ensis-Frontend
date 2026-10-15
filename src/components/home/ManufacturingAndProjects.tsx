@@ -45,7 +45,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
   projHeading: sectionContent.projHeading||"Creating Wellness\nSpaces Worldwide",
   projDescription: sectionContent.projDescription||"Proud to be a trusted partner for 500+ wellness projects across the globe.",
   projButtonText: sectionContent.projButtonText||"VIEW ALL PROJECTS",
-  projButtonPath: sectionContent.mfgButtonPath||"/projects",
+  projButtonPath: sectionContent.mfgButtonPath||"/projects-and-clients",
   projects: sectionContent.projects||[
     { image: "", title: "Project 1", location: "" },
     { image: "", title: "Project 2", location: "" },

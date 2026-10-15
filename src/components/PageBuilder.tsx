@@ -26,15 +26,92 @@ const fallbackPageSections: Record<string, PageSection[]> = {
     { key: "home.testimonials", data: {} },
     { key: "home.blogInsights", data: {} },
   ],
+  about: [
+    { key: "about.hero", data: {} },
+    { key: "about.ourStory", data: {} },
+    { key: "about.industriesWeServe", data: {} },
+    { key: "about.ourProducts", data: {} },
+    { key: "about.ourTurnkeyProcess", data: {} },
+    { key: "about.wellnessSection", data: {} },
+    { key: "about.aboutEnsis", data: {} },
+    { key: "about.founderVision", data: {} },
+    { key: "about.testimonials", data: {} },
+    { key: "about.letsBuild", data: {} },
+  ],
+  turnkey: [
+    { key: "turnkey.banner", data: {} },
+    { key: "turnkey.whatIsTurnkey", data: {} },
+    { key: "turnkey.completeSolutions", data: {} },
+    { key: "turnkey.facilities", data: {} },
+    { key: "turnkey.customized", data: {} },
+    { key: "turnkey.featuredProjects", data: {} },
+    { key: "turnkey.readyToBuild", data: {} },
+  ],
+  consultancy: [
+    { key: "consultancy.hero", data: {} },
+    { key: "consultancy.features_strip", data: {} },
+    { key: "consultancy.whatWeOffer", data: {} },
+    { key: "consultancy.whyChooseOurProcess", data: {} },
+    { key: "consultancy.readyToGetStarted", data: {} },
+  ],
+  contact: [
+    { key: "contact.hero", data: {} },
+    { key: "contact.getInTouch", data: {} },
+    { key: "contact.ctaBanner", data: {} },
+    { key: "contact.premiumMap", data: {} },
+  ],
+  blog: [
+    { key: "blog.hero", data: {} },
+    { key: "blog.allBlogs", data: {} },
+    { key: "blog.mediaResources", data: {} },
+    { key: "blog.stayInspired", data: {} },
+    { key: "blog.supportWellness", data: {} },
+  ],
+  product: [
+    { key: "product.hero", data: {} },
+    { key: "product.trustedBy", data: {} },
+    { key: "product.productsection", data: {} },
+    { key: "product.whyChoose", data: {} },
+    { key: "product.testimonials", data: {} },
+  ],
+  projects: [
+    { key: "projects.banner", data: {} },
+    { key: "projects.ourProjects", data: {} },
+    { key: "projects.ourClients", data: {} },
+    { key: "projects.whyPartner", data: {} },
+    { key: "projects.contactSection", data: {} },
+  ],
+  career: [
+    { key: "career.banner", data: {} },
+    { key: "career.features", data: {} },
+    { key: "career.whyWork", data: {} },
+    { key: "career.section", data: {} },
+    { key: "career.benefits", data: {} },
+    { key: "career.talentCommunity", data: {} },
+    { key: "career.testimonials", data: {} },
+  ],
+};
+
+const normalizeSlug = (s: string) => {
+  const map: Record<string, string> = {
+    "about-us": "about",
+    "products": "product",
+    "turnkey-solutions": "turnkey",
+    "projects-and-clients": "projects",
+    "careers": "career",
+    "contact-us": "contact",
+  };
+  return map[s] || s;
 };
 
 export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps) {
+  const normalized = normalizeSlug(slug);
   try {
     const [pageData, schema] = await Promise.all([
       getPageComponent(slug),
       generateSchema(schemaSlug || slug),
     ]);
-    const sections = Array.isArray(pageData)
+    const rawSections = Array.isArray(pageData)
       ? pageData
       : Array.isArray(pageData?.sections)
       ? pageData.sections
@@ -42,7 +119,11 @@ export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps
       ? pageData.data.sections
       : Array.isArray(pageData?.page?.sections)
       ? pageData.page.sections
-      : fallbackPageSections[slug] || [];
+      : null;
+
+    const sections = (rawSections && rawSections.length > 0)
+      ? rawSections
+      : fallbackPageSections[slug] || fallbackPageSections[normalized] || [];
 
     const sortedSections = [...sections].sort((a: any, b: any) => {
       const ai = typeof a?.index === "number" ? a.index : Number.MAX_SAFE_INTEGER;
@@ -79,8 +160,8 @@ export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps
         })}
       </main>
     );
-  } catch (error) {
-    console.error(`PageBuilder failed to load page content for "${slug}"`, error);
+  } catch (error: any) {
+    console.warn(`[PageBuilder] Failed to load page content for "${slug}": ${error?.message || error}`);
     return (
       <main className="flex min-h-screen items-center justify-center">
         <p>Unable to load page content for {slug}. Please try again later.</p>

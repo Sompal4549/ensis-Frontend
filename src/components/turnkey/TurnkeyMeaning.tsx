@@ -49,7 +49,21 @@ export interface TurnkeyMeaningContent {
   };
 }
 
-export default function TurnkeyMeaning({ sectionContent }: { sectionContent: TurnkeyMeaningContent }) {
+export default function TurnkeyMeaning({ sectionContent }: { sectionContent?: TurnkeyMeaningContent }) {
+  const subheading = sectionContent?.subheading || "ONE-STOP SOLUTION";
+  const title = sectionContent?.title || "What Does Turnkey Mean?";
+  const description = sectionContent?.description || "A turnkey project means you hand over a bare shell space to Ensis, and we return a fully functional, revenue-ready wellness facility.";
+  const mostProjectsTitle = sectionContent?.mostProjectsTitle || "Most Projects Need Multiple Vendors";
+  const mostProjects = (sectionContent?.mostProjects && sectionContent.mostProjects.length > 0)
+    ? sectionContent.mostProjects
+    : VENDORS.map((v, i) => ({ id: String(i), title: v.label.replace('\n', ' '), label: v.label, image: { imageUrl: v.icon.src || v.icon, alt: v.label } }));
+
+  const withEnsisData = sectionContent?.withEnsis || {
+    title: "With Ensis You Get:",
+    withEnsisList: BENEFITS,
+    image: { imageUrl: ensisPlaque.src || ensisPlaque },
+  };
+
   return (
     <section className="bg-[#f5efe0] w-full py-2 border-t border-[#d78c2f] border-b">
       <Container className="">
@@ -58,14 +72,12 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
           {/* ── COLUMN 1: What does Turnkey mean ── */}
           <div className="flex flex-col gap-2 xl:pr-6">
             <p className="text-[#d19f4f] text-base font-bold uppercase">
-              {sectionContent.subheading}
+              {subheading}
             </p>
             <h2 className="text-2xl font-semibold leading-tight">
-              {sectionContent.title}
+              {title}
             </h2>
-            <HtmlRenderer content={sectionContent.description} className="text-base font-semibold leading-6">
-           
-            </HtmlRenderer>
+            <HtmlRenderer content={description} className="text-base font-semibold leading-6" />
           </div>
 
           {/* Divider */}
@@ -74,19 +86,18 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
           {/* ── COLUMN 2: Most Projects Need Multiple Vendors ── */}
           <div className="flex flex-col gap-3 lg:px-3">
             <p className="text-base font-semibold text-center lg:text-left">
-              {sectionContent.mostProjectsTitle}
+              {mostProjectsTitle}
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-x-1 gap-y-3">
-              {sectionContent.mostProjects.map((v) => (
+              {mostProjects.map((v, idx) => (
                 <div
-                  key={v.id}
+                  key={v.id || idx}
                   className="flex flex-col items-center gap-1 text-center"
                 >
-                  {/* Icon slot — replace div with your Image when ready */}
                   <div className="w-10 h-10 flex items-center justify-center">
                     <Image
-                      src={v.image.imageUrl||""}
-                      alt={v.label||""}
+                      src={typeof v.image === 'string' ? v.image : (v.image?.imageUrl || architectIcon)}
+                      alt={v.label || v.title || ""}
                       width={40}
                       height={40}
                       className="object-contain"
@@ -107,11 +118,11 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
           <div className="flex flex-row justify-between gap-4 lg:pl-3">
             <div className="flex flex-col gap-2">
               <p className="text-base font-semibold">
-                {sectionContent.withEnsis.title}
+                {withEnsisData.title || "With Ensis You Get:"}
               </p>
               <ul className="flex flex-col gap-2">
-                {sectionContent.withEnsis.withEnsisList.map((b) => (
-                  <li key={b} className="flex items-center gap-3 text-base">
+                {(withEnsisData.withEnsisList || BENEFITS).map((b, idx) => (
+                  <li key={idx} className="flex items-center gap-3 text-base">
                     <Image alt="dot" src={withEnsis} height={20} width={20} />
                     {b}
                   </li>
@@ -122,7 +133,7 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent: Tur
             {/* ENSIS Plaque image */}
             <div className="shrink-0 w-28 sm:w-32 lg:w-36">
               <Image
-                src={sectionContent.withEnsis.image.imageUrl}
+                src={withEnsisData?.image?.imageUrl || ensisPlaque.src || ensisPlaque}
                 alt="ENSIS — Everything Under One Roof"
                 width={124}
                 height={140}

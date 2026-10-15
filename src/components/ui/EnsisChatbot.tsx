@@ -15,6 +15,7 @@ import {
 import { API_URL } from "@/lib/api/api";
 import lotusImg from "@/assets/about/lotus.webp";
 import logoImg from "@/assets/logo.webp";
+import LottieChatbotAvatar from "./LottieChatbotAvatar";
 
 interface Message {
   id: string;
@@ -422,62 +423,35 @@ export default function EnsisChatbot() {
   return (
     <>
       {/* =========================================================
-          FLOATING TRIGGER BUTTON (Theme Matched: Deep Forest #263016 & Warm Gold #c39a5c)
+          FLOATING TRIGGER BUTTON (Exact Bharat Organic Lottie Character Launcher)
       ========================================================= */}
-      <div className="fixed right-6 bottom-8 z-[100] flex flex-col items-end">
-        {/* Tooltip bubble (Ensis Botanical Theme: #263016 + Gold Border #c39a5c) */}
-        {!isOpen && showTooltip && (
-          <div className="relative mb-3 flex items-center gap-2.5 rounded-xl bg-[#263016] px-4 py-2.5 text-xs font-medium text-[#faf7f2] shadow-[0_10px_25px_rgba(38,48,22,0.35)] border border-[#c39a5c]/70 animate-bounce">
-            <Sparkles className="h-3.5 w-3.5 text-[#c39a5c] shrink-0" />
-            <span>
-              {language === "hi" ? (
-                <>पंचकर्म व क्लिनिक सेटअप? <strong className="text-[#c39a5c]">Ensis AI से पूछें</strong></>
-              ) : (
-                <>Need Panchkarma setup help? <strong className="text-[#c39a5c]">Ask Ensis AI</strong></>
-              )}
-            </span>
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowTooltip(false);
-              }}
-              className="ml-1 text-[#d8cdb8] hover:text-white transition-colors"
-              aria-label="Close tooltip"
-            >
-              ✕
-            </button>
-            <div className="absolute -bottom-1.5 right-6 h-3 w-3 rotate-45 bg-[#263016] border-r border-b border-[#c39a5c]/70" />
-          </div>
-        )}
-
-        {/* Main Floating Button - Ensis Deep Forest (#263016) & Metallic Gold (#c39a5c) */}
+      <div
+        className={`fixed right-4 sm:right-6 bottom-[84px] sm:bottom-20 lg:bottom-8 z-[100] flex items-end gap-3 ${isOpen ? "max-[480px]:hidden" : ""}`}
+        style={{ fontFamily: "var(--font-montserrat), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}
+      >
         <button
+          type="button"
           onClick={() => (isOpen ? setIsOpen(false) : handleOpen())}
-          aria-label="Ensis Wellness Advisor Chat"
-          className="group relative flex h-14 w-14 lg:h-15 lg:w-15 items-center justify-center rounded-full bg-[#263016] text-[#c39a5c] shadow-[0_8px_30px_rgba(38,48,22,0.45)] transition-all duration-300 hover:scale-108 hover:shadow-[0_12px_36px_rgba(195,154,92,0.45)] focus:outline-none border-2 border-[#c39a5c]"
+          aria-label={isOpen ? "Close Ensis Wellness chat" : "Chat with Ensis Wellness Advisor"}
+          aria-expanded={isOpen}
+          className="group relative block shrink-0"
         >
-          {/* Outer Pulsing Golden Halo */}
-          <div className="absolute -inset-1 rounded-full border border-[#c39a5c]/40 opacity-70 animate-ping" />
-          <div className="absolute inset-0 rounded-full border border-[#c39a5c]/50 animate-pulse" />
-
-          {/* Online gold indicator dot */}
-          <span className="absolute top-1 right-1 flex h-3.5 w-3.5 z-20">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#c39a5c] opacity-75" />
-            <span className="relative inline-flex h-3.5 w-3.5 rounded-full border-2 border-[#263016] bg-[#c39a5c]" />
-          </span>
+          {/* "May I help you?" speech bubble above the robot while closed (matches organic_frontend) */}
+          {!isOpen && (
+            <span className="pointer-events-none absolute bottom-full right-0 -mb-1 px-3 py-1.5 rounded-xl bg-white border border-[#c39a5c]/60 text-[#263016] text-[12px] lg:text-[13px] font-semibold whitespace-nowrap shadow-lg transition-transform duration-200 group-hover:-translate-y-1 animate-[mitra-pop_0.35s_ease-out]">
+              {language === "hi" ? "क्या मैं आपकी सहायता करूँ?" : "May I help you?"}
+              {/* Arrow pointing at the middle of the robot character */}
+              <span className="absolute -bottom-[5px] right-[27px] sm:right-11 lg:right-[52px] w-2.5 h-2.5 rotate-45 bg-white border-r border-b border-[#c39a5c]/60" aria-hidden="true" />
+            </span>
+          )}
 
           {isOpen ? (
-            <X className="h-6 w-6 text-[#c39a5c] transition-transform duration-200 group-hover:rotate-90" />
+            <div className="relative w-11 h-11 lg:w-12 lg:h-12 bg-gradient-to-br from-[#263016] to-[#3a4922] rounded-full flex items-center justify-center shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-110 border border-[#c39a5c]">
+              <X className="w-5 h-5 lg:w-6 lg:h-6 text-[#c39a5c] relative z-10" strokeWidth={2.5} />
+            </div>
           ) : (
-            <div className="relative flex items-center justify-center p-2.5">
-              {/* Authentic Ensis Golden Lotus Asset */}
-              <Image
-                src={lotusImg}
-                alt="Ensis Wellness"
-                width={36}
-                height={36}
-                className="object-contain filter drop-shadow-[0_2px_8px_rgba(195,154,92,0.6)] group-hover:scale-110 transition-transform duration-300"
-              />
+            <div className="relative w-16 h-16 sm:w-24 sm:h-24 lg:w-28 lg:h-28 flex items-center justify-center transition-transform duration-300 hover:scale-110 cursor-pointer">
+              <LottieChatbotAvatar className="absolute inset-0 w-full h-full" />
             </div>
           )}
         </button>
@@ -487,7 +461,10 @@ export default function EnsisChatbot() {
           EXPANDABLE CHAT WINDOW (Matched 100% to Ensis Website Theme)
       ========================================================= */}
       {isOpen && (
-        <div className="fixed right-4 sm:right-6 bottom-24 z-[101] flex flex-col w-[390px] max-w-[calc(100vw-32px)] h-[580px] max-h-[82vh] rounded-2xl bg-[#faf7f2] shadow-[0_20px_50px_rgba(38,48,22,0.28)] border border-[#c39a5c]/60 overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200">
+        <div
+          className="fixed right-4 sm:right-6 bottom-24 z-[101] flex flex-col w-[390px] max-w-[calc(100vw-32px)] h-[580px] max-h-[82vh] rounded-2xl bg-[#faf7f2] shadow-[0_20px_50px_rgba(38,48,22,0.28)] border border-[#c39a5c]/60 overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200 font-sans"
+          style={{ fontFamily: "var(--font-montserrat), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}
+        >
           {/* Header - Ensis Deep Forest #263016 & Gold Trim #c39a5c with subtle lotus watermark */}
           <div className="relative flex items-center justify-between bg-[#263016] px-4 py-3.5 text-white border-b-2 border-[#c39a5c] overflow-hidden">
             {/* Watermark Lotus in header background */}
@@ -496,20 +473,14 @@ export default function EnsisChatbot() {
             </div>
 
             <div className="relative z-10 flex items-center gap-3">
-              {/* Ensis Lotus Avatar Emblem */}
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#1b2310] border border-[#c39a5c] p-1.5 shadow-inner">
-                <Image
-                  src={lotusImg}
-                  alt="Ensis"
-                  width={28}
-                  height={28}
-                  className="object-contain"
-                />
+              {/* Ensis Animated Avatar Emblem */}
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#1b2310] border border-[#c39a5c] overflow-hidden p-0.5 shadow-inner">
+                <LottieChatbotAvatar className="w-9 h-9" style={{ transform: "scale(1.2)" }} />
               </div>
 
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h3 className="text-base font-semibold tracking-wide text-white font-[family-name:var(--font-cormorant)]">
+                  <h3 className="text-base font-semibold tracking-wide text-white">
                     {language === "hi" ? "Ensis वेलनेस सलाहकार" : "Ensis Wellness Advisor"}
                   </h3>
                   <span className="flex h-2 w-2 rounded-full bg-[#c39a5c] animate-pulse" />
@@ -571,15 +542,9 @@ export default function EnsisChatbot() {
               >
                 {m.sender === "bot" ? (
                   <div className="flex items-start gap-2 max-w-[90%]">
-                    {/* Bot Lotus Avatar Icon */}
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#263016] border border-[#c39a5c] p-1 mt-0.5 shadow-2xs">
-                      <Image
-                        src={lotusImg}
-                        alt="Ensis"
-                        width={18}
-                        height={18}
-                        className="object-contain"
-                      />
+                    {/* Bot Animated Lottie Avatar Icon */}
+                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#263016] border border-[#c39a5c] overflow-hidden mt-0.5 shadow-2xs">
+                      <LottieChatbotAvatar className="w-5 h-5" style={{ transform: "scale(1.2)" }} />
                     </div>
                     <div className="rounded-2xl rounded-tl-xs p-3.5 shadow-xs leading-relaxed whitespace-pre-line bg-white text-[#1f261b] border border-[#e2dfd9]">
                       {m.text}
@@ -597,7 +562,7 @@ export default function EnsisChatbot() {
                     onSubmit={handleLeadSubmit}
                     className="mt-2.5 ml-8 w-[88%] rounded-xl bg-white p-4 border-2 border-[#c39a5c]/60 shadow-md space-y-3"
                   >
-                    <p className="text-xs font-semibold text-[#1f261b] font-[family-name:var(--font-cormorant)] flex items-center gap-1.5 text-[13px]">
+                    <p className="text-xs font-semibold text-[#1f261b] flex items-center gap-1.5 text-[13px]">
                       <Sparkles className="h-3.5 w-3.5 text-[#c39a5c]" />
                       {language === "hi" ? "कॉल बैक व 2026 PDF कैटलॉग प्राप्त करें" : "Request 2026 Architectural Catalog & Callback"}
                     </p>

@@ -116,9 +116,27 @@ interface HowWeWorkContent {
   };
 }
 
-export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWorkContent }) {
-  const whyChoose = sectionContent.whyChoose;
-  const ourProcess = sectionContent.ourProcess;
+export default function HowWeWork({ sectionContent }: { sectionContent?: HowWeWorkContent }) {
+  const whyChoose = sectionContent?.whyChoose || {
+    bgImage: ourMission as any,
+    heading: whyChooseData.badge,
+    title: `${whyChooseData.title.line1} ${whyChooseData.title.line2}`,
+    description: whyChooseData.description,
+    primaryButton: { label: whyChooseData.button.label, href: whyChooseData.button.href },
+    chooseList: whyChooseData.benefits,
+  };
+
+  const ourProcess = sectionContent?.ourProcess || {
+    heading: whyChooseData.process.badge,
+    title: whyChooseData.process.title,
+    processList: whyChooseData.process.steps.map(s => ({
+      title: s.title,
+      description: s.description,
+      color: s.color,
+      image: s.icon,
+    })),
+  };
+
   return (
     <section>
       <Container>
@@ -127,7 +145,7 @@ export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWor
           <div className="overflow-hidden rounded-2xl border border-[#ECECEC] bg-[#F8FBFE]">
             <div className="grid h-full md:grid-cols-[1.2fr_0.95fr] relative">
               <Image
-                src={whyChoose.bgImage}
+                src={whyChoose.bgImage || ourMission}
                 alt="Why Choose Us"
                 fill
                 className="object-cover object-center z-0"
@@ -142,11 +160,11 @@ export default function HowWeWork({ sectionContent }: { sectionContent: HowWeWor
                   {whyChoose.title}
                 </h2>
 
-                <p className="mt-4 text-base leading-6" dangerouslySetInnerHTML={{ __html: whyChoose.description }}>
+                <p className="mt-4 text-base leading-6" dangerouslySetInnerHTML={{ __html: whyChoose.description || "" }}>
                 </p>
 
                 <div className="mt-5 space-y-3">
-                  {whyChoose.chooseList.map((item, index) => (
+                  {(whyChoose.chooseList || []).map((item, index) => (
                     <div
                       key={index}
                       className="flex items-center gap-4"

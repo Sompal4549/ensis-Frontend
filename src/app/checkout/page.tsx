@@ -859,7 +859,15 @@ export default function CheckoutPage() {
 
           {/* ─────────── Need Help ─────────── */}
           <div className="mt-10">
-            <div className="relative overflow-hidden rounded-3xl border border-[#1F3A2A]/20 bg-cover bg-center bg-no-repeat p-6 text-white shadow-[0_30px_60px_-24px_rgba(31,58,42,0.6)] sm:p-8" style={{ backgroundImage: `url(${needHelpBg.src || needHelpBg})` }}>
+            <div className="relative overflow-hidden rounded-3xl border border-[#1F3A2A]/20 p-6 text-white shadow-[0_30px_60px_-24px_rgba(31,58,42,0.6)] sm:p-8">
+              <Image
+                src={needHelpBg}
+                alt="Need Help Background"
+                fill
+                className="object-cover"
+                priority={false}
+                loading="lazy"
+              />
               <div className="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
                 <div>
                   <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#e9d7a8]">Need Help?</p>

@@ -43,16 +43,45 @@ interface ConsultancyHeroContent {
   secondaryButton: { label: string; href: string };
 }
 
-export default async function ConsultancyHero({ sectionContent }: { sectionContent: ConsultancyHeroContent }) { // Changed to async function
- const features = await getComponentContent("consultancy.features", {}) as { items: { title: string; image: string; heading: string; description: string }[] };
-return (
+const defaultFeatureItems = [
+  { heading: "20+ Years", title: "Ayurvedic Heritage", image: "/icons/shield.svg", description: "Trusted across India" },
+  { heading: "500+ Spaces", title: "Designed & Delivered", image: "/icons/document.svg", description: "Clinics, spas, hospitals" },
+  { heading: "NABH Compliant", title: "Layout Standards", image: "/icons/factory.svg", description: "Meeting all regulations" },
+  { heading: "100% In-House", title: "Manufacturing", image: "/icons/users.svg", description: "Teakwood & medical brass" },
+];
+
+export default async function ConsultancyHero({ sectionContent }: { sectionContent?: ConsultancyHeroContent }) {
+  let featuresItems = defaultFeatureItems;
+  try {
+    const fetched = await getComponentContent("consultancy.features", {}) as any;
+    if (fetched?.items && Array.isArray(fetched.items) && fetched.items.length > 0) {
+      featuresItems = fetched.items;
+    }
+  } catch {
+    featuresItems = defaultFeatureItems;
+  }
+
+  const bgImage = sectionContent?.bgImage || "/uploads/welcome_to_ensis.webp";
+  const heading = sectionContent?.heading || "EXPERT WELLNESS CONSULTANCY";
+  const title = sectionContent?.title || "Architecting Profitable & Healing";
+  const titlepart1 = sectionContent?.titlepart1 || "";
+  const titleHighlight = sectionContent?.titleHighlight || "Wellness Spaces";
+  const titlepart2 = sectionContent?.titlepart2 || "";
+  const description = sectionContent?.description || "End-to-end guidance from NABH-compliant clinic layouts to equipment selection and operational workflows.";
+  const featuresList = (sectionContent?.features && sectionContent.features.length > 0)
+    ? sectionContent.features
+    : [];
+  const primaryButton = sectionContent?.primaryButton || { label: "Book Consultation", href: "/contact" };
+  const secondaryButton = sectionContent?.secondaryButton || { label: "Download Guide", href: "/contact" };
+
+  return (
   <section className="relative bg-[#f7f5f2] md:pb-16">
     {/* Hero */}
     <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none">
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(${sectionContent.bgImage})`,
+          backgroundImage: `url(${bgImage})`,
         }}
       />
 
@@ -61,61 +90,65 @@ return (
           {/* LEFT */}
           <div className="max-w-[700px] flex flex-col justify-center">
             <p className="mb-2 text-base font-bold tracking-[1.8px] uppercase text-[#d66a38]">
-              {sectionContent.heading}
+              {heading}
             </p>
 
             <h1 className="w-full">
               <span>
-                {sectionContent.title}{" "}
-                {sectionContent.titlepart1}{" "}
+                {title}{" "}
+                {titlepart1}{" "}
                 <span className="text-[#2563eb]">
-                  {sectionContent.titleHighlight}
+                  {titleHighlight}
                 </span>{" "}
-                {sectionContent.titlepart2}
+                {titlepart2}
               </span>
             </h1>
 
             <p
               className="mt-2 w-full text-base leading-6"
               dangerouslySetInnerHTML={{
-                __html: sectionContent.description,
+                __html: description,
               }}
             />
 
-            <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-              {sectionContent.features.map((item) => (
-                <div key={item.title} className="flex gap-4">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    width={40}
-                    height={40}
-                    className="object-contain shrink-0"
-                  />
+            {featuresList.length > 0 && (
+              <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+                {featuresList.map((item) => (
+                  <div key={item.title} className="flex gap-4">
+                    {item.image && (
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        width={40}
+                        height={40}
+                        className="object-contain shrink-0"
+                      />
+                    )}
 
-                  <div>
-                    <h3 className="text-base font-semibold line-clamp-3">{item.title}</h3>
+                    <div>
+                      <h3 className="text-base font-semibold line-clamp-3">{item.title}</h3>
 
-                    <p
-                      className="mt-1 text-base line-clamp-3"
-                      dangerouslySetInnerHTML={{
-                        __html: item.description,
-                      }}
-                    />
+                      <p
+                        className="mt-1 text-base line-clamp-3"
+                        dangerouslySetInnerHTML={{
+                          __html: item.description,
+                        }}
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
 
             <div className="mt-4 flex flex-col gap-4 sm:flex-row">
               <BookButton
-                text={sectionContent.primaryButton.label}
-                path={sectionContent.primaryButton.href}
+                text={primaryButton.label}
+                path={primaryButton.href}
               />
 
               <GreenButton
-                text={sectionContent.secondaryButton.label}
-                path={sectionContent.secondaryButton.href}
+                text={secondaryButton.label}
+                path={secondaryButton.href}
                 rightIcon={<Download size={16} />}
               />
             </div>
@@ -133,7 +166,7 @@ return (
         <Container>
         <div className="rounded-[20px] border-2 border-[#C7A55B] bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
   <div className="grid grid-cols-4">
-    {features.items.map((item, index) => (
+    {featuresItems.map((item, index) => (
       <div
         key={item.title}
         className="relative flex items-start gap-5 px-4 py-4"
@@ -179,7 +212,7 @@ return (
       <Container>
         <div className="rounded-[20px] bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6">
-            {features.items.map((item) => (
+            {featuresItems.map((item) => (
               <div
                 key={item.title}
                 className="flex items-center gap-4"

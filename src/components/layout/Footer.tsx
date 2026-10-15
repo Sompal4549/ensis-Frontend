@@ -82,10 +82,10 @@ const defaultFooter = {
         { "label": "Home", "href": "/" },
         { "label": "About Us", "href": "/about-us" },
         { "label": "Products", "href": "/products" },
-        { "label": "Turnkey Solutions", "href": "/turnkey-solutions" },
-        { "label": "Projects", "href": "/projects" },
+        { "label": "Turnkey Solutions", "href": "/turnkey" },
+        { "label": "Projects", "href": "/projects-and-clients" },
         { "label": "Blog", "href": "/blog" },
-        { "label": "Contact Us", "href": "/contact-us" }
+        { "label": "Contact Us", "href": "/contact" }
       ]
     },
     {

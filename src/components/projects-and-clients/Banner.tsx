@@ -39,8 +39,16 @@ interface ProjectsBannerProps {
 }
 
 const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
-  sectionContent = fallbackProjectsBanner,
+  sectionContent,
 }) => {
+  const content = {
+    ...fallbackProjectsBanner,
+    ...sectionContent,
+    title: {
+      ...fallbackProjectsBanner.title,
+      ...(sectionContent?.title || {}),
+    },
+  };
   return (
     <section className="relative overflow-visible bg-[#f8f2e8] mb-0 md:mb-20">
       <div className="relative">
@@ -48,8 +56,8 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
           section can stay overflow-visible for StatsStrip overlap */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
-          src={banner}
-          alt={sectionContent?.title?.line1}
+          src={content.heroImage || banner}
+          alt={content.title.line1}
           fill
           priority
           sizes="100vw"
@@ -65,11 +73,11 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
           <div className="w-full lg:max-w-[42%]">
             <h1>
               <span className="block text-[#1f2c25]">
-                {sectionContent?.title?.line1}
+                {content.title.line1}
               </span>
 
               <span className="block text-[#b1793d] italic">
-                {sectionContent?.title?.line2}
+                {content.title.line2}
               </span>
             </h1>
 
@@ -78,10 +86,10 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
             </div>
 
             <h2 className="mb-4 text-md font-medium">
-              {sectionContent?.subtitle}
+              {content.subtitle}
             </h2>
 
-            <p className="max-w-xs text-base leading-6" dangerouslySetInnerHTML={{ __html: sectionContent?.description }}>
+            <p className="max-w-xs text-base leading-6" dangerouslySetInnerHTML={{ __html: content.description || "" }}>
             </p>
           </div>
         </div>

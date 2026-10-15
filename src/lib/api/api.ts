@@ -15,6 +15,7 @@ export const BACKEND_URL = API_URL.replace(/\/api\/v1$/, "");
 
 const apiClient = axios.create({
     baseURL: API_URL,
+    timeout: 10000,
     validateStatus: () => true,
     headers: {
         "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -173,27 +174,30 @@ const normalizePageResponse = (payload: any) => {
     return direct;
 };
 
-export async function getPageComponent(slug: string) {
+export const getPageComponent = cache(async (slug: string) => {
     try {
-        const response = await apiClient.get(`/component-content/page/${slug}`);
+        const response = await fetch(`${API_URL}/component-content/page/${slug}`, {
+            next: { revalidate: 60 },
+            signal: AbortSignal.timeout(5000),
+        });
 
-        if (response.status < 200 || response.status >= 300) {
-            console.error(`Failed to fetch page content for: ${slug} (status ${response.status})`);
+        if (!response.ok) {
+            console.warn(`[getPageComponent] Status ${response.status} for page "${slug}". Using fallback.`);
             return null;
         }
 
-        const payload = response.data;
+        const payload = await response.json();
         if (payload?.status === "error" || payload?.success === false) {
-            console.error(`API error for page "${slug}":`, payload.message);
+            console.warn(`[getPageComponent] API error for page "${slug}":`, payload.message);
             return null;
         }
 
         return normalizePageResponse(payload);
-    } catch (error) {
-        console.error(`Error fetching page content for "${slug}":`, error);
+    } catch (error: any) {
+        console.warn(`[getPageComponent] Unable to fetch page content for "${slug}": ${error?.message || "connection error"}`);
         return null;
     }
-}
+});
 
 
 export type ComponentContent<T> = {
