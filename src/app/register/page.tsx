@@ -9,6 +9,7 @@ import { API_URL } from "@/lib/api/api";
 import bannerImage from "@/assets/home/home_banner2.webp"
 import Image from "next/image";
 import AuthLayout from "@/components/layout/AuthLayout";
+import { fetchLocationByPincode } from "@/lib/pincode";
 
 const Container = dynamic(() => import("@/components/ui/Container").then((mod) => mod.Container));
 
@@ -24,6 +25,25 @@ export default function RegisterPage() {
   const [zipCode, setZipCode] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [fetchingPincode, setFetchingPincode] = useState(false);
+
+  const handleZipCodeChange = async (value: string) => {
+    setZipCode(value);
+    const clean = value.replace(/\D/g, "");
+    if (clean.length === 6) {
+      setFetchingPincode(true);
+      try {
+        const loc = await fetchLocationByPincode(clean);
+        if (loc) {
+          if (loc.city) setCity(loc.city);
+          if (loc.state) setState(loc.state);
+          if (loc.country) setCountry(loc.country);
+        }
+      } finally {
+        setFetchingPincode(false);
+      }
+    }
+  };
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -103,8 +123,8 @@ const inputClass =
                 <input suppressHydrationWarning className={inputClass} type="text" value={country} onChange={(event) => setCountry(event.target.value)} required />
               </label>
               <label className={labelClass}>
-                ZIP Code *
-                <input suppressHydrationWarning className={inputClass} type="text" value={zipCode} onChange={(event) => setZipCode(event.target.value)} required />
+                ZIP Code * {fetchingPincode && <span className="text-xs text-[#b88b3d] lowercase font-normal">(fetching...)</span>}
+                <input suppressHydrationWarning className={inputClass} type="text" maxLength={6} value={zipCode} onChange={(event) => handleZipCodeChange(event.target.value)} placeholder="6-digit ZIP / Pincode" required />
               </label>
             </div>
             

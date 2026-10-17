@@ -34,17 +34,17 @@ export default function GreenButton({ path = '/contact', variant = 'golden', tex
         href={path}
         target="_blank"
         onClick={onClick}
-        className={`flex items-center gap-1.5 px-4 h-8 rounded-lg relative z-10 hover:scale-[1.02] transition-transform justify-center
+        className={`flex items-center gap-1.5 px-4 min-h-8 py-1.5 rounded-lg relative z-10 hover:scale-[1.02] transition-transform justify-center
           ${isGolden
             ? 'bg-gradient-to-r from-[#f0c040] via-[#c8922a] to-[#f0c040] shadow-[0_2px_12px_rgba(200,146,42,0.35)]'
             : 'bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)]'
           }`}
       >
         <span className={`w-[14px] h-[14px] shrink-0 ${'text-white'}`}>{leftIcon}</span>
-        <span className={`font-bold ${fontSize} tracking-widest ${isGolden ? 'text-[#050A1A]' : 'text-white'}`}>
+        <span className={`font-bold ${fontSize} text-center leading-tight tracking-wide sm:tracking-widest ${isGolden ? 'text-[#050A1A]' : 'text-white'}`}>
           {text || 'BOOK A STALL'}
         </span>
-        {rightIcon || <ArrowRight className={`w-3 h-3 group-hover/btn:translate-x-1 transition-transform ${isGolden ? 'text-[#050A1A]' : 'text-white'}`} />}
+        {rightIcon || <ArrowRight className={`w-3 h-3 shrink-0 group-hover/btn:translate-x-1 transition-transform ${isGolden ? 'text-[#050A1A]' : 'text-white'}`} />}
       </Link>
     </div>
   );

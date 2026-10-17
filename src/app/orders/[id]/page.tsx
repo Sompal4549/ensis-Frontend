@@ -35,6 +35,7 @@ import type { Product } from "@/constants";
 import ordersBg from "@/assets/orders.png";
 import needHelpBg from "@/assets/need-help.png";
 import ProductCard from "@/components/products/ProductCard";
+import { sanitizeInlineHtml } from "@/lib/sanitize-html";
 
 const jost = { fontFamily: "var(--font-montserrat), Arial, sans-serif" };
 
@@ -468,7 +469,7 @@ export default function OrderPage() {
                         href={`/products/${typeof item.product === "object" ? item.product._id : ""}`}
                         className="block"
                       >
-                        <p className="text-base font-semibold text-[#1F3A2A] transition-colors hover:text-[#8d6a3a]" dangerouslySetInnerHTML={{ __html: itemName(item) }} />
+                        <p className="text-base font-semibold text-[#1F3A2A] transition-colors hover:text-[#8d6a3a]" dangerouslySetInnerHTML={{ __html: sanitizeInlineHtml(itemName(item)) }} />
                       </Link>
                       {(item.finish || item.size) && (
                         <p className="mt-0.5 text-base text-[#8d6a3a]">

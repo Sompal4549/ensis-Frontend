@@ -44,6 +44,8 @@ import { API_URL } from "@/lib/api/api";
 import { authStore } from "@/lib/auth";
 import needHelpBg from "@/assets/need-help.png";
 import GreenButton from "@/components/ui/GreenButton";
+import { fetchLocationByPincode } from "@/lib/pincode";
+import { sanitizeInlineHtml } from "@/lib/sanitize-html";
 
 interface ShippingAddress {
   label: string;
@@ -140,6 +142,7 @@ export default function CheckoutPage() {
   const [isMounted, setIsMounted] = useState<boolean>(false);
   const [checkoutSnapshot, setCheckoutSnapshot] = useState<CheckoutSnapshot | null>(null);
   const [editingAddress, setEditingAddress] = useState(false);
+  const [fetchingPincode, setFetchingPincode] = useState(false);
 
   // Authentication check / pre-fill address from user data
   useEffect(() => {
@@ -188,9 +191,30 @@ export default function CheckoutPage() {
     } catch {}
   }, [router]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setShippingAddress((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "postalCode") {
+      const clean = value.replace(/\D/g, "");
+      if (clean.length === 6) {
+        setFetchingPincode(true);
+        try {
+          const loc = await fetchLocationByPincode(clean);
+          if (loc) {
+            setShippingAddress((prev) => ({
+              ...prev,
+              postalCode: value,
+              city: loc.city || prev.city,
+              state: loc.state || prev.state,
+              country: loc.country || prev.country || "India",
+            }));
+          }
+        } finally {
+          setFetchingPincode(false);
+        }
+      }
+    }
   };
 
   // Cart calculations (mirror the server-side rules so the displayed total matches the charged amount)
@@ -550,7 +574,9 @@ export default function CheckoutPage() {
 
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                         <div>
-                          <label className={labelClass}>Postal Code *</label>
+                          <label className={labelClass}>
+                            Postal Code * {fetchingPincode && <span className="text-xs text-[#b88b3d] font-normal lowercase">(fetching location...)</span>}
+                          </label>
                           <input suppressHydrationWarning
                             className={inputClass}
                             type="text"
@@ -558,6 +584,7 @@ export default function CheckoutPage() {
                             placeholder="110001"
                             value={shippingAddress.postalCode}
                             onChange={handleInputChange}
+                            maxLength={6}
                             required
                           />
                         </div>
@@ -720,7 +747,7 @@ export default function CheckoutPage() {
                           />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-[#2b2a26]" dangerouslySetInnerHTML={{ __html: item.name }} />
+                          <p className="truncate text-sm font-semibold text-[#2b2a26]" dangerouslySetInnerHTML={{ __html: sanitizeInlineHtml(item.name) }} />
                           {item.finish || item.size ? (
                             <p className="mt-0.5 text-xs font-semibold text-[#c7a55b]">
                               {[item.finish && `Finish: ${item.finish}`, item.size && `Size: ${item.size}`]

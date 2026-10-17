@@ -19,6 +19,7 @@ import { authStore } from "@/lib/auth";
 import type { Product } from "@/constants";
 import YouMightCarousel from "@/components/ui/YouMightCarousel";
 import ProductCard from "@/components/products/ProductCard";
+import { sanitizeInlineHtml } from "@/lib/sanitize-html";
 
 const jost = { fontFamily: "var(--font-montserrat), Arial, sans-serif" };
 
@@ -320,7 +321,7 @@ export default function OrdersPage() {
                             <div className="min-w-0 flex-1">
                               <p
                                 className="truncate text-xs font-semibold text-[#2b2a26]"
-                                dangerouslySetInnerHTML={{ __html: itemName(item) }}
+                                dangerouslySetInnerHTML={{ __html: sanitizeInlineHtml(itemName(item)) }}
                               />
                               <p className="text-[11px] text-[#8a7c63]">
                                 {formatCurrency(item.price)} × {item.quantity}

@@ -301,3 +301,57 @@ h1 {
 .blog-content tbody tr:nth-child(even) { background: #fbf6ee; }
 .blog-content tbody td:first-child { font-weight: 600; color: #1f2c25; }
 .blog-content img { border-radius: 16px; max-width: 100%; height: auto; }
+
+/* ── React-Toastify refined compact styling ── */
+.Toastify__toast-container {
+  z-index: 999999 !important;
+  width: auto !important;
+  max-width: 380px !important;
+  padding: 12px !important;
+}
+
+.Toastify__toast {
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif !important;
+  font-size: 13.5px !important;
+  line-height: 1.45 !important;
+  font-weight: 500 !important;
+  min-height: 44px !important;
+  padding: 10px 14px !important;
+  border-radius: 10px !important;
+  margin-bottom: 8px !important;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.05) !important;
+}
+
+.Toastify__toast-body {
+  font-family: inherit !important;
+  font-size: 13.5px !important;
+  line-height: 1.4 !important;
+  font-weight: 500 !important;
+  padding: 0 4px !important;
+  margin: 0 !important;
+}
+
+.Toastify__toast-icon {
+  width: 18px !important;
+  margin-inline-end: 10px !important;
+}
+
+.Toastify__close-button {
+  opacity: 0.6 !important;
+  align-self: center !important;
+}
+.Toastify__close-button:hover {
+  opacity: 1 !important;
+}
+
+.Toastify__progress-bar {
+  height: 3px !important;
+}
+
+/* ── Typographic clamps ── */
+.line-clamp-3 {
+  display: -webkit-box !important;
+  -webkit-box-orient: vertical !important;
+  -webkit-line-clamp: 3 !important;
+  overflow: hidden !important;
+}

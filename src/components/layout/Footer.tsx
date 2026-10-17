@@ -21,7 +21,7 @@ import { Container } from '../ui/Container';
 import logoImg from '@/assets/logo.webp';
 import GlowLogo from './GlowLogo';
 import SparkleLogo from './SparkleLogo';
-import { getComponentContent, socialApi, categoryApi } from '@/lib/api/api';
+import { getComponentContent, getImageUrl, socialApi, categoryApi } from '@/lib/api/api';
 import type { IconType } from "react-icons";
 import SocialIconLink from './SocialLink';
 import footerTop2 from "@/assets/footer-top2.webp"
@@ -145,6 +145,9 @@ const features = [
 // export const Footer = async ({image:StaticImageData|string}) => {
 export const Footer = async () => {
   const content = await getComponentContent("layout.footer", defaultFooter);
+  // Admin footer logo (Pages > Footer > Ensis Logo); bundled logo when none is set
+  const footerLogo = (content.company as { ensisLogo?: { imageUrl?: string; alt?: string } })?.ensisLogo;
+  const footerLogoSrc = footerLogo?.imageUrl ? getImageUrl(footerLogo.imageUrl, 400) : logoImg;
   const socialLinks = (await socialApi.getLinks())
     .filter((item) => item.isActive)
     .sort((a, b) => a.order - b.order);
@@ -200,7 +203,12 @@ export const Footer = async () => {
 
             <div className="flex flex-col items-center md:w-[75%]">
 
-                <SparkleLogo src={logoImg} alt="ENSIS" className="h-16 w-auto" />
+                <SparkleLogo
+                  src={footerLogoSrc}
+                  alt={footerLogo?.alt || "ENSIS"}
+                  variant="card"
+                  className="h-16 w-auto object-contain md:h-[72px]"
+                />
 
               {/* lotus divider */}
               <div className="my-2 flex items-center gap-4">

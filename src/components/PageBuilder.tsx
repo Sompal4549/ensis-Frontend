@@ -28,6 +28,7 @@ const fallbackPageSections: Record<string, PageSection[]> = {
     { key: "home.wellnessRoomSetups", data: {} },
     { key: "home.manufacturingAndProjects", data: {} },
     { key: "home.testimonials", data: {} },
+    { key: "home.faqs", data: {} },
     { key: "home.blogInsights", data: {} },
   ],
   about: [
@@ -133,6 +134,13 @@ export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps
       const bi = typeof b?.index === "number" ? b.index : Number.MAX_SAFE_INTEGER;
       return ai - bi;
     });
+
+    // FAQs come from the admin FAQ module, so the home page shows them even when the
+    // CMS section list predates them: placed just before the blog/CTA block
+    if (normalized === "home" && !sortedSections.some((s: PageSection) => (s.key || s.componentKey) === "home.faqs")) {
+      const blogIndex = sortedSections.findIndex((s: PageSection) => (s.key || s.componentKey) === "home.blogInsights");
+      sortedSections.splice(blogIndex === -1 ? sortedSections.length : blogIndex, 0, { key: "home.faqs", data: {} });
+    }
 
     if (sortedSections.length === 0) {
       return (

@@ -9,6 +9,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { toast } from "react-toastify";
 
 export interface ShopProduct {
   id: string;
@@ -106,6 +107,11 @@ export function ShopProvider({ children }: { children: ReactNode }) {
 
       return [...items, variantItem];
     });
+
+    // One toast per product: adding several at once (quantity picker) shows a single message
+    const cleanName = String(product.name || "Product").replace(/<br\s*\/?>/gi, " ").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+    const displayName = cleanName.length > 36 ? `${cleanName.slice(0, 36)}...` : cleanName;
+    toast.success(`${displayName} added to cart`, { toastId: `cart-${product.id}-${variant?.finish || ""}-${variant?.size || ""}`, autoClose: 2500 });
   }, []);
 
   const removeFromCart = useCallback((itemKey: string) => {

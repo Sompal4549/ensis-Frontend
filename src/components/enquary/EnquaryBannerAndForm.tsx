@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -14,15 +14,13 @@ import { API_URL } from "@/lib/api/api";
 import HtmlRenderer from "../layout/HtmlRender";
 import EnquaryStatsStrip from "./EnquaryStatsStrip";
 import BookButton from "../ui/BookButton";
+import { ALL_INDIAN_STATES, fetchLocationByPincode, matchStateOption } from "@/lib/pincode";
 
 interface EnquiryPageProps {
   content?: EnquiryPageContent;
   onSubmit?: (data: EnquiryFormData) => void | Promise<void>;
   statsStrip?: React.ReactNode;
 }
-
-/** All states and union territories, so no visitor is left without their state */
-const INDIAN_STATES = ["Andhra Pradesh","Arunachal Pradesh","Assam","Bihar","Chhattisgarh","Goa","Gujarat","Haryana","Himachal Pradesh","Jharkhand","Karnataka","Kerala","Madhya Pradesh","Maharashtra","Manipur","Meghalaya","Mizoram","Nagaland","Odisha","Punjab","Rajasthan","Sikkim","Tamil Nadu","Telangana","Tripura","Uttar Pradesh","Uttarakhand","West Bengal","Andaman and Nicobar Islands","Chandigarh","Dadra and Nagar Haveli and Daman and Diu","Delhi","Jammu and Kashmir","Ladakh","Lakshadweep","Puducherry"];
 
 /** The label shown for a stored option value (the admin should read "Under ₹10 Lakhs", not "under-10l") */
 const labelOf = (options: { value?: string; id?: string; label: string }[] | undefined, value: string) =>
@@ -58,12 +56,19 @@ export default function EnquiryPage({
   const [fetchingPincode, setFetchingPincode] = useState(false);
 
   // States from the admin first, then every other state/UT
-  const stateOptions: SelectOption[] = [
-    ...(content.stateOptions || []),
-    ...INDIAN_STATES.filter(
-      (name) => !(content.stateOptions || []).some((o: SelectOption) => o.label.toLowerCase() === name.toLowerCase())
-    ).map((name) => ({ value: name, label: name })),
-  ];
+  const stateOptions: SelectOption[] = useMemo(() => {
+    const adminOpts = content.stateOptions || [];
+    const remaining = ALL_INDIAN_STATES.filter(
+      (name) =>
+        !adminOpts.some(
+          (o: SelectOption) =>
+            (o.label || "").toLowerCase() === name.toLowerCase() ||
+            (o.value || "").toLowerCase() === name.toLowerCase()
+        )
+    ).map((name) => ({ value: name, label: name }));
+
+    return [...adminOpts, ...remaining];
+  }, [content.stateOptions]);
 
   const handleZipcodeChange = async (zip: string) => {
     setField("zipcode", zip);
@@ -71,18 +76,21 @@ export default function EnquiryPage({
     if (cleanZip.length === 6) {
       try {
         setFetchingPincode(true);
-        const res = await fetch(`https://api.postalpincode.in/pincode/${cleanZip}`);
-        const data = await res.json();
-        if (data && data[0]?.Status === "Success" && data[0]?.PostOffice?.length > 0) {
-          const po = data[0].PostOffice[0];
-          const fetchedCity = po.District || po.Name || "";
-          const fetchedState = po.State || "";
+        const loc = await fetchLocationByPincode(cleanZip);
+        if (loc) {
+          const matched = matchStateOption(stateOptions, loc.state);
+          const stateValueToSet = matched ? matched.value : loc.state;
+          const displayStateLabel = matched ? matched.label : loc.state;
+
           setFormData((prev) => ({
             ...prev,
             zipcode: zip,
-            city: fetchedCity || prev.city,
-            state: fetchedState || prev.state,
-            cityAndState: fetchedCity && fetchedState ? `${fetchedCity}, ${fetchedState}` : prev.cityAndState,
+            city: loc.city || prev.city,
+            state: stateValueToSet || prev.state,
+            cityAndState:
+              loc.city && displayStateLabel
+                ? `${loc.city}, ${displayStateLabel}`
+                : prev.cityAndState,
           }));
           setErrors((prev) => ({ ...prev, city: undefined, state: undefined }));
         }
@@ -522,6 +530,11 @@ export default function EnquiryPage({
                         onChange={(e) => setField("state", e.target.value)}
                       >
                         <option value="">Select state</option>
+                        {formData.state && !stateOptions.some((opt) => opt.value === formData.state) && (
+                          <option value={formData.state}>
+                            {formData.state}
+                          </option>
+                        )}
                         {stateOptions.map((opt: SelectOption) => (
                           <option key={opt.value} value={opt.value}>
                             {opt.label}

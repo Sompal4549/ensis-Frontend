@@ -32,10 +32,12 @@ import logoImg from "@/assets/logo.webp";
 import GreenButton from "../ui/GreenButton";
 import BookButton from "../ui/BookButton";
 import { useShop } from "@/context/ShopContext";
-import { getComponentContent } from "@/lib/api/api";
+import { getComponentContent, getImageUrl } from "@/lib/api/api";
 import { authStore } from "@/lib/auth";
 
-export const Header = () => {
+type HeaderLogo = { imageUrl?: string; alt?: string };
+
+export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
     const pathname = usePathname();
     const [mounted, setMounted] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -123,7 +125,7 @@ export const Header = () => {
     }, []);
 
     const navLink =
-        "inline-flex items-center whitespace-nowrap border-b-2 border-transparent pt-0.5 text-sm font-bold tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
+        "inline-flex items-center whitespace-nowrap border-b-2 border-transparent pt-0.5 text-sm xl:text-[13px] 2xl:text-sm font-bold tracking-wide xl:tracking-normal 2xl:tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
 
     const mobileLink =
         "border-b border-[#e8e0d3] py-3 text-sm font-bold tracking-wide text-[#1f261b]";
@@ -131,6 +133,8 @@ export const Header = () => {
     // Default content shape matches the actual DB schema for "layout.header"
     // (contactInfo + navigation), NOT the old badges/navLinks shape.
     const [headerContent, setHeaderContent] = useState({
+        // Admin "Header" logo; empty until loaded, so the bundled logo shows meanwhile
+        logo: { imageUrl: initialLogo?.imageUrl || "", alt: initialLogo?.alt || "ENSIS Logo" },
         phone: "+91 9654900525",
         email: "info@ensis.in",
         brochureUrl: "/pdf/e-brochure.pdf",
@@ -177,6 +181,9 @@ export const Header = () => {
     }, []);
 
     // Map DB's `navigation` (title/slug) to the {label, href} shape this component renders
+    const logoSrc = headerContent.logo?.imageUrl ? getImageUrl(headerContent.logo.imageUrl, 400) : logoImg;
+    const logoAlt = headerContent.logo?.alt || "ENSIS Logo";
+
     const navLinks = (headerContent.navigation ?? []).map((n: any) => ({
         label: n.title,
         href: n.slug,
@@ -369,7 +376,7 @@ export const Header = () => {
                                               return displayName.charAt(0).toUpperCase();
                                             })()}
                                         </div>
-                                        <span className="text-[10px] font-bold tracking-wide text-white">
+                                        <span className="max-w-[90px] truncate text-[10px] font-bold tracking-wide text-white sm:max-w-[160px]">
                                           {user.name || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email}
                                         </span>
                                         <ChevronDown
@@ -398,16 +405,31 @@ export const Header = () => {
                                     href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 rounded-md bg-[#d9c49d] px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-[#263016] hover:bg-[#c8a45d] transition-colors"
+                                    className="flex items-center gap-1.5 whitespace-nowrap rounded-md bg-[#d9c49d] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#263016] hover:bg-[#c8a45d] transition-colors sm:px-3"
                                 >
-                                    <ShieldCheck size={12} /> Super Admin
+                                    <ShieldCheck size={12} />
+                                    <span className="sm:hidden">Admin</span>
+                                    <span className="hidden sm:inline">Super Admin</span>
                                 </a>
                             </div>
                         ) : (
                             <div className="flex items-center gap-2">
-                              <GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
-                              <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 rounded-md bg-[#d9c49d] px-3 h-8 text-[10px] font-bold uppercase tracking-wider text-[#263016] hover:bg-[#c8a45d] transition-colors">
-                                <ShieldCheck size={12} /> Login as Superadmin
+                              {/* Short labels on phones so both buttons stay on one line */}
+                              <GreenButton
+                                path="/login"
+                                fontSize="text-xs sm:text-base"
+                                leftIcon={<LogIn size={14} className="text-[#050A1A]" />}
+                                text={
+                                  <span className="whitespace-nowrap">
+                                    <span className="sm:hidden">Login</span>
+                                    <span className="hidden sm:inline">User Login</span>
+                                  </span>
+                                }
+                              />
+                              <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" rel="noopener noreferrer" className="flex h-8 items-center gap-1.5 whitespace-nowrap rounded-md bg-[#d9c49d] px-2.5 sm:px-3 text-[10px] font-bold uppercase tracking-wider text-[#263016] hover:bg-[#c8a45d] transition-colors">
+                                <ShieldCheck size={12} />
+                                <span className="sm:hidden">Admin</span>
+                                <span className="hidden sm:inline">Login as Superadmin</span>
                               </a>
                             </div>
                         ))}
@@ -419,26 +441,26 @@ export const Header = () => {
             </div>
 
             <div className={`bg-white`}>
-            <Container className="relative flex items-center justify-between gap-6 py-2!">
+            <Container className="relative flex items-center justify-between gap-6 py-1!">
         <Link
             href="/"
-            className="relative block h-10 w-[150px] shrink-0 md:h-11.5"
+            className="relative block shrink-0"
             aria-label="ENSIS Logo"
         >
-            {/* PREVIOUS: absolute left-0 top-1/2 z-10 -translate-y-[30%] — static now */}
+            {/* Slightly smaller on 1280–1535px screens so the full menu fits */}
             <div className="flex h-full items-center">
                 <SparkleLogo
-                    src={logoImg}
-                    alt="ENSIS Logo"
-                    className="h-8 w-auto object-contain md:h-10"
+                    src={logoSrc}
+                    alt={logoAlt}
+                    className="h-12 w-auto object-contain md:h-14 xl:h-12 2xl:h-14"
                 />
             </div>
         </Link>
 
                     {/* Spacer so nav doesn't go under the logo */}
-                    <div className="w-[40px] md:w-[120px] xl:w-[80px] 2xl:w-[120px] shrink-0" />
+                    <div className="w-[40px] md:w-[120px] xl:w-4 2xl:w-[120px] shrink-0" />
       <nav className="hidden xl:flex">
-            <ul className="flex items-center gap-4.5 xl:gap-3.5 2xl:gap-6.5">
+            <ul className="flex items-center gap-4.5 xl:gap-3 2xl:gap-6.5">
                             {navLinks.map((item, index) => (
                                 <li key={index}>
                                     <Link
@@ -479,15 +501,15 @@ export const Header = () => {
                     }`}
                 aria-hidden={!isMenuOpen}
             >
-                <div className="flex h-14 items-center justify-between border-b border-[#e8e0d3] px-4">
+                <div className="flex h-[76px] items-center justify-between gap-3 border-b border-[#e8e0d3] px-4">
                     <SparkleLogo
-                        src={logoImg}
-                        alt="ENSIS Logo"
-                        className="h-8 w-auto object-contain"
+                        src={logoSrc}
+                        alt={logoAlt}
+                        className="h-12 w-auto max-w-full object-contain sm:h-14"
                     />
 
                     <button
-                        className="inline-flex size-9 items-center justify-center border border-[#d8cbb9] text-[#263016]"
+                        className="inline-flex size-9 shrink-0 items-center justify-center border border-[#d8cbb9] text-[#263016]"
                         aria-label="Close menu"
                         onClick={() => setIsMenuOpen(false)}
                     >

@@ -35,6 +35,7 @@ import TrustedBrandsStrip, { TrustedBrandsStripContent } from "@/components/prod
 import WellnessFeatureStrip, { WellnessFeatureStripContent } from "@/components/products/WellnessFeatureStrip";
 import ProductWhyChoose, { WhyChooseContent } from "@/components/products/WhyChoose";
 import { BlogInsights } from "./home/BlogInsights";
+import { HomeFaqs } from "./home/HomeFaqs";
 import TurnkeyWhyChoose, { TurnkeyWhyChooseContent } from '@/components/turnkey/WhyChoose'
 import HeroSlider from "@/components/products/HeroSlider"; // Already imported
 import TrunkeyMeaning, { TurnkeyMeaningContent } from '@/components/turnkey/TurnkeyMeaning' // Already imported
@@ -81,6 +82,8 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
       return <GlobalPresence sectionData={data} />;
     case "home.blogInsights":
       return <BlogInsights subtitle={data.subtitle} heading={data.heading} buttonText={data.buttonText} buttonPath={data.buttonPath} />;
+    case "home.faqs":
+      return <HomeFaqs subtitle={data.subtitle} heading={data.heading} description={data.description} />;
     case "home.manufacturingAndProjects":
       return <ManufacturingAndProjects sectionContent={data} />;
     case "home.productsGrid":

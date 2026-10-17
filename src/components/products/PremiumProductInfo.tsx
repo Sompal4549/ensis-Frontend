@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import {
   ArrowRight,
   Check,
+  ChevronDown,
   Gem,
   Sparkles,
   Layers,
@@ -53,6 +55,9 @@ export default function PremiumProductInfo({
   onSizeChange,
   headingHtml,
 }: PremiumProductInfoProps) {
+  const [showFullDesc, setShowFullDesc] = useState(false);
+  const [showAllSpecs, setShowAllSpecs] = useState(false);
+
   const overview = product.overview;
   const productOverview = overview?.productSpecifications;
   const smartDesignAppearance = overview?.smartDesignAppearance;
@@ -199,10 +204,28 @@ export default function PremiumProductInfo({
                 dangerouslySetInnerHTML={{ __html: headingHtml || product.title }}
               />
               {appearanceTitle && (
-                <p
-                  className="mt-1.5 text-sm text-[#8d6a3a] leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: appearanceTitle }}
-                />
+                <div className="mt-1.5">
+                  <p
+                    className={`text-sm text-[#8d6a3a] leading-relaxed transition-all duration-300 ${
+                      !showFullDesc ? "line-clamp-3" : ""
+                    }`}
+                    dangerouslySetInnerHTML={{ __html: appearanceTitle }}
+                  />
+                  {appearanceTitle.length > 150 && (
+                    <button
+                      type="button"
+                      onClick={() => setShowFullDesc((prev) => !prev)}
+                      className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-[#0F2E22] hover:text-[#8d6a3a] transition-colors cursor-pointer"
+                    >
+                      <span>{showFullDesc ? "Show Less" : "Read More..."}</span>
+                      <ChevronDown
+                        className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                          showFullDesc ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                  )}
+                </div>
               )}
               {appearanceHighlight && (
                 <p className="mt-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#0F2E22]/70">
@@ -226,7 +249,7 @@ export default function PremiumProductInfo({
                   </div>
                   <table className="w-full text-sm">
                     <tbody>
-                      {validSpecs.map((spec, i) => {
+                      {(showAllSpecs ? validSpecs : validSpecs.slice(0, 5)).map((spec, i) => {
                         const Icon = specIcons[i % specIcons.length];
                         return (
                           <tr
@@ -253,6 +276,27 @@ export default function PremiumProductInfo({
                       })}
                     </tbody>
                   </table>
+
+                  {validSpecs.length > 5 && (
+                    <div className="border-t border-[#C9A45C]/25 bg-[#fbf8f2] px-5 py-2 text-center">
+                      <button
+                        type="button"
+                        onClick={() => setShowAllSpecs((prev) => !prev)}
+                        className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-[#0F2E22] hover:text-[#8d6a3a] transition-colors cursor-pointer py-1"
+                      >
+                        <span>
+                          {showAllSpecs
+                            ? "Show Less Specifications"
+                            : `View All Specifications (+${validSpecs.length - 5} More)`}
+                        </span>
+                        <ChevronDown
+                          className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                            showAllSpecs ? "rotate-180" : ""
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
