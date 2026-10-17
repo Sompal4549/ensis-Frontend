@@ -40,6 +40,8 @@ const STATIC_ROUTES: {
   { path: "contact", changeFrequency: "yearly", priority: 0.5 },
   { path: "enquiry", changeFrequency: "yearly", priority: 0.5 },
   { path: "career", changeFrequency: "monthly", priority: 0.5 },
+  { path: "privacy-policy", changeFrequency: "yearly", priority: 0.3 },
+  { path: "terms-and-conditions", changeFrequency: "yearly", priority: 0.3 },
 ];
 
 function escapeXml(value: string) {

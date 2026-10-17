@@ -1,3 +1,4 @@
+import { toJsonLd } from "@/lib/seo-text";
 import { getComponentContent, getImageUrl, getPageComponent, API_URL } from "@/lib/api/api";
 import { headers } from "next/headers";
 import { Container } from "@/components/ui/Container";
@@ -31,7 +32,7 @@ const decodeHtml = (html: string) => {
 async function getBlogBySlug(slug: string) {
   try {
     const res = await fetch(`${API_URL}/blogs/${slug}`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 60 },
     });
     const json = await res.json();
     return Boolean(json.success || json.status === "success") ? json.data : getStaticBlog(slug) || null;
@@ -43,7 +44,7 @@ async function getBlogBySlug(slug: string) {
 
 async function getAllBlogs() {
   try {
-    const res = await fetch(`${API_URL}/blogs`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${API_URL}/blogs`, { next: { revalidate: 60 } });
     const json = await res.json();
     return Boolean(json.success || json.status === "success") ? json.data : [];
   } catch {
@@ -177,9 +178,8 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
     category: blog.category || undefined,
     keywords: blog.tags?.join(", ") || undefined,
   };
-  const schemaJson = schemaMatchesBlog
-    ? adminSchema
-    : JSON.stringify(autoSchema);
+  // Admin schema only when it is valid JSON-LD for this blog; otherwise the generated one
+  const schemaJson = (schemaMatchesBlog && toJsonLd(adminSchema)) || toJsonLd(autoSchema)!;
 
   return (
     <main className="bg-[#fdfaf5]">
@@ -237,9 +237,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 )}
 
                 <div
-                  className="prose prose-stone prose-lg max-w-none text-[#4a4036]
-                  prose-headings: prose-headings:text-[#2b241f]
-                  prose-p:leading-relaxed prose-strong:text-[#2b241f]"
+                  className="blog-content max-w-none"
                   dangerouslySetInnerHTML={{ __html: decodeHtml(blog.article.content || blog.description || "") }}
                 />
 
@@ -266,7 +264,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
       )}
 <BlogDetailCtaBanner sectionContent={blog.ctaBanner} />
       {/* ── NEWSLETTER ── */}
- <RelatedBlogs allBlogs={allBlogs}  />
+ <RelatedBlogs allBlogs={allBlogs} currentSlug={blog.slug} />
  {hasNewsletter ? (
    <BlogDetailNewsletter sectionContent={blog.newsletter} />
  ) : (

@@ -49,6 +49,7 @@ export default async function FeaturedArticles({ sectionContent, blogs }: { sect
             title={article.title} 
             image={article.image} 
             link={article?.slug}
+            views={article?.views}
           />
         ))}
       </div>

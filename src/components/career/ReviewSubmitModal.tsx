@@ -65,8 +65,8 @@ const brandHeader = {
 };
 
 const job = {
-  title: "Sales Manager – Domestic Exhibition Sales & Sponsorships",
-  company: "Namo Gange Wellness Pvt. Ltd.",
+  title: "Career Application",
+  company: "ENSIS",
   brand: "Ensis",
 };
 
@@ -80,7 +80,7 @@ const candidateProfile = {
 const aiMatchScore = 72;
 
 const jobSummary = {
-  company: "Namo Gange Wellness Pvt. Ltd.",
+  company: "ENSIS",
   location: "Delhi NCR",
   type: "Full Time",
   experience: "3 – 6 Years",
@@ -740,7 +740,7 @@ function ReviewSubmitContent({
             </button>
           ) : (
             <Link
-              href="/careers"
+              href="/career"
               className="flex w-fit items-center gap-[5px] text-[13px] font-semibold text-[#0d5d3c] hover:text-[#d92027] transition-colors"
             >
               <ArrowLeft className="h-[14px] w-[14px]" />
@@ -748,7 +748,7 @@ function ReviewSubmitContent({
             </Link>
           )}
 
-          <h1 className="mt-[3px] text-[25px] font-semibold leading-none tracking-[-0.02em] text-[#123963]">
+          <h1 className="mt-[3px] !text-[25px] font-semibold !leading-none tracking-[-0.02em] text-[#123963]">
             {candidateData?.jobDetails?.title || job.title}
           </h1>
 

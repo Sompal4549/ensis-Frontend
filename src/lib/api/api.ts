@@ -310,7 +310,7 @@ export const verifyApi = {
         const response = await apiClient.post(`/auth/send-phone-otp`, {
             phone,
             purpose: profile,
-            message: name ? `Dear ${name}, your IHWE OTP is {{code}}.` : undefined,
+            message: name ? `Dear ${name}, your Ensis OTP is {{code}}.` : undefined,
         });
         return normalizeOtpResponse(response);
     },
@@ -461,6 +461,14 @@ export type Career = {
   type: string;
   experience: string;
   status: "active" | "closed";
+  // Job details shown in the AI CV screening popup
+  description?: string;
+  roleObjective?: string;
+  responsibilities?: string[];
+  requirements?: string[];
+  skills?: string[];
+  educationRequirements?: string;
+  eligibilityThreshold?: number;
 };
 
 export const careerApi = {

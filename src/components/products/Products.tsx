@@ -59,7 +59,8 @@ const minPrice = useMemo(() => {
   return Math.min(adminMin, ...products.map((p) => p.price));
 }, [products, adminPriceRange]);
 
-const [priceRange, setPriceRange] = useState(0);
+// Starts at the highest price, so nothing is filtered out before the visitor moves the slider
+const [priceRange, setPriceRange] = useState(() => maxPrice);
 const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
 const [selectedIdealFor, setSelectedIdealFor] = useState<string[]>([]);
 

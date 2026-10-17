@@ -69,6 +69,8 @@ export interface Testimonial {
     image?: string | any;
     userImage?: string | any;
     rating?: number;
+    /** Admin visibility: Published / Pending Review / Hidden */
+    status?: string;
   }[];
 }
 
@@ -86,9 +88,11 @@ const breakpointsConfig = {
 
 export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
   const title = sectionContent?.title || defaultContent.title;
-  const testimonials = (sectionContent?.testimonials && sectionContent.testimonials.length > 0)
-    ? sectionContent.testimonials
-    : defaultContent.testimonials;
+  // Only reviews marked Published in the admin (older entries have no status and count as published)
+  const published = (sectionContent?.testimonials || []).filter(
+    (t) => !t.status || t.status === "Published"
+  );
+  const testimonials = published.length > 0 ? published : defaultContent.testimonials;
 
   return (
     <section className="bg-[#fbf8f2]">

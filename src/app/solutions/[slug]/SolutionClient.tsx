@@ -21,6 +21,7 @@ import {
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import BookButton from "@/components/ui/BookButton";
+import CityLinks from "@/components/ui/CityLinks";
 import GreenButton from "@/components/ui/GreenButton";
 import type { SolutionSolution } from "@/data/solutions";
 import type { ResolvedSolution } from "@/lib/solutions";
@@ -92,8 +93,6 @@ export default function SolutionClient({
 }) {
   const { services, process, city } = solution;
   const solutionCards = cards;
-  // City pages other than the one being viewed, for internal links
-  const otherCities = solution.cities.filter((c) => c.slug !== city?.slug);
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#faf7f2] font-sans text-[#333]">
@@ -858,39 +857,6 @@ export default function SolutionClient({
       </section>
 
       {/* =========================================================
-          CITY LINKS
-      ========================================================= */}
-
-      {otherCities.length > 0 && (
-        <section className="border-t border-[#e6d6b9] bg-[#faf7f2]">
-          <Container className="py-8 text-center">
-            <p className="text-sm font-semibold tracking-[0.18em] text-[#a9742a]">
-              {city ? `${solution.title.toUpperCase()} IN OTHER CITIES` : `${solution.title.toUpperCase()} ACROSS INDIA`}
-            </p>
-            <div className="mt-4 flex flex-wrap justify-center gap-2">
-              {city && (
-                <Link
-                  href={`/solutions/${solution.slug}`}
-                  className="rounded-full border border-[#c39a5c] bg-white px-4 py-1.5 text-sm font-semibold text-[#0e3d21] transition hover:bg-[#0e3d21] hover:text-white"
-                >
-                  {solution.title}
-                </Link>
-              )}
-              {otherCities.map((c) => (
-                <Link
-                  key={c.slug}
-                  href={`/solutions/${solution.slug}/${c.slug}`}
-                  className="rounded-full border border-[#c39a5c] bg-white px-4 py-1.5 text-sm font-semibold text-[#0e3d21] transition hover:bg-[#0e3d21] hover:text-white"
-                >
-                  {solution.title} in {c.city}
-                </Link>
-              ))}
-            </div>
-          </Container>
-        </section>
-      )}
-
-      {/* =========================================================
           FINAL CTA
       ========================================================= */}
 
@@ -960,6 +926,8 @@ export default function SolutionClient({
           </Reveal>
         </Container>
       </section>
+
+      <CityLinks title={solution.title} basePath={`/solutions/${solution.slug}`} cities={solution.cities} currentSlug={city?.slug} />
     </main>
   );
 }

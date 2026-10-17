@@ -3,11 +3,13 @@ import { headers } from "next/headers";
 import type { Metadata } from "next";
 import ProductDetailClient from "@/components/products/ProductDetailClient";
 import { Container } from "@/components/ui/Container";
+import CityLinks from "@/components/ui/CityLinks";
 import img6 from "@/assets/home/img-6.webp";
 import { generateSeo } from "@/lib/api/seo";
 import { productApi, getImageUrl } from "@/lib/api/api";
 import { SITE_HOST, SITE_URL } from "@/lib/site";
 import type { CityPage } from "@/lib/solutions";
+import { metaDescription } from "@/lib/seo-text";
 
 const FALLBACK_TITLE = "Ensis - Premium Panchkarma & Wellness Spaces";
 
@@ -31,33 +33,58 @@ export const findCity = (product: any, citySlug: string): CityPage | null =>
 const plain = (value: unknown) =>
   String(value ?? "").replace(/<br\s*\/?>/gi, " ").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
 
+/**
+ * Heading HTML that keeps only line breaks: <br> (as in product titles) and new lines become <br />,
+ * all other markup is escaped so admin text can never inject tags or scripts.
+ */
+const headingHtml = (value: string) =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/&lt;br\s*\/?&gt;/gi, "<br />")
+    .replace(/\r?\n/g, "<br />");
+
+/** "PREMIUM TEAK WOOD DRONI" → "Premium Teak Wood Droni"; mixed-case text is left as written */
+const titleCase = (value: string) =>
+  value && value === value.toUpperCase() ? value.toLowerCase().replace(/(^|[\s(/-])([a-z])/g, (_m, sep, ch) => sep + ch.toUpperCase()) : value;
+
 const productDescription = (p: any, fallback = "") => p?.shortDescription || p?.overview?.description || p?.description || fallback;
 
 export async function buildProductMetadata(slug: string, apiProduct: any, city?: CityPage | null): Promise<Metadata> {
   const base = await generateSeo(`products/${slug}`);
 
   const pageTitled = !!base.title && base.title !== FALLBACK_TITLE;
-  let title = String((pageTitled ? base.title : plain(apiProduct?.title) || base.title) || FALLBACK_TITLE);
+  // Admin titles are often ALL CAPS; search results read better in title case with the brand
+  const productName = titleCase(plain(apiProduct?.title));
+  let title = String((pageTitled ? base.title : productName ? (productName.length > 56 ? productName : `${productName} | ENSIS`) : base.title) || FALLBACK_TITLE);
   let description = productDescription(apiProduct, (base.description as string) || "");
   let alternates = base.alternates;
   let ogUrl = base.openGraph?.url;
 
   if (city) {
-    const name = plain(apiProduct?.title) || slug.replace(/-/g, " ");
+    const name = productName || slug.replace(/-/g, " ");
     title = city.metaTitle || `${name} in ${city.city} | ENSIS`;
-    description =
-      city.metaDescription ||
-      city.description ||
-      `${description} Supplied and installed by ENSIS in ${city.city}.`.trim();
+    const baseDescription = description;
+    description = city.metaDescription || city.description || "";
+    // A city page must not repeat the main product description word for word
+    if (!description || plain(description) === plain(baseDescription)) {
+      description = `${name} in ${city.city}, supplied and installed by ENSIS. ${baseDescription}`.trim();
+    }
     const canonical = `${SITE_URL}/products/${slug}/${city.slug}`;
     alternates = { canonical };
     ogUrl = canonical;
   }
+  description = metaDescription(description);
 
   // Prefer an explicitly configured og:image from admin page SEO,
   // otherwise fall back to the product's first image.
-  const adminOgImage = (base.openGraph?.images as { url?: string }[] | undefined)?.[0]?.url;
-  const ogImage = adminOgImage || (apiProduct?.images?.[0] ? getImageUrl(apiProduct.images[0], 1200) : "");
+  // The site-wide default image does not count as a product-specific choice
+  const configuredOg = (base.openGraph?.images as { url?: string }[] | undefined)?.[0]?.url;
+  const adminOgImage = configuredOg && !/\/og-image\.\w+$/.test(configuredOg) ? configuredOg : "";
+  const ogImage = adminOgImage || (apiProduct?.images?.[0] ? getImageUrl(apiProduct.images[0], 1200) : configuredOg || "");
 
   // Prefer base SEO keywords, otherwise auto-populate from product search tags
   const productTags = Array.isArray(apiProduct?.tags) ? apiProduct.tags.map((t: any) => String(t).trim()).filter(Boolean) : [];
@@ -164,66 +191,26 @@ export async function ProductView({ slug, apiProduct, city }: { slug: string; ap
     },
   };
 
-  const otherCities = activeCities(apiProduct).filter((c) => c.slug !== city?.slug);
   const productName = plain(product.name || product.title);
 
   return (
     <div className="min-h-screen bg-[#fbfaf7]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productSchema) }} />
 
-      {city && (
-        <section className="border-b border-[#e6d6b9] bg-white">
-          <Container className="py-6 text-center">
-            <p className="text-xs font-semibold tracking-[0.18em] text-[#a9742a]">{city.city.toUpperCase()}</p>
-            <h2 className="mt-1 font-serif text-[26px] leading-tight text-[#0e3d21] md:text-[32px]">
-              {(city.heading || `${productName} in ${city.city}`).split(/\r?\n/).map((line, i, all) => (
-                <span key={i}>
-                  {line}
-                  {i < all.length - 1 && <br />}
-                </span>
-              ))}
-            </h2>
-            {city.description && <p className="mx-auto mt-3 max-w-[820px] text-base font-semibold leading-7 text-[#555]">{city.description}</p>}
-            {city.intro &&
-              city.intro.split(/\r?\n\s*\r?\n/).map((p, i) => (
-                <p key={i} className="mx-auto mt-3 max-w-[820px] text-[15px] leading-7 text-[#555]">
-                  {p}
-                </p>
-              ))}
-          </Container>
-        </section>
-      )}
+      <ProductDetailClient
+        originalPrice={originalPrice}
+        product={product}
+        shopProduct={product}
+        // City page: the admin's heading for this city, or "Best <product> in <city>"
+        headingHtml={city ? headingHtml(city.heading || `Best ${apiProduct.title || productName} in ${city.city}`) : undefined}
+      />
 
-      <ProductDetailClient originalPrice={originalPrice} product={product} shopProduct={product} />
-
-      {otherCities.length > 0 && (
-        <section className="border-t border-[#e6d6b9] bg-[#faf7f2]">
-          <Container className="py-8 text-center">
-            <p className="text-sm font-semibold tracking-[0.18em] text-[#a9742a]">
-              {city ? `${productName.toUpperCase()} IN OTHER CITIES` : `${productName.toUpperCase()} ACROSS INDIA`}
-            </p>
-            <div className="mt-4 flex flex-wrap justify-center gap-2">
-              {city && (
-                <Link
-                  href={`/products/${product.slug || slug}`}
-                  className="rounded-full border border-[#c39a5c] bg-white px-4 py-1.5 text-sm font-semibold text-[#0e3d21] transition hover:bg-[#0e3d21] hover:text-white"
-                >
-                  {productName}
-                </Link>
-              )}
-              {otherCities.map((c) => (
-                <Link
-                  key={c.slug}
-                  href={`/products/${product.slug || slug}/${c.slug}`}
-                  className="rounded-full border border-[#c39a5c] bg-white px-4 py-1.5 text-sm font-semibold text-[#0e3d21] transition hover:bg-[#0e3d21] hover:text-white"
-                >
-                  {productName} in {c.city}
-                </Link>
-              ))}
-            </div>
-          </Container>
-        </section>
-      )}
+      <CityLinks
+        title={productName}
+        basePath={`/products/${product.slug || slug}`}
+        cities={activeCities(apiProduct)}
+        currentSlug={city?.slug}
+      />
     </div>
   );
 }

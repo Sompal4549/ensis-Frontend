@@ -68,8 +68,8 @@ const assets = {
    ========================================================= */
 
 const job = {
-  title: "Sales Manager – Domestic Exhibition Sales & Sponsorships",
-  company: "Namo Gange Wellness Pvt. Ltd.",
+  title: "Career Application",
+  company: "ENSIS",
   brand: "Ensis",
 };
 
@@ -731,9 +731,9 @@ function ProfessionalDetails({
   setOtherBenefits: (value: string) => void;
 }) {
   // Read-only values parsed directly from candidate's Resume/CV
-  const company = candidateData?.currentCompany || candidateData?.fullProfile?.currentCompany || "ABC Exhibitions Pvt. Ltd.";
-  const designation = candidateData?.currentDesignation || candidateData?.fullProfile?.currentDesignation || "Senior Sales Executive";
-  const experience = candidateData?.totalExperience || candidateData?.fullProfile?.totalExperience || "5 Years 8 Months";
+  const company = candidateData?.currentCompany || candidateData?.fullProfile?.currentCompany || "";
+  const designation = candidateData?.currentDesignation || candidateData?.fullProfile?.currentDesignation || "";
+  const experience = candidateData?.totalExperience || candidateData?.fullProfile?.totalExperience || "";
 
   const isFresher = employmentStatus === "Fresher";
   const isNotEmployed = employmentStatus === "Not Currently Employed";
@@ -1066,7 +1066,7 @@ function CVCard({ candidateData }: { candidateData?: any }) {
           <p className="mt-[1px] text-[12px] text-[#58708c]">{cvSize}</p>
 
           <div className="mt-[5px] flex gap-[13px] text-[12px] font-semibold text-[#0874ce]">
-            <Link href="/careers#current-openings" className="flex items-center gap-[4px] hover:opacity-80">
+            <Link href="/career#current-openings" className="flex items-center gap-[4px] hover:opacity-80">
               <RefreshCw className="h-[13px] w-[13px]" />
               Upload Different CV
             </Link>
@@ -1299,7 +1299,7 @@ function ApplicationFormContent({
             Preview
           </button>
 
-          <h1 className="mt-[2px] text-[24px] font-semibold leading-none tracking-[-0.02em] text-[#123963]">
+          <h1 className="mt-[2px] !text-[24px] font-semibold !leading-none tracking-[-0.02em] text-[#123963]">
             {candidateData?.jobDetails?.title || job.title}
           </h1>
 

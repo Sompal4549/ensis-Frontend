@@ -89,8 +89,8 @@ const profile = {
    ========================================================= */
 
 const job = {
-  title: "Sales Manager – Domestic Exhibition Sales & Sponsorships",
-  company: "Namo Gange Wellness Pvt. Ltd.",
+  title: "Career Application",
+  company: "ENSIS",
   brand: "Ensis",
 
   location: "Delhi NCR",
@@ -453,7 +453,7 @@ const MatchContext = createContext<MatchContextType>({
 export const useMatchData = () => useContext(MatchContext);
 
 /**
- * The popup is rendered over /careers itself, so a plain <Link href="/careers"> is a no-op
+ * The popup is rendered over /careers itself, so a plain <Link href="/career"> is a no-op
  * there and leaves the popup open. Close the flow first, then land on the job list.
  */
 function useGoToCareers() {
@@ -463,7 +463,7 @@ function useGoToCareers() {
 
   return (scrollToOpenings: boolean) => {
     onClose?.();
-    if (pathname === "/careers") {
+    if (pathname === "/career") {
       if (scrollToOpenings) {
         // Wait for the popup to unmount and release the scroll lock before scrolling.
         setTimeout(() => {
@@ -472,7 +472,7 @@ function useGoToCareers() {
       }
       return;
     }
-    router.push(scrollToOpenings ? "/careers#current-openings" : "/careers");
+    router.push(scrollToOpenings ? "/career#current-openings" : "/career");
   };
 }
 
@@ -1919,7 +1919,7 @@ function SupportCard() {
         <p className="mt-[2px] text-[13px] font-medium leading-tight text-[#214368]">
           Feel free to reach out to our HR team at
           <br />
-          <strong className="font-semibold text-[#102d58]">careers@bharatorganicexpo.com</strong>
+          <strong className="font-semibold text-[#102d58]">info@ensis.in</strong>
         </p>
       </div>
     </div>
@@ -2121,7 +2121,7 @@ export function EligibilityPopupContent({
               </button>
             ) : (
               <Link
-                href="/careers"
+                href="/career"
                 className="flex w-fit items-center gap-[8px] text-[17px] font-semibold text-[#113a72] transition-colors hover:text-red-600"
               >
                 <ArrowLeft className="h-[22px] w-[22px]" strokeWidth={2.5} />
@@ -2129,7 +2129,7 @@ export function EligibilityPopupContent({
               </Link>
             )}
 
-            <h1 className="mt-[2px] truncate text-[26px] font-semibold leading-[1.05] tracking-[-0.025em] text-[#113a72]">
+            <h1 className="mt-[2px] truncate !text-[26px] font-semibold !leading-[1.05] tracking-[-0.025em] text-[#113a72]">
               {candidate.jobDetails?.title || job.title}
             </h1>
 

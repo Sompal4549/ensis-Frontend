@@ -1,6 +1,8 @@
+import { toJsonLd } from "@/lib/seo-text";
 import { getPageComponent } from "@/lib/api/api";
 import RenderSection from "./RenderSections";
-import { generateSchema } from "@/lib/api/seo";
+import { generateSchema, generateSeo } from "@/lib/api/seo";
+import { SITE_URL } from "@/lib/site";
 
 type PageBuilderProps = {
   slug: string;
@@ -140,12 +142,27 @@ export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps
       );
     }
 
+    // Admin schema when set and valid; otherwise a basic WebPage schema from the page's own SEO
+    let jsonLd = toJsonLd(schema);
+    if (!jsonLd) {
+      const seo = await generateSeo(schemaSlug || slug);
+      const canonical = seo.alternates?.canonical ? String(seo.alternates.canonical) : undefined;
+      jsonLd = toJsonLd({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: typeof seo.title === "string" ? seo.title : undefined,
+        description: seo.description || undefined,
+        url: canonical,
+        publisher: { "@type": "Organization", name: "ENSIS", url: SITE_URL },
+      });
+    }
+
     return (
       <main>
-        {schema && (
+        {jsonLd && (
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: schema }}
+            dangerouslySetInnerHTML={{ __html: jsonLd }}
           />
         )}
         {sortedSections.map((section: PageSection, index: number) => {

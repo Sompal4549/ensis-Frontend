@@ -155,6 +155,12 @@ const handleApply = (job: Career) => {
     location: job.location,
     experience: job.experience,
     type: job.type,
+    description: job.roleObjective || job.description,
+    responsibilities: job.responsibilities,
+    requirements: job.requirements,
+    skills: job.skills,
+    education: job.educationRequirements,
+    eligibilityThreshold: job.eligibilityThreshold,
   });
   setIsUploadCvOpen(true);
 };
@@ -280,7 +286,7 @@ const experienceOptions = Array.from(
     : defaultImages;
 
   return (
-    <section className="bg-[#f8f5f0]">
+    <section id="current-openings" className="bg-[#f8f5f0] scroll-mt-24">
       <Container>
         <div className="grid lg:grid-cols-[0.5fr_1fr] lg:min-h-[320px]">
           {/* Left Content */}
@@ -576,22 +582,22 @@ const experienceOptions = Array.from(
   ))}
 </select>
               <div
+                role="button"
+                aria-disabled={!appliedJob}
                 onClick={() => {
-                  setScreeningJob({
-                    title: appliedJob?.title || (form.department ? `${form.department} Specialist` : "General Career Application"),
-                    department: form.department || appliedJob?.department || "General",
-                    experience: form.experience || "2-5 Yrs",
-                    location: form.currentLocation || "India",
-                  });
-                  setIsUploadCvOpen(true);
+                  if (appliedJob) handleApply(appliedJob);
                 }}
-                className="rounded-xl border border-dashed border-[#b98b43] p-4 text-center text-base cursor-pointer hover:bg-white/5 transition"
+                className={`rounded-xl border border-dashed border-[#b98b43] p-4 text-center text-base transition ${
+                  appliedJob ? "cursor-pointer hover:bg-white/5" : "cursor-not-allowed opacity-50"
+                }`}
               >
                 <Upload className="mx-auto mb-2 text-[#c89a4b]" />
                 <p className="text-base font-semibold text-white">
                   {resume ? resume.name : "Screen CV with AI & Apply (PDF/DOC)"}
                 </p>
-                <span className="text-xs text-white/60">Instant AI qualification score & match</span>
+                <span className="text-xs text-white/60">
+                  {appliedJob ? "Instant AI qualification score & match" : "Select a job from the list to start AI screening"}
+                </span>
               </div>
 
              <textarea
@@ -623,16 +629,12 @@ const experienceOptions = Array.from(
 <button
   suppressHydrationWarning
   type="button"
+  disabled={!appliedJob}
+  title={appliedJob ? undefined : "Select a job from the list first"}
   onClick={() => {
-    setScreeningJob({
-      title: appliedJob?.title || (form.department ? `${form.department} Specialist` : "General Career Application"),
-      department: form.department || appliedJob?.department || "General",
-      experience: form.experience || "2-5 Yrs",
-      location: form.currentLocation || "India",
-    });
-    setIsUploadCvOpen(true);
+    if (appliedJob) handleApply(appliedJob);
   }}
-  className="flex w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-base hover:bg-[#b58637] transition"
+  className="flex w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-base hover:bg-[#b58637] transition disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-[#c89a4b]"
 >
   Start AI CV Screening
   <ArrowRight size={16} />

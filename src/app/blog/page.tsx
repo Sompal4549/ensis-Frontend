@@ -11,7 +11,7 @@ export async function generateMetadata() {
 
 async function getAllBlogs() {
   try {
-    const res = await fetch(`${API_URL}/blogs`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${API_URL}/blogs`, { next: { revalidate: 60 } });
     const json = await res.json();
     return Boolean(json.success || json.status === "success") ? json.data : staticBlogs;
   } catch {

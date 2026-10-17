@@ -2,27 +2,43 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
-import { SITE_URL } from "@/lib/site";
 import { fetchSolutions, solutionCards } from "@/lib/solutions";
+import { generateSeo } from "@/lib/api/seo";
+import { SITE_URL } from "@/lib/site";
+import { toJsonLd } from "@/lib/seo-text";
 
 export const revalidate = 60;
 
-const title = "Wellness Solutions | Panchkarma, Spa & Ayurveda Setups | ENSIS";
 const description =
   "Explore ENSIS solutions — Panchkarma clinic setup, resort & spa setup, wellness retreat design, Ayurveda hospital setup and interior & equipment integration.";
 
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: { canonical: `${SITE_URL}/solutions` },
-  openGraph: { title, description, url: `${SITE_URL}/solutions`, siteName: "ENSIS", type: "website", locale: "en_IN" },
-};
+// SEO comes from Pages & CMS → Custom Solutions & Engineering, like the other pages
+export async function generateMetadata(): Promise<Metadata> {
+  return generateSeo("solutions");
+}
 
 export default async function SolutionsPage() {
   const cards = solutionCards(await fetchSolutions());
+  const jsonLd = toJsonLd({
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "ENSIS Solutions",
+    description,
+    url: `${SITE_URL}/solutions`,
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: cards.map((card, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: card.title,
+        url: `${SITE_URL}${card.href}`,
+      })),
+    },
+  });
 
   return (
     <main className="min-h-screen bg-[#faf7f2] font-sans text-[#333]">
+      {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />}
       <Container className="py-12">
         <div className="mx-auto max-w-[760px] text-center">
           <p className="text-sm font-semibold tracking-[0.18em] text-[#a9742a]">OUR SOLUTIONS</p>

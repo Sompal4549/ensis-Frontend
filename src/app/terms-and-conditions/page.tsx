@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useMemo } from "react";
 import {
   ArrowRight,
   Globe,
@@ -66,11 +66,10 @@ export default function TermsConditionsPage() {
     fetchTermsData();
   }, []);
 
-  const navItems = sections.map((section) => ({
-    id: section.id,
-    number: section.number,
-    title: section.title,
-  }));
+  const navItems = useMemo(
+    () => sections.map((section) => ({ id: section.id, number: section.number, title: section.title })),
+    [sections]
+  );
 
   const handleSectionChange = useCallback((id: string) => {
     setActiveSection(id);

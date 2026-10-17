@@ -11,6 +11,7 @@ import {
   type SolutionStat,
 } from "@/data/solutions";
 import { API_URL, getImageUrl } from "@/lib/api/api";
+import { metaDescription } from "@/lib/seo-text";
 
 /** A city landing page as stored on a solution or product (see backend city-page.schema). */
 export interface CityPage {
@@ -173,9 +174,14 @@ export function solutionMeta(solution: ResolvedSolution) {
   const title = city
     ? text(city.metaTitle, `${solution.title} in ${city.city} | ENSIS Wellness`)
     : text(solution.seo.metaTitle, `${solution.hero.eyebrow} | ENSIS Wellness`);
-  const description = city
-    ? text(city.metaDescription, solution.hero.description)
-    : text(solution.seo.metaDescription, solution.hero.description);
+  // A city page leads with the city, so it never repeats the main page's description
+  const description = metaDescription(
+    city
+      ? city.metaDescription && city.metaDescription.trim() !== solution.hero.description.trim() && city.metaDescription.trim() !== (solution.seo.metaDescription || "").trim()
+        ? city.metaDescription
+        : `${solution.title} in ${city.city} by ENSIS: ${solution.hero.description}`
+      : text(solution.seo.metaDescription, solution.hero.description)
+  );
   const path = `/solutions/${solution.slug}${city ? `/${city.slug}` : ""}`;
   return { title, description, path };
 }

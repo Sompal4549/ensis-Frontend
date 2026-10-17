@@ -9,13 +9,44 @@ import {
   Sparkles,
   CheckCircle2,
   User,
-  Languages,
   ArrowRight,
 } from "lucide-react";
 import { API_URL } from "@/lib/api/api";
 import lotusImg from "@/assets/about/lotus.webp";
 import logoImg from "@/assets/logo.webp";
 import LottieChatbotAvatar from "./LottieChatbotAvatar";
+import Link from "next/link";
+
+/** Bot text with [label](url) links, bare URLs and **bold**; product links open in the same tab */
+function BotText({ text }: { text: string }) {
+  const clean = text.replace(/^\s*[*-]\s+/gm, "• ");
+  const parts: React.ReactNode[] = [];
+  const pattern = /\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+)\*\*|(https?:\/\/[^\s)]+)/g;
+  let last = 0;
+  let match: RegExpExecArray | null;
+  while ((match = pattern.exec(clean))) {
+    if (match.index > last) parts.push(clean.slice(last, match.index));
+    const [, label, href, bold, url] = match;
+    const key = match.index;
+    const linkClass = "font-semibold text-[#8a6a2f] underline underline-offset-2 hover:text-[#263016]";
+    if (label && href) {
+      parts.push(
+        href.startsWith("/") ? (
+          <Link key={key} href={href} className={linkClass}>{label}</Link>
+        ) : (
+          <a key={key} href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>{label}</a>
+        )
+      );
+    } else if (bold) {
+      parts.push(<strong key={key} className="font-semibold text-slate-800">{bold}</strong>);
+    } else if (url) {
+      parts.push(<a key={key} href={url} target="_blank" rel="noopener noreferrer" className={linkClass}>{url}</a>);
+    }
+    last = match.index + match[0].length;
+  }
+  if (last < clean.length) parts.push(clean.slice(last));
+  return <>{parts}</>;
+}
 
 interface Message {
   id: string;
@@ -80,6 +111,10 @@ export default function EnsisChatbot() {
   const [leadName, setLeadName] = useState("");
   const [leadPhone, setLeadPhone] = useState("");
   const [leadSubmitted, setLeadSubmitted] = useState(false);
+  // Callback form step 2: the WhatsApp OTP
+  const [leadOtpSent, setLeadOtpSent] = useState(false);
+  const [leadOtp, setLeadOtp] = useState("");
+  const [leadError, setLeadError] = useState("");
   const [leadSubmitting, setLeadSubmitting] = useState(false);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -124,8 +159,8 @@ export default function EnsisChatbot() {
           sender: "bot",
           text:
             activeLang === "hi"
-              ? "नमो नमः! Ensis — भारत के प्रमुख पंचकर्म एवं वेलनेस स्पेस आर्किटेक्ट्स में आपका स्वागत है। 🙏\n\nबातचीत शुरू करने के लिए कृपया अपना शुभ नाम बताएं:"
-              : "Namaste! Welcome to Ensis — India's Premier Panchkarma & Wellness Space Architects. 🙏\n\nBefore we begin, may I know your good name, please?\n(बातचीत शुरू करने के लिए कृपया अपना नाम बताएं)",
+              ? "नमस्ते! 🙏 मैं Ensis सलाहकार हूँ।\n\nकृपया अपना नाम बताएं?"
+              : "Namaste! 🙏 I'm Ensis Advisor, your wellness space assistant.\n\nMay I know your name?",
           time: getCurrentTime(),
         },
       ]);
@@ -337,7 +372,7 @@ export default function EnsisChatbot() {
     }
 
     try {
-      const history = messages.slice(-4).map((m) => ({
+      const history = messages.slice(-10).map((m) => ({
         role: m.sender === "user" ? "user" : "model",
         content: m.text,
       }));
@@ -368,7 +403,8 @@ export default function EnsisChatbot() {
               text: replyText,
               time: getCurrentTime(),
               options: resolution.options || getPills(language).slice(0, 3),
-              isLeadForm: resolution.isLeadForm,
+              // The AI asks for a callback when the visitor shows buying interest
+              isLeadForm: Boolean(payload.data?.showLeadForm) || resolution.isLeadForm,
             },
           ]);
           setIsTyping(false);
@@ -395,8 +431,22 @@ export default function EnsisChatbot() {
     setIsTyping(false);
   };
 
+  // Only the latest invitation shows the callback form, so the chat never holds two copies of it
+  const lastLeadFormId = [...messages].reverse().find((m) => m.isLeadForm)?.id;
+
   const handleOptionClick = (option: string) => {
     handleSendMessage(option);
+  };
+
+  /** Sends (or resends) the WhatsApp OTP for the callback form */
+  const sendLeadOtp = async () => {
+    const res = await fetch(`${API_URL}/chatbot/lead/otp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: leadName.trim(), phone: leadPhone.trim() }),
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(body?.message || (language === "hi" ? "OTP नहीं भेजा जा सका।" : "Could not send the OTP."));
   };
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
@@ -404,6 +454,22 @@ export default function EnsisChatbot() {
     if (!leadName || !leadPhone) return;
 
     setLeadSubmitting(true);
+    setLeadError("");
+
+    // Step 1: send the OTP on WhatsApp
+    if (!leadOtpSent) {
+      try {
+        await sendLeadOtp();
+        setLeadOtpSent(true);
+      } catch (err) {
+        setLeadError((err as Error).message);
+      } finally {
+        setLeadSubmitting(false);
+      }
+      return;
+    }
+
+    // Step 2: verify the OTP; the lead is saved only for a verified number
     try {
       // Saved on this chat and added to Website Enquiries (source "chatbot")
       const res = await fetch(`${API_URL}/chatbot/lead`, {
@@ -412,12 +478,18 @@ export default function EnsisChatbot() {
         body: JSON.stringify({
           name: leadName.trim(),
           phone: leadPhone.trim(),
+          otp: leadOtp.trim(),
           language,
           sessionId: getChatSessionId(),
           pageUrl: window.location.pathname,
         }),
       });
-      if (!res.ok) throw new Error(`Lead request failed (${res.status})`);
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        setLeadError(body?.message || (language === "hi" ? "OTP सही नहीं है।" : "That OTP is not correct."));
+        setLeadSubmitting(false);
+        return;
+      }
 
       setLeadSubmitted(true);
       setMessages((prev) => [
@@ -434,6 +506,8 @@ export default function EnsisChatbot() {
         },
       ]);
       setLeadPhone("");
+      setLeadOtp("");
+      setLeadOtpSent(false);
     } catch {
       setMessages((prev) => [
         ...prev,
@@ -490,220 +564,275 @@ export default function EnsisChatbot() {
       </div>
 
       {/* =========================================================
-          EXPANDABLE CHAT WINDOW (Matched 100% to Ensis Website Theme)
+          CHAT PANEL — same placement and size as the Organic Mitra panel, in the Ensis theme
       ========================================================= */}
       {isOpen && (
         <div
-          className="fixed right-4 sm:right-6 bottom-24 z-[101] flex flex-col w-[390px] max-w-[calc(100vw-32px)] h-[580px] max-h-[82vh] rounded-2xl bg-[#faf7f2] shadow-[0_20px_50px_rgba(38,48,22,0.28)] border border-[#c39a5c]/60 overflow-hidden animate-in fade-in slide-in-from-bottom-5 duration-200 font-sans"
+          role="dialog"
+          aria-label="Ensis Advisor chat"
+          className="fixed z-[110] right-4 sm:right-6 inset-y-0 my-auto w-[380px] h-[580px] max-h-[calc(100svh-32px)] max-[480px]:inset-x-0 max-[480px]:top-auto max-[480px]:bottom-0 max-[480px]:my-0 max-[480px]:w-full max-[480px]:h-[88svh] max-[480px]:max-h-none flex flex-col bg-gradient-to-b from-[#fbf8f2] to-[#f3ede2] rounded-[20px] max-[480px]:rounded-b-none shadow-[0_30px_80px_-20px_rgba(27,35,16,0.55),0_0_0_1px_rgba(38,48,22,0.08)] overflow-clip text-[13.5px] leading-[1.55] animate-in fade-in slide-in-from-bottom-5 duration-200"
           style={{ fontFamily: "var(--font-montserrat), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}
         >
-          {/* Header - Ensis Deep Forest #263016 & Gold Trim #c39a5c with subtle lotus watermark */}
-          <div className="relative flex items-center justify-between bg-[#263016] px-4 py-3.5 text-white border-b-2 border-[#c39a5c] overflow-hidden">
-            {/* Watermark Lotus in header background */}
-            <div className="pointer-events-none absolute -right-4 -bottom-6 opacity-10 select-none">
-              <Image src={lotusImg} alt="" width={100} height={100} className="object-contain" />
+          {/* ── Header ── */}
+          <div className="relative shrink-0 overflow-clip bg-gradient-to-br from-[#33421f] via-[#263016] to-[#1b2310] text-white">
+            <div className="pointer-events-none absolute -right-5 -bottom-8 w-28 h-28 opacity-[0.08] select-none" aria-hidden="true">
+              <Image src={lotusImg} alt="" width={112} height={112} className="object-contain" />
             </div>
+            <span className="absolute inset-x-0 bottom-0 h-[3px] bg-gradient-to-r from-[#c39a5c] via-[#e2c684] to-[#c39a5c] opacity-90" aria-hidden="true" />
 
-            <div className="relative z-10 flex items-center gap-3">
-              {/* Ensis Animated Avatar Emblem */}
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#1b2310] border border-[#c39a5c] overflow-hidden p-0.5 shadow-inner">
-                <LottieChatbotAvatar className="w-9 h-9" style={{ transform: "scale(1.2)" }} />
+            <div className="relative flex items-center gap-2.5 pl-3.5 pr-2.5 py-3">
+              <div className="relative h-[30px] w-[66px] shrink-0 rounded-md bg-white ring-1 ring-white/30 flex items-center justify-center shadow-md px-1">
+                <Image src={logoImg} alt="ENSIS" width={60} height={24} className="h-auto w-full object-contain" />
+                <span className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-[#4ade80] ring-2 ring-[#263016]" aria-hidden="true" />
               </div>
 
-              <div>
-                <div className="flex items-center gap-1.5">
-                  <h3 className="text-[17px] font-semibold tracking-wide text-white">
-                    {language === "hi" ? "Ensis वेलनेस सलाहकार" : "Ensis Wellness Advisor"}
-                  </h3>
-                  <span className="flex h-2 w-2 rounded-full bg-[#c39a5c] animate-pulse" />
-                </div>
-                {userName ? (
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-[15.5px] leading-tight whitespace-nowrap">
+                  {language === "hi" ? "Ensis सलाहकार" : "Ensis Advisor"}
+                </p>
+                <p className="mt-0.5 text-[11px] leading-snug text-white/85 truncate">
+                  {language === "hi" ? "Ensis वेलनेस सहायक" : "Ensis Wellness Assistant"}
+                </p>
+              </div>
+
+              {/* Language switch */}
+              <div className="shrink-0 flex items-center rounded-full bg-white/10 p-0.5 text-[10.5px]" role="group" aria-label="Language">
+                {(["en", "hi"] as const).map((l) => (
                   <button
-                    onClick={handleResetName}
-                    title={language === "hi" ? "नाम बदलने के लिए क्लिक करें" : "Click to change name"}
-                    className="flex items-center gap-1 text-[12.5px] text-[#c39a5c] hover:text-white transition-colors"
+                    key={l}
+                    type="button"
+                    onClick={() => language !== l && toggleLanguage()}
+                    aria-pressed={language === l}
+                    className={`rounded-full px-2 py-0.5 font-semibold transition-colors ${
+                      language === l ? "bg-white text-[#263016] shadow-sm" : "text-white/75 hover:text-white"
+                    }`}
                   >
-                    <User className="h-2.5 w-2.5" />
-                    <span>{userName}</span>
-                    <span className="text-[11px] text-[#faf7f2]/80 underline">
-                      {language === "hi" ? "(बदलें)" : "(Change)"}
-                    </span>
+                    {l === "en" ? "EN" : "हिं"}
                   </button>
-                ) : (
-                  <p className="text-[12.5px] text-[#c39a5c] font-medium tracking-wide">
-                    {language === "hi" ? "पंचकर्म एवं वेलनेस स्पेस विशेषज्ञ" : "Panchkarma & Wellness Space Architects"}
-                  </p>
-                )}
+                ))}
               </div>
-            </div>
 
-            <div className="relative z-10 flex items-center gap-1.5">
-              {/* Language Switcher Button [EN | हिंदी] */}
-              <button
-                onClick={toggleLanguage}
-                title="Switch Language / भाषा बदलें"
-                className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#1b2310] hover:bg-[#c39a5c] hover:text-[#1b2310] border border-[#c39a5c]/80 text-[12.5px] font-semibold text-[#c39a5c] transition-all shadow-xs"
-              >
-                <Languages className="h-3.5 w-3.5" />
-                <span>{language === "en" ? "हिंदी" : "English"}</span>
-              </button>
-
-              <button
-                onClick={() => initChat()}
-                title={language === "hi" ? "बातचीत पुनः प्रारंभ करें" : "Restart Chat"}
-                className="rounded-lg p-1.5 text-[#d8cdb8] hover:bg-white/10 hover:text-white transition-colors"
-              >
-                <RotateCcw className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                title="Close"
-                className="rounded-lg p-1.5 text-[#d8cdb8] hover:bg-white/10 hover:text-white transition-colors"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              <div className="shrink-0 flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => initChat()}
+                  aria-label={language === "hi" ? "बातचीत पुनः प्रारंभ करें" : "Restart chat"}
+                  title={language === "hi" ? "बातचीत पुनः प्रारंभ करें" : "Restart chat"}
+                  className="w-7 h-7 shrink-0 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" strokeWidth={2.5} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Close chat"
+                  className="w-7 h-7 shrink-0 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors"
+                >
+                  <X className="w-4 h-4" strokeWidth={2.5} />
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Messages Body (Ensis Website Background: #faf7f2 warm ivory) */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-[#faf7f2] text-[14px] leading-snug">
+          {/* ── Messages ── */}
+          <div className="flex-1 overflow-y-auto overflow-x-hidden overscroll-contain px-4 pt-3.5 pb-3 flex flex-col gap-3" data-lenis-prevent>
             {messages.map((m) => (
-              <div
-                key={m.id}
-                className={`flex flex-col ${m.sender === "user" ? "items-end" : "items-start"}`}
-              >
+              <div key={m.id} className={`flex flex-col ${m.sender === "user" ? "items-end" : "items-start"}`}>
                 {m.sender === "bot" ? (
-                  <div className="flex items-start gap-2 max-w-[90%]">
-                    {/* Bot Animated Lottie Avatar Icon */}
-                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#263016] border border-[#c39a5c] overflow-hidden mt-0.5 shadow-2xs">
-                      <LottieChatbotAvatar className="w-5 h-5" style={{ transform: "scale(1.2)" }} />
+                  <div className="flex items-start gap-2.5 max-w-[88%]">
+                    <div className="w-8 h-8 shrink-0 rounded-full bg-white shadow-sm ring-2 ring-[#c39a5c]/50 flex items-center justify-center overflow-hidden" aria-hidden="true">
+                      <LottieChatbotAvatar className="w-7 h-7" style={{ transform: "scale(1.15)" }} />
                     </div>
-                    <div className="rounded-2xl rounded-tl-xs p-3.5 shadow-xs leading-relaxed whitespace-pre-line bg-white text-[#1f261b] border border-[#e2dfd9]">
-                      {m.text}
+                    <div className="bg-white rounded-2xl rounded-tl-md shadow-sm border border-[#c39a5c]/15 px-3.5 py-2 text-[13.5px] text-slate-700 whitespace-pre-line break-words">
+                      <BotText text={m.text} />
                     </div>
                   </div>
                 ) : (
-                  <div className="max-w-[85%] rounded-2xl rounded-tr-xs p-3.5 shadow-xs leading-relaxed whitespace-pre-line bg-[#263016] text-[#faf7f2] border border-[#1b2310]">
+                  <div className="max-w-[80%] bg-gradient-to-br from-[#33421f] to-[#263016] text-white rounded-2xl rounded-tr-md shadow-sm px-3.5 py-2 text-[13.5px] whitespace-pre-line">
                     {m.text}
                   </div>
                 )}
 
-                {/* Lead Submission Form Card inside message - Ensis Enquiry Form Styled */}
-                {m.isLeadForm && !leadSubmitted && (
+                {/* Callback form (name, mobile, WhatsApp OTP) */}
+                {m.isLeadForm && !leadSubmitted && m.id === lastLeadFormId && (
                   <form
                     onSubmit={handleLeadSubmit}
-                    className="mt-2.5 ml-8 w-[88%] rounded-xl bg-white p-4 border-2 border-[#c39a5c]/60 shadow-md space-y-3"
+                    noValidate
+                    className="mt-2 ml-[42px] w-[calc(100%-42px)] bg-white rounded-2xl border border-[#c39a5c]/20 shadow-sm px-3.5 pt-3 pb-3 flex flex-col gap-2.5"
                   >
-                    <p className="font-semibold text-[#1f261b] flex items-center gap-1.5 text-[13px]">
+                    <p className="font-semibold text-[#263016] flex items-center gap-1.5 text-[13px]">
                       <Sparkles className="h-3.5 w-3.5 text-[#c39a5c]" />
-                      {language === "hi" ? "कॉल बैक व 2026 PDF कैटलॉग प्राप्त करें" : "Request 2026 Architectural Catalog & Callback"}
+                      {language === "hi" ? "कॉल बैक व कैटलॉग प्राप्त करें" : "Get a callback & catalogue"}
                     </p>
                     <input
                       type="text"
-                      placeholder={language === "hi" ? "आपका पूरा नाम" : "Your Full Name"}
+                      placeholder={language === "hi" ? "आपका पूरा नाम" : "Your full name"}
                       value={leadName}
                       onChange={(e) => setLeadName(e.target.value)}
                       required
-                      className="w-full rounded-lg border border-[#d8cdb8] bg-[#faf7f2] px-3.5 py-2 text-[14px] text-[#1f261b] placeholder:text-[#8f8777] focus:border-[#b1793d] focus:bg-white focus:outline-none transition-colors"
+                      className="w-full px-3 py-2.5 rounded-xl bg-[#faf7f2] border border-[#e6dcc8] text-[14px] text-slate-800 placeholder:text-slate-400 outline-none transition focus:bg-white focus:border-[#c39a5c] focus:ring-4 focus:ring-[#c39a5c]/15"
                     />
                     <input
                       type="tel"
-                      placeholder={language === "hi" ? "व्हाट्सएप / फोन नंबर (10 अंक)" : "WhatsApp / Phone (10 Digits)"}
+                      placeholder={language === "hi" ? "व्हाट्सएप नंबर (10 अंक)" : "WhatsApp number (10 digits)"}
                       value={leadPhone}
                       onChange={(e) => setLeadPhone(e.target.value)}
                       required
-                      className="w-full rounded-lg border border-[#d8cdb8] bg-[#faf7f2] px-3.5 py-2 text-[14px] text-[#1f261b] placeholder:text-[#8f8777] focus:border-[#b1793d] focus:bg-white focus:outline-none transition-colors"
+                      disabled={leadOtpSent}
+                      className="w-full px-3 py-2.5 rounded-xl bg-[#faf7f2] border border-[#e6dcc8] text-[14px] text-slate-800 placeholder:text-slate-400 outline-none transition focus:bg-white focus:border-[#c39a5c] focus:ring-4 focus:ring-[#c39a5c]/15 disabled:opacity-70"
                     />
+                    {leadOtpSent && (
+                      <>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          autoComplete="one-time-code"
+                          maxLength={8}
+                          placeholder={language === "hi" ? "व्हाट्सएप पर आया OTP" : "OTP sent on WhatsApp"}
+                          value={leadOtp}
+                          onChange={(e) => setLeadOtp(e.target.value.replace(/\D/g, ""))}
+                          required
+                          className="w-full px-3 py-2.5 rounded-xl bg-[#faf7f2] border border-[#e6dcc8] text-[15px] tracking-[0.3em] text-slate-800 placeholder:tracking-normal placeholder:text-[14px] placeholder:text-slate-400 outline-none transition focus:bg-white focus:border-[#c39a5c] focus:ring-4 focus:ring-[#c39a5c]/15"
+                        />
+                        <div className="flex justify-between text-[12px]">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setLeadOtpSent(false);
+                              setLeadOtp("");
+                              setLeadError("");
+                            }}
+                            className="font-medium text-[#a9742a] hover:underline"
+                          >
+                            {language === "hi" ? "नंबर बदलें" : "Change number"}
+                          </button>
+                          <button
+                            type="button"
+                            disabled={leadSubmitting}
+                            onClick={async () => {
+                              setLeadError("");
+                              try {
+                                await sendLeadOtp();
+                                setLeadError(language === "hi" ? "नया OTP भेज दिया गया है।" : "A new OTP has been sent.");
+                              } catch (err) {
+                                setLeadError((err as Error).message);
+                              }
+                            }}
+                            className="font-medium text-[#a9742a] hover:underline disabled:opacity-50"
+                          >
+                            {language === "hi" ? "OTP दोबारा भेजें" : "Resend OTP"}
+                          </button>
+                        </div>
+                      </>
+                    )}
+                    {leadError && <p role="alert" className="text-[12px] font-medium text-red-600">{leadError}</p>}
                     <button
                       type="submit"
                       disabled={leadSubmitting}
-                      className="w-full py-2.5 rounded-lg bg-gradient-to-r from-[#c39a5c] via-[#d5ad6a] to-[#a9742a] text-[#1f261b] hover:brightness-105 font-bold text-[13px] flex items-center justify-center gap-1.5 transition-all shadow-xs"
+                      className="h-11 rounded-full bg-gradient-to-br from-[#33421f] to-[#263016] hover:brightness-110 text-white font-medium text-[14px] flex items-center justify-center gap-2 transition active:scale-[0.99] disabled:opacity-70"
                     >
                       {leadSubmitting ? (
-                        <span>{language === "hi" ? "सबमिट हो रहा है..." : "Submitting..."}</span>
+                        <span>{language === "hi" ? "कृपया प्रतीक्षा करें..." : "Please wait..."}</span>
                       ) : (
                         <>
-                          <CheckCircle2 className="h-3.5 w-3.5 text-[#1f261b]" />
-                          <span>{language === "hi" ? "अनुरोध सबमिट करें" : "Submit Request"}</span>
+                          <CheckCircle2 className="h-4 w-4 text-[#e2c684]" />
+                          <span>
+                            {leadOtpSent
+                              ? language === "hi"
+                                ? "सत्यापित करें व सबमिट करें"
+                                : "Verify & Submit"
+                              : language === "hi"
+                                ? "व्हाट्सएप पर OTP भेजें"
+                                : "Send OTP on WhatsApp"}
+                          </span>
                         </>
                       )}
                     </button>
                   </form>
                 )}
 
-                {/* Option Pills - Ensis Warm Gold & Deep Forest Styling */}
+                {/* Quick replies */}
                 {m.options && m.options.length > 0 && (
-                  <div className={`mt-2 flex flex-wrap gap-1.5 max-w-[95%] ${m.sender === "bot" ? "ml-8" : ""}`}>
+                  <div className={`mt-2 flex flex-wrap gap-1.5 ${m.sender === "bot" ? "ml-[42px]" : ""}`}>
                     {m.options.map((opt, i) => (
                       <button
                         key={i}
+                        type="button"
                         onClick={() => handleOptionClick(opt)}
-                        className="rounded-full bg-white px-3.5 py-1.5 text-[13px] font-medium text-[#263016] border border-[#c39a5c]/60 shadow-2xs hover:bg-[#263016] hover:text-[#c39a5c] hover:border-[#263016] transition-all text-left flex items-center gap-1 group/pill"
+                        className="group inline-flex items-center gap-1.5 rounded-full bg-white hover:bg-[#263016] border border-[#e2d6bf] hover:border-[#263016] px-3.5 py-1.5 font-medium text-[12.5px] text-[#263016] hover:text-white shadow-[0_1px_2px_rgba(27,35,16,0.06)] transition-colors text-left"
                       >
-                        <span>{opt}</span>
-                        <ArrowRight className="h-2.5 w-2.5 opacity-0 -translate-x-1 group-hover/pill:opacity-100 group-hover/pill:translate-x-0 transition-all text-[#c39a5c]" />
+                        <span>{opt.replace(/^[✦📞📦📋🏥]\s*/u, "")}</span>
+                        <ArrowRight className="h-3 w-3 text-[#c39a5c]" />
                       </button>
                     ))}
                   </div>
                 )}
 
-                <span className={`mt-1 text-[12px] text-[#8f8777] px-1 ${m.sender === "bot" ? "ml-8" : ""}`}>{m.time}</span>
+                <span className={`mt-1 text-[11px] text-slate-400 px-1 ${m.sender === "bot" ? "ml-[42px]" : ""}`}>{m.time}</span>
               </div>
             ))}
 
             {isTyping && (
-              <div className="flex items-center gap-2 text-[#5a5248] text-[13px] px-2 py-1 ml-8">
-                <span className="flex h-1.5 w-1.5 rounded-full bg-[#c39a5c] animate-pulse" />
-                <span className="flex h-1.5 w-1.5 rounded-full bg-[#c39a5c] animate-pulse delay-100" />
-                <span className="flex h-1.5 w-1.5 rounded-full bg-[#c39a5c] animate-pulse delay-200" />
-                <span className="text-[12px] text-[#8f8777] ml-1 font-medium">
-                  {language === "hi" ? "Ensis AI उत्तर लिख रहा है..." : "Ensis Advisor typing..."}
-                </span>
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 shrink-0 rounded-full bg-white shadow-sm ring-2 ring-[#c39a5c]/50 flex items-center justify-center overflow-hidden" aria-hidden="true">
+                  <LottieChatbotAvatar className="w-7 h-7" style={{ transform: "scale(1.15)" }} />
+                </div>
+                <div className="bg-white rounded-2xl rounded-tl-md shadow-sm border border-[#c39a5c]/15 px-3.5 py-2.5 flex items-center gap-1" aria-label={language === "hi" ? "लिख रहा है" : "Typing"}>
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#c39a5c] animate-bounce [animation-delay:-0.2s]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#c39a5c] animate-bounce [animation-delay:-0.1s]" />
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#c39a5c] animate-bounce" />
+                </div>
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Footer Input Area */}
-          <div className="p-3 bg-white border-t border-[#e2dfd9]">
+          {/* ── Composer ── */}
+          <div className="shrink-0 px-3 pt-2 pb-2 border-t border-[#e6dcc8]/70 bg-white/60 backdrop-blur-sm">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 bg-white rounded-full border border-[#e6dcc8] shadow-[0_4px_14px_-8px_rgba(27,35,16,0.3)] pl-4 pr-1 py-1 transition focus-within:border-[#c39a5c] focus-within:ring-4 focus-within:ring-[#c39a5c]/15"
             >
               <input
                 type="text"
                 placeholder={
                   isAskingName
                     ? language === "hi"
-                      ? "कृपया अपना नाम लिखें..."
-                      : "Please enter your name / अपना नाम लिखें..."
-                    : userName
-                    ? language === "hi"
-                      ? `${userName} जी, कुछ भी पूछें...`
-                      : `Ask anything, ${userName}...`
+                      ? "अपना नाम लिखें..."
+                      : "Type your name..."
                     : language === "hi"
-                    ? "क्लिनिक सेटअप, द्रोणी या मूल्य के बारे में पूछें..."
-                    : "Ask about clinic setups, Droni, pricing..."
+                      ? "अपना सवाल लिखें..."
+                      : "Type your question..."
                 }
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 autoFocus={isAskingName}
-                className="flex-1 rounded-xl bg-[#faf7f2] px-3.5 py-2.5 text-[14px] text-[#1f261b] placeholder:text-[#8f8777] border border-[#d8cdb8] focus:border-[#b1793d] focus:bg-white focus:outline-none transition-colors"
+                className="flex-1 min-w-0 bg-transparent text-[13.5px] text-slate-800 placeholder:text-slate-400 outline-none"
               />
               <button
                 type="submit"
                 disabled={!inputText.trim()}
-                aria-label="Send Message"
-                className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[#263016] text-[#c39a5c] hover:bg-[#1b2310] border border-[#c39a5c]/50 disabled:opacity-40 disabled:hover:bg-[#263016] transition-colors shadow-xs"
+                aria-label="Send message"
+                className="w-9 h-9 shrink-0 rounded-full bg-gradient-to-br from-[#33421f] to-[#263016] text-white flex items-center justify-center shadow-md transition hover:brightness-110 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                <Send className="h-3.5 w-3.5" />
+                <Send className="w-4 h-4 -ml-0.5" strokeWidth={2.2} />
               </button>
             </form>
-            <div className="mt-1.5 text-center text-[11px] tracking-widest text-[#8f8777] uppercase font-medium">
-              Ensis • Premier Panchkarma & Wellness Spaces
+            <div className="mt-1.5 px-2 flex items-center justify-between text-[11px] text-slate-500">
+              <span>{language === "hi" ? "स्वचालित सहायक" : "Automated assistant"}</span>
+              {userName && (
+                <button
+                  type="button"
+                  onClick={handleResetName}
+                  className="inline-flex items-center gap-1 font-medium text-[#263016] underline underline-offset-2 hover:text-[#a9742a]"
+                >
+                  <User className="w-3 h-3" />
+                  {language === "hi" ? "नाम बदलें" : "Change name"}
+                </button>
+              )}
             </div>
           </div>
         </div>

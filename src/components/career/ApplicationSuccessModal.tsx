@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { lockScroll, unlockScroll } from "@/lib/scrollLock";
 import {
   ArrowRight,
@@ -172,7 +171,7 @@ export default function ApplicationSuccessModal({ isOpen, onClose, applicationDa
       <div className="relative z-10 flex max-h-[95vh] w-[85%] max-w-[1300px] overflow-hidden rounded-[18px] bg-[#fbfcf9] shadow-[0_30px_90px_rgba(0,0,0,.28)]">
 
         {/* ===== LEFT SIDE ===== */}
-        <div className="relative flex w-[76.2%] flex-col overflow-hidden px-[38px] pb-[16px] pt-[18px]">
+        <div className="relative flex w-[76.2%] flex-col overflow-y-auto px-[38px] pb-[16px] pt-[18px]">
 
           {/* HEADER LOGO & TAGLINE */}
           <div className="flex shrink-0 items-center gap-[8px] relative z-10">
@@ -202,7 +201,7 @@ export default function ApplicationSuccessModal({ isOpen, onClose, applicationDa
               alt="Together for a Healthier Tomorrow"
               width={210}
               height={140}
-              className="h-[112px] w-[168px] object-contain object-right-top"
+              className="h-[112px] w-[168px] object-contain object-right-top mix-blend-multiply"
             />
           </div>
 
@@ -213,7 +212,7 @@ export default function ApplicationSuccessModal({ isOpen, onClose, applicationDa
               alt=""
               width={125}
               height={90}
-              className="absolute left-[31%] top-[28px] h-[46px] w-[64px] object-contain"
+              className="absolute left-[31%] top-[28px] h-[46px] w-[64px] object-contain mix-blend-multiply"
             />
             <Image
               src={assets.successCheck}
@@ -221,19 +220,19 @@ export default function ApplicationSuccessModal({ isOpen, onClose, applicationDa
               width={150}
               height={150}
               priority
-              className="h-[112px] w-[112px] object-contain"
+              className="h-[112px] w-[112px] object-contain mix-blend-multiply"
             />
             <Image
               src={assets.leafRight}
               alt=""
               width={120}
               height={105}
-              className="absolute right-[30%] top-[24px] h-[52px] w-[60px] object-contain"
+              className="absolute right-[30%] top-[24px] h-[52px] w-[60px] object-contain mix-blend-multiply"
             />
           </div>
 
           {/* SUCCESS TITLE */}
-          <h1 className="mt-[2px] shrink-0 text-center text-[30px] font-semibold text-[#075241] leading-tight">
+          <h1 className="mt-[2px] shrink-0 text-center !text-[30px] font-semibold text-[#075241] !leading-tight">
             Application Submitted Successfully!
           </h1>
 
@@ -295,7 +294,7 @@ export default function ApplicationSuccessModal({ isOpen, onClose, applicationDa
                 alt=""
                 width={160}
                 height={140}
-                className="mb-[4px] h-[92px] w-[100px] object-contain"
+                className="mb-[4px] h-[92px] w-[100px] object-contain mix-blend-multiply"
               />
               <p className="text-[13.5px] italic leading-[1.35] font-semibold text-[#123963]">
                 &ldquo;People with purpose create a greener tomorrow.&rdquo;
@@ -357,19 +356,26 @@ export default function ApplicationSuccessModal({ isOpen, onClose, applicationDa
             <div className="flex items-center gap-[6px] shrink-0 ml-[16px]">
               <span className="text-[12px] font-semibold text-[#58708c]">Need Help?</span>
               <Phone className="h-[13px] w-[13px] text-[#087447]" />
-              <span className="text-[13px] font-semibold text-[#123963]">+91 92056 45544</span>
+              <span className="text-[13px] font-semibold text-[#123963]">+91 96549 00525</span>
             </div>
           </div>
 
           {/* BOTTOM BUTTONS */}
           <div className="mt-[12px] flex shrink-0 items-center justify-end">
-            <Link
-              href="/careers"
+            <button
+              type="button"
+              onClick={() => {
+                // The popup sits on /career itself, so a link there would leave it open: close it, then show the job list
+                onClose();
+                setTimeout(() => {
+                  document.getElementById("current-openings")?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }, 150);
+              }}
               className="flex items-center gap-[8px] rounded-[8px] bg-[#08743e] px-[22px] py-[10px] text-[14px] font-semibold text-white shadow-md hover:bg-[#076637] transition-colors"
             >
               Explore More Opportunities
               <ArrowRight className="h-[16px] w-[16px]" />
-            </Link>
+            </button>
           </div>
         </div>
 

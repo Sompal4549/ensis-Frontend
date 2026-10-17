@@ -220,3 +220,84 @@ h1 {
   }
 }
 
+
+/* ── Blog article body (HTML from the admin) ── */
+.blog-content {
+  color: #4a4036;
+  font-size: 17px;
+  line-height: 1.75;
+}
+.blog-content > * + * { margin-top: 1.1em; }
+.blog-content h2 {
+  margin-top: 2em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid #e8dcc8;
+  font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.75rem);
+  font-weight: 600;
+  line-height: 1.25;
+  color: #1f2c25;
+}
+.blog-content h3 {
+  margin-top: 1.6em;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #1f2c25;
+}
+.blog-content p:first-child { font-size: 1.1em; color: #2b241f; }
+.blog-content strong { color: #2b241f; font-weight: 600; }
+.blog-content a {
+  color: #a9742a;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.blog-content a:hover { color: #0f2e22; }
+.blog-content ul,
+.blog-content ol { padding-left: 1.4em; }
+.blog-content ul { list-style: none; padding-left: 0; }
+.blog-content ul li {
+  position: relative;
+  padding-left: 1.6em;
+  margin-top: 0.5em;
+}
+.blog-content ul li::before {
+  content: "";
+  position: absolute;
+  left: 0.3em;
+  top: 0.68em;
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: #c9972a;
+}
+.blog-content ol { list-style: decimal; }
+.blog-content ol li { margin-top: 0.5em; }
+.blog-content blockquote {
+  margin-top: 2em;
+  padding: 1.1em 1.4em;
+  border-left: 4px solid #c9972a;
+  border-radius: 0 12px 12px 0;
+  background: #f5ecdc;
+  color: #2b241f;
+  font-weight: 500;
+}
+.blog-content table {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 12px;
+  font-size: 15px;
+  display: block;
+  overflow-x: auto;
+}
+.blog-content th,
+.blog-content td {
+  padding: 0.7em 1em;
+  border: 1px solid #e8dcc8;
+  text-align: left;
+  white-space: nowrap;
+}
+.blog-content thead th { background: #0f2e22; color: #fff; font-weight: 600; }
+.blog-content tbody tr:nth-child(even) { background: #fbf6ee; }
+.blog-content tbody td:first-child { font-weight: 600; color: #1f2c25; }
+.blog-content img { border-radius: 16px; max-width: 100%; height: auto; }

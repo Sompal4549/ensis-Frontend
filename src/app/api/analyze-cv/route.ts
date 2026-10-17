@@ -173,7 +173,7 @@ export async function POST(req: NextRequest) {
       else mimeType = "text/plain";
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.GEMINI_AI_API_KEY;
 
     const userParts: Array<any> = [
       {
@@ -239,7 +239,7 @@ Return ONLY valid JSON matching this exact structure:
       });
     }
 
-    const candidateModels = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-flash-latest"];
+    const candidateModels = ["gemini-flash-latest", "gemini-flash-lite-latest", "gemini-2.5-flash"];
     let responseText = "";
 
     if (apiKey) {
@@ -253,6 +253,7 @@ Return ONLY valid JSON matching this exact structure:
               contents: [{ role: "user", parts: userParts }],
               generationConfig: { temperature: 0.1, maxOutputTokens: 2048 },
             }),
+            signal: AbortSignal.timeout(30000),
           });
 
           if (res.ok) {
@@ -315,52 +316,17 @@ Return ONLY valid JSON matching this exact structure:
       }
     }
 
-    // High quality intelligent fallback if AI key not configured
-    let fallbackScore = 76;
-    if (fileName.toLowerCase().includes("low") || fileName.toLowerCase().includes("junior")) fallbackScore = 48;
-    else if (fileName.toLowerCase().includes("mid") || fileName.toLowerCase().includes("associate")) fallbackScore = 64;
-
-    return NextResponse.json({
-      success: true,
-      candidateName: fallbackName,
-      firstName: fallbackFirstName,
-      email: extractedEmailFromBuffer || null,
-      phone: extractedPhoneFromBuffer || null,
-      phones: extractedPhonesFromBuffer,
-      linkedin: extractedLinkedinFromBuffer || null,
-      cvUrl: savedCvUrl,
-      score: fallbackScore,
-      summary: "Candidate profile evaluated and matched with ENSIS role standards.",
-      requirementsMet: DEFAULT_REQUIREMENTS,
-      breakdown: {
-        relevantExperience: fallbackScore > 70 ? 80 : fallbackScore > 50 ? 60 : 40,
-        educationalQualification: 100,
-        keySkills: fallbackScore > 70 ? 76 : fallbackScore > 50 ? 62 : 45,
-        roleFit: fallbackScore > 70 ? 72 : fallbackScore > 50 ? 55 : 38,
-        industryExperience: fallbackScore > 70 ? 74 : fallbackScore > 50 ? 52 : 35,
-        locationPreference: 100,
-      },
-    });
+    // No AI result: never invent a score for the candidate
+    console.error("Analyze CV: no AI result", apiKey ? "(all models failed)" : "(GEMINI_API_KEY not set)");
+    return NextResponse.json(
+      { success: false, message: "We couldn't analyse your CV right now. Please try again in a moment." },
+      { status: 503 }
+    );
   } catch (err: any) {
     console.error("Analyze CV API Error:", err);
-    return NextResponse.json({
-      success: true,
-      candidateName: "Candidate Profile",
-      firstName: "Candidate",
-      email: null,
-      phone: null,
-      linkedin: null,
-      score: 74,
-      summary: "CV uploaded and parsed successfully.",
-      requirementsMet: DEFAULT_REQUIREMENTS,
-      breakdown: {
-        relevantExperience: 75,
-        educationalQualification: 100,
-        keySkills: 75,
-        roleFit: 70,
-        industryExperience: 70,
-        locationPreference: 100,
-      },
-    });
+    return NextResponse.json(
+      { success: false, message: "We couldn't read this CV. Please upload a PDF or Word file and try again." },
+      { status: 500 }
+    );
   }
 }

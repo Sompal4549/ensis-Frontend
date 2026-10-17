@@ -54,11 +54,11 @@ const BlogDetailCtaBanner: React.FC<CtaBannerProps> = ({ sectionContent }) => {
             )}
 
             <div>
-              <h2 className=" text-lg leading-tight text-white sm:text-xl md:text-2xl">
+              <h2 className=" text-lg leading-tight text-[#1f2c25] sm:text-xl md:text-2xl">
                 {sectionContent.title}
               </h2>
               {sectionContent.description && (
-                <p className="mt-1 max-w-md text-base leading-snug text-white/70 sm:text-sm">
+                <p className="mt-1 max-w-md text-base leading-snug text-[#2b241f]/85 sm:text-sm">
                   {sectionContent.description}
                 </p>
               )}

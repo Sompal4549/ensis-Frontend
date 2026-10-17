@@ -124,7 +124,9 @@ export async function generateSeo(page: string): Promise<SeoResult> {
     } catch { }
   }
 
-  const ogImage = ogExtra["og:image"] || "";
+  // Placeholders such as "YOUR_PROJECTS_OG_IMAGE_URL" fall back to the default image
+  const rawOgImage = String(ogExtra["og:image"] || "").trim();
+  const ogImage = /^(https?:\/\/|\/)/.test(rawOgImage) ? rawOgImage : "";
 
   return {
     title: seo.metaTitle,

@@ -41,6 +41,8 @@ type PremiumProductInfoProps = {
   size?: string;
   onFinishChange?: (finish: string) => void;
   onSizeChange?: (size: string) => void;
+  /** City pages: the admin's city heading (already escaped), shown instead of the product title */
+  headingHtml?: string;
 };
 
 export default function PremiumProductInfo({
@@ -49,6 +51,7 @@ export default function PremiumProductInfo({
   size,
   onFinishChange,
   onSizeChange,
+  headingHtml,
 }: PremiumProductInfoProps) {
   const overview = product.overview;
   const productOverview = overview?.productSpecifications;
@@ -193,7 +196,7 @@ export default function PremiumProductInfo({
             <div className="flex flex-col">
               <h2
                 className="text-lg font-medium leading-tight text-[#0F2E22] md:text-2xl"
-                dangerouslySetInnerHTML={{ __html: product.title }}
+                dangerouslySetInnerHTML={{ __html: headingHtml || product.title }}
               />
               {appearanceTitle && (
                 <p
