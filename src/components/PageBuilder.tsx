@@ -12,6 +12,8 @@ type PageSection = {
   key?: string;
   data?: Record<string, any>;
   isActive?: boolean;
+  /** Admin page-section toggle */
+  enabled?: boolean;
 };
 
 const fallbackPageSections: Record<string, PageSection[]> = {
@@ -49,7 +51,6 @@ const fallbackPageSections: Record<string, PageSection[]> = {
   ],
   consultancy: [
     { key: "consultancy.hero", data: {} },
-    { key: "consultancy.features_strip", data: {} },
     { key: "consultancy.whatWeOffer", data: {} },
     { key: "consultancy.whyChooseOurProcess", data: {} },
     { key: "consultancy.readyToGetStarted", data: {} },
@@ -149,7 +150,8 @@ export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps
         )}
         {sortedSections.map((section: PageSection, index: number) => {
           const componentKey = section.key || section.componentKey;
-          if (!componentKey) return null;
+          // Sections switched off in the admin stay hidden
+          if (!componentKey || section.isActive === false || section.enabled === false) return null;
           return (
             <RenderSection
               key={`${componentKey}-${index}`}

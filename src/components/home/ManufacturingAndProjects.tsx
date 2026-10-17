@@ -45,7 +45,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
   projHeading: sectionContent.projHeading||"Creating Wellness\nSpaces Worldwide",
   projDescription: sectionContent.projDescription||"Proud to be a trusted partner for 500+ wellness projects across the globe.",
   projButtonText: sectionContent.projButtonText||"VIEW ALL PROJECTS",
-  projButtonPath: sectionContent.mfgButtonPath||"/projects-and-clients",
+  projButtonPath: sectionContent.projButtonHref||"/projects-and-clients",
   projects: sectionContent.projects||[
     { image: "", title: "Project 1", location: "" },
     { image: "", title: "Project 2", location: "" },
@@ -60,8 +60,29 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const data = await getComponentContent("home.manufacturingAndProjects", defaultContent);
-        setContent(data);
+        const data: any = await getComponentContent<any>("home.manufacturingAndProjects", {});
+        setContent({
+          ...defaultContent,
+          ...data,
+          mfgSubtitle: data.subtitle ?? defaultContent.mfgSubtitle,
+          heading: data.heading ?? defaultContent.heading,
+          description: data.description ?? defaultContent.description,
+          stats: Array.isArray(data.stats) && data.stats.length ? data.stats : defaultContent.stats,
+          mfgFeatures: Array.isArray(data.features) && data.features.length
+            ? data.features
+            : Array.isArray(data.mfgFeatures) && data.mfgFeatures.length
+              ? data.mfgFeatures
+              : defaultContent.mfgFeatures,
+          mfgButtonText: data.mfgButtonText ?? defaultContent.mfgButtonText,
+          mfgButtonPath: data.mfgButtonHref ?? defaultContent.mfgButtonPath,
+          mfgImages: Array.isArray(data.mfgImages) && data.mfgImages.length ? data.mfgImages : defaultContent.mfgImages,
+          projSubtitle: data.projSubtitle ?? defaultContent.projSubtitle,
+          projHeading: data.projHeading ?? defaultContent.projHeading,
+          projDescription: data.projDescription ?? defaultContent.projDescription,
+          projButtonText: data.projButtonText ?? defaultContent.projButtonText,
+          projButtonPath: data.projButtonHref ?? defaultContent.projButtonPath,
+          projects: Array.isArray(data.projects) && data.projects.length ? data.projects : defaultContent.projects,
+        });
       } catch {
         // Keep defaults
       }
@@ -121,7 +142,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
 />
 
               {/* Stats from admin API */}
-              {/* {stats.length > 0 && (
+              {stats.length > 0 && (
                 <div className="mt-4 grid grid-cols-3 gap-4">
                   {stats.map((stat: { value: string; label: string }, i: number) => (
                     <div key={i} className="text-center">
@@ -130,21 +151,26 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                     </div>
                   ))}
                 </div>
-              )} */}
+              )}
 
               <ul className="mt-2 space-y-2">
-                {content.mfgFeatures.map((item: string) => (
-                  <li
-                    key={item}
-                    className="flex items-center gap-4 text-base font-bold text-[#3f3a32]"
-                  >
-                    <CheckSquare2
-                      size={16}
-                      className="shrink-0 text-[#b08b57]"
-                    />
-                    {item}
-                  </li>
-                ))}
+                {content.mfgFeatures.map((item: any, index: number) => {
+                  const text = typeof item === "string"
+                    ? item
+                    : (item?.title || item?.name || item?.text || item?.feature || item?.label || "");
+                  return (
+                    <li
+                      key={typeof item === "string" ? `${item}-${index}` : (item?._id || item?.id || `${text}-${index}`)}
+                      className="flex items-center gap-4 text-base font-bold text-[#3f3a32]"
+                    >
+                      <CheckSquare2
+                        size={16}
+                        className="shrink-0 text-[#b08b57]"
+                      />
+                      {text}
+                    </li>
+                  );
+                })}
               </ul>
               <div className="w-60 mt-2">
                 <BookButton text={content.mfgButtonText} path={content.mfgButtonPath} />

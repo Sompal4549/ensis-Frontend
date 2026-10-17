@@ -113,7 +113,7 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
     //   return <ExpertiseSection sectionContent={data as any} />;
 
     case "about.wellnessSection":
-      return <WellnessSection {...(data as any)} />;
+      return <WellnessSection sectionContent={data as any} />;
 
     case "about.ourTurnkeyProcess":
       const TurnkeyProcessComp: any = TurnkeyProcess;

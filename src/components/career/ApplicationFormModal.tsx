@@ -70,7 +70,7 @@ const assets = {
 const job = {
   title: "Sales Manager – Domestic Exhibition Sales & Sponsorships",
   company: "Namo Gange Wellness Pvt. Ltd.",
-  brand: "Bharat Organic Expo",
+  brand: "Ensis",
 };
 
 const profile = {

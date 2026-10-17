@@ -17,6 +17,7 @@ import { Container } from "@/components/ui/Container";
 import MobileScrollSpy from "@/components/ui/MobileScrollSpy";
 import termsBg from "@/assets/privacy-terms/terms_bg.png";
 import privacyCta from "@/assets/privacy-terms/privacy_cta.png";
+import { staticTermsSections } from "@/data/policy";
 
 interface PolicySection {
   id: string;
@@ -34,9 +35,9 @@ interface PolicySection {
 ========================================================= */
 
 export default function TermsConditionsPage() {
-  const [sections, setSections] = useState<PolicySection[]>([]);
+  const [sections, setSections] = useState<PolicySection[]>(staticTermsSections);
   const [loading, setLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState<string>("");
+  const [activeSection, setActiveSection] = useState<string>(staticTermsSections[0]?.id || "");
   const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {

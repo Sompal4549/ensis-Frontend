@@ -1,4 +1,8 @@
 import { Product, SocialClick, SocialLink } from "@/constants";
+import { staticProducts, staticCategories, getStaticProduct } from "@/data/products";
+import { staticBlogs, getStaticBlog } from "@/data/blogs";
+import { staticCareers } from "@/data/careers";
+import { staticSocialLinks } from "@/data/socialLinks";
 import { authStore } from "@/lib/auth";
 import axios, { AxiosResponse } from "axios";
 import { StaticImageData } from "next/image";
@@ -177,7 +181,7 @@ const normalizePageResponse = (payload: any) => {
 export const getPageComponent = cache(async (slug: string) => {
     try {
         const response = await fetch(`${API_URL}/component-content/page/${slug}`, {
-            next: { revalidate: 60 },
+            cache: "no-store",
             signal: AbortSignal.timeout(5000),
         });
 
@@ -259,21 +263,37 @@ export const getImageUrl = (image?: any, width?: number) => {
 
 export const productApi = {
     list: async (limit = 100, page = 1, sortBy = "orderBy", order = "asc") => {
-        const response = await apiClient.get(`/products`, { params: { limit, page, sortBy, order } });
-        return unwrap<{
-          data: any; products: Product[]; total: number; page: number; limit: number 
+        try {
+            const response = await apiClient.get(`/products`, { params: { limit, page, sortBy, order } });
+            return unwrap<{
+              data: any; products: Product[]; total: number; page: number; limit: number 
 }>(response);
+        } catch (error) {
+            console.error("Error fetching products, using static data:", error);
+            return { data: null, products: staticProducts, total: staticProducts.length, page, limit };
+        }
     },
     detail: async (idOrSlug: string) => {
-        const response = await apiClient.get(`/products/${idOrSlug}`);
-        return unwrap<Product>(response);
+        try {
+            const response = await apiClient.get(`/products/${idOrSlug}`);
+            return unwrap<Product>(response);
+        } catch (error) {
+            const staticProduct = getStaticProduct(idOrSlug);
+            if (staticProduct) return staticProduct;
+            throw error;
+        }
     },
 };
 
 export const categoryApi = {
     list: async () => {
-        const response = await apiClient.get(`/categories`);
-        return unwrap<any[]>(response);
+        try {
+            const response = await apiClient.get(`/categories`);
+            return unwrap<any[]>(response);
+        } catch (error) {
+            console.error("Error fetching categories, using static data:", error);
+            return staticCategories;
+        }
     },
 };
 
@@ -327,10 +347,12 @@ export const getComponentContent = cache(
 export const getProducts = async () => {
     try {
         const response = await apiClient.get(`/products?limit=100`);
-        return (response.data.data.products || []) as Product[];
+        const products = (response.data?.data?.products || []) as Product[];
+        if (products.length > 0) return products;
+        return staticProducts;
     } catch (error) {
-        console.error("Error fetching products:", error);
-        return [] as Product[];
+        console.error("Error fetching products, using static data:", error);
+        return staticProducts;
     }
 };
 
@@ -349,13 +371,13 @@ export const socialApi = {
       }
 
       if (!isOk || payload.status === "error" || payload.success === false) {
-        return [];
+        return staticSocialLinks;
       }
 
-      return payload.data || [];
+      return payload.data || staticSocialLinks;
     } catch (err) {
-      console.error("Failed to fetch social links", err);
-      return [];
+      console.error("Failed to fetch social links, using static data", err);
+      return staticSocialLinks;
     }
   },
 
@@ -443,8 +465,13 @@ export type Career = {
 
 export const careerApi = {
   list: async (): Promise<Career[]> => {
-    const response = await apiClient.get(`/careers`);
-    return unwrap<Career[]>(response);
+    try {
+      const response = await apiClient.get(`/careers`);
+      return unwrap<Career[]>(response);
+    } catch (error) {
+      console.error("Error fetching careers, using static data:", error);
+      return staticCareers;
+    }
   },
 };
 
@@ -461,13 +488,13 @@ export const blogApi = {
       }
 
       if (!isOk || payload.status === "error" || payload.success === false) {
-        return [];
+        return staticBlogs;
       }
 
-      return payload.data || [];
+      return payload.data || staticBlogs;
     } catch (err) {
-      console.error("Failed to fetch blogs", err);
-      return [];
+      console.error("Failed to fetch blogs, using static data", err);
+      return staticBlogs;
     }
   },
 
@@ -483,13 +510,13 @@ export const blogApi = {
       }
 
       if (!isOk || payload.status === "error" || payload.success === false) {
-        return null;
+        return getStaticBlog(slug) || null;
       }
 
-      return payload.data || null;
+      return payload.data || getStaticBlog(slug) || null;
     } catch (err) {
-      console.error("Failed to fetch blog detail", err);
-      return null;
+      console.error("Failed to fetch blog detail, using static data", err);
+      return getStaticBlog(slug) || null;
     }
   },
 };

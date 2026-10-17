@@ -58,7 +58,7 @@ const separatedAssets = {
 };
 
 const brandHeader = {
-  title: "Bharat Organic Expo",
+  title: "Ensis",
   tagline: "People • Ideas • Partnerships for a Greener Tomorrow",
 };
 
@@ -91,7 +91,7 @@ const profile = {
 const job = {
   title: "Sales Manager – Domestic Exhibition Sales & Sponsorships",
   company: "Namo Gange Wellness Pvt. Ltd.",
-  brand: "Bharat Organic Expo",
+  brand: "Ensis",
 
   location: "Delhi NCR",
   type: "Full Time",
@@ -552,11 +552,11 @@ export function getMatchData(
   // A message switched off (or not loaded) keeps the built-in text above.
   const message = resultMessages?.[level === "high" ? "eligible" : level === "moderate" ? "partial" : "notEligible"];
   if (message?.active) {
-    const vars: Record<string, string> = {
-      candidate_name: cleanFullName,
-      first_name: firstName,
-      job_title: candidate.jobDetails?.title || "this position",
-      company_name: "Bharat Organic Expo",
+      const vars: Record<string, string> = {
+        candidate_name: cleanFullName,
+        first_name: firstName,
+        job_title: candidate.jobDetails?.title || "this position",
+        company_name: "Ensis",
       current_ctc: "",
       expected_ctc: "",
       total_experience: "",
@@ -795,11 +795,11 @@ function ResultHero() {
                 </p>
               )}
 
-              <p className="mt-[8px] text-[15px] italic leading-[1.18] text-[#164232]">
-                — Talent Acquisition Team
-                <br />
-                <span className="pl-[16px] font-semibold">Bharat Organic Expo</span>
-              </p>
+<p className="mt-[8px] text-[15px] italic leading-[1.18] text-[#164232]">
+        — Talent Acquisition Team
+        <br />
+        <span className="pl-[16px] font-semibold">Ensis</span>
+      </p>
             </div>
           </div>
         </div>
@@ -1887,7 +1887,7 @@ function SupportCard() {
           </h4>
 
           <p className="mt-[2px] text-[13px] font-medium leading-tight text-[#28425d]">
-            Explore other career opportunities at Bharat Organic Expo.
+            Explore other career opportunities at Ensis.
           </p>
         </div>
       </div>
@@ -2041,7 +2041,7 @@ function Sidebar({
                 Looking for a Better Fit?
               </h4>
               <p className="mt-[3px] text-[14px] font-medium leading-[1.28] text-[#1c6448]">
-                Browse other career opportunities at<br />Bharat Organic Expo and find the right role for you.
+                Browse other career opportunities at<br />Ensis and find the right role for you.
               </p>
             </div>
           </div>

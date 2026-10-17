@@ -33,6 +33,14 @@ interface TurnkeySolutionsProps {
   };
 }
 
+const DEFAULT_SOLUTIONS = [
+  { imgUrl: god, title: "Panchkarma Clinic Setup" },
+  { imgUrl: resort, title: "Resort & Spa Setup" },
+  { imgUrl: wellness, title: "Wellness Retreat Design" },
+  { imgUrl: ayurveda, title: "Ayurveda Hospital Equipment" },
+  { imgUrl: interior, title: "Interior & Equipment Integration" }
+];
+
 export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) => {
   const fallback = {
     eyebrow: sectionData?.eyebrow || "TURNKEY WELLNESS SOLUTIONS",
@@ -40,20 +48,22 @@ export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) =
     description: sectionData?.description || "We provide end-to-end solutions for Panchkarma Clinics, Resorts, Hospitals & Wellness Centers.",
     buttonText: sectionData?.buttonText || "BOOK CONSULTATION",
     buttonHref: sectionData?.buttonHref || "/contact",
-    backgroundImage: sectionData?.backgroundImage || img15,
-    solutions: sectionData?.solutions || [
-      { imgUrl: god, title: "Panchkarma Clinic Setup" },
-      { imgUrl: resort, title: "Resort & Spa Setup" },
-      { imgUrl: wellness, title: "Wellness Retreat Design" },
-      { imgUrl: ayurveda, title: "Ayurveda Hospital Equipment" },
-      { imgUrl: interior, title: "Interior & Equipment Integration" }
-    ],
+    backgroundImage: (sectionData?.backgroundImage && typeof sectionData.backgroundImage === "string" && sectionData.backgroundImage.trim()) ? sectionData.backgroundImage : (sectionData?.backgroundImage || img15),
+    solutions: (sectionData?.solutions && sectionData.solutions.length > 0) ? sectionData.solutions : DEFAULT_SOLUTIONS,
   };
   const content = await getComponentContent<typeof fallback>("home.turnkeySolutions", fallback);
-  const backgroundImage = typeof content.backgroundImage === "string" && content.backgroundImage ? getImageUrl(content.backgroundImage) : img15.src;
+  const rawBg = content.backgroundImage;
+  const backgroundImage = (typeof rawBg === "string" && rawBg.trim()) ? getImageUrl(rawBg.trim()) : (rawBg || img15);
+
+  const solutionsList = Array.isArray(content.solutions) && content.solutions.length > 0
+    ? content.solutions
+    : DEFAULT_SOLUTIONS;
+
   return (
     <section className="relative overflow-hidden bg-cover bg-center text-white">
-      <Image src={backgroundImage} alt="Background" fill className="object-cover z-0" crossOrigin="anonymous"/>
+      {backgroundImage ? (
+        <Image src={backgroundImage} alt="Background" fill className="object-cover z-0" crossOrigin="anonymous"/>
+      ) : null}
       <Container className="py-6 relative z-10">
         <div className="grid gap-4 lg:grid-cols-[0.9fr_1.6fr] lg:items-center xl:w-[85%]">
           <div className="flex">
@@ -68,25 +78,43 @@ export const TurnkeySolutions = async ({ sectionData }: TurnkeySolutionsProps) =
               </div>
             </div>
          <div className="py-8 self-stretch hidden lg:flex items-stretch px-6">
-  <div className="w-px bg-white/40 h-full" />
-</div>
+   <div className="w-px bg-white/40 h-full" />
+ </div>
           </div>
           <div className="grid gap-4 lg:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
-            {content.solutions.map((solution, index) => {
-              const fallbackIcon = fallback.solutions[index % fallback.solutions.length].imgUrl;
-              const icon = solution.imgUrl || fallbackIcon;
+            {solutionsList.map((solution, index) => {
+              const defaultIcon = DEFAULT_SOLUTIONS[index % DEFAULT_SOLUTIONS.length]?.imgUrl || god;
+              let iconSrc: any = null;
+              if (typeof solution.imgUrl === "string") {
+                const trimmed = solution.imgUrl.trim();
+                iconSrc = trimmed ? getImageUrl(trimmed) : defaultIcon;
+              } else if (solution.imgUrl) {
+                iconSrc = solution.imgUrl;
+              } else {
+                iconSrc = defaultIcon;
+              }
+
+              if (!iconSrc) {
+                iconSrc = defaultIcon;
+              }
+
               return (
                 <div key={index} className="text-center items-center sm:flex-row sm:items-center">
-                  <div className="mx-auto  flex size-14 items-center justify-center text-[#d5ad6a]">
-                    {typeof icon === "string" ? (
-                      <Image src={getImageUrl(icon)} alt={solution.title} width={250} height={150} className="object-contain" crossOrigin="anonymous" />
-                    ) : (
-                      <Image src={icon||""} alt={solution.title} width={250} height={150} className="object-contain" crossOrigin="anonymous" />
-                    )}
+                  <div className="mx-auto flex size-14 items-center justify-center text-[#d5ad6a]">
+                    {iconSrc ? (
+                      <Image
+                        src={iconSrc}
+                        alt={solution.title || "Turnkey Solution"}
+                        width={250}
+                        height={150}
+                        className="object-contain"
+                        crossOrigin="anonymous"
+                      />
+                    ) : null}
                   </div>
                   <span className="text-base font-semibold text-[#f3eee6] w-20! leading-snug">{solution.title}</span>
                 </div>
-              )
+              );
             })}
           </div>
         </div>

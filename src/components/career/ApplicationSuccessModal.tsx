@@ -32,7 +32,7 @@ const assets = {
 };
 
 const brandHeader = {
-  title: "Bharat Organic Expo",
+  title: "Ensis",
   tagline: "People • Ideas • Partnerships for a Greener Tomorrow",
 };
 

@@ -12,6 +12,7 @@ import { Metadata } from "next";
 import RelatedBlogs from "@/components/blog/Relatedblogs";
 import BlogDetailCtaBanner from "@/components/blog/BlogDetailCtaBanner";
 import { SITE_URL, SITE_HOST } from "@/lib/site";
+import { getStaticBlog, staticBlogs } from "@/data/blogs";
 
 interface BlogDetailProps {
   params: Promise<{ slug: string }>;
@@ -33,10 +34,10 @@ async function getBlogBySlug(slug: string) {
       next: { revalidate: 3600 },
     });
     const json = await res.json();
-    return Boolean(json.success || json.status === "success") ? json.data : null;
+    return Boolean(json.success || json.status === "success") ? json.data : getStaticBlog(slug) || null;
   } catch (error) {
-    console.error("Error fetching blog detail:", error);
-    return null;
+    console.error("Error fetching blog detail, using static data:", error);
+    return getStaticBlog(slug) || null;
   }
 }
 
@@ -281,7 +282,11 @@ export async function generateStaticParams() {
   const blogData: any = await getComponentContent("blog.allBlogs", { blogs: [] });
   const blogs = blogData?.blogs || (Array.isArray(blogData) ? blogData : []);
 
-  return blogs
-    .map((blog: any) => ({ slug: blog.link || blog.id || "" }))
-    .filter((item: any) => item.slug !== "");
+  const slugs = new Set<string>(staticBlogs.map((b: any) => b.slug));
+  blogs.forEach((blog: any) => {
+    const slug = blog.link || blog.id || "";
+    if (slug) slugs.add(slug);
+  });
+
+  return Array.from(slugs).map((slug) => ({ slug }));
 }

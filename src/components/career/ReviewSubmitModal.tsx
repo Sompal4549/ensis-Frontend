@@ -6,6 +6,7 @@ import Link from "next/link";
 import ApplicationSuccessModal from "./ApplicationSuccessModal";
 import sidebarFooterImage from "@/app/assets/carrer/grow-organic-grow-india.png";
 import { lockScroll, unlockScroll } from "@/lib/scrollLock";
+import { applicationApi } from "@/lib/api/api";
 import {
   ArrowLeft,
   ArrowRight,
@@ -59,14 +60,14 @@ const DESIGN_HEIGHT = 900;
    ========================================================= */
 
 const brandHeader = {
-  title: "Bharat Organic Expo",
+  title: "Ensis",
   tagline: "People • Ideas • Partnerships for a Greener Tomorrow",
 };
 
 const job = {
   title: "Sales Manager – Domestic Exhibition Sales & Sponsorships",
   company: "Namo Gange Wellness Pvt. Ltd.",
-  brand: "Bharat Organic Expo",
+  brand: "Ensis",
 };
 
 const candidateProfile = {
@@ -844,90 +845,71 @@ export function ReviewSubmitModal({
   const handleSubmit = async () => {
     setIsSubmitting(true);
     setSubmitError(null);
-    const apiBase = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+
+    const cvFile: File | undefined = candidateData?.cvFile instanceof File ? candidateData.cvFile : undefined;
+    if (!cvFile) {
+      setSubmitError("We couldn't find your CV. Please upload it again.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const profile = candidateData?.fullProfile || {};
+    const jobTitle = candidateData?.jobDetails?.title || job.title;
+    const name = String(candidateData?.candidateName || candidateData?.name || "").trim();
+    const email = String(candidateData?.email || "").trim();
+    const phone = String(candidateData?.verifiedPhone || candidateData?.phone || "").trim();
+    if (!name || !email || !phone) {
+      setSubmitError("Please add your name, email and phone number before submitting.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Same endpoint as the general career form, so both reach "Career Applications" in the admin
+    const fd = new FormData();
+    const add = (key: string, value: unknown) => {
+      const v = value === undefined || value === null ? "" : String(value).trim();
+      if (v) fd.append(key, v);
+    };
+    add("source", "ai-cv");
+    add("fullName", name);
+    add("email", email);
+    add("phone", phone);
+    fd.append("currentLocation", String(candidateData?.location || profile.location || "").trim() || "Not specified");
+    fd.append("department", jobTitle || "General");
+    fd.append(
+      "experience",
+      String(candidateData?.totalExperience || profile.totalExperience || candidateData?.jobDetails?.experience || "").trim() || "Not specified"
+    );
+    add("coverLetter", candidateData?.whyInterested || candidateData?.summary);
+    add("jobTitle", jobTitle);
+    add("aiScore", candidateData?.score);
+    add("aiSummary", candidateData?.summary);
+    add("linkedin", candidateData?.linkedin);
+    add("currentCompany", candidateData?.currentCompany || profile.currentCompany);
+    add("currentDesignation", candidateData?.currentDesignation || profile.currentDesignation);
+    add("noticePeriod", candidateData?.noticePeriod);
+    add("expectedCTC", candidateData?.expectedCTC);
+    add(
+      "willingToRelocate",
+      candidateData?.willingToRelocate === true || candidateData?.willingToRelocate === "Yes"
+        ? "Yes"
+        : candidateData?.willingToRelocate === false || candidateData?.willingToRelocate === "No"
+          ? "No"
+          : ""
+    );
+    add("employmentStatus", candidateData?.employmentStatus);
+    fd.append("resume", cvFile, cvFile.name);
 
     try {
-      let candidateId = candidateData?.candidateId;
-      let jobId = candidateData?.jobId || "sales-manager-domestic-exhibition-sales-sponsorships";
-      let cvAnalysisId = candidateData?.analysisId;
-
-      // Ensure a draft application exists first if candidateId is available
-      let targetAppId = candidateData?.applicationId;
-
-      if (!targetAppId && candidateId) {
-        const createRes = await fetch(`${apiBase}/careers/applications`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            candidateId,
-            jobId,
-            cvAnalysisId,
-            whyInterested: candidateData?.summary || "Interested in joining Bharat Organic Expo team.",
-          }),
-        });
-
-        const createJson = await createRes.json();
-        if (createRes.ok && createJson.success) {
-          targetAppId = createJson.data.applicationId || createJson.data._id;
-        } else {
-          setSubmitError(createJson.message || "Could not start your application. Please try again.");
-          return;
-        }
-      }
-
-      if (!targetAppId) {
-        setSubmitError("We couldn't find your candidate profile. Please upload your CV again.");
-        return;
-      }
-
-      const submitRes = await fetch(`${apiBase}/careers/applications/${targetAppId}/submit`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          candidateData: {
-            name: candidateData?.candidateName || candidateData?.name,
-            email: candidateData?.email,
-            phone: candidateData?.phone,
-            verifiedPhone: candidateData?.verifiedPhone,
-            currentCompany: candidateData?.currentCompany || candidateData?.fullProfile?.currentCompany,
-            currentDesignation: candidateData?.currentDesignation || candidateData?.fullProfile?.currentDesignation,
-            totalExperience: candidateData?.totalExperience || candidateData?.fullProfile?.totalExperience,
-            noticePeriod: candidateData?.noticePeriod,
-            expectedCTC: candidateData?.expectedCTC,
-            // The form stores this as "Yes"/"No" for display, but the backend's
-            // CandidateProfile schema is a real Boolean — sending the string as-is
-            // throws a Mongoose CastError and fails the whole submission.
-            willingToRelocate:
-              candidateData?.willingToRelocate === true ||
-              candidateData?.willingToRelocate === "Yes",
-            photo: typeof candidateData?.image === "string" && !candidateData.image.startsWith("blob:")
-              ? candidateData.image
-              : undefined,
-            location: candidateData?.location,
-          },
-          whyInterested: candidateData?.whyInterested || candidateData?.summary || "",
-        }),
-      });
-
-      const submitJson = await submitRes.json();
-
-      // A non-2xx or { success: false } response is a real failure — never paper over
-      // it with a fake success screen, or the candidate will think they applied when
-      // they didn't.
-      if (!submitRes.ok || !submitJson.success) {
-        setSubmitError(
-          submitJson.message || "Something went wrong while submitting your application. Please try again."
-        );
-        return;
-      }
-
-      const resData = submitJson.data;
+      // A failed request throws, so the candidate never sees a success screen for an unsaved application
+      const created = (await applicationApi.create(fd)) as { _id?: string; createdAt?: string } | null;
+      const applicationId = created?._id;
 
       setSubmittedAppDetails({
-        id: resData.applicationId,
-        candidateName: candidateData?.candidateName || "Candidate",
-        position: candidateData?.jobDetails?.title || job.title,
-        submittedOn: new Date(resData.submittedAt || Date.now()).toLocaleString("en-IN", {
+        id: applicationId ? `ENS-${applicationId.slice(-6).toUpperCase()}` : undefined,
+        candidateName: name,
+        position: jobTitle,
+        submittedOn: new Date(created?.createdAt || Date.now()).toLocaleString("en-IN", {
           day: "numeric",
           month: "long",
           year: "numeric",
@@ -937,11 +919,14 @@ export function ReviewSubmitModal({
         aiMatchScore: candidateData?.score ?? 72,
       });
 
-      onSuccess?.(resData.applicationId);
+      onSuccess?.(applicationId);
       setShowSuccessModal(true);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Submit Application error:", err);
-      setSubmitError("We couldn't reach the server. Please check your connection and try again.");
+      setSubmitError(
+        err?.response?.data?.message ||
+          (err?.response ? "Something went wrong while submitting your application. Please try again." : "We couldn't reach the server. Please check your connection and try again.")
+      );
     } finally {
       setIsSubmitting(false);
     }

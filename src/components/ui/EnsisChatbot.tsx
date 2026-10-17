@@ -42,6 +42,28 @@ const PILLS_HI = [
   "✦ कॉल बैक का अनुरोध",
 ];
 
+const SESSION_KEY = "ensis_chat_session";
+
+/** One id per visitor's chat, so the conversation is saved and shows up in the admin */
+function getChatSessionId(): string {
+  const fresh = () => `web-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+  try {
+    const saved = localStorage.getItem(SESSION_KEY);
+    if (saved && /^[A-Za-z0-9_-]{8,100}$/.test(saved)) return saved;
+    const id = fresh();
+    localStorage.setItem(SESSION_KEY, id);
+    return id;
+  } catch {
+    return fresh();
+  }
+}
+
+function resetChatSessionId() {
+  try {
+    localStorage.removeItem(SESSION_KEY);
+  } catch {}
+}
+
 export default function EnsisChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [showTooltip, setShowTooltip] = useState(true);
@@ -141,6 +163,8 @@ export default function EnsisChatbot() {
     try {
       localStorage.removeItem("ensis_chat_username");
     } catch {}
+    // A new visitor name starts a new conversation in the admin
+    resetChatSessionId();
     initChat("", language);
   };
 
@@ -321,7 +345,14 @@ export default function EnsisChatbot() {
       const res = await fetch(`${API_URL}/chatbot/message`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, history, userName, language }),
+        body: JSON.stringify({
+          message: text,
+          history,
+          userName,
+          language,
+          sessionId: getChatSessionId(),
+          pageUrl: window.location.pathname,
+        }),
       });
 
       if (res.ok) {
@@ -374,18 +405,19 @@ export default function EnsisChatbot() {
 
     setLeadSubmitting(true);
     try {
-      await fetch(`${API_URL}/enquiry/submit`, {
+      // Saved on this chat and added to Website Enquiries (source "chatbot")
+      const res = await fetch(`${API_URL}/chatbot/lead`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          fullName: leadName.trim(),
-          mobileNumber: leadPhone.trim(),
-          email: `${leadPhone.trim()}@ensis-lead.com`,
-          projectType: "Chatbot Quick Inquiry",
-          message: `Inquiry generated via Ensis Interactive Website Chatbot (${language.toUpperCase()}).`,
-          agreeToContact: true,
+          name: leadName.trim(),
+          phone: leadPhone.trim(),
+          language,
+          sessionId: getChatSessionId(),
+          pageUrl: window.location.pathname,
         }),
       });
+      if (!res.ok) throw new Error(`Lead request failed (${res.status})`);
 
       setLeadSubmitted(true);
       setMessages((prev) => [
@@ -480,7 +512,7 @@ export default function EnsisChatbot() {
 
               <div>
                 <div className="flex items-center gap-1.5">
-                  <h3 className="text-base font-semibold tracking-wide text-white">
+                  <h3 className="text-[17px] font-semibold tracking-wide text-white">
                     {language === "hi" ? "Ensis वेलनेस सलाहकार" : "Ensis Wellness Advisor"}
                   </h3>
                   <span className="flex h-2 w-2 rounded-full bg-[#c39a5c] animate-pulse" />
@@ -489,16 +521,16 @@ export default function EnsisChatbot() {
                   <button
                     onClick={handleResetName}
                     title={language === "hi" ? "नाम बदलने के लिए क्लिक करें" : "Click to change name"}
-                    className="flex items-center gap-1 text-[11px] text-[#c39a5c] hover:text-white transition-colors"
+                    className="flex items-center gap-1 text-[12.5px] text-[#c39a5c] hover:text-white transition-colors"
                   >
                     <User className="h-2.5 w-2.5" />
                     <span>{userName}</span>
-                    <span className="text-[9px] text-[#faf7f2]/80 underline">
+                    <span className="text-[11px] text-[#faf7f2]/80 underline">
                       {language === "hi" ? "(बदलें)" : "(Change)"}
                     </span>
                   </button>
                 ) : (
-                  <p className="text-[10.5px] text-[#c39a5c] font-medium tracking-wide">
+                  <p className="text-[12.5px] text-[#c39a5c] font-medium tracking-wide">
                     {language === "hi" ? "पंचकर्म एवं वेलनेस स्पेस विशेषज्ञ" : "Panchkarma & Wellness Space Architects"}
                   </p>
                 )}
@@ -510,7 +542,7 @@ export default function EnsisChatbot() {
               <button
                 onClick={toggleLanguage}
                 title="Switch Language / भाषा बदलें"
-                className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#1b2310] hover:bg-[#c39a5c] hover:text-[#1b2310] border border-[#c39a5c]/80 text-[11px] font-semibold text-[#c39a5c] transition-all shadow-xs"
+                className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#1b2310] hover:bg-[#c39a5c] hover:text-[#1b2310] border border-[#c39a5c]/80 text-[12.5px] font-semibold text-[#c39a5c] transition-all shadow-xs"
               >
                 <Languages className="h-3.5 w-3.5" />
                 <span>{language === "en" ? "हिंदी" : "English"}</span>
@@ -534,7 +566,7 @@ export default function EnsisChatbot() {
           </div>
 
           {/* Messages Body (Ensis Website Background: #faf7f2 warm ivory) */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-[#faf7f2] text-xs">
+          <div className="flex-1 overflow-y-auto p-4 space-y-3.5 bg-[#faf7f2] text-[14px] leading-snug">
             {messages.map((m) => (
               <div
                 key={m.id}
@@ -562,7 +594,7 @@ export default function EnsisChatbot() {
                     onSubmit={handleLeadSubmit}
                     className="mt-2.5 ml-8 w-[88%] rounded-xl bg-white p-4 border-2 border-[#c39a5c]/60 shadow-md space-y-3"
                   >
-                    <p className="text-xs font-semibold text-[#1f261b] flex items-center gap-1.5 text-[13px]">
+                    <p className="font-semibold text-[#1f261b] flex items-center gap-1.5 text-[13px]">
                       <Sparkles className="h-3.5 w-3.5 text-[#c39a5c]" />
                       {language === "hi" ? "कॉल बैक व 2026 PDF कैटलॉग प्राप्त करें" : "Request 2026 Architectural Catalog & Callback"}
                     </p>
@@ -572,7 +604,7 @@ export default function EnsisChatbot() {
                       value={leadName}
                       onChange={(e) => setLeadName(e.target.value)}
                       required
-                      className="w-full rounded-lg border border-[#d8cdb8] bg-[#faf7f2] px-3.5 py-2 text-xs text-[#1f261b] placeholder:text-[#8f8777] focus:border-[#b1793d] focus:bg-white focus:outline-none transition-colors"
+                      className="w-full rounded-lg border border-[#d8cdb8] bg-[#faf7f2] px-3.5 py-2 text-[14px] text-[#1f261b] placeholder:text-[#8f8777] focus:border-[#b1793d] focus:bg-white focus:outline-none transition-colors"
                     />
                     <input
                       type="tel"
@@ -580,12 +612,12 @@ export default function EnsisChatbot() {
                       value={leadPhone}
                       onChange={(e) => setLeadPhone(e.target.value)}
                       required
-                      className="w-full rounded-lg border border-[#d8cdb8] bg-[#faf7f2] px-3.5 py-2 text-xs text-[#1f261b] placeholder:text-[#8f8777] focus:border-[#b1793d] focus:bg-white focus:outline-none transition-colors"
+                      className="w-full rounded-lg border border-[#d8cdb8] bg-[#faf7f2] px-3.5 py-2 text-[14px] text-[#1f261b] placeholder:text-[#8f8777] focus:border-[#b1793d] focus:bg-white focus:outline-none transition-colors"
                     />
                     <button
                       type="submit"
                       disabled={leadSubmitting}
-                      className="w-full py-2.5 rounded-lg bg-gradient-to-r from-[#c39a5c] via-[#d5ad6a] to-[#a9742a] text-[#1f261b] hover:brightness-105 font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs"
+                      className="w-full py-2.5 rounded-lg bg-gradient-to-r from-[#c39a5c] via-[#d5ad6a] to-[#a9742a] text-[#1f261b] hover:brightness-105 font-bold text-[13px] flex items-center justify-center gap-1.5 transition-all shadow-xs"
                     >
                       {leadSubmitting ? (
                         <span>{language === "hi" ? "सबमिट हो रहा है..." : "Submitting..."}</span>
@@ -606,7 +638,7 @@ export default function EnsisChatbot() {
                       <button
                         key={i}
                         onClick={() => handleOptionClick(opt)}
-                        className="rounded-full bg-white px-3.5 py-1.5 text-[11px] font-medium text-[#263016] border border-[#c39a5c]/60 shadow-2xs hover:bg-[#263016] hover:text-[#c39a5c] hover:border-[#263016] transition-all text-left flex items-center gap-1 group/pill"
+                        className="rounded-full bg-white px-3.5 py-1.5 text-[13px] font-medium text-[#263016] border border-[#c39a5c]/60 shadow-2xs hover:bg-[#263016] hover:text-[#c39a5c] hover:border-[#263016] transition-all text-left flex items-center gap-1 group/pill"
                       >
                         <span>{opt}</span>
                         <ArrowRight className="h-2.5 w-2.5 opacity-0 -translate-x-1 group-hover/pill:opacity-100 group-hover/pill:translate-x-0 transition-all text-[#c39a5c]" />
@@ -615,16 +647,16 @@ export default function EnsisChatbot() {
                   </div>
                 )}
 
-                <span className={`mt-1 text-[9.5px] text-[#8f8777] px-1 ${m.sender === "bot" ? "ml-8" : ""}`}>{m.time}</span>
+                <span className={`mt-1 text-[12px] text-[#8f8777] px-1 ${m.sender === "bot" ? "ml-8" : ""}`}>{m.time}</span>
               </div>
             ))}
 
             {isTyping && (
-              <div className="flex items-center gap-2 text-[#5a5248] text-xs px-2 py-1 ml-8">
+              <div className="flex items-center gap-2 text-[#5a5248] text-[13px] px-2 py-1 ml-8">
                 <span className="flex h-1.5 w-1.5 rounded-full bg-[#c39a5c] animate-pulse" />
                 <span className="flex h-1.5 w-1.5 rounded-full bg-[#c39a5c] animate-pulse delay-100" />
                 <span className="flex h-1.5 w-1.5 rounded-full bg-[#c39a5c] animate-pulse delay-200" />
-                <span className="text-[11px] text-[#8f8777] ml-1 font-medium">
+                <span className="text-[12px] text-[#8f8777] ml-1 font-medium">
                   {language === "hi" ? "Ensis AI उत्तर लिख रहा है..." : "Ensis Advisor typing..."}
                 </span>
               </div>
@@ -659,7 +691,7 @@ export default function EnsisChatbot() {
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 autoFocus={isAskingName}
-                className="flex-1 rounded-xl bg-[#faf7f2] px-3.5 py-2.5 text-xs text-[#1f261b] placeholder:text-[#8f8777] border border-[#d8cdb8] focus:border-[#b1793d] focus:bg-white focus:outline-none transition-colors"
+                className="flex-1 rounded-xl bg-[#faf7f2] px-3.5 py-2.5 text-[14px] text-[#1f261b] placeholder:text-[#8f8777] border border-[#d8cdb8] focus:border-[#b1793d] focus:bg-white focus:outline-none transition-colors"
               />
               <button
                 type="submit"
@@ -670,7 +702,7 @@ export default function EnsisChatbot() {
                 <Send className="h-3.5 w-3.5" />
               </button>
             </form>
-            <div className="mt-1.5 text-center text-[9px] tracking-widest text-[#8f8777] uppercase font-medium">
+            <div className="mt-1.5 text-center text-[11px] tracking-widest text-[#8f8777] uppercase font-medium">
               Ensis • Premier Panchkarma & Wellness Spaces
             </div>
           </div>

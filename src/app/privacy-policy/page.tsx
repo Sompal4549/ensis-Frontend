@@ -20,6 +20,7 @@ import { Container } from "@/components/ui/Container";
 import MobileScrollSpy from "@/components/ui/MobileScrollSpy";
 import privacyBg from "@/assets/privacy-terms/privacy_bg.png";
 import privacyCta from "@/assets/privacy-terms/privacy_cta.png";
+import { staticPrivacySections } from "@/data/policy";
 
 interface PolicySection {
   id: string;
@@ -62,7 +63,7 @@ interface PolicyContact {
 ========================================================= */
 
 export default function PrivacyPolicyPage() {
-  const [sections, setSections] = useState<PolicySection[]>([]);
+  const [sections, setSections] = useState<PolicySection[]>(staticPrivacySections);
   const [hero, setHero] = useState<PolicyHero>({
     eyebrow: "ENSIS LEGAL & PRIVACY",
     title: "Privacy Policy",
@@ -93,7 +94,7 @@ export default function PrivacyPolicyPage() {
     website: "www.ensis.in",
   });
   const [loading, setLoading] = useState(true);
-  const [activeSection, setActiveSection] = useState<string>("");
+  const [activeSection, setActiveSection] = useState<string>(staticPrivacySections[0]?.id || "");
   const [mobileMenu, setMobileMenu] = useState(false);
 
   // Fetch policy data from API
