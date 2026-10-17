@@ -20,6 +20,7 @@ export const metadata: Metadata = {
     siteName: "Ensis Wellness",
     type: "website",
   },
+  robots: "noindex, nofollow",
   alternates: { canonical: `${SITE_URL}/orders` },
 };
 

@@ -31,6 +31,8 @@ export default function AllBlogs({ sectionContent, blogs }: { sectionContent: an
               category={post.category}
               image={post.image}
               link={post.slug || post.link || post.id}
+              views={post.views}
+              readingTime={post.readingTime}
             />
           ))
         ) : (

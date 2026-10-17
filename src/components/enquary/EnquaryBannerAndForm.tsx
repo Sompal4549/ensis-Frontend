@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -14,12 +14,17 @@ import { API_URL } from "@/lib/api/api";
 import HtmlRenderer from "../layout/HtmlRender";
 import EnquaryStatsStrip from "./EnquaryStatsStrip";
 import BookButton from "../ui/BookButton";
+import { ALL_INDIAN_STATES, fetchLocationByPincode, matchStateOption } from "@/lib/pincode";
 
 interface EnquiryPageProps {
   content?: EnquiryPageContent;
   onSubmit?: (data: EnquiryFormData) => void | Promise<void>;
   statsStrip?: React.ReactNode;
 }
+
+/** The label shown for a stored option value (the admin should read "Under ₹10 Lakhs", not "under-10l") */
+const labelOf = (options: { value?: string; id?: string; label: string }[] | undefined, value: string) =>
+  options?.find((o) => (o.value ?? o.id) === value)?.label || value;
 
 const initialFormData: EnquiryFormData = {
   fullName: "",
@@ -30,6 +35,7 @@ const initialFormData: EnquiryFormData = {
   projectType: "",
   state: "",
   city: "",
+  zipcode: "",
   projectSize: "",
   budgetRange: "",
   servicesRequired: [],
@@ -47,6 +53,54 @@ export default function EnquiryPage({
   const [formData, setFormData] = useState<EnquiryFormData>(initialFormData);
   const [errors, setErrors] = useState<EnquiryFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fetchingPincode, setFetchingPincode] = useState(false);
+
+  // States from the admin first, then every other state/UT
+  const stateOptions: SelectOption[] = useMemo(() => {
+    const adminOpts = content.stateOptions || [];
+    const remaining = ALL_INDIAN_STATES.filter(
+      (name) =>
+        !adminOpts.some(
+          (o: SelectOption) =>
+            (o.label || "").toLowerCase() === name.toLowerCase() ||
+            (o.value || "").toLowerCase() === name.toLowerCase()
+        )
+    ).map((name) => ({ value: name, label: name }));
+
+    return [...adminOpts, ...remaining];
+  }, [content.stateOptions]);
+
+  const handleZipcodeChange = async (zip: string) => {
+    setField("zipcode", zip);
+    const cleanZip = zip.replace(/\D/g, "");
+    if (cleanZip.length === 6) {
+      try {
+        setFetchingPincode(true);
+        const loc = await fetchLocationByPincode(cleanZip);
+        if (loc) {
+          const matched = matchStateOption(stateOptions, loc.state);
+          const stateValueToSet = matched ? matched.value : loc.state;
+          const displayStateLabel = matched ? matched.label : loc.state;
+
+          setFormData((prev) => ({
+            ...prev,
+            zipcode: zip,
+            city: loc.city || prev.city,
+            state: stateValueToSet || prev.state,
+            cityAndState:
+              loc.city && displayStateLabel
+                ? `${loc.city}, ${displayStateLabel}`
+                : prev.cityAndState,
+          }));
+          setErrors((prev) => ({ ...prev, city: undefined, state: undefined }));
+        }
+      } catch (err) {
+        console.error("Failed to fetch location from zipcode:", err);
+      } finally {
+        setFetchingPincode(false);
+      }
+    }
+  };
 
   const handleFormSubmit = async (data: EnquiryFormData) => {
     try {
@@ -57,16 +111,22 @@ export default function EnquiryPage({
       payload.append("email", data.email ?? "");
       payload.append("companyOrganization", data.companyOrganization ?? "");
       payload.append("cityAndState", data.cityAndState ?? "");
-      payload.append("projectType", data.projectType ?? "");
-      payload.append("state", data.state ?? "");
-      payload.append("city", data.city ?? "");
-      payload.append("projectSize", data.projectSize ?? "");
-      payload.append("budgetRange", data.budgetRange ?? "");
-      payload.append("servicesRequired", JSON.stringify(data.servicesRequired ?? []));
-      payload.append("timeline", data.timeline ?? "");
+      payload.append("projectType", labelOf(content.projectTypeOptions, data.projectType ?? ""));
+      payload.append("state", labelOf(stateOptions, data.state ?? ""));
+      payload.append("city", (data.city ?? "").trim());
+      payload.append("zipcode", data.zipcode ?? "");
+      payload.append("pincode", data.zipcode ?? "");
+      payload.append("projectSize", labelOf(content.projectSizeOptions, data.projectSize ?? ""));
+      payload.append("budgetRange", labelOf(content.budgetRangeOptions, data.budgetRange ?? ""));
+      payload.append(
+        "servicesRequired",
+        JSON.stringify((data.servicesRequired ?? []).map((id) => labelOf(content.servicesOptions, id)))
+      );
+      payload.append("timeline", labelOf(content.timelineOptions, data.timeline ?? ""));
       payload.append("message", data.message ?? "");
-      payload.append("preferredContact", data.preferredContact ?? "whatsapp");
+      payload.append("preferredContact", labelOf(content.preferredContactOptions, data.preferredContact ?? "whatsapp"));
       payload.append("agreeToContact", String(Boolean(data.agreeToContact)));
+      payload.append("source", "enquiry");
 
       if (data.file) {
         payload.append("file", data.file);
@@ -444,6 +504,20 @@ export default function EnquiryPage({
 
                 <div className="mb-2">
                   <span className={labelBaseClass}>Project Location</span>
+                  <div className="mb-2">
+                    <label className="mb-1 block text-base" htmlFor="zipcode">
+                      Zipcode / Pincode {fetchingPincode && <span className="text-xs text-[#b1793d] font-normal">(Fetching location...)</span>}
+                    </label>
+                    <input
+                      id="zipcode"
+                      type="text"
+                      placeholder="Enter 6-digit zipcode"
+                      className={inputBaseClass}
+                      value={formData.zipcode || ""}
+                      onChange={(e) => handleZipcodeChange(e.target.value)}
+                      maxLength={6}
+                    />
+                  </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="mb-1 block text-base" htmlFor="state">
@@ -456,7 +530,12 @@ export default function EnquiryPage({
                         onChange={(e) => setField("state", e.target.value)}
                       >
                         <option value="">Select state</option>
-                        {content.stateOptions.map((opt: SelectOption) => (
+                        {formData.state && !stateOptions.some((opt) => opt.value === formData.state) && (
+                          <option value={formData.state}>
+                            {formData.state}
+                          </option>
+                        )}
+                        {stateOptions.map((opt: SelectOption) => (
                           <option key={opt.value} value={opt.value}>
                             {opt.label}
                           </option>
@@ -467,19 +546,23 @@ export default function EnquiryPage({
                       <label className="mb-1 block text-base" htmlFor="city">
                         City
                       </label>
-                      <select suppressHydrationWarning
+                      {/* Free text: no fixed list can hold every city; admin cities are suggestions */}
+                      <input
                         id="city"
+                        type="text"
+                        list="enquiry-city-options"
+                        autoComplete="address-level2"
+                        placeholder="Enter your city"
                         className={inputBaseClass}
                         value={formData.city}
                         onChange={(e) => setField("city", e.target.value)}
-                      >
-                        <option value="">Select city</option>
-                        {content.cityOptions.map((opt: SelectOption) => (
-                          <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                          </option>
+                        maxLength={80}
+                      />
+                      <datalist id="enquiry-city-options">
+                        {(content.cityOptions || []).map((opt: SelectOption) => (
+                          <option key={opt.value} value={opt.label} />
                         ))}
-                      </select>
+                      </datalist>
                     </div>
                   </div>
                 </div>

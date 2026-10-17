@@ -124,7 +124,9 @@ export async function generateSeo(page: string): Promise<SeoResult> {
     } catch { }
   }
 
-  const ogImage = ogExtra["og:image"] || "";
+  // Placeholders such as "YOUR_PROJECTS_OG_IMAGE_URL" fall back to the default image
+  const rawOgImage = String(ogExtra["og:image"] || "").trim();
+  const ogImage = /^(https?:\/\/|\/)/.test(rawOgImage) ? rawOgImage : "";
 
   return {
     title: seo.metaTitle,
@@ -180,9 +182,9 @@ export interface AdvancedSeoData {
 export const getAdvancedSeo = cache(
   async (): Promise<AdvancedSeoData | null> => {
     try {
+      // Short cache so tracking IDs and robots.txt saved in the admin go live within a minute
       const response = await fetch(`${API_URL}/seo/advanced`, {
-        cache: "force-cache",
-        next: { revalidate: 3600 }, // 1 hour cache
+        next: { revalidate: 60 },
       });
 
       if (!response.ok) {

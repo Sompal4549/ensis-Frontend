@@ -1,6 +1,8 @@
 import { getAdvancedSeo } from "@/lib/api/seo";
 import { blogApi, productApi } from "@/lib/api/api";
 import { SITE_URL } from "@/lib/site";
+import { fetchSolutions } from "@/lib/solutions";
+import { solutions as bundledSolutions } from "@/data/solutions";
 
 export const revalidate = 3600;
 
@@ -30,6 +32,7 @@ const STATIC_ROUTES: {
   { path: "", changeFrequency: "daily", priority: 1.0 },
   { path: "products", changeFrequency: "weekly", priority: 0.9 },
   { path: "turnkey", changeFrequency: "weekly", priority: 0.9 },
+  { path: "solutions", changeFrequency: "weekly", priority: 0.8 },
   { path: "consultancy", changeFrequency: "weekly", priority: 0.8 },
   { path: "projects-and-clients", changeFrequency: "weekly", priority: 0.8 },
   { path: "blog", changeFrequency: "weekly", priority: 0.8 },
@@ -37,6 +40,8 @@ const STATIC_ROUTES: {
   { path: "contact", changeFrequency: "yearly", priority: 0.5 },
   { path: "enquiry", changeFrequency: "yearly", priority: 0.5 },
   { path: "career", changeFrequency: "monthly", priority: 0.5 },
+  { path: "privacy-policy", changeFrequency: "yearly", priority: 0.3 },
+  { path: "terms-and-conditions", changeFrequency: "yearly", priority: 0.3 },
 ];
 
 function escapeXml(value: string) {
@@ -112,10 +117,33 @@ export async function GET() {
     });
 
     try {
-      const [blogs, products] = await Promise.all([
+      const [blogs, products, solutions] = await Promise.all([
         blogApi.list(),
         fetchAllProducts(),
+        fetchSolutions(),
       ]);
+
+      // Adds one URL (skipping excluded paths and duplicates)
+      const add = (path: string, entry: Omit<SitemapEntry, "url">) => {
+        if (isExcluded(path)) return;
+        const loc = buildUrl(siteUrl, path);
+        if (urls.has(loc)) return;
+        urls.add(loc);
+        entries.push({ url: loc, ...entry });
+      };
+      type CityRecord = { slug?: string; isActive?: boolean };
+      const activeCities = (cities: unknown) =>
+        (Array.isArray(cities) ? (cities as CityRecord[]) : []).filter((c) => c?.slug && c.isActive !== false);
+
+      // Solutions and their city pages (bundled list while the database has none)
+      const solutionList = solutions.length ? solutions : bundledSolutions.map((x) => ({ slug: x.slug }));
+      solutionList.forEach((solution: { slug: string; updatedAt?: string; cities?: unknown }) => {
+        const lastmod = formatLastmod(solution.updatedAt) || undefined;
+        add(`solutions/${solution.slug}`, { lastmod, changeFrequency: "monthly", priority: 0.8 });
+        activeCities(solution.cities).forEach((c) =>
+          add(`solutions/${solution.slug}/${c.slug}`, { lastmod, changeFrequency: "monthly", priority: 0.7 })
+        );
+      });
 
       blogs.forEach((blog: { slug?: string; link?: string; _id?: string }) => {
         const slug = blog?.slug || blog?.link || blog?._id;
@@ -150,6 +178,10 @@ export async function GET() {
               priority: 0.8,
             });
           }
+          const lastmod = formatLastmod((product as { updatedAt?: string }).updatedAt) || undefined;
+          activeCities((product as { cities?: unknown }).cities).forEach((c) =>
+            add(`products/${slug}/${c.slug}`, { lastmod, changeFrequency: "monthly", priority: 0.6 })
+          );
         }
       });
     } catch (error) {

@@ -21,13 +21,10 @@ import {
 import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import BookButton from "@/components/ui/BookButton";
+import CityLinks from "@/components/ui/CityLinks";
 import GreenButton from "@/components/ui/GreenButton";
-import {
-  solutionsMap,
-  services,
-  process,
-  getSolutionCardsExcluding,
-} from "@/data/solutions";
+import type { SolutionSolution } from "@/data/solutions";
+import type { ResolvedSolution } from "@/lib/solutions";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -86,30 +83,16 @@ function getIcon(name: string): LucideIcon {
   return iconMap[name] || Leaf;
 }
 
-export default function SolutionClient({ slug }: { slug: string }) {
-  const solution = solutionsMap[slug];
-
-  if (!solution) {
-    return (
-      <main className="min-h-screen flex items-center justify-center bg-[#faf7f2]">
-        <Container>
-          <div className="text-center py-20">
-            <h1 className="font-serif text-4xl text-[#0f2518]">
-              Solution Not Found
-            </h1>
-            <p className="mt-4 text-[#444] text-lg">
-              The solution you&apos;re looking for doesn&apos;t exist.
-            </p>
-            <div className="mt-8">
-              <BookButton text="BACK TO HOME" path="/" />
-            </div>
-          </div>
-        </Container>
-      </main>
-    );
-  }
-
-  const solutionCards = getSolutionCardsExcluding(slug);
+export default function SolutionClient({
+  solution,
+  cards,
+}: {
+  solution: ResolvedSolution;
+  /** The other solutions, shown as cards near the bottom */
+  cards: SolutionSolution[];
+}) {
+  const { services, process, city } = solution;
+  const solutionCards = cards;
 
   return (
     <main className="min-h-screen overflow-hidden bg-[#faf7f2] font-sans text-[#333]">
@@ -187,12 +170,12 @@ export default function SolutionClient({ slug }: { slug: string }) {
             <div className="mt-7 flex flex-wrap gap-3">
               <BookButton
                 text={solution.hero.primaryCta}
-                path="/contact"
+                path={solution.hero.primaryCtaUrl}
                 fontSize="text-xs md:text-base"
               />
               <GreenButton
                 text={solution.hero.secondaryCta}
-                path="#approach"
+                path={solution.hero.secondaryCtaUrl}
                 fontSize="text-xs md:text-base"
               />
             </div>
@@ -341,6 +324,28 @@ export default function SolutionClient({ slug }: { slug: string }) {
           </div>
         </Container>
       </section>
+
+      {/* =========================================================
+          CITY INTRO (city pages only)
+      ========================================================= */}
+
+      {city?.intro && (
+        <section className="border-b border-[#e6d6b9] bg-white">
+          <Container className="py-10">
+            <Reveal className="mx-auto max-w-[860px] text-center">
+              <p className="text-sm font-semibold tracking-[0.18em] text-[#a9742a]">
+                {solution.title.toUpperCase()} IN {city.city.toUpperCase()}
+              </p>
+              <div className="mx-auto my-3 h-px w-9 bg-[#a9742a]" />
+              {city.intro.split(/\r?\n\s*\r?\n/).map((p, i) => (
+                <p key={i} className="mt-3 text-base font-semibold leading-7 text-[#555]">
+                  {p}
+                </p>
+              ))}
+            </Reveal>
+          </Container>
+        </section>
+      )}
 
       {/* =========================================================
           SPACES
@@ -921,6 +926,8 @@ export default function SolutionClient({ slug }: { slug: string }) {
           </Reveal>
         </Container>
       </section>
+
+      <CityLinks title={solution.title} basePath={`/solutions/${solution.slug}`} cities={solution.cities} currentSlug={city?.slug} />
     </main>
   );
 }

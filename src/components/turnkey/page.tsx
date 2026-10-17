@@ -13,7 +13,7 @@ const ProjectsPage = () => {
       try {
         const response = await fetch(`${API_URL}/content/projects`);
         const json = await response.json();
-        if (json.status === "success") {
+        if (Boolean(json.success || json.status === "success")) {
           // Sorting by the index provided in your JSON
           const sortedData = json.data.sort((a: any, b: any) => a.index - b.index);
           setSections(sortedData);

@@ -28,6 +28,7 @@ import YouMightCarousel from "@/components/ui/YouMightCarousel";
 import { productApi, getImageUrl } from "@/lib/api/api";
 import { useEffect, useState } from "react";
 import ProductCard from "@/components/products/ProductCard";
+import { sanitizeInlineHtml } from "@/lib/sanitize-html";
 
 const LOTUS_PATTERN = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='92' height='92' viewBox='0 0 92 92'%3E%3Cg fill='none' stroke='%231F3A2A' stroke-width='1'%3E%3Cpath d='M46 8 C28 20 28 40 46 58 C64 40 64 20 46 8Z'/%3E%3Cpath d='M46 20 C34 28 34 44 46 52 C58 44 58 28 46 20Z'/%3E%3Cpath d='M46 8 C30 34 30 62 46 84 C62 62 62 34 46 8Z' opacity='.5'/%3E%3C/g%3E%3C/svg%3E\")";
 
@@ -94,7 +95,7 @@ function CartTableRow({ item }: { item: CartItem }) {
           <Link href={`/products/${item.slug || item.id}`}>
             <h3
               className="line-clamp-2 text-sm font-bold leading-5 text-[#1F3A2A]"
-              dangerouslySetInnerHTML={{ __html: item.name }}
+              dangerouslySetInnerHTML={{ __html: sanitizeInlineHtml(item.name) }}
             />
           </Link>
           <p className="mt-1 text-xs font-medium text-[#8a7c63]">{categoryName}</p>

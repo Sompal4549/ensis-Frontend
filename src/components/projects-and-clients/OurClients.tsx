@@ -163,7 +163,17 @@ interface OurClientsBannerProps {
 }
 
 export default function WhyPartner({ sectionContent }: {sectionContent: OurClientsBannerProps}) {
-  const banner = sectionContent?.data ?? clientsBannerFallback;
+  const rawData: any = (sectionContent as any)?.data || sectionContent;
+  const banner: OurClients = {
+    ...clientsBannerFallback,
+    ...rawData,
+    clients: (rawData?.clients && Array.isArray(rawData.clients) && rawData.clients.length > 0)
+      ? rawData.clients
+      : clientsBannerFallback.clients,
+    stats: (rawData?.stats && Array.isArray(rawData.stats) && rawData.stats.length > 0)
+      ? rawData.stats
+      : clientsBannerFallback.stats,
+  };
 
   return (
     <section className="relative w-full bg-[#FBF3E7]">

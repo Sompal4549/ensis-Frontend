@@ -59,7 +59,8 @@ const minPrice = useMemo(() => {
   return Math.min(adminMin, ...products.map((p) => p.price));
 }, [products, adminPriceRange]);
 
-const [priceRange, setPriceRange] = useState(0);
+// Starts at the highest price, so nothing is filtered out before the visitor moves the slider
+const [priceRange, setPriceRange] = useState(() => maxPrice);
 const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
 const [selectedIdealFor, setSelectedIdealFor] = useState<string[]>([]);
 
@@ -142,6 +143,7 @@ useEffect(() => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          source: "products",
           fullName: enquiry.name.trim(),
           email: enquiry.email.trim(),
           mobileNumber: enquiry.phone.trim(),
@@ -153,7 +155,7 @@ useEffect(() => {
 
       const payload = await res.json().catch(() => ({}));
 
-      if (res.ok && payload.status !== "error") {
+      if (res.ok && payload.status !== "error" && payload.success !== false) {
         setEnquiryStatus({ type: "success", message: "Thank you! Our wellness experts will contact you soon." });
         setEnquiry({ name: "", email: "", phone: "", category: "", message: "" });
       } else {

@@ -1,8 +1,9 @@
 // components/blog/cards/BlogListItem.tsx
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Eye } from "lucide-react";
 import Link from "next/link";
 import { getImageUrl } from "@/lib/api/api";
+import { formatViews } from "@/utils/blog";
 
 interface Props {
   title: string;
@@ -10,6 +11,8 @@ interface Props {
   category: string;
   image: any;
   link?: string;
+  views?: number;
+  readingTime?: string;
 }
 
 export default function BlogListItem({
@@ -18,6 +21,8 @@ export default function BlogListItem({
   category,
   image,
   link,
+  views,
+  readingTime,
 }: Props) {
   const href = link ? `/blog/${link}` : "#";
   const imageUrl = typeof image === 'string' || !image?.src ? getImageUrl(image) : image;
@@ -38,6 +43,17 @@ export default function BlogListItem({
           <span>{date}</span>
           <span>•</span>
           <span>{category}</span>
+          {readingTime && (
+            <>
+              <span>•</span>
+              <span>{readingTime}</span>
+            </>
+          )}
+          <span>•</span>
+          <span className="flex items-center gap-1">
+            <Eye size={14} />
+            {formatViews(views)}
+          </span>
         </div>
 
         <h3 className="max-w-[700px]  text-xl leading-snug text-[#2b241f] font-semibold">

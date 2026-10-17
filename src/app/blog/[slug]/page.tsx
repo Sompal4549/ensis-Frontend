@@ -1,3 +1,4 @@
+import { toJsonLd } from "@/lib/seo-text";
 import { getComponentContent, getImageUrl, getPageComponent, API_URL } from "@/lib/api/api";
 import { headers } from "next/headers";
 import { Container } from "@/components/ui/Container";
@@ -12,6 +13,7 @@ import { Metadata } from "next";
 import RelatedBlogs from "@/components/blog/Relatedblogs";
 import BlogDetailCtaBanner from "@/components/blog/BlogDetailCtaBanner";
 import { SITE_URL, SITE_HOST } from "@/lib/site";
+import { getStaticBlog, staticBlogs } from "@/data/blogs";
 
 interface BlogDetailProps {
   params: Promise<{ slug: string }>;
@@ -30,21 +32,21 @@ const decodeHtml = (html: string) => {
 async function getBlogBySlug(slug: string) {
   try {
     const res = await fetch(`${API_URL}/blogs/${slug}`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 60 },
     });
     const json = await res.json();
-    return json.status === "success" ? json.data : null;
+    return Boolean(json.success || json.status === "success") ? json.data : getStaticBlog(slug) || null;
   } catch (error) {
-    console.error("Error fetching blog detail:", error);
-    return null;
+    console.error("Error fetching blog detail, using static data:", error);
+    return getStaticBlog(slug) || null;
   }
 }
 
 async function getAllBlogs() {
   try {
-    const res = await fetch(`${API_URL}/blogs`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${API_URL}/blogs`, { next: { revalidate: 60 } });
     const json = await res.json();
-    return json.status === "success" ? json.data : [];
+    return Boolean(json.success || json.status === "success") ? json.data : [];
   } catch {
     return [];
   }
@@ -176,9 +178,8 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
     category: blog.category || undefined,
     keywords: blog.tags?.join(", ") || undefined,
   };
-  const schemaJson = schemaMatchesBlog
-    ? adminSchema
-    : JSON.stringify(autoSchema);
+  // Admin schema only when it is valid JSON-LD for this blog; otherwise the generated one
+  const schemaJson = (schemaMatchesBlog && toJsonLd(adminSchema)) || toJsonLd(autoSchema)!;
 
   return (
     <main className="bg-[#fdfaf5]">
@@ -236,9 +237,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 )}
 
                 <div
-                  className="prose prose-stone prose-lg max-w-none text-[#4a4036]
-                  prose-headings: prose-headings:text-[#2b241f]
-                  prose-p:leading-relaxed prose-strong:text-[#2b241f]"
+                  className="blog-content max-w-none"
                   dangerouslySetInnerHTML={{ __html: decodeHtml(blog.article.content || blog.description || "") }}
                 />
 
@@ -265,7 +264,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
       )}
 <BlogDetailCtaBanner sectionContent={blog.ctaBanner} />
       {/* ── NEWSLETTER ── */}
- <RelatedBlogs allBlogs={allBlogs}  />
+ <RelatedBlogs allBlogs={allBlogs} currentSlug={blog.slug} />
  {hasNewsletter ? (
    <BlogDetailNewsletter sectionContent={blog.newsletter} />
  ) : (
@@ -281,7 +280,11 @@ export async function generateStaticParams() {
   const blogData: any = await getComponentContent("blog.allBlogs", { blogs: [] });
   const blogs = blogData?.blogs || (Array.isArray(blogData) ? blogData : []);
 
-  return blogs
-    .map((blog: any) => ({ slug: blog.link || blog.id || "" }))
-    .filter((item: any) => item.slug !== "");
+  const slugs = new Set<string>(staticBlogs.map((b: any) => b.slug));
+  blogs.forEach((blog: any) => {
+    const slug = blog.link || blog.id || "";
+    if (slug) slugs.add(slug);
+  });
+
+  return Array.from(slugs).map((slug) => ({ slug }));
 }

@@ -78,6 +78,7 @@ export interface EnquiryFormData {
   projectType: string;
   state: string;
   city: string;
+  zipcode?: string;
   projectSize: string;
   budgetRange: string;
   servicesRequired: string[];

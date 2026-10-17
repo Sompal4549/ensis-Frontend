@@ -1,4 +1,5 @@
 const TOKEN_KEY = "ensis_access_token";
+const REFRESH_TOKEN_KEY = "ensis_refresh_token";
 const USER_KEY = "ensis_user";
 
 export const AUTH_CHANGE_EVENT = "ensis-auth-change";
@@ -20,6 +21,16 @@ export const authStore = {
     }
   },
 
+  getRefreshToken: (): string => {
+    if (typeof window === "undefined") return "";
+    return localStorage.getItem(REFRESH_TOKEN_KEY) || "";
+  },
+
+  setRefreshToken: (token: string) => {
+    if (typeof window === "undefined") return;
+    localStorage.setItem(REFRESH_TOKEN_KEY, token);
+  },
+
   setSession: (token: string, user: unknown) => {
     localStorage.setItem(TOKEN_KEY, token);
     localStorage.setItem(USER_KEY, JSON.stringify(user));
@@ -27,6 +38,7 @@ export const authStore = {
 
   clear: () => {
     localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
   },
 

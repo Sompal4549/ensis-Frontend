@@ -79,7 +79,15 @@ interface WhyPartnerBannerProps {
   ],
 };
 export default function WhyPartnerBanner({ sectionContent }: WhyPartnerBannerProps) {
-  const banner = sectionContent ?? whyPartnerBannerFallback;
+  const banner: WhyPartnerBannerData = {
+    ...whyPartnerBannerFallback,
+    ...sectionContent,
+    features: (sectionContent?.features && Array.isArray(sectionContent.features) && sectionContent.features.length > 0)
+      ? sectionContent.features
+      : whyPartnerBannerFallback.features,
+    decorativeImageSrc: sectionContent?.decorativeImageSrc || whyPartnerBannerFallback.decorativeImageSrc,
+    decorativeImageAlt: sectionContent?.decorativeImageAlt || whyPartnerBannerFallback.decorativeImageAlt,
+  };
 
   return (
     <section className="relative w-full overflow-hidden bg-[#0F2E22]">

@@ -11,10 +11,13 @@ export default function ProductDetailClient({
   product,
   originalPrice,
   shopProduct,
+  headingHtml,
 }: {
   product: Product;
   originalPrice: number;
   shopProduct: Product;
+  /** City pages: heading shown above the specifications instead of the product title */
+  headingHtml?: string;
 }) {
   const [finish, setFinish] = useState<string>("");
   const [size, setSize] = useState<string>("");
@@ -39,6 +42,7 @@ export default function ProductDetailClient({
           size={size}
           onFinishChange={setFinish}
           onSizeChange={setSize}
+          headingHtml={headingHtml}
         />
       </Container>
     </>

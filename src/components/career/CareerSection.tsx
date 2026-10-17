@@ -13,6 +13,12 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { applicationApi, careerApi, Career } from "@/lib/api/api";
 import HtmlRenderer from "../layout/HtmlRender";
+import UploadCvModal, { CandidateAnalysisData, CareerJob } from "./UploadCvModal";
+import EligibilityModal from "./EligibilityModal";
+import ApplicationFormModal, { ApplicationFormData } from "./ApplicationFormModal";
+import ReviewSubmitModal from "./ReviewSubmitModal";
+import { lockScroll, unlockScroll } from "@/lib/scrollLock";
+import { createPortal } from "react-dom";
 export interface CareerSectionProps{
     heading: string;
     titlePart1: string;
@@ -103,6 +109,24 @@ const [openings, setOpenings] = useState<Career[]>(jobs);
 const [appliedJob, setAppliedJob] = useState<Career | null>(null);
 const formRef = useRef<HTMLDivElement>(null);
 
+// AI CV Screening Modal States
+const [screeningJob, setScreeningJob] = useState<CareerJob | null>(null);
+const [isUploadCvOpen, setIsUploadCvOpen] = useState(false);
+const [isEligibilityOpen, setIsEligibilityOpen] = useState(false);
+const [isAppFormOpen, setIsAppFormOpen] = useState(false);
+const [isReviewOpen, setIsReviewOpen] = useState(false);
+const [candidateData, setCandidateData] = useState<CandidateAnalysisData | null>(null);
+const [applicationFormData, setApplicationFormData] = useState<ApplicationFormData | null>(null);
+
+useEffect(() => {
+  const anyOpen = isUploadCvOpen || isEligibilityOpen || isAppFormOpen || isReviewOpen;
+  if (anyOpen) lockScroll();
+  else unlockScroll();
+  return () => {
+    if (anyOpen) unlockScroll();
+  };
+}, [isUploadCvOpen, isEligibilityOpen, isAppFormOpen, isReviewOpen]);
+
 useEffect(() => {
   let isMounted = true;
   careerApi
@@ -124,13 +148,21 @@ useEffect(() => {
 
 const handleApply = (job: Career) => {
   setAppliedJob(job);
-  setForm((prev) => ({
-    ...prev,
+  setScreeningJob({
+    id: job._id,
+    title: job.title,
     department: job.department,
+    location: job.location,
     experience: job.experience,
-  }));
-  formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-  toast.info("We have filled the form, please upload your resume.");
+    type: job.type,
+    description: job.roleObjective || job.description,
+    responsibilities: job.responsibilities,
+    requirements: job.requirements,
+    skills: job.skills,
+    education: job.educationRequirements,
+    eligibilityThreshold: job.eligibilityThreshold,
+  });
+  setIsUploadCvOpen(true);
 };
 
 const handleSubmit = async (
@@ -241,25 +273,37 @@ const experienceOptions = Array.from(
   ])
 );
 
+  const defaultImages = [
+    { imageUrl: life1, alt: "Life at Ensis" },
+    { imageUrl: life2, alt: "Life at Ensis" },
+    { imageUrl: life3, alt: "Life at Ensis" },
+    { imageUrl: life4, alt: "Life at Ensis" },
+    { imageUrl: life5, alt: "Life at Ensis" },
+  ];
+
+  const grid = Array.isArray(sectionContent?.RightImageGrid) && sectionContent.RightImageGrid.length >= 5
+    ? sectionContent.RightImageGrid
+    : defaultImages;
+
   return (
-    <section className="bg-[#f8f5f0]">
+    <section id="current-openings" className="bg-[#f8f5f0] scroll-mt-24">
       <Container>
         <div className="grid lg:grid-cols-[0.5fr_1fr] lg:min-h-[320px]">
           {/* Left Content */}
           <div className="relative h-full overflow-hidden bg-[#062017] p-8 lg:p-10">
             <div className="relative z-10">
               <p className="mb-4 text-base uppercase tracking-[0.25em] text-[#c89a4b] font-semibold">
-                {sectionContent.heading||"Life at ENSIS"}
+                {sectionContent?.heading || "Life at ENSIS"}
               </p>
 
               <h2 className=" text-2xl leading-tight text-white font-medium">
-                {sectionContent.titlePart1||"Where Passion"}
+                {sectionContent?.titlePart1 || "Where Passion"}
                 <br />
-                {sectionContent.titlePart2||'Meets Purpose'}
+                {sectionContent?.titlePart2 || 'Meets Purpose'}
               </h2>
 
               <p className="mt-2 text-base leading-7 text-white/75"
-                dangerouslySetInnerHTML={{__html:sectionContent.description||`From design studios to production units, every corner of ENSIS is
+                dangerouslySetInnerHTML={{__html: sectionContent?.description || `From design studios to production units, every corner of ENSIS is
                 inspired by creativity, craftsmanship and care.`}}>
               </p>
               <div className="mt-2 max-w-[250px]">
@@ -272,8 +316,8 @@ const experienceOptions = Array.from(
           <div className="grid h-full grid-cols-2 md:grid-cols-4 auto-rows-fr">
             <div className="relative col-span-2 row-span-2">
               <Image
-                src={sectionContent.RightImageGrid[0].imageUrl}
-                alt={sectionContent.RightImageGrid[0].alt}
+                src={grid[0]?.imageUrl || life1}
+                alt={grid[0]?.alt || "Life at Ensis"}
                 fill
                 className="object-cover"
               />
@@ -281,32 +325,32 @@ const experienceOptions = Array.from(
 
             <div className="relative">
               <Image
-          src={sectionContent.RightImageGrid[1].imageUrl}
-                alt={sectionContent.RightImageGrid[1].alt}
+                src={grid[1]?.imageUrl || life2}
+                alt={grid[1]?.alt || "Life at Ensis"}
                 fill
                 className="object-cover"
               />
             </div>
             <div className="relative">
               <Image
-               src={sectionContent.RightImageGrid[2].imageUrl}
-                alt={sectionContent.RightImageGrid[2].alt}
+                src={grid[2]?.imageUrl || life3}
+                alt={grid[2]?.alt || "Life at Ensis"}
                 fill
                 className="object-cover"
               />
             </div>
             <div className="relative">
               <Image
-               src={sectionContent.RightImageGrid[3].imageUrl}
-                alt={sectionContent.RightImageGrid[3].alt}
+                src={grid[3]?.imageUrl || life4}
+                alt={grid[3]?.alt || "Life at Ensis"}
                 fill
                 className="object-cover"
               />
             </div>
             <div className="relative">
               <Image
-            src={sectionContent.RightImageGrid[4].imageUrl}
-                alt={sectionContent.RightImageGrid[4].alt}
+                src={grid[4]?.imageUrl || life5}
+                alt={grid[4]?.alt || "Life at Ensis"}
                 fill
                 className="object-cover"
               />
@@ -320,10 +364,10 @@ const experienceOptions = Array.from(
             <div>
               {/* Heading */}
               <h3 className=" text-2xl text-[#1d1d1d] font-semibold mt-2">
-                {sectionContent.leftSide.heading}
+                {sectionContent?.leftSide?.heading || "Open Positions"}
               </h3>
 
-              <p className="mt-2 text-base" dangerouslySetInnerHTML={{__html:sectionContent.leftSide.description}}>
+              <p className="mt-2 text-base" dangerouslySetInnerHTML={{__html: sectionContent?.leftSide?.description || ""}}>
 
               </p>
 
@@ -343,7 +387,7 @@ const experienceOptions = Array.from(
                 )}
 
                 <button suppressHydrationWarning className="ml-auto rounded-md border border-[#c89a4b] px-3 py-1.5 text-base text-[#c89a4b]">
-                  {sectionContent.leftSide.buttonLabel}
+                  {sectionContent?.leftSide?.buttonLabel || "Search"}
                 </button>
               </div>
 
@@ -381,14 +425,20 @@ const experienceOptions = Array.from(
               {/* Journey */}
               <div className="mt-2">
                 <h3 className="text-lg font-semibold">
-                  {sectionContent.ourHiringJourney.title||"Our Hiring Journey"}
+                  {sectionContent?.ourHiringJourney?.title || "Our Hiring Journey"}
                 </h3>
 
-                <p className="mt-2 text-base text-[#666]" dangerouslySetInnerHTML={{__html:sectionContent.description||`Our simple and transparent process to welcome you to ENSIS.`}}>
+                <p className="mt-2 text-base text-[#666]" dangerouslySetInnerHTML={{__html: sectionContent?.ourHiringJourney?.description || sectionContent?.description || `Our simple and transparent process to welcome you to ENSIS.`}}>
                 </p>
 
                 <div className="mt-4 grid gap-4 md:grid-cols-5">
-                  {sectionContent.ourHiringJourney.steps.map((step, index) => (
+                  {(sectionContent?.ourHiringJourney?.steps || [
+                    { label: "Apply Online", description: "Submit your resume through our career portal." },
+                    { label: "Initial Screening", description: "Short introductory call with talent team." },
+                    { label: "Technical Assessment", description: "Role-specific discussion with department leads." },
+                    { label: "Culture & Values", description: "Interaction with senior leadership." },
+                    { label: "Welcome Aboard", description: "Offer rollout and seamless onboarding." },
+                  ]).map((step, index) => (
                     <div
                       key={step.label}
                       className="rounded-2xl border border-[#e5dfd7] bg-white p-4 text-center"
@@ -410,10 +460,10 @@ const experienceOptions = Array.from(
             <aside ref={formRef} className="relative z-10 lg:-mt-18 lg:sticky lg:top-10 lg:h-fit scroll-mt-24">
               <div className=" bg-[#062017] p-4 text-white shadow-2xl">
                 <h3 className=" text-lg uppercase">
-                  {sectionContent.careerForm.title}
+                  {sectionContent?.careerForm?.title || "Join Ensis Team"}
                 </h3>
 
-                <HtmlRenderer className="mt-3 text-base text-white" content={sectionContent.description||`Send us your details and become part of the ENSIS family.`}
+                <HtmlRenderer className="mt-3 text-base text-white" content={sectionContent?.careerForm?.description || sectionContent?.description || `Send us your details and become part of the ENSIS family.`}
                 >
                 </HtmlRenderer>
 
@@ -531,33 +581,24 @@ const experienceOptions = Array.from(
     <option key={opt} value={opt}>{opt}</option>
   ))}
 </select>
-              <div className="rounded-xl border border-dashed border-[#b98b43] p-4 text-center text-base">
-  <input
-    suppressHydrationWarning
-    type="file"
-    accept=".pdf,.jpg,.jpeg,.png,.webp"
-    className="hidden"
-    id="resume"
-    onChange={(e) =>
-      setResume(
-        e.target.files?.[0] || null
-      )
-    }
-  />
-
-  <label
-    htmlFor="resume"
-    className="cursor-pointer"
-  >
-    <Upload className="mx-auto mb-4" />
-
-    <p className="text-base text-white/70">
-      {resume
-        ? resume.name
-        : "Upload Resume (PDF/Image)"}
-    </p>
-  </label>
-</div>
+              <div
+                role="button"
+                aria-disabled={!appliedJob}
+                onClick={() => {
+                  if (appliedJob) handleApply(appliedJob);
+                }}
+                className={`rounded-xl border border-dashed border-[#b98b43] p-4 text-center text-base transition ${
+                  appliedJob ? "cursor-pointer hover:bg-white/5" : "cursor-not-allowed opacity-50"
+                }`}
+              >
+                <Upload className="mx-auto mb-2 text-[#c89a4b]" />
+                <p className="text-base font-semibold text-white">
+                  {resume ? resume.name : "Screen CV with AI & Apply (PDF/DOC)"}
+                </p>
+                <span className="text-xs text-white/60">
+                  {appliedJob ? "Instant AI qualification score & match" : "Select a job from the list to start AI screening"}
+                </span>
+              </div>
 
              <textarea
   suppressHydrationWarning
@@ -583,20 +624,20 @@ const experienceOptions = Array.from(
     setAgreed(e.target.checked)
   }
 />
-                   {sectionContent.careerForm.termsText}
+                    {sectionContent?.careerForm?.termsText || "I agree to the terms and conditions"}
                   </label>
 <button
   suppressHydrationWarning
-  type="submit"
-  disabled={loading}
-  className="flex w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-base disabled:opacity-60"
+  type="button"
+  disabled={!appliedJob}
+  title={appliedJob ? undefined : "Select a job from the list first"}
+  onClick={() => {
+    if (appliedJob) handleApply(appliedJob);
+  }}
+  className="flex w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-base hover:bg-[#b58637] transition disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-[#c89a4b]"
 >
-  {loading
-    ? "SUBMITTING..."
-    : sectionContent.careerForm.buttonText}
-  {!loading && (
-    <ArrowRight size={16} />
-  )}
+  Start AI CV Screening
+  <ArrowRight size={16} />
 </button>
                 </form>
               </div>
@@ -604,6 +645,91 @@ const experienceOptions = Array.from(
           </div>
         </div>
       </Container>
+
+      {/* ── AI CV SCREENING MODALS (ORGANIC FLOW) ── */}
+      {isUploadCvOpen && screeningJob && typeof document !== "undefined"
+        ? createPortal(
+            <UploadCvModal
+              job={screeningJob}
+              onClose={() => setIsUploadCvOpen(false)}
+              onAnalyze={(data) => {
+                setCandidateData(data);
+                setIsUploadCvOpen(false);
+                setIsEligibilityOpen(true);
+              }}
+            />,
+            document.body
+          )
+        : null}
+
+      {isEligibilityOpen && candidateData && typeof document !== "undefined"
+        ? createPortal(
+            <EligibilityModal
+              isOpen={isEligibilityOpen}
+              candidate={candidateData}
+              score={candidateData.score}
+              onCandidateChange={setCandidateData}
+              onClose={() => setIsEligibilityOpen(false)}
+              onBack={() => {
+                setIsEligibilityOpen(false);
+                setIsUploadCvOpen(true);
+              }}
+              onProceed={() => {
+                setIsEligibilityOpen(false);
+                setIsAppFormOpen(true);
+              }}
+              onApply={() => {
+                setIsEligibilityOpen(false);
+                setIsAppFormOpen(true);
+              }}
+            />,
+            document.body
+          )
+        : null}
+
+      {isAppFormOpen && candidateData && typeof document !== "undefined"
+        ? createPortal(
+            <ApplicationFormModal
+              isOpen={isAppFormOpen}
+              candidateData={candidateData}
+              onClose={() => setIsAppFormOpen(false)}
+              onBack={() => {
+                setIsAppFormOpen(false);
+                setIsEligibilityOpen(true);
+              }}
+              onNext={(data) => {
+                if (data) setCandidateData(data);
+                setApplicationFormData(data || candidateData);
+                setIsAppFormOpen(false);
+                setIsReviewOpen(true);
+              }}
+            />,
+            document.body
+          )
+        : null}
+
+      {isReviewOpen && (applicationFormData || candidateData) && typeof document !== "undefined"
+        ? createPortal(
+            <ReviewSubmitModal
+              isOpen={isReviewOpen}
+              candidateData={applicationFormData || candidateData}
+              formData={applicationFormData || candidateData}
+              onClose={() => {
+                setIsReviewOpen(false);
+                setCandidateData(null);
+                setApplicationFormData(null);
+              }}
+              onBack={() => {
+                setIsReviewOpen(false);
+                setIsAppFormOpen(true);
+              }}
+              onSuccess={(id) => {
+                toast.success(`Application ${id || ""} submitted successfully!`);
+              }}
+            />,
+            document.body
+          )
+        : null}
     </section>
   );
 }

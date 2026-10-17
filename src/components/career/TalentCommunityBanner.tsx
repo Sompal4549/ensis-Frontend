@@ -62,7 +62,7 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
     <section className="relative">
       {/* Background Image */}
       <Image
-        src={sectionContent.bgImage.image||talentBg} // Your background image
+        src={sectionContent?.bgImage?.image || talentBg} // Your background image
         alt="Ready to Create Impact"
         fill
         priority
@@ -75,16 +75,16 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
         {/* Left Content */}
         <div className="max-w-md lg:ml-auto">
           <h2 className=" text-xl text-[#d4a35c] sm:text-2xl font-semibold">
-            {sectionContent.heading||'Ready to Create Impact?'}
+            {sectionContent?.heading || 'Ready to Create Impact?'}
           </h2>
 
-          <HtmlRenderer className="mt-4 text-base text-white/80 max-w-105" content={sectionContent.description||`If you're passionate about wellness, design and innovation,
+          <HtmlRenderer className="mt-4 text-base text-white/80 max-w-105" content={sectionContent?.description || `If you're passionate about wellness, design and innovation,
             we'd love to hear from you.`}>
             
           </HtmlRenderer>
 
           <ul className="mt-6 space-y-4">
-            {(sectionContent.features || features).map((item, index) => (
+            {(sectionContent?.features || features).map((item, index) => (
               <li
                 key={index}
                 className="flex items-center gap-4 text-base text-white/90"
@@ -106,10 +106,10 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
           <div className="pointer-events-none absolute -bottom-5 -right-5 h-24 w-24 rounded-full border border-[#b98b43]/20" />
 
           <h3 className="text-base font-semibold uppercase tracking-wide text-[#d4a35c]">
-            {sectionContent.newsLetterCard.title||`Join Our Talent Community`}
+            {sectionContent?.newsLetterCard?.title || `Join Our Talent Community`}
           </h3>
 
-          <HtmlRenderer className="mt-3 text-base leading-6 text-white/70" content={sectionContent.description||"Receive updates on new openings and career opportunities."}>
+          <HtmlRenderer className="mt-3 text-base leading-6 text-white/70" content={sectionContent?.newsLetterCard?.description || sectionContent?.description || "Receive updates on new openings and career opportunities."}>
             
           </HtmlRenderer>
 

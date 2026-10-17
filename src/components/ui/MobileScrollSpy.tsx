@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef } from "react";
+import { getActiveSectionId } from "./StickyScrollSpy";
 
 /* =========================================================
    TYPES
@@ -49,33 +50,21 @@ export default function MobileScrollSpy({
 
     if (!sectionElements.length) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (isProgrammaticScroll.current) return;
+    let ticking = false;
+    const onScroll = () => {
+      if (isProgrammaticScroll.current || ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        onSectionChange(getActiveSectionId(sectionElements, headerOffset));
+        ticking = false;
+      });
+    };
 
-        const visibleEntries = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort(
-            (a, b) =>
-              a.boundingClientRect.top -
-              b.boundingClientRect.top
-          );
-
-        if (visibleEntries.length > 0) {
-          onSectionChange(visibleEntries[0].target.id);
-        }
-      },
-      {
-        root: null,
-        rootMargin: `-${headerOffset}px 0px -55% 0px`,
-        threshold: [0, 0.1, 0.25, 0.5],
-      }
-    );
-
-    sectionElements.forEach((el) => observer.observe(el));
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
 
     return () => {
-      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
       if (programmaticTimeout.current) {
         clearTimeout(programmaticTimeout.current);
       }

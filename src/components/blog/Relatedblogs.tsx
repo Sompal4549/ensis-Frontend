@@ -3,14 +3,17 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Eye } from "lucide-react";
 import { Container } from "../ui/Container";
+import { formatViews } from "@/utils/blog";
 
 interface RelatedBlog {
   _id?: string;
   slug?: string;
   title: string;
   category?: string;
+  viewCount?: number;
+  isActive?: boolean;
   banner: {
     backgroundImage: string;
     backgroundImageAlt?: string;
@@ -20,15 +23,18 @@ interface RelatedBlog {
 
 interface RelatedBlogsProps {
   allBlogs: RelatedBlog[];
+  /** The post being read, left out of the list */
+  currentSlug?: string;
 }
 
-const RelatedBlogs: React.FC<RelatedBlogsProps> = ({ allBlogs }) => {
-  const blogs = allBlogs.length > 0 ? allBlogs : [];
+const RelatedBlogs: React.FC<RelatedBlogsProps> = ({ allBlogs, currentSlug }) => {
+  const blogs = (allBlogs || []).filter((b) => b.slug && b.slug !== currentSlug && b.isActive !== false);
+  if (blogs.length === 0) return null;
 
   return (
-    <section className="bg-[#faf6ef] py-12 md:py-16">
+    <section className="bg-[#faf6ef] py-6 md:py-8">
       <Container>
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between">
           <h2 className=" text-2xl text-[#1f2c25] md:text-3xl">
             You May Also Like
           </h2>
@@ -52,7 +58,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({ allBlogs }) => {
                   href={`/blog/${blog.slug}`}
                   className="group block h-full overflow-hidden rounded-md border border-[#e8e0d3] bg-white shadow-sm transition-shadow hover:shadow-md"
                 >
-                  <div className="relative h-44 w-full overflow-hidden md:h-48">
+                  <div className="relative h-36 w-full overflow-hidden md:h-40">
                     <Image
                       src={blog?.banner?.backgroundImage || (blog as any)?.blogImage?.image}
                       alt={blog?.banner?.backgroundImageAlt || blog.title}
@@ -62,7 +68,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({ allBlogs }) => {
                     />
                   </div>
 
-                  <div className="p-4">
+                  <div className="p-3">
                     <p className="text-base font-bold uppercase tracking-wider text-[#C9972A]">
                       {blog.category}
                       {blog.banner.readingTime && (
@@ -77,9 +83,13 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({ allBlogs }) => {
                       )}
                     </p>
 
-                    <h3 className="mt-2  text-base leading-snug text-[#1f2c25] transition-colors group-hover:text-[#8d6a3a] md:text-lg">
+                    <h3 className="mt-1.5 line-clamp-2 text-base leading-snug text-[#1f2c25] transition-colors group-hover:text-[#8d6a3a] md:text-lg">
                       {blog.title}
                     </h3>
+                    <p className="mt-2 flex items-center gap-1.5 text-sm text-[#1f2c25]/60">
+                      <Eye size={14} className="text-[#C9972A]" />
+                      {formatViews(blog.viewCount)}
+                    </p>
                   </div>
                 </Link>
               </div>

@@ -17,6 +17,21 @@ type StickyScrollSpyProps = {
   className?: string;
 };
 
+/**
+ * The section whose top has passed just below the header. Uses viewport positions, so it works
+ * whatever the sections' offset parent is. At the bottom of the page the last section wins,
+ * since short final sections can never reach the top.
+ */
+export function getActiveSectionId(sections: HTMLElement[], headerOffset: number): string {
+  const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+  if (atBottom) return sections[sections.length - 1].id;
+  let current = sections[0].id;
+  for (const el of sections) {
+    if (el.getBoundingClientRect().top <= headerOffset + 24) current = el.id;
+  }
+  return current;
+}
+
 export default function StickyScrollSpy({
   items,
   activeSection,
@@ -37,33 +52,23 @@ export default function StickyScrollSpy({
       .filter(Boolean) as HTMLElement[];
     if (!sectionElements.length) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (isProgrammaticScroll.current) return;
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible.length > 0) onSectionChange(visible[0].target.id);
-      },
-      { root: null, rootMargin: `-${headerOffset}px 0px -55% 0px`, threshold: [0, 0.1, 0.25, 0.5] }
-    );
-    sectionElements.forEach((el) => observer.observe(el));
-
     let ticking = false;
     const onScroll = () => {
       if (isProgrammaticScroll.current || ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        const pos = window.scrollY + headerOffset + 20;
-        let cur = items[0].id;
-        sectionElements.forEach((el) => { if (el.offsetTop <= pos) cur = el.id; });
-        onSectionChange(cur);
+        onSectionChange(getActiveSectionId(sectionElements, headerOffset));
         ticking = false;
       });
     };
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     onScroll();
-    return () => { observer.disconnect(); window.removeEventListener("scroll", onScroll); if (programmaticTimeout.current) clearTimeout(programmaticTimeout.current); };
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (programmaticTimeout.current) clearTimeout(programmaticTimeout.current);
+    };
   }, [items, headerOffset, onSectionChange]);
 
   const updateIndicator = useCallback(() => {

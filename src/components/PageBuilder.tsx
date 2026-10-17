@@ -1,6 +1,8 @@
+import { toJsonLd } from "@/lib/seo-text";
 import { getPageComponent } from "@/lib/api/api";
 import RenderSection from "./RenderSections";
-import { generateSchema } from "@/lib/api/seo";
+import { generateSchema, generateSeo } from "@/lib/api/seo";
+import { SITE_URL } from "@/lib/site";
 
 type PageBuilderProps = {
   slug: string;
@@ -12,6 +14,8 @@ type PageSection = {
   key?: string;
   data?: Record<string, any>;
   isActive?: boolean;
+  /** Admin page-section toggle */
+  enabled?: boolean;
 };
 
 const fallbackPageSections: Record<string, PageSection[]> = {
@@ -24,17 +28,94 @@ const fallbackPageSections: Record<string, PageSection[]> = {
     { key: "home.wellnessRoomSetups", data: {} },
     { key: "home.manufacturingAndProjects", data: {} },
     { key: "home.testimonials", data: {} },
+    { key: "home.faqs", data: {} },
     { key: "home.blogInsights", data: {} },
+  ],
+  about: [
+    { key: "about.hero", data: {} },
+    { key: "about.ourStory", data: {} },
+    { key: "about.industriesWeServe", data: {} },
+    { key: "about.ourProducts", data: {} },
+    { key: "about.ourTurnkeyProcess", data: {} },
+    { key: "about.wellnessSection", data: {} },
+    { key: "about.aboutEnsis", data: {} },
+    { key: "about.founderVision", data: {} },
+    { key: "about.testimonials", data: {} },
+    { key: "about.letsBuild", data: {} },
+  ],
+  turnkey: [
+    { key: "turnkey.banner", data: {} },
+    { key: "turnkey.whatIsTurnkey", data: {} },
+    { key: "turnkey.completeSolutions", data: {} },
+    { key: "turnkey.facilities", data: {} },
+    { key: "turnkey.customized", data: {} },
+    { key: "turnkey.featuredProjects", data: {} },
+    { key: "turnkey.readyToBuild", data: {} },
+  ],
+  consultancy: [
+    { key: "consultancy.hero", data: {} },
+    { key: "consultancy.whatWeOffer", data: {} },
+    { key: "consultancy.whyChooseOurProcess", data: {} },
+    { key: "consultancy.readyToGetStarted", data: {} },
+  ],
+  contact: [
+    { key: "contact.hero", data: {} },
+    { key: "contact.getInTouch", data: {} },
+    { key: "contact.ctaBanner", data: {} },
+    { key: "contact.premiumMap", data: {} },
+  ],
+  blog: [
+    { key: "blog.hero", data: {} },
+    { key: "blog.allBlogs", data: {} },
+    { key: "blog.mediaResources", data: {} },
+    { key: "blog.stayInspired", data: {} },
+    { key: "blog.supportWellness", data: {} },
+  ],
+  product: [
+    { key: "product.hero", data: {} },
+    { key: "product.trustedBy", data: {} },
+    { key: "product.productsection", data: {} },
+    { key: "product.whyChoose", data: {} },
+    { key: "product.testimonials", data: {} },
+  ],
+  projects: [
+    { key: "projects.banner", data: {} },
+    { key: "projects.ourProjects", data: {} },
+    { key: "projects.ourClients", data: {} },
+    { key: "projects.whyPartner", data: {} },
+    { key: "projects.contactSection", data: {} },
+  ],
+  career: [
+    { key: "career.banner", data: {} },
+    { key: "career.features", data: {} },
+    { key: "career.whyWork", data: {} },
+    { key: "career.section", data: {} },
+    { key: "career.benefits", data: {} },
+    { key: "career.talentCommunity", data: {} },
+    { key: "career.testimonials", data: {} },
   ],
 };
 
+const normalizeSlug = (s: string) => {
+  const map: Record<string, string> = {
+    "about-us": "about",
+    "products": "product",
+    "turnkey-solutions": "turnkey",
+    "projects-and-clients": "projects",
+    "careers": "career",
+    "contact-us": "contact",
+  };
+  return map[s] || s;
+};
+
 export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps) {
+  const normalized = normalizeSlug(slug);
   try {
     const [pageData, schema] = await Promise.all([
       getPageComponent(slug),
       generateSchema(schemaSlug || slug),
     ]);
-    const sections = Array.isArray(pageData)
+    const rawSections = Array.isArray(pageData)
       ? pageData
       : Array.isArray(pageData?.sections)
       ? pageData.sections
@@ -42,13 +123,24 @@ export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps
       ? pageData.data.sections
       : Array.isArray(pageData?.page?.sections)
       ? pageData.page.sections
-      : fallbackPageSections[slug] || [];
+      : null;
+
+    const sections = (rawSections && rawSections.length > 0)
+      ? rawSections
+      : fallbackPageSections[slug] || fallbackPageSections[normalized] || [];
 
     const sortedSections = [...sections].sort((a: any, b: any) => {
       const ai = typeof a?.index === "number" ? a.index : Number.MAX_SAFE_INTEGER;
       const bi = typeof b?.index === "number" ? b.index : Number.MAX_SAFE_INTEGER;
       return ai - bi;
     });
+
+    // FAQs come from the admin FAQ module, so the home page shows them even when the
+    // CMS section list predates them: placed just before the blog/CTA block
+    if (normalized === "home" && !sortedSections.some((s: PageSection) => (s.key || s.componentKey) === "home.faqs")) {
+      const blogIndex = sortedSections.findIndex((s: PageSection) => (s.key || s.componentKey) === "home.blogInsights");
+      sortedSections.splice(blogIndex === -1 ? sortedSections.length : blogIndex, 0, { key: "home.faqs", data: {} });
+    }
 
     if (sortedSections.length === 0) {
       return (
@@ -58,17 +150,33 @@ export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps
       );
     }
 
+    // Admin schema when set and valid; otherwise a basic WebPage schema from the page's own SEO
+    let jsonLd = toJsonLd(schema);
+    if (!jsonLd) {
+      const seo = await generateSeo(schemaSlug || slug);
+      const canonical = seo.alternates?.canonical ? String(seo.alternates.canonical) : undefined;
+      jsonLd = toJsonLd({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: typeof seo.title === "string" ? seo.title : undefined,
+        description: seo.description || undefined,
+        url: canonical,
+        publisher: { "@type": "Organization", name: "ENSIS", url: SITE_URL },
+      });
+    }
+
     return (
       <main>
-        {schema && (
+        {jsonLd && (
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: schema }}
+            dangerouslySetInnerHTML={{ __html: jsonLd }}
           />
         )}
         {sortedSections.map((section: PageSection, index: number) => {
           const componentKey = section.key || section.componentKey;
-          if (!componentKey) return null;
+          // Sections switched off in the admin stay hidden
+          if (!componentKey || section.isActive === false || section.enabled === false) return null;
           return (
             <RenderSection
               key={`${componentKey}-${index}`}
@@ -79,8 +187,8 @@ export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps
         })}
       </main>
     );
-  } catch (error) {
-    console.error(`PageBuilder failed to load page content for "${slug}"`, error);
+  } catch (error: any) {
+    console.warn(`[PageBuilder] Failed to load page content for "${slug}": ${error?.message || error}`);
     return (
       <main className="flex min-h-screen items-center justify-center">
         <p>Unable to load page content for {slug}. Please try again later.</p>

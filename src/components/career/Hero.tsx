@@ -18,13 +18,16 @@ export interface CareersBannerProps {
   buttonPath:string
 }
 
-const CareersBanner = ({sectionContent }: {sectionContent:CareersBannerProps}) => {
+const CareersBanner = ({sectionContent }: {sectionContent?: CareersBannerProps}) => {
+  const bgImg = sectionContent?.bgImage?.imageUrl || bgImage;
+  const bgAlt = sectionContent?.bgImage?.imageAlt || "Careers at ENSIS";
+
   return (
     <section className="relative">
       {/* Background */}
       <Image
-        src={sectionContent.bgImage.imageUrl||bgImage}
-        alt={sectionContent.bgImage.imageAlt||"Careers at ENSIS"}
+        src={bgImg}
+        alt={bgAlt}
         fill
         priority
         className="object-left xl:object-center object-cover"
@@ -33,28 +36,28 @@ const CareersBanner = ({sectionContent }: {sectionContent:CareersBannerProps}) =
         <Container>
           {/* Eyebrow */}
           <p className="mb-4 text-base font-semibold uppercase tracking-[0.2em] text-[#c07d19]">
-            {sectionContent.heading||"Careers at ENSIS"}
+            {sectionContent?.heading||"Careers at ENSIS"}
           </p>
 
           {/* Heading */}
           <h1 className="text-[#0e3d21]">
-            {sectionContent.titlePart1||"Build Spaces"}
+            {sectionContent?.titlePart1||"Build Spaces"}
             <br />
-            {sectionContent.titlePart2||"That Heal."}
+            {sectionContent?.titlePart2||"That Heal."}
             <br />
-            {sectionContent.titlePart3||"Build a Better You."}
+            {sectionContent?.titlePart3||"Build a Better You."}
           </h1>
 
           {/* Description */}
           <HtmlRenderer className="mt-6 max-w-md text-base font-semibold text-[#313628]"
-          content={sectionContent.description||`At ENSIS, we blend ancient wisdom with modern innovation to create
+          content={sectionContent?.description||`At ENSIS, we blend ancient wisdom with modern innovation to create
             authentic wellness experiences. Join our passionate team and build a
             career that makes a difference.`}>
         
           </HtmlRenderer>
           <div className="w-[310px] mt-4">
 
-<GreenButton text={sectionContent.buttonText||"Explore Opportunities"} path={sectionContent.buttonPath||"/contact"}/>
+<GreenButton text={sectionContent?.buttonText||"Explore Opportunities"} path={sectionContent?.buttonPath||"/contact"}/>
           </div>
         
       </Container>

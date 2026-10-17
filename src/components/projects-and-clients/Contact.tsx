@@ -103,8 +103,18 @@ interface Props {
 }
 
 export default function ProjectsContactBanner({
-  sectionContent = fallbackContactBanner,
+  sectionContent,
 }: Props) {
+  const content = {
+    ...fallbackContactBanner,
+    ...sectionContent,
+    contact: {
+      ...fallbackContactBanner.contact,
+      ...(sectionContent?.contact || {}),
+    },
+    leftImage: sectionContent?.leftImage || fallbackContactBanner.leftImage,
+  };
+
   return (
     <section className="overflow-hidden bg-[#002112] ">
       <Container className="!py-0">
@@ -117,7 +127,7 @@ export default function ProjectsContactBanner({
               {/* CTA */}
               <div className="relative bg-[#002112] pl-10">
                 <Image
-                  src={sectionContent.leftImage}
+                  src={content.leftImage}
                   alt="Wellness"
                   fill
                   className="object-fill z-10 max-w-40"
@@ -127,15 +137,15 @@ export default function ProjectsContactBanner({
 
                 <div className="absolute inset-0 flex flex-col justify-center  text-white z-20 pl-50">
                   <h3 className="text-lg  mb-4">
-                    {sectionContent.ctaTitle}
+                    {content.ctaTitle}
                   </h3>
 
                   <p className="max-w-md mb-6 text-base">
-                    {sectionContent.ctaDescription}
+                    {content.ctaDescription}
                   </p>
                   <div className="max-w-62.5">
 
-                    <GreenButton text={sectionContent.ctaButtonText} path="/projects-and-clients" />
+                    <GreenButton text={content.ctaButtonText} path="/projects-and-clients" />
                   </div>
                 </div>
               </div>
@@ -153,10 +163,10 @@ export default function ProjectsContactBanner({
 
                       <div>
                         <h4 className="font-semibold">
-                          {sectionContent.contact.officeName}
+                          {content.contact.officeName}
                         </h4>
 
-                        <p>{sectionContent.contact.address}</p>
+                        <p>{content.contact.address}</p>
                       </div>
                       <div className="flex gap-4 items-center justify-center">
                          <Image src={arrow} alt='arrow' width={150} height={40} className="max-w-55 sm:max-w-75 md:max-w-87.5" crossOrigin="anonymous" />
@@ -165,17 +175,17 @@ export default function ProjectsContactBanner({
                     <div className="flex items-baseline justify-between">
                       <div>
 
-                        <p>{sectionContent.contact.phone}</p>
-                        <p>{sectionContent.contact.email}</p>
-                        <p>{sectionContent.contact.website}</p>
+                        <p>{content.contact.phone}</p>
+                        <p>{content.contact.email}</p>
+                        <p>{content.contact.website}</p>
                       </div>
                       <div className="">
                         <h4 className="font-semibold">
                           Working Hours
                         </h4>
 
-                        <p>{sectionContent.contact.workingDays}</p>
-                        <p>{sectionContent.contact.workingHours}</p>
+                        <p>{content.contact.workingDays}</p>
+                        <p>{content.contact.workingHours}</p>
                       </div>
                     </div>
                   </div>
@@ -191,7 +201,7 @@ export default function ProjectsContactBanner({
         {/* Bottom Strip */}
         <div className="bg-[#032c22] px-4 py-4 text-center">
           <p className="text-base md:text-lg text-[#e4c27c]">
-            {sectionContent.bottomText}
+            {content.bottomText}
           </p>
         </div>
 

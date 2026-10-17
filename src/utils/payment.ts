@@ -18,8 +18,10 @@ export interface RazorpayOrderData {
 }
 
 export interface CreateOrderResponse {
-  status: string;
+  success?: boolean;
+  statusCode?: number;
   message?: string;
+  status?: string;
   data: RazorpayOrderData;
 }
 
@@ -30,8 +32,10 @@ export interface VerifyPaymentPayload {
 }
 
 export interface VerifyPaymentResponse {
-  status: string;
+  success?: boolean;
+  statusCode?: number;
   message?: string;
+  status?: string;
   data: {
     transaction: {
       status: string;
@@ -46,8 +50,10 @@ export interface VerifyPaymentResponse {
 }
 
 export interface PaymentStatusResponse {
-  status: string;
+  success?: boolean;
+  statusCode?: number;
   message?: string;
+  status?: string;
   data: {
     orderId: string;
     paymentStatus: string;
@@ -64,7 +70,18 @@ export interface PaymentStatusResponse {
  */
 async function handleResponse<T>(response: Response): Promise<T> {
   const payload = await response.json().catch(() => ({}));
-  if (!response.ok || payload.status === "error") {
+  const isOk = response.ok;
+  const hasSuccess = payload.hasOwnProperty('success');
+  
+  // Handle Organic Envelope format: { success: true, statusCode: 200, data: { ... } }
+  if (hasSuccess) {
+    if (!payload.success || !isOk) {
+      throw new Error(payload.message || `API request failed`);
+    }
+    return (payload.data !== undefined ? payload.data : payload) as T;
+  }
+  
+  if (!isOk || payload.status === "error") {
     throw new Error(payload.message || `API request failed with status: ${response.status}`);
   }
   return payload as T;

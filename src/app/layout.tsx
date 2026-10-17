@@ -28,9 +28,11 @@ const playfair = Playfair_Display({
 
 import { Header } from "@/components/layout/Header";
 import { getAdvancedSeo } from "@/lib/api/seo";
+import { getComponentContent } from "@/lib/api/api";
 const Footer = nextDynamic(() => import("@/components/layout/Footer").then((mod) => mod.Footer));
 const SocialSidebar = nextDynamic(() => import("@/components/layout/SocialSidebar").then((mod) => mod.default));
 const WhatsAppFloat = nextDynamic(() => import("@/components/ui/WhatsAppFloat").then((mod) => mod.default));
+const EnsisChatbot = nextDynamic(() => import("@/components/ui/EnsisChatbot").then((mod) => mod.default));
 const ToastProvider = nextDynamic(() => import("@/components/ui/ToastProvider").then((mod) => mod.default));
 
 
@@ -44,7 +46,11 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const advSeo = await getAdvancedSeo();
+  const [advSeo, headerLayout] = await Promise.all([
+    getAdvancedSeo(),
+    // Header logo is rendered on the server so the admin logo shows on first paint
+    getComponentContent<{ logo?: { imageUrl?: string; alt?: string } }>("layout.header", {}),
+  ]);
 
   const analytics = advSeo?.analytics || {};
   const searchConsole = advSeo?.searchConsole || {};
@@ -128,7 +134,7 @@ export default async function RootLayout({
           </noscript>
         )}
         <ShopProvider>
-          <Header />
+          <Header initialLogo={headerLayout.logo} />
           <main className="pt-22">{children}</main>
           <Footer />          {/* <Footer image={footerTop1} />
           <Footer image={footerTop2} />
@@ -138,6 +144,7 @@ export default async function RootLayout({
           <Footer image={footerTop6} /> */}
           <SocialSidebar />
           <WhatsAppFloat />
+          <EnsisChatbot />
           <ToastProvider />
         </ShopProvider>
       </body>

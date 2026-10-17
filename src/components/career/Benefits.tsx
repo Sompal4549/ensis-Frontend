@@ -51,7 +51,11 @@ export interface CareerBenefitsProps {
   title: string;
   benefits: Benefit[]
 }
-const CareerBenefits = ({ sectionContent }: { sectionContent: CareerBenefitsProps }) => {
+const CareerBenefits = ({ sectionContent }: { sectionContent?: CareerBenefitsProps }) => {
+  const activeBenefits = Array.isArray(sectionContent?.benefits) && sectionContent.benefits.length > 0
+    ? sectionContent.benefits
+    : benefits;
+
   return (
     <section className="relative overflow-hidden">
 
@@ -62,7 +66,7 @@ const CareerBenefits = ({ sectionContent }: { sectionContent: CareerBenefitsProp
         {/* Heading */}
         <div className="mb-4 flex items-center gap-5">
           <h2 className="shrink-0  text-lg font-semibold uppercase tracking-wide text-[#2A2A2A]">
-            {sectionContent.title || `Benefits of Being an Ensisian`}
+            {sectionContent?.title || `Benefits of Being an Ensisian`}
           </h2>
 
           <div className="hidden h-px flex-1 bg-[#D9D2C9] md:block" />
@@ -74,10 +78,10 @@ const CareerBenefits = ({ sectionContent }: { sectionContent: CareerBenefitsProp
 
         {/* Benefits */}
         <div className="grid grid-cols-2 gap-y-8 md:grid-cols-3 lg:grid-cols-6 lg:gap-0">
-          {sectionContent.benefits.map((item, index) => (
+          {activeBenefits.map((item, index) => (
             <div
               key={item.title}
-              className={`flex items-start gap-4 px-4 lg:px-6 ${index !== benefits.length - 1
+              className={`flex items-start gap-4 px-4 lg:px-6 ${index !== activeBenefits.length - 1
                   ? "lg:border-r lg:border-[#E3DDD5]"
                   : ""
                 }`}

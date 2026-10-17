@@ -85,14 +85,20 @@ const AboutWellnessSection = ({
 }) => {
   const resolved = { ...fallbackContent, ...sectionContent };
 
-  const gridCols = gridColsClass(resolved.stats?.length || 6);
+  const mainImageUrl = typeof resolved.imageurl === "string" ? resolved.imageurl : resolved.imageurl?.imageUrl || fallbackContent.imageurl.imageUrl;
+  const mainImageAlt = typeof resolved.imageurl === "string" ? "Wellness Building" : resolved.imageurl?.alt || "Wellness Building";
+
+  const coreValues = Array.isArray(resolved.ourCoreValues) && resolved.ourCoreValues.length > 0 ? resolved.ourCoreValues : fallbackContent.ourCoreValues;
+  const statsList = Array.isArray(resolved.stats) && resolved.stats.length > 0 ? resolved.stats : fallbackContent.stats;
+
+  const gridCols = gridColsClass(statsList?.length || 6);
 
   return (
     <section className="w-full relative mt-2">
         <div className="absolute left-0 w-[100%] md:w-[40%] top-0 h-50 md:h-full md:bottom-8 z-10">
             <Image
-              src={getImageUrl(resolved.imageurl.imageUrl)}
-              alt={resolved.imageurl.alt}
+              src={getImageUrl(mainImageUrl)}
+              alt={mainImageAlt}
               className="w-full h-full object-cover"
               crossOrigin="anonymous"
               fill
@@ -135,19 +141,22 @@ const AboutWellnessSection = ({
             </h3>
 
             <div className="space-y-2">
-              {resolved.ourCoreValues.map((item, index) => (
-                <div key={index} className="flex items-center gap-4">
-                  {/* Icon Placeholder */}
-                  <div className="w-9 h-9">
-                    <Image alt={item.imageurl.alt} src={getImageUrl(item.imageurl.imageUrl)} width={30} height={30} className="object-contain"
-                    crossOrigin="anonymous" style={{ height: "auto" }} />
-                  </div>
+              {coreValues.map((item, index) => {
+                const itemUrl = typeof item.imageurl === "string" ? item.imageurl : (item.imageurl?.imageUrl || (item as any).icon || (item as any).image || ayurved.src);
+                const itemAlt = typeof item.imageurl === "string" ? item.title : (item.imageurl?.alt || item.title || "Core Value");
+                return (
+                  <div key={index} className="flex items-center gap-4">
+                    <div className="w-9 h-9 relative shrink-0">
+                      <Image alt={itemAlt} src={getImageUrl(itemUrl)} width={30} height={30} className="object-contain"
+                      crossOrigin="anonymous" style={{ height: "auto" }} />
+                    </div>
 
-                  <span className="text-base  font-semibold">
-                    {item.title}
-                  </span>
-                </div>
-              ))}
+                    <span className="text-base font-semibold">
+                      {item.title}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
           </div>
@@ -157,27 +166,30 @@ const AboutWellnessSection = ({
         {/* Bottom Stats Bar */}
         <div className="mt-4 bg-[#03261b] rounded-2xl py-4 px-5 border-3 border-[#e8c37a] md:absolute -bottom-10 left-0 right-0">
           <div className={`grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-x-4 gap-y-6 ${gridCols}`}>
-            {resolved.stats.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-start gap-4 pr-6 md:border-r border-[#aa8f47] last:border-r-0"
-              >
-                {/* Icon Placeholder */}
-                <div className="mt-1 shrink-0 w-10 h-10 flex items-center justify-center">
-                    <Image alt={item.imageurl.alt} src={getImageUrl(item.imageurl.imageUrl)} width={70} height={50} className="object-contain" crossOrigin="anonymous" style={{ height: "auto" }} />
-                </div>
+            {statsList.map((item, index) => {
+              const statUrl = typeof item.imageurl === "string" ? item.imageurl : (item.imageurl?.imageUrl || (item as any).icon || (item as any).image || since.src);
+              const statAlt = typeof item.imageurl === "string" ? item.title : (item.imageurl?.alt || item.title || "Stat");
+              return (
+                <div
+                  key={index}
+                  className="flex items-start gap-4 pr-6 md:border-r border-[#aa8f47] last:border-r-0"
+                >
+                  <div className="mt-1 shrink-0 w-10 h-10 flex items-center justify-center">
+                    <Image alt={statAlt} src={getImageUrl(statUrl)} width={70} height={50} className="object-contain" crossOrigin="anonymous" style={{ height: "auto" }} />
+                  </div>
 
-                <div>
-                  <p className="text-base font-semibold text-[#e8c37a]">
-                    {item.title}
-                  </p>
+                  <div>
+                    <p className="text-base font-semibold text-[#e8c37a]">
+                      {item.title}
+                    </p>
 
-                  <p className="mt-1 text-base leading-5 text-white font-medium">
-                    {item.subtitle}
-                  </p>
+                    <p className="mt-1 text-base leading-5 text-white font-medium">
+                      {item.subtitle}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
         </div>

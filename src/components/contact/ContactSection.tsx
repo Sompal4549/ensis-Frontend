@@ -116,6 +116,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          source: "contact",
           fullName: formData.fullName,
           mobileNumber: formData.mobile,
           email: formData.email,
@@ -142,18 +143,22 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
 
           {/* LEFT — Contact Info */}
           <div className="bg-white rounded-2xl border border-[#ebe7df] p-7 md:p-9 shadow-sm">
-            <h2 className="text-xl font-bold text-[#111]">{sectionContent.title || "Contact Information"}</h2>
+            <h2 className="text-xl font-bold text-[#111]">{sectionContent?.title || "Contact Information"}</h2>
             <div className="w-8 h-[3px] bg-[#D9B25F] mt-1.5 mb-7 rounded-full" />
 
             <div className="divide-y divide-[#f0ece5]">
-              {sectionContent.contactDetails.map((detail) => (
+              {(sectionContent?.contactDetails || []).map((detail) => (
                 <div key={detail.id} className="flex items-start gap-4 py-4">
                   <div className="w-10 h-10 rounded-xl bg-[#f5f0e8] border border-[#ebe7df] flex items-center justify-center shrink-0">
-                    <Image src={detail.icon} alt={detail.title} width={18} height={18} />
+                    {detail.icon ? (
+                      <Image src={detail.icon} alt={detail.title} width={18} height={18} />
+                    ) : (
+                      <span className="text-[#D9B25F] text-xs font-bold">●</span>
+                    )}
                   </div>
                   <div>
                     <p className="text-base font-bold text-[#111]">{detail.title}</p>
-                    <HtmlRenderer className="text-base text-[#6b7280] mt-0.5 leading-6" content={detail.description}></HtmlRenderer>
+                    <HtmlRenderer className="text-base text-[#6b7280] mt-0.5 leading-6" content={detail.description || ""}></HtmlRenderer>
                   </div>
                 </div>
               ))}

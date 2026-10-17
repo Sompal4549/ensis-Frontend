@@ -92,28 +92,41 @@ interface ConsultancyServicesContent {
   }>;
 }
 
-export default function ConsultancyServices({ sectionContent }: { sectionContent: ConsultancyServicesContent }) {
+export default function ConsultancyServices({ sectionContent }: { sectionContent?: ConsultancyServicesContent }) {
+  const subheading = sectionContent?.subheading || consultancyServicesData.badge;
+  const title = sectionContent?.title || consultancyServicesData.title;
+  const description = sectionContent?.description || consultancyServicesData.description;
+  const serviceCards = (sectionContent?.serviceCards && sectionContent.serviceCards.length > 0)
+    ? sectionContent.serviceCards
+    : consultancyServicesData.services.map(s => ({
+        title: s.title,
+        description: s.description,
+        iconBg: s.iconBg,
+        image: s.icon,
+        learnMoreLink: s.href || "contact",
+        learnMoreText: "Learn More",
+      }));
+
   return (
     <section>
       <Container>
         {/* HEADER */}
         <div className="mx-auto max-w-[540px] text-center">
           <p className="text-base font-semibold uppercase tracking-[2px] text-[#D66736]">
-            {sectionContent.subheading}
+            {subheading}
           </p>
 
           <h2 className="mt-2 text-[28px] font-bold leading-tight">
-            {sectionContent.title}
+            {title}
           </h2>
 
-          <p className="mx-auto mt-3 max-w-[500px] text-base font-medium" dangerouslySetInnerHTML={{__html:sectionContent.description}}>
-            
+          <p className="mx-auto mt-3 max-w-[500px] text-base font-medium" dangerouslySetInnerHTML={{__html: description}}>
           </p>
         </div>
 
         {/* CARDS */}
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-          {sectionContent.serviceCards.map((service) => (
+          {serviceCards.map((service, index) => (
            <div
   key={service.title}
   className="group flex flex-col rounded-[14px] border border-[#E9E9E9] bg-white px-4 py-4 transition-all duration-300 hover:shadow-md items-center text-center"
