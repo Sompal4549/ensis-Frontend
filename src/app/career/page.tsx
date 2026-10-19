@@ -6,5 +6,9 @@ export async function generateMetadata() {
 }
 
 export default function CareerPage() {
-  return <CareerLanding />;
+  return (
+    <div className="pt-6 sm:pt-8 md:pt-10">
+      <CareerLanding />
+    </div>
+  );
 }

@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default async function AllJobsPage() {
   const { jobs } = await listOpenJobs();
   return (
-    <div className="bg-[#fbf6ec] py-10">
+    <div className="bg-[#fbf6ec] pt-14 sm:pt-16 md:pt-20 pb-12">
       <Container>
         <Link href="/career" className="inline-flex items-center gap-1.5 text-[15px] font-semibold text-[#163a2b] hover:text-[#a8792c]">
           <ArrowLeft size={16} /> Back to Careers

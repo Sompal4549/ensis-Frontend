@@ -28,7 +28,7 @@ export function FlowHero({
   subtitle,
 }: FlowHeroProps) {
   return (
-    <div className="relative border-b border-[#eadfcd] bg-[#fbf6ec]/60 pt-4 pb-6 sm:pb-8">
+    <div className="relative border-b border-[#eadfcd] bg-[#fbf6ec]/60 pt-10 sm:pt-12 md:pt-14 pb-6 sm:pb-8">
       <Container className="!py-0">
         {/* Breadcrumbs Row */}
         <nav aria-label="Breadcrumb" className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-[#8d6a3a]">
