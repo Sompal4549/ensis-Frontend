@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, Home, ChevronRight } from "lucide-react";
+import { Container } from "@/components/ui/Container";
 import { serif, Eyebrow } from "@/components/career-v2/ui";
 import spaBannerImg from "@/assets/career/flow/spa-banner.webp";
 
@@ -28,7 +29,7 @@ export function FlowHero({
 }: FlowHeroProps) {
   return (
     <div className="relative border-b border-[#eadfcd] bg-[#fbf6ec]/60 pt-4 pb-6 sm:pb-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <Container className="!py-0">
         {/* Breadcrumbs Row */}
         <nav aria-label="Breadcrumb" className="mb-3 flex flex-wrap items-center gap-1.5 text-xs text-[#8d6a3a]">
           <Link href="/" className="inline-flex items-center gap-1 transition-colors hover:text-[#163a2b]">
@@ -103,7 +104,7 @@ export function FlowHero({
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }

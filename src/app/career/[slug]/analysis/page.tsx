@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { serif, greenButton, goldButton, Eyebrow } from "@/components/career-v2/ui";
 import { FlowHero } from "@/components/career-v2/flow/FlowHero";
+import { Container } from "@/components/ui/Container";
 import { Stepper, APPLICATION_FLOW_STEPS } from "@/components/career-v2/flow/Stepper";
 import { MatchRing } from "@/components/career-v2/flow/MatchRing";
 import {
@@ -153,7 +154,7 @@ export default function AnalysisPage() {
 
       <Stepper currentStep={2} steps={APPLICATION_FLOW_STEPS} />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <Container className="py-8 sm:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* Main Left Area */}
           <div className="lg:col-span-8 space-y-6">
@@ -525,7 +526,7 @@ export default function AnalysisPage() {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }

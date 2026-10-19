@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { serif, greenButton, goldOutlineButton, Eyebrow } from "@/components/career-v2/ui";
 import { FlowHero } from "@/components/career-v2/flow/FlowHero";
+import { Container } from "@/components/ui/Container";
 import { Stepper } from "@/components/career-v2/flow/Stepper";
 import { MatchRing } from "@/components/career-v2/flow/MatchRing";
 import { BreakdownBars } from "@/components/career-v2/flow/BreakdownBars";
@@ -126,7 +127,7 @@ export default function ResultPage() {
 
       <Stepper currentStep={3} steps={ELIGIBILITY_STEPS} />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <Container className="py-8 sm:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* Main Left Content */}
           <div className="lg:col-span-8 space-y-7">
@@ -460,7 +461,7 @@ export default function ResultPage() {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }

@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { serif, greenButton, Eyebrow, CareerIcon } from "@/components/career-v2/ui";
 import { FlowHero } from "@/components/career-v2/flow/FlowHero";
+import { Container } from "@/components/ui/Container";
 import type { PublicJob } from "@/lib/careerApi";
 import { jobExperience, jobLocation, jobType } from "@/lib/careers";
 import { setCvFile, saveFlowState } from "@/lib/careerFlowV2";
@@ -122,7 +123,7 @@ export function JobDetailClient({ job, slug }: { job: PublicJob; slug: string })
         subtitle={job.shortDescription || "Join our team and design wellness spaces for a healthier tomorrow."}
       />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <Container className="py-8 sm:py-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
           {/* Left Column: Job Description & Details */}
           <div className="lg:col-span-7 xl:col-span-8 space-y-8">
@@ -365,7 +366,7 @@ export function JobDetailClient({ job, slug }: { job: PublicJob; slug: string })
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }
