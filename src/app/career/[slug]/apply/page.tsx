@@ -32,6 +32,9 @@ import {
   loadFlowState,
   saveFlowState,
   getCvFile,
+  recordSubmittedApplication,
+  findExistingSubmission,
+  type SubmittedAppRecord,
   type FlowDetailsState,
   type FlowAdditionalState,
   type FlowReferenceItem,
@@ -113,6 +116,7 @@ export default function ApplyPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [existingSubmission, setExistingSubmission] = useState<SubmittedAppRecord | null>(null);
 
   useEffect(() => {
     if (!slug) return;
@@ -124,12 +128,22 @@ export default function ApplyPage() {
 
     setJob(state.job);
     setScreening(state.screening);
-    setProfile(state.profile || state.screening.result.profile);
+    const prof = state.profile || state.screening.result.profile;
+    setProfile(prof);
 
     if (state.details) setDetails((prev) => ({ ...prev, ...state.details }));
     if (state.additional) setAdditional((prev) => ({ ...prev, ...state.additional }));
     if (state.references && state.references.length > 0) setReferences(state.references);
     if (state.consents) setConsents((prev) => ({ ...prev, ...state.consents }));
+
+    // Check if candidate already submitted for this job
+    const existing = findExistingSubmission(slug, prof?.email, prof?.phone);
+    if (existing) {
+      setExistingSubmission(existing);
+      setErrorMessage(
+        `You have already submitted an application for this position on ${new Date(existing.submittedAt).toLocaleDateString()} (Application ID: ${existing.applicationId}). Multiple applications within 30 days are not permitted.`
+      );
+    }
   }, [slug, router]);
 
   if (!job || !screening?.result || !profile) {
@@ -198,6 +212,13 @@ export default function ApplyPage() {
       return;
     }
 
+    if (existingSubmission) {
+      setErrorMessage(
+        `You have already submitted an application for this role (Application ID: ${existingSubmission.applicationId}). Multiple submissions are not accepted within 30 days.`
+      );
+      return;
+    }
+
     if (!additional.whyJoin.trim()) {
       setErrorMessage("Please briefly tell us why you want to join ENSIS.");
       return;
@@ -211,17 +232,29 @@ export default function ApplyPage() {
 
       const applicationInput: ApplicationInput = {
         screeningId: screening.screeningId,
-        jobId: job._id,
+        jobId: job._id || slug,
         profile,
         details,
         additional,
         references,
         documents: docs.map((d) => ({ fileId: d.fileId, label: d.label })),
         consents,
+        screeningResult: screening.result,
+        screeningCvName: screening.cv?.fileName,
       };
 
       const cvFile = getCvFile();
       const response = await submitApplication(applicationInput, cvFile);
+
+      // Record in local persistent storage to prevent future duplicates
+      recordSubmittedApplication({
+        applicationId: response.applicationId,
+        jobId: slug || job._id,
+        jobTitle: job.title,
+        email: profile.email,
+        phone: profile.phone,
+        submittedAt: response.submittedAt,
+      });
 
       // Save submission result into flow state
       saveFlowState({
@@ -238,10 +271,21 @@ export default function ApplyPage() {
       router.push(`/career/${encodeURIComponent(slug)}/submitted`);
     } catch (err: any) {
       console.error("Application submission error:", err);
-      setErrorMessage(
-        err.message || "Unable to submit application at this time. Please verify your details and try again."
-      );
+      const msg = err.message || "Unable to submit application at this time. Please verify your details and try again.";
+      setErrorMessage(msg);
       setIsSubmitting(false);
+
+      if (msg.toLowerCase().includes("already submitted") || msg.toLowerCase().includes("duplicate")) {
+        const idMatch = msg.match(/ENS-CAR-[0-9]{4}-[0-9]+/i);
+        setExistingSubmission({
+          applicationId: idMatch ? idMatch[0] : "ENS-CAR",
+          jobId: slug,
+          jobTitle: job.title,
+          email: profile.email,
+          phone: profile.phone,
+          submittedAt: new Date().toISOString(),
+        });
+      }
     }
   };
 
@@ -615,13 +659,15 @@ export default function ApplyPage() {
               <div className="pt-3 space-y-2.5">
                 <button
                   type="button"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || Boolean(existingSubmission)}
                   onClick={handleSubmit}
-                  className={`w-full ${greenButton} justify-center py-3 text-sm font-bold shadow-md cursor-pointer ${
-                    isSubmitting ? "opacity-75 cursor-not-allowed" : ""
+                  className={`w-full ${greenButton} justify-center py-3 text-sm font-bold shadow-md ${
+                    isSubmitting || Boolean(existingSubmission) ? "opacity-75 cursor-not-allowed" : "cursor-pointer"
                   }`}
                 >
-                  {isSubmitting ? (
+                  {existingSubmission ? (
+                    "Already Applied"
+                  ) : isSubmitting ? (
                     <span className="inline-flex items-center gap-2">
                       <span className="size-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
                       Submitting Application...
@@ -633,12 +679,21 @@ export default function ApplyPage() {
                   )}
                 </button>
 
-                <Link
-                  href={`/career/${encodeURIComponent(slug)}/review`}
-                  className={`w-full ${goldOutlineButton} justify-center py-2.5 text-xs font-semibold`}
-                >
-                  <ArrowLeft size={14} /> Back to Review Details
-                </Link>
+                {existingSubmission ? (
+                  <Link
+                    href={`/career/${encodeURIComponent(slug)}/submitted`}
+                    className={`w-full ${goldOutlineButton} justify-center py-2.5 text-xs font-semibold`}
+                  >
+                    View Existing Submission ({existingSubmission.applicationId})
+                  </Link>
+                ) : (
+                  <Link
+                    href={`/career/${encodeURIComponent(slug)}/review`}
+                    className={`w-full ${goldOutlineButton} justify-center py-2.5 text-xs font-semibold`}
+                  >
+                    <ArrowLeft size={14} /> Back to Review Details
+                  </Link>
+                )}
               </div>
 
               {/* Security note */}

@@ -137,6 +137,8 @@ export type ApplicationInput = {
     futureContact: boolean;
     privacy: boolean;
   };
+  screeningResult?: ScreeningResult;
+  screeningCvName?: string;
 };
 
 export type ApplicationSubmitResponse = {
@@ -493,15 +495,26 @@ export async function submitApplication(
       return payload.data as ApplicationSubmitResponse;
     }
 
-    // Pass through explicit error messages from contract (409, 410, 422)
-    if (res.status === 409 || res.status === 410 || res.status === 422) {
-      throw new Error(payload?.message || `Application rejected (${res.status})`);
+    // Pass through explicit error messages from backend (409 duplicate, 410 closed, 422 validation, etc.)
+    if (!res.ok) {
+      const msg =
+        payload?.message ||
+        (Array.isArray(payload?.errors) && payload.errors[0]) ||
+        `Application rejected (${res.status})`;
+      throw new Error(msg);
     }
   } catch (backendErr: any) {
-    if (backendErr.message && (backendErr.message.includes("409") || backendErr.message.includes("410") || backendErr.message.includes("422") || backendErr.message.includes("eligible") || backendErr.message.includes("duplicate"))) {
+    // If backend returned a functional response error (e.g. 409 duplicate, 410 closed, 422 validation),
+    // NEVER swallow it with fallback — throw it so candidate sees the rejection message!
+    if (
+      backendErr &&
+      backendErr.message &&
+      !backendErr.message.includes("Failed to fetch") &&
+      !backendErr.name?.includes("Abort")
+    ) {
       throw backendErr;
     }
-    console.warn("[career] Backend POST /careers/applications failed, attempting fallback submission:", backendErr);
+    console.warn("[career] Backend POST /careers/applications network error, attempting fallback submission:", backendErr);
   }
 
   // ---------------------------------------------------------------------------
