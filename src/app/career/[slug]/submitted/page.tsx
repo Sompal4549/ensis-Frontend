@@ -85,11 +85,6 @@ export default function SubmittedPage() {
   return (
     <div className="min-h-screen bg-[#fbf8f2] text-[#3f3a33]">
       <FlowHero
-        breadcrumbs={[
-          { label: "Careers", href: "/career" },
-          { label: jobTitle, href: `/career/${encodeURIComponent(slug)}` },
-          { label: "Application Submitted" },
-        ]}
         backHref="/career"
         backLabel="← Explore Openings"
         eyebrow="CAREERS AT ENSIS"
@@ -101,28 +96,28 @@ export default function SubmittedPage() {
       {/* Stepper with all 4 steps marked completed */}
       <Stepper currentStep={5} steps={APPLICATION_FLOW_STEPS} />
 
-      <Container className="py-8 sm:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+      <Container className="py-5 sm:py-7">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
           {/* Main Left Content */}
-          <div className="lg:col-span-8 space-y-7">
+          <div className="lg:col-span-8 space-y-4 sm:space-y-5">
             {/* 1. Success Hero Banner Card */}
-            <div className="rounded-2xl border border-[#eadfcd] bg-[#fffdf8] p-6 sm:p-8 shadow-[0_6px_30px_rgba(154,115,52,0.08)]">
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-center">
+            <div className="rounded-2xl border border-[#eadfcd] bg-[#fffdf8] p-4 sm:p-5.5 shadow-[0_6px_30px_rgba(154,115,52,0.08)]">
+              <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 sm:gap-6 items-center">
                 {/* Left Illustration / Emblem */}
                 <div className="sm:col-span-4 flex items-center justify-center">
-                  <div className="relative size-36 sm:size-44 overflow-hidden rounded-2xl bg-gradient-to-b from-[#f4ebd9]/40 to-[#fffdf8] p-2 flex items-center justify-center">
+                  <div className="relative size-28 sm:size-36 overflow-hidden rounded-2xl bg-gradient-to-b from-[#f4ebd9]/40 to-[#fffdf8] p-2 flex items-center justify-center">
                     <Image
                       src={podiumCheckImg}
                       alt="Application Success"
-                      width={160}
-                      height={160}
+                      width={130}
+                      height={130}
                       className="object-contain drop-shadow-md"
                     />
                   </div>
                 </div>
 
                 {/* Right Congratulatory Content */}
-                <div className="sm:col-span-8 space-y-3">
+                <div className="sm:col-span-8 space-y-2.5">
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#e8efe9] text-[#163a2b] border border-[#c2d7c5]">
                     <CheckCircle2 size={13} className="text-[#163a2b]" />
                     Application Submitted Successfully

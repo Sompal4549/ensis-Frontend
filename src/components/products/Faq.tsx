@@ -45,7 +45,7 @@ export default function FaqSection({ product }: { product: Product }) {
   const list = overview?.faqs?.length ? overview.faqs : faqs;
   return (
     <Container className="py-4">
-      <p className="text-base font-bold uppercase  text-[#8d6a3a] mb-4 ">
+      <p className="text-base font-semibold uppercase  text-[#8d6a3a] mb-4 ">
         Frequently Asked Questions
       </p>
 

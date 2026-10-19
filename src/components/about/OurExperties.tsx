@@ -82,7 +82,7 @@ const ExpertiseSection: React.FC<{ sectionContent: ExpertiseSectionContent }> = 
                             <div className="p-4 flex flex-col gap-4">
                                 <div>
                                     <div className="flex justify-between items-center">
-                                        <h3 className="text-base font-bold uppercase tracking-wide text-[#2d2d2d] leading-tight w-[65%]">
+                                        <h3 className="text-base font-semibold uppercase tracking-wide text-[#2d2d2d] leading-tight w-[65%]">
                                             {item.title}
                                         </h3><button className="w-9 h-9 rounded-full bg-[#0f3b2e] text-white flex items-center justify-center hover:scale-105 transition">
                                             <ArrowRight size={16} />

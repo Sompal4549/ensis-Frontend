@@ -69,7 +69,7 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent?: Turnk
                 </div>
 
                 {/* Headline */}
-                <h1 className="text-[#1a2e1a] text-3xl md:text-5xl font-light tracking-tight">
+                <h1 className="text-[#1a2e1a] text-3xl md:text-5xl font-normal tracking-tight">
                   {title}
                   {highlight && (
                     <span className="block mt-1 text-[#c38727] font-medium">{highlight}</span>

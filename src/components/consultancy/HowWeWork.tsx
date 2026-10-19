@@ -156,7 +156,7 @@ export default function HowWeWork({ sectionContent }: { sectionContent?: HowWeWo
                   {whyChoose.heading}
                 </p>
 
-                <h2 className="mt-2 text-[28px] font-bold leading-[1.1] ">
+                <h2 className="mt-2 text-[28px] font-semibold leading-[1.1] ">
                   {whyChoose.title}
                 </h2>
 
@@ -170,7 +170,7 @@ export default function HowWeWork({ sectionContent }: { sectionContent?: HowWeWo
                       className="flex items-center gap-4"
                     >
                       {/* CHECK ICON */}
-                      <div className="flex h-4 w-4 shrink-0 font-bold items-center justify-center rounded-full bg-[#2563EB]">
+                      <div className="flex h-4 w-4 shrink-0 font-semibold items-center justify-center rounded-full bg-[#2563EB]">
                         {/* ADD CHECK ICON HERE */}
                         <Check size={10} strokeWidth={2} color="#fff" />
                       </div>
@@ -201,7 +201,7 @@ export default function HowWeWork({ sectionContent }: { sectionContent?: HowWeWo
                 {ourProcess.heading}
               </p>
 
-              <h2 className="mt-1 text-[28px] font-bold leading-tight">
+              <h2 className="mt-1 text-[28px] font-semibold leading-tight">
                 {ourProcess.title}
               </h2>
             </div>

@@ -8,8 +8,25 @@ import type { CareerIconName } from "@/lib/careers";
 
 /** Shared visual pieces of the career redesign (Ensis green / gold on cream) */
 
-/** Playfair (loaded as --font-cormorant); set inline because the global h1–h6 rules force the sans font */
-export const serif: React.CSSProperties = { fontFamily: "var(--font-cormorant), Georgia, 'Times New Roman', serif" };
+import { DM_Serif_Display, Playfair_Display } from "next/font/google";
+
+export const dmSerif = DM_Serif_Display({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
+export const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  display: "swap",
+});
+
+/** DM Serif Display - exact match for elegant, thick headline style */
+export const serif: React.CSSProperties = {
+  fontFamily: `${dmSerif.style.fontFamily}, 'DM Serif Display', ${playfair.style.fontFamily}, Georgia, serif`,
+};
+export const serifFontClass = dmSerif.className;
 
 export const careerColors = {
   green: "#163a2b",

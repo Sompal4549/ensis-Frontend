@@ -147,7 +147,7 @@ subtitle="Access your wellness projects and services"
               required
               maxLength={6}
               placeholder="123456"
-              className={`${inputClass} tracking-[4px] text-center font-bold`}
+              className={`${inputClass} tracking-[4px] text-center font-semibold`}
             />
             {timer > 0 && (
               <div className="mt-4 flex flex-col items-center justify-center gap-4">
@@ -174,9 +174,9 @@ subtitle="Access your wellness projects and services"
                       className="transition-all duration-1000 ease-linear"
                     />
                   </svg>
-                  <span className="absolute text-[11px] font-bold text-[#8b6b35]">{timer}</span>
+                  <span className="absolute text-[11px] font-semibold text-[#8b6b35]">{timer}</span>
                 </div>
-                <p className="text-[9px] font-bold uppercase tracking-[1px] text-[#8b6b35]/60 text-center">
+                <p className="text-[9px] font-semibold uppercase tracking-[1px] text-[#8b6b35]/60 text-center">
                   Waiting for resend...
                 </p>
               </div>

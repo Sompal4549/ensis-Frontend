@@ -120,7 +120,7 @@ export default function ProductCard({
           />
         </Link>
 
-        <p className="mt-1.5 text-[17px] font-bold text-[#b8863b]">
+        <p className="mt-1.5 text-[17px] font-semibold text-[#b8863b]">
           {formatPrice(product?.price)}
         </p>
 

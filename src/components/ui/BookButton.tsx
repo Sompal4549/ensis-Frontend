@@ -38,7 +38,7 @@ export default function BookButton({ path, text,leftIcon, rightIcon, variant = '
             : 'bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)]'
           }`}
       >{leftIcon&&<span className={`w-[14px] h-[14px] shrink-0 text-white`}>{leftIcon}</span>}
-             <span className={`font-bold ${fontSize} text-center leading-tight tracking-wide sm:tracking-widest text-white`}>
+             <span className={`font-semibold ${fontSize} text-center leading-tight tracking-wide sm:tracking-widest text-white`}>
                   {text || 'BOOK A STALL'}
                 </span>
                {rightIcon|| <ArrowRight className={`w-3 h-3 shrink-0 group-hover/btn:translate-x-1 transition-transform text-white`} />}

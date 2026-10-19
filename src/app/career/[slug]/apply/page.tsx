@@ -294,11 +294,6 @@ export default function ApplyPage() {
   return (
     <div className="min-h-screen bg-[#fbf8f2] text-[#3f3a33]">
       <FlowHero
-        breadcrumbs={[
-          { label: "Careers", href: "/career" },
-          { label: job.title, href: `/career/${encodeURIComponent(slug)}` },
-          { label: "Complete Application" },
-        ]}
         backHref={`/career/${encodeURIComponent(slug)}/review`}
         backLabel="← Back to Review Details"
         eyebrow="CAREERS AT ENSIS"
@@ -309,13 +304,13 @@ export default function ApplyPage() {
 
       <Stepper currentStep={4} steps={APPLICATION_FLOW_STEPS} />
 
-      <Container className="py-8 sm:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+      <Container className="py-5 sm:py-7">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
           {/* Main Left Content: 3 Form Sections */}
-          <div className="lg:col-span-8 space-y-7">
+          <div className="lg:col-span-8 space-y-4 sm:space-y-5">
             {errorMessage && (
-              <div className="flex items-start gap-2.5 rounded-xl border border-[#fecaca] bg-[#fef2f2] p-4 text-xs sm:text-sm text-[#991b1b]">
-                <AlertCircle size={18} className="shrink-0 mt-0.5 text-[#dc2626]" />
+              <div className="flex items-start gap-2.5 rounded-xl border border-[#fecaca] bg-[#fef2f2] p-3 text-xs sm:text-sm text-[#991b1b]">
+                <AlertCircle size={16} className="shrink-0 mt-0.5 text-[#dc2626]" />
                 <span className="font-semibold">{errorMessage}</span>
               </div>
             )}
@@ -656,12 +651,12 @@ export default function ApplyPage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-3 space-y-2.5">
+              <div className="pt-2 space-y-2">
                 <button
                   type="button"
                   disabled={isSubmitting || Boolean(existingSubmission)}
                   onClick={handleSubmit}
-                  className={`w-full ${greenButton} justify-center py-3 text-sm font-bold shadow-md ${
+                  className={`w-full ${greenButton} justify-center py-2.5 text-xs sm:text-sm font-bold shadow-md ${
                     isSubmitting || Boolean(existingSubmission) ? "opacity-75 cursor-not-allowed" : "cursor-pointer"
                   }`}
                 >
@@ -674,7 +669,7 @@ export default function ApplyPage() {
                     </span>
                   ) : (
                     <>
-                      Submit Application <ArrowRight size={16} />
+                      Submit Application <ArrowRight size={15} />
                     </>
                   )}
                 </button>

@@ -726,7 +726,7 @@ export default function EnquiryPage({
                 <input suppressHydrationWarning
                   id="agreeToContact"
                   type="checkbox"
-                  className="mt-0.5 h-4 w-4 rounded border-[#d8cdb8] text-[#b1793d] focus:ring-[#b1793d]/40 font-bold"
+                  className="mt-0.5 h-4 w-4 rounded border-[#d8cdb8] text-[#b1793d] focus:ring-[#b1793d]/40 font-semibold"
                   checked={formData.agreeToContact}
                   onChange={(e) => setField("agreeToContact", e.target.checked)}
                 />

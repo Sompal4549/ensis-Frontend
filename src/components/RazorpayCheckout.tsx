@@ -37,7 +37,7 @@ export function RazorpayCheckout({
         type="button"
         onClick={handlePay}
         disabled={disabled || isPending}
-        className={`relative w-full overflow-hidden rounded-xl border border-white/10 px-6 py-4 font-bold tracking-wide text-white shadow-2xl transition-all duration-300 active:scale-[0.98] ${
+        className={`relative w-full overflow-hidden rounded-xl border border-white/10 px-6 py-4 font-semibold tracking-wide text-white shadow-2xl transition-all duration-300 active:scale-[0.98] ${
           disabled || isPending
             ? "cursor-not-allowed bg-slate-800/50"
             : "bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-500 hover:via-purple-500 hover:to-indigo-600 hover:shadow-indigo-500/25 hover:shadow-[0_12px_30px_-6px]"

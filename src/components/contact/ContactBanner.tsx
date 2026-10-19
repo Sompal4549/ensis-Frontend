@@ -37,7 +37,7 @@ const ContactCtaBanner = ({ sectionContent }: { sectionContent: ContactBannerPro
               </div>
 
               <div>
-                <h2 className="text-xl font-bold text-[#D9B25F] md:text-2xl">
+                <h2 className="text-xl font-semibold text-[#D9B25F] md:text-2xl">
                   {sectionContent?.title||'Need Immediate Assistance?'}
                 </h2>
 

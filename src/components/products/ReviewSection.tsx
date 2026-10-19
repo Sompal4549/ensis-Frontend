@@ -161,7 +161,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                         />
                       ))}
                     </div>
-                    <span className="text-base font-bold">{rev.user}</span>
+                    <span className="text-base font-semibold">{rev.user}</span>
                     <span className="text-base text-gray-400">{new Date(rev.createdAt).toLocaleDateString()}</span>
                   </div>
                   <p className="text-base text-gray-700 leading-relaxed">{rev.comment}</p>
@@ -186,7 +186,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                   
                   <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                      <label className="text-base font-bold uppercase mb-2 block">Rating</label>
+                      <label className="text-base font-semibold uppercase mb-2 block">Rating</label>
                       <div className="flex gap-1">
                         {[...Array(5)].map((_, i) => {
                           const starValue = i + 1;
@@ -210,7 +210,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                     </div>
 
                     <div>
-                      <label className="text-base font-bold uppercase mb-2 block">Your Experience</label>
+                      <label className="text-base font-semibold uppercase mb-2 block">Your Experience</label>
                       <textarea suppressHydrationWarning
                         rows={4}
                         value={comment}
@@ -223,7 +223,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
 
                     <button suppressHydrationWarning
                       type="submit"
-                      className="w-full py-3 bg-[#313b30] text-white text-base font-bold uppercase tracking-widest rounded-lg hover:bg-black transition-colors"
+                      className="w-full py-3 bg-[#313b30] text-white text-base font-semibold uppercase tracking-widest rounded-lg hover:bg-black transition-colors"
                     >
                       {userReviewId ? "Update Review" : "Submit Review"}
                     </button>
@@ -240,7 +240,7 @@ export default function ReviewSection({ productId, productTitle, productSlug }: 
                   <p className="text-base text-emerald-600 mt-1 mb-4">Thank you for sharing your experience.</p>
                   <button suppressHydrationWarning
                     onClick={() => setSubmitted(false)}
-                    className="w-full py-2 border border-[#8d6a3a] text-[#8d6a3a] text-base font-bold uppercase tracking-widest rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-colors"
+                    className="w-full py-2 border border-[#8d6a3a] text-[#8d6a3a] text-base font-semibold uppercase tracking-widest rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-colors"
                   >
                     Edit Review Again
                   </button>

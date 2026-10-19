@@ -386,7 +386,7 @@ export default function CheckoutPage() {
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#1F3A2A]/5">
                 <ShoppingBag size={28} className="text-[#c7a55b]" />
               </div>
-              <h1 className="text-2xl font-bold text-[#1F3A2A]" >
+              <h1 className="text-2xl font-semibold text-[#1F3A2A]" >
                 Your session is inactive
               </h1>
               <p className="mx-auto mt-3 max-w-xs text-base leading-6 text-[#7a7062]">
@@ -394,7 +394,7 @@ export default function CheckoutPage() {
               </p>
               <Link
                 href="/products"
-                className="mt-5 inline-flex h-12 items-center justify-center gap-3 rounded-xl bg-[#1F3A2A] px-8 text-sm font-bold uppercase tracking-[0.18em] text-white transition-all duration-300 hover:bg-[#c7a55b]"
+                className="mt-5 inline-flex h-12 items-center justify-center gap-3 rounded-xl bg-[#1F3A2A] px-8 text-sm font-semibold uppercase tracking-[0.18em] text-white transition-all duration-300 hover:bg-[#c7a55b]"
               >
                 Browse Products <ArrowRight size={16} />
               </Link>
@@ -405,7 +405,7 @@ export default function CheckoutPage() {
               <div className="space-y-3">
                 <div className="flex items-center gap-4">
                   <div>
-                    <h1 className="text-3xl font-bold leading-none text-[#1F3A2A]" >
+                    <h1 className="text-3xl font-semibold leading-none text-[#1F3A2A]" >
                       Checkout
                     </h1>
                     <p className="mt-2 text-sm text-[#8a7c63]">
@@ -417,10 +417,10 @@ export default function CheckoutPage() {
                 {/* Form Block */}
                 <div className="relative overflow-hidden rounded-3xl border border-[#ece3d2] bg-white/90 p-4 backdrop-blur-sm sm:p-5" style={{ boxShadow: "rgba(50,50,93,0.25) 0px 6px 12px -2px, rgba(0,0,0,0.3) 0px 3px 7px -3px" }}>
                   <div className="mb-4 flex items-center gap-3 border-b border-[#ece3d2] pb-3">
-                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#1F3A2A] text-sm font-bold text-white">
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#1F3A2A] text-sm font-semibold text-white">
                       1
                     </div>
-                    <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-[#1F3A2A]">
+                    <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-[#1F3A2A]">
                       Shipping Destination
                     </h2>
                   </div>
@@ -434,7 +434,7 @@ export default function CheckoutPage() {
                             <div className="flex items-center justify-between mb-2">
                               <div className="flex items-center gap-2">
                                 <Home size={14} className="text-[#c7a55b]" />
-                                <span className="text-sm font-bold uppercase tracking-[0.16em] text-[#8a7c63]">{shippingAddress.label || "Address"}</span>
+                                <span className="text-sm font-semibold uppercase tracking-[0.16em] text-[#8a7c63]">{shippingAddress.label || "Address"}</span>
                               </div>
                               <button type="button" onClick={() => setEditingAddress(true)} className="flex items-center gap-1.5 rounded-lg border border-[#e4dccb] px-3 py-1 text-sm font-semibold text-[#1F3A2A] transition-colors hover:border-[#c7a55b] hover:bg-[#c7a55b]/10">
                                 <Pencil size={12} />
@@ -461,7 +461,7 @@ export default function CheckoutPage() {
                             type="button"
                             disabled={isPlacingOrder}
                             onClick={handlePlaceOrder}
-                            className="group relative mt-1 flex w-full items-center justify-center gap-4 overflow-hidden rounded-xl bg-[#1F3A2A] px-5 py-3 text-base font-bold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:bg-[#18301f] disabled:cursor-not-allowed disabled:opacity-60"
+                            className="group relative mt-1 flex w-full items-center justify-center gap-4 overflow-hidden rounded-xl bg-[#1F3A2A] px-5 py-3 text-base font-semibold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:bg-[#18301f] disabled:cursor-not-allowed disabled:opacity-60"
                             style={{ boxShadow: "rgba(50,50,93,0.25) 0px 6px 12px -2px, rgba(0,0,0,0.3) 0px 3px 7px -3px" }}
                           >
                             {isPlacingOrder ? (
@@ -486,7 +486,7 @@ export default function CheckoutPage() {
                         /* Editable address form */
                         <>
                           <div className="flex items-center justify-between mb-1">
-                              <span className="text-sm font-bold uppercase tracking-[0.16em] text-[#8a7c63]">Editing Address</span>
+                              <span className="text-sm font-semibold uppercase tracking-[0.16em] text-[#8a7c63]">Editing Address</span>
                               <button type="button" onClick={() => setEditingAddress(false)} className="text-sm font-semibold uppercase tracking-[0.1em] text-[#c7a55b] hover:underline">
                               Cancel
                             </button>
@@ -644,7 +644,7 @@ export default function CheckoutPage() {
                       <button suppressHydrationWarning
                         type="submit"
                         disabled={isPlacingOrder}
-                        className="group relative mt-1 flex w-full items-center justify-center gap-4 overflow-hidden rounded-xl bg-[#1F3A2A] px-5 py-3 text-base font-bold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:bg-[#18301f] disabled:cursor-not-allowed disabled:opacity-60"
+                        className="group relative mt-1 flex w-full items-center justify-center gap-4 overflow-hidden rounded-xl bg-[#1F3A2A] px-5 py-3 text-base font-semibold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:bg-[#18301f] disabled:cursor-not-allowed disabled:opacity-60"
                         style={{ boxShadow: "rgba(50,50,93,0.25) 0px 6px 12px -2px, rgba(0,0,0,0.3) 0px 3px 7px -3px" }}
                       >
                         {isPlacingOrder ? (
@@ -670,7 +670,7 @@ export default function CheckoutPage() {
                   ) : (
                     <div className="space-y-3">
                       <div className="rounded-2xl border border-[#d8e3cf] bg-[#f2f7ee] p-4">
-                        <p className="flex items-center gap-3 text-sm font-bold uppercase tracking-[0.14em] text-[#516a35]">
+                        <p className="flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#516a35]">
                           <BadgeCheck size={18} /> Order created successfully
                         </p>
                         <p className="mt-2 text-sm text-[#5c6f50]">
@@ -678,7 +678,7 @@ export default function CheckoutPage() {
                           <code className="rounded bg-white/70 px-2 py-0.5 font-mono text-[#1F3A2A]">{orderId}</code>
                         </p>
                         <div className="mt-3 border-t border-[#d8e3cf] pt-3 text-sm leading-5 text-[#5c6f50]">
-                          <p className="font-bold">Deliver to:</p>
+                          <p className="font-semibold">Deliver to:</p>
                           <p className="mt-1">
                             {shippingAddress.fullName || shippingAddress.label} • {shippingAddress.street}
                             {shippingAddress.landmark ? `, ${shippingAddress.landmark}` : ""},{" "}
@@ -690,7 +690,7 @@ export default function CheckoutPage() {
 
                       {/* Payment */}
                       <div className="rounded-2xl border border-[#ece3d2] bg-[#fbf9f4] p-4">
-                        <p className="mb-3 text-sm font-bold uppercase tracking-[0.12em] text-[#1F3A2A]">
+                        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.12em] text-[#1F3A2A]">
                           Select payment method
                         </p>
                         <RazorpayCheckout
@@ -725,10 +725,10 @@ export default function CheckoutPage() {
                 {/* Order Summary */}
                 <div className="overflow-hidden rounded-3xl border border-[#ece3d2] bg-white/90 p-5 backdrop-blur-sm" style={{ boxShadow: "rgba(50,50,93,0.25) 0px 6px 12px -2px, rgba(0,0,0,0.3) 0px 3px 7px -3px" }}>
                   <div className="mb-4 flex items-center justify-between border-b border-[#ece3d2] pb-3">
-                    <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-[#1F3A2A]">
+                    <h2 className="text-sm font-semibold uppercase tracking-[0.12em] text-[#1F3A2A]">
                       Order Summary
                     </h2>
-                    <span className="rounded-full bg-[#1F3A2A] px-3 py-1 text-xs font-bold text-[#e9d7a8]">
+                    <span className="rounded-full bg-[#1F3A2A] px-3 py-1 text-xs font-semibold text-[#e9d7a8]">
                       {summary.cartCount} items
                     </span>
                   </div>
@@ -759,7 +759,7 @@ export default function CheckoutPage() {
                             {formatCurrency(item.price)} × {item.quantity}
                           </p>
                         </div>
-                        <span className="tabular-nums shrink-0 text-sm font-bold text-[#1F3A2A]">
+                        <span className="tabular-nums shrink-0 text-sm font-semibold text-[#1F3A2A]">
                           {formatCurrency(item.price * item.quantity)}
                         </span>
                       </div>
@@ -800,8 +800,8 @@ export default function CheckoutPage() {
                     )}
 
                     <div className="mt-3 flex items-center justify-between border-t-2 border-[#c7a55b]/60 pt-3">
-                      <span className="text-base font-bold uppercase tracking-wide text-[#1F3A2A]">Grand Total</span>
-                      <span className="tabular-nums text-xl font-bold text-[#1F3A2A]">
+                      <span className="text-base font-semibold uppercase tracking-wide text-[#1F3A2A]">Grand Total</span>
+                      <span className="tabular-nums text-xl font-semibold text-[#1F3A2A]">
                         {formatCurrency(summary.grandTotal)}
                       </span>
                     </div>
@@ -816,7 +816,7 @@ export default function CheckoutPage() {
             <>
               {/* Payment Methods */}
               <div className="mt-6 rounded-3xl border border-[#2a4a38] bg-[#1F3A2A] p-5" style={{ boxShadow: "rgba(50,50,93,0.25) 0px 6px 12px -2px, rgba(0,0,0,0.3) 0px 3px 7px -3px" }}>
-                <h3 className="mb-4 flex items-center gap-3 text-sm font-bold uppercase tracking-[0.14em] text-[#e9d7a8]">
+                <h3 className="mb-4 flex items-center gap-3 text-sm font-semibold uppercase tracking-[0.14em] text-[#e9d7a8]">
                   <Wallet size={16} className="text-[#c7a55b]" /> Payment Methods
                 </h3>
                 <div className="grid grid-cols-4 gap-3">
@@ -839,7 +839,7 @@ export default function CheckoutPage() {
                   ))}
                 </div>
                 <p className="mt-3 text-xs text-white/40">
-                  Secured by <span className="font-bold text-[#e9d7a8]">Razorpay</span> • 256-bit SSL Encryption
+                  Secured by <span className="font-semibold text-[#e9d7a8]">Razorpay</span> • 256-bit SSL Encryption
                 </p>
               </div>
 
@@ -862,8 +862,8 @@ export default function CheckoutPage() {
           {/* ─────────── Why Buy From ENSIS ─────────── */}
           <div className="mt-10">
             <div className="mb-6 text-center">
-              <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#c7a55b]">Why Buy From ENSIS</p>
-              <h2 className="mt-2 text-3xl font-bold text-[#1F3A2A]" >
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#c7a55b]">Why Buy From ENSIS</p>
+              <h2 className="mt-2 text-3xl font-semibold text-[#1F3A2A]" >
                 Crafted for Wellness, Built to Last
               </h2>
               <p className="mt-2 text-sm text-[#8a7c63]">Every ENSIS product is designed with quality, expertise and long-term wellness in mind.</p>
@@ -897,8 +897,8 @@ export default function CheckoutPage() {
               />
               <div className="relative flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
                 <div>
-                  <p className="text-sm font-bold uppercase tracking-[0.28em] text-[#e9d7a8]">Need Help?</p>
-                  <h2 className="mt-2 text-2xl font-bold" >
+                  <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#e9d7a8]">Need Help?</p>
+                  <h2 className="mt-2 text-2xl font-semibold" >
                     Our wellness experts are here
                   </h2>
                   <p className="mt-2 max-w-md text-sm leading-6 text-[#d9d4c9]">

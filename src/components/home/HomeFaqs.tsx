@@ -3,6 +3,8 @@ import SubHeading from './SubHeading';
 import FaqAccordion, { type HomeFaq } from './FaqAccordion';
 import { API_URL } from '@/lib/api/api';
 import { toJsonLd } from '@/lib/seo-text';
+import Image from 'next/image';
+import faqbg from "@/assets/home/faq_bg.png"
 
 const defaultContent = {
   subtitle: 'HELP & INFORMATION',
@@ -56,9 +58,10 @@ export const HomeFaqs = async ({ subtitle, heading, description }: HomeFaqsProps
   });
 
   return (
-    <section className="bg-[#fbf8f2] py-6 md:py-10">
+    <section className="bg-[#fbf8f2] py-6 md:py-10 relative">
+      <Image src={faqbg} alt="FAQs" fill className="absolute inset-0 object-cover z-0" />
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />}
-      <Container>
+      <Container className="relative z-10">
         <div className="mx-auto max-w-5xl">
           <div className="mb-6 flex flex-col items-center text-center">
             <div className="flex items-center gap-3">
@@ -81,7 +84,7 @@ export const HomeFaqs = async ({ subtitle, heading, description }: HomeFaqsProps
             </p>
           </div>
 
-          <FaqAccordion faqs={faqs} />
+          <FaqAccordion faqs={faqs.slice(0,5)} />
         </div>
       </Container>
     </section>

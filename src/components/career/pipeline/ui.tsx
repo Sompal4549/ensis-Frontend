@@ -96,7 +96,7 @@ export function ProgressSteps({ current }: { current: number }) {
               <div className="flex items-center gap-2">
                 <span
                   className={[
-                    "grid h-7 w-7 place-items-center rounded-full text-[11px] font-bold transition",
+                    "grid h-7 w-7 place-items-center rounded-full text-[11px] font-semibold transition",
                     done
                       ? "bg-emerald-500 text-white"
                       : active
@@ -176,7 +176,7 @@ export function ScoreRing({
         </div>
       </div>
       <span
-        className={`rounded-full border px-3 py-1 text-[11px] font-bold uppercase tracking-[0.12em] ${theme.chip}`}
+        className={`rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] ${theme.chip}`}
       >
         {theme.label}
       </span>
@@ -230,7 +230,7 @@ export function SectionTitle({
   return (
     <div className="mb-5">
       {eyebrow ? (
-        <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.18em] text-emerald-600">
+        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-emerald-600">
           {eyebrow}
         </p>
       ) : null}
@@ -354,7 +354,7 @@ export function SideCard({
   return (
     <div className={`rounded-2xl border p-4 ${accentClass}`}>
       {title ? (
-        <p className="mb-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+        <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
           {title}
         </p>
       ) : null}

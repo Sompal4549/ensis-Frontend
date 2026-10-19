@@ -39,6 +39,14 @@ h1 {
   letter-spacing: -0.01em;
 }
 
+/* Bold text is 600 site-wide (browsers default <b>/<strong> to 700, e.g. inside CMS and blog HTML) */
+@layer base {
+  b,
+  strong {
+    font-weight: 600;
+  }
+}
+
 /* ── Phase 2: Mobile body floor & typographic guardrails ──
    Inside @layer base so explicit utilities (text-xs, leading-*, etc.)
    keep precedence; these only raise unstyled elements. */

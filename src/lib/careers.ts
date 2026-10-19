@@ -84,10 +84,10 @@ export const CAREER_DEFAULTS: CareerContent = {
     quote: "Together, we create wellness spaces for a healthier tomorrow.",
   },
   whyWork: {
-    eyebrow: "Why Work with Ensis",
+    eyebrow: "WHY WORK AT ENSIS?",
     heading: "A Career with Purpose",
     description:
-      "At ENSIS, you will be part of a passionate and collaborative environment where design, innovation and wellbeing come together to create spaces that make a real difference.",
+      "We're not just creating interiors and equipment, we're crafting experiences that transform lives. Join a team that believes in purpose over profit and wellness over everything.",
     items: [
       { icon: "leaf", title: "Purpose-Driven Work", text: "Contribute to wellness spaces that enhance people's lives." },
       { icon: "users", title: "Supportive Team Environment", text: "Collaborate with talented and driven colleagues across design, manufacturing, sales and operations." },

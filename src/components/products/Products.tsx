@@ -748,7 +748,7 @@ const toggleIdealFor = (value: string) => {
                     type="button"
                     disabled={enquiryLoading}
                     onClick={handleEnquirySubmit}
-                    className="w-full flex items-center justify-center gap-1.5 px-4 h-8 rounded-lg bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)] text-white font-bold text-base tracking-widest hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full flex items-center justify-center gap-1.5 px-4 h-8 rounded-lg bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)] text-white font-semibold text-base tracking-widest hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {enquiryLoading ? (
                       <span className="inline-block w-3.5 h-3.5 border-2 border-[#c8a45d] border-t-transparent rounded-full animate-spin" />

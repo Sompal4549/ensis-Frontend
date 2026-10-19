@@ -71,7 +71,7 @@ export default function TurnkeyMeaning({ sectionContent }: { sectionContent?: Tu
 
           {/* ── COLUMN 1: What does Turnkey mean ── */}
           <div className="flex flex-col gap-2 xl:pr-6">
-            <p className="text-[#d19f4f] text-base font-bold uppercase">
+            <p className="text-[#d19f4f] text-base font-semibold uppercase">
               {subheading}
             </p>
             <h2 className="text-2xl font-semibold leading-tight">

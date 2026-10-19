@@ -496,7 +496,7 @@ function PersonalInformation({
             {isVerifying ? (
               <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-black/60 text-white">
                 <Loader2 className="h-[22px] w-[22px] animate-spin text-emerald-400" />
-                <span className="mt-[4px] text-[9px] font-bold">Verifying AI...</span>
+                <span className="mt-[4px] text-[9px] font-semibold">Verifying AI...</span>
               </div>
             ) : (
               <span className="absolute bottom-[4px] right-[4px] z-10 grid h-[24px] w-[24px] place-items-center rounded-full bg-[#088049] text-white shadow-md transition-colors hover:bg-[#06683b]">
@@ -507,13 +507,13 @@ function PersonalInformation({
 
           <div className="flex flex-col justify-start gap-[6px] rounded-[6px] border border-[#bfe9cf] bg-[#effbf3] p-[7px]">
             {isVerifying ? (
-              <div className="flex items-center gap-[6px] text-[13px] font-bold text-[#0284c7]">
+              <div className="flex items-center gap-[6px] text-[13px] font-semibold text-[#0284c7]">
                 <Loader2 className="h-[15px] w-[15px] animate-spin" />
                 Checking Vision...
               </div>
             ) : isPhotoVerified ? (
               <div className="space-y-[3px]">
-                <div className="flex items-center gap-[5px] text-[13.5px] font-bold text-[#047857]">
+                <div className="flex items-center gap-[5px] text-[13.5px] font-semibold text-[#047857]">
                   <CheckCircle2 className="h-[16px] w-[16px] fill-[#059669] text-white" />
                   Photo Verified
                 </div>
@@ -523,7 +523,7 @@ function PersonalInformation({
               </div>
             ) : verificationError ? (
               <div className="space-y-[3px]">
-                <div className="flex items-center gap-[5px] text-[13px] font-bold text-[#b91c1c]">
+                <div className="flex items-center gap-[5px] text-[13px] font-semibold text-[#b91c1c]">
                   <XCircle className="h-[15px] w-[15px] text-[#dc2626]" />
                   Photo Rejected
                 </div>
@@ -533,7 +533,7 @@ function PersonalInformation({
               </div>
             ) : (
               <div className="space-y-[3px]">
-                <div className="flex items-center gap-[6px] text-[13.5px] font-bold text-[#0a7043]">
+                <div className="flex items-center gap-[6px] text-[13.5px] font-semibold text-[#0a7043]">
                   <Sparkles className="h-[15px] w-[15px] text-[#059669]" />
                   Photo is Mandatory <span className="text-[#d91d26]">*</span>
                 </div>
@@ -547,7 +547,7 @@ function PersonalInformation({
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isVerifying}
-              className="mt-[6px] h-[26px] w-full rounded-[4px] bg-[#076c3d] text-[11.5px] font-bold text-white shadow-sm hover:bg-[#055630] disabled:opacity-50"
+              className="mt-[6px] h-[26px] w-full rounded-[4px] bg-[#076c3d] text-[11.5px] font-semibold text-white shadow-sm hover:bg-[#055630] disabled:opacity-50"
             >
               {photoSrc ? "Change & Re-Verify" : "Choose & Verify Photo"}
             </button>

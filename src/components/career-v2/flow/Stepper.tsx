@@ -24,7 +24,7 @@ export function Stepper({
   steps?: FlowStep[];
 }) {
   return (
-    <div className="w-full bg-[#fbf6ec]/40 py-4 sm:py-6 border-b border-[#eadfcd]">
+    <div className="w-full bg-[#fbf6ec]/40 py-2.5 sm:py-3.5 border-b border-[#eadfcd]">
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         {/* Desktop View */}
         <div className="hidden sm:flex items-center justify-between relative">

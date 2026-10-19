@@ -141,9 +141,25 @@ export default function ReviewPage() {
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const res = await uploadFile(file, "photo");
-    const localUrl = URL.createObjectURL(file);
-    setProfile((prev) => (prev ? { ...prev, photoUrl: localUrl } : prev));
+
+    // Use FileReader for persistent Base64 so photo stays visible across sessions/pages
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result as string;
+      setProfile((prev) => {
+        if (!prev) return prev;
+        const updated = { ...prev, photoUrl: dataUrl };
+        saveFlowState({ profile: updated });
+        return updated;
+      });
+    };
+    reader.readAsDataURL(file);
+
+    try {
+      await uploadFile(file, "photo");
+    } catch (err) {
+      console.warn("Avatar upload to backend:", err);
+    }
   };
 
   const handleAddDocument = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -284,11 +300,6 @@ export default function ReviewPage() {
   return (
     <div className="min-h-screen bg-[#fbf8f2] text-[#3f3a33]">
       <FlowHero
-        breadcrumbs={[
-          { label: "Careers", href: "/career" },
-          { label: job.title, href: `/career/${encodeURIComponent(slug)}` },
-          { label: "Review Details" },
-        ]}
         backHref={`/career/${encodeURIComponent(slug)}/result`}
         backLabel="← Back to AI Result"
         eyebrow="CAREERS AT ENSIS"
@@ -298,13 +309,13 @@ export default function ReviewPage() {
 
       <Stepper currentStep={3} steps={APPLICATION_FLOW_STEPS} />
 
-      <Container className="py-8 sm:py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+      <Container className="py-5 sm:py-7">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
           {/* Main Left Content: 7 Detailed Sections */}
-          <div className="lg:col-span-8 space-y-7">
+          <div className="lg:col-span-8 space-y-4 sm:space-y-5">
             {validationError && (
-              <div className="flex items-start gap-2.5 rounded-xl border border-[#fecaca] bg-[#fef2f2] p-4 text-xs sm:text-sm text-[#991b1b]">
-                <AlertCircle size={18} className="shrink-0 mt-0.5 text-[#dc2626]" />
+              <div className="flex items-start gap-2.5 rounded-xl border border-[#fecaca] bg-[#fef2f2] p-3 text-xs sm:text-sm text-[#991b1b]">
+                <AlertCircle size={16} className="shrink-0 mt-0.5 text-[#dc2626]" />
                 <span className="font-semibold">{validationError}</span>
               </div>
             )}
@@ -316,15 +327,23 @@ export default function ReviewPage() {
               onEdit={() => setEditProfile(!editProfile)}
             >
               <div className="flex flex-col sm:flex-row items-start gap-5">
-                {/* Photo & Change Photo button */}
+                {/* Photo & Upload Photo button */}
                 <div className="flex flex-col items-center gap-2 shrink-0">
-                  <div className="relative size-20 sm:size-24 overflow-hidden rounded-full border-2 border-[#d9bf86] shadow-sm">
+                  <div
+                    onClick={() => avatarInputRef.current?.click()}
+                    className="group relative size-20 sm:size-24 cursor-pointer overflow-hidden rounded-full border-2 border-[#d9bf86] shadow-sm hover:border-[#163a2b] transition-all"
+                    title="Click to upload profile photo"
+                  >
                     <Image
                       src={profile.photoUrl || defaultAvatar}
                       alt={profile.fullName}
                       fill
                       className="object-cover"
                     />
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-[10px] font-semibold gap-1">
+                      <Camera size={16} />
+                      <span>Upload</span>
+                    </div>
                   </div>
                   <input
                     ref={avatarInputRef}
@@ -336,11 +355,16 @@ export default function ReviewPage() {
                   <button
                     type="button"
                     onClick={() => avatarInputRef.current?.click()}
-                    className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#8d6a3a] hover:text-[#163a2b] bg-[#f4ebd9]/60 px-2.5 py-1 rounded-md"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#8d6a3a] hover:text-[#163a2b] bg-[#f4ebd9]/80 hover:bg-[#eadfcd] px-3 py-1.5 rounded-lg border border-[#d9bf86]/50 transition-colors shadow-2xs"
                   >
-                    <Camera size={12} />
-                    <span>Change Photo</span>
+                    <Camera size={13} />
+                    <span>{profile.photoUrl ? "Change Photo" : "Upload Photo"}</span>
                   </button>
+                  {!profile.photoUrl && (
+                    <span className="text-[10px] text-[#a8792c] font-medium text-center max-w-[110px] leading-tight">
+                      No photo in CV
+                    </span>
+                  )}
                 </div>
 
                 {/* Profile Fields */}
@@ -974,14 +998,14 @@ export default function ReviewPage() {
           </div>
 
           {/* Right Sidebar */}
-          <div className="lg:col-span-4 space-y-6">
+          <div className="lg:col-span-4 space-y-3.5 sm:space-y-4">
             {/* Application Summary Card */}
-            <div className="rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-5 shadow-xs space-y-3">
+            <div className="rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-4 shadow-xs space-y-2.5">
               <span className="text-xs font-bold uppercase tracking-wider text-[#8d6a3a]">
                 Application Summary
               </span>
-              <div className="flex items-center gap-3 pt-1">
-                <div className="relative size-12 shrink-0 overflow-hidden rounded-full border-2 border-[#d9bf86]">
+              <div className="flex items-center gap-3 pt-0.5">
+                <div className="relative size-11 shrink-0 overflow-hidden rounded-full border-2 border-[#d9bf86]">
                   <Image
                     src={profile.photoUrl || defaultAvatar}
                     alt={profile.fullName}
@@ -990,7 +1014,7 @@ export default function ReviewPage() {
                   />
                 </div>
                 <div>
-                  <h4 style={serif} className="text-base font-bold text-[#163a2b]">
+                  <h4 style={serif} className="text-sm sm:text-base font-bold text-[#163a2b]">
                     {job.title}
                   </h4>
                   <p className="text-xs text-[#6b6255]">
@@ -1001,8 +1025,8 @@ export default function ReviewPage() {
             </div>
 
             {/* Profile Match Donut Card */}
-            <div className="rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-5 shadow-xs">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#8d6a3a] block mb-3">
+            <div className="rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-4 shadow-xs">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#8d6a3a] block mb-2">
                 Profile Match
               </span>
               <MatchRing
@@ -1015,7 +1039,7 @@ export default function ReviewPage() {
 
             {/* Key Strengths Identified Card */}
             {result.strengths && result.strengths.length > 0 && (
-              <div className="rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-5 shadow-xs space-y-3">
+              <div className="rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-4 shadow-xs space-y-2.5">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#163a2b] block">
                   Key Strengths Identified
                 </span>
@@ -1025,7 +1049,7 @@ export default function ReviewPage() {
 
             {/* Areas for Improvement (Optional) Card */}
             {result.suggestions && result.suggestions.length > 0 && (
-              <div className="rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-5 shadow-xs space-y-3">
+              <div className="rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-4 shadow-xs space-y-2.5">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#b45309] block">
                   Areas for Improvement (Optional)
                 </span>
@@ -1034,20 +1058,20 @@ export default function ReviewPage() {
             )}
 
             {/* CTAs */}
-            <div className="space-y-3 pt-2">
+            <div className="space-y-2.5 pt-1">
               <button
                 type="button"
                 onClick={handleProceedToApply}
-                className={`w-full ${greenButton} justify-center py-3 text-sm font-bold shadow-md cursor-pointer`}
+                className={`w-full ${greenButton} justify-center py-2.5 text-xs sm:text-sm font-bold shadow-md cursor-pointer`}
               >
-                Submit Application <ArrowRight size={16} />
+                Submit Application <ArrowRight size={15} />
               </button>
 
               <Link
                 href={`/career/${encodeURIComponent(slug)}/analysis`}
-                className={`w-full ${goldOutlineButton} justify-center py-2.5 text-xs font-semibold`}
+                className={`w-full ${goldOutlineButton} justify-center py-2 text-xs font-semibold`}
               >
-                <ArrowLeft size={14} /> Back to AI Analysis
+                <ArrowLeft size={13} /> Back to AI Analysis
               </Link>
             </div>
 

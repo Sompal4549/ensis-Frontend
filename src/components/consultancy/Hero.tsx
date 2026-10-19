@@ -89,7 +89,7 @@ export default async function ConsultancyHero({ sectionContent }: { sectionConte
         <div className="grid h-full grid-cols-1 lg:grid-cols-2 items-start pt-10 md:pt-14 lg:pt-20 xl:pt-24 pb-10 lg:pb-24">
           {/* LEFT */}
           <div className="max-w-[700px] flex flex-col justify-center">
-            <p className="mb-2 text-base font-bold tracking-[1.8px] uppercase text-[#d66a38]">
+            <p className="mb-2 text-base font-semibold tracking-[1.8px] uppercase text-[#d66a38]">
               {heading}
             </p>
 
@@ -184,7 +184,7 @@ export default async function ConsultancyHero({ sectionContent }: { sectionConte
         />
 
         <div className="flex flex-col">
-          <div className="font-bold text-[#1F3A2A]">
+          <div className="font-semibold text-[#1F3A2A]">
             {item.heading}
           </div>
 
@@ -226,7 +226,7 @@ export default async function ConsultancyHero({ sectionContent }: { sectionConte
                 />
 
                 <div>
-                  <div className="font-bold">
+                  <div className="font-semibold">
                     {item.heading}
                   </div>
 

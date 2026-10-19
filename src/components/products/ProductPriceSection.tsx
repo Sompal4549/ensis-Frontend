@@ -241,7 +241,7 @@ const ProductPriceSection = ({
           </p>
 
           <div className="mt-1 flex items-end gap-2">
-            <h2 className="text-2xl font-bold text-[#17231A] leading-none">
+            <h2 className="text-2xl font-semibold text-[#17231A] leading-none">
               {formatPrice(product.price)}
             </h2>
             {product.price > 0 && (
@@ -285,14 +285,14 @@ const ProductPriceSection = ({
           <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col">
             <div className="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-[#fbfaf7]">
               <div>
-                <h3 className="font-bold text-[#313b30]">Customer Reviews</h3>
+                <h3 className="font-semibold text-[#313b30]">Customer Reviews</h3>
                 <div className="flex items-center gap-4 mt-0.5">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} size={10} className="fill-[#d5a642] text-[#d5a642]" />
                     ))}
                   </div>
-                  <span className="text-[10px] font-bold text-gray-500">{reviewData.averageRating}/5.0 average rating</span>
+                  <span className="text-[10px] font-semibold text-gray-500">{reviewData.averageRating}/5.0 average rating</span>
                 </div>
               </div>
               <button suppressHydrationWarning
@@ -306,7 +306,7 @@ const ProductPriceSection = ({
             <div className="p-5 overflow-y-auto max-h-[60vh]">
               {isWritingReview ? (
                 <form onSubmit={handleReviewSubmit} className="space-y-4">
-                  <h4 className="text-sm font-bold text-[#313b30]">{userReviewId ? "Edit Your Review" : "Write a Review"}</h4>
+                  <h4 className="text-sm font-semibold text-[#313b30]">{userReviewId ? "Edit Your Review" : "Write a Review"}</h4>
                   <div className="flex gap-1">
                     {[...Array(5)].map((_, i) => {
                       const starValue = i + 1;
@@ -328,7 +328,7 @@ const ProductPriceSection = ({
                     })}
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold uppercase mb-2 block">Your Experience</label>
+                    <label className="text-[11px] font-semibold uppercase mb-2 block">Your Experience</label>
                     <textarea suppressHydrationWarning
                       rows={4}
                       value={comment}
@@ -342,14 +342,14 @@ const ProductPriceSection = ({
                     <button suppressHydrationWarning
                       type="button"
                       onClick={() => setIsWritingReview(false)}
-                      className="flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all"
+                      className="flex-1 py-2.5 text-[10px] font-semibold uppercase tracking-widest text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all"
                     >
                       Cancel
                     </button>
                     <button suppressHydrationWarning
                       type="submit"
                       disabled={isSubmitting}
-                      className="flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest text-white bg-[#313b30] rounded-lg hover:bg-black transition-all disabled:opacity-50"
+                      className="flex-1 py-2.5 text-[10px] font-semibold uppercase tracking-widest text-white bg-[#313b30] rounded-lg hover:bg-black transition-all disabled:opacity-50"
                     >
                       {isSubmitting ? "Submitting..." : (userReviewId ? "Update Review" : "Submit Review")}
                     </button>
@@ -361,7 +361,7 @@ const ProductPriceSection = ({
                     reviewData.reviews.map((rev) => (
                       <div key={rev._id} className="border-b border-gray-50 pb-5 last:border-0 last:pb-0">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-[11px] font-bold text-[#1a1a1a]">{rev.user}</span>
+                          <span className="text-[11px] font-semibold text-[#1a1a1a]">{rev.user}</span>
                           <span className="text-[9px] text-gray-400">{new Date(rev.createdAt).toLocaleDateString()}</span>
                         </div>
                         <div className="flex mb-2">
@@ -385,7 +385,7 @@ const ProductPriceSection = ({
               <div className="p-4 bg-gray-50 border-t border-gray-100">
                 <button suppressHydrationWarning
                   onClick={() => setIsWritingReview(true)}
-                  className="w-full py-2.5 text-[10px] font-bold uppercase tracking-widest text-[#8d6a3a] border border-[#8d6a3a] rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-all"
+                  className="w-full py-2.5 text-[10px] font-semibold uppercase tracking-widest text-[#8d6a3a] border border-[#8d6a3a] rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-all"
                 >
                   {userReviewId ? "Edit Your Review" : "Write a Review"}
                 </button>

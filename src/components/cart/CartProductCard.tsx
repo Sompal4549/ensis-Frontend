@@ -48,7 +48,7 @@ export default function CartProductCard({ item }: { item: CartItem }) {
         <div className="pr-8">
           <Link href={`/products/${item.slug}`}>
             <h3
-              className="max-w-[420px] text-xs font-black uppercase leading-[1.35] text-[#1F3A2A] md:text-xs"
+              className="max-w-[420px] text-xs font-semibold uppercase leading-[1.35] text-[#1F3A2A] md:text-xs"
               dangerouslySetInnerHTML={{ __html: item.name }}
             />
           </Link>
@@ -89,7 +89,7 @@ export default function CartProductCard({ item }: { item: CartItem }) {
           <button
             type="button"
             onClick={() => toggleLike(item)}
-            className={`inline-flex h-6 items-center gap-1.5 rounded-lg border px-2 text-[10px] font-bold uppercase tracking-[0.12em] transition-colors ${
+            className={`inline-flex h-6 items-center gap-1.5 rounded-lg border px-2 text-[10px] font-semibold uppercase tracking-[0.12em] transition-colors ${
               liked
                 ? "border-red-500 bg-red-50 text-red-600"
                 : "border-[#EDE4D3] text-[#8a7c63] hover:bg-white"

@@ -4,38 +4,12 @@ import { notFound } from "next/navigation";
 import { getJob, type PublicJob } from "@/lib/careerApi";
 import { JobDetailClient } from "./JobDetailClient";
 
+import { generateSeo } from "@/lib/api/seo";
+
 export const revalidate = 60;
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-  const { slug } = await params;
-  const job = await getJob(slug);
-
-  if (!job) {
-    return {
-      title: "Job Not Found | Ensis Careers",
-      description: "The requested career opening could not be found.",
-    };
-  }
-
-  const title = `${job.title} | Careers at Ensis`;
-  const description =
-    job.shortDescription ||
-    job.description?.slice(0, 160) ||
-    `Apply for the ${job.title} position at Ensis Wellness.`;
-
-  return {
-    title,
-    description,
-    openGraph: {
-      title,
-      description,
-      images: job.coverImage ? [{ url: job.coverImage }] : undefined,
-    },
-  };
+export async function generateMetadata(): Promise<Metadata> {
+  return generateSeo("career");
 }
 
 export default async function JobDetailPage({

@@ -58,7 +58,7 @@ const Card = ({
         {/* Content */}
         <div className="px-4 py-3">
           <h3
-            className={`text-base font-bold leading-[1.15] pl-3 ${dark ? "text-[#f4e8c9]" : ""
+            className={`text-base font-semibold leading-[1.15] pl-3 ${dark ? "text-[#f4e8c9]" : ""
               }`}
           >
             {item.title}
@@ -167,7 +167,7 @@ const TurnkeySolutions = ({sectionContent}: { sectionContent?: TurnkeySolutionsC
                 {/* Content */}
                 <div className="px-5 py-4 text-[#f4e8c9]">
                   <div className="mb-3 flex items-center gap-4 text-[#d0a965]">
-                    <h3 className="font-bold text-base leading-none">
+                    <h3 className="font-semibold text-base leading-none">
                      {lastCard.title}
                     </h3>
                   </div>

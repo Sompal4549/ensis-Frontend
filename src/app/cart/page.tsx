@@ -55,7 +55,7 @@ function TrustItem({ icon, title, text }: { icon: React.ReactNode; title: string
         {icon}
       </div>
       <div>
-        <p className="text-xs font-bold text-[#1F3A2A]">{title}</p>
+        <p className="text-xs font-semibold text-[#1F3A2A]">{title}</p>
         <p className="mt-0.5 text-[11px] font-medium text-[#8a7c63]">{text}</p>
       </div>
     </div>
@@ -94,7 +94,7 @@ function CartTableRow({ item }: { item: CartItem }) {
         <div className="min-w-0 py-1">
           <Link href={`/products/${item.slug || item.id}`}>
             <h3
-              className="line-clamp-2 text-sm font-bold leading-5 text-[#1F3A2A]"
+              className="line-clamp-2 text-sm font-semibold leading-5 text-[#1F3A2A]"
               dangerouslySetInnerHTML={{ __html: sanitizeInlineHtml(item.name) }}
             />
           </Link>
@@ -176,7 +176,7 @@ export default function CartPage() {
               </h1>
             </div>
             {hasItems && (
-              <button type="button" onClick={clearCart} className="inline-flex h-10 items-center gap-4 rounded-full border border-[#EDE4D3] bg-white px-4 text-xs font-bold transition-all duration-300 hover:border-[#C7A55B] hover:text-[#8d6a3a]">
+              <button type="button" onClick={clearCart} className="inline-flex h-10 items-center gap-4 rounded-full border border-[#EDE4D3] bg-white px-4 text-xs font-semibold transition-all duration-300 hover:border-[#C7A55B] hover:text-[#8d6a3a]">
                 <Trash2 size={15} /> Clear Cart
               </button>
             )}
@@ -192,7 +192,7 @@ export default function CartPage() {
           {hasItems ? (
             <div className="mt-4 grid gap-4 lg:grid-cols-[1fr_400px] lg:items-start">
               <section className="overflow-hidden rounded-[20px] border border-[#EDE4D3] bg-white shadow-[0_10px_28px_rgba(31,58,42,0.05)]">
-                <div className="hidden grid-cols-[1fr_110px_150px_110px_34px] px-5 py-4 text-[10px] font-bold uppercase tracking-[0.14em] text-[#a89a82] md:grid">
+                <div className="hidden grid-cols-[1fr_110px_150px_110px_34px] px-5 py-4 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#a89a82] md:grid">
                   <span>Product</span><span>Price</span><span>Quantity</span><span>Total</span><span />
                 </div>
                 <div className="relative">
@@ -204,7 +204,7 @@ export default function CartPage() {
                       <Tag size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#8a7c63]" />
                       <input type="text" placeholder="Enter promo code" className="h-8 w-full rounded-xl border border-[#e4dccb] bg-white/80 pl-10 pr-3 text-sm outline-none transition-all duration-200 placeholder:text-[#a79d8c] focus:border-[#c7a55b] focus:ring-2 focus:ring-[#c7a55b]/20" />
                     </label>
-                    <button type="button" className="h-8 rounded-full border border-[#1F3A2A] px-5 text-xs font-bold transition-all duration-300 hover:bg-[#1F3A2A] hover:text-white">Apply</button>
+                    <button type="button" className="h-8 rounded-full border border-[#1F3A2A] px-5 text-xs font-semibold transition-all duration-300 hover:bg-[#1F3A2A] hover:text-white">Apply</button>
                   </div>
                   <div className="rounded-xl bg-[#f2f7ee] px-4 py-2 text-xs font-semibold text-[#516a35]">
                     <Truck size={15} className="mr-2 inline-block" />
@@ -224,12 +224,12 @@ export default function CartPage() {
                   </div>
                   <div className="mt-3 border-t border-[#EDE4D3] pt-3">
                     <div className="flex items-center justify-between gap-4">
-                      <span className="text-base font-bold uppercase tracking-wide text-[#1F3A2A]">Total</span>
+                      <span className="text-base font-semibold uppercase tracking-wide text-[#1F3A2A]">Total</span>
                       <span className="tabular-nums text-xl font-semibold text-[#1F3A2A]">{formatCurrency(total)}</span>
                     </div>
                     <p className="mt-1.5 text-[11px] leading-5 text-[#8a7c63]">Pay securely online or request support from our wellness equipment team.</p>
                   </div>
-                  <Link href="/checkout" className="mt-4 flex w-full items-center justify-center gap-4 rounded-full bg-[#1F3A2A] px-5 py-2.5 text-sm font-bold uppercase tracking-[0.12em] text-white shadow-[0_12px_30px_rgba(31,58,42,0.28)] transition-all duration-300 hover:bg-[#18301f] hover:shadow-[0_16px_38px_rgba(31,58,42,0.36)]">
+                  <Link href="/checkout" className="mt-4 flex w-full items-center justify-center gap-4 rounded-full bg-[#1F3A2A] px-5 py-2.5 text-sm font-semibold uppercase tracking-[0.12em] text-white shadow-[0_12px_30px_rgba(31,58,42,0.28)] transition-all duration-300 hover:bg-[#18301f] hover:shadow-[0_16px_38px_rgba(31,58,42,0.36)]">
                     <LockKeyhole size={15} /> Proceed to Checkout
                   </Link>
                   <p className="mt-2.5 text-center text-[11px] font-medium text-[#a89a82]">Guaranteed safe and secure checkout</p>
@@ -243,7 +243,7 @@ export default function CartPage() {
               </div>
               <h2 className="mt-4 text-2xl font-semibold text-[#1F3A2A]">Your cart is empty</h2>
               <p className="mt-3 max-w-md text-sm leading-6 text-[#5f665b]">Browse our wellness equipment and add products here to review quantities, shipping benefits, and order totals.</p>
-              <Link href="/products" className="mt-5 inline-flex items-center gap-4 rounded-full bg-[#1F3A2A] px-6 py-2.5 text-xs font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_30px_rgba(31,58,42,0.28)] transition-all duration-300 hover:bg-[#18301f] hover:shadow-[0_16px_38px_rgba(31,58,42,0.36)]">
+              <Link href="/products" className="mt-5 inline-flex items-center gap-4 rounded-full bg-[#1F3A2A] px-6 py-2.5 text-xs font-semibold uppercase tracking-[0.14em] text-white shadow-[0_12px_30px_rgba(31,58,42,0.28)] transition-all duration-300 hover:bg-[#18301f] hover:shadow-[0_16px_38px_rgba(31,58,42,0.36)]">
                 Browse Products
               </Link>
             </section>
@@ -262,7 +262,7 @@ export default function CartPage() {
 
           {suggestions.length > 0 && (
             <section className="mt-8">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C7A55B]">Curated for you</p>
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C7A55B]">Curated for you</p>
               <h2 className="mt-1 text-xl font-semibold text-[#1F3A2A] md:text-2xl">You May Also Like</h2>
               <div className="mt-4">
                 <YouMightCarousel>
@@ -288,7 +288,7 @@ export default function CartPage() {
                     <DisplayIcon size={18} className="text-[#1F3A2A]" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-[#1F3A2A]">{title as string}</p>
+                    <p className="text-xs font-semibold text-[#1F3A2A]">{title as string}</p>
                     <p className="text-[11px] font-medium text-[#8a7c63]">{text as string}</p>
                   </div>
                 </div>

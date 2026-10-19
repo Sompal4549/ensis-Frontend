@@ -14,6 +14,7 @@ import {
   Check,
   Edit2,
   UploadCloud,
+  Camera,
   type LucideIcon,
 } from "lucide-react";
 
@@ -62,14 +63,14 @@ export function SectionCard({
 }) {
   return (
     <section
-      className={`rounded-2xl border border-[#eadfcd] bg-[#fffdf8] p-5 sm:p-7 shadow-[0_4px_20px_rgba(154,115,52,0.06)] ${className}`}
+      className={`rounded-2xl border border-[#eadfcd] bg-[#fffdf8] p-4 sm:p-5 shadow-[0_4px_20px_rgba(154,115,52,0.06)] ${className}`}
     >
-      <div className="flex items-center justify-between pb-4 mb-5 border-b border-[#eadfcd]/70">
-        <div className="flex items-center gap-3">
-          <span className="grid size-9 place-items-center rounded-full bg-[#f4ebd9] text-[#a8792c] border border-[#d9bf86]/40">
-            <Icon size={17} strokeWidth={2} />
+      <div className="flex items-center justify-between pb-2.5 mb-3.5 border-b border-[#eadfcd]/70">
+        <div className="flex items-center gap-2.5">
+          <span className="grid size-8 place-items-center rounded-full bg-[#f4ebd9] text-[#a8792c] border border-[#d9bf86]/40">
+            <Icon size={15} strokeWidth={2} />
           </span>
-          <h2 style={serif} className="text-xl font-semibold tracking-tight text-[#163a2b] sm:text-2xl">
+          <h2 style={serif} className="text-lg font-semibold tracking-tight text-[#163a2b] sm:text-xl">
             {title}
           </h2>
         </div>
@@ -78,9 +79,9 @@ export function SectionCard({
             <button
               type="button"
               onClick={onEdit}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#8d6a3a] hover:text-[#163a2b] px-3 py-1.5 rounded-md hover:bg-[#f4ebd9]/50 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#8d6a3a] hover:text-[#163a2b] px-2.5 py-1 rounded-md hover:bg-[#f4ebd9]/50 transition-colors"
             >
-              <Edit2 size={13} />
+              <Edit2 size={12} />
               <span>Edit</span>
             </button>
           ))}
@@ -124,13 +125,24 @@ export function ProfileCard({
       </div>
 
       <div className="flex items-start gap-3.5">
-        <div className="relative size-14 shrink-0 overflow-hidden rounded-full border-2 border-[#d9bf86]/60 shadow-inner">
+        <div
+          onClick={onEdit}
+          className={`relative size-14 shrink-0 overflow-hidden rounded-full border-2 border-[#d9bf86]/60 shadow-inner ${
+            onEdit ? "cursor-pointer group hover:border-[#163a2b] transition-all" : ""
+          }`}
+          title={onEdit ? "Click to edit profile / change photo" : undefined}
+        >
           <Image
             src={profile.photoUrl || defaultAvatar}
             alt={profile.fullName || "Candidate"}
             fill
             className="object-cover"
           />
+          {onEdit && (
+            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+              <Camera size={14} />
+            </div>
+          )}
         </div>
 
         <div className="min-w-0 flex-1 space-y-1 text-xs">

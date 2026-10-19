@@ -146,7 +146,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                 <div className="mt-4 grid grid-cols-3 gap-4">
                   {stats.map((stat: { value: string; label: string }, i: number) => (
                     <div key={i} className="text-center">
-                      <span className="block text-xl font-bold text-[#334022]">{stat.value}</span>
+                      <span className="block text-xl font-semibold text-[#334022]">{stat.value}</span>
                       <span className="block text-[10px] font-semibold text-[#5f5a50] uppercase tracking-wide">{stat.label}</span>
                     </div>
                   ))}
@@ -161,7 +161,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                   return (
                     <li
                       key={typeof item === "string" ? `${item}-${index}` : (item?._id || item?.id || `${text}-${index}`)}
-                      className="flex items-center gap-4 text-base font-bold text-[#3f3a32]"
+                      className="flex items-center gap-4 text-base font-semibold text-[#3f3a32]"
                     >
                       <CheckSquare2
                         size={16}

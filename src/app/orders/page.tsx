@@ -173,7 +173,7 @@ export default function OrdersPage() {
               <ShoppingBag size={14} className="text-[#C7A55B]" />
             </div>
             <div>
-              <h1 className="text-sm font-bold uppercase tracking-[0.12em] text-[#1F3A2A] sm:text-base">
+              <h1 className="text-sm font-semibold uppercase tracking-[0.12em] text-[#1F3A2A] sm:text-base">
                 My Orders
               </h1>
               <p className="text-[11px] uppercase tracking-[0.08em] text-[#8a7c63]">
@@ -184,7 +184,7 @@ export default function OrdersPage() {
 
           <Link
             href="/products"
-            className="inline-flex items-center gap-1.5 rounded-full border border-[#EDE4D3] bg-white px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.1em] text-[#1F3A2A] shadow-sm transition-all duration-300 hover:border-[#1F3A2A] hover:bg-[#1F3A2A] hover:text-white"
+            className="inline-flex items-center gap-1.5 rounded-full border border-[#EDE4D3] bg-white px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.1em] text-[#1F3A2A] shadow-sm transition-all duration-300 hover:border-[#1F3A2A] hover:bg-[#1F3A2A] hover:text-white"
           >
             Browse Store <ArrowRight size={12} />
           </Link>
@@ -204,7 +204,7 @@ export default function OrdersPage() {
             <p className="text-xs font-semibold text-rose-600">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="mt-1.5 text-xs font-bold uppercase tracking-[0.1em] text-rose-500 hover:underline"
+              className="mt-1.5 text-xs font-semibold uppercase tracking-[0.1em] text-rose-500 hover:underline"
             >
               Retry
             </button>
@@ -221,7 +221,7 @@ export default function OrdersPage() {
             </p>
             <Link
               href="/products"
-              className="mt-1.5 inline-flex items-center gap-2 rounded-full bg-[#1F3A2A] px-5 py-2 text-xs font-bold uppercase tracking-[0.12em] text-white shadow-sm transition-all duration-300 hover:bg-[#18301f]"
+              className="mt-1.5 inline-flex items-center gap-2 rounded-full bg-[#1F3A2A] px-5 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-white shadow-sm transition-all duration-300 hover:bg-[#18301f]"
             >
               Browse Products
             </Link>
@@ -255,7 +255,7 @@ export default function OrdersPage() {
                         <Package size={13} className="text-[#1F3A2A]" />
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate text-xs font-bold uppercase tracking-[0.08em] text-[#1F3A2A]">
+                        <p className="truncate text-xs font-semibold uppercase tracking-[0.08em] text-[#1F3A2A]">
                           Order #{order._id.slice(-8).toUpperCase()}
                         </p>
                         <p className="mt-0.5 text-[11px] text-[#8a7c63]">
@@ -280,13 +280,13 @@ export default function OrdersPage() {
                     <div className="flex items-center justify-between border-t border-[#F0E8DC] pt-2 sm:border-t-0 sm:pt-0 sm:flex-col sm:items-end sm:gap-1.5">
                       <div>
                         <span className="text-[10px] font-medium text-[#8a7c63] sm:hidden mr-1">Total:</span>
-                        <span className="text-sm font-bold text-[#1F3A2A]">
+                        <span className="text-sm font-semibold text-[#1F3A2A]">
                           {formatCurrency(order.totalAmount)}
                         </span>
                       </div>
                       <Link
                         href={`/orders/${order._id}`}
-                        className="inline-flex items-center gap-1 rounded-full border border-[#EDE4D3] bg-[#FBF8F2] px-3 py-1 text-[11px] font-bold uppercase tracking-[0.08em] text-[#1F3A2A] transition-all duration-300 hover:border-[#1F3A2A] hover:bg-[#1F3A2A] hover:text-white"
+                        className="inline-flex items-center gap-1 rounded-full border border-[#EDE4D3] bg-[#FBF8F2] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#1F3A2A] transition-all duration-300 hover:border-[#1F3A2A] hover:bg-[#1F3A2A] hover:text-white"
                       >
                         <Eye size={11} />
                         View
@@ -329,7 +329,7 @@ export default function OrdersPage() {
                                 {item.size ? ` | ${item.size}` : ""}
                               </p>
                             </div>
-                            <span className="shrink-0 text-xs font-bold text-[#1F3A2A]">
+                            <span className="shrink-0 text-xs font-semibold text-[#1F3A2A]">
                               {formatCurrency(item.price * item.quantity)}
                             </span>
                           </div>
@@ -348,16 +348,16 @@ export default function OrdersPage() {
           <section className="mt-9 pt-4">
             <div className="mb-3.5 flex items-center justify-between">
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C7A55B]">
+                <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C7A55B]">
                   Curated for you
                 </p>
-                <h2 className="mt-0.5 text-sm font-bold text-[#1F3A2A] sm:text-base">
+                <h2 className="mt-0.5 text-sm font-semibold text-[#1F3A2A] sm:text-base">
                   Explore Wellness Products
                 </h2>
               </div>
               <Link
                 href="/products"
-                className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.1em] text-[#8d6a3a] transition-colors hover:text-[#1F3A2A]"
+                className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-[0.1em] text-[#8d6a3a] transition-colors hover:text-[#1F3A2A]"
               >
                 View All <ArrowRight size={12} />
               </Link>
