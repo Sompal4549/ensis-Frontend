@@ -22,11 +22,11 @@ import botanicalBranch from "@/assets/career/Pale Sage Botanical Branch.png";
 import exploreBg from "@/assets/career/first-step/explore-bg.webp";
 import whyWorkBg from "@/assets/career/why_work_bg.png";
 import lifeBg from "@/assets/career/first-step/life-bg.webp";
-import life1 from "@/assets/career/life1.webp";
-import life2 from "@/assets/career/life2.webp";
-import life4 from "@/assets/career/life4.png";
-import teamWide from "@/assets/career/ChatGPT (6).webp";
-import teamTable from "@/assets/career/ChatGPT Image Jun 21, 2026, 03_48_36 PM.png";
+import space1 from "@/assets/career/new/space-1.webp";
+import space2 from "@/assets/career/new/spaces-2.webp";
+import space3 from "@/assets/career/new/spaces-3.png";
+import space4 from "@/assets/career/new/space-4.png";
+import space5 from "@/assets/career/new/spaces-fifth.png";
 import jobDesigner from "@/assets/career/new/Designing a Modern Lounge Chair.webp";
 import jobProduction from "@/assets/career/new/Focused Notes in a Modern Wellness Studio.webp";
 import jobSales from "@/assets/career/new/Design Consultation in a Modern Showroom.webp";
@@ -35,10 +35,33 @@ import iconMeaningful from "@/assets/career/meaning_full.png";
 import iconTeam from "@/assets/career/first-step/Golden Group Icon in Circle.png";
 import iconGrowth from "@/assets/career/first-step/Golden Growth Chart Icon.png";
 import iconHeart from "@/assets/career/first-step/Golden Heart in a Circle.png";
+import whyWorkLeaf from "@/assets/career/first-step/icon-leaf.webp";
+import whyWorkTeam from "@/assets/career/first-step/icon-team.webp";
+import whyWorkGrowth from "@/assets/career/first-step/icon-growth.webp";
+import whyWorkHeart from "@/assets/career/first-step/icon-heart.webp";
 import sectionLeft from "@/assets/career/section_left.png";
 import sectionRight from "@/assets/career/section_right.png";
 import CareerStatsStrip from "@/components/career/StatsStrip";
 import { CareerIcon, Eyebrow, SerifHeading, goldButton, goldOutlineButton, greenButton, serif, serifFontClass } from "./ui";
+
+function formatWhyWorkTitle(title: string) {
+  const lower = title.toLowerCase();
+  if (lower.includes("supportive")) {
+    return (
+      <>
+        Supportive Team<br />Environment
+      </>
+    );
+  }
+  if (lower.includes("better spaces")) {
+    return (
+      <>
+        Better Spaces,<br />Better Lives
+      </>
+    );
+  }
+  return title;
+}
 
 const HERO_FEATURES = [
   { image: iconMeaningful, label: "Meaningful\nWork" },
@@ -47,7 +70,7 @@ const HERO_FEATURES = [
   { image: iconHeart, label: "Real Impact\non Lives" },
 ];
 
-function JobLocationIcon({ className = "size-3.5" }: { className?: string }) {
+function JobLocationIcon({ className = "size-4.5" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className}>
       <path
@@ -59,7 +82,7 @@ function JobLocationIcon({ className = "size-3.5" }: { className?: string }) {
   );
 }
 
-function JobBriefcaseIcon({ className = "size-3.5" }: { className?: string }) {
+function JobBriefcaseIcon({ className = "size-4.5" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className}>
       {/* Top Handle */}
@@ -86,24 +109,24 @@ function JobBriefcaseIcon({ className = "size-3.5" }: { className?: string }) {
 function SectionLeaves({ className = "" }: { className?: string }) {
   return (
     <>
-      <div className={`pointer-events-none absolute left-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden ${className}`}>
+      <div className={`pointer-events-none absolute left-0 top-0 bottom-0 w-[60px] sm:w-[85px] md:w-[110px] lg:w-[135px] select-none z-10 overflow-hidden opacity-40 ${className}`}>
         <Image
           src={sectionLeft}
           alt=""
           aria-hidden
           fill
-          sizes="7vw"
-          className="object-cover object-right"
+          sizes="12vw"
+          className="object-cover object-left"
         />
       </div>
-      <div className={`pointer-events-none absolute right-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden ${className}`}>
+      <div className={`pointer-events-none absolute right-0 top-0 bottom-0 w-[60px] sm:w-[85px] md:w-[110px] lg:w-[135px] select-none z-10 overflow-hidden opacity-40 ${className}`}>
         <Image
           src={sectionRight}
           alt=""
           aria-hidden
           fill
-          sizes="7vw"
-          className="object-cover object-left"
+          sizes="12vw"
+          className="object-cover object-right"
         />
       </div>
     </>
@@ -112,7 +135,7 @@ function SectionLeaves({ className = "" }: { className?: string }) {
 
 // Exact job cover fallbacks matching the 4 mockup cards
 const JOB_FALLBACKS: StaticImageData[] = [jobDesigner, jobProduction, jobSales, jobConsultant];
-const LIFE_FALLBACKS: StaticImageData[] = [teamTable, life1, life2, teamWide];
+const LIFE_FALLBACKS: StaticImageData[] = [space1, space2, space3, space4];
 
 const MOCKUP_JOBS_ORDER = [
   {
@@ -192,29 +215,29 @@ export function JobCard({ job, index }: { job: PublicJob; index: number }) {
         <div>
           <h3
             style={serif}
-            className="text-[17px] sm:text-[18px] xl:text-[18.5px] font-bold leading-[1.22] text-[#163a2b] min-h-[44px] sm:min-h-[46px]"
+            className="text-[18px] sm:text-[19px] xl:text-[20px] font-bold leading-[1.22] text-[#163a2b] min-h-[44px]"
           >
             {formatJobTitle(job.title)}
           </h3>
-          <div className="mt-2 mb-2 flex items-center gap-2 text-[11.5px] sm:text-[12px] font-medium text-[#4a4338]">
+          <div className="mt-2 mb-2 flex items-center gap-2 text-[12.5px] sm:text-[13.5px] font-medium text-[#4a4338]">
             <span className="inline-flex items-center gap-1.5 font-medium">
-              <JobLocationIcon className="size-3.5 shrink-0" /> {jobLocation(job)}
+              <JobLocationIcon className="size-4 shrink-0" /> {jobLocation(job)}
             </span>
             <span className="text-[#dacbb4]">|</span>
             <span className="inline-flex items-center gap-1.5 font-medium">
-              <JobBriefcaseIcon className="size-3.5 shrink-0" /> {jobType(job)}
+              <JobBriefcaseIcon className="size-4 shrink-0" /> {jobType(job)}
             </span>
           </div>
-          <p className="text-[12px] sm:text-[12.5px] leading-[1.48] text-[#554e42] line-clamp-3 min-h-[54px]">
+          <p className="text-[13px] sm:text-[14px] leading-[1.45] text-[#554e42] line-clamp-3 min-h-[56px]">
             {jobSummary(job)}
           </p>
         </div>
         <Link
           href={jobHref(job)}
-          className="mt-3 w-full py-2 px-3 rounded-xl border border-[#ebdcc7] bg-[#fffdfa] hover:bg-[#c08a2e] text-[#9d7232] hover:text-white text-xs sm:text-[13px] font-semibold transition-all inline-flex items-center justify-center gap-1.5 shadow-2xs"
+          className="mt-3 w-full py-1.5 sm:py-2 px-3.5 rounded-lg border-[1.5px] border-[#c89228] bg-transparent hover:bg-[#c89228] text-[#8a570c] hover:text-white text-xs sm:text-[13px] font-semibold transition-all inline-flex items-center justify-center gap-1.5 shadow-2xs"
         >
           <span>View Details</span>
-          <ArrowRight size={13.5} />
+          <ArrowRight size={13} />
         </Link>
       </div>
     </article>
@@ -241,33 +264,33 @@ function Hero({ banner }: { banner: CareerContent["banner"] }) {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[72%_center] xl:object-center"
+            className="object-cover object-[72%_center] xl:object-top"
           />
         </div>
 
         <Container className="bg-transparent relative z-10">
-          <div className="relative min-h-[460px] md:h-[500px] lg:h-[520px] xl:h-[540px] w-full flex items-center">
-            <div className="max-w-[580px] pt-4 pb-4 sm:pt-6 sm:pb-6 pl-1 sm:pl-3 lg:pl-5">
+          <div className="relative min-h-[440px] md:h-[480px] lg:h-[490px] xl:h-[500px] w-full flex items-center">
+            <div className="max-w-[620px] pt-3 pb-3 sm:pt-4 sm:pb-4 pl-1 sm:pl-3 lg:pl-5">
               {/* 1. Eyebrow: CAREERS AT ENSIS — */}
-              <div className="mb-1.5 sm:mb-2 flex items-center gap-2">
-                <span className="text-[11px] sm:text-[11.5px] font-bold uppercase tracking-[0.2em] text-[#a9742a]">
+              <div className="mb-0.5 sm:mb-1 flex items-center gap-2">
+                <span className="text-[15px] sm:text-[16px] md:text-[17px] font-bold uppercase tracking-[0.16em] text-[#a9742a]">
                   CAREERS AT ENSIS
                 </span>
-                <span className="text-[#a9742a] font-bold text-sm select-none">—</span>
+                <span className="text-[#a9742a] font-bold text-base select-none">—</span>
               </div>
 
-              {/* 2. Headline: Design Spaces for a Healthier Tomorrow */}
+              {/* 2. Headline: Design Spaces for a Healthier Tomorrow - Tight Line-Height & Small Gap */}
               <h1
-                style={serif}
-                className={`${serifFontClass} text-[36px] sm:text-[42px] md:text-[48px] lg:text-[52px] xl:text-[56px] font-bold leading-[0.96] tracking-[-0.02em] text-[#163a2b]`}
+                style={{ ...serif, fontWeight: 800 }}
+                className={`${serifFontClass} text-[40px] sm:text-[46px] md:text-[52px] lg:text-[58px] xl:text-[62px] font-extrabold tracking-[-0.03em] text-[#163a2b] mt-0`}
               >
                 Design Spaces<br />
                 for a Healthier<br />
-                <span className="text-[#cca038]">Tomorrow</span>
+                <span className="text-[#dc881a]">Tomorrow</span>
               </h1>
 
-              {/* 3. Subtitle / Description - wraps in exact 3 lines */}
-              <p className="mt-3 sm:mt-3.5 text-xs sm:text-[13px] md:text-[13.5px] text-[#423b32] leading-[1.48] max-w-[480px] font-medium">
+              {/* 3. Subtitle / Description */}
+              <p className="mt-3 sm:mt-3.5 text-[15px] sm:text-[16px] md:text-[16.5px] text-[#332f28] leading-[1.5] max-w-[560px] font-medium">
                 Be a part of a passionate team that designs and delivers<br />
                 wellness furniture and solutions for spas, wellness centers<br />
                 and healthcare spaces across the world.
@@ -277,37 +300,32 @@ function Hero({ banner }: { banner: CareerContent["banner"] }) {
               <div className="mt-3.5 sm:mt-4">
                 <Link
                   href={banner.ctaHref || "#openings"}
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#0e3022] hover:bg-[#071b13] px-5 sm:px-6 py-2 sm:py-2.5 text-xs sm:text-[13px] font-semibold text-white shadow-[0_6px_18px_rgba(14,48,34,0.3)] transition-all transform hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#0e3022] hover:bg-[#071b13] px-6 sm:px-7 py-2.5 sm:py-3 text-[14px] sm:text-[15px] font-semibold text-white shadow-[0_6px_18px_rgba(14,48,34,0.3)] transition-all transform hover:-translate-y-0.5"
                 >
                   <span>{banner.ctaText || "Explore Opportunities"}</span>
-                  <ArrowRight size={14} />
+                  <ArrowRight size={15} />
                 </Link>
               </div>
 
-              {/* 5. Four Feature Emblems matching mockup with vertical dividers */}
-              <div className="mt-4 sm:mt-5 flex items-center gap-2 sm:gap-3.5 md:gap-4 lg:gap-5">
+              {/* 5. Four Feature Emblems matching career detail page sizes and styling */}
+              <ul className="mt-4 sm:mt-5 flex flex-wrap items-center gap-x-7 sm:gap-x-10 lg:gap-x-12 gap-y-2.5">
                 {HERO_FEATURES.map((item, i) => (
-                  <React.Fragment key={i}>
-                    {i > 0 && (
-                      <div className="h-8 sm:h-9 w-px bg-[#dfceb5] shrink-0" aria-hidden />
-                    )}
-                    <div className="flex flex-col items-center text-center">
-                      <div className="relative size-10 sm:size-11 flex items-center justify-center">
-                        <Image
-                          src={item.image}
-                          alt={item.label}
-                          width={42}
-                          height={42}
-                          className="object-contain"
-                        />
-                      </div>
-                      <span className="mt-1 text-[10.5px] sm:text-[11px] font-semibold leading-[1.18] text-[#333d36] whitespace-pre-line">
-                        {item.label}
-                      </span>
+                  <li key={i} className="flex flex-col items-center gap-1.5 text-center">
+                    <div className="relative size-[48px] sm:size-[54px] flex items-center justify-center">
+                      <Image
+                        src={item.image}
+                        alt=""
+                        width={54}
+                        height={54}
+                        className="size-full object-contain drop-shadow-xs"
+                      />
                     </div>
-                  </React.Fragment>
+                    <span className="text-[13px] sm:text-[14px] font-semibold leading-[1.25] text-[#163a2b] whitespace-pre-line">
+                      {item.label}
+                    </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </div>
         </Container>
@@ -320,10 +338,9 @@ function Hero({ banner }: { banner: CareerContent["banner"] }) {
 }
 
 function Openings({ content, jobs }: { content: CareerContent; jobs: PublicJob[] }) {
-  const { openings, emptyState } = content;
+  const { openings } = content;
 
   // Prioritize the 4 mockup jobs on the landing page
-  const prioritySlugs = ["product-designer", "furniture-production-specialist", "sales-partnerships-executive", "wellness-space-consultant"];
   const displayJobs = MOCKUP_JOBS_ORDER.map((fallback, i) => {
     const match = jobs.find(
       (j) => j.slug === fallback.slug || j.title?.toLowerCase() === fallback.title.toLowerCase()
@@ -332,7 +349,7 @@ function Openings({ content, jobs }: { content: CareerContent; jobs: PublicJob[]
   });
 
   return (
-    <section id="openings" className="relative scroll-mt-20 pt-4 sm:pt-5 lg:pt-6 pb-6 sm:pb-8 overflow-hidden">
+    <section id="openings" className="relative scroll-mt-20 pt-3 sm:pt-3.5 lg:pt-4 pb-3 sm:pb-3.5 overflow-hidden">
       {/* Background with subtle warmth */}
       <Image src={exploreBg} alt="" aria-hidden fill sizes="100vw" className="object-cover" />
 
@@ -340,34 +357,34 @@ function Openings({ content, jobs }: { content: CareerContent; jobs: PublicJob[]
       <SectionLeaves />
 
       <Container className="relative z-10">
-        <div className="grid items-end gap-3 lg:grid-cols-[1fr_auto] pb-2 sm:pb-3">
+        <div className="grid items-end gap-2.5 lg:grid-cols-[1fr_auto] pb-1.5 sm:pb-2">
           <div>
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] sm:text-[11.5px] font-bold uppercase tracking-[0.2em] text-[#a8742b]">
+            <div className="flex items-center gap-2.5">
+              <span className="text-[18px] font-bold uppercase tracking-[0.16em] text-[#a8742b]">
                 {openings.eyebrow || "CURRENT OPENINGS"}
               </span>
-              <div className="h-[1.5px] w-8 sm:w-10 bg-[#c9a86a]" />
+              <div className="h-[2px] w-8 sm:w-10 bg-[#c9a86a]" />
             </div>
-            <h2 style={serif} className="mt-1 text-2xl sm:text-3xl md:text-[32px] font-bold leading-[1.12] text-[#163a2b]">
+            <h2 style={serif} className="mt-1 text-3xl sm:text-4xl md:text-[38px] font-bold leading-[1.12] text-[#163a2b]">
               Explore <span className="text-[#c88f28]">Opportunities</span>
             </h2>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 lg:gap-6">
-            <p className="max-w-md text-xs sm:text-[13px] leading-relaxed text-[#4a4338] font-medium">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 lg:gap-5">
+            <p className="max-w-md text-sm sm:text-[14.5px] leading-relaxed text-[#4a4338] font-medium">
               {openings.description || "Join our team and contribute to creating inspiring wellness spaces through innovative furniture, design and customer-focused solutions."}
             </p>
             <Link
               href="/career/jobs"
-              className="inline-flex shrink-0 items-center gap-1.5 text-xs sm:text-[13px] font-bold text-[#163a2b] hover:text-[#c88f28] self-start sm:self-center transition-colors whitespace-nowrap"
+              className="inline-flex shrink-0 items-center gap-1.5 text-sm sm:text-[14.5px] font-bold text-[#163a2b] hover:text-[#c88f28] self-start sm:self-center transition-colors whitespace-nowrap"
             >
               <span>{openings.viewAllText || "View all roles"}</span>
-              <ArrowRight size={14} />
+              <ArrowRight size={15} />
             </Link>
           </div>
         </div>
 
-        <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5 lg:gap-4">
+        <div className="mt-2.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-4.5">
           {displayJobs.map((job, i) => (
             <JobCard key={job._id || job.slug || i} job={job} index={i} />
           ))}
@@ -377,84 +394,153 @@ function Openings({ content, jobs }: { content: CareerContent; jobs: PublicJob[]
   );
 }
 
-function WhyWork({ whyWork }: { whyWork: CareerContent["whyWork"] }) {
+function WhyWork({
+  whyWork,
+  hasPosts = true,
+  jobsCount,
+}: {
+  whyWork: CareerContent["whyWork"];
+  hasPosts?: boolean;
+  jobsCount?: number;
+}) {
+  // Background image ONLY appears when there are no job posts or 0 posts
+  const hasBg = jobsCount !== undefined ? jobsCount === 0 : !hasPosts;
+
   const items = [
     {
-      icon: Leaf,
+      image: whyWorkLeaf,
       title: whyWork.items?.[0]?.title || "Purpose-Driven Work",
       text: whyWork.items?.[0]?.text || "Contribute to wellness spaces that enhance people's lives.",
     },
     {
-      icon: Users,
+      image: whyWorkTeam,
       title: whyWork.items?.[1]?.title || "Supportive Team Environment",
       text: whyWork.items?.[1]?.text || "Collaborate with talented and driven colleagues across design, manufacturing, sales and operations.",
     },
     {
-      icon: BarChart3,
+      image: whyWorkGrowth,
       title: whyWork.items?.[2]?.title || "Learning & Growth",
       text: whyWork.items?.[2]?.text || "Enhance your skills with continuous learning and exposure to global markets.",
     },
     {
-      icon: HeartHandshake,
+      image: whyWorkHeart,
       title: whyWork.items?.[3]?.title || "Better Spaces, Better Lives",
       text: whyWork.items?.[3]?.text || "Be part of a mission that improves how people live, work and heal.",
     },
   ];
 
-  return (
-    <section className="relative py-6 sm:py-8 overflow-hidden text-white">
-      {/* Dark Forest Green Background with Gold Border Foliage */}
-      <Image
-        src={whyWorkBg}
-        alt=""
-        aria-hidden
-        fill
-        sizes="100vw"
-        className="object-cover"
-        priority
-      />
+  if (hasBg) {
+    return (
+      <section className="relative py-4 sm:py-4.5 md:py-5 overflow-hidden text-white bg-[#fdf9ed]">
+        {/* Dark Forest Green Background with Gold Border Foliage - Only when 0 posts */}
+        <Image
+          src={whyWorkBg}
+          alt=""
+          aria-hidden
+          fill
+          sizes="100vw"
+          className="object-cover"
+          priority
+        />
 
-      <Container className="relative z-10">
-        <div className="grid items-end gap-2 lg:grid-cols-[1fr_minmax(0,1.15fr)]">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-[11px] sm:text-[11.5px] font-bold uppercase tracking-[0.2em] text-[#e0a92b]">
-                {whyWork.eyebrow || "WHY WORK AT ENSIS?"}
-              </span>
-              <span className="h-px w-8 sm:w-10 bg-[#e0a92b]" />
+        <Container className="relative z-10">
+          <div className="grid items-end gap-2.5 lg:grid-cols-[1fr_minmax(0,1.15fr)]">
+            <div>
+              <div className="flex items-center gap-2.5">
+                <span className="text-[18px] font-bold uppercase tracking-[0.16em] text-[#e0a92b]">
+                  {whyWork.eyebrow || "WHY WORK AT ENSIS?"}
+                </span>
+                <span className="h-[2px] w-8 sm:w-10 bg-[#e0a92b]" />
+              </div>
+              <h2 style={serif} className="mt-1 text-3xl sm:text-4xl md:text-[38px] font-bold leading-[1.12] text-white">
+                Why Work <span className="text-[#e0a92b]">with ENSIS</span>
+              </h2>
             </div>
-            <h2 style={serif} className="mt-1 text-2xl sm:text-3xl md:text-[34px] font-bold leading-[1.12] text-white">
-              Why Work <span className="text-[#e0a92b]">with ENSIS</span>
-            </h2>
+            <p className="max-w-xl text-sm sm:text-[14.5px] md:text-[15px] leading-relaxed text-[#e2ded6]">
+              {whyWork.description ||
+                "We're not just creating interiors and equipment, we're crafting experiences that transform lives. Join a team that believes in purpose over profit and wellness over everything."}
+            </p>
           </div>
-          <p className="max-w-xl text-xs sm:text-[13.5px] leading-relaxed text-[#e2ded6]">
-            {whyWork.description ||
-              "We're not just creating interiors and equipment, we're crafting experiences that transform lives. Join a team that believes in purpose over profit and wellness over everything."}
-          </p>
-        </div>
 
-        <ul className="mt-3 sm:mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
-          {items.map((item, i) => {
-            const Icon = item.icon;
-            return (
+          <ul className="mt-3.5 sm:mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
+            {items.map((item, i) => (
               <li
-                key={item.title}
-                className={`flex flex-col items-center px-3 sm:px-4 text-center ${
-                  i > 0 ? "lg:border-l lg:border-[#e0a92b]/30" : ""
-                }`}
+                key={i}
+                className={`flex flex-col items-center px-3.5 sm:px-4 text-center ${i > 0 ? "lg:border-l lg:border-[#e0a92b]/30" : ""
+                  }`}
               >
-                <div className="grid size-12 sm:size-14 place-items-center rounded-full border border-[#e0a92b]/60 bg-[#0a2318]/70 text-[#e0a92b] shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
-                  <Icon size={22} strokeWidth={1.8} />
+                <div className="relative size-12 sm:size-14 flex items-center justify-center">
+                  <Image
+                    src={item.image}
+                    alt=""
+                    width={56}
+                    height={56}
+                    className="size-full object-contain drop-shadow-xs"
+                  />
                 </div>
-                <h3 style={serif} className="mt-2.5 text-base sm:text-[17px] font-semibold leading-snug text-white">
-                  {item.title}
+                <h3 style={serif} className="mt-2.5 text-base sm:text-[18px] font-bold leading-snug text-white min-h-[42px] sm:min-h-[46px] flex items-center justify-center text-center">
+                  {formatWhyWorkTitle(item.title)}
                 </h3>
-                <p className="mt-1 max-w-[16rem] text-xs sm:text-[13px] leading-relaxed text-[#d1ccc4]">
+                <p className="mt-1.5 max-w-[16rem] text-[13px] sm:text-[14px] leading-relaxed text-[#d1ccc4] text-center">
                   {item.text}
                 </p>
               </li>
-            );
-          })}
+            ))}
+          </ul>
+        </Container>
+      </section>
+    );
+  }
+
+  // When posts exist, render on clean natural background with leaf borders matching mockup
+  return (
+    <section className="relative py-4 sm:py-4.5 md:py-5 overflow-hidden bg-[#faf5eb] border-y border-[#ebdcc7]/60">
+      {/* Decorative Botanical Leaf Borders on left and right */}
+      <SectionLeaves />
+
+      <Container className="relative z-10">
+        <div className="grid items-end gap-2.5 lg:grid-cols-[1fr_minmax(0,1.15fr)]">
+          <div>
+            <div className="flex items-center gap-2.5">
+              <span className="text-xs sm:text-[13px] md:text-sm font-bold uppercase tracking-[0.16em] text-[#b47422]">
+                WHY WORK WITH ENSIS
+              </span>
+              <span className="h-[1.5px] w-8 sm:w-10 bg-[#b47422]" />
+            </div>
+            <h2 style={serif} className="mt-1 text-2xl sm:text-3xl md:text-[38px] font-bold leading-[1.12] text-[#163a2b]">
+              A Career with Purpose
+            </h2>
+          </div>
+          <p className="max-w-xl text-xs sm:text-[13px] md:text-[13.5px] leading-relaxed text-[#4a4338] font-normal">
+            {whyWork.description ||
+              "At ENSIS, you will be part of a passionate and collaborative environment where design, innovation and wellbeing come together to create spaces that make a real difference."}
+          </p>
+        </div>
+
+        <ul className="mt-3.5 sm:mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-0">
+          {items.map((item, i) => (
+            <li
+              key={i}
+              className={`flex flex-col items-center px-3.5 sm:px-4 text-center ${i > 0 ? "lg:border-l lg:border-[#dfceb5]" : ""
+                }`}
+            >
+              <div className="relative size-12 sm:size-14 flex items-center justify-center">
+                <Image
+                  src={item.image}
+                  alt=""
+                  width={56}
+                  height={56}
+                  className="size-full object-contain drop-shadow-xs"
+                />
+              </div>
+              <h3 style={serif} className="mt-2.5 text-base sm:text-[17.5px] font-bold leading-snug text-[#163a2b] min-h-[42px] sm:min-h-[46px] flex items-center justify-center text-center">
+                {formatWhyWorkTitle(item.title)}
+              </h3>
+              <p className="mt-1.5 max-w-[16rem] text-[13px] sm:text-[13.5px] leading-relaxed text-[#554e42] text-center">
+                {item.text}
+              </p>
+            </li>
+          ))}
         </ul>
       </Container>
     </section>
@@ -464,28 +550,30 @@ function WhyWork({ whyWork }: { whyWork: CareerContent["whyWork"] }) {
 function LifeAtEnsis({ life }: { life: CareerContent["life"] }) {
   const photos = (life.images.length ? life.images.map((p, i) => ({ src: imageSrc(p.image, LIFE_FALLBACKS[i % LIFE_FALLBACKS.length]), alt: p.alt || "Life at Ensis" })) : LIFE_FALLBACKS.map((src) => ({ src, alt: "Life at Ensis" }))).slice(0, 4);
   return (
-    <section className="relative pt-3 sm:pt-4 pb-1">
+    <section className="relative pt-2.5 sm:pt-3 pb-1">
       <Container className="relative z-10">
         <div className="grid items-end gap-2 lg:grid-cols-[1fr_minmax(0,0.9fr)]">
           <div>
             <Eyebrow>{life.eyebrow}</Eyebrow>
-            <SerifHeading text={life.heading} className="mt-1 text-[1.85rem] md:text-[2.25rem]" />
+            <SerifHeading text={life.heading} className="mt-1 text-2xl sm:text-3xl md:text-[36px]" />
           </div>
-          {life.description && <p className="max-w-lg text-xs sm:text-[13.5px] leading-relaxed text-[#4b453b]">{life.description}</p>}
+          {life.description && <p className="max-w-lg text-[13px] sm:text-[14px] leading-relaxed text-[#4b453b] font-medium">{life.description}</p>}
         </div>
-        <div className="mt-2.5 sm:mt-3 grid grid-cols-2 gap-2 md:grid-cols-5">
+        <div className="mt-2.5 sm:mt-3 grid grid-cols-2 gap-2.5 md:grid-cols-5">
           {photos.map((photo, i) => (
-            <div key={i} className={`relative h-32 sm:h-36 overflow-hidden rounded-lg md:h-36 ${i === 0 ? "col-span-2 md:col-span-1" : ""}`}>
+            <div key={i} className={`relative h-32 sm:h-36 overflow-hidden rounded-xl md:h-36 ${i === 0 ? "col-span-2 md:col-span-1" : ""}`}>
               <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 768px) 50vw, 20vw" className="object-cover transition duration-500 hover:scale-105" />
             </div>
           ))}
-          <div className="relative col-span-2 flex h-32 sm:h-36 items-center justify-end overflow-hidden rounded-xl bg-[linear-gradient(135deg,#f6ead2_0%,#e9d3a8_100%)] p-3 md:col-span-1 md:h-36">
-            <Image src={life4} alt="" aria-hidden fill sizes="20vw" className="object-cover opacity-25" />
-            <p style={serif} className="relative text-right text-xl leading-tight text-[#3a2c14]">
-              {life.tileText.split(" ").map((word, i, words) => (
-                <span key={i}>{word}{i % 2 === 1 && i < words.length - 1 ? <br /> : " "}</span>
-              ))}
-            </p>
+          {/* 5th tile: spaces-fifth.png (Healing People Enriching Lives) */}
+          <div className="relative col-span-2 h-32 sm:h-36 overflow-hidden rounded-xl md:col-span-1 md:h-36">
+            <Image
+              src={space5}
+              alt={life.tileText || "Healing People Enriching Lives"}
+              fill
+              sizes="(max-width: 768px) 50vw, 20vw"
+              className="object-cover transition duration-500 hover:scale-105"
+            />
           </div>
         </div>
       </Container>
@@ -495,27 +583,29 @@ function LifeAtEnsis({ life }: { life: CareerContent["life"] }) {
 
 function TalentCta({ talent }: { talent: CareerContent["talent"] }) {
   return (
-    <section className="relative overflow-hidden py-4 sm:py-6 md:py-8">
+    <section className="relative overflow-hidden py-2 sm:py-2.5 md:py-3">
       <Container className="relative z-10 flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
-        <div className="max-w-2xl">
+        <div className="max-w-2xl pl-2 sm:pl-4 md:pl-8 lg:pl-12">
           <h2
-            style={serif}
-            className="text-2xl sm:text-[26px] md:text-[28px] font-bold leading-[1.18] text-[#163a2b]"
+            style={{ ...serif, fontWeight: 700 }}
+            className="text-2xl sm:text-3xl md:text-[30px] font-bold leading-[1.18] text-[#163a2b]"
           >
             {talent.heading || "Don't See the Right Role?"}
           </h2>
-          <p className="mt-1.5 text-[13px] sm:text-[13.5px] md:text-[14px] leading-[1.55] text-[#3e3830] font-medium max-w-xl">
+          <p className="mt-1 text-[13px] sm:text-[14px] leading-relaxed text-[#3e3830] font-medium max-w-xl">
             {talent.text ||
               "We are always open to connecting with passionate and talented professionals. Share your profile with us and we will get in touch when a suitable opportunity arises."}
           </p>
         </div>
-        <Link
-          href="/career/jobs"
-          className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-[#c08a2e] hover:bg-[#a8742b] px-6 sm:px-7 py-2.5 sm:py-3 text-xs sm:text-[13px] font-semibold text-white shadow-xs transition-all hover:-translate-y-0.5"
-        >
-          <span>{talent.buttonText || "Share Your Profile"}</span>
-          <ArrowRight size={15} />
-        </Link>
+        <div className="pr-2 sm:pr-4 md:pr-8 lg:pr-12">
+          <Link
+            href="/career/jobs"
+            className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-[#c08a2e] hover:bg-[#a8742b] px-5 sm:px-6 py-2.5 sm:py-3 text-[13.5px] sm:text-[14px] font-semibold text-white shadow-xs transition-all hover:-translate-y-0.5"
+          >
+            <span>{talent.buttonText || "Share Your Profile"}</span>
+            <ArrowRight size={15} />
+          </Link>
+        </div>
       </Container>
     </section>
   );
@@ -542,13 +632,14 @@ function jobPostingJsonLd(jobs: PublicJob[]) {
 
 export default async function CareerLanding() {
   const [content, { jobs }] = await Promise.all([getCareerContent(), listOpenJobs()]);
+  const hasPosts = Boolean(jobs && jobs.length > 0);
   const jsonLd = jobPostingJsonLd(jobs);
   return (
-    <div className="relative overflow-hidden bg-[#fbf6ec] bg-[radial-gradient(1200px_600px_at_15%_0%,#fffaf0_0%,transparent_60%)]">
+    <div className="relative overflow-hidden bg-[#fbf6ec] bg-[radial-gradient(1200px_600px_at_15%_0%,#fffaf0_0%,transparent_60%)] text-[16px] [font-size:16px]">
       {jsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd }} />}
       <Hero banner={content.banner} />
-      <Openings content={content} jobs={jobs} />
-      <WhyWork whyWork={content.whyWork} />
+      {hasPosts && <Openings content={content} jobs={jobs} />}
+      <WhyWork whyWork={content.whyWork} jobsCount={jobs.length} hasPosts={hasPosts} />
       {/* One cream-and-leaves backdrop behind the gallery and the closing call to action */}
       <div className="relative overflow-hidden">
         <Image src={lifeBg} alt="" aria-hidden fill sizes="100vw" className="object-cover" />

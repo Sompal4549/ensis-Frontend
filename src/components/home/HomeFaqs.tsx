@@ -84,7 +84,9 @@ export const HomeFaqs = async ({ subtitle, heading, description }: HomeFaqsProps
             </p>
           </div>
 
-          <FaqAccordion faqs={faqs.slice(0,5)} />
+          <div className="mx-auto max-w-3xl">
+            <FaqAccordion faqs={faqs.slice(0, 5)} />
+          </div>
         </div>
       </Container>
     </section>

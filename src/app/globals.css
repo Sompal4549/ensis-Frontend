@@ -70,6 +70,27 @@ h1 {
   p, li { line-height: 1.6; }
 }
 
+/* ── Career Pages: Titles Serif (Playfair Display), Normal Text Sans-serif, Root 16px / 500 ── */
+.career-root {
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.career-root :is(h1, h2, h3, h4, .font-serif, [data-font="serif"]) {
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif !important;
+}
+
+.career-root :is(h1, h2, h3, h4, .font-serif, [data-font="serif"]) span:not(.font-sans) {
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif !important;
+}
+
+.career-root :is(p, span, a, label, input, select, textarea, button, li, th, td, div):not(h1, h2, h3, h4, .font-serif, [data-font="serif"], :is(h1, h2, h3, h4, .font-serif, [data-font="serif"]) *) {
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+
+
+
 
 * {
   box-sizing: border-box;

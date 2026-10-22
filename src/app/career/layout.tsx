@@ -10,5 +10,6 @@ export default function CareerLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <div className="career-root text-[16px] font-medium">{children}</div>;
 }
+

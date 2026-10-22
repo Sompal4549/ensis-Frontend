@@ -210,6 +210,158 @@ export const GENERAL_APPLICATION_JOB: PublicJob = {
   showMatchBreakdown: true,
 };
 
+export const MOCK_DESIGN_JOBS: Record<string, PublicJob> = {
+  "product-designer": {
+    _id: "mock-job-product-designer",
+    slug: "product-designer",
+    title: "Product Designer",
+    department: "Design & Wellness Solutions",
+    location: "Delhi NCR",
+    employmentType: "Full Time",
+    workplaceType: "Hybrid",
+    experienceMin: 2,
+    experienceMax: 5,
+    educationRequirements: "B.Des / M.Des (Product or Industrial Design)",
+    shortDescription:
+      "Design innovative wellness furniture and treatment solutions that combine functionality, comfort and aesthetics.",
+    description:
+      "We are looking for a passionate Product Designer to design luxury wellness furniture, spa treatment tables, and ergonomic wellness spaces that blend contemporary aesthetics with timeless comfort.",
+    responsibilities: [
+      "Design innovative wellness furniture and treatment solutions for spas and wellness spaces.",
+      "Create product concepts, 3D models and detailed technical drawings.",
+      "Collaborate with manufacturing, sourcing and project teams to ensure design feasibility.",
+      "Ensure the right balance of functionality, comfort, ergonomics and aesthetics.",
+    ],
+    requirements: [
+      "Bachelor's or Master's degree in Product Design, Industrial Design or Interior Design.",
+      "Proficiency in design tools such as AutoCAD, SolidWorks, SketchUp, Rhino or similar.",
+      "Strong portfolio showcasing furniture or product design work.",
+      "Good communication and collaboration skills.",
+      "Passion for wellness design and creating meaningful spaces.",
+    ],
+    aiCheckPoints: [
+      "Relevant product design experience",
+      "Experience in furniture / industrial / interior design",
+      "Proficiency in CAD / 3D design tools",
+      "Portfolio and design quality",
+      "Communication & teamwork skills",
+      "Overall profile match",
+    ],
+    eligibilityThreshold: 70,
+    partialMatchMin: 50,
+    showMatchScoreToCandidate: true,
+    showMatchBreakdown: true,
+  },
+  "furniture-production-specialist": {
+    _id: "mock-job-furniture-production-specialist",
+    slug: "furniture-production-specialist",
+    title: "Furniture Production Specialist",
+    department: "Manufacturing",
+    location: "Delhi NCR",
+    employmentType: "Full Time",
+    workplaceType: "On-site",
+    experienceMin: 3,
+    experienceMax: 7,
+    educationRequirements: "Diploma / Degree in Production, Woodwork, or Mechanical Engineering",
+    shortDescription:
+      "Support manufacturing processes, ensure quality craftsmanship and help bring our designs to life.",
+    description:
+      "Oversee premium hardwood crafting, upholstery finishing, assembly, and quality assurance for luxury spa and wellness furniture.",
+    responsibilities: [
+      "Manage woodwork, joinery, and assembly workflows on the production floor.",
+      "Enforce 5-year structural warranty quality standards across all wellness pieces.",
+      "Coordinate with design and procurement teams for premium raw material sourcing.",
+      "Optimize production schedules to meet project delivery commitments.",
+    ],
+    requirements: [
+      "3+ years experience in furniture production or premium woodwork fabrication.",
+      "Deep understanding of hardwood types, veneers, polishing, and upholstery.",
+      "Strong attention to detail and team leadership capabilities.",
+    ],
+    aiCheckPoints: [
+      "Furniture fabrication and woodworking expertise",
+      "Quality assurance and warranty compliance knowledge",
+      "Team supervision and workshop workflow management",
+    ],
+    eligibilityThreshold: 70,
+    partialMatchMin: 50,
+    showMatchScoreToCandidate: true,
+    showMatchBreakdown: true,
+  },
+  "sales-partnerships-executive": {
+    _id: "mock-job-sales-partnerships-executive",
+    slug: "sales-partnerships-executive",
+    title: "Sales & Partnerships Executive",
+    department: "Sales",
+    location: "Delhi NCR",
+    employmentType: "Full Time",
+    workplaceType: "Hybrid",
+    experienceMin: 2,
+    experienceMax: 5,
+    educationRequirements: "Any Graduate; MBA / Marketing certification is a plus",
+    shortDescription:
+      "Build client relationships, explore new business opportunities and contribute to the growth of ENSIS.",
+    description:
+      "Develop partnerships with luxury spa owners, wellness retreats, Ayurvedic resorts, and architects to present bespoke wellness furniture and turnkey installations.",
+    responsibilities: [
+      "Generate and qualify leads with wellness resorts, luxury hotels, and clinics.",
+      "Conduct consultative presentations highlighting our ergonomic wellness products.",
+      "Prepare commercial proposals and collaborate with the design team on custom quotes.",
+      "Nurture enduring relationships with architects, interior consultants, and hospitality brands.",
+    ],
+    requirements: [
+      "2+ years experience in B2B project sales, luxury furnishings, or hospitality supply.",
+      "Excellent communication, presentation, and negotiation skills.",
+      "Client-first mindset with proven pipeline management ability.",
+    ],
+    aiCheckPoints: [
+      "B2B sales and project consultation track record",
+      "Client relationship management and closing ability",
+      "Communication and presentation excellence",
+    ],
+    eligibilityThreshold: 70,
+    partialMatchMin: 50,
+    showMatchScoreToCandidate: true,
+    showMatchBreakdown: true,
+  },
+  "wellness-space-consultant": {
+    _id: "mock-job-wellness-space-consultant",
+    slug: "wellness-space-consultant",
+    title: "Wellness Space Consultant",
+    department: "Consultancy",
+    location: "Delhi NCR",
+    employmentType: "Full Time",
+    workplaceType: "Hybrid",
+    experienceMin: 3,
+    experienceMax: 6,
+    educationRequirements: "Degree in Interior Architecture, Wellness Design, or Hospitality Management",
+    shortDescription:
+      "Guide clients in creating functional and beautiful wellness spaces with the right furniture and solutions.",
+    description:
+      "Consult clients on holistic spatial layouts, equipment selection, and ergonomic workflows for world-class Ayurvedic and spa environments.",
+    responsibilities: [
+      "Consult clients on holistic spatial layouts, equipment selection, and ergonomic workflows.",
+      "Develop comprehensive room layout recommendations tailored to client therapy menus.",
+      "Work with architects and interior designers to seamlessly integrate Panchkarma and spa units.",
+      "Lead client discovery sessions and translate vision into functional equipment setups.",
+    ],
+    requirements: [
+      "3+ years experience in wellness space planning, spa consultation, or luxury interior consulting.",
+      "Solid knowledge of wellness modalities, ergonomics, and spatial aesthetics.",
+      "High empathy and exceptional consultative advisory skills.",
+    ],
+    aiCheckPoints: [
+      "Wellness spatial design and spa workflow planning",
+      "Client advisory and consultative solution mapping",
+      "Holistic equipment integration expertise",
+    ],
+    eligibilityThreshold: 70,
+    partialMatchMin: 50,
+    showMatchScoreToCandidate: true,
+    showMatchBreakdown: true,
+  },
+};
+
 // -----------------------------------------------------------------------------
 // 1. Get Job by Slug
 // -----------------------------------------------------------------------------
@@ -237,7 +389,7 @@ export async function getJob(slug: string): Promise<PublicJob | null> {
     console.warn("[career] Backend /careers/:slug request failed, falling back to listOpenJobs", err);
   }
 
-  // Fallback: list open jobs and find by slug or _id
+  // Fallback 1: list open jobs and find by slug or _id
   console.info("[career] using fallback: resolving job from listOpenJobs()");
   const listResult = await listOpenJobs();
   if (listResult.ok && listResult.jobs.length > 0) {
@@ -249,6 +401,17 @@ export async function getJob(slug: string): Promise<PublicJob | null> {
     );
     if (found) return found;
   }
+
+  // Fallback 2: Check defined mock design jobs
+  if (MOCK_DESIGN_JOBS[decoded]) {
+    return MOCK_DESIGN_JOBS[decoded];
+  }
+  const mockMatch = Object.values(MOCK_DESIGN_JOBS).find(
+    (m) =>
+      m.slug === decoded ||
+      m.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") === decoded
+  );
+  if (mockMatch) return mockMatch;
 
   return null;
 }

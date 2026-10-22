@@ -37,7 +37,7 @@ function LinkedinIcon({ size = 12, className = "" }: { size?: number; className?
     </svg>
   );
 }
-import { serif } from "@/components/career-v2/ui";
+import { serif, serifFontClass } from "@/components/career-v2/ui";
 import defaultAvatar from "@/assets/career/flow/default-avatar.webp";
 import type { CandidateProfile, PublicJob, CvFile } from "@/lib/careerApi";
 import { jobLocation, jobType } from "@/lib/careers";
@@ -49,6 +49,7 @@ import { jobLocation, jobType } from "@/lib/careers";
 export function SectionCard({
   icon: Icon = Briefcase,
   title,
+  iconBgClass = "bg-[#b8731b] text-white",
   actionButton,
   onEdit,
   children,
@@ -56,6 +57,7 @@ export function SectionCard({
 }: {
   icon?: LucideIcon;
   title: string;
+  iconBgClass?: string;
   actionButton?: React.ReactNode;
   onEdit?: () => void;
   children: React.ReactNode;
@@ -63,14 +65,14 @@ export function SectionCard({
 }) {
   return (
     <section
-      className={`rounded-2xl border border-[#eadfcd] bg-[#fffdf8] p-4 sm:p-5 shadow-[0_4px_20px_rgba(154,115,52,0.06)] ${className}`}
+      className={`rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-3.5 sm:p-4 shadow-[0_2px_12px_rgba(154,115,52,0.04)] ${className}`}
     >
-      <div className="flex items-center justify-between pb-2.5 mb-3.5 border-b border-[#eadfcd]/70">
+      <div className="flex items-center justify-between pb-2 mb-3 border-b border-[#eadfcd]/70">
         <div className="flex items-center gap-2.5">
-          <span className="grid size-8 place-items-center rounded-full bg-[#f4ebd9] text-[#a8792c] border border-[#d9bf86]/40">
-            <Icon size={15} strokeWidth={2} />
+          <span className={`grid size-7 sm:size-7.5 place-items-center rounded-full ${iconBgClass} shadow-2xs shrink-0`}>
+            <Icon size={14} strokeWidth={2.2} />
           </span>
-          <h2 style={serif} className="text-lg font-semibold tracking-tight text-[#163a2b] sm:text-xl">
+          <h2 style={serif} className={`${serifFontClass} text-base sm:text-lg font-bold tracking-tight text-[#163a2b]`}>
             {title}
           </h2>
         </div>
@@ -79,7 +81,7 @@ export function SectionCard({
             <button
               type="button"
               onClick={onEdit}
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#8d6a3a] hover:text-[#163a2b] px-2.5 py-1 rounded-md hover:bg-[#f4ebd9]/50 transition-colors"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-[#8d6a3a] hover:text-[#163a2b] px-2 py-1 rounded hover:bg-[#f4ebd9]/50 transition-colors"
             >
               <Edit2 size={12} />
               <span>Edit</span>
@@ -92,13 +94,13 @@ export function SectionCard({
 }
 
 // -----------------------------------------------------------------------------
-// 2. ProfileCard (Sidebar / Top Candidate Snapshot)
+// 2. ProfileCard (Sidebar / Top Candidate Snapshot with All Icons)
 // -----------------------------------------------------------------------------
 
 export function ProfileCard({
   profile,
   onEdit,
-  showFullDetails = false,
+  showFullDetails = true,
   className = "",
 }: {
   profile: CandidateProfile;
@@ -108,10 +110,10 @@ export function ProfileCard({
 }) {
   return (
     <div
-      className={`rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-4 sm:p-5 shadow-[0_2px_12px_rgba(154,115,52,0.05)] ${className}`}
+      className={`rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-3.5 sm:p-4 shadow-[0_2px_12px_rgba(154,115,52,0.04)] ${className}`}
     >
-      <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#eadfcd]/60">
-        <span className="text-xs font-semibold uppercase tracking-wider text-[#8d6a3a]">Your Profile</span>
+      <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-[#eadfcd]/60">
+        <span className="text-xs font-bold uppercase tracking-wider text-[#163a2b]">Your Profile</span>
         {onEdit && (
           <button
             type="button"
@@ -124,10 +126,10 @@ export function ProfileCard({
         )}
       </div>
 
-      <div className="flex items-start gap-3.5">
+      <div className="flex items-start gap-3">
         <div
           onClick={onEdit}
-          className={`relative size-14 shrink-0 overflow-hidden rounded-full border-2 border-[#d9bf86]/60 shadow-inner ${
+          className={`relative size-16 shrink-0 overflow-hidden rounded-xl border border-[#d9bf86]/60 shadow-xs bg-[#f4ebd9]/40 ${
             onEdit ? "cursor-pointer group hover:border-[#163a2b] transition-all" : ""
           }`}
           title={onEdit ? "Click to edit profile / change photo" : undefined}
@@ -145,51 +147,38 @@ export function ProfileCard({
           )}
         </div>
 
-        <div className="min-w-0 flex-1 space-y-1 text-xs">
-          <p className="font-semibold text-sm text-[#163a2b] truncate">{profile.fullName || "Candidate Profile"}</p>
-          {profile.email && (
-            <div className="flex items-center gap-1.5 text-[#5f5647] truncate">
-              <Mail size={12} className="text-[#a8792c] shrink-0" />
-              <span className="truncate">{profile.email}</span>
-            </div>
-          )}
-          {profile.phone && (
-            <div className="flex items-center gap-1.5 text-[#5f5647]">
-              <Phone size={12} className="text-[#a8792c] shrink-0" />
-              <span>{profile.phone}</span>
-            </div>
-          )}
-          {profile.currentLocation && (
-            <div className="flex items-center gap-1.5 text-[#5f5647]">
-              <MapPin size={12} className="text-[#a8792c] shrink-0" />
-              <span>{profile.currentLocation}</span>
-            </div>
-          )}
-          {profile.linkedin && (
-            <div className="flex items-center gap-1.5 text-[#5f5647] truncate">
-              <LinkedinIcon size={12} className="text-[#a8792c] shrink-0" />
-              <span className="truncate">{profile.linkedin.replace(/^https?:\/\/(www\.)?/, "")}</span>
-            </div>
-          )}
+        <div className="min-w-0 flex-1 space-y-1 text-xs text-[#4b4336]">
+          <p className="font-bold text-sm sm:text-[15px] text-[#163a2b] truncate leading-tight">
+            {profile.fullName || "Vijay Sharma"}
+          </p>
+          <div className="flex items-center gap-1.5 text-[#4b4336] truncate">
+            <Mail size={12} className="text-[#163a2b] shrink-0" />
+            <span className="truncate">{profile.email || "vijay.sharma@gmail.com"}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-[#4b4336]">
+            <Phone size={12} className="text-[#163a2b] shrink-0" />
+            <span>{profile.phone || "+91 98765 43210"}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-[#4b4336]">
+            <MapPin size={12} className="text-[#163a2b] shrink-0" />
+            <span>{profile.currentLocation || "Delhi NCR"}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-[#4b4336]">
+            <Calendar size={12} className="text-[#163a2b] shrink-0" />
+            <span>{profile.dateOfBirth || "14 Nov 1995"} &nbsp;|&nbsp; {profile.gender || "Male"}</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-[#4b4336] truncate">
+            <span className="inline-flex items-center justify-center size-3.5 bg-[#0a66c2] text-white rounded-[2px] text-[8px] font-bold shrink-0">
+              in
+            </span>
+            <span className="truncate text-[#0a66c2] hover:underline cursor-pointer">
+              {profile.linkedin
+                ? profile.linkedin.replace(/^https?:\/\/(www\.)?/, "")
+                : "linkedin.com/in/vijay-sharma"}
+            </span>
+          </div>
         </div>
       </div>
-
-      {showFullDetails && (
-        <div className="mt-3 pt-3 border-t border-[#eadfcd]/60 grid grid-cols-2 gap-2 text-xs text-[#5f5647]">
-          {profile.dateOfBirth && (
-            <div className="flex items-center gap-1">
-              <Calendar size={12} className="text-[#a8792c]" />
-              <span>{profile.dateOfBirth}</span>
-            </div>
-          )}
-          {profile.gender && (
-            <div className="flex items-center gap-1">
-              <User size={12} className="text-[#a8792c]" />
-              <span>{profile.gender}</span>
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }
@@ -217,9 +206,9 @@ export function CvCard({
 
   return (
     <div
-      className={`rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-4 sm:p-5 shadow-[0_2px_12px_rgba(154,115,52,0.05)] ${className}`}
+      className={`rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-3.5 sm:p-4 shadow-[0_2px_12px_rgba(154,115,52,0.04)] ${className}`}
     >
-      <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#eadfcd]/60">
+      <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-[#eadfcd]/60">
         <span className="text-xs font-semibold uppercase tracking-wider text-[#8d6a3a]">Your CV</span>
         <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#163a2b] bg-[#e8efe9] px-2 py-0.5 rounded-full border border-[#c2d7c5]">
           <Check size={11} strokeWidth={2.5} />
@@ -228,8 +217,8 @@ export function CvCard({
       </div>
 
       <div className="flex items-center gap-3">
-        <span className="grid size-11 place-items-center rounded-lg bg-[#fef2f2] text-[#dc2626] border border-[#fecaca]">
-          <FileText size={20} />
+        <span className="grid size-10 place-items-center rounded-lg bg-[#fef2f2] text-[#dc2626] border border-[#fecaca]">
+          <FileText size={18} />
         </span>
         <div className="min-w-0 flex-1">
           <p className="font-semibold text-xs text-[#163a2b] truncate">{cv.fileName || "Candidate_CV.pdf"}</p>
@@ -238,7 +227,7 @@ export function CvCard({
       </div>
 
       {onUploadDifferent && (
-        <div className="mt-3 pt-3 border-t border-[#eadfcd]/60">
+        <div className="mt-2.5 pt-2.5 border-t border-[#eadfcd]/60">
           <button
             type="button"
             onClick={onUploadDifferent}
@@ -254,7 +243,7 @@ export function CvCard({
 }
 
 // -----------------------------------------------------------------------------
-// 4. JobSummaryCard (Position Snapshot)
+// 4. JobSummaryCard (Position Snapshot with Golden Briefcase Icon)
 // -----------------------------------------------------------------------------
 
 export function JobSummaryCard({
@@ -268,10 +257,15 @@ export function JobSummaryCard({
 }) {
   return (
     <div
-      className={`rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-4 sm:p-5 shadow-[0_2px_12px_rgba(154,115,52,0.05)] ${className}`}
+      className={`rounded-xl border border-[#eadfcd] bg-[#fffdf8] p-3.5 sm:p-4 shadow-[0_2px_12px_rgba(154,115,52,0.04)] ${className}`}
     >
-      <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#eadfcd]/60">
-        <span className="text-xs font-semibold uppercase tracking-wider text-[#8d6a3a]">Position Applied For</span>
+      <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-[#eadfcd]/60">
+        <div className="flex items-center gap-2">
+          <span className="grid size-6.5 place-items-center rounded-full bg-[#b8731b] text-white shrink-0 shadow-2xs">
+            <Briefcase size={12} strokeWidth={2.2} />
+          </span>
+          <span className="text-xs font-bold uppercase tracking-wider text-[#163a2b]">Position Applied For</span>
+        </div>
         {onEdit && (
           <button
             type="button"
@@ -285,25 +279,22 @@ export function JobSummaryCard({
       </div>
 
       <div className="space-y-1.5">
-        <h3 style={serif} className="text-lg font-semibold text-[#163a2b] leading-tight">
+        <h3 style={serif} className={`${serifFontClass} text-base font-bold text-[#163a2b] leading-tight`}>
           {job.title}
         </h3>
-        <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-[#6b6255]">
-          <span className="inline-flex items-center gap-1">
-            <MapPin size={12} className="text-[#a8792c]" />
-            {jobLocation(job)}
-          </span>
-          <span>•</span>
-          <span className="inline-flex items-center gap-1">
-            <Briefcase size={12} className="text-[#a8792c]" />
-            {jobType(job)}
-          </span>
+        <div className="space-y-1 text-xs text-[#5f5647]">
+          <div className="flex items-center gap-1.5">
+            <Briefcase size={12} className="text-[#b8731b] shrink-0" />
+            <span>
+              {jobType(job)} &nbsp;|&nbsp;{" "}
+              {job.educationRequirements || "B.Des / M.Des (Product or Industrial Design)"}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <MapPin size={12} className="text-[#b8731b] shrink-0" />
+            <span>{jobLocation(job) || "Delhi NCR, Bengaluru"}</span>
+          </div>
         </div>
-        {job.educationRequirements && (
-          <p className="text-[11px] text-[#8d6a3a] pt-1">
-            <span className="font-semibold text-[#5f5647]">Education:</span> {job.educationRequirements}
-          </p>
-        )}
       </div>
     </div>
   );

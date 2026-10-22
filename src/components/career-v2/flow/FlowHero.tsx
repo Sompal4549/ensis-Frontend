@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import { Container } from "@/components/ui/Container";
-import { serif, Eyebrow } from "@/components/career-v2/ui";
+import { serif, serifFontClass, Eyebrow } from "@/components/career-v2/ui";
 import spaBannerImg from "@/assets/career/flow/spa-banner.webp";
 
 export type FlowHeroProps = {
@@ -31,9 +31,9 @@ export function FlowHero({
         {backHref && (
           <Link
             href={backHref}
-            className="mb-2 inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-semibold text-[#8d6a3a] transition-colors hover:text-[#163a2b]"
+            className="mb-2 inline-flex items-center gap-1.5 text-[14px] font-semibold text-[#8d6a3a] transition-colors hover:text-[#163a2b]"
           >
-            <ArrowLeft size={12} />
+            <ArrowLeft size={14} />
             <span>{backLabel}</span>
           </Link>
         )}
@@ -43,8 +43,8 @@ export function FlowHero({
           <div className="max-w-2xl">
             {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
             <h1
-              style={serif}
-              className="mt-0.5 text-2xl font-semibold tracking-tight text-[#163a2b] sm:text-3xl lg:text-[34px] lg:leading-[1.18]"
+              style={{ ...serif, fontWeight: 800 }}
+              className={`${serifFontClass} mt-0.5 text-[28px] font-extrabold tracking-tight text-[#163a2b] sm:text-[34px] lg:text-[40px] lg:leading-[1.18]`}
             >
               {title}
               {highlight && (
@@ -55,7 +55,7 @@ export function FlowHero({
               )}
             </h1>
             {subtitle && (
-              <p className="mt-1.5 text-xs text-[#5f5647] sm:text-[13.5px] leading-relaxed">
+              <p className="mt-1.5 text-[14px] text-[#5f5647] leading-relaxed font-sans">
                 {subtitle}
               </p>
             )}
@@ -73,8 +73,8 @@ export function FlowHero({
                 className="object-cover object-center"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/30" />
-              <div className="absolute right-3.5 bottom-2.5 max-w-[190px] text-right">
-                <p style={serif} className="text-xs sm:text-[13px] font-semibold italic leading-tight text-white drop-shadow-md">
+              <div className="absolute right-3.5 bottom-2.5 max-w-[210px] text-right">
+                <p style={serif} className={`${serifFontClass} text-[14px] font-semibold italic leading-tight text-white drop-shadow-md`}>
                   Wellness Spaces For A Healthier Tomorrow
                 </p>
               </div>
