@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useHrContact } from "@/lib/useHrContact";
 import {
   ArrowLeft,
   ArrowRight,
@@ -1875,6 +1876,7 @@ function JobSummary() {
 
 function SupportCard() {
   const { matchLevel, theme } = useMatchData();
+  const hr = useHrContact();
 
   if (matchLevel === "low") {
     return (
@@ -1919,7 +1921,7 @@ function SupportCard() {
         <p className="mt-[2px] text-[13px] font-medium leading-tight text-[#214368]">
           Feel free to reach out to our HR team at
           <br />
-          <strong className="font-semibold text-[#102d58]">info@ensis.in</strong>
+          <a href={"mailto:" + hr.email} className="font-semibold text-[#102d58] hover:underline">{hr.email}</a>
         </p>
       </div>
     </div>

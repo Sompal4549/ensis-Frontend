@@ -207,7 +207,7 @@ export const Footer = async () => {
                   src={footerLogoSrc}
                   alt={footerLogo?.alt || "ENSIS"}
                   variant="card"
-                  className="h-16 w-auto object-contain md:h-[72px]"
+                  className="h-[76px] w-auto object-contain md:h-[88px]"
                 />
 
               {/* lotus divider */}

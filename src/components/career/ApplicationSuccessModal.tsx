@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import { lockScroll, unlockScroll } from "@/lib/scrollLock";
+import { useHrContact } from "@/lib/useHrContact";
 import {
   ArrowRight,
   BarChart3,
@@ -152,6 +153,7 @@ interface SuccessModalProps {
 
 export default function ApplicationSuccessModal({ isOpen, onClose, applicationData: propAppDetails }: SuccessModalProps) {
   const currentAppDetails = propAppDetails || applicationData;
+  const hr = useHrContact();
   const matchScoreVal = currentAppDetails.aiMatchScore ?? 72;
   const circumference = 2 * Math.PI * 38;
   const offset = circumference - (matchScoreVal / 100) * circumference;
@@ -356,7 +358,7 @@ export default function ApplicationSuccessModal({ isOpen, onClose, applicationDa
             <div className="flex items-center gap-[6px] shrink-0 ml-[16px]">
               <span className="text-[12px] font-semibold text-[#58708c]">Need Help?</span>
               <Phone className="h-[13px] w-[13px] text-[#087447]" />
-              <span className="text-[13px] font-semibold text-[#123963]">+91 96549 00525</span>
+              <a href={hr.phoneHref} className="text-[13px] font-semibold text-[#123963] hover:underline">{hr.phone}</a>
             </div>
           </div>
 

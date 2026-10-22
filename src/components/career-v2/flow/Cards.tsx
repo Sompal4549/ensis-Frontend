@@ -15,6 +15,7 @@ import {
   Edit2,
   UploadCloud,
   Camera,
+  Pencil,
   type LucideIcon,
 } from "lucide-react";
 
@@ -100,11 +101,13 @@ export function SectionCard({
 export function ProfileCard({
   profile,
   onEdit,
+  onEditPhoto,
   showFullDetails = true,
   className = "",
 }: {
   profile: CandidateProfile;
   onEdit?: () => void;
+  onEditPhoto?: () => void;
   showFullDetails?: boolean;
   className?: string;
 }) {
@@ -114,58 +117,108 @@ export function ProfileCard({
     >
       <div className="flex items-center justify-between pb-2 mb-2.5 border-b border-[#eadfcd]/60">
         <span className="text-xs font-bold uppercase tracking-wider text-[#163a2b]">Your Profile</span>
-        {onEdit && (
-          <button
-            type="button"
-            onClick={onEdit}
-            className="inline-flex items-center gap-1 text-xs font-semibold text-[#8d6a3a] hover:text-[#163a2b]"
-          >
-            <Edit2 size={12} />
-            <span>Edit</span>
-          </button>
-        )}
+        <div className="flex items-center gap-2">
+          {onEditPhoto && (
+            <button
+              type="button"
+              onClick={onEditPhoto}
+              className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#163a2b] hover:text-[#a8742b] cursor-pointer"
+            >
+              <Camera size={11} />
+              <span>Change Photo</span>
+            </button>
+          )}
+          {onEdit && (
+            <button
+              type="button"
+              onClick={onEdit}
+              className="inline-flex items-center gap-1 text-xs font-semibold text-[#8d6a3a] hover:text-[#163a2b] cursor-pointer"
+            >
+              <Edit2 size={12} />
+              <span>Edit</span>
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="flex items-start gap-3">
-        <div
-          onClick={onEdit}
-          className={`relative size-16 shrink-0 overflow-hidden rounded-xl border border-[#d9bf86]/60 shadow-xs bg-[#f4ebd9]/40 ${
-            onEdit ? "cursor-pointer group hover:border-[#163a2b] transition-all" : ""
-          }`}
-          title={onEdit ? "Click to edit profile / change photo" : undefined}
-        >
-          <Image
-            src={profile.photoUrl || defaultAvatar}
-            alt={profile.fullName || "Candidate"}
-            fill
-            className="object-cover"
-          />
-          {onEdit && (
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
-              <Camera size={14} />
-            </div>
+        {/* Avatar with visible pencil icon badge */}
+        <div className="relative shrink-0">
+          <div
+            onClick={onEditPhoto || onEdit}
+            className={`relative size-16 overflow-hidden rounded-xl border border-[#d9bf86]/60 shadow-xs bg-[#f4ebd9] ${
+              onEditPhoto || onEdit ? "cursor-pointer group hover:border-[#163a2b] transition-all" : ""
+            }`}
+            title="Click to edit profile photo"
+          >
+            {profile?.photoUrl ? (
+              <Image
+                src={profile.photoUrl}
+                alt={profile.fullName || "Candidate"}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <div className="size-full flex flex-col items-center justify-center bg-[#f4ebd9] text-[#163a2b] select-none">
+                {profile?.fullName ? (
+                  <span className="font-bold text-base tracking-wider text-[#163a2b]">
+                    {profile.fullName
+                      .split(" ")
+                      .map((n) => n[0])
+                      .filter(Boolean)
+                      .slice(0, 2)
+                      .join("")
+                      .toUpperCase()}
+                  </span>
+                ) : (
+                  <User size={26} className="text-[#8d6a3a]" />
+                )}
+              </div>
+            )}
+            {(onEditPhoto || onEdit) && (
+              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+                <Camera size={14} />
+              </div>
+            )}
+          </div>
+
+          {/* Visible Pencil Badge */}
+          {(onEditPhoto || onEdit) && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onEditPhoto) onEditPhoto();
+                else if (onEdit) onEdit();
+              }}
+              aria-label="Edit Profile Photo"
+              className="absolute -bottom-1 -right-1 size-5.5 rounded-full bg-[#163a2b] text-white flex items-center justify-center shadow-md border-2 border-white hover:bg-[#a8742b] transition-all cursor-pointer z-10 hover:scale-110"
+              title="Change Profile Photo"
+            >
+              <Pencil size={10} strokeWidth={2.5} />
+            </button>
           )}
         </div>
 
         <div className="min-w-0 flex-1 space-y-1 text-xs text-[#4b4336]">
           <p className="font-bold text-sm sm:text-[15px] text-[#163a2b] truncate leading-tight">
-            {profile.fullName || "Vijay Sharma"}
+            {profile.fullName || "—"}
           </p>
           <div className="flex items-center gap-1.5 text-[#4b4336] truncate">
             <Mail size={12} className="text-[#163a2b] shrink-0" />
-            <span className="truncate">{profile.email || "vijay.sharma@gmail.com"}</span>
+            <span className="truncate">{profile.email || "—"}</span>
           </div>
           <div className="flex items-center gap-1.5 text-[#4b4336]">
             <Phone size={12} className="text-[#163a2b] shrink-0" />
-            <span>{profile.phone || "+91 98765 43210"}</span>
+            <span>{profile.phone || "—"}</span>
           </div>
           <div className="flex items-center gap-1.5 text-[#4b4336]">
             <MapPin size={12} className="text-[#163a2b] shrink-0" />
-            <span>{profile.currentLocation || "Delhi NCR"}</span>
+            <span>{profile.currentLocation || "—"}</span>
           </div>
           <div className="flex items-center gap-1.5 text-[#4b4336]">
             <Calendar size={12} className="text-[#163a2b] shrink-0" />
-            <span>{profile.dateOfBirth || "14 Nov 1995"} &nbsp;|&nbsp; {profile.gender || "Male"}</span>
+            <span className="whitespace-pre">{[profile.dateOfBirth, profile.gender].filter(Boolean).join("  |  ") || "—"}</span>
           </div>
           <div className="flex items-center gap-1.5 text-[#4b4336] truncate">
             <span className="inline-flex items-center justify-center size-3.5 bg-[#0a66c2] text-white rounded-[2px] text-[8px] font-bold shrink-0">
@@ -174,7 +227,7 @@ export function ProfileCard({
             <span className="truncate text-[#0a66c2] hover:underline cursor-pointer">
               {profile.linkedin
                 ? profile.linkedin.replace(/^https?:\/\/(www\.)?/, "")
-                : "linkedin.com/in/vijay-sharma"}
+                : "—"}
             </span>
           </div>
         </div>

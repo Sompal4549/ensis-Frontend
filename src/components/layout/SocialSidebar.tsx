@@ -262,7 +262,7 @@ const SocialSidebar = ({ layout = "vertical" }: SocialSidebarProps) => {
 
     <div className={`
   ${layout === "vertical" 
-    ? "fixed right-1 lg:right-1.5 top-[45%] lg:top-1/2 -translate-y-1/2 z-50 flex flex-col gap-4 lg:gap-4" 
+    ? "hidden md:flex fixed right-1 lg:right-1.5 top-[45%] lg:top-1/2 -translate-y-1/2 z-50 flex-col gap-4 lg:gap-4" 
     : "flex flex-row gap-4"
   } print:hidden`}>
         {socialLinks.map((social, index) => {

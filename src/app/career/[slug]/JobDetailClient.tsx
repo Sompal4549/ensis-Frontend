@@ -31,8 +31,7 @@ import aiRobot from "@/assets/career/new/ai_robot.png";
 import iconLeaf from "@/assets/career/first-step/Glossy Golden Leaf Emblem.png";
 import iconTeam from "@/assets/career/first-step/Golden Group Icon in Circle.png";
 import iconGrowth from "@/assets/career/first-step/Golden Growth Chart Icon.png";
-import sectionLeft from "@/assets/career/section_left.png";
-import sectionRight from "@/assets/career/section_right.png";
+import exploreBg from "@/assets/career/first-step/explore.png";
 
 const ALLOWED_EXTENSIONS = [".pdf", ".doc", ".docx"];
 const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
@@ -146,15 +145,11 @@ export function JobDetailClient({ job, slug }: { job: PublicJob; slug: string })
       {/* 1. Top Panoramic Hero matching mockup */}
       <CareerDetailBanner />
 
-      {/* Botanical leaves along left and right edges: left starts from right, right starts from left */}
-      <div className="pointer-events-none absolute left-0 top-[260px] bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-0 overflow-hidden opacity-40">
-        <Image src={sectionLeft} alt="" aria-hidden fill sizes="7vw" className="object-cover object-right" />
-      </div>
-      <div className="pointer-events-none absolute right-0 top-[260px] bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-0 overflow-hidden opacity-40">
-        <Image src={sectionRight} alt="" aria-hidden fill sizes="7vw" className="object-cover object-left" />
-      </div>
-
       {/* 2. Main 2-Column Section matching mockup: compact styling fitting within single screen height */}
+      <section
+        className="relative bg-[#fbf4e2] bg-no-repeat"
+        style={{ backgroundImage: `url(${exploreBg.src})`, backgroundSize: "100% 100%" }}
+      >
       <Container className="pt-1.5 sm:pt-2.5 pb-4 sm:pb-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 lg:gap-4 items-start">
           {/* ── Left Column: Job Details Card (66.7% on desktop) ── */}
@@ -523,6 +518,7 @@ export function JobDetailClient({ job, slug }: { job: PublicJob; slug: string })
           </div>
         </div>
       </Container>
+      </section>
     </div>
   );
 }

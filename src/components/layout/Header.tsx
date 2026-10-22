@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import SparkleLogo from "./SparkleLogo";
 import {
     Phone,
     Mail,
@@ -181,7 +180,7 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
     }, []);
 
     // Map DB's `navigation` (title/slug) to the {label, href} shape this component renders
-    const logoSrc = headerContent.logo?.imageUrl ? getImageUrl(headerContent.logo.imageUrl, 400) : logoImg;
+    const logoSrc = headerContent.logo?.imageUrl ? getImageUrl(headerContent.logo.imageUrl, 600) : logoImg;
     const logoAlt = headerContent.logo?.alt || "ENSIS Logo";
 
     const navLinks = (headerContent.navigation ?? []).map((n: any) => ({
@@ -441,24 +440,23 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
             </div>
 
             <div className={`bg-white`}>
-            <Container className="relative flex items-center justify-between gap-6 py-1!">
+            <Container className="relative flex items-center justify-between gap-3 xl:gap-5 py-0.5!">
         <Link
             href="/"
-            className="relative block shrink-0"
+            className="relative flex items-center shrink-0 py-0"
             aria-label="ENSIS Logo"
         >
-            {/* Slightly smaller on 1280–1535px screens so the full menu fits */}
-            <div className="flex h-full items-center">
-                <SparkleLogo
-                    src={logoSrc}
-                    alt={logoAlt}
-                    className="h-12 w-auto object-contain md:h-14 xl:h-12 2xl:h-14"
-                />
-            </div>
+            <Image
+                src={logoSrc}
+                alt={logoAlt}
+                className="h-[53px] sm:h-[57px] md:h-[63px] xl:h-[59px] 2xl:h-[67px] -my-[2.5px] w-auto object-contain"
+                {...(typeof logoSrc === "string" ? { width: 600, height: 244 } : {})}
+                priority
+            />
         </Link>
 
                     {/* Spacer so nav doesn't go under the logo */}
-                    <div className="w-[40px] md:w-[120px] xl:w-4 2xl:w-[120px] shrink-0" />
+                    <div className="w-2 md:w-6 xl:w-3 2xl:w-8 shrink-0" />
       <nav className="hidden xl:flex">
             <ul className="flex items-center gap-4.5 xl:gap-3 2xl:gap-6.5">
                             {navLinks.map((item, index) => (
@@ -502,10 +500,12 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                 aria-hidden={!isMenuOpen}
             >
                 <div className="flex h-[76px] items-center justify-between gap-3 border-b border-[#e8e0d3] px-4">
-                    <SparkleLogo
+                    <Image
                         src={logoSrc}
                         alt={logoAlt}
-                        className="h-12 w-auto max-w-full object-contain sm:h-14"
+                        className="h-11 sm:h-13 w-auto max-w-[200px] object-contain"
+                        {...(typeof logoSrc === "string" ? { width: 600, height: 244 } : {})}
+                        priority
                     />
 
                     <button

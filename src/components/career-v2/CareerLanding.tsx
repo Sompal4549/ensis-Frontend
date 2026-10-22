@@ -109,7 +109,7 @@ function JobBriefcaseIcon({ className = "size-4.5" }: { className?: string }) {
 function SectionLeaves({ className = "" }: { className?: string }) {
   return (
     <>
-      <div className={`pointer-events-none absolute left-0 top-0 bottom-0 w-[60px] sm:w-[85px] md:w-[110px] lg:w-[135px] select-none z-10 overflow-hidden opacity-40 ${className}`}>
+      <div className={`hidden sm:block pointer-events-none absolute left-0 top-0 bottom-0 w-[60px] sm:w-[85px] md:w-[110px] lg:w-[135px] select-none z-10 overflow-hidden opacity-40 ${className}`}>
         <Image
           src={sectionLeft}
           alt=""
@@ -119,7 +119,7 @@ function SectionLeaves({ className = "" }: { className?: string }) {
           className="object-cover object-left"
         />
       </div>
-      <div className={`pointer-events-none absolute right-0 top-0 bottom-0 w-[60px] sm:w-[85px] md:w-[110px] lg:w-[135px] select-none z-10 overflow-hidden opacity-40 ${className}`}>
+      <div className={`hidden sm:block pointer-events-none absolute right-0 top-0 bottom-0 w-[60px] sm:w-[85px] md:w-[110px] lg:w-[135px] select-none z-10 overflow-hidden opacity-40 ${className}`}>
         <Image
           src={sectionRight}
           alt=""
@@ -198,9 +198,9 @@ function formatJobTitle(title: string) {
 
 export function JobCard({ job, index }: { job: PublicJob; index: number }) {
   return (
-    <article className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-[#ebdcc7] bg-[#fffdf9] shadow-[0_4px_16px_rgba(70,50,20,0.04)] transition hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(70,50,20,0.08)]">
+    <article className="group flex h-full w-full flex-col justify-between overflow-hidden rounded-2xl border border-[#ebdcc7] bg-[#fffdf9] shadow-[0_4px_16px_rgba(70,50,20,0.04)] transition hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(70,50,20,0.08)]">
       {/* Edge-to-edge cover image with NO side gappings */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#efe6d6]">
+      <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-[#efe6d6]">
         <Image
           src={imageSrc(job.coverImage, JOB_FALLBACKS[index % JOB_FALLBACKS.length])}
           alt={job.title}
@@ -212,29 +212,31 @@ export function JobCard({ job, index }: { job: PublicJob; index: number }) {
 
       {/* Padding inside the bottom text container */}
       <div className="flex flex-1 flex-col justify-between p-3.5 sm:p-4">
-        <div>
+        <div className="flex flex-1 flex-col">
           <h3
             style={serif}
-            className="text-[18px] sm:text-[19px] xl:text-[20px] font-bold leading-[1.22] text-[#163a2b] min-h-[44px]"
+            className="text-[17px] sm:text-[18px] xl:text-[19px] font-bold text-[#163a2b] line-clamp-2 min-h-[44px] sm:min-h-[48px]"
+            title={job.title}
           >
             {formatJobTitle(job.title)}
           </h3>
-          <div className="mt-2 mb-2 flex items-center gap-2 text-[12.5px] sm:text-[13.5px] font-medium text-[#4a4338]">
-            <span className="inline-flex items-center gap-1.5 font-medium">
-              <JobLocationIcon className="size-4 shrink-0" /> {jobLocation(job)}
+          <div className="mt-2 mb-2 flex items-center gap-2 text-[14px] font-medium text-[#4a4338] min-h-[24px]">
+            <span className="inline-flex items-center gap-1.5 font-medium truncate max-w-[170px]" title={jobLocation(job)}>
+              <JobLocationIcon className="size-4 shrink-0 text-[#a8742b]" />
+              <span className="truncate">{jobLocation(job)}</span>
             </span>
-            <span className="text-[#dacbb4]">|</span>
-            <span className="inline-flex items-center gap-1.5 font-medium">
-              <JobBriefcaseIcon className="size-4 shrink-0" /> {jobType(job)}
+            <span className="text-[#dacbb4] shrink-0">|</span>
+            <span className="inline-flex items-center gap-1.5 font-medium shrink-0">
+              <JobBriefcaseIcon className="size-4 shrink-0 text-[#a8742b]" /> {jobType(job)}
             </span>
           </div>
-          <p className="text-[13px] sm:text-[14px] leading-[1.45] text-[#554e42] line-clamp-3 min-h-[56px]">
+          <p className="text-[14px] leading-[1.5] text-[#554e42] line-clamp-3 min-h-[63px]">
             {jobSummary(job)}
           </p>
         </div>
         <Link
           href={jobHref(job)}
-          className="mt-3 w-full py-1.5 sm:py-2 px-3.5 rounded-lg border-[1.5px] border-[#c89228] bg-transparent hover:bg-[#c89228] text-[#8a570c] hover:text-white text-xs sm:text-[13px] font-semibold transition-all inline-flex items-center justify-center gap-1.5 shadow-2xs"
+          className="mt-3.5 w-full shrink-0 py-2 px-3.5 rounded-lg border-[1.5px] border-[#c89228] bg-transparent hover:bg-[#c89228] text-[#8a570c] hover:text-white text-[14px] font-semibold transition-all inline-flex items-center justify-center gap-1.5 shadow-2xs"
         >
           <span>View Details</span>
           <ArrowRight size={13} />
@@ -266,33 +268,43 @@ function Hero({ banner }: { banner: CareerContent["banner"] }) {
             sizes="100vw"
             className="object-cover object-[72%_center] xl:object-top"
           />
+          {/* Mobile & Tablet Readability Overlay - exactly like Home & About heroes */}
+          <div
+            className="absolute inset-0 lg:hidden"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(251, 247, 238, 0.94) 0%, rgba(251, 247, 238, 0.84) 45%, rgba(251, 247, 238, 0.95) 100%)",
+            }}
+          />
         </div>
 
         <Container className="bg-transparent relative z-10">
-          <div className="relative min-h-[440px] md:h-[480px] lg:h-[490px] xl:h-[500px] w-full flex items-center">
-            <div className="max-w-[620px] pt-3 pb-3 sm:pt-4 sm:pb-4 pl-1 sm:pl-3 lg:pl-5">
+          <div className="relative min-h-[440px] py-7 sm:py-9 md:py-12 lg:py-0 md:h-[480px] lg:h-[490px] xl:h-[500px] w-full flex items-center">
+            <div className="max-w-[620px] pl-0 sm:pl-3 lg:pl-5 w-full">
               {/* 1. Eyebrow: CAREERS AT ENSIS — */}
-              <div className="mb-0.5 sm:mb-1 flex items-center gap-2">
-                <span className="text-[15px] sm:text-[16px] md:text-[17px] font-bold uppercase tracking-[0.16em] text-[#a9742a]">
+              <div className="mb-1 sm:mb-1.5 flex items-center gap-2">
+                <span className="text-[14px] md:text-[16px] font-bold uppercase tracking-[0.16em] text-[#a9742a]">
                   CAREERS AT ENSIS
                 </span>
-                <span className="text-[#a9742a] font-bold text-base select-none">—</span>
+                <span className="text-[#a9742a] font-bold text-sm sm:text-base select-none">—</span>
               </div>
 
-              {/* 2. Headline: Design Spaces for a Healthier Tomorrow - Tight Line-Height & Small Gap */}
+              {/* 2. Headline: Design Spaces for a Healthier Tomorrow */}
               <h1
                 style={{ ...serif, fontWeight: 800 }}
-                className={`${serifFontClass} text-[40px] sm:text-[46px] md:text-[52px] lg:text-[58px] xl:text-[62px] font-extrabold tracking-[-0.03em] text-[#163a2b] mt-0`}
+                className={`${serifFontClass} text-[30px] sm:text-[40px] md:text-[48px] lg:text-[56px] xl:text-[60px] font-extrabold tracking-[-0.03em] text-[#163a2b] mt-0 leading-[1.12] sm:leading-[1.15]`}
               >
-                Design Spaces<br />
-                for a Healthier<br />
+                Design Spaces<br className="hidden xs:inline" />{" "}
+                for a Healthier<br className="hidden xs:inline" />{" "}
                 <span className="text-[#dc881a]">Tomorrow</span>
               </h1>
 
               {/* 3. Subtitle / Description */}
-              <p className="mt-3 sm:mt-3.5 text-[15px] sm:text-[16px] md:text-[16.5px] text-[#332f28] leading-[1.5] max-w-[560px] font-medium">
-                Be a part of a passionate team that designs and delivers<br />
-                wellness furniture and solutions for spas, wellness centers<br />
+              <p className="mt-2.5 sm:mt-3 text-[14px] sm:text-[15px] md:text-[16px] text-[#332f28] leading-[1.5] max-w-[560px] font-medium">
+                Be a part of a passionate team that designs and delivers{" "}
+                <br className="hidden sm:inline" />
+                wellness furniture and solutions for spas, wellness centers{" "}
+                <br className="hidden sm:inline" />
                 and healthcare spaces across the world.
               </p>
 
@@ -300,18 +312,18 @@ function Hero({ banner }: { banner: CareerContent["banner"] }) {
               <div className="mt-3.5 sm:mt-4">
                 <Link
                   href={banner.ctaHref || "#openings"}
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#0e3022] hover:bg-[#071b13] px-6 sm:px-7 py-2.5 sm:py-3 text-[14px] sm:text-[15px] font-semibold text-white shadow-[0_6px_18px_rgba(14,48,34,0.3)] transition-all transform hover:-translate-y-0.5"
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#0e3022] hover:bg-[#071b13] px-5 sm:px-7 py-2.5 sm:py-3 text-[14px] sm:text-[15px] font-semibold text-white shadow-[0_6px_18px_rgba(14,48,34,0.3)] transition-all transform hover:-translate-y-0.5"
                 >
                   <span>{banner.ctaText || "Explore Opportunities"}</span>
                   <ArrowRight size={15} />
                 </Link>
               </div>
 
-              {/* 5. Four Feature Emblems matching career detail page sizes and styling */}
-              <ul className="mt-4 sm:mt-5 flex flex-wrap items-center gap-x-7 sm:gap-x-10 lg:gap-x-12 gap-y-2.5">
+              {/* 5. Four Feature Emblems */}
+              <ul className="mt-4 sm:mt-5 grid grid-cols-4 sm:flex sm:flex-wrap items-center gap-x-2 sm:gap-x-8 lg:gap-x-11 gap-y-2 max-w-[520px]">
                 {HERO_FEATURES.map((item, i) => (
-                  <li key={i} className="flex flex-col items-center gap-1.5 text-center">
-                    <div className="relative size-[48px] sm:size-[54px] flex items-center justify-center">
+                  <li key={i} className="flex flex-col items-center gap-1 sm:gap-1.5 text-center">
+                    <div className="relative size-[38px] sm:size-[48px] lg:size-[54px] flex items-center justify-center">
                       <Image
                         src={item.image}
                         alt=""
@@ -320,7 +332,7 @@ function Hero({ banner }: { banner: CareerContent["banner"] }) {
                         className="size-full object-contain drop-shadow-xs"
                       />
                     </div>
-                    <span className="text-[13px] sm:text-[14px] font-semibold leading-[1.25] text-[#163a2b] whitespace-pre-line">
+                    <span className="text-[10.5px] sm:text-[13px] lg:text-[14px] font-semibold leading-[1.2] sm:leading-[1.25] text-[#163a2b] whitespace-pre-line">
                       {item.label}
                     </span>
                   </li>
@@ -340,13 +352,15 @@ function Hero({ banner }: { banner: CareerContent["banner"] }) {
 function Openings({ content, jobs }: { content: CareerContent; jobs: PublicJob[] }) {
   const { openings } = content;
 
-  // Prioritize the 4 mockup jobs on the landing page
-  const displayJobs = MOCKUP_JOBS_ORDER.map((fallback, i) => {
-    const match = jobs.find(
-      (j) => j.slug === fallback.slug || j.title?.toLowerCase() === fallback.title.toLowerCase()
-    );
-    return match || ({ ...fallback, _id: `mock-${i}` } as PublicJob);
-  });
+  // Use real live jobs from the database; only fallback to mockup placeholders if 0 database jobs exist
+  const displayJobs = React.useMemo(() => {
+    if (jobs && jobs.length > 0) {
+      return jobs;
+    }
+    return MOCKUP_JOBS_ORDER.map((fallback, i) => ({ ...fallback, _id: `mock-${i}` } as PublicJob));
+  }, [jobs]);
+
+  const isMarquee = displayJobs.length > 4;
 
   return (
     <section id="openings" className="relative scroll-mt-20 pt-3 sm:pt-3.5 lg:pt-4 pb-3 sm:pb-3.5 overflow-hidden">
@@ -357,7 +371,7 @@ function Openings({ content, jobs }: { content: CareerContent; jobs: PublicJob[]
       <SectionLeaves />
 
       <Container className="relative z-10">
-        <div className="grid items-end gap-2.5 lg:grid-cols-[1fr_auto] pb-1.5 sm:pb-2">
+        <div className="grid items-end gap-2.5 pb-1.5 sm:pb-2">
           <div>
             <div className="flex items-center gap-2.5">
               <span className="text-[18px] font-bold uppercase tracking-[0.16em] text-[#a8742b]">
@@ -370,25 +384,65 @@ function Openings({ content, jobs }: { content: CareerContent; jobs: PublicJob[]
             </h2>
           </div>
 
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2.5 lg:gap-5">
-            <p className="max-w-md text-sm sm:text-[14.5px] leading-relaxed text-[#4a4338] font-medium">
+          <div>
+            <p className="max-w-2xl text-sm sm:text-[14.5px] leading-relaxed text-[#4a4338] font-medium">
               {openings.description || "Join our team and contribute to creating inspiring wellness spaces through innovative furniture, design and customer-focused solutions."}
             </p>
-            <Link
-              href="/career/jobs"
-              className="inline-flex shrink-0 items-center gap-1.5 text-sm sm:text-[14.5px] font-bold text-[#163a2b] hover:text-[#c88f28] self-start sm:self-center transition-colors whitespace-nowrap"
-            >
-              <span>{openings.viewAllText || "View all roles"}</span>
-              <ArrowRight size={15} />
-            </Link>
           </div>
         </div>
 
-        <div className="mt-2.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-4.5">
-          {displayJobs.map((job, i) => (
-            <JobCard key={job._id || job.slug || i} job={job} index={i} />
-          ))}
-        </div>
+        {isMarquee ? (
+          <div className="relative mt-2.5 sm:mt-3 w-full overflow-hidden py-2 group">
+            {/* Subtle fade edges for smooth transition */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-[#fbf6ec] via-[#fbf6ec]/80 to-transparent z-10" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-16 bg-gradient-to-l from-[#fbf6ec] via-[#fbf6ec]/80 to-transparent z-10" />
+
+            <style>{`
+              @keyframes careerMarquee {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .animate-career-marquee {
+                display: flex;
+                align-items: stretch;
+                width: max-content;
+                animation: careerMarquee ${Math.max(26, displayJobs.length * 6)}s linear infinite;
+              }
+              .animate-career-marquee:hover,
+              .group:hover .animate-career-marquee {
+                animation-play-state: paused;
+              }
+            `}</style>
+
+            <div className="animate-career-marquee items-stretch gap-3.5 sm:gap-4 lg:gap-4.5 py-1">
+              {/* First Set */}
+              {displayJobs.map((job, i) => (
+                <div
+                  key={`orig-${job._id || job.slug || i}`}
+                  className="w-[280px] sm:w-[305px] lg:w-[320px] shrink-0 flex flex-col self-stretch"
+                >
+                  <JobCard job={job} index={i} />
+                </div>
+              ))}
+              {/* Duplicate Set for Seamless Continuous Infinite Loop */}
+              {displayJobs.map((job, i) => (
+                <div
+                  key={`dup-${job._id || job.slug || i}`}
+                  className="w-[280px] sm:w-[305px] lg:w-[320px] shrink-0 flex flex-col self-stretch"
+                  aria-hidden="true"
+                >
+                  <JobCard job={job} index={i} />
+                </div>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <div className="mt-2.5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 items-stretch gap-3.5 sm:gap-4 lg:gap-4.5">
+            {displayJobs.map((job, i) => (
+              <JobCard key={job._id || job.slug || i} job={job} index={i} />
+            ))}
+          </div>
+        )}
       </Container>
     </section>
   );
@@ -481,7 +535,7 @@ function WhyWork({
                 <h3 style={serif} className="mt-2.5 text-base sm:text-[18px] font-bold leading-snug text-white min-h-[42px] sm:min-h-[46px] flex items-center justify-center text-center">
                   {formatWhyWorkTitle(item.title)}
                 </h3>
-                <p className="mt-1.5 max-w-[16rem] text-[13px] sm:text-[14px] leading-relaxed text-[#d1ccc4] text-center">
+                <p className="mt-1.5 max-w-[16rem] text-[14px] leading-relaxed text-[#d1ccc4] text-center">
                   {item.text}
                 </p>
               </li>
@@ -502,7 +556,7 @@ function WhyWork({
         <div className="grid items-end gap-2.5 lg:grid-cols-[1fr_minmax(0,1.15fr)]">
           <div>
             <div className="flex items-center gap-2.5">
-              <span className="text-xs sm:text-[13px] md:text-sm font-bold uppercase tracking-[0.16em] text-[#b47422]">
+              <span className="text-[14px] font-bold uppercase tracking-[0.16em] text-[#b47422]">
                 WHY WORK WITH ENSIS
               </span>
               <span className="h-[1.5px] w-8 sm:w-10 bg-[#b47422]" />
@@ -511,7 +565,7 @@ function WhyWork({
               A Career with Purpose
             </h2>
           </div>
-          <p className="max-w-xl text-xs sm:text-[13px] md:text-[13.5px] leading-relaxed text-[#4a4338] font-normal">
+          <p className="max-w-xl text-[14px] leading-relaxed text-[#4a4338] font-normal">
             {whyWork.description ||
               "At ENSIS, you will be part of a passionate and collaborative environment where design, innovation and wellbeing come together to create spaces that make a real difference."}
           </p>
@@ -536,7 +590,7 @@ function WhyWork({
               <h3 style={serif} className="mt-2.5 text-base sm:text-[17.5px] font-bold leading-snug text-[#163a2b] min-h-[42px] sm:min-h-[46px] flex items-center justify-center text-center">
                 {formatWhyWorkTitle(item.title)}
               </h3>
-              <p className="mt-1.5 max-w-[16rem] text-[13px] sm:text-[13.5px] leading-relaxed text-[#554e42] text-center">
+              <p className="mt-1.5 max-w-[17rem] text-[14px] leading-relaxed text-[#554e42] text-center">
                 {item.text}
               </p>
             </li>
@@ -557,16 +611,26 @@ function LifeAtEnsis({ life }: { life: CareerContent["life"] }) {
             <Eyebrow>{life.eyebrow}</Eyebrow>
             <SerifHeading text={life.heading} className="mt-1 text-2xl sm:text-3xl md:text-[36px]" />
           </div>
-          {life.description && <p className="max-w-lg text-[13px] sm:text-[14px] leading-relaxed text-[#4b453b] font-medium">{life.description}</p>}
+          {life.description && <p className="max-w-lg text-[14px] leading-relaxed text-[#4b453b] font-medium">{life.description}</p>}
         </div>
-        <div className="mt-2.5 sm:mt-3 grid grid-cols-2 gap-2.5 md:grid-cols-5">
+        <div className="mt-2.5 sm:mt-3 grid grid-cols-2 gap-2 sm:gap-2.5 md:grid-cols-5">
           {photos.map((photo, i) => (
-            <div key={i} className={`relative h-32 sm:h-36 overflow-hidden rounded-xl md:h-36 ${i === 0 ? "col-span-2 md:col-span-1" : ""}`}>
+            <div key={i} className="relative h-28 xs:h-32 sm:h-36 overflow-hidden rounded-xl md:h-36">
               <Image src={photo.src} alt={photo.alt} fill sizes="(max-width: 768px) 50vw, 20vw" className="object-cover transition duration-500 hover:scale-105" />
             </div>
           ))}
+          {/* Mobile-only 5th photo to pair with the 5th tile so every row has exactly 2 images on mobile */}
+          <div className="relative h-28 xs:h-32 sm:h-36 overflow-hidden rounded-xl md:hidden">
+            <Image
+              src={jobSales}
+              alt="Life at Ensis"
+              fill
+              sizes="(max-width: 768px) 50vw, 20vw"
+              className="object-cover transition duration-500 hover:scale-105"
+            />
+          </div>
           {/* 5th tile: spaces-fifth.png (Healing People Enriching Lives) */}
-          <div className="relative col-span-2 h-32 sm:h-36 overflow-hidden rounded-xl md:col-span-1 md:h-36">
+          <div className="relative h-28 xs:h-32 sm:h-36 overflow-hidden rounded-xl md:h-36">
             <Image
               src={space5}
               alt={life.tileText || "Healing People Enriching Lives"}
@@ -584,23 +648,23 @@ function LifeAtEnsis({ life }: { life: CareerContent["life"] }) {
 function TalentCta({ talent }: { talent: CareerContent["talent"] }) {
   return (
     <section className="relative overflow-hidden py-2 sm:py-2.5 md:py-3">
-      <Container className="relative z-10 flex flex-col items-start gap-3 md:flex-row md:items-center md:justify-between">
-        <div className="max-w-2xl pl-2 sm:pl-4 md:pl-8 lg:pl-12">
+      <Container className="relative z-10 flex flex-col items-start gap-2.5 sm:gap-3 pl-8 sm:pl-12 md:pl-16 lg:pl-20 lg:flex-row lg:items-center lg:justify-between">
+        <div className="max-w-md sm:max-w-lg md:max-w-[460px] lg:max-w-xl">
           <h2
             style={{ ...serif, fontWeight: 700 }}
-            className="text-2xl sm:text-3xl md:text-[30px] font-bold leading-[1.18] text-[#163a2b]"
+            className="text-2xl sm:text-3xl md:text-[30px] lg:text-[32px] font-bold leading-[1.18] text-[#163a2b]"
           >
             {talent.heading || "Don't See the Right Role?"}
           </h2>
-          <p className="mt-1 text-[13px] sm:text-[14px] leading-relaxed text-[#3e3830] font-medium max-w-xl">
+          <p className="mt-1 sm:mt-1.5 text-[14px] sm:text-[14.5px] leading-relaxed text-[#3e3830] font-medium max-w-md md:max-w-[440px] lg:max-w-xl">
             {talent.text ||
               "We are always open to connecting with passionate and talented professionals. Share your profile with us and we will get in touch when a suitable opportunity arises."}
           </p>
         </div>
-        <div className="pr-2 sm:pr-4 md:pr-8 lg:pr-12">
+        <div className="shrink-0 mt-1 lg:mt-0">
           <Link
             href="/career/jobs"
-            className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-[#c08a2e] hover:bg-[#a8742b] px-5 sm:px-6 py-2.5 sm:py-3 text-[13.5px] sm:text-[14px] font-semibold text-white shadow-xs transition-all hover:-translate-y-0.5"
+            className="inline-flex shrink-0 whitespace-nowrap items-center gap-2 rounded-xl bg-[#c08a2e] hover:bg-[#a8742b] px-5 sm:px-6 py-2.5 sm:py-3 text-[14px] font-semibold text-white shadow-xs transition-all hover:-translate-y-0.5"
           >
             <span>{talent.buttonText || "Share Your Profile"}</span>
             <ArrowRight size={15} />

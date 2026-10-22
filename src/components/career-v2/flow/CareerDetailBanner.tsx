@@ -31,10 +31,10 @@ export function CareerDetailBanner() {
       />
 
       {/* Botanical leaves on left and right borders: left starts from right, right starts from left */}
-      <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden opacity-40">
+      <div className="hidden sm:block pointer-events-none absolute left-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden opacity-40">
         <Image src={sectionLeft} alt="" aria-hidden fill sizes="7vw" className="object-cover object-right" />
       </div>
-      <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden opacity-40">
+      <div className="hidden sm:block pointer-events-none absolute right-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden opacity-40">
         <Image src={sectionRight} alt="" aria-hidden fill sizes="7vw" className="object-cover object-left" />
       </div>
 
@@ -53,16 +53,16 @@ export function CareerDetailBanner() {
 
           <h1
             style={{ ...serif, fontWeight: 800 }}
-            className={`${serifFontClass} mt-0 text-[34px] sm:text-[42px] lg:text-[48px] font-extrabold tracking-[-0.02em] text-[#163a2b]`}
+            className={`${serifFontClass} mt-0 text-[28px] sm:text-[38px] lg:text-[48px] font-extrabold tracking-[-0.02em] text-[#163a2b] leading-[1.12]`}
           >
             Create Spaces
             <br />
             That Help People Thrive.
           </h1>
 
-          <p className="mt-2.5 text-[15px] sm:text-[16px] leading-[1.28] text-[#332f28] font-medium max-w-[640px] tracking-normal">
-            Be a part of a passionate team that designs and delivers wellness <br />
-            furniture and turnkey solutions for spas, wellness centers and<br />
+          <p className="mt-2.5 text-[14px] sm:text-[16px] leading-[1.4] text-[#332f28] font-medium max-w-[640px] tracking-normal">
+            Be a part of a passionate team that designs and delivers wellness <br className="hidden sm:inline" />
+            furniture and turnkey solutions for spas, wellness centers and <br className="hidden sm:inline" />
             healthcare spaces across the world.
           </p>
 
@@ -74,11 +74,11 @@ export function CareerDetailBanner() {
             <ArrowRight size={15} className="text-[#e5b85a]" />
           </Link>
 
-          {/* 4 Feature Emblems with generous spacing matching image */}
-          <ul className="mt-5 sm:mt-6 flex flex-wrap items-center gap-x-8 sm:gap-x-11 lg:gap-x-14 gap-y-3">
+          {/* 4 Feature Emblems: 4 in 1 row on mobile, clean flex on tablet/desktop */}
+          <ul className="mt-4 sm:mt-6 grid grid-cols-4 sm:flex sm:flex-wrap items-center gap-x-2 sm:gap-x-9 lg:gap-x-12 gap-y-3 max-w-[560px]">
             {FEATURES.map((item, i) => (
-              <li key={i} className="flex flex-col items-center gap-1.5 text-center">
-                <div className="relative size-[52px] sm:size-[58px] flex items-center justify-center">
+              <li key={i} className="flex flex-col items-center gap-1 sm:gap-1.5 text-center">
+                <div className="relative size-[40px] sm:size-[52px] lg:size-[58px] flex items-center justify-center">
                   <Image
                     src={item.image}
                     alt=""
@@ -87,7 +87,7 @@ export function CareerDetailBanner() {
                     className="size-full object-contain drop-shadow-xs"
                   />
                 </div>
-                <span className="text-[13px] sm:text-[14px] font-semibold leading-[1.25] text-[#163a2b] whitespace-pre-line">
+                <span className="text-[10.5px] sm:text-[13px] lg:text-[14px] font-semibold leading-[1.2] sm:leading-[1.25] text-[#163a2b] whitespace-pre-line">
                   {item.label}
                 </span>
               </li>

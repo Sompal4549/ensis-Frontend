@@ -58,6 +58,7 @@ import passAndPartialImg from "@/assets/career/new/pass_and_partial.png";
 import failImg from "@/assets/career/new/fail.png";
 import defaultAvatar from "@/assets/career/flow/default-avatar.webp";
 import sectionLeft from "@/assets/career/section_left.png";
+import exploreBg from "@/assets/career/first-step/explore.png";
 import sectionRight from "@/assets/career/section_right.png";
 import profileMatchLeftImg from "@/assets/career/flow/profile_match_left.png";
 import requirementRightImg from "@/assets/career/flow/requirement_right.png";
@@ -119,19 +120,19 @@ export default function ResultPage() {
             status: "done",
             progress: initialScore,
             steps: [],
-            cv: { fileName: "Sompal_Kumar_Frontend_Engineer_CV.pdf", size: 31 * 1024, uploadedAt: new Date().toISOString() },
+            cv: { fileName: "Sample_Candidate_CV.pdf", size: 31 * 1024, uploadedAt: new Date().toISOString() },
             result: {
               score: initialScore,
               level: initialLevel,
               thresholds: { eligible: 70, partial: 50 },
               profile: {
-                fullName: "Sompal Kumar",
-                email: "somfrontenddeveloper@gmail.com",
-                phone: "+91 7678221037",
-                currentLocation: "Tagore Garden, New Delhi",
+                fullName: "Sample Candidate",
+                email: "candidate@example.com",
+                phone: "+91 90000 00000",
+                currentLocation: "New Delhi",
                 dateOfBirth: "1995-11-14",
                 gender: "Male",
-                linkedin: "https://linkedin.com/in/sompal-kumar-b62b5022b",
+                linkedin: "",
                 education: [],
                 experience: [],
                 skills: [{ name: "Product Design", level: 90 }],
@@ -200,8 +201,8 @@ export default function ResultPage() {
       : 28
     : (baseResult.score || (isEligible ? 85 : isPartial ? 58 : 28));
 
-  const candidateName = baseResult.profile?.fullName || "Sompal Kumar";
-  const firstName = candidateName.split(" ")[0] || "Sompal";
+  const candidateName = baseResult.profile?.fullName || "";
+  const firstName = candidateName.split(" ")[0] || "Candidate";
   const candidatePhoto =
     baseResult.profile?.photoUrl ||
     (baseResult.profile as any)?.photo ||
@@ -335,10 +336,10 @@ export default function ResultPage() {
         />
 
         {/* Botanical leaves on left and right borders */}
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden opacity-40">
+        <div className="hidden sm:block pointer-events-none absolute left-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden opacity-40">
           <Image src={sectionLeft} alt="" aria-hidden fill sizes="7vw" className="object-cover object-right" />
         </div>
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden opacity-40">
+        <div className="hidden sm:block pointer-events-none absolute right-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden opacity-40">
           <Image src={sectionRight} alt="" aria-hidden fill sizes="7vw" className="object-cover object-left" />
         </div>
 
@@ -423,15 +424,11 @@ export default function ResultPage() {
         </Container>
       </section>
 
-      {/* Botanical leaves along page body edges */}
-      <div className="pointer-events-none absolute left-0 top-[260px] bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-0 overflow-hidden opacity-40">
-        <Image src={sectionLeft} alt="" aria-hidden fill sizes="7vw" className="object-cover object-right" />
-      </div>
-      <div className="pointer-events-none absolute right-0 top-[260px] bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-0 overflow-hidden opacity-40">
-        <Image src={sectionRight} alt="" aria-hidden fill sizes="7vw" className="object-cover object-left" />
-      </div>
-
       {/* ── 2. Main 2-Column Content Section ── */}
+      <section
+        className="relative bg-[#fbf4e2] bg-no-repeat"
+        style={{ backgroundImage: `url(${exploreBg.src})`, backgroundSize: "100% 100%" }}
+      >
       <Container className="pt-1.5 pb-2 sm:pb-3 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-2.5 lg:gap-3 items-start">
           {/* ════════ Left Column: Result Outcome & Breakdown (~68%) ════════ */}
@@ -464,40 +461,40 @@ export default function ResultPage() {
                 <div className="absolute inset-x-0 bottom-0 sm:hidden h-6 bg-gradient-to-t from-[#fdfaf3] to-transparent pointer-events-none" />
               </div>
 
-              {/* Content Layer (positioned next to left photo, shifted right to preserve right-side banner artwork) */}
-              <div className="relative z-10 py-1.5 sm:py-2 px-3 sm:px-4 md:pl-3.5 lg:pl-4 sm:pr-20 md:pr-24 lg:pr-28 xl:pr-32 flex-1 min-w-0 flex flex-col justify-center">
+              {/* Content Layer: with clean solid background on mobile so text never clashes with background leaves/slogan */}
+              <div className="relative z-10 py-3 sm:py-2 px-3.5 sm:px-4 md:pl-3.5 lg:pl-4 sm:pr-20 md:pr-24 lg:pr-28 xl:pr-32 flex-1 min-w-0 flex flex-col justify-center bg-[#fdfaf3] sm:bg-transparent rounded-b-2xl sm:rounded-none">
                 {/* Eligible State */}
                 {isEligible && (
-                  <div className="space-y-0.5 sm:space-y-1">
+                  <div className="space-y-1 sm:space-y-1">
                     <div>
                       <h2 style={serif} className="text-base sm:text-lg md:text-[21px] font-bold text-[#163a2b] leading-tight tracking-tight">
                         Great News, <br className="hidden sm:inline" />
                         <span className="text-[#c9972a]">{firstName}!</span>
                       </h2>
-                      <p className="mt-0.5 text-[10.5px] sm:text-[11px] font-bold text-[#163a2b]">
+                      <p className="mt-1 text-[12px] sm:text-[13px] font-bold text-[#163a2b]">
                         You are eligible to apply for this position.
                       </p>
-                      <p className="mt-0.5 text-[9.5px] sm:text-[10px] text-[#554e42] leading-snug max-w-[95%]">
+                      <p className="mt-1 text-[11.5px] sm:text-[12.5px] text-[#554e42] leading-relaxed max-w-[95%]">
                         Your profile meets the key requirements for {job.title} at ENSIS. We encourage
                         you to complete your application and join our mission of creating wellness spaces
                         for a healthier tomorrow.
                       </p>
                     </div>
 
-                    <div className="pt-0.5 flex flex-wrap sm:flex-nowrap items-center gap-2">
+                    <div className="pt-1.5 flex flex-wrap sm:flex-nowrap items-center gap-2">
                       <Link
                         href={`/career/${encodeURIComponent(slug)}/apply`}
-                        className="inline-flex items-center gap-1.5 rounded-lg border-[1.5px] border-[#b88c42] bg-gradient-to-b from-[#1b3d2b] via-[#143423] to-[#0c2216] hover:from-[#214a34] hover:to-[#102d1e] hover:border-[#cf9e4d] px-3 sm:px-3.5 py-1 sm:py-1.5 text-[10.5px] sm:text-[11px] font-semibold text-white shadow-[0_2px_6px_rgba(10,25,18,0.28),inset_0_1px_0_rgba(255,255,255,0.18)] transition-all hover:-translate-y-0.5 whitespace-nowrap"
+                        className="inline-flex items-center gap-1.5 rounded-lg border-[1.5px] border-[#b88c42] bg-gradient-to-b from-[#1b3d2b] via-[#143423] to-[#0c2216] hover:from-[#214a34] hover:to-[#102d1e] hover:border-[#cf9e4d] px-3.5 sm:px-4 py-2 text-[12px] sm:text-[13px] font-semibold text-white shadow-[0_2px_6px_rgba(10,25,18,0.28),inset_0_1px_0_rgba(255,255,255,0.18)] transition-all hover:-translate-y-0.5 whitespace-nowrap"
                       >
                         <span>Continue & Apply for This Job</span>
-                        <ArrowRight size={12} className="text-[#e5b85a]" />
+                        <ArrowRight size={13} className="text-[#e5b85a]" />
                       </Link>
                       <button
                         type="button"
                         onClick={handleDownloadPdf}
-                        className="inline-flex items-center gap-1.5 rounded-lg border-[1.5px] border-[#cbb38b] bg-[#fffdf9] hover:bg-[#fbf5eb] hover:border-[#b89b6c] px-2.5 sm:px-3 py-1 sm:py-1.5 text-[10.5px] sm:text-[11px] font-semibold text-[#163a2b] shadow-[0_1px_3px_rgba(70,50,20,0.06)] transition-all hover:-translate-y-0.5 cursor-pointer whitespace-nowrap"
+                        className="inline-flex items-center gap-1.5 rounded-lg border-[1.5px] border-[#cbb38b] bg-[#fffdf9] hover:bg-[#fbf5eb] hover:border-[#b89b6c] px-3 sm:px-3.5 py-2 text-[12px] sm:text-[13px] font-semibold text-[#163a2b] shadow-[0_1px_3px_rgba(70,50,20,0.06)] transition-all hover:-translate-y-0.5 cursor-pointer whitespace-nowrap"
                       >
-                        <Download size={11} className="text-[#8d6a3a]" />
+                        <Download size={12} className="text-[#8d6a3a]" />
                         <span>Download Result (PDF)</span>
                       </button>
                     </div>
@@ -506,34 +503,34 @@ export default function ResultPage() {
 
                 {/* Partial Match State */}
                 {isPartial && (
-                  <div className="space-y-0.5 sm:space-y-1">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
+                  <div className="space-y-1 sm:space-y-1">
+                    <div className="flex items-center gap-2">
                       <span className="grid size-6 sm:size-7 shrink-0 place-items-center rounded-full bg-[#f59e0b] text-white shadow-md font-bold text-sm sm:text-base">
                         !
                       </span>
                       <div>
-                        <h2 style={serif} className="text-xs sm:text-sm lg:text-[17px] font-bold text-[#b45309] leading-tight tracking-tight whitespace-nowrap">
+                        <h2 style={serif} className="text-sm sm:text-base lg:text-[18px] font-bold text-[#b45309] leading-tight tracking-tight">
                           You&apos;re a Partial Match, {firstName}!
                         </h2>
-                        <p className="mt-0.5 text-[9.5px] sm:text-[10.5px] font-bold text-[#0c3363] leading-snug whitespace-nowrap">
+                        <p className="mt-0.5 text-[11px] sm:text-[12px] font-bold text-[#0c3363] leading-snug">
                           You are close to the requirements for this position.
                         </p>
                       </div>
                     </div>
-                    <p className="mt-0.5 text-[9px] sm:text-[9.5px] lg:text-[10px] text-[#334155] leading-snug max-w-[95%]">
+                    <p className="mt-1 text-[11px] sm:text-[12px] text-[#334155] leading-relaxed max-w-[95%]">
                       Your profile shows good potential, but a few key areas need improvement. You can
                       still apply after reviewing the suggestions below and updating your profile or CV
                       to strengthen your application.
                     </p>
 
-                    <div className="mt-0.5 text-[9.5px] sm:text-[10px] text-[#1e40af] italic font-medium leading-tight">
+                    <div className="mt-1.5 text-[11.5px] sm:text-[12px] text-[#1e40af] italic font-medium leading-relaxed">
                       <p>
                         Keep learning and building your skills.<br />
                         The right opportunity will come at the right time.
                       </p>
                     </div>
 
-                    <div className="mt-0.5 text-[9px] sm:text-[9.5px] font-bold text-[#163a2b] leading-tight">
+                    <div className="mt-1.5 text-[11px] sm:text-[11.5px] font-bold text-[#163a2b] leading-tight">
                       <p className="flex items-center gap-1.5">
                         <span className="text-xs leading-none select-none">—</span>
                         <span>Talent Acquisition Team</span>
@@ -543,37 +540,37 @@ export default function ResultPage() {
                   </div>
                 )}
 
-                {/* Ineligible State - EXACT match to user screenshot */}
+                {/* Ineligible State */}
                 {isIneligible && (
-                  <div className="space-y-0.5 sm:space-y-1">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
+                  <div className="space-y-1 sm:space-y-1">
+                    <div className="flex items-center gap-2">
                       <span className="grid size-6 sm:size-7 shrink-0 place-items-center rounded-full bg-[#dc2626] text-white shadow-md">
                         <X size={14} strokeWidth={3.5} />
                       </span>
                       <div>
-                        <h2 style={serif} className="text-xs sm:text-sm lg:text-[17px] font-bold text-[#c5221f] leading-tight tracking-tight whitespace-nowrap">
+                        <h2 style={serif} className="text-sm sm:text-base lg:text-[18px] font-bold text-[#c5221f] leading-tight tracking-tight">
                           Currently Not Eligible, {firstName}
                         </h2>
-                        <p className="mt-0.5 text-[9.5px] sm:text-[10.5px] font-bold text-[#0c3363] leading-snug whitespace-nowrap">
+                        <p className="mt-0.5 text-[11px] sm:text-[12px] font-bold text-[#0c3363] leading-snug">
                           Your profile does not meet the key requirements for this position.
                         </p>
                       </div>
                     </div>
-                    <p className="mt-0.5 text-[9px] sm:text-[9.5px] lg:text-[10px] text-[#334155] leading-snug max-w-[95%]">
+                    <p className="mt-1 text-[11px] sm:text-[12px] text-[#334155] leading-relaxed max-w-[95%]">
                       Based on our AI analysis, your current profile does not match the minimum
                       requirements for {job.title || "Product Designer"} at ENSIS. However, we appreciate your interest and
                       encourage you to explore other suitable opportunities or improve your profile for
                       future openings.
                     </p>
 
-                    <div className="mt-0.5 text-[9.5px] sm:text-[10px] text-[#1e40af] italic font-medium leading-tight">
+                    <div className="mt-1.5 text-[11.5px] sm:text-[12px] text-[#1e40af] italic font-medium leading-relaxed">
                       <p>
                         Keep learning and building your skills.<br />
                         The right opportunity will come at the right time.
                       </p>
                     </div>
 
-                    <div className="mt-0.5 text-[9px] sm:text-[9.5px] font-bold text-[#163a2b] leading-tight">
+                    <div className="mt-1.5 text-[11px] sm:text-[11.5px] font-bold text-[#163a2b] leading-tight">
                       <p className="flex items-center gap-1.5">
                         <span className="text-xs leading-none select-none">—</span>
                         <span>Talent Acquisition Team</span>
@@ -886,12 +883,26 @@ export default function ResultPage() {
 
               <div className="mt-2 flex items-stretch gap-2.5">
                 <div className="relative w-18 sm:w-20 shrink-0 self-stretch min-h-[96px] rounded-xl overflow-hidden border border-[#ebdcc7] bg-[#f4ebd9] shadow-2xs">
-                  <Image
-                    src={candidatePhoto || defaultAvatar}
-                    alt={candidateName}
-                    fill
-                    className="object-cover object-top"
-                  />
+                  {candidatePhoto ? (
+                    <Image
+                      src={candidatePhoto}
+                      alt={candidateName}
+                      fill
+                      className="object-cover object-top"
+                    />
+                  ) : (
+                    <div className="size-full flex flex-col items-center justify-center bg-[#f4ebd9] text-[#163a2b] select-none p-2">
+                      <span className="font-bold text-lg tracking-wider text-[#163a2b]">
+                        {candidateName
+                          .split(" ")
+                          .map((n) => n[0])
+                          .filter(Boolean)
+                          .slice(0, 2)
+                          .join("")
+                          .toUpperCase()}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 <div className="min-w-0 flex-1 flex flex-col gap-1.5 py-0.5 text-[10.5px] text-[#554e42]">
@@ -900,29 +911,29 @@ export default function ResultPage() {
                   </p>
                   <p className="flex items-center gap-1.5 text-[10.5px] min-w-0">
                     <Mail size={11} className="text-[#163a2b] shrink-0" />
-                    <span className="truncate block" title={baseResult.profile?.email || "somfrontenddeveloper@gmail.com"}>
-                      {baseResult.profile?.email || "somfrontenddeveloper@gmail.com"}
+                    <span className="truncate block" title={baseResult.profile?.email || "—"}>
+                      {baseResult.profile?.email || "—"}
                     </span>
                   </p>
                   <p className="flex items-center gap-1.5 text-[10.5px] min-w-0">
                     <Phone size={11} className="text-[#163a2b] shrink-0" />
-                    <span className="truncate block">{baseResult.profile?.phone || "+91 7678221037"}</span>
+                    <span className="truncate block">{baseResult.profile?.phone || "—"}</span>
                   </p>
                   <p className="flex items-center gap-1.5 text-[10.5px] min-w-0">
                     <MapPin size={11} className="text-[#163a2b] shrink-0" />
-                    <span className="truncate block">{baseResult.profile?.currentLocation || "Tagore Garden, New Delhi"}</span>
+                    <span className="truncate block">{baseResult.profile?.currentLocation || "—"}</span>
                   </p>
                   <p className="flex items-center gap-1.5 text-[10.5px] min-w-0">
                     <Calendar size={11} className="text-[#163a2b] shrink-0" />
-                    <span className="truncate block">14 Nov 1995 &nbsp;|&nbsp; Male</span>
+                    <span className="truncate block whitespace-pre">{[baseResult.profile?.dateOfBirth, baseResult.profile?.gender].filter(Boolean).join("  |  ") || "—"}</span>
                   </p>
                   <p className="flex items-center gap-1.5 text-[10.5px] text-[#0a66c2] min-w-0">
                     <LinkedinIcon size={11} className="shrink-0 text-[#0a66c2]" />
                     <span
                       className="truncate block cursor-pointer hover:underline"
-                      title={baseResult.profile?.linkedin || "https://linkedin.com/in/sompal-kumar-b62b5022b"}
+                      title={baseResult.profile?.linkedin || "—"}
                     >
-                      {baseResult.profile?.linkedin || "https://linkedin.com/in/sompal-kumar-b62b5022b"}
+                      {baseResult.profile?.linkedin || "—"}
                     </span>
                   </p>
                 </div>
@@ -982,7 +993,7 @@ export default function ResultPage() {
                 {/* File details & actions */}
                 <div className="min-w-0 flex-1">
                   <p className="text-xs sm:text-[13px] font-bold text-[#0c3363] truncate leading-tight">
-                    {screening.cv?.fileName || "Sompal_Kumar_Frontend_Engineer_CV.pdf"}
+                    {screening.cv?.fileName || "—"}
                   </p>
                   <p className="text-[10px] text-[#556987] mt-0.5">
                     {(screening.cv?.size ? (screening.cv.size / 1024).toFixed(0) : "31")} KB &nbsp;|&nbsp; 17 Oct 2026, 10:24 AM
@@ -1148,6 +1159,7 @@ export default function ResultPage() {
           </div>
         </div>
       </Container>
+      </section>
     </div>
   );
 }

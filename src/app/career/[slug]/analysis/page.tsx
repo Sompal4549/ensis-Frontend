@@ -45,6 +45,7 @@ import aiAnalysisHero from "@/assets/career/first-step/ai-analysis-hero.png";
 import positionAppliedImg from "@/assets/career/new/position_applied.png";
 import analysisCheckImg from "@/assets/career/flow/analysis_check.png";
 import sectionLeft from "@/assets/career/section_left.png";
+import exploreBg from "@/assets/career/first-step/explore.png";
 import sectionRight from "@/assets/career/section_right.png";
 import pageOpenImg from "@/assets/career/flow/page_open.png";
 import yourProfileImg from "@/assets/career/flow/your_profile.png";
@@ -119,7 +120,7 @@ function AnalysisContent() {
   const [error, setError] = useState<string | null>(null);
   const [needsReupload, setNeedsReupload] = useState(false);
   const [fileToReupload, setFileToReupload] = useState<File | null>(null);
-  const [uploadedCvName, setUploadedCvName] = useState<string>("Sompal_Kumar_Frontend_Engineer_CV.pdf");
+  const [uploadedCvName, setUploadedCvName] = useState<string>("");
   const [uploadedCvSize, setUploadedCvSize] = useState<string>("31 KB");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const startedRef = useRef(false);
@@ -171,7 +172,7 @@ function AnalysisContent() {
   useEffect(() => {
     // In Preview Mode, do NOT run real screening or auto-redirect
     if (isPreview) {
-      setUploadedCvName("Sompal_Kumar_Frontend_Engineer_CV.pdf");
+      setUploadedCvName("Sample_Candidate_CV.pdf");
       setUploadedCvSize("31 KB");
       setNeedsReupload(false);
       return;
@@ -274,10 +275,10 @@ function AnalysisContent() {
         />
 
         {/* Botanical leaves on left and right borders */}
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden opacity-40">
+        <div className="hidden sm:block pointer-events-none absolute left-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden opacity-40">
           <Image src={sectionLeft} alt="" aria-hidden fill sizes="7vw" className="object-cover object-right" />
         </div>
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden opacity-40">
+        <div className="hidden sm:block pointer-events-none absolute right-0 top-0 bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[90px] select-none z-10 overflow-hidden opacity-40">
           <Image src={sectionRight} alt="" aria-hidden fill sizes="7vw" className="object-cover object-left" />
         </div>
 
@@ -304,15 +305,11 @@ function AnalysisContent() {
         </Container>
       </section>
 
-      {/* Botanical leaves along page body edges */}
-      <div className="pointer-events-none absolute left-0 top-[220px] bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[85px] select-none z-0 overflow-hidden opacity-40">
-        <Image src={sectionLeft} alt="" aria-hidden fill sizes="7vw" className="object-cover object-right" />
-      </div>
-      <div className="pointer-events-none absolute right-0 top-[220px] bottom-0 w-[5.5%] sm:w-[6.5%] max-w-[85px] select-none z-0 overflow-hidden opacity-40">
-        <Image src={sectionRight} alt="" aria-hidden fill sizes="7vw" className="object-cover object-left" />
-      </div>
-
       {/* ── Main 2-Column Section Matching Mockup ── */}
+      <section
+        className="relative bg-[#fbf4e2] bg-no-repeat"
+        style={{ backgroundImage: `url(${exploreBg.src})`, backgroundSize: "100% 100%" }}
+      >
       <Container className="pt-2 sm:pt-2.5 pb-6 sm:pb-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 lg:gap-4.5 items-start">
           {/* ════════ Left Column: Application Status & Steps Card (~68%) ════════ */}
@@ -970,6 +967,7 @@ function AnalysisContent() {
           </div>
         </div>
       </Container>
+      </section>
     </div>
   );
 }

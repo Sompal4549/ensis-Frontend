@@ -67,7 +67,7 @@ export default function ReviewPage() {
 
   // Position & details fields
   const [details, setDetails] = useState<FlowDetailsState>({
-    preferredLocations: ["Delhi NCR", "Bengaluru"],
+    preferredLocations: [],
     noticePeriod: "30 Days",
     expectedCtc: "As per company norms",
     joiningPreference: "Within 1 Month",
@@ -334,12 +334,30 @@ export default function ReviewPage() {
                     className="group relative size-20 sm:size-24 cursor-pointer overflow-hidden rounded-full border-2 border-[#d9bf86] shadow-sm hover:border-[#163a2b] transition-all"
                     title="Click to upload profile photo"
                   >
-                    <Image
-                      src={profile.photoUrl || defaultAvatar}
-                      alt={profile.fullName}
-                      fill
-                      className="object-cover"
-                    />
+                    {profile.photoUrl ? (
+                      <Image
+                        src={profile.photoUrl}
+                        alt={profile.fullName}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <div className="size-full flex flex-col items-center justify-center bg-[#f4ebd9] text-[#163a2b] select-none">
+                        {profile?.fullName ? (
+                          <span className="font-bold text-xl sm:text-2xl tracking-wider text-[#163a2b]">
+                            {profile.fullName
+                              .split(" ")
+                              .map((n) => n[0])
+                              .filter(Boolean)
+                              .slice(0, 2)
+                              .join("")
+                              .toUpperCase()}
+                          </span>
+                        ) : (
+                          <User size={32} className="text-[#8d6a3a]" />
+                        )}
+                      </div>
+                    )}
                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white text-[10px] font-semibold gap-1">
                       <Camera size={16} />
                       <span>Upload</span>
@@ -455,15 +473,15 @@ export default function ReviewPage() {
                       </div>
                       <div>
                         <span className="text-[#8d6a3a] block text-[11px] font-semibold">Date of Birth & Gender</span>
-                        <span className="text-[#163a2b]">{profile.dateOfBirth || "14 Nov 1995"} • {profile.gender || "Male"}</span>
+                        <span className="text-[#163a2b]">{[profile.dateOfBirth, profile.gender].filter(Boolean).join(" • ") || "—"}</span>
                       </div>
                       <div>
                         <span className="text-[#8d6a3a] block text-[11px] font-semibold">Current Location</span>
-                        <span className="text-[#163a2b]">{profile.currentLocation || "Delhi NCR"}</span>
+                        <span className="text-[#163a2b]">{profile.currentLocation || "—"}</span>
                       </div>
                       <div>
                         <span className="text-[#8d6a3a] block text-[11px] font-semibold">Permanent Address</span>
-                        <span className="text-[#163a2b] truncate block">{profile.permanentAddress || "Delhi NCR, India"}</span>
+                        <span className="text-[#163a2b] truncate block">{profile.permanentAddress || "—"}</span>
                       </div>
                     </div>
                   )}
@@ -1005,13 +1023,27 @@ export default function ReviewPage() {
                 Application Summary
               </span>
               <div className="flex items-center gap-3 pt-0.5">
-                <div className="relative size-11 shrink-0 overflow-hidden rounded-full border-2 border-[#d9bf86]">
-                  <Image
-                    src={profile.photoUrl || defaultAvatar}
-                    alt={profile.fullName}
-                    fill
-                    className="object-cover"
-                  />
+                <div className="relative size-11 shrink-0 overflow-hidden rounded-full border-2 border-[#d9bf86] bg-[#f4ebd9]">
+                  {profile.photoUrl ? (
+                    <Image
+                      src={profile.photoUrl}
+                      alt={profile.fullName}
+                      fill
+                      className="object-cover"
+                    />
+                  ) : (
+                    <div className="size-full flex items-center justify-center bg-[#f4ebd9] text-[#163a2b] select-none font-bold text-xs tracking-wider">
+                      {profile?.fullName
+                        ? profile.fullName
+                            .split(" ")
+                            .map((n) => n[0])
+                            .filter(Boolean)
+                            .slice(0, 2)
+                            .join("")
+                            .toUpperCase()
+                        : <User size={16} className="text-[#8d6a3a]" />}
+                    </div>
+                  )}
                 </div>
                 <div>
                   <h4 style={serif} className="text-sm sm:text-base font-bold text-[#163a2b]">

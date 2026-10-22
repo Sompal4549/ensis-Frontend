@@ -176,8 +176,12 @@ export type SubmittedAppRecord = {
   applicationId: string;
   jobId: string;
   jobTitle: string;
+  candidateName?: string;
   email: string;
   phone?: string;
+  profile?: CandidateProfile;
+  score?: number;
+  level?: "eligible" | "partial" | "not_eligible";
   submittedAt: string;
 };
 
@@ -199,7 +203,9 @@ export function recordSubmittedApplication(record: SubmittedAppRecord): void {
     const cleanEmail = record.email.toLowerCase().trim();
     records[`${cleanJob}_${cleanEmail}`] = record;
     records[cleanJob] = record;
+    records["__last__"] = record;
     localStorage.setItem(SUBMITTED_APPS_KEY, JSON.stringify(records));
+    localStorage.setItem("ensis_last_submission", JSON.stringify(record));
   } catch (err) {
     console.error("Failed to record submitted application:", err);
   }
@@ -210,30 +216,44 @@ export function findExistingSubmission(
   email?: string,
   phone?: string
 ): SubmittedAppRecord | null {
-  if (typeof window === "undefined" || !jobIdOrSlug) return null;
+  if (typeof window === "undefined") return null;
   try {
     const records = getSubmittedApplications();
-    const cleanJob = jobIdOrSlug.toLowerCase().trim();
+    const cleanJob = (jobIdOrSlug || "").toLowerCase().trim();
     const cleanEmail = (email || "").toLowerCase().trim();
     const cleanPhone = (phone || "").replace(/\D/g, "").slice(-10);
 
     // 1. Direct key match: `${cleanJob}_${cleanEmail}`
-    if (cleanEmail && records[`${cleanJob}_${cleanEmail}`]) {
+    if (cleanJob && cleanEmail && records[`${cleanJob}_${cleanEmail}`]) {
       return records[`${cleanJob}_${cleanEmail}`];
     }
 
-    // 2. Scan records for this job
-    for (const item of Object.values(records)) {
-      if (!item || !item.applicationId) continue;
-      const matchJob = item.jobId?.toLowerCase().trim() === cleanJob;
-      if (!matchJob) continue;
+    // 2. Direct job key match
+    if (cleanJob && records[cleanJob]) {
+      return records[cleanJob];
+    }
 
-      if (cleanEmail && item.email?.toLowerCase().trim() === cleanEmail) {
-        return item;
+    // 3. Scan records for this job
+    if (cleanJob) {
+      for (const item of Object.values(records)) {
+        if (!item || !item.applicationId) continue;
+        const matchJob = item.jobId?.toLowerCase().trim() === cleanJob;
+        if (matchJob) {
+          if (!cleanEmail && !cleanPhone) return item;
+          if (cleanEmail && item.email?.toLowerCase().trim() === cleanEmail) return item;
+          if (cleanPhone && item.phone && item.phone.replace(/\D/g, "").slice(-10) === cleanPhone) return item;
+        }
       }
-      if (cleanPhone && item.phone && item.phone.replace(/\D/g, "").slice(-10) === cleanPhone) {
-        return item;
-      }
+    }
+
+    // 4. Check last recorded submission
+    if (records["__last__"]) {
+      return records["__last__"];
+    }
+
+    const lastRaw = localStorage.getItem("ensis_last_submission");
+    if (lastRaw) {
+      return JSON.parse(lastRaw);
     }
 
     return null;

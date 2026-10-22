@@ -5,6 +5,7 @@ import { getJob, type PublicJob } from "@/lib/careerApi";
 import { JobDetailClient } from "./JobDetailClient";
 
 import { generateSeo } from "@/lib/api/seo";
+import { SITE_URL } from "@/lib/site";
 
 export const revalidate = 60;
 
@@ -35,9 +36,8 @@ export default async function JobDetailPage({
     employmentType: job.employmentType ? job.employmentType.toUpperCase().replace(/\s+/g, "_") : "FULL_TIME",
     hiringOrganization: {
       "@type": "Organization",
-      name: "Ensis Wellness",
-      sameAs: "https://ensiswellness.com",
-      logo: "https://ensiswellness.com/logo.png",
+      name: "ENSIS",
+      sameAs: SITE_URL,
     },
     jobLocation: {
       "@type": "Place",

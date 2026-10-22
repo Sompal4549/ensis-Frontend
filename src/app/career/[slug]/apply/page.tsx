@@ -26,6 +26,14 @@ import {
   Star,
   Clock,
   ChevronDown,
+  Camera,
+  UploadCloud,
+  CheckCircle2,
+  AlertTriangle,
+  Loader2,
+  Sparkles,
+  Pencil,
+  ShieldAlert,
 } from "lucide-react";
 import { serif, serifFontClass, greenButton, goldOutlineButton } from "@/components/career-v2/ui";
 import { Container } from "@/components/ui/Container";
@@ -33,10 +41,12 @@ import { ProfileCard, JobSummaryCard, SectionCard } from "@/components/career-v2
 import {
   submitApplication,
   getJob,
+  verifyCandidatePhotoApi,
   type PublicJob,
   type Screening,
   type CandidateProfile,
   type ApplicationInput,
+  type PhotoVerifyResponse,
 } from "@/lib/careerApi";
 import {
   loadFlowState,
@@ -52,8 +62,7 @@ import {
 } from "@/lib/careerFlowV2";
 import { jobLocation, jobType } from "@/lib/careers";
 import applyBg from "@/assets/career/first-step/apply.png";
-import sectionLeft from "@/assets/career/section_left.png";
-import sectionRight from "@/assets/career/section_right.png";
+import exploreBg from "@/assets/career/first-step/explore-bg.webp";
 
 const AVAILABLE_LOCATIONS = [
   "Delhi NCR",
@@ -87,7 +96,7 @@ export default function ApplyPage() {
 
   // Form State matching the mockup
   const [details, setDetails] = useState<FlowDetailsState>({
-    preferredLocations: ["Delhi NCR", "Bengaluru"],
+    preferredLocations: [],
     noticePeriod: "30 Days",
     expectedCtc: "As per company norms",
     joiningPreference: "Within 1 Month",
@@ -97,28 +106,17 @@ export default function ApplyPage() {
   });
 
   const [additional, setAdditional] = useState<FlowAdditionalState>({
-    whyJoin:
-      "I am passionate about designing wellness furniture and creating healthier spaces for people. I want to be a part of ENSIS's mission of enhancing well-being through innovative designs.",
-    extraSkills: "Product design, 3D modeling, visualization, material exploration, user research, wellness design, furniture design.",
-    workedWith: ["Furniture Design", "3D Modeling", "Space Planning"],
+    whyJoin: "",
+    extraSkills: "",
+    workedWith: [],
   });
 
+  // Two blank (optional) reference slots; empty ones are dropped on submit
   const [references, setReferences] = useState<FlowReferenceItem[]>([
-    {
-      name: "Dr. Ramesh Gupta",
-      designation: "Design Director",
-      organization: "Wellness Design Studio",
-      phone: "+91 98100 12345",
-      email: "ramesh.gupta@mail.com",
-    },
-    {
-      name: "Ms. Neha Singh",
-      designation: "Senior Product Designer",
-      organization: "Infinity Furniture",
-      phone: "+91 98765 43210",
-      email: "neha.singh@mail.com",
-    },
+    { name: "", designation: "", organization: "", phone: "", email: "" },
+    { name: "", designation: "", organization: "", phone: "", email: "" },
   ]);
+  const filledReferences = references.filter((r) => [r.name, r.phone, r.email].some((v) => v?.trim()));
 
   const [consents, setConsents] = useState<FlowConsentsState>({
     accurate: true,
@@ -131,77 +129,126 @@ export default function ApplyPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [existingSubmission, setExistingSubmission] = useState<SubmittedAppRecord | null>(null);
 
+  // Photo verification modal & state
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null);
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  const [isVerifyingPhoto, setIsVerifyingPhoto] = useState(false);
+  const [photoVerificationResult, setPhotoVerificationResult] = useState<PhotoVerifyResponse | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
+  const [photoSuccess, setPhotoSuccess] = useState<string | null>(null);
+
+  const handleOpenPhotoPicker = () => {
+    setPhotoError(null);
+    setPhotoSuccess(null);
+    fileInputRef.current?.click();
+  };
+
+  const handlePhotoSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setPhotoError("Please select a valid image file (JPG, PNG, or WebP).");
+      setIsPhotoModalOpen(true);
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      setPhotoError("Image size exceeds 10 MB. Please choose a smaller photo.");
+      setIsPhotoModalOpen(true);
+      return;
+    }
+
+    const previewUrl = URL.createObjectURL(file);
+    setPhotoPreview(previewUrl);
+    setPhotoError(null);
+    setPhotoSuccess(null);
+    setPhotoVerificationResult(null);
+    setIsPhotoModalOpen(true);
+    setIsVerifyingPhoto(true);
+
+    try {
+      // Calculate age from profile.dateOfBirth or profile
+      let calculatedAge: number | undefined = undefined;
+      if (profile?.dateOfBirth) {
+        const match = profile.dateOfBirth.match(/\b(19\d{2}|20\d{2})\b/);
+        if (match) {
+          calculatedAge = new Date().getFullYear() - parseInt(match[1], 10);
+        }
+      }
+
+      const res = await verifyCandidatePhotoApi(file, {
+        gender: profile?.gender || undefined,
+        age: calculatedAge || undefined,
+        dateOfBirth: profile?.dateOfBirth || undefined,
+        name: profile?.fullName || undefined,
+      });
+
+      setPhotoVerificationResult(res);
+
+      if (res.approved && res.photoUrl) {
+        // Update profile in state
+        const updatedProfile = { ...profile, photoUrl: res.photoUrl } as CandidateProfile;
+        setProfile(updatedProfile);
+        setPhotoSuccess(res.feedback || "Photo verified by AI and approved successfully!");
+
+        // Persist to flow state
+        const currentFlow = loadFlowState(slug) || {};
+        saveFlowState({
+          ...currentFlow,
+          profile: updatedProfile,
+          updatedAt: new Date().toISOString(),
+        });
+
+        // Also update ensis_last_submission if it exists
+        try {
+          const lastSub = localStorage.getItem("ensis_last_submission");
+          if (lastSub) {
+            const parsed = JSON.parse(lastSub);
+            parsed.profile = updatedProfile;
+            localStorage.setItem("ensis_last_submission", JSON.stringify(parsed));
+          }
+        } catch {}
+      } else {
+        const errorMsg =
+          res.rejection_reasons?.[0] ||
+          res.reason ||
+          res.feedback ||
+          "Photo could not be verified according to profile guidelines.";
+        setPhotoError(errorMsg);
+      }
+    } catch (err: any) {
+      console.error("Photo verification failed:", err);
+      setPhotoError("Verification service temporarily unavailable. Please try again.");
+    } finally {
+      setIsVerifyingPhoto(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
   useEffect(() => {
     if (!slug) return;
     const state = loadFlowState(slug);
 
-    if (state?.job) {
+    // The apply step needs a real AI screening from this browser's flow; without one, start the flow over
+    if (!state?.screening?.result) {
+      router.replace(`/career/${encodeURIComponent(slug)}`);
+      return;
+    }
+
+    if (state.job) {
       setJob(state.job);
     } else {
       getJob(slug).then((fetched) => {
-        if (fetched) {
-          setJob(fetched);
-        } else {
-          setJob({
-            _id: slug,
-            title: "Product Designer",
-            slug,
-            department: "Design",
-            location: "Delhi NCR, Bengaluru",
-            type: "Full-time",
-            experience: "3-6 years",
-            educationRequirements: "B.Des / M.Des (Product or Industrial Design)",
-            shortDescription: "Design, build and scale next-generation wellness furniture and equipment.",
-            description: "",
-            responsibilities: [],
-            requirements: [],
-            benefits: [],
-            isActive: true,
-            createdAt: new Date().toISOString(),
-          } as any);
-        }
+        if (fetched) setJob(fetched);
+        else router.replace("/career");
       });
     }
 
-    if (state?.screening?.result) {
-      setScreening(state.screening);
-    } else {
-      setScreening({
-        screeningId: "scr_mock",
-        status: "completed",
-        result: {
-          score: 85,
-          level: "eligible",
-          feedback: "Strong Match",
-          strengths: ["Product Design", "3D Modeling", "Space Planning"],
-          gaps: [],
-          recommendations: [],
-          profile: {
-            fullName: "Vijay Sharma",
-            email: "vijay.sharma@gmail.com",
-            phone: "+91 98765 43210",
-            currentLocation: "Delhi NCR",
-            dateOfBirth: "14 Nov 1995",
-            gender: "Male",
-            linkedin: "https://linkedin.com/in/vijay-sharma",
-          },
-        },
-      } as any);
-    }
+    setScreening(state.screening);
 
-    const prof = (state?.profile || state?.screening?.result?.profile || {
-      fullName: "Vijay Sharma",
-      email: "vijay.sharma@gmail.com",
-      phone: "+91 98765 43210",
-      currentLocation: "Delhi NCR",
-      dateOfBirth: "14 Nov 1995",
-      gender: "Male",
-      linkedin: "https://linkedin.com/in/vijay-sharma",
-      education: [],
-      experience: [],
-      skills: ["Product Design", "3D Modeling", "Space Planning"],
-      certifications: [],
-    }) as CandidateProfile;
+    const prof = (state.profile || state.screening.result.profile) as CandidateProfile;
     setProfile(prof);
 
     if (state?.details) setDetails((prev) => ({ ...prev, ...state.details }));
@@ -309,7 +356,7 @@ export default function ApplyPage() {
         profile,
         details,
         additional,
-        references,
+        references: filledReferences,
         documents: docs.map((d) => ({ fileId: d.fileId, label: d.label })),
         consents,
         screeningResult: screening.result,
@@ -324,14 +371,20 @@ export default function ApplyPage() {
         applicationId: response.applicationId,
         jobId: slug || job._id,
         jobTitle: job.title,
+        candidateName: profile.fullName || "",
         email: profile.email,
         phone: profile.phone,
+        profile,
+        score: screening.result?.score,
+        level: screening.result?.level,
         submittedAt: response.submittedAt,
       });
 
       // Save submission result into flow state
       saveFlowState({
         job,
+        screeningId: screening.screeningId,
+        screening,
         profile,
         details,
         additional,
@@ -351,7 +404,7 @@ export default function ApplyPage() {
       if (msg.toLowerCase().includes("already submitted") || msg.toLowerCase().includes("duplicate")) {
         const idMatch = msg.match(/ENS-CAR-[0-9]{4}-[0-9]+/i);
         setExistingSubmission({
-          applicationId: idMatch ? idMatch[0] : "ENS-CAR",
+          applicationId: idMatch ? idMatch[0] : "—",
           jobId: slug,
           jobTitle: job.title,
           email: profile.email,
@@ -374,11 +427,11 @@ export default function ApplyPage() {
     { id: 1, label: "Upload CV", sublabel: "Completed", isCompleted: true, isCurrent: false },
     { id: 2, label: "AI Analysis", sublabel: "Completed", isCompleted: true, isCurrent: false },
     { id: 3, label: "Review Details", sublabel: "Completed", isCompleted: true, isCurrent: false },
-    { id: 4, label: "Submit Application", sublabel: "In Progress", isCompleted: false, isCurrent: true },
+    { id: 4, label: "Submit Application", sublabel: "Current Step", isCompleted: false, isCurrent: true },
   ];
 
   // Donut score for Profile Match card
-  const score = result.score || 85;
+  const score = Math.round(result.score ?? 0);
   const radius = 32;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (score / 100) * circumference;
@@ -386,7 +439,7 @@ export default function ApplyPage() {
   return (
     <div className="min-h-screen bg-[#fbf8f2] text-[#3f3a33] relative">
       {/* ════════ Hero Banner Using apply.png matching user mockup ════════ */}
-      <section className="relative overflow-hidden border-b border-[#ebdcc7] bg-[#fbf4e2] min-h-[160px] sm:min-h-[180px] md:min-h-[195px] flex items-center">
+      <section className="relative overflow-hidden bg-[#fbf4e2] min-h-[160px] sm:min-h-[180px] md:min-h-[195px] flex items-center">
         {/* Panoramic Banner Image */}
         <Image
           src={applyBg}
@@ -398,31 +451,31 @@ export default function ApplyPage() {
         />
 
         {/* Soft readability overlay on left side so spa bed & tagline shine on right */}
-        <div className="absolute inset-0 bg-[#fbf4e2]/90 lg:hidden" />
+        <div className="absolute inset-0 bg-[#fbf4e2]/92 lg:hidden" />
         <div className="absolute inset-0 hidden w-[68%] bg-gradient-to-r from-[#fbf4e2]/98 via-[#fbf4e2]/85 to-transparent lg:block" />
 
-        <Container className="relative py-2.5 sm:py-3 z-10 w-full">
-          <div className="max-w-[650px] space-y-0.5">
-            {/* Breadcrumb matching mockup with no extra spacing */}
-            <div className="flex items-center gap-1.5 text-[11px] sm:text-xs text-[#6b6255] font-medium tracking-tight">
-              <Link href="/" className="hover:text-[#163a2b] transition-colors flex items-center gap-1">
+        <Container className="relative pt-8 sm:pt-9 md:pt-10 pb-3 sm:pb-3.5 z-10 w-full">
+          <div className="max-w-[650px] space-y-1">
+            {/* Breadcrumb matching mockup with clean responsive wrapping */}
+            <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs text-[#6b6255] font-medium leading-normal">
+              <Link href="/" className="hover:text-[#163a2b] transition-colors flex items-center gap-1 whitespace-nowrap">
                 <Home size={11} className="text-[#a8792c]" />
                 <span>Home</span>
               </Link>
               <span className="text-[#a8792c]">&gt;</span>
-              <Link href="/career" className="hover:text-[#163a2b] transition-colors">
+              <Link href="/career" className="hover:text-[#163a2b] transition-colors whitespace-nowrap">
                 Careers
               </Link>
               <span className="text-[#a8792c]">&gt;</span>
-              <Link href={`/career/${encodeURIComponent(slug)}`} className="hover:text-[#163a2b] transition-colors">
+              <Link href={`/career/${encodeURIComponent(slug)}`} className="hover:text-[#163a2b] transition-colors whitespace-nowrap">
                 Apply for Position
               </Link>
               <span className="text-[#a8792c]">&gt;</span>
-              <span className="text-[#163a2b] font-semibold">Complete Application</span>
+              <span className="text-[#163a2b] font-semibold whitespace-nowrap">Complete Application</span>
             </div>
 
             {/* Back link */}
-            <div>
+            <div className="pt-0.5">
               <Link
                 href={`/career/${encodeURIComponent(slug)}`}
                 className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-semibold text-[#163a2b] hover:text-[#a8792c] transition-colors"
@@ -432,48 +485,63 @@ export default function ApplyPage() {
               </Link>
             </div>
 
-            {/* Heading: Complete Your Application (800 font weight) */}
+            {/* Heading: Complete Your Application */}
             <h1
               style={{ ...serif, fontWeight: 800 }}
-              className="text-[1.6rem] sm:text-[1.85rem] lg:text-[2.1rem] font-extrabold tracking-tight text-[#163a2b] leading-[1.08] !mt-0.5"
+              className="text-[1.35rem] sm:text-[1.85rem] lg:text-[2.1rem] font-extrabold tracking-tight text-[#163a2b] leading-[1.12] !mt-1"
             >
               Complete Your <span className="text-[#c89228]">Application</span>
             </h1>
 
             {/* Subtitle */}
-            <p className="text-[11px] sm:text-xs text-[#4a4237] leading-tight max-w-[560px] !mt-0.5">
+            <p className="text-[11px] sm:text-xs text-[#4a4237] leading-relaxed max-w-[560px] !mt-0.5">
               You&apos;re almost there! Please review and confirm your details to submit your application.
             </p>
 
             {/* 4-Step Stepper inside Banner with NO trailing border after Step 4 */}
-            <div className="!mt-1 pt-0.5">
-              <div className="flex items-center w-full max-w-[560px]">
-                {bannerSteps.map((step, idx) => (
+            <div className="!mt-2.5 pt-1 w-full max-w-[640px]">
+              <div className="relative grid grid-cols-4 w-full">
+                {/* Connecting line from first to last circle centre (never past step 4) */}
+                <div className="absolute top-[14px] sm:top-[16px] left-[12.5%] right-[12.5%] h-[1.5px] bg-[#1f4d34]" />
+                {bannerSteps.map((step) => (
                   <React.Fragment key={step.id}>
-                    <div className="flex flex-col items-center text-center shrink-0">
+                    <div className="relative flex flex-col items-center text-center">
                       <div
-                        className={`size-6 sm:size-7 rounded-full flex items-center justify-center font-bold text-[11px] sm:text-xs shadow-xs transition-all ${
+                        className={`size-7 sm:size-8 rounded-full flex items-center justify-center font-bold text-xs sm:text-sm shadow-sm ring-2 ring-[#fbf4e2] transition-all ${
                           step.isCompleted
-                            ? "bg-[#163a2b] text-white"
+                            ? "bg-[#1f5a36] text-white"
                             : step.isCurrent
-                            ? "bg-[#c88d2d] text-white ring-2 ring-[#f4d58a]/60"
+                            ? "bg-[#c8922a] text-white"
                             : "bg-[#fffdf8] text-[#8d6a3a] border border-[#eadfcd]"
                         }`}
                       >
-                        {step.isCompleted ? <Check size={12} strokeWidth={3} /> : step.id}
+                        {step.isCompleted ? <Check size={14} strokeWidth={3} /> : step.id}
                       </div>
-                      <p className="mt-0.5 text-[11px] sm:text-xs font-bold text-[#163a2b] whitespace-nowrap leading-tight">
-                        {step.label}
+                      <p
+                        className={`mt-1 text-[10px] sm:text-[13px] font-semibold leading-tight ${
+                          step.isCurrent ? "text-[#a8792c]" : "text-[#163a2b]"
+                        }`}
+                      >
+                        {step.id === 3 ? (
+                          <>
+                            Review<span className="hidden sm:inline"> Details</span>
+                          </>
+                        ) : step.id === 4 ? (
+                          <>
+                            Submit<span className="hidden sm:inline"> Application</span>
+                          </>
+                        ) : (
+                          step.label
+                        )}
                       </p>
-                      <span className="text-[9.5px] sm:text-[10px] font-medium text-[#5f5647] leading-tight">
+                      <span
+                        className={`mt-0.5 text-[9px] sm:text-[11px] font-medium leading-tight ${
+                          step.isCurrent ? "text-[#a8792c]" : "text-[#3f5a4a]"
+                        }`}
+                      >
                         {step.sublabel}
                       </span>
                     </div>
-
-                    {/* Connecting line ONLY rendered between steps (never after step 4!) */}
-                    {idx < bannerSteps.length - 1 && (
-                      <div className="flex-1 h-[2px] bg-[#163a2b] mx-1.5 sm:mx-2 -mt-5 min-w-[16px]" />
-                    )}
                   </React.Fragment>
                 ))}
               </div>
@@ -482,15 +550,11 @@ export default function ApplyPage() {
         </Container>
       </section>
 
-      {/* Botanical leaves along page body edges */}
-      <div className="pointer-events-none absolute left-0 top-[340px] bottom-0 w-[5.5%] max-w-[85px] select-none z-0 overflow-hidden opacity-40">
-        <Image src={sectionLeft} alt="" aria-hidden fill sizes="7vw" className="object-cover object-right" />
-      </div>
-      <div className="pointer-events-none absolute right-0 top-[340px] bottom-0 w-[5.5%] max-w-[85px] select-none z-0 overflow-hidden opacity-40">
-        <Image src={sectionRight} alt="" aria-hidden fill sizes="7vw" className="object-cover object-left" />
-      </div>
-
-      {/* ── Main 2-Column Content ── */}
+      {/* ── Main 2-Column Content (explore-bg behind this section only) ── */}
+      <section
+        className="relative bg-[#fbf4e2] bg-no-repeat"
+        style={{ backgroundImage: `url(${exploreBg.src})`, backgroundSize: "100% 100%" }}
+      >
       <Container className="py-3.5 sm:py-4.5 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-3.5 lg:gap-4.5 items-start">
           {/* Main Left Content: 3 Form Sections (~68%) */}
@@ -787,6 +851,7 @@ export default function ApplyPage() {
               profile={profile}
               showFullDetails={true}
               onEdit={() => router.push(`/career/${encodeURIComponent(slug)}/review`)}
+              onEditPhoto={handleOpenPhotoPicker}
             />
 
             {/* Card 2: Position Applied For with Golden Briefcase Circle */}
@@ -987,6 +1052,167 @@ export default function ApplyPage() {
           </div>
         </div>
       </Container>
+      </section>
+
+      {/* Hidden File Input for Profile Photo Upload */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+        className="hidden"
+        onChange={handlePhotoSelected}
+      />
+
+      {/* AI Profile Photo Verification Modal */}
+      {isPhotoModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 backdrop-blur-xs p-4 sm:p-6 overflow-y-auto">
+          <div className="relative w-full max-w-md rounded-2xl border border-[#eadfcd] bg-[#fffdf9] p-5 sm:p-6 shadow-2xl space-y-4 animate-in fade-in zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-2 border-b border-[#eadfcd]/70">
+              <div className="flex items-center gap-2">
+                <span className="grid size-7 place-items-center rounded-full bg-[#f4ebd9] text-[#163a2b]">
+                  <Sparkles size={14} className="text-[#c08a2e]" />
+                </span>
+                <div>
+                  <h3 style={serif} className="font-bold text-base text-[#163a2b] leading-tight">
+                    AI Profile Photo Verification
+                  </h3>
+                  <p className="text-[10px] text-[#554e42]">
+                    Compliance check: real face, gender, age & safety standards
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsPhotoModalOpen(false)}
+                className="grid size-7 place-items-center rounded-full text-[#554e42] hover:bg-[#f4ebd9] hover:text-[#163a2b] transition-colors cursor-pointer"
+              >
+                <X size={15} />
+              </button>
+            </div>
+
+            {/* Candidate Matching Context Badges */}
+            <div className="flex items-center gap-2 flex-wrap text-[10.5px]">
+              <span className="px-2 py-0.5 rounded-md bg-[#f4ebd9] text-[#163a2b] font-semibold border border-[#d9bf86]/50">
+                Candidate: {profile?.fullName || "—"}
+              </span>
+              <span className="px-2 py-0.5 rounded-md bg-[#e8f5ec] text-[#0c5931] font-semibold border border-[#d2ead9]">
+                Gender: {profile?.gender || "—"}
+              </span>
+              <span className="px-2 py-0.5 rounded-md bg-[#fff7ed] text-[#ea580c] font-semibold border border-[#ffedd5]">
+                DOB: {profile?.dateOfBirth || "—"}
+              </span>
+            </div>
+
+            {/* Photo Preview & Scanning Animation */}
+            <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-[#faf6ee] border border-[#eadfcd]/80">
+              <div className="relative size-28 rounded-xl overflow-hidden border-2 border-[#d9bf86] shadow-sm bg-white">
+                {photoPreview ? (
+                  <Image src={photoPreview} alt="Selected photo" fill className="object-cover" />
+                ) : profile?.photoUrl ? (
+                  <Image src={profile.photoUrl} alt="Current photo" fill className="object-cover" />
+                ) : (
+                  <div className="size-full flex items-center justify-center text-[#8d6a3a]">
+                    <User size={40} />
+                  </div>
+                )}
+
+                {/* Scanning Radar Overlay when verifying */}
+                {isVerifyingPhoto && (
+                  <div className="absolute inset-0 bg-emerald-900/30 backdrop-blur-[1px] flex flex-col items-center justify-center text-white p-2 text-center animate-pulse">
+                    <Loader2 size={24} className="animate-spin text-white mb-1" />
+                    <span className="text-[10px] font-bold tracking-wider">AI INSPECTING</span>
+                  </div>
+                )}
+
+                {/* Approved Badge Overlay */}
+                {photoSuccess && !isVerifyingPhoto && (
+                  <div className="absolute bottom-1 right-1 grid size-6 place-items-center rounded-full bg-emerald-600 text-white shadow-xs">
+                    <Check size={14} strokeWidth={3} />
+                  </div>
+                )}
+              </div>
+
+              {/* Status / Feedback message */}
+              {isVerifyingPhoto && (
+                <div className="mt-3 text-center space-y-1">
+                  <p className="text-xs font-bold text-[#163a2b] flex items-center justify-center gap-1.5">
+                    <Loader2 size={13} className="animate-spin text-[#c08a2e]" />
+                    <span>Analyzing face, gender, age & safety checks...</span>
+                  </p>
+                  <p className="text-[10.5px] text-[#554e42] max-w-xs">
+                    AI is verifying: real human headshot, gender match{profile?.gender ? ` (${profile.gender})` : ""}, age appropriateness, zero nudity/violence/harassment.
+                  </p>
+                </div>
+              )}
+
+              {/* Success Alert */}
+              {photoSuccess && !isVerifyingPhoto && (
+                <div className="mt-3 w-full rounded-lg bg-emerald-50 border border-emerald-200 p-2.5 text-left space-y-1">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-800">
+                    <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
+                    <span>Photo Verified & Approved!</span>
+                  </div>
+                  <p className="text-[10.5px] text-emerald-700 leading-snug">
+                    {photoSuccess}
+                  </p>
+                  <div className="pt-1 flex items-center gap-2 flex-wrap text-[9.5px] text-emerald-800 font-semibold">
+                    <span className="px-1.5 py-0.5 rounded bg-emerald-100 border border-emerald-300">✓ Real Face</span>
+                    <span className="px-1.5 py-0.5 rounded bg-emerald-100 border border-emerald-300">✓ Gender Match</span>
+                    <span className="px-1.5 py-0.5 rounded bg-emerald-100 border border-emerald-300">✓ Age Consistent</span>
+                    <span className="px-1.5 py-0.5 rounded bg-emerald-100 border border-emerald-300">✓ Policy Passed</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Error Alert */}
+              {photoError && !isVerifyingPhoto && (
+                <div className="mt-3 w-full rounded-lg bg-rose-50 border border-rose-200 p-2.5 text-left space-y-1.5">
+                  <div className="flex items-start gap-1.5 text-xs font-bold text-rose-800">
+                    <AlertTriangle size={14} className="text-rose-600 shrink-0 mt-0.5" />
+                    <span>Verification Failed</span>
+                  </div>
+                  <div className="text-[10.5px] text-rose-700 leading-snug space-y-1">
+                    {photoVerificationResult?.rejection_reasons && photoVerificationResult.rejection_reasons.length > 0 ? (
+                      photoVerificationResult.rejection_reasons.map((reason, idx) => (
+                        <p key={idx} className="flex items-start gap-1">
+                          <span className="text-rose-600 font-bold">•</span>
+                          <span>{reason}</span>
+                        </p>
+                      ))
+                    ) : (
+                      <p>{photoError}</p>
+                    )}
+                  </div>
+                  <div className="pt-1 text-[9.5px] text-rose-800 font-medium">
+                    Please ensure the photo is a genuine solo portrait of yourself matching your stated gender and age without inappropriate content.
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center justify-end gap-2.5 pt-1 border-t border-[#eadfcd]/60">
+              <button
+                type="button"
+                onClick={() => setIsPhotoModalOpen(false)}
+                className="px-3 py-1.5 text-xs font-semibold text-[#554e42] hover:text-[#163a2b] cursor-pointer"
+              >
+                {photoSuccess ? "Close" : "Cancel"}
+              </button>
+              <button
+                type="button"
+                onClick={handleOpenPhotoPicker}
+                disabled={isVerifyingPhoto}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-[#163a2b] hover:bg-[#0c3363] disabled:opacity-50 text-white px-3.5 py-1.5 text-xs font-semibold transition-all shadow-xs cursor-pointer"
+              >
+                <Camera size={13} />
+                <span>{photoSuccess ? "Change Again" : photoError ? "Choose Another Photo" : "Select Photo"}</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

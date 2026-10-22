@@ -32,13 +32,13 @@ export default function SparkleLogo({
   return (
     <div className={`logo-wrap relative inline-block ${isCard ? "is-card" : "is-plain"}`}>
       <div className="logo-frame">
-        <div className="logo-card relative overflow-hidden">
+        <div className={`logo-card relative ${isCard ? "overflow-hidden" : ""}`}>
           {/* Admin-uploaded logos arrive as URLs, which next/image can only size with explicit dimensions */}
           <Image
             src={src}
             alt={alt}
             className={`relative z-10 ${className ?? ""}`}
-            {...(typeof src === "string" ? { width: 600, height: 258 } : {})}
+            {...(typeof src === "string" ? { width: 600, height: 240 } : {})}
             priority
           />
           {/* Light sweep that glides across the logo every few seconds */}
@@ -79,7 +79,7 @@ export default function SparkleLogo({
         }
         .is-card .logo-card {
           border-radius: 16.5px;
-          padding: 14px 22px;
+          padding: 6px 14px;
           background:
             radial-gradient(120% 140% at 50% 0%, #ffffff 0%, #fffdf7 55%, #f7f0e1 100%);
           box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), inset 0 -10px 24px -18px rgba(141, 106, 58, 0.45);
