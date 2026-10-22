@@ -1,3 +1,4 @@
+import { toJsonLd } from "@/lib/seo-text";
 import { getComponentContent, getImageUrl, getPageComponent, API_URL } from "@/lib/api/api";
 import { headers } from "next/headers";
 import { Container } from "@/components/ui/Container";
@@ -11,6 +12,8 @@ import BlogDetailNewsletter from "@/components/blog/BlogDetailNewsLetter";
 import { Metadata } from "next";
 import RelatedBlogs from "@/components/blog/Relatedblogs";
 import BlogDetailCtaBanner from "@/components/blog/BlogDetailCtaBanner";
+import { SITE_URL, SITE_HOST } from "@/lib/site";
+import { getStaticBlog, staticBlogs } from "@/data/blogs";
 
 interface BlogDetailProps {
   params: Promise<{ slug: string }>;
@@ -29,21 +32,21 @@ const decodeHtml = (html: string) => {
 async function getBlogBySlug(slug: string) {
   try {
     const res = await fetch(`${API_URL}/blogs/${slug}`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 60 },
     });
     const json = await res.json();
-    return json.status === "success" ? json.data : null;
+    return Boolean(json.success || json.status === "success") ? json.data : getStaticBlog(slug) || null;
   } catch (error) {
-    console.error("Error fetching blog detail:", error);
-    return null;
+    console.error("Error fetching blog detail, using static data:", error);
+    return getStaticBlog(slug) || null;
   }
 }
 
 async function getAllBlogs() {
   try {
-    const res = await fetch(`${API_URL}/blogs`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${API_URL}/blogs`, { next: { revalidate: 60 } });
     const json = await res.json();
-    return json.status === "success" ? json.data : [];
+    return Boolean(json.success || json.status === "success") ? json.data : [];
   } catch {
     return [];
   }
@@ -72,25 +75,33 @@ export async function generateMetadata({ params }: BlogDetailProps): Promise<Met
     blog.banner?.backgroundImage ||
     "";
 
+  const dbCanonical = seo.canonical;
+  const canonical = dbCanonical
+    ? dbCanonical.startsWith("http")
+      ? dbCanonical
+      : `${SITE_URL}${dbCanonical.startsWith("/") ? dbCanonical : "/" + dbCanonical}`
+    : `${SITE_URL}/blog/${slug}`;
+
   return {
     title: seo.metaTitle || title,
     description: seo.metaDescription,
     keywords: keywordsArray,
-    alternates: seo.canonical ? { canonical: seo.canonical } : undefined,
+    alternates: { canonical },
     robots: "index, follow",
     openGraph: {
       title: ogExtra["og:title"] || seo.metaTitle || title,
       description: ogExtra["og:description"] || seo.metaDescription,
-      url: ogExtra["og:url"] || undefined,
-      siteName: ogExtra["og:site_name"] || undefined,
+      url: ogExtra["og:url"] || canonical,
+      siteName: ogExtra["og:site_name"] || "ENSIS",
       type: (ogExtra["og:type"] as "website" | "article") || "article",
-      images: ogImage ? [{ url: getImageUrl(ogImage) }] : [],
+      locale: "en_IN",
+      images: [{ url: ogImage ? getImageUrl(ogImage) : `${SITE_URL}/og-image.webp` }],
     },
     twitter: {
       card: "summary_large_image",
       title: ogExtra["og:title"] || seo.metaTitle || title,
       description: ogExtra["og:description"] || seo.metaDescription,
-      images: ogImage ? [getImageUrl(ogImage)] : undefined,
+      images: [ogImage ? getImageUrl(ogImage) : `${SITE_URL}/og-image.webp`],
     },
   };
 }
@@ -131,7 +142,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
   const host =
     requestHeaders.get("x-forwarded-host") ||
     requestHeaders.get("host") ||
-    "ensis.in";
+    SITE_HOST;
   const protocol = requestHeaders.get("x-forwarded-proto") || "https";
   const blogUrl = `${protocol}://${host}/blog/${blog.slug}`;
   const autoSchema = {
@@ -156,7 +167,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
       name: "ENSIS",
       logo: {
         "@type": "ImageObject",
-        url: "https://ensis.in/logo.png",
+        url: `${SITE_URL}/logo.png`,
       },
     },
     mainEntityOfPage: {
@@ -167,9 +178,8 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
     category: blog.category || undefined,
     keywords: blog.tags?.join(", ") || undefined,
   };
-  const schemaJson = schemaMatchesBlog
-    ? adminSchema
-    : JSON.stringify(autoSchema);
+  // Admin schema only when it is valid JSON-LD for this blog; otherwise the generated one
+  const schemaJson = (schemaMatchesBlog && toJsonLd(adminSchema)) || toJsonLd(autoSchema)!;
 
   return (
     <main className="bg-[#fdfaf5]">
@@ -227,15 +237,13 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
                 )}
 
                 <div
-                  className="prose prose-stone prose-lg max-w-none text-[#4a4036]
-                  prose-headings:font-serif prose-headings:text-[#2b241f]
-                  prose-p:leading-relaxed prose-strong:text-[#2b241f]"
+                  className="blog-content max-w-none"
                   dangerouslySetInnerHTML={{ __html: decodeHtml(blog.article.content || blog.description || "") }}
                 />
 
                 {blog.tags && blog.tags.length > 0 && (
                   <div className="mt-12 pt-8 border-t border-[#dcc9b5]">
-                    <h4 className="text-sm font-bold text-[#2b241f] uppercase tracking-widest mb-4">Tags</h4>
+                    <h4 className="text-sm font-semibold text-[#2b241f] uppercase tracking-widest mb-4">Tags</h4>
                     <div className="flex flex-wrap gap-4">
                       {blog.tags.map((tag: string) => (
                         <span key={tag} className="px-4 py-1.5 bg-[#efe4d7] text-[#6e5b4d] rounded-full text-xs font-medium border border-[#dcc9b5]">
@@ -256,7 +264,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
       )}
 <BlogDetailCtaBanner sectionContent={blog.ctaBanner} />
       {/* ── NEWSLETTER ── */}
- <RelatedBlogs allBlogs={allBlogs}  />
+ <RelatedBlogs allBlogs={allBlogs} currentSlug={blog.slug} />
  {hasNewsletter ? (
    <BlogDetailNewsletter sectionContent={blog.newsletter} />
  ) : (
@@ -272,7 +280,11 @@ export async function generateStaticParams() {
   const blogData: any = await getComponentContent("blog.allBlogs", { blogs: [] });
   const blogs = blogData?.blogs || (Array.isArray(blogData) ? blogData : []);
 
-  return blogs
-    .map((blog: any) => ({ slug: blog.link || blog.id || "" }))
-    .filter((item: any) => item.slug !== "");
+  const slugs = new Set<string>(staticBlogs.map((b: any) => b.slug));
+  blogs.forEach((blog: any) => {
+    const slug = blog.link || blog.id || "";
+    if (slug) slugs.add(slug);
+  });
+
+  return Array.from(slugs).map((slug) => ({ slug }));
 }

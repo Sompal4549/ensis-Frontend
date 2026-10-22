@@ -62,7 +62,7 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
     <section className="relative">
       {/* Background Image */}
       <Image
-        src={sectionContent.bgImage.image||talentBg} // Your background image
+        src={sectionContent?.bgImage?.image || talentBg} // Your background image
         alt="Ready to Create Impact"
         fill
         priority
@@ -74,20 +74,20 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
       <div className="relative z-10 grid min-h-[280px] lg:grid-cols-[1.2fr_300px] items-center gap-10 px-6 py-8 sm:px-8 lg:px-12">
         {/* Left Content */}
         <div className="max-w-md lg:ml-auto">
-          <h2 className="font-serif text-xl text-[#d4a35c] sm:text-2xl font-semibold">
-            {sectionContent.heading||'Ready to Create Impact?'}
+          <h2 className=" text-xl text-[#d4a35c] sm:text-2xl font-semibold">
+            {sectionContent?.heading || 'Ready to Create Impact?'}
           </h2>
 
-          <HtmlRenderer className="mt-4 text-sm text-white/80 max-w-105" content={sectionContent.description||`If you're passionate about wellness, design and innovation,
+          <HtmlRenderer className="mt-4 text-base text-white/80 max-w-105" content={sectionContent?.description || `If you're passionate about wellness, design and innovation,
             we'd love to hear from you.`}>
             
           </HtmlRenderer>
 
           <ul className="mt-6 space-y-4">
-            {(sectionContent.features || features).map((item, index) => (
+            {(sectionContent?.features || features).map((item, index) => (
               <li
                 key={index}
-                className="flex items-center gap-4 text-sm text-white/90"
+                className="flex items-center gap-4 text-base text-white/90"
               >
                 <CheckCircle2
                   size={18}
@@ -106,35 +106,37 @@ const TalentCommunityBanner = ({sectionContent}:{sectionContent:CareerTalentComm
           <div className="pointer-events-none absolute -bottom-5 -right-5 h-24 w-24 rounded-full border border-[#b98b43]/20" />
 
           <h3 className="text-base font-semibold uppercase tracking-wide text-[#d4a35c]">
-            {sectionContent.newsLetterCard.title||`Join Our Talent Community`}
+            {sectionContent?.newsLetterCard?.title || `Join Our Talent Community`}
           </h3>
 
-          <HtmlRenderer className="mt-3 text-xs leading-6 text-white/70" content={sectionContent.description||"Receive updates on new openings and career opportunities."}>
+          <HtmlRenderer className="mt-3 text-base leading-6 text-white/70" content={sectionContent?.newsLetterCard?.description || sectionContent?.description || "Receive updates on new openings and career opportunities."}>
             
           </HtmlRenderer>
 
           <form className="mt-6 space-y-4" onSubmit={handleSubscribe}>
             <input
+              suppressHydrationWarning
               type="email"
               aria-label="Email address to join the talent community"
               placeholder="Enter your email"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="h-9 w-full rounded-md border border-[#d7d7d7]/20 bg-white px-3 text-xs text-black outline-none placeholder:text-gray-400"
+              className="h-9 w-full rounded-md border border-[#d7d7d7]/20 bg-white px-3 text-base text-black outline-none placeholder:text-gray-400"
             />
 
             <button
+              suppressHydrationWarning
               type="submit"
               disabled={loading}
-              className="flex h-9 w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-[#b48235] disabled:opacity-60"
+              className="flex h-9 w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] text-base font-semibold uppercase tracking-wide text-white transition hover:bg-[#b48235] disabled:opacity-60"
             >
               {loading && <Loader2 size={16} className="animate-spin" />}
               {loading ? "Subscribing..." : (sectionContent.button||"Subscribe")}
             </button>
 
             {status && (
-              <p className={`text-xs ${status.type === "success" ? "text-green-400" : "text-red-400"}`}>
+              <p className={`text-base ${status.type === "success" ? "text-green-400" : "text-red-400"}`}>
                 {status.message}
               </p>
             )}

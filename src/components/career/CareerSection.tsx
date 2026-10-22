@@ -13,6 +13,12 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { applicationApi, careerApi, Career } from "@/lib/api/api";
 import HtmlRenderer from "../layout/HtmlRender";
+import UploadCvModal, { CandidateAnalysisData, CareerJob } from "./UploadCvModal";
+import EligibilityModal from "./EligibilityModal";
+import ApplicationFormModal, { ApplicationFormData } from "./ApplicationFormModal";
+import ReviewSubmitModal from "./ReviewSubmitModal";
+import { lockScroll, unlockScroll } from "@/lib/scrollLock";
+import { createPortal } from "react-dom";
 export interface CareerSectionProps{
     heading: string;
     titlePart1: string;
@@ -103,6 +109,24 @@ const [openings, setOpenings] = useState<Career[]>(jobs);
 const [appliedJob, setAppliedJob] = useState<Career | null>(null);
 const formRef = useRef<HTMLDivElement>(null);
 
+// AI CV Screening Modal States
+const [screeningJob, setScreeningJob] = useState<CareerJob | null>(null);
+const [isUploadCvOpen, setIsUploadCvOpen] = useState(false);
+const [isEligibilityOpen, setIsEligibilityOpen] = useState(false);
+const [isAppFormOpen, setIsAppFormOpen] = useState(false);
+const [isReviewOpen, setIsReviewOpen] = useState(false);
+const [candidateData, setCandidateData] = useState<CandidateAnalysisData | null>(null);
+const [applicationFormData, setApplicationFormData] = useState<ApplicationFormData | null>(null);
+
+useEffect(() => {
+  const anyOpen = isUploadCvOpen || isEligibilityOpen || isAppFormOpen || isReviewOpen;
+  if (anyOpen) lockScroll();
+  else unlockScroll();
+  return () => {
+    if (anyOpen) unlockScroll();
+  };
+}, [isUploadCvOpen, isEligibilityOpen, isAppFormOpen, isReviewOpen]);
+
 useEffect(() => {
   let isMounted = true;
   careerApi
@@ -124,13 +148,21 @@ useEffect(() => {
 
 const handleApply = (job: Career) => {
   setAppliedJob(job);
-  setForm((prev) => ({
-    ...prev,
+  setScreeningJob({
+    id: job._id,
+    title: job.title,
     department: job.department,
+    location: job.location,
     experience: job.experience,
-  }));
-  formRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-  toast.info("We have filled the form, please upload your resume.");
+    type: job.type,
+    description: job.roleObjective || job.description,
+    responsibilities: job.responsibilities,
+    requirements: job.requirements,
+    skills: job.skills,
+    education: job.educationRequirements,
+    eligibilityThreshold: job.eligibilityThreshold,
+  });
+  setIsUploadCvOpen(true);
 };
 
 const handleSubmit = async (
@@ -241,28 +273,40 @@ const experienceOptions = Array.from(
   ])
 );
 
+  const defaultImages = [
+    { imageUrl: life1, alt: "Life at Ensis" },
+    { imageUrl: life2, alt: "Life at Ensis" },
+    { imageUrl: life3, alt: "Life at Ensis" },
+    { imageUrl: life4, alt: "Life at Ensis" },
+    { imageUrl: life5, alt: "Life at Ensis" },
+  ];
+
+  const grid = Array.isArray(sectionContent?.RightImageGrid) && sectionContent.RightImageGrid.length >= 5
+    ? sectionContent.RightImageGrid
+    : defaultImages;
+
   return (
-    <section className="bg-[#f8f5f0]">
+    <section id="current-openings" className="bg-[#f8f5f0] scroll-mt-24">
       <Container>
         <div className="grid lg:grid-cols-[0.5fr_1fr] lg:min-h-[320px]">
           {/* Left Content */}
           <div className="relative h-full overflow-hidden bg-[#062017] p-8 lg:p-10">
             <div className="relative z-10">
-              <p className="mb-4 text-xs uppercase tracking-[0.25em] text-[#c89a4b] font-semibold">
-                {sectionContent.heading||"Life at ENSIS"}
+              <p className="mb-4 text-base uppercase tracking-[0.25em] text-[#c89a4b] font-semibold">
+                {sectionContent?.heading || "Life at ENSIS"}
               </p>
 
-              <h2 className="font-serif text-2xl leading-tight text-white font-medium">
-                {sectionContent.titlePart1||"Where Passion"}
+              <h2 className=" text-2xl leading-tight text-white font-medium">
+                {sectionContent?.titlePart1 || "Where Passion"}
                 <br />
-                {sectionContent.titlePart2||'Meets Purpose'}
+                {sectionContent?.titlePart2 || 'Meets Purpose'}
               </h2>
 
-              <p className="mt-2 text-sm leading-7 text-white/75"
-                dangerouslySetInnerHTML={{__html:sectionContent.description||`From design studios to production units, every corner of ENSIS is
+              <p className="mt-2 text-base leading-7 text-white/75"
+                dangerouslySetInnerHTML={{__html: sectionContent?.description || `From design studios to production units, every corner of ENSIS is
                 inspired by creativity, craftsmanship and care.`}}>
               </p>
-              <div className="mt-2 max-w-50">
+              <div className="mt-2 max-w-[250px]">
                 <GreenButton text="VIEW LIFE AT ENSIS" path="/contact" />
               </div>
             </div>
@@ -272,8 +316,8 @@ const experienceOptions = Array.from(
           <div className="grid h-full grid-cols-2 md:grid-cols-4 auto-rows-fr">
             <div className="relative col-span-2 row-span-2">
               <Image
-                src={sectionContent.RightImageGrid[0].imageUrl}
-                alt={sectionContent.RightImageGrid[0].alt}
+                src={grid[0]?.imageUrl || life1}
+                alt={grid[0]?.alt || "Life at Ensis"}
                 fill
                 className="object-cover"
               />
@@ -281,32 +325,32 @@ const experienceOptions = Array.from(
 
             <div className="relative">
               <Image
-          src={sectionContent.RightImageGrid[1].imageUrl}
-                alt={sectionContent.RightImageGrid[1].alt}
+                src={grid[1]?.imageUrl || life2}
+                alt={grid[1]?.alt || "Life at Ensis"}
                 fill
                 className="object-cover"
               />
             </div>
             <div className="relative">
               <Image
-               src={sectionContent.RightImageGrid[2].imageUrl}
-                alt={sectionContent.RightImageGrid[2].alt}
+                src={grid[2]?.imageUrl || life3}
+                alt={grid[2]?.alt || "Life at Ensis"}
                 fill
                 className="object-cover"
               />
             </div>
             <div className="relative">
               <Image
-               src={sectionContent.RightImageGrid[3].imageUrl}
-                alt={sectionContent.RightImageGrid[3].alt}
+                src={grid[3]?.imageUrl || life4}
+                alt={grid[3]?.alt || "Life at Ensis"}
                 fill
                 className="object-cover"
               />
             </div>
             <div className="relative">
               <Image
-            src={sectionContent.RightImageGrid[4].imageUrl}
-                alt={sectionContent.RightImageGrid[4].alt}
+                src={grid[4]?.imageUrl || life5}
+                alt={grid[4]?.alt || "Life at Ensis"}
                 fill
                 className="object-cover"
               />
@@ -319,11 +363,11 @@ const experienceOptions = Array.from(
             {/* LEFT SIDE */}
             <div>
               {/* Heading */}
-              <h3 className="font-serif text-2xl text-[#1d1d1d] font-semibold mt-2">
-                {sectionContent.leftSide.heading}
+              <h3 className=" text-2xl text-[#1d1d1d] font-semibold mt-2">
+                {sectionContent?.leftSide?.heading || "Open Positions"}
               </h3>
 
-              <p className="mt-2 text-sm" dangerouslySetInnerHTML={{__html:sectionContent.leftSide.description}}>
+              <p className="mt-2 text-base" dangerouslySetInnerHTML={{__html: sectionContent?.leftSide?.description || ""}}>
 
               </p>
 
@@ -333,23 +377,24 @@ const experienceOptions = Array.from(
                   (item) => (
                     <button
                       key={item}
-                      className="flex min-w-[150px] items-center justify-between rounded-md border border-[#ddd] bg-white px-4 py-3 text-xs"
+                      suppressHydrationWarning
+                      className="flex min-w-[130px] items-center justify-between rounded-md border border-[#ddd] bg-white px-3 py-2 text-base"
                     >
                       {item}
-                      <ChevronDown size={16} />
+                      <ChevronDown size={14} />
                     </button>
                   )
                 )}
 
-                <button className="ml-auto rounded-md border border-[#c89a4b] px-4 py-2 text-xs text-[#c89a4b]">
-                  {sectionContent.leftSide.buttonLabel}
+                <button suppressHydrationWarning className="ml-auto rounded-md border border-[#c89a4b] px-3 py-1.5 text-base text-[#c89a4b]">
+                  {sectionContent?.leftSide?.buttonLabel || "Search"}
                 </button>
               </div>
 
               {/* Job Table */}
               <div className="mt-3 border border-[#e5dfd7] bg-white">
                 {openings.length === 0 ? (
-                  <div className="p-6 text-center text-xs text-[#777]">
+                  <div className="p-6 text-center text-base text-[#777]">
                     No open positions right now. Please check back later.
                   </div>
                 ) : (
@@ -358,15 +403,16 @@ const experienceOptions = Array.from(
                       key={job._id || job.title}
                       className="grid gap-4 border-b border-[#f0ebe5] p-2 md:grid-cols-[2fr_1.5fr_1fr_1fr_auto]"
                     >
-                      <div className="font-medium text-xs">{job.title}</div>
-                      <div className="text-xs">{job.department}</div>
-                      <div className="text-xs">{job.location}</div>
-                      <div className="text-xs">{job.experience}</div>
+                      <div className="font-medium text-base">{job.title}</div>
+                      <div className="text-base">{job.department}</div>
+                      <div className="text-base">{job.location}</div>
+                      <div className="text-base">{job.experience}</div>
 
                       <button
                         type="button"
+                        suppressHydrationWarning
                         onClick={() => handleApply(job)}
-                        className="flex items-center gap-4 text-[#c89a4b] text-xs"
+                        className="flex items-center gap-4 text-[#c89a4b] text-base"
                       >
                         APPLY NOW
                         <ArrowRight size={16} />
@@ -379,17 +425,23 @@ const experienceOptions = Array.from(
               {/* Journey */}
               <div className="mt-2">
                 <h3 className="text-lg font-semibold">
-                  {sectionContent.ourHiringJourney.title||"Our Hiring Journey"}
+                  {sectionContent?.ourHiringJourney?.title || "Our Hiring Journey"}
                 </h3>
 
-                <p className="mt-2 text-sm text-[#666]" dangerouslySetInnerHTML={{__html:sectionContent.description||`Our simple and transparent process to welcome you to ENSIS.`}}>
+                <p className="mt-2 text-base text-[#666]" dangerouslySetInnerHTML={{__html: sectionContent?.ourHiringJourney?.description || sectionContent?.description || `Our simple and transparent process to welcome you to ENSIS.`}}>
                 </p>
 
                 <div className="mt-4 grid gap-4 md:grid-cols-5">
-                  {sectionContent.ourHiringJourney.steps.map((step, index) => (
+                  {(sectionContent?.ourHiringJourney?.steps || [
+                    { label: "Apply Online", description: "Submit your resume through our career portal." },
+                    { label: "Initial Screening", description: "Short introductory call with talent team." },
+                    { label: "Technical Assessment", description: "Role-specific discussion with department leads." },
+                    { label: "Culture & Values", description: "Interaction with senior leadership." },
+                    { label: "Welcome Aboard", description: "Offer rollout and seamless onboarding." },
+                  ]).map((step, index) => (
                     <div
                       key={step.label}
-                      className="rounded-2xl border border-[#e5dfd7] bg-white p-5 text-center"
+                      className="rounded-2xl border border-[#e5dfd7] bg-white p-4 text-center"
                     >
                       <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#062017] text-white">
                         {index + 1}
@@ -397,7 +449,7 @@ const experienceOptions = Array.from(
 
                       <h4 className="mt-4 font-medium">{step.label}</h4>
 
-                      <HtmlRenderer className="mt-2 text-xs text-[#777]" content={step.description}/>
+                      <HtmlRenderer className="mt-2 text-base text-[#777]" content={step.description}/>
                     </div>
                   ))}
                 </div>
@@ -407,23 +459,23 @@ const experienceOptions = Array.from(
             {/* RIGHT FORM */}
             <aside ref={formRef} className="relative z-10 lg:-mt-18 lg:sticky lg:top-10 lg:h-fit scroll-mt-24">
               <div className=" bg-[#062017] p-4 text-white shadow-2xl">
-                <h3 className="font-serif text-lg uppercase">
-                  {sectionContent.careerForm.title}
+                <h3 className=" text-lg uppercase">
+                  {sectionContent?.careerForm?.title || "Join Ensis Team"}
                 </h3>
 
-                <HtmlRenderer className="mt-3 text-sm text-white" content={sectionContent.description||`Send us your details and become part of the ENSIS family.`}
+                <HtmlRenderer className="mt-3 text-base text-white" content={sectionContent?.careerForm?.description || sectionContent?.description || `Send us your details and become part of the ENSIS family.`}
                 >
                 </HtmlRenderer>
 
                 {appliedJob && (
                   <div className="mt-4 flex items-center justify-between gap-4 rounded-md border border-[#c89a4b] bg-[#c89a4b]/10 px-3 py-2">
-                    <span className="text-xs font-semibold text-[#e8c766]">
+                    <span className="text-base font-semibold text-[#e8c766]">
                       Applying for: {appliedJob.title}
                     </span>
                     <button
                       type="button"
                       onClick={() => setAppliedJob(null)}
-                      className="text-[10px] text-white/60 underline hover:text-white"
+                      className="text-base text-white/60 underline hover:text-white"
                     >
                       Clear
                     </button>
@@ -435,6 +487,7 @@ const experienceOptions = Array.from(
   onSubmit={handleSubmit}
 >
                 <input
+  suppressHydrationWarning
   aria-label="Full name"
   value={form.fullName}
   onChange={(e) =>
@@ -444,10 +497,11 @@ const experienceOptions = Array.from(
     })
   }
   placeholder="Full Name *"
-  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-base"
 />
 
           <input
+  suppressHydrationWarning
   type="email"
   aria-label="Email address"
   value={form.email}
@@ -458,10 +512,11 @@ const experienceOptions = Array.from(
     })
   }
   placeholder="Email Address *"
-  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-base"
 />
 
         <input
+  suppressHydrationWarning
   aria-label="Phone number"
   value={form.phone}
   onChange={(e) =>
@@ -471,11 +526,12 @@ const experienceOptions = Array.from(
     })
   }
   placeholder="Phone Number *"
-  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-base"
 />
 
                   <div className="grid grid-cols-2 gap-4">
                 <input
+  suppressHydrationWarning
   aria-label="Current location"
   value={form.currentLocation}
   onChange={(e) =>
@@ -485,9 +541,10 @@ const experienceOptions = Array.from(
     })
   }
   placeholder="Current Location *"
-  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-xs"
+  className="w-full border-b border-[#b98b43]/40 bg-transparent pb-1 outline-none text-base"
 />
 <select
+  suppressHydrationWarning
   aria-label="Years of experience"
   value={form.experience}
   onChange={(e) =>
@@ -496,7 +553,7 @@ const experienceOptions = Array.from(
       experience: e.target.value,
     })
   }
-  className="border-b border-[#b98b43]/40 bg-[#062017] text-white pb-1 outline-none text-xs"
+  className="border-b border-[#b98b43]/40 bg-[#062017] text-white pb-1 pt-1 leading-none outline-none text-base"
 >
   <option value="" className="text-black">Experience</option>
   {experienceOptions.map((opt) => (
@@ -506,6 +563,7 @@ const experienceOptions = Array.from(
                   </div>
 
            <select
+  suppressHydrationWarning
   aria-label="Department interested in"
   value={form.department}
   onChange={(e) =>
@@ -514,7 +572,7 @@ const experienceOptions = Array.from(
       department: e.target.value,
     })
   }
-  className="w-full border-b border-[#b98b43]/40 bg-[#062017] text-white pb-2 outline-none text-xs"
+  className="w-full border-b border-[#b98b43]/40 bg-[#062017] text-white pb-1.5 pt-1 leading-none outline-none text-base"
 >
   <option value="">
     Department Interested In
@@ -523,34 +581,27 @@ const experienceOptions = Array.from(
     <option key={opt} value={opt}>{opt}</option>
   ))}
 </select>
-              <div className="rounded-xl border border-dashed border-[#b98b43] p-4 text-center text-xs">
-  <input
-    type="file"
-    accept=".pdf,.jpg,.jpeg,.png,.webp"
-    className="hidden"
-    id="resume"
-    onChange={(e) =>
-      setResume(
-        e.target.files?.[0] || null
-      )
-    }
-  />
-
-  <label
-    htmlFor="resume"
-    className="cursor-pointer"
-  >
-    <Upload className="mx-auto mb-4" />
-
-    <p className="text-sm text-white/70">
-      {resume
-        ? resume.name
-        : "Upload Resume (PDF/Image)"}
-    </p>
-  </label>
-</div>
+              <div
+                role="button"
+                aria-disabled={!appliedJob}
+                onClick={() => {
+                  if (appliedJob) handleApply(appliedJob);
+                }}
+                className={`rounded-xl border border-dashed border-[#b98b43] p-4 text-center text-base transition ${
+                  appliedJob ? "cursor-pointer hover:bg-white/5" : "cursor-not-allowed opacity-50"
+                }`}
+              >
+                <Upload className="mx-auto mb-2 text-[#c89a4b]" />
+                <p className="text-base font-semibold text-white">
+                  {resume ? resume.name : "Screen CV with AI & Apply (PDF/DOC)"}
+                </p>
+                <span className="text-xs text-white/60">
+                  {appliedJob ? "Instant AI qualification score & match" : "Select a job from the list to start AI screening"}
+                </span>
+              </div>
 
              <textarea
+  suppressHydrationWarning
   rows={2}
   aria-label="Cover letter or message"
   value={form.coverLetter}
@@ -561,10 +612,11 @@ const experienceOptions = Array.from(
     })
   }
   placeholder="Cover Letter / Message"
-  className="w-full rounded-xl border border-[#b98b43]/30 bg-transparent p-4 outline-none text-xs"
+  className="w-full rounded-xl border border-[#b98b43]/30 bg-transparent p-4 outline-none text-base"
 />
-                  <label className="flex items-start gap-4 text-xs text-white">
+                  <label className="flex items-start gap-4 text-base text-white">
                    <input
+  suppressHydrationWarning
   type="checkbox"
   aria-label="I agree to the terms"
   checked={agreed}
@@ -572,19 +624,20 @@ const experienceOptions = Array.from(
     setAgreed(e.target.checked)
   }
 />
-                   {sectionContent.careerForm.termsText}
+                    {sectionContent?.careerForm?.termsText || "I agree to the terms and conditions"}
                   </label>
 <button
-  type="submit"
-  disabled={loading}
-  className="flex w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-xs disabled:opacity-60"
+  suppressHydrationWarning
+  type="button"
+  disabled={!appliedJob}
+  title={appliedJob ? undefined : "Select a job from the list first"}
+  onClick={() => {
+    if (appliedJob) handleApply(appliedJob);
+  }}
+  className="flex w-full items-center justify-center gap-4 rounded-md bg-[#c89a4b] px-4 py-2 font-medium text-black text-base hover:bg-[#b58637] transition disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-[#c89a4b]"
 >
-  {loading
-    ? "SUBMITTING..."
-    : sectionContent.careerForm.buttonText}
-  {!loading && (
-    <ArrowRight size={16} />
-  )}
+  Start AI CV Screening
+  <ArrowRight size={16} />
 </button>
                 </form>
               </div>
@@ -592,6 +645,91 @@ const experienceOptions = Array.from(
           </div>
         </div>
       </Container>
+
+      {/* ── AI CV SCREENING MODALS (ORGANIC FLOW) ── */}
+      {isUploadCvOpen && screeningJob && typeof document !== "undefined"
+        ? createPortal(
+            <UploadCvModal
+              job={screeningJob}
+              onClose={() => setIsUploadCvOpen(false)}
+              onAnalyze={(data) => {
+                setCandidateData(data);
+                setIsUploadCvOpen(false);
+                setIsEligibilityOpen(true);
+              }}
+            />,
+            document.body
+          )
+        : null}
+
+      {isEligibilityOpen && candidateData && typeof document !== "undefined"
+        ? createPortal(
+            <EligibilityModal
+              isOpen={isEligibilityOpen}
+              candidate={candidateData}
+              score={candidateData.score}
+              onCandidateChange={setCandidateData}
+              onClose={() => setIsEligibilityOpen(false)}
+              onBack={() => {
+                setIsEligibilityOpen(false);
+                setIsUploadCvOpen(true);
+              }}
+              onProceed={() => {
+                setIsEligibilityOpen(false);
+                setIsAppFormOpen(true);
+              }}
+              onApply={() => {
+                setIsEligibilityOpen(false);
+                setIsAppFormOpen(true);
+              }}
+            />,
+            document.body
+          )
+        : null}
+
+      {isAppFormOpen && candidateData && typeof document !== "undefined"
+        ? createPortal(
+            <ApplicationFormModal
+              isOpen={isAppFormOpen}
+              candidateData={candidateData}
+              onClose={() => setIsAppFormOpen(false)}
+              onBack={() => {
+                setIsAppFormOpen(false);
+                setIsEligibilityOpen(true);
+              }}
+              onNext={(data) => {
+                if (data) setCandidateData(data);
+                setApplicationFormData(data || candidateData);
+                setIsAppFormOpen(false);
+                setIsReviewOpen(true);
+              }}
+            />,
+            document.body
+          )
+        : null}
+
+      {isReviewOpen && (applicationFormData || candidateData) && typeof document !== "undefined"
+        ? createPortal(
+            <ReviewSubmitModal
+              isOpen={isReviewOpen}
+              candidateData={applicationFormData || candidateData}
+              formData={applicationFormData || candidateData}
+              onClose={() => {
+                setIsReviewOpen(false);
+                setCandidateData(null);
+                setApplicationFormData(null);
+              }}
+              onBack={() => {
+                setIsReviewOpen(false);
+                setIsAppFormOpen(true);
+              }}
+              onSuccess={(id) => {
+                toast.success(`Application ${id || ""} submitted successfully!`);
+              }}
+            />,
+            document.body
+          )
+        : null}
     </section>
   );
 }

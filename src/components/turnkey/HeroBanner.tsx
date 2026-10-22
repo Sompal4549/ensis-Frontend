@@ -35,22 +35,33 @@ export interface TurnkeyHeroContent {
   secondaryButton: { label: string; url: string }; // Changed url to path
 }
 
-export default function TurnkeyHero({ sectionContent }: { sectionContent: TurnkeyHeroContent }) {
+export default function TurnkeyHero({ sectionContent }: { sectionContent?: TurnkeyHeroContent }) {
+  const bgImage = sectionContent?.backgroundImage?.imageUrl || banner_image;
+  const subheading = sectionContent?.subheading || "END-TO-END SOLUTIONS";
+  const title = sectionContent?.title || "Complete Turnkey Solutions";
+  const highlight = sectionContent?.highlight || "From Concept to Commissioning";
+  const description = sectionContent?.description || "We design, manufacture, and build world-class Ayurvedic clinics, spas, and wellness spaces.";
+  const features = (sectionContent?.features && sectionContent.features.length > 0)
+    ? sectionContent.features
+    : FEATURES.map((f, i) => ({ id: String(i), title: f.label.replace('\n', ' '), label: f.label, image: { imageUrl: f.icon.src || f.icon, alt: f.label } }));
+  const primaryButton = sectionContent?.primaryButton || { label: "Get a Free Consultation", url: "/contact" };
+  const secondaryButton = sectionContent?.secondaryButton || { label: "View Our Products", url: "/products" };
+
   return (
     <div className="relative overflow-visible mb-0 md:mb-20 pt-6">
       <div className="relative">
-        <Image src={sectionContent.backgroundImage.imageUrl} alt={sectionContent.backgroundImage.alt || sectionContent.title} fill className="object-cover sm:object-fill z-0! absolute object-left sm:object-right" priority />
+        <Image src={bgImage} alt={sectionContent?.backgroundImage?.alt || title} fill className="object-cover xl:object-fill z-0! absolute object-left xl:object-right" priority />
         {/* ── HERO ── */}
-        <Container className="relative z-20 !py-0">
-          <div className="relative min-h-[470px] md:h-[calc(100vh-146px)] w-full">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center h-full">
+        <Container className="relative z-20 !py-0 !max-w-none xl:!max-w-[1400px]">
+          <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none w-full">
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 xl:gap-8 items-center h-full">
 
               {/* LEFT COLUMN */}
               <div className="flex flex-col gap-4 h-full justify-center">
                 {/* Eyebrow */}
                 <div className="flex items-center gap-4">
-                  <span className="text-[#c38727] text-xs sm:text-sm font-semibold uppercase">
-                    {sectionContent.subheading}
+                  <span className="text-[#c38727] text-base font-semibold uppercase">
+                    {subheading}
                   </span>
                   <div className="h-px w-8 bg-[#c38727]" />
                   <Image alt="lotus" src={lotus} width={30} height={30} className="h-full object-contain" />
@@ -58,39 +69,29 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent: Turnke
                 </div>
 
                 {/* Headline */}
-                <div>
-                  <h1 className="text-[#1a2e1a]">
-                    {sectionContent.title}
-                  </h1>
-                  <h1 className="text-[#c38727] mt-1">
-                    {sectionContent.highlight}
-                  </h1>
-                </div>
-
-                {/* Ornament divider */}
-                {/* <div className="flex items-center gap-4">
-              <div className="h-px flex-1 max-w-[120px] bg-[#d6a85f] opacity-50" />
-             <Image alt="lotus" src={lotus} width={30} height={30} className="h-full object-contain" />
-              <div className="h-px flex-1 max-w-[120px] bg-[#d6a85f] opacity-50" />
-            </div> */}
+                <h1 className="text-[#1a2e1a] text-3xl md:text-5xl font-normal tracking-tight">
+                  {title}
+                  {highlight && (
+                    <span className="block mt-1 text-[#c38727] font-medium">{highlight}</span>
+                  )}
+                </h1>
 
                 {/* Body copy */}
-                <div className="text-sm md:text-base leading-6 max-w-md mb-4 line-clamp-4" dangerouslySetInnerHTML={{ __html: sectionContent.description || "" }}>
-
+                <div className="text-base leading-6 max-w-lg mb-4 line-clamp-4" dangerouslySetInnerHTML={{ __html: description }}>
                 </div>
 
                 {/* Feature icons */}
-                <div className="flex flex-wrap gap-4 sm:gap-6">
-                  {(Array.isArray(sectionContent.features) ? sectionContent.features : []).map((f, index) => (
+                <div className="flex flex-wrap md:flex-nowrap gap-4 sm:gap-6">
+                  {features.map((f, index) => (
                     <div
                       key={f?.id || index}
-                      className={`flex flex-col items-center gap-3 text-center min-w-[64px] pr-3 ${index !== sectionContent.features.length - 1 ? "border-r border-[#7c5c18]" : ""
+                      className={`flex flex-col items-center gap-3 text-center min-w-[64px] pr-3 ${index !== features.length - 1 ? "border-r border-[#7c5c18]" : ""
                         }`}
                     >
                       <div className="w-8 h-8 text-[#d6a85f] flex items-center justify-center text-xl">
-                        <Image src={f?.image?.imageUrl || ""} alt={f?.image?.alt || f?.title || ""} width={40} height={40} className="object-fill" />
+                        <Image src={typeof f?.image === 'string' ? f?.image : (f?.image?.imageUrl || single_point)} alt={f?.image?.alt || f?.title || ""} width={40} height={40} className="object-fill" />
                       </div>
-                      <p className="text-[10px] sm:text-xs leading-snug whitespace-pre-line font-medium max-w-[90px]">
+                      <p className="text-sm md:text-xs leading-snug whitespace-pre-line font-medium max-w-[90px]">
                         {f?.title}
                       </p>
                     </div>
@@ -99,8 +100,8 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent: Turnke
 
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 sm:gap-4 mt-3">
-                  <BookButton text={sectionContent.primaryButton.label} path={sectionContent.primaryButton.url} />
-                  <GreenButton text={sectionContent.secondaryButton.label} path={sectionContent.secondaryButton.url} />
+                  <BookButton text={primaryButton.label} path={primaryButton.url} />
+                  <GreenButton text={secondaryButton.label} path={secondaryButton.url} />
                 </div>
               </div>
 

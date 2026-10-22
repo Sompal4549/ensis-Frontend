@@ -55,8 +55,49 @@ export interface WhyChooseContent {
   };
 }
 
-export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseContent }) {
-  console.log(sectionContent, "why choose")
+const sanitizeDescription = (html: string): string => {
+  if (!html) return "";
+  if (html.includes("StartFragment") || html.includes("data-turn-id")) {
+    return html
+      .replace(/<!--StartFragment-->|<!--EndFragment-->/g, "")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/&nbsp;/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+  return html;
+};
+
+const fallbackContent: WhyChooseContent = {
+  whyChoose: {
+    title: "WHY CHOOSE ENSIS",
+    reasons: [
+      "Authentic Ayurvedic Design",
+      "Premium Quality Materials",
+      "Custom Solutions for Every Space",
+      "Expert Guidance & Support",
+      "Timely Delivery Worldwide",
+    ],
+    button: { label: "View All Products", url: "/products" },
+  },
+  welcomeToEnsis: {
+    highlight: "WELCOME TO ENSIS",
+    title: "Crafting Wellness Spaces That Heal",
+    description: "<p>We combine Ayurvedic wisdom with modern engineering to deliver complete wellness environments across India and worldwide.</p>",
+    features: [
+      { id: "1", image: customized.src, title: "Custom\nManufacturing" },
+      { id: "2", image: premium_quality.src, title: "Premium\nQuality" },
+      { id: "3", image: ayurvedic.src, title: "Ayurvedic\nExpertise" },
+      { id: "4", image: global.src, title: "Global\nSupport" },
+    ],
+  },
+};
+
+export default function WhyChoose({sectionContent}: { sectionContent?: WhyChooseContent }) {
+  const resolved = { ...fallbackContent, ...sectionContent };
+  if (!resolved.whyChoose) resolved.whyChoose = fallbackContent.whyChoose;
+  if (!resolved.welcomeToEnsis) resolved.welcomeToEnsis = fallbackContent.welcomeToEnsis;
+  console.log(resolved, "why choose")
   return (
     <section className="wca-body w-full bg-[#f5efe6]">
       <Container>
@@ -69,23 +110,23 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
             <div className="absolute -bottom-16 -left-16 w-64 h-64 rounded-full border border-white/5 pointer-events-none" />
 
             <div>
-              <p className="font-semibold tracking-[0.22em] text-[#c8a45d] uppercase mb-4 text-sm">
-                {sectionContent.whyChoose.title}
+              <p className="font-semibold tracking-[0.22em] text-[#c8a45d] uppercase mb-4 text-base">
+                {resolved.whyChoose.title}
               </p>
               <ul className="space-y-4 mb-6">
-                {sectionContent.whyChoose.reasons.map((f) => (
+                {resolved.whyChoose.reasons.map((f) => (
                   <li key={f} className="flex items-start gap-4">
                     <span className="mt-[2px] shrink-0 w-[15px] h-[15px] rounded-full border border-[#c8a45d]/60 flex items-center justify-center">
                       <svg width="7" height="7" viewBox="0 0 8 8" fill="none">
                         <circle cx="4" cy="4" r="2.5" fill="#c8a45d" opacity="0.85"/>
                       </svg>
                     </span>
-                    <span className="text-sm text-white/85 leading-snug">{f}</span>
+                    <span className="text-base text-white/85 leading-snug">{f}</span>
                   </li>
                 ))}
               </ul>
             </div>
-            <GreenButton rightIcon={<ArrowRight size={11} className="text-[#c8a45d]" />} text={sectionContent.whyChoose.button.label} path={sectionContent.whyChoose.button.url}/>
+            <GreenButton rightIcon={<ArrowRight size={11} className="text-[#c8a45d]" />} text={resolved.whyChoose.button.label} path={resolved.whyChoose.button.url}/>
           </div>
 
           {/* ── CENTRE — image ── */}
@@ -95,38 +136,38 @@ export default function WhyChoose({sectionContent}: { sectionContent: WhyChooseC
               alt="Ayurvedic wellness setup"
               className="w-full h-full object-cover object-center"
             /> */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#183b17]/30 via-transparent to-[#f5efe6]/40 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#183b17]/30 via-transparent to-[#f5efe6]/70 md:to-[#f5efe6]/40 pointer-events-none" />
           </div>
 
           {/* ── RIGHT PANEL ── */}
           <div className="bg-white/50 flex flex-col justify-center p-5 sm:p-7 md:p-8 flex-1 relative">
 
-            <p className="text-sm font-semibold tracking-[0.22em] text-[#a9742a] uppercase mb-2">
-              {sectionContent.welcomeToEnsis.highlight}
+            <p className="text-base font-semibold tracking-[0.22em] text-[#a9742a] uppercase mb-2">
+              {resolved.welcomeToEnsis.highlight}
             </p>
 
             <h2 className="wca-serif text-[1.35rem] sm:text-[1.6rem] lg:text-[1.85rem] leading-[1.1] font-[600] text-[#1a1a1a] mb-2.5">
-              {sectionContent.welcomeToEnsis.title}
+              {resolved.welcomeToEnsis.title}
             </h2>
 
-            <p className="text-[11px] sm:text-[12px] text-[#5a5040] leading-relaxed mb-4 max-w-[340px]" dangerouslySetInnerHTML={{__html:sectionContent.welcomeToEnsis.description}}>
+            <p className="text-base text-[#5a5040] leading-relaxed mb-4 max-w-[340px]" dangerouslySetInnerHTML={{__html: sanitizeDescription(resolved.welcomeToEnsis.description)}}>
             </p>
 
             {/* Stats row — icons only, no bg/border */}
             <div className="grid grid-cols-4 gap-4 mb-4">
-              {sectionContent.welcomeToEnsis.features.map((s) => (
+              {resolved.welcomeToEnsis.features.map((s) => (
                 <div key={s.id} className="flex flex-col items-center gap-1 text-center">
                   <div className="flex items-center justify-center w-8 h-8">
                     <Image src={s.image} alt={s.title} width={30} height={30} className="object-fill object-center" />
                   </div>
-                  <span className="text-xs whitespace-pre-line">
+                  <span className="text-base whitespace-pre-line">
                     {s.title}
                   </span>
                 </div>
               ))}
             </div>
 
-          <div className="w-46">
+          <div className="w-60">
             <BookButton text="Book a Consultation" rightIcon={<ArrowRight size={11} className="text-white" />} />
             </div>
           </div>

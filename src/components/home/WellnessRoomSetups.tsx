@@ -1,5 +1,5 @@
 "use client";
-import React, {  useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowRight } from "lucide-react";
 import { Container } from "../ui/Container";
 import SubHeading from "./SubHeading";
@@ -9,7 +9,7 @@ import steam from "@/assets/home/panchkarma.webp";
 import consultaion from "@/assets/home/consultation.webp";
 import Image from "next/image";
 import BookButton from "../ui/BookButton";
-import {  getImageUrl } from "@/lib/api/api";
+import { getComponentContent, getImageUrl } from "@/lib/api/api";
 import HtmlRenderer from "../layout/HtmlRender";
 
 const fallbackImages: Record<string, any> = {
@@ -48,7 +48,19 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
 };
 
   const [hovered, setHovered] = useState<number | null>(null);
-  const content = defaultContent;
+  const [content, setContent] = useState(defaultContent);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        const data = await getComponentContent("home.wellnessRoomSetups", defaultContent);
+        setContent(data);
+      } catch {
+        // Keep defaults
+      }
+    };
+    fetchContent();
+  }, []);
 
 
   const headingLines = (content.heading || "").split("\n");
@@ -61,7 +73,7 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
 
         {/* Left Content */}
         <div className="flex flex-col justify-center h-full">
-          <SubHeading text={content.subtitle} className="uppercase tracking-[4px] text-[#8f8777] text-xs font-semibold mb-2">
+          <SubHeading text={content.subtitle} className="uppercase tracking-[4px] text-[#8f8777] font-semibold mb-2">
           </SubHeading>
 
           <h2 className="text-[#0f2518] text-2xl md:text-3xl font-semibold mb-3">
@@ -72,10 +84,10 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
               </React.Fragment>
             ))}
           </h2>
-            <HtmlRenderer className="text-[#0f2518] text-xs mb-3" content={content.description}>
+            <HtmlRenderer className="text-[#0f2518] text-base mb-3" content={content.description}>
               
             </HtmlRenderer>
-          <div className="max-w-[220px]">
+          <div className="max-w-[280px]">
             <BookButton text={content.buttonText} path={content.buttonPath} />
           </div>
         </div>
@@ -99,14 +111,14 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
 
               {/* Tag badge */}
               {/* {card.tag && (
-                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#0f2518] text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md">
+                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#0f2518] text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded-md">
                   {card.tag}
                 </div>
               )} */}
 
               {/* Content */}
               <div className="absolute bottom-0 left-0 w-full p-5 flex items-center justify-between">
-                <h3 className="text-white text-xs md:text-md font-semibold max-w-45 leading-5">
+                <h3 className="text-white text-base font-semibold max-w-45 leading-5">
                   {card.title}
                 </h3>
 

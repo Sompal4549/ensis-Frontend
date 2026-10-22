@@ -43,14 +43,14 @@ export default function ProductFeatures() {
   return (
     <div className="bg-[#f5f0e8] p-2">
       {/* Description */}
-      <p className="text-[10px]">
+      <p className="text-base">
         Expertly crafted wooden trolley designed for Panchkarma therapies.
         Ideal for keeping oils, powders, towels and accessories organized
         and within easy reach. Durable, smooth mobility and easy to clean.
       </p>
 
       {/* Features header */}
-      <h2 className="text-xs font-semibold tracking-[0.22em] my-2 text-[#4a6741]">
+      <h2 className="text-base font-semibold tracking-[0.22em] my-2 text-[#4a6741]">
         Features
       </h2>
 
@@ -64,8 +64,8 @@ export default function ProductFeatures() {
             </div>
             {/* Text */}
             <div className="pt-0.5">
-              <p className="text-[8px] font-semibold leading-tight mb-0.5">{feature.title}</p>
-              <p className="text-[8px] leading-snug font-medium">{feature.desc}</p>
+              <p className="text-base font-semibold leading-tight mb-0.5">{feature.title}</p>
+              <p className="text-base leading-snug font-medium">{feature.desc}</p>
             </div>
           </li>
         ))}

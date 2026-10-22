@@ -9,6 +9,7 @@ import { API_URL } from "@/lib/api/api";
 import bannerImage from "@/assets/home/home_banner2.webp"
 import Image from "next/image";
 import AuthLayout from "@/components/layout/AuthLayout";
+import { fetchLocationByPincode } from "@/lib/pincode";
 
 const Container = dynamic(() => import("@/components/ui/Container").then((mod) => mod.Container));
 
@@ -17,8 +18,32 @@ export default function RegisterPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [addressLine, setAddressLine] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("India");
+  const [zipCode, setZipCode] = useState("");
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [fetchingPincode, setFetchingPincode] = useState(false);
+
+  const handleZipCodeChange = async (value: string) => {
+    setZipCode(value);
+    const clean = value.replace(/\D/g, "");
+    if (clean.length === 6) {
+      setFetchingPincode(true);
+      try {
+        const loc = await fetchLocationByPincode(clean);
+        if (loc) {
+          if (loc.city) setCity(loc.city);
+          if (loc.state) setState(loc.state);
+          if (loc.country) setCountry(loc.country);
+        }
+      } finally {
+        setFetchingPincode(false);
+      }
+    }
+  };
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -29,10 +54,10 @@ export default function RegisterPage() {
       const response = await fetch(`${API_URL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, phone }),
+        body: JSON.stringify({ name, email, phone, addressLine, city, state, country, zipCode }),
       });
       const payload = await response.json();
-      if (!response.ok || payload.status === "error") {
+      if (!response.ok || payload.status === "error" || payload.success === false) {
         throw new Error(payload.message || "Registration failed");
       }
       
@@ -62,21 +87,48 @@ const inputClass =
 
           <form onSubmit={onSubmit}>     
             <label className={labelClass}>
-              Full Name
-              <input className={inputClass} type="text" value={name} onChange={(event) => setName(event.target.value)} required />
+              Full Name *
+              <input suppressHydrationWarning className={inputClass} type="text" value={name} onChange={(event) => setName(event.target.value)} required />
             </label>
             
             <label className={labelClass}>
-              Email
-              <input className={inputClass} type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
+              Email *
+              <input suppressHydrationWarning className={inputClass} type="email" value={email} onChange={(event) => setEmail(event.target.value)} required />
             </label>
             
             <label className={labelClass}>
-              Phone Number
-              <input className={inputClass} type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required placeholder="91XXXXXXXXXX" />
+              Phone Number *
+              <input suppressHydrationWarning className={inputClass} type="tel" value={phone} onChange={(event) => setPhone(event.target.value)} required placeholder="91XXXXXXXXXX" />
             </label>
+
+            <label className={labelClass}>
+              Address *
+              <input suppressHydrationWarning className={inputClass} type="text" value={addressLine} onChange={(event) => setAddressLine(event.target.value)} required placeholder="Street address" />
+            </label>
+
+            <div className="grid grid-cols-2 gap-3">
+              <label className={labelClass}>
+                City *
+                <input suppressHydrationWarning className={inputClass} type="text" value={city} onChange={(event) => setCity(event.target.value)} required />
+              </label>
+              <label className={labelClass}>
+                State *
+                <input suppressHydrationWarning className={inputClass} type="text" value={state} onChange={(event) => setState(event.target.value)} required />
+              </label>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3">
+              <label className={labelClass}>
+                Country *
+                <input suppressHydrationWarning className={inputClass} type="text" value={country} onChange={(event) => setCountry(event.target.value)} required />
+              </label>
+              <label className={labelClass}>
+                ZIP Code * {fetchingPincode && <span className="text-xs text-[#b88b3d] lowercase font-normal">(fetching...)</span>}
+                <input suppressHydrationWarning className={inputClass} type="text" maxLength={6} value={zipCode} onChange={(event) => handleZipCodeChange(event.target.value)} placeholder="6-digit ZIP / Pincode" required />
+              </label>
+            </div>
             
-            <button className={buttonClass} type="submit" disabled={isLoading}>
+            <button suppressHydrationWarning className={buttonClass} type="submit" disabled={isLoading}>
               {isLoading ? "Registering..." : "Create Account"}
             </button>
             {message && <p className="mt-4 text-sm font-semibold text-[#334022]">{message}</p>}

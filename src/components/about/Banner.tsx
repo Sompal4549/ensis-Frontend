@@ -129,7 +129,7 @@ const AboutHero: React.FC = () => {
 
           {/* Experience Badge */}
           <div className="absolute top-14 right-14 w-[125px] h-[125px] rounded-full border-[3px] border-[#c7a567] bg-[#113228] text-white flex flex-col items-center justify-center shadow-2xl">
-            <h3 className="text-[42px] leading-none font-serif">20<span className="text-[28px]">+</span></h3>
+            <h3 className="text-[42px] leading-none ">20<span className="text-[28px]">+</span></h3>
             <p className="text-[11px] font-semibold text-center mt-2 uppercase">
               Years of
               <br />

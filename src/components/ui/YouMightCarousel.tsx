@@ -11,6 +11,7 @@ interface CarouselProps {
   slideClassName?: string;
   containerClassName?: string;
   stopOnMouseEnter?: boolean;
+  showArrows?: boolean;
 }
 
 // 2 on mobile, 3 on tablet, 5 on desktop
@@ -25,6 +26,7 @@ const YouMightCarousel: React.FC<CarouselProps> = ({
   slideClassName = DEFAULT_SLIDE_CLASS,
   containerClassName = DEFAULT_CONTAINER_CLASS,
   stopOnMouseEnter = false,
+  showArrows = false,
 }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
@@ -47,16 +49,18 @@ const YouMightCarousel: React.FC<CarouselProps> = ({
   return (
     <div className="relative group">
       {/* Previous */}
-      <button
-        onClick={scrollPrev}
-        className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10
-          bg-white border border-gray-200 shadow-md rounded-full p-2
-          opacity-0 group-hover:opacity-100 transition-opacity
-          hover:bg-gray-50 active:scale-95"
-        aria-label="Previous"
-      >
-        <ChevronLeft className="w-5 h-5 text-gray-600" />
-      </button>
+      {showArrows && (
+        <button
+          onClick={scrollPrev}
+          className="absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10
+            bg-white border border-gray-200 shadow-md rounded-full p-2
+            opacity-0 group-hover:opacity-100 transition-opacity
+            hover:bg-gray-50 active:scale-95"
+          aria-label="Previous"
+        >
+          <ChevronLeft className="w-5 h-5 text-gray-600" />
+        </button>
+      )}
 
       {/* Viewport */}
       <div className="overflow-hidden" ref={emblaRef}>
@@ -75,16 +79,18 @@ const YouMightCarousel: React.FC<CarouselProps> = ({
       </div>
 
       {/* Next */}
-      <button
-        onClick={scrollNext}
-        className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 z-10
-          bg-white border border-gray-200 shadow-md rounded-full p-2
-          opacity-0 group-hover:opacity-100 transition-opacity
-          hover:bg-gray-50 active:scale-95"
-        aria-label="Next"
-      >
-        <ChevronRight className="w-5 h-5 text-gray-600" />
-      </button>
+      {showArrows && (
+        <button
+          onClick={scrollNext}
+          className="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 z-10
+            bg-white border border-gray-200 shadow-md rounded-full p-2
+            opacity-0 group-hover:opacity-100 transition-opacity
+            hover:bg-gray-50 active:scale-95"
+          aria-label="Next"
+        >
+          <ChevronRight className="w-5 h-5 text-gray-600" />
+        </button>
+      )}
     </div>
   );
 };

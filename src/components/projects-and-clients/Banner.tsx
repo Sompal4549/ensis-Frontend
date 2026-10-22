@@ -39,8 +39,16 @@ interface ProjectsBannerProps {
 }
 
 const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
-  sectionContent = fallbackProjectsBanner,
+  sectionContent,
 }) => {
+  const content = {
+    ...fallbackProjectsBanner,
+    ...sectionContent,
+    title: {
+      ...fallbackProjectsBanner.title,
+      ...(sectionContent?.title || {}),
+    },
+  };
   return (
     <section className="relative overflow-visible bg-[#f8f2e8] mb-0 md:mb-20">
       <div className="relative">
@@ -48,28 +56,28 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
           section can stay overflow-visible for StatsStrip overlap */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
-          src={banner}
-          alt={sectionContent?.title?.line1}
+          src={content.heroImage || banner}
+          alt={content.title.line1}
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="md:object-center object-left object-cover"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-[#f8f2e8] from-10% via-[#f8f2e8]/80 via-50% to-transparent w-[60%] h-full" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#f8f2e8] from-10% via-[#f8f2e8]/80 via-50% to-transparent w-[100%] md:w-[60%] h-full" />
       </div>
 
       {/* Content */}
       <Container className="relative z-20">
-        <div className="flex min-h-162.5 md:min-h-[calc(100vh-146px)] items-center">
+        <div className="flex min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none items-center">
           <div className="w-full lg:max-w-[42%]">
             <h1>
               <span className="block text-[#1f2c25]">
-                {sectionContent?.title?.line1}
+                {content.title.line1}
               </span>
 
               <span className="block text-[#b1793d] italic">
-                {sectionContent?.title?.line2}
+                {content.title.line2}
               </span>
             </h1>
 
@@ -78,10 +86,10 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
             </div>
 
             <h2 className="mb-4 text-md font-medium">
-              {sectionContent?.subtitle}
+              {content.subtitle}
             </h2>
 
-            <p className="max-w-xs text-sm md:text-base leading-6" dangerouslySetInnerHTML={{ __html: sectionContent?.description }}>
+            <p className="max-w-xs text-base leading-6" dangerouslySetInnerHTML={{ __html: content.description || "" }}>
             </p>
           </div>
         </div>

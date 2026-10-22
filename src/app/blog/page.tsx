@@ -2,6 +2,8 @@ import { generateSeo } from "@/lib/api/seo";
 import PageBuilder from '@/components/PageBuilder';
 import { headers } from "next/headers";
 import { API_URL, getImageUrl } from "@/lib/api/api";
+import { SITE_HOST } from "@/lib/site";
+import { staticBlogs } from "@/data/blogs";
 
 export async function generateMetadata() {
   return generateSeo("blog");
@@ -9,11 +11,11 @@ export async function generateMetadata() {
 
 async function getAllBlogs() {
   try {
-    const res = await fetch(`${API_URL}/blogs`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${API_URL}/blogs`, { next: { revalidate: 60 } });
     const json = await res.json();
-    return json.status === "success" ? json.data : [];
+    return Boolean(json.success || json.status === "success") ? json.data : staticBlogs;
   } catch {
-    return [];
+    return staticBlogs;
   }
 }
 
@@ -22,7 +24,7 @@ const Blog = async () => {
   const host =
     requestHeaders.get("x-forwarded-host") ||
     requestHeaders.get("host") ||
-    "ensis.in";
+    SITE_HOST;
   const protocol = requestHeaders.get("x-forwarded-proto") || "https";
   const baseUrl = `${protocol}://${host}`;
 

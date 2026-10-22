@@ -83,11 +83,11 @@ export const Features = async () => {
       </div>
 
       <div>
-        <p className="text-xs font-semibold text-[#0f2518]">
+        <p className="text-base font-semibold text-[#0f2518]">
           {feature.title}
         </p>
 
-        <p className="mt-2 text-xs leading-4 text-[#0f2518] font-medium " dangerouslySetInnerHTML={{__html:feature.desc}}>
+        <p className="text-base leading-relaxed text-[#0f2518] font-medium " dangerouslySetInnerHTML={{__html:feature.desc}}>
         </p>
       </div>
     </div>

@@ -12,6 +12,7 @@ export default function CategoryFilters({ selected, onSelect,categories }: Props
       {categories.map((item, index) => (
         <button
           key={index}
+          suppressHydrationWarning
           onClick={() => onSelect(item)}
           className={`rounded-lg border ${item === "All" ? "px-1 py-1" : "px-2 py-2"} text-sm transition ${
             selected === item

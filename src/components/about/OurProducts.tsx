@@ -18,9 +18,25 @@ export interface OurProductsSectionContent {
   products: ProductItem[];
 }
 
-export default function OurProductsSection({ sectionContent }: { sectionContent: OurProductsSectionContent }) {
-  const products = sectionContent.products; // Use products from sectionContent
-  const title = sectionContent.title; // Use title from sectionContent
+const fallbackContent: OurProductsSectionContent = {
+  title: "Our Products",
+  products: [
+    { title: "Steam & Sauna", subtitle: "Room", image: steam.src },
+    { title: "Panchkarma", subtitle: "Equipment", image: panchkarma_2.src },
+    { title: "Wellness", subtitle: "Accessories", image: wellness_assosries.src },
+    { title: "Wellness", subtitle: "Furniture", image: wellness_furniture.src },
+    { title: "Wellness", subtitle: "Interiors", image: wellnessInteriors.src },
+    { title: "Treatment", subtitle: "Tables", image: img12.src },
+  ],
+};
+
+export default function OurProductsSection({ sectionContent = {} as OurProductsSectionContent }: { sectionContent?: OurProductsSectionContent }) {
+  const resolved = { ...fallbackContent, ...sectionContent };
+  if (!resolved.products || resolved.products.length === 0) {
+    resolved.products = fallbackContent.products;
+  }
+  const products = resolved.products;
+  const title = resolved.title;
 
 
   return (
@@ -30,7 +46,7 @@ export default function OurProductsSection({ sectionContent }: { sectionContent:
 
        <div className="relative flex items-center justify-center mb-4">
   <AboutTitle title="Our Products" />
-  <button className="group absolute right-0 inline-flex items-center gap-4 px-1 py-1 text-[13px] font-medium text-[#8a6b47] transition-colors hover:text-[#6b5134]">
+  <button className="group absolute right-0 inline-flex items-center gap-4 px-1 py-1 text-base font-medium text-[#8a6b47] transition-colors hover:text-[#6b5134]">
     View All Products
     <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
   </button>
@@ -57,11 +73,12 @@ export default function OurProductsSection({ sectionContent }: { sectionContent:
               {/* Content */}
               <div className="flex items-end justify-between p-3">
                 <div>
-                  <p className="text-xs font-bold tracking-[0.08em] text-[#3d3227] uppercase leading-tight">
-                    {product.title}
-                  </p>
+                  <p
+                    className="text-base font-semibold tracking-[0.08em] text-[#3d3227] uppercase leading-tight"
+                    dangerouslySetInnerHTML={{ __html: product.title }}
+                  />
 
-                  <p className="mt-1 text-xs font-bold tracking-[0.08em] text-[#5b524a] uppercase leading-tight">
+                  <p className="mt-1 text-base font-semibold tracking-[0.08em] text-[#5b524a] uppercase leading-tight">
                     {product.subtitle}
                   </p>
                 </div>

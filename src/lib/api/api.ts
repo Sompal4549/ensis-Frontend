@@ -1,4 +1,9 @@
 import { Product, SocialClick, SocialLink } from "@/constants";
+import { staticProducts, staticCategories, getStaticProduct } from "@/data/products";
+import { staticBlogs, getStaticBlog } from "@/data/blogs";
+import { staticCareers } from "@/data/careers";
+import { staticSocialLinks } from "@/data/socialLinks";
+import { authStore } from "@/lib/auth";
 import axios, { AxiosResponse } from "axios";
 import { StaticImageData } from "next/image";
 import { cache } from "react";
@@ -14,6 +19,7 @@ export const BACKEND_URL = API_URL.replace(/\/api\/v1$/, "");
 
 const apiClient = axios.create({
     baseURL: API_URL,
+    timeout: 10000,
     validateStatus: () => true,
     headers: {
         "Cache-Control": "no-cache, no-store, must-revalidate",
@@ -22,7 +28,62 @@ const apiClient = axios.create({
     },
 });
 
-apiClient.interceptors.request.use((config) => {
+// ─── Silent dual-token refresh (access 15m / refresh 7d) ─────────────────────
+const REFRESH_TOKEN_KEY = "ensis_refresh_token";
+const ACCESS_TOKEN_KEY = "ensis_access_token";
+
+// Single-flight: concurrent 401s share one refresh round-trip
+let refreshInFlight: Promise<string | null> | null = null;
+
+const refreshAccessToken = (): Promise<string | null> => {
+  if (typeof window === "undefined") return Promise.resolve(null);
+
+  if (!refreshInFlight) {
+    refreshInFlight = (async () => {
+      try {
+        const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+        if (!refreshToken) return null;
+
+        // Plain axios so the refresh call never re-enters apiClient interceptors
+        const response = await axios.post(
+          `${API_URL}/auth/refresh`,
+          { refreshToken },
+          { withCredentials: true, headers: { "Content-Type": "application/json" } }
+        );
+
+        const payload = response.data;
+        if (!payload || payload?.success === false || payload?.status === "error") return null;
+
+        const nextAccess = payload?.data?.accessToken ?? payload?.accessToken;
+        if (!nextAccess) return null;
+
+        const nextRefresh =
+          payload?.data?.refreshToken ?? payload?.refreshToken ?? refreshToken;
+
+        localStorage.setItem(ACCESS_TOKEN_KEY, nextAccess);
+        localStorage.setItem(REFRESH_TOKEN_KEY, nextRefresh);
+        window.dispatchEvent(new Event("ensis-auth-change"));
+        return nextAccess;
+      } catch {
+        return null;
+      } finally {
+        refreshInFlight = null;
+      }
+    })();
+  }
+
+  return refreshInFlight;
+};
+
+const forceLogout = () => {
+  localStorage.removeItem(ACCESS_TOKEN_KEY);
+  localStorage.removeItem(REFRESH_TOKEN_KEY);
+  localStorage.removeItem("ensis_user");
+  window.dispatchEvent(new Event("ensis-auth-change"));
+  window.location.href = "/login";
+};
+
+apiClient.interceptors.request.use(async (config) => {
   // Component content requests ko cache hone do
   if (!config.url?.startsWith("/component-content")) {
     config.params = {
@@ -31,14 +92,81 @@ apiClient.interceptors.request.use((config) => {
     };
   }
 
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+    if (token) {
+      if (authStore.isTokenExpired(token)) {
+        // Access token expired → rotate silently instead of losing the session
+        const refreshed = await refreshAccessToken();
+        if (refreshed) {
+          config.headers.Authorization = `Bearer ${refreshed}`;
+        } else {
+          forceLogout();
+          return config;
+        }
+      } else {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+  }
+
   return config;
 });
+
+apiClient.interceptors.response.use(
+  async (response) => {
+    if (response.status !== 401 || typeof window === "undefined") {
+      return response;
+    }
+
+    const url = String(response.config?.url || "");
+    const isAuthRequest =
+      url.includes("/auth/login") ||
+      url.includes("/auth/register") ||
+      url.includes("/auth/refresh") ||
+      url.includes("/auth/whatsapp-otp");
+
+    if (isAuthRequest) return response;
+
+    const config = response.config as typeof response.config & { _retry?: boolean };
+    if (config._retry) {
+      forceLogout();
+      return response;
+    }
+    config._retry = true;
+
+    const refreshed = await refreshAccessToken();
+    if (!refreshed) {
+      forceLogout();
+      return response;
+    }
+
+    const headers = config.headers as unknown as
+      | { set?: (k: string, v: string) => void; Authorization?: string }
+      | undefined;
+    if (headers && typeof headers.set === "function") {
+      headers.set("Authorization", `Bearer ${refreshed}`);
+    } else if (headers) {
+      headers.Authorization = `Bearer ${refreshed}`;
+    }
+
+    return apiClient.request(config);
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 const normalizePageResponse = (payload: any) => {
     if (!payload) return null;
     if (Array.isArray(payload)) return payload;
     if (Array.isArray(payload?.data)) return payload.data;
     if (Array.isArray(payload?.data?.data)) return payload.data.data;
+
+    // Handle Organic Envelope format: { success: true, statusCode: 200, data: { ... } }
+    if (payload && payload.success !== undefined && payload.data !== undefined) {
+        return payload.data;
+    }
 
     const direct = payload?.data?.data ?? payload?.data ?? payload;
     if (Array.isArray(direct?.sections)) return direct;
@@ -50,20 +178,30 @@ const normalizePageResponse = (payload: any) => {
     return direct;
 };
 
-export async function getPageComponent(slug: string) {
-    const response = await apiClient.get(`/component-content/page/${slug}`);
+export const getPageComponent = cache(async (slug: string) => {
+    try {
+        const response = await fetch(`${API_URL}/component-content/page/${slug}`, {
+            cache: "no-store",
+            signal: AbortSignal.timeout(5000),
+        });
 
-    if (response.status < 200 || response.status >= 300) {
-        throw new Error(`Failed to fetch page content for: ${slug}`);
+        if (!response.ok) {
+            console.warn(`[getPageComponent] Status ${response.status} for page "${slug}". Using fallback.`);
+            return null;
+        }
+
+        const payload = await response.json();
+        if (payload?.status === "error" || payload?.success === false) {
+            console.warn(`[getPageComponent] API error for page "${slug}":`, payload.message);
+            return null;
+        }
+
+        return normalizePageResponse(payload);
+    } catch (error: any) {
+        console.warn(`[getPageComponent] Unable to fetch page content for "${slug}": ${error?.message || "connection error"}`);
+        return null;
     }
-
-    const payload = response.data;
-    if (payload?.status === "error") {
-        throw new Error(payload.message || `Failed to fetch page content for: ${slug}`);
-    }
-
-    return normalizePageResponse(payload);
-}
+});
 
 
 export type ComponentContent<T> = {
@@ -78,7 +216,17 @@ export type ComponentContent<T> = {
 
 const unwrap = <T>(response: AxiosResponse): T => {
     const payload = response.data;
-    if (response.status < 200 || response.status >= 300 || payload.status === "error") {
+    const isOk = response.status >= 200 && response.status < 300;
+
+    // Handle new Organic Envelope format: { success: true, statusCode: 200, data: { ... } }
+    if (payload && payload.success !== undefined) {
+        if (!payload.success) {
+            throw new Error(payload.message || "API request failed");
+        }
+        return payload.data as T;
+    }
+
+    if (!isOk || payload.status === "error" || payload.success === false) {
         throw new Error(payload.message || "API request failed");
     }
     return payload.data as T;
@@ -114,22 +262,38 @@ export const getImageUrl = (image?: any, width?: number) => {
 };
 
 export const productApi = {
-    list: async (limit = 100, page = 1) => {
-        const response = await apiClient.get(`/products`, { params: { limit, page } });
-        return unwrap<{
-          data: any; products: Product[]; total: number; page: number; limit: number 
+    list: async (limit = 100, page = 1, sortBy = "orderBy", order = "asc") => {
+        try {
+            const response = await apiClient.get(`/products`, { params: { limit, page, sortBy, order } });
+            return unwrap<{
+              data: any; products: Product[]; total: number; page: number; limit: number 
 }>(response);
+        } catch (error) {
+            console.error("Error fetching products, using static data:", error);
+            return { data: null, products: staticProducts, total: staticProducts.length, page, limit };
+        }
     },
     detail: async (idOrSlug: string) => {
-        const response = await apiClient.get(`/products/${idOrSlug}`);
-        return unwrap<Product>(response);
+        try {
+            const response = await apiClient.get(`/products/${idOrSlug}`);
+            return unwrap<Product>(response);
+        } catch (error) {
+            const staticProduct = getStaticProduct(idOrSlug);
+            if (staticProduct) return staticProduct;
+            throw error;
+        }
     },
 };
 
 export const categoryApi = {
     list: async () => {
-        const response = await apiClient.get(`/categories`);
-        return unwrap<any[]>(response);
+        try {
+            const response = await apiClient.get(`/categories`);
+            return unwrap<any[]>(response);
+        } catch (error) {
+            console.error("Error fetching categories, using static data:", error);
+            return staticCategories;
+        }
     },
 };
 
@@ -146,7 +310,7 @@ export const verifyApi = {
         const response = await apiClient.post(`/auth/send-phone-otp`, {
             phone,
             purpose: profile,
-            message: name ? `Dear ${name}, your IHWE OTP is {{code}}.` : undefined,
+            message: name ? `Dear ${name}, your Ensis OTP is {{code}}.` : undefined,
         });
         return normalizeOtpResponse(response);
     },
@@ -161,18 +325,19 @@ export const getComponentContent = cache(
   async <T>(key: string, fallback: T): Promise<T> => {
     try {
       const response = await apiClient.get(`/component-content/${key}`);
-
+      const payload = response.data;
       if (
         response.status < 200 ||
         response.status >= 300 ||
-        response.data.status === "error"
+        payload?.status === "error" ||
+        payload?.success === false
       ) {
         return fallback;
       }
 
       return {
         ...fallback,
-        ...(response.data.data?.data || {}),
+        ...(payload?.data?.data ?? payload?.data ?? {}),
       };
     } catch {
       return fallback;
@@ -180,8 +345,15 @@ export const getComponentContent = cache(
   }
 );
 export const getProducts = async () => {
-    const response = await apiClient.get(`/products?limit=100`);
-    return response.data.data.products as Product[];
+    try {
+        const response = await apiClient.get(`/products?limit=100`);
+        const products = (response.data?.data?.products || []) as Product[];
+        if (products.length > 0) return products;
+        return staticProducts;
+    } catch (error) {
+        console.error("Error fetching products, using static data:", error);
+        return staticProducts;
+    }
 };
 
 
@@ -190,28 +362,40 @@ export const socialApi = {
   getLinks: async (): Promise<SocialLink[]> => {
     try {
       const response = await apiClient.get("/social-clicks/links");
-
-      if (
-        response.status >= 200 &&
-        response.status < 300 &&
-        response.data.status === "success"
-      ) {
-        return response.data.data;
+      const payload = response.data;
+      const isOk = response.status >= 200 && response.status < 300;
+      
+      // Handle Organic Envelope format: { success: true, statusCode: 200, data: { ... } }
+      if (payload && payload.success !== undefined && payload.data !== undefined) {
+        return payload.data;
       }
 
-      return [];
+      if (!isOk || payload.status === "error" || payload.success === false) {
+        return staticSocialLinks;
+      }
+
+      return payload.data || staticSocialLinks;
     } catch (err) {
-      console.error("Failed to fetch social links", err);
-      return [];
+      console.error("Failed to fetch social links, using static data", err);
+      return staticSocialLinks;
     }
   },
 
   // Track click
   trackClick: async (platform: string) => {
     try {
-      await apiClient.post("/social-clicks", {
-        platform: platform.toLowerCase(),
-      });
+      let clientIp = "";
+      try {
+        const ipRes = await fetch("https://api.ipify.org?format=json");
+        const ipData = await ipRes.json();
+        clientIp = ipData.ip || "";
+      } catch {}
+
+      await apiClient.post(
+        "/social-clicks",
+        { platform: platform.toLowerCase() },
+        { headers: clientIp ? { "x-client-ip": clientIp } : {} }
+      );
     } catch (err) {
       console.error("Failed to track social click", err);
     }
@@ -277,12 +461,25 @@ export type Career = {
   type: string;
   experience: string;
   status: "active" | "closed";
+  // Job details shown in the AI CV screening popup
+  description?: string;
+  roleObjective?: string;
+  responsibilities?: string[];
+  requirements?: string[];
+  skills?: string[];
+  educationRequirements?: string;
+  eligibilityThreshold?: number;
 };
 
 export const careerApi = {
   list: async (): Promise<Career[]> => {
-    const response = await apiClient.get(`/careers`);
-    return unwrap<Career[]>(response);
+    try {
+      const response = await apiClient.get(`/careers`);
+      return unwrap<Career[]>(response);
+    } catch (error) {
+      console.error("Error fetching careers, using static data:", error);
+      return staticCareers;
+    }
   },
 };
 
@@ -290,34 +487,122 @@ export const blogApi = {
   list: async (): Promise<any[]> => {
     try {
       const response = await apiClient.get(`/blogs`);
-      if (
-        response.status >= 200 &&
-        response.status < 300 &&
-        response.data.status === "success"
-      ) {
-        return response.data.data;
+      const payload = response.data;
+      const isOk = response.status >= 200 && response.status < 300;
+      
+      // Handle Organic Envelope format: { success: true, statusCode: 200, data: { ... } }
+      if (payload && payload.success !== undefined && payload.data !== undefined) {
+        return payload.data;
       }
-      return [];
+
+      if (!isOk || payload.status === "error" || payload.success === false) {
+        return staticBlogs;
+      }
+
+      return payload.data || staticBlogs;
     } catch (err) {
-      console.error("Failed to fetch blogs", err);
-      return [];
+      console.error("Failed to fetch blogs, using static data", err);
+      return staticBlogs;
     }
   },
 
   detail: async (slug: string): Promise<any> => {
     try {
       const response = await apiClient.get(`/blogs/${slug}`);
-      if (
-        response.status >= 200 &&
-        response.status < 300 &&
-        response.data.status === "success"
-      ) {
-        return response.data.data;
+      const payload = response.data;
+      const isOk = response.status >= 200 && response.status < 300;
+      
+      // Handle Organic Envelope format: { success: true, statusCode: 200, data: { ... } }
+      if (payload && payload.success !== undefined && payload.data !== undefined) {
+        return payload.data;
       }
-      return null;
+
+      if (!isOk || payload.status === "error" || payload.success === false) {
+        return getStaticBlog(slug) || null;
+      }
+
+      return payload.data || getStaticBlog(slug) || null;
     } catch (err) {
-      console.error("Failed to fetch blog detail", err);
-      return null;
+      console.error("Failed to fetch blog detail, using static data", err);
+      return getStaticBlog(slug) || null;
     }
+  },
+};
+
+export type InvoiceItem = {
+  product?: string;
+  name: string;
+  description?: string;
+  quantity: number;
+  unitPrice: number;
+  gstRate: number;
+  amount: number;
+};
+
+export type InvoiceAddress = {
+  name: string;
+  email?: string;
+  phone?: string;
+  addressLine?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  country?: string;
+  gstNumber?: string;
+};
+
+export type Invoice = {
+  _id: string;
+  invoiceNumber: string;
+  type: "proforma" | "tax" | "credit_note" | "debit_note" | "delivery_challan";
+  lead: string;
+  order?: string;
+  items: InvoiceItem[];
+  billingAddress: InvoiceAddress;
+  shippingAddress?: InvoiceAddress;
+  subtotal: number;
+  discount: number;
+  tax: number;
+  shipping: number;
+  totalAmount: number;
+  status: "draft" | "sent" | "paid" | "partial" | "overdue" | "cancelled";
+  paymentReceived: number;
+  paymentDate?: string;
+  dueDate?: string;
+  notes?: string;
+  termsAndConditions?: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export const invoiceApi = {
+  createFromOrder: async (orderId: string): Promise<Invoice> => {
+    const response = await apiClient.post(`/invoices/from-order/${orderId}`);
+    return unwrap<Invoice>(response);
+  },
+
+  getById: async (id: string): Promise<Invoice> => {
+    const response = await apiClient.get(`/invoices/${id}`);
+    return unwrap<Invoice>(response);
+  },
+
+  getHtml: async (id: string): Promise<string> => {
+    const response = await apiClient.get(`/invoices/${id}/html`, {
+      responseType: "text",
+    });
+    if (response.status >= 200 && response.status < 300) {
+      return response.data;
+    }
+    throw new Error(response.data?.message || "Failed to fetch invoice HTML");
+  },
+
+  sendEmail: async (id: string) => {
+    const response = await apiClient.post(`/invoices/${id}/send-email`);
+    return unwrap<{ success: boolean; message: string }>(response);
+  },
+
+  sendWhatsApp: async (id: string) => {
+    const response = await apiClient.post(`/invoices/${id}/send-whatsapp`);
+    return unwrap<{ success: boolean; message: string }>(response);
   },
 };

@@ -29,20 +29,20 @@ sectionContent = {}
 
 
   // Merge API data over prop defaults
-  const resolvedTitle = sectionContent?.title;
-  const resolvedSubtitle = sectionContent?.heading;
-  const resolvedDescription = sectionContent?.description;
-  const resolvedHighlight = sectionContent?.highlight;
-  const resolvedPrimaryBtnText = sectionContent?.primaryBtnText;
-  const resolvedPrimaryBtnPath = sectionContent?.primaryBtnPath;
-  const resolvedSecondaryBtnText = sectionContent?.secondaryBtnText;
-  const resolvedSecondaryBtnPath = sectionContent?.secondaryBtnPath;
+  const resolvedTitle = sectionContent?.title || "Building Wellness";
+  const resolvedSubtitle = sectionContent?.heading || "ABOUT ENSIS";
+  const resolvedDescription = sectionContent?.description || "<p>We design and deliver complete wellness environments — from Ayurvedic clinics and spa rooms to turnkey hospital wellness floors — combining traditional wisdom with modern engineering.</p>";
+  const resolvedHighlight = sectionContent?.highlight || "Spaces That Heal";
+  const resolvedPrimaryBtnText = sectionContent?.primaryBtnText || "Get a Free Consultation";
+  const resolvedPrimaryBtnPath = sectionContent?.primaryBtnPath || "/contact";
+  const resolvedSecondaryBtnText = sectionContent?.secondaryBtnText || "View Our Products";
+  const resolvedSecondaryBtnPath = sectionContent?.secondaryBtnPath || "/products";
   const resolvedImage = sectionContent?.image;
 
   const imageUrl = resolvedImage?.imageUrl;
 
   return (
-    <section className="relative overflow-visible mb-0 md:mb-16">
+    <section className="relative z-20 overflow-visible mb-0 lg:mb-16">
       <div className="relative">
       {/* Background image kept in its own overflow-hidden layer so it still
           stays clipped to the hero, while the section itself stays
@@ -54,18 +54,18 @@ sectionContent = {}
           alt={resolvedImage?.alt ?? "about banner"}
           src={imageUrl ? getImageUrl(imageUrl) : banner_image}
           fill
-          className="object-cover object-left md:object-right"
+          className="object-cover object-left xl:object-center "
           crossOrigin="anonymous"
           sizes="100vw"
         />
       </div>
       <Container className="bg-black md:bg-transparent">
-        <div className="relative min-h-[470px] md:h-[calc(100vh-146px)] w-full">
+        <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none w-full">
           <div className="relative z-10 mx-auto flex min-h-[450px] max-w-[1500px] items-center h-full">
             <div className="max-w-[620px] pt-24 pb-12 md:pt-16 md:pb-16">
               <div className="mb-5 flex items-center gap-4">
                 {/* <Image alt="lotus" src={lotus} width={20} height={20} className="h-full object-contain" crossOrigin="anonymous" /> */}
-                <span className="text-[13px] font-semibold uppercase tracking-[0.18em] text-[#c07d19]">
+                <span className="text-base font-semibold uppercase tracking-[0.18em] text-[#c07d19]">
                   {resolvedSubtitle}
                 </span>
                 <div className="h-[1px] w-14 bg-[#c07d19]" />
@@ -78,7 +78,7 @@ sectionContent = {}
                 </span>
               </h1>
 
-              <p className="mt-5 max-w-[360px] text-sm md:text-base leading-6 font-semibold text-[#313628]" dangerouslySetInnerHTML={{__html:resolvedDescription||""}}>
+              <p className="mt-5 max-w-[360px] text-base leading-6 font-semibold text-[#313628]" dangerouslySetInnerHTML={{__html:resolvedDescription||""}}>
               </p>
 
               <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-4">

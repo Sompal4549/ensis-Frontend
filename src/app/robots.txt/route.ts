@@ -1,13 +1,12 @@
 import { getAdvancedSeo } from "@/lib/api/seo";
-
-const DEFAULT_SITE_URL = "https://ensis.in";
+import { SITE_URL } from "@/lib/site";
 
 const DEFAULT_ROBOTS = `User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap: ${DEFAULT_SITE_URL}/sitemap.xml`;
+Sitemap: ${SITE_URL}/sitemap.xml`;
 
 export async function GET() {
   const advSeo = await getAdvancedSeo();

@@ -110,7 +110,7 @@ const WhyChooseEnsis: React.FC<{ sectionContent: WhyChooseEnsisContent }> = ({ s
       <Container>
         <AboutTitle title={sectionContent.title || "Why Choose Ensis?"} />
 
-        <p className="text-center text-sm text-[#5e5a55] mb-[20px] max-w-3xl mx-auto font-semibold"
+        <p className="text-center text-base text-[#5e5a55] mb-[20px] max-w-3xl mx-auto font-semibold"
          dangerouslySetInnerHTML={{__html:sectionContent.description || " We don&apos;t just sell products, we create complete wellness experiences."}}
         
         >
@@ -124,11 +124,11 @@ const WhyChooseEnsis: React.FC<{ sectionContent: WhyChooseEnsisContent }> = ({ s
             >
             <Image src={feature.imageurl.imageUrl} alt={feature.imageurl.alt}  width={34} height={34} style={{ height: "auto" }}  />
 
-              <b className="mb-3 text-[14px] font-semibold tracking-[0.4px]">
+              <b className="mb-3 text-base font-semibold tracking-[0.4px]">
                 {feature.title}
               </b>
 
-              <p className="text-[14px] leading-[1.8] font-medium" dangerouslySetInnerHTML={{__html:feature.description}}>
+              <p className="text-base leading-[1.8] font-medium" dangerouslySetInnerHTML={{__html:feature.description}}>
               </p>
             </div>
           ))}

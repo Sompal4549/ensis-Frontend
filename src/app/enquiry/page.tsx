@@ -10,6 +10,7 @@ export async function generateMetadata() {
 const EnquaryPage = () => {
   return (
     <>
+      <h1 className="sr-only">Enquiry</h1>
       <SchemaScript page="enquiry" />
       <EnquiryClient />
     </>

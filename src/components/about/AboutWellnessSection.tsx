@@ -45,17 +45,17 @@ const fallbackContent: AboutWellnessSectionContent = {
   heading: "Our Story",
   title: "Crafting Wellness Since 2003",
   description: `
-    <p class="text-xs font-semibold leading-6 mt-4">
+    <p class="text-base font-semibold leading-6 mt-4">
       ENSIS, the wellness division of Design House India Pvt. Ltd.,
       was established in 2003 with a vision to create authentic,
       durable and aesthetically superior wellness solutions.
     </p>
-    <p class="text-xs font-semibold leading-6 ">
+    <p class="text-base font-semibold leading-6 ">
       We combine the wisdom of Ayurveda with modern engineering to
       build products and spaces that deliver healing, comfort and
       long-term value.
     </p>
-    <p class="text-xs font-semibold leading-6 ">
+    <p class="text-base font-semibold leading-6 ">
       Today, ENSIS is a preferred partner for clinics, hospitals,
       resorts, spas and wellness entrepreneurs across India.
     </p>
@@ -79,20 +79,26 @@ const fallbackContent: AboutWellnessSectionContent = {
 };
 
 const AboutWellnessSection = ({
-  sectionContent,
+  sectionContent = {} as AboutWellnessSectionContent,
 }: {
-  sectionContent: AboutWellnessSectionContent;
+  sectionContent?: AboutWellnessSectionContent;
 }) => {
-  // direct use sectionContent
+  const resolved = { ...fallbackContent, ...sectionContent };
 
-  const gridCols = gridColsClass(sectionContent.stats?.length || 6);
+  const mainImageUrl = typeof resolved.imageurl === "string" ? resolved.imageurl : resolved.imageurl?.imageUrl || fallbackContent.imageurl.imageUrl;
+  const mainImageAlt = typeof resolved.imageurl === "string" ? "Wellness Building" : resolved.imageurl?.alt || "Wellness Building";
+
+  const coreValues = Array.isArray(resolved.ourCoreValues) && resolved.ourCoreValues.length > 0 ? resolved.ourCoreValues : fallbackContent.ourCoreValues;
+  const statsList = Array.isArray(resolved.stats) && resolved.stats.length > 0 ? resolved.stats : fallbackContent.stats;
+
+  const gridCols = gridColsClass(statsList?.length || 6);
 
   return (
     <section className="w-full relative mt-2">
         <div className="absolute left-0 w-[100%] md:w-[40%] top-0 h-50 md:h-full md:bottom-8 z-10">
             <Image
-              src={getImageUrl(sectionContent.imageurl.imageUrl)}
-              alt={sectionContent.imageurl.alt}
+              src={getImageUrl(mainImageUrl)}
+              alt={mainImageAlt}
               className="w-full h-full object-cover"
               crossOrigin="anonymous"
               fill
@@ -101,7 +107,7 @@ const AboutWellnessSection = ({
   {/* <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0)_0%,rgba(255,255,255,0.1)_20%,rgba(255,255,255,0.8)_50%,rgba(255,255,255,1)_100%)] z-10" /> */}
       <Container>
         <div  className="relative z-20 md:pt-0 pt-[60%]  mb-12">
-       <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1.4fr_0.8fr] gap-4 items-stretch overflow-hidden h-full pb-10">
+       <div className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1.4fr_0.8fr] gap-4 items-stretch overflow-hidden h-full md:pb-10">
   {/* Gradient Overlay */}
 
           {/* Left Image */}
@@ -111,17 +117,17 @@ const AboutWellnessSection = ({
 
           {/* Center Content */}
           <div className=" md:px-6 md:py-7 flex flex-col justify-center">
-            <span className="text-[10px] uppercase tracking-[2px] bg-[#e5c18e] border-[#e29222] border text-center rounded-2xl text-[#5e3b0a] inline-block font-semibold mb-2 w-25 ">
-              {sectionContent.heading}
+            <span className="text-base uppercase tracking-[2px] bg-[#e5c18e] border-[#e29222] border text-center rounded-2xl text-[#5e3b0a] inline-block font-semibold mb-2 w-35 ">
+              {resolved.heading}
             </span>
 
             <h2 className="text-xl md:text-[28px] leading-[1.15] font-semibold ">
-            {sectionContent.title}
+            {resolved.title}
             </h2>
             <div className="max-w-[480px]">
               <div
-                className="text-xs font-semibold md:leading-6 mt-4"
-                dangerouslySetInnerHTML={{ __html: sectionContent.description }}
+                className="text-base font-semibold md:leading-6 my-2"
+                dangerouslySetInnerHTML={{ __html: resolved.description }}
               />
              </div>
           </div>
@@ -135,19 +141,22 @@ const AboutWellnessSection = ({
             </h3>
 
             <div className="space-y-2">
-              {sectionContent.ourCoreValues.map((item, index) => (
-                <div key={index} className="flex items-center gap-4">
-                  {/* Icon Placeholder */}
-                  <div className="w-9 h-9">
-                    <Image alt={item.imageurl.alt} src={getImageUrl(item.imageurl.imageUrl)} width={30} height={30} className="object-contain"
-                    crossOrigin="anonymous" style={{ height: "auto" }} />
-                  </div>
+              {coreValues.map((item, index) => {
+                const itemUrl = typeof item.imageurl === "string" ? item.imageurl : (item.imageurl?.imageUrl || (item as any).icon || (item as any).image || ayurved.src);
+                const itemAlt = typeof item.imageurl === "string" ? item.title : (item.imageurl?.alt || item.title || "Core Value");
+                return (
+                  <div key={index} className="flex items-center gap-4">
+                    <div className="w-9 h-9 relative shrink-0">
+                      <Image alt={itemAlt} src={getImageUrl(itemUrl)} width={30} height={30} className="object-contain"
+                      crossOrigin="anonymous" style={{ height: "auto" }} />
+                    </div>
 
-                  <span className="text-xs  font-semibold">
-                    {item.title}
-                  </span>
-                </div>
-              ))}
+                    <span className="text-base font-semibold">
+                      {item.title}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
           </div>
@@ -155,29 +164,32 @@ const AboutWellnessSection = ({
         </div>
 
         {/* Bottom Stats Bar */}
-        <div className="mt-4 bg-[#03261b] rounded-2xl py-5 px-5 border-3 border-[#e8c37a] absolute -bottom-10 left-0 right-0">
-          <div className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-x-4 gap-y-6 ${gridCols}`}>
-            {sectionContent.stats.map((item, index) => (
-              <div
-                key={index}
-                className="flex items-start gap-4 pr-6 md:border-r border-[#aa8f47] last:border-r-0"
-              >
-                {/* Icon Placeholder */}
-                <div className="mt-1 shrink-0 w-14 h-14 flex items-center justify-center">
-                    <Image alt={item.imageurl.alt} src={getImageUrl(item.imageurl.imageUrl)} width={70} height={50} className="object-contain" crossOrigin="anonymous" style={{ height: "auto" }} />
-                </div>
+        <div className="mt-4 bg-[#03261b] rounded-2xl py-4 px-5 border-3 border-[#e8c37a] md:absolute -bottom-10 left-0 right-0">
+          <div className={`grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 gap-x-4 gap-y-6 ${gridCols}`}>
+            {statsList.map((item, index) => {
+              const statUrl = typeof item.imageurl === "string" ? item.imageurl : (item.imageurl?.imageUrl || (item as any).icon || (item as any).image || since.src);
+              const statAlt = typeof item.imageurl === "string" ? item.title : (item.imageurl?.alt || item.title || "Stat");
+              return (
+                <div
+                  key={index}
+                  className="flex items-start gap-4 pr-6 md:border-r border-[#aa8f47] last:border-r-0"
+                >
+                  <div className="mt-1 shrink-0 w-10 h-10 flex items-center justify-center">
+                    <Image alt={statAlt} src={getImageUrl(statUrl)} width={70} height={50} className="object-contain" crossOrigin="anonymous" style={{ height: "auto" }} />
+                  </div>
 
-                <div>
-                  <p className="text-xs font-semibold text-[#e8c37a]">
-                    {item.title}
-                  </p>
+                  <div>
+                    <p className="text-base font-semibold text-[#e8c37a]">
+                      {item.title}
+                    </p>
 
-                  <p className="mt-1 text-xs leading-4 text-white font-medium">
-                    {item.subtitle}
-                  </p>
+                    <p className="mt-1 text-base leading-5 text-white font-medium">
+                      {item.subtitle}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
         </div>

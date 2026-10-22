@@ -72,7 +72,7 @@ export function useRazorpay({ onSuccess, onFailure }: UseRazorpayOptions = {}) {
           if (userJson) {
             const user = JSON.parse(userJson);
             prefill = {
-              name: user.name || "",
+              name: user.name || [user.firstName, user.lastName].filter(Boolean).join(" ") || "",
               email: user.email || "",
               contact: user.phone || "",
             };

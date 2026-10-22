@@ -37,7 +37,7 @@ export const ManufacturingAndProjects: React.FC<{ sectionContent?: any }> = ({ s
     "Multi-Level Quality Testing",
     "International Export Packing",
   ],
-  mfgButtonText: sectionContent.mfgButtonText||"OUR MANUFACTURING",
+  mfgButtonText: sectionContent.mfgButtonText||"Our Manufacturing",
   mfgButtonPath: sectionContent.mfgButtonHref||"/manufacturing",
   
 mfgImages: sectionContent.mfgImages||["", "", ""],
@@ -45,7 +45,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
   projHeading: sectionContent.projHeading||"Creating Wellness\nSpaces Worldwide",
   projDescription: sectionContent.projDescription||"Proud to be a trusted partner for 500+ wellness projects across the globe.",
   projButtonText: sectionContent.projButtonText||"VIEW ALL PROJECTS",
-  projButtonPath: sectionContent.mfgButtonPath||"/projects",
+  projButtonPath: sectionContent.projButtonHref||"/projects-and-clients",
   projects: sectionContent.projects||[
     { image: "", title: "Project 1", location: "" },
     { image: "", title: "Project 2", location: "" },
@@ -60,8 +60,29 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
   useEffect(() => {
     const fetchContent = async () => {
       try {
-        const data = await getComponentContent("home.manufacturingAndProjects", defaultContent);
-        setContent(data);
+        const data: any = await getComponentContent<any>("home.manufacturingAndProjects", {});
+        setContent({
+          ...defaultContent,
+          ...data,
+          mfgSubtitle: data.subtitle ?? defaultContent.mfgSubtitle,
+          heading: data.heading ?? defaultContent.heading,
+          description: data.description ?? defaultContent.description,
+          stats: Array.isArray(data.stats) && data.stats.length ? data.stats : defaultContent.stats,
+          mfgFeatures: Array.isArray(data.features) && data.features.length
+            ? data.features
+            : Array.isArray(data.mfgFeatures) && data.mfgFeatures.length
+              ? data.mfgFeatures
+              : defaultContent.mfgFeatures,
+          mfgButtonText: data.mfgButtonText ?? defaultContent.mfgButtonText,
+          mfgButtonPath: data.mfgButtonHref ?? defaultContent.mfgButtonPath,
+          mfgImages: Array.isArray(data.mfgImages) && data.mfgImages.length ? data.mfgImages : defaultContent.mfgImages,
+          projSubtitle: data.projSubtitle ?? defaultContent.projSubtitle,
+          projHeading: data.projHeading ?? defaultContent.projHeading,
+          projDescription: data.projDescription ?? defaultContent.projDescription,
+          projButtonText: data.projButtonText ?? defaultContent.projButtonText,
+          projButtonPath: data.projButtonHref ?? defaultContent.projButtonPath,
+          projects: Array.isArray(data.projects) && data.projects.length ? data.projects : defaultContent.projects,
+        });
       } catch {
         // Keep defaults
       }
@@ -107,7 +128,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
             {/* Content */}
             <div className="flex flex-col justify-center">
               <SubHeading className=' text-black font-normal' text={sectionSubtitle} />
-              <h2 className="mt-2 font-serif text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
+              <h2 className="mt-2  text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
                 {mfgHeadingLines.map((line: string, i: number) => (
                   <React.Fragment key={i}>
                     {line}
@@ -116,43 +137,48 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                 ))}
               </h2>
 <div
-  className="mt-2 text-xs text-[#5f5a50]"
+  className="mt-2 text-base text-[#5f5a50]"
   dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(sectionDescription || "") }}
 />
 
               {/* Stats from admin API */}
-              {/* {stats.length > 0 && (
+              {stats.length > 0 && (
                 <div className="mt-4 grid grid-cols-3 gap-4">
                   {stats.map((stat: { value: string; label: string }, i: number) => (
                     <div key={i} className="text-center">
-                      <span className="block text-xl font-bold text-[#334022]">{stat.value}</span>
+                      <span className="block text-xl font-semibold text-[#334022]">{stat.value}</span>
                       <span className="block text-[10px] font-semibold text-[#5f5a50] uppercase tracking-wide">{stat.label}</span>
                     </div>
                   ))}
                 </div>
-              )} */}
+              )}
 
               <ul className="mt-2 space-y-2">
-                {content.mfgFeatures.map((item: string) => (
-                  <li
-                    key={item}
-                    className="flex items-center gap-4 text-[13px] text-[#3f3a32]"
-                  >
-                    <CheckSquare2
-                      size={16}
-                      className="shrink-0 text-[#b08b57]"
-                    />
-                    {item}
-                  </li>
-                ))}
+                {content.mfgFeatures.map((item: any, index: number) => {
+                  const text = typeof item === "string"
+                    ? item
+                    : (item?.title || item?.name || item?.text || item?.feature || item?.label || "");
+                  return (
+                    <li
+                      key={typeof item === "string" ? `${item}-${index}` : (item?._id || item?.id || `${text}-${index}`)}
+                      className="flex items-center gap-4 text-base font-semibold text-[#3f3a32]"
+                    >
+                      <CheckSquare2
+                        size={16}
+                        className="shrink-0 text-[#b08b57]"
+                      />
+                      {text}
+                    </li>
+                  );
+                })}
               </ul>
-              <div className="w-50 mt-2">
+              <div className="w-60 mt-2">
                 <BookButton text={content.mfgButtonText} path={content.mfgButtonPath} />
               </div>
             </div>
 
             {/* Manufacturing Images */}
-            <div className="grid grid-cols-2 gap-4 self-start h-[100%]">
+            <div className="grid grid-cols-2 gap-4 self-start h-[240px] md:h-[320px] lg:h-full">
 
               {/* Top Large */}
               <div className="relative col-span-2 h-[100%] overflow-hidden rounded-2xl">
@@ -196,7 +222,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
           {/* RIGHT SIDE */}
           <div className="border-[#e7ddd1] lg:border-l lg:pl-4 h">
             <SubHeading className=' text-black font-normal' text={content.projSubtitle} />
-            <h2 className="mt-2 font-serif text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
+            <h2 className="mt-2  text-[26px] font-semibold leading-[1.08] text-[#1f261b] lg:text-[28px]">
               {projHeadingLines.map((line: string, i: number) => (
                 <React.Fragment key={i}>
                   {line}
@@ -205,10 +231,10 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
               ))}
             </h2>
 
-            <p className="mt-2 max-w-[320px] text-xs text-[#5f5a50]">
+            <p className="mt-2 max-w-[320px] text-base text-[#5f5a50]">
               {content.projDescription}
             </p>
-            <div className="w-50 mt-2">
+            <div className="w-60 mt-2">
               <BookButton text={content.projButtonText} path={content.projButtonPath} />
             </div>
 
@@ -228,8 +254,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                   />
                   {(projects[0]?.title || projects[0]?.location) && (
                     <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
-                      {projects[0]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[0].title}</p>}
-                      {projects[0]?.location && <p className="text-white/80 text-[9px]">{projects[0].location}</p>}
+                      {projects[0]?.location && <p className="text-white/80 text-base">{projects[0].location}</p>}
                     </div>
                   )}
                 </div>
@@ -246,8 +271,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                   />
                   {(projects[1]?.title || projects[1]?.location) && (
                     <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
-                      {projects[1]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[1].title}</p>}
-                      {projects[1]?.location && <p className="text-white/80 text-[9px]">{projects[1].location}</p>}
+                      {projects[1]?.location && <p className="text-white/80 text-base">{projects[1].location}</p>}
                     </div>
                   )}
                 </div>
@@ -264,8 +288,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                   />
                   {(projects[2]?.title || projects[2]?.location) && (
                     <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
-                      {projects[2]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[2].title}</p>}
-                      {projects[2]?.location && <p className="text-white/80 text-[9px]">{projects[2].location}</p>}
+                      {projects[2]?.location && <p className="text-white/80 text-base">{projects[2].location}</p>}
                     </div>
                   )}
                 </div>
@@ -282,8 +305,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                   />
                   {(projects[3]?.title || projects[3]?.location) && (
                     <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
-                      {projects[3]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[3].title}</p>}
-                      {projects[3]?.location && <p className="text-white/80 text-[9px]">{projects[3].location}</p>}
+                      {projects[3]?.location && <p className="text-white/80 text-base">{projects[3].location}</p>}
                     </div>
                   )}
                 </div>
@@ -300,8 +322,7 @@ mfgImages: sectionContent.mfgImages||["", "", ""],
                   />
                   {(projects[4]?.title || projects[4]?.location) && (
                     <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
-                      {projects[4]?.title && <p className="text-white text-[10px] font-semibold leading-tight">{projects[4].title}</p>}
-                      {projects[4]?.location && <p className="text-white/80 text-[9px]">{projects[4].location}</p>}
+                      {projects[4]?.location && <p className="text-white/80 text-base">{projects[4].location}</p>}
                     </div>
                   )}
                 </div>

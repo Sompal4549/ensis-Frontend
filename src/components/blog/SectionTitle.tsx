@@ -11,7 +11,7 @@ interface Props {
 export default function SectionTitle({ title }: Props) {
   return (
     <div className="mb-3">
-      <h2 className="font-serif text-2xl text-[#2b241f] font-semibold">{title}</h2>
+      <h2 className=" text-2xl text-[#2b241f] font-semibold">{title}</h2>
 
       <div className="mt-3 flex items-center gap-4">
 

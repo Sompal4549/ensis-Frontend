@@ -15,7 +15,6 @@ export default function LoginPage() {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState("");
   const [step, setStep] = useState<"phone" | "otp">("phone");
-  const [isAdmin, setIsAdmin] = useState(false);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [timer, setTimer] = useState(0);
@@ -29,7 +28,6 @@ export default function LoginPage() {
 
     try {
       const payload: any = { phone };
-      if (isAdmin) payload.purpose = "admin-login";
 
       const response = await axios.post(`${API_URL}/auth/whatsapp-otp/send`, payload);
       
@@ -52,16 +50,29 @@ export default function LoginPage() {
     setMessage("");
 
     try {
-      const endpoint = isAdmin ? "/admin/login" : "/auth/login";
+      const endpoint = "/auth/login";
       const response = await axios.post(`${API_URL}${endpoint}`, { phone, otp });
 
       const payload = response.data;
-      if (payload.status === "error") {
+      if (payload.status === "error" || payload.success === false) {
         throw new Error(payload.message || "Login failed");
       }
       
       localStorage.setItem("ensis_access_token", payload.data.accessToken);
-      localStorage.setItem("ensis_user", JSON.stringify(payload.data.user));
+      if (payload.data.refreshToken) {
+        localStorage.setItem("ensis_refresh_token", payload.data.refreshToken);
+      }
+      const rawUser = payload.data.user || payload.data.lead;
+      // Lead model has firstName+lastName, normalize to name for header display
+      const userData = {
+        ...rawUser,
+        name: rawUser?.name || 
+              [rawUser?.firstName, rawUser?.lastName].filter(Boolean).join(" ") || 
+              rawUser?.email || "",
+      };
+      console.log("Login response payload.data:", payload.data);
+      console.log("Login userData stored:", userData);
+      localStorage.setItem("ensis_user", JSON.stringify(userData));
       window.dispatchEvent(new Event("ensis-auth-change"));
       router.push("/");
     } catch (error: any) {
@@ -109,21 +120,9 @@ subtitle="Access your wellness projects and services"
     >
       {step === "phone" ? (
         <form onSubmit={handleSendOTP}>
-          <div className="mb-4">
-            <label className="flex items-center gap-4 cursor-pointer text-[10px] font-semibold text-[#8b6b35] uppercase tracking-[1px]">
-              <input 
-                type="checkbox" 
-                checked={isAdmin} 
-                onChange={(e) => setIsAdmin(e.target.checked)} 
-                className="accent-[#b88b3d]"
-              />
-              Login as Admin / Expert
-            </label>
-          </div>
-
           <div>
             <label className={labelClass}>Mobile Number</label>
-            <input
+            <input suppressHydrationWarning
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
@@ -133,7 +132,7 @@ subtitle="Access your wellness projects and services"
             />
           </div>
 
-          <button type="submit" disabled={isLoading} className={buttonClass}>
+          <button suppressHydrationWarning type="submit" disabled={isLoading} className={buttonClass}>
             {isLoading ? "Sending Code..." : "Get OTP"}
           </button>
         </form>
@@ -141,14 +140,14 @@ subtitle="Access your wellness projects and services"
         <form onSubmit={handleLogin}>
           <div>
             <label className={labelClass}>6-Digit WhatsApp Code</label>
-            <input
+            <input suppressHydrationWarning
               type="text"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
               required
               maxLength={6}
               placeholder="123456"
-              className={`${inputClass} tracking-[4px] text-center font-bold`}
+              className={`${inputClass} tracking-[4px] text-center font-semibold`}
             />
             {timer > 0 && (
               <div className="mt-4 flex flex-col items-center justify-center gap-4">
@@ -175,15 +174,15 @@ subtitle="Access your wellness projects and services"
                       className="transition-all duration-1000 ease-linear"
                     />
                   </svg>
-                  <span className="absolute text-[11px] font-bold text-[#8b6b35]">{timer}</span>
+                  <span className="absolute text-[11px] font-semibold text-[#8b6b35]">{timer}</span>
                 </div>
-                <p className="text-[9px] font-bold uppercase tracking-[1px] text-[#8b6b35]/60 text-center">
+                <p className="text-[9px] font-semibold uppercase tracking-[1px] text-[#8b6b35]/60 text-center">
                   Waiting for resend...
                 </p>
               </div>
             )}
             {showResendButton && (
-              <button
+              <button suppressHydrationWarning
                 type="button"
                 onClick={handleSendOTP}
                 disabled={isLoading}
@@ -195,7 +194,7 @@ subtitle="Access your wellness projects and services"
 
           </div>
 
-          <button type="submit" disabled={isLoading} className={buttonClass}>
+          <button suppressHydrationWarning type="submit" disabled={isLoading} className={buttonClass}>
             {isLoading ? "Verifying..." : "Sign In"}
           </button>
         </form>

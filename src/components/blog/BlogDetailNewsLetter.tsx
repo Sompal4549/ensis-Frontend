@@ -83,11 +83,11 @@ const BlogDetailNewsletter = ({sectionContent}:{sectionContent:any}) => {
           />
 
           <div>
-            <h3 className="font-serif text-md text-white">
+            <h3 className=" text-md text-white">
               {sectionContent.title}
             </h3>
 
-            <p className="mt-1 max-w-xs text-xs leading-4 text-white/80">
+            <p className="mt-1 max-w-xs text-base leading-4 text-white/80">
               {sectionContent.description}
             </p>
           </div>
@@ -99,20 +99,20 @@ const BlogDetailNewsletter = ({sectionContent}:{sectionContent:any}) => {
             onSubmit={handleSubscribe}
             className="flex w-full max-w-xl overflow-hidden rounded-md bg-white lg:w-auto"
           >
-            <input
+            <input suppressHydrationWarning
               type="email"
               aria-label="Email address for newsletter subscription"
               placeholder="Enter your email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="h-10 flex-1 px-5 text-xs text-gray-700 outline-none placeholder:text-gray-400 min-w-[280px]"
+              className="h-10 flex-1 px-5 text-base text-gray-700 outline-none placeholder:text-gray-400 min-w-[280px]"
             />
 
-            <button
+            <button suppressHydrationWarning
               type="submit"
               disabled={loading}
-              className="bg-[#B88A43] px-4 text-xs font-semibold uppercase tracking-wide text-white transition hover:bg-[#a97c39] disabled:opacity-70"
+              className="bg-[#B88A43] px-4 text-base font-semibold uppercase tracking-wide text-white transition hover:bg-[#a97c39] disabled:opacity-70"
             >
               {loading ? "..." :sectionContent.followText||"Subscribe"}
             </button>

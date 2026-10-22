@@ -3,7 +3,7 @@ import { Container } from '../ui/Container';
 import Image from 'next/image';
 import globe from "@/assets/icons/globe.webp"
 import SubHeading from './SubHeading';
-import { getImageUrl } from '@/lib/api/api';
+import { getComponentContent, getImageUrl } from '@/lib/api/api';
 import HtmlRenderer from '../layout/HtmlRender';
 
 type GlobalPresenceProps = {
@@ -29,7 +29,7 @@ export const GlobalPresence = async ({ sectionData }: GlobalPresenceProps) => {
     { value: "100%", label: "Customer Satisfaction" }
     ],
   };
-  const content =  fallback;
+  const content = await getComponentContent<typeof fallback>("home.globalPresence", fallback);
 
   return (
     <section className="bg-[#f3eee6]">
@@ -38,7 +38,7 @@ export const GlobalPresence = async ({ sectionData }: GlobalPresenceProps) => {
           <div>
             <SubHeading className=' text-black' text={content.eyebrow} />
             <h2 className="mt-2 whitespace-pre-line font-serif text-3xl leading-[100%] text-[#1f261b] font-semibold">{content.heading}</h2>
-            <HtmlRenderer className="mt-2 text-xs text-[#5f5a50]" content={content.description}>
+            <HtmlRenderer className="mt-2 text-base text-[#5f5a50]" content={content.description}>
               
             </HtmlRenderer>
           </div>
@@ -55,7 +55,7 @@ export const GlobalPresence = async ({ sectionData }: GlobalPresenceProps) => {
             {content.stats.map((stat, index) => (
               <div key={index}>
                 <span className="block text-3xl font-semibold text-[#334022]">{stat.value}</span>
-                <span className="mt-1 block text-xs font-semibold text-[#5f5a50]">{stat.label}</span>
+                <span className="mt-1 block text-base font-semibold text-[#5f5a50]">{stat.label}</span>
               </div>
             ))}
           </div>

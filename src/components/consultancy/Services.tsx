@@ -92,28 +92,41 @@ interface ConsultancyServicesContent {
   }>;
 }
 
-export default function ConsultancyServices({ sectionContent }: { sectionContent: ConsultancyServicesContent }) {
+export default function ConsultancyServices({ sectionContent }: { sectionContent?: ConsultancyServicesContent }) {
+  const subheading = sectionContent?.subheading || consultancyServicesData.badge;
+  const title = sectionContent?.title || consultancyServicesData.title;
+  const description = sectionContent?.description || consultancyServicesData.description;
+  const serviceCards = (sectionContent?.serviceCards && sectionContent.serviceCards.length > 0)
+    ? sectionContent.serviceCards
+    : consultancyServicesData.services.map(s => ({
+        title: s.title,
+        description: s.description,
+        iconBg: s.iconBg,
+        image: s.icon,
+        learnMoreLink: s.href || "contact",
+        learnMoreText: "Learn More",
+      }));
+
   return (
     <section>
       <Container>
         {/* HEADER */}
         <div className="mx-auto max-w-[540px] text-center">
-          <p className="text-sm font-semibold uppercase tracking-[2px] text-[#D66736]">
-            {sectionContent.subheading}
+          <p className="text-base font-semibold uppercase tracking-[2px] text-[#D66736]">
+            {subheading}
           </p>
 
-          <h2 className="mt-2 text-[28px] font-bold leading-tight">
-            {sectionContent.title}
+          <h2 className="mt-2 text-[28px] font-semibold leading-tight">
+            {title}
           </h2>
 
-          <p className="mx-auto mt-3 max-w-[500px] text-[13px] font-medium" dangerouslySetInnerHTML={{__html:sectionContent.description}}>
-            
+          <p className="mx-auto mt-3 max-w-[500px] text-base font-medium" dangerouslySetInnerHTML={{__html: description}}>
           </p>
         </div>
 
         {/* CARDS */}
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-          {sectionContent.serviceCards.map((service) => (
+          {serviceCards.map((service, index) => (
            <div
   key={service.title}
   className="group flex flex-col rounded-[14px] border border-[#E9E9E9] bg-white px-4 py-4 transition-all duration-300 hover:shadow-md items-center text-center"
@@ -126,18 +139,18 @@ export default function ConsultancyServices({ sectionContent }: { sectionContent
     <Image src={service.image} alt={service.title} width={26} height={26} />
   </div>
 
-  <h3 className="mt-3 text-xs font-bold leading-[1.45]">
+  <h3 className="mt-3 text-base font-semibold leading-[1.45]">
     {service.title}
   </h3>
 
-  <HtmlRenderer content={service.description} className="mt-3 text-[12px] text-gray-500">
+  <HtmlRenderer content={service.description} className="mt-3 text-base text-gray-500">
     
   </HtmlRenderer>
 
   {/* mt-auto yahan flex-grow wale div pe lagao */}
  <div className="mt-auto">
   <a
-    href={`/${service.learnMoreLink}`}
+    href={`/${service.learnMoreLink.replace(/^\//, "")}`}
     className="flex items-center justify-center gap-4" // Removed Next/Link import, using <a>
   >
     <span style={{ fontSize: '12px', fontWeight: 600, color: '#2563EB' }}>

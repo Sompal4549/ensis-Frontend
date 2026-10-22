@@ -63,7 +63,7 @@ export default function ExpertsSection({blogs}:any) {
             </div>
 
             <div className="flex-1">
-              <p className="text-xs text-[#3d3129]">
+              <p className="text-base text-[#3d3129]">
                 "{blog?.expert?.quote}"
               </p>
 
@@ -72,7 +72,7 @@ export default function ExpertsSection({blogs}:any) {
                   {blog?.expert?.name}
                 </h4>
 
-                <p className="text-xs text-[#8f735d]">
+                <p className="text-base text-[#8f735d]">
                   {blog?.expert?.role}
                 </p>
               </div>

@@ -21,7 +21,7 @@ import { Container } from '../ui/Container';
 import logoImg from '@/assets/logo.webp';
 import GlowLogo from './GlowLogo';
 import SparkleLogo from './SparkleLogo';
-import { getComponentContent, socialApi, categoryApi } from '@/lib/api/api';
+import { getComponentContent, getImageUrl, socialApi, categoryApi } from '@/lib/api/api';
 import type { IconType } from "react-icons";
 import SocialIconLink from './SocialLink';
 import footerTop2 from "@/assets/footer-top2.webp"
@@ -80,12 +80,12 @@ const defaultFooter = {
       "title": "Quick Links",
       "links": [
         { "label": "Home", "href": "/" },
-        { "label": "About Us", "href": "/about" },
+        { "label": "About Us", "href": "/about-us" },
         { "label": "Products", "href": "/products" },
-        { "label": "Turnkey Solutions", "href": "/turnkey-solutions" },
-        { "label": "Projects", "href": "/projects" },
+        { "label": "Turnkey Solutions", "href": "/turnkey" },
+        { "label": "Projects", "href": "/projects-and-clients" },
         { "label": "Blog", "href": "/blog" },
-        { "label": "Contact Us", "href": "/contact-us" }
+        { "label": "Contact Us", "href": "/contact" }
       ]
     },
     {
@@ -145,6 +145,9 @@ const features = [
 // export const Footer = async ({image:StaticImageData|string}) => {
 export const Footer = async () => {
   const content = await getComponentContent("layout.footer", defaultFooter);
+  // Admin footer logo (Pages > Footer > Ensis Logo); bundled logo when none is set
+  const footerLogo = (content.company as { ensisLogo?: { imageUrl?: string; alt?: string } })?.ensisLogo;
+  const footerLogoSrc = footerLogo?.imageUrl ? getImageUrl(footerLogo.imageUrl, 400) : logoImg;
   const socialLinks = (await socialApi.getLinks())
     .filter((item) => item.isActive)
     .sort((a, b) => a.order - b.order);
@@ -198,16 +201,21 @@ export const Footer = async () => {
             {/* ── BRAND COL ── */}
             <div>
 
-            <div className="flex flex-col items-center w-[75%]">
+            <div className="flex flex-col items-center md:w-[75%]">
 
-                <SparkleLogo src={logoImg} alt="ENSIS" className="h-16 w-auto" />
+                <SparkleLogo
+                  src={footerLogoSrc}
+                  alt={footerLogo?.alt || "ENSIS"}
+                  variant="card"
+                  className="h-[76px] w-auto object-contain md:h-[88px]"
+                />
 
               {/* lotus divider */}
               <div className="my-2 flex items-center gap-4">
                <Image src={arrow} alt='arrow' width={150} height={8} />
               </div>
 
-              <HtmlRenderer content={content.company.description} className="text-[12px] leading-4 text-white text-center">
+              <HtmlRenderer content={content.company.description} className="text-sm leading-[1.5] text-white md:text-[#24334c] text-center font-semibold">
                 
               </HtmlRenderer>
 
@@ -221,7 +229,7 @@ export const Footer = async () => {
                       key={social._id}
                       href={social.url}
                       platform={social.platform}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-[#d0a965] md:text-white transition hover:bg-[#0f2e22] hover:text-white"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white text-white transition hover:bg-[#0f2e22] hover:text-white md:border-[#24334c] md:text-[#24334c]"
                     >
                       <Icon size={14} />
                     </SocialIconLink>
@@ -241,7 +249,7 @@ export const Footer = async () => {
                     <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${color.bg} ${color.text}`}>
                       <Icon size={14} />
                     </div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-white md:text-[#122544]">
+<h3 className="text-sm font-semibold uppercase tracking-wider text-white md:text-[#122544]">
                       {nav.title}
                     </h3>
                   </div>
@@ -254,7 +262,7 @@ export const Footer = async () => {
                       <li key={link.href}>
                         <Link
                           href={link.href}
-                          className="flex font-medium items-center gap-1 text-xs text-white md:text-[#24334c] transition hover:text-[#d0a965]"
+                          className="flex font-medium items-center gap-1 text-sm text-white md:text-[#24334c] transition hover:text-[#d0a965]"
                         >
                           <ChevronRight size={12} className="shrink-0 text-white md:text-[#d0a965] font-semibold" />
                           {link.label}
@@ -271,7 +279,7 @@ export const Footer = async () => {
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#d0a965] text-white">
                   <Phone size={14} />
                 </div>
-                <h3 className="text-xs font-bold uppercase tracking-wider text-white md:text-[#122544]">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-white md:text-[#122544]">
                   Contact Us
                 </h3>
               </div>
@@ -281,30 +289,30 @@ export const Footer = async () => {
               <div className="space-y-2">
                 {/* address */}
                 <div className="flex gap-4">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#d0a965]">
-                    <MapPin size={14} className="text-[#d0a965]" />
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white md:border-[#d0a965]">
+                    <MapPin size={14} className="text-white md:text-[#d0a965]" />
                   </div>
-                  <p className="text-xs leading-4 text-white md:text-[#24334c] font-semibold">
+                  <p className="text-sm leading-[1.5] text-white md:text-[#24334c] font-semibold">
                     {content.contact.address}
                   </p>
                 </div>
 
                 {/* phone */}
                 <Link href={`tel:${content.contact.phone}`} className="flex items-center gap-4">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#d0a965]">
-                    <Phone size={14} className="text-[#d0a965]" />
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white md:border-[#d0a965]">
+                    <Phone size={14} className="text-white md:text-[#d0a965]" />
                   </div>
-                  <span className="text-xs text-white md:text-[#24334c] hover:text-[#d0a965] font-semibold">
+                  <span className="text-sm text-white md:text-[#24334c] hover:text-[#d0a965] font-semibold">
                     {content.contact.phone}
                   </span>
                 </Link>
 
                 {/* email */}
                 <Link href={`mailto:${content.contact.email}`} className="flex items-center gap-4">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[#d0a965]">
-                    <Mail size={14} className="text-[#d0a965]" />
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white md:border-[#d0a965]">
+                    <Mail size={14} className="text-white md:text-[#d0a965]" />
                   </div>
-                  <span className="text-xs text-white md:text-[#24334c] hover:text-[#d0a965] font-semibold">
+                  <span className="text-sm text-white md:text-[#24334c] hover:text-[#d0a965] font-semibold">
                     {content.contact.email}
                   </span>
                 </Link>
@@ -319,8 +327,8 @@ export const Footer = async () => {
                   <div className="flex items-center gap-4 text-white">
                     <FaWhatsapp size={18} color="white" />
                     <div>
-                      <p className="text-xs font-bold leading-tight text-white">WHATSAPP CHAT</p>
-                      <p className="text-[11px] text-white/80 font-semibold">Chat with our experts</p>
+                      <p className="text-sm font-semibold leading-[1.4] tracking-wider text-white">WHATSAPP CHAT</p>
+                      <p className="text-sm text-white/80 font-semibold">Chat with our experts</p>
                     </div>
                   </div>
                   <ChevronRight size={16} color="white" />
@@ -354,8 +362,8 @@ export const Footer = async () => {
                     <Icon size={18} />
                   </div>
                   <div>
-                    <h4 className={`${item.color} text-[10px] font-bold leading-tight`}>{item.title}</h4>
-                    <p className="mt-0.5 text-[11px] text-white/80">{item.desc}</p>
+                    <h4 className={`${item.color} text-[14px] font-semibold leading-[1.4] tracking-wider`}>{item.title}</h4>
+                    <p className="mt-0.5 text-[14px] text-white/80">{item.desc}</p>
                   </div>
                 </div>
               );
@@ -367,7 +375,7 @@ export const Footer = async () => {
       <div className="px-0 md:px-8">
         <Container>
           <div className="flex flex-col items-center justify-between gap-4 py-2 md:flex-row">
-            <p className="text-[12px] text-white/70">{content.copyright.text}</p>
+            <p className="text-sm text-white/70">{content.copyright.text}</p>
 
             {/* lotus center */}
             <div className="hidden items-center gap-4 md:flex">
@@ -379,7 +387,7 @@ export const Footer = async () => {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="text-[12px] text-white/70 transition hover:text-white"
+                  className="text-sm text-white/70 transition hover:text-white"
                 >
                   <span className='text-white'>
 

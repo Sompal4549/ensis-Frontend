@@ -21,7 +21,20 @@ export interface FeaturedProjectsContent {
   buttonPath: string;
 }
 
-export default function FeaturedProjects({sectionContent}: { sectionContent: FeaturedProjectsContent }) {
+const defaultProjects = [
+  { id: "1", title: "Luxury Ayurvedic Spa", location: "Rishikesh, Uttarakhand", image: { imageUrl: "/uploads/welcome_to_ensis.webp", alt: "Rishikesh" } },
+  { id: "2", title: "Panchkarma Hospital Setup", location: "New Delhi", image: { imageUrl: "/uploads/welcome_to_ensis.webp", alt: "Delhi" } },
+  { id: "3", title: "Heritage Wellness Resort", location: "Udaipur, Rajasthan", image: { imageUrl: "/uploads/welcome_to_ensis.webp", alt: "Udaipur" } },
+  { id: "4", title: "Holistic Health Center", location: "Bengaluru, Karnataka", image: { imageUrl: "/uploads/welcome_to_ensis.webp", alt: "Bengaluru" } },
+];
+
+export default function FeaturedProjects({sectionContent}: { sectionContent?: FeaturedProjectsContent }) {
+  const title = sectionContent?.title || "Featured Turnkey Installations";
+  const subtitle = sectionContent?.subtitle || "Selected turnkey facilities designed and delivered by Ensis.";
+  const cards = (sectionContent?.cards && sectionContent.cards.length > 0) ? sectionContent.cards : defaultProjects;
+  const buttonText = sectionContent?.buttonText || "View All Projects";
+  const buttonPath = sectionContent?.buttonPath || "/projects-and-clients";
+
   return (
     <section className="w-full bg-[#f7f3eb]">
       <Container>
@@ -29,36 +42,36 @@ export default function FeaturedProjects({sectionContent}: { sectionContent: Fea
         <div className="mb-2 flex items-center justify-center gap-4">
          <Image src={decorationLeft} width={30} height={30} alt="decoration" className="h-full object-contain" />
           <h2 className="text-base font-semibold uppercase">
-            {sectionContent.title}
+            {title}
           </h2>
           <Image src={decorationRight} width={30} height={30} alt="decoration" className="h-full object-contain" />
         </div>
-<p className="mb-6 text-center text-xs sm:text-sm font-semibold">
-  {sectionContent.subtitle}
-</p>
+        <p className="mb-6 text-center text-base font-semibold">
+          {subtitle}
+        </p>
         {/* Cards */}
- <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
-  {sectionContent.cards.map((project:any, index:number) => (
-    <div
-      key={project.id || index}
-      className="overflow-hidden rounded-md border border-[#d8d2c6] bg-white"
-    >
-      {/* Image with fixed height container */}
-      <div className="relative h-[160px] w-full">
-        <Image
-          src={project.image.imageUrl}
-          alt={project.image.alt }
-          fill
-          className="object-cover scale-110"
-        />
-      </div>
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
+          {cards.map((project: any, index: number) => (
+            <div
+              key={project.id || index}
+              className="overflow-hidden rounded-md border border-[#d8d2c6] bg-white"
+            >
+              {/* Image with fixed height container */}
+              <div className="relative h-[160px] w-full bg-[#e8e0d5]">
+                <Image
+                  src={project.image?.imageUrl || project.image || "/uploads/welcome_to_ensis.webp"}
+                  alt={project.image?.alt || project.title || ""}
+                  fill
+                  className="object-cover scale-110"
+                />
+              </div>
 
       {/* Content */}
       <div className="px-2 py-2 mt-2">
-        <h3 className="text-sm font-semibold leading-[1.2]">
+        <h3 className="text-base font-semibold leading-[1.2]">
           {project.title}
         </h3>
-        <p className="mt-1 text-xs leading-none">
+        <p className="mt-1 text-base leading-none">
           {project.location}
         </p>
       </div>

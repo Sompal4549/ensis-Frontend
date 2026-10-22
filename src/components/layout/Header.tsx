@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
-import SparkleLogo from "./SparkleLogo";
+import { usePathname } from "next/navigation";
 import {
     Phone,
     Mail,
@@ -31,15 +31,19 @@ import logoImg from "@/assets/logo.webp";
 import GreenButton from "../ui/GreenButton";
 import BookButton from "../ui/BookButton";
 import { useShop } from "@/context/ShopContext";
-import { getComponentContent } from "@/lib/api/api";
+import { getComponentContent, getImageUrl } from "@/lib/api/api";
 import { authStore } from "@/lib/auth";
 
-export const Header = () => {
+type HeaderLogo = { imageUrl?: string; alt?: string };
+
+export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
+    const pathname = usePathname();
     const [mounted, setMounted] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [wishlistOpen, setWishlistOpen] = useState(false);
+    const [userMenuOpen, setUserMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    const [user, setUser] = useState<{ name?: string; email?: string } | null>(null);
+    const [user, setUser] = useState<{ name?: string; firstName?: string; lastName?: string; email?: string } | null>(null);
     const { addToCart, cartCount, likedCount, likedItems, toggleLike } = useShop();
     const wishlistRef = useRef<HTMLDivElement | null>(null);
     const adminUrl = process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001";
@@ -48,6 +52,7 @@ export const Header = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("ensis_access_token");
+        localStorage.removeItem("ensis_refresh_token");
         localStorage.removeItem("ensis_user");
         window.dispatchEvent(new Event("ensis-auth-change"));
         setUser(null);
@@ -104,6 +109,11 @@ export const Header = () => {
             ) {
                 setWishlistOpen(false);
             }
+            // Close user menu if clicked outside
+            const userMenu = document.getElementById("user-menu-wrapper");
+            if (userMenu && !userMenu.contains(event.target as Node)) {
+                setUserMenuOpen(false);
+            }
         };
 
         document.addEventListener("mousedown", handleClickOutside);
@@ -114,36 +124,38 @@ export const Header = () => {
     }, []);
 
     const navLink =
-        "inline-flex items-center whitespace-nowrap border-b-2 border-transparent pt-0.5 text-[11px] font-bold tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
+        "inline-flex items-center whitespace-nowrap border-b-2 border-transparent pt-0.5 text-sm xl:text-[13px] 2xl:text-sm font-semibold tracking-wide xl:tracking-normal 2xl:tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
 
     const mobileLink =
-        "border-b border-[#e8e0d3] py-6 text-[12px] font-bold tracking-wide text-[#1f261b]";
+        "border-b border-[#e8e0d3] py-3 text-sm font-semibold tracking-wide text-[#1f261b]";
 
     // Default content shape matches the actual DB schema for "layout.header"
     // (contactInfo + navigation), NOT the old badges/navLinks shape.
     const [headerContent, setHeaderContent] = useState({
+        // Admin "Header" logo; empty until loaded, so the bundled logo shows meanwhile
+        logo: { imageUrl: initialLogo?.imageUrl || "", alt: initialLogo?.alt || "ENSIS Logo" },
         phone: "+91 9654900525",
         email: "info@ensis.in",
-        brochureUrl: "https://ensis.in/pdf/e-broucher.pdf",
+        brochureUrl: "/pdf/e-brochure.pdf",
         contactInfo: [
             {
-                image: { imageUrl: "/icons/factory.svg", alt: "Factory Icon" },
+                image: { imageUrl: "https://res.cloudinary.com/ddjhixcwh/image/upload/v1782895454/ensis/hiiaox1cxbhqitgl398r.webp", alt: "Factory Icon" },
                 text: "Manufactured in India",
             },
             {
-                image: { imageUrl: "/icons/phone.svg", alt: "Phone Icon" },
+                image: { imageUrl: "https://res.cloudinary.com/ddjhixcwh/image/upload/v1782895338/ensis/o9uoqux6pxhfkqvetosb.webp", alt: "Phone Icon" },
                 text: "+91 9654900525",
                 href: "tel:+919654900525",
             },
             {
-                image: { imageUrl: "/icons/mail.svg", alt: "Mail Icon" },
+                image: { imageUrl: "https://res.cloudinary.com/ddjhixcwh/image/upload/v1782895404/ensis/bfzklxvkqlxinbj4uuhw.webp", alt: "Mail Icon" },
                 text: "info@ensis.in",
                 href: "mailto:info@ensis.in",
             },
         ],
         navigation: [
             { title: "Home", slug: "/" },
-            { title: "About Us", slug: "/about" },
+            { title: "About Us", slug: "/about-us" },
             { title: "Products", slug: "/products" },
             { title: "Turnkey Solutions", slug: "/turnkey" },
             { title: "Consultancy", slug: "/consultancy" },
@@ -168,10 +180,22 @@ export const Header = () => {
     }, []);
 
     // Map DB's `navigation` (title/slug) to the {label, href} shape this component renders
+    const logoSrc = headerContent.logo?.imageUrl ? getImageUrl(headerContent.logo.imageUrl, 600) : logoImg;
+    const logoAlt = headerContent.logo?.alt || "ENSIS Logo";
+
     const navLinks = (headerContent.navigation ?? []).map((n: any) => ({
         label: n.title,
         href: n.slug,
     }));
+
+    const brochureUrl =
+        (headerContent as any)?.actions?.brochureButton?.href ||
+        (headerContent as any)?.brochureUrl ||
+        "/pdf/e-brochure.pdf";
+
+    const brochureText =
+        (headerContent as any)?.actions?.brochureButton?.text ||
+        "E-Brochure";
 
     return (
         <header className={`fixed inset-x-0 top-0 z-[60] transition-all duration-300 ${isScrolled ? "bg-white shadow-sm" : "bg-transparent"}`}>
@@ -229,7 +253,7 @@ export const Header = () => {
                             >
                                 <Heart size={15} />
                                 {mounted && (
-                                    <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c8a45d] text-[9px] font-bold text-white">
+                                    <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c8a45d] text-[9px] font-semibold text-white">
                                         {likedCount}
                                     </span>
                                 )}
@@ -238,10 +262,10 @@ export const Header = () => {
                             {wishlistOpen && (
                                 <div className="absolute right-0 top-10 z-50 w-[340px] overflow-hidden rounded-md border border-[#e2d8ca] bg-white text-left shadow-[0_18px_45px_rgba(0,0,0,0.14)]">
                                     <div className="flex items-center justify-between border-b border-[#eee6dc] px-4 py-3">
-                                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#263016]">
+                                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#263016]">
                                             Wishlist
                                         </p>
-                                        <span className="rounded-full bg-[#fbf8f2] px-2 py-1 text-[10px] font-bold text-[#8d6a3a]">
+                                        <span className="rounded-full bg-[#fbf8f2] px-2 py-1 text-[10px] font-semibold text-[#8d6a3a]">
                                             {likedCount}
                                         </span>
                                     </div>
@@ -254,7 +278,7 @@ export const Header = () => {
                                                     className="grid grid-cols-[64px_1fr] gap-4 border-b border-[#f0e8df] px-4 py-3 last:border-b-0"
                                                 >
                                                     <Link
-                                                        href={`/products/${item.id}`}
+                                                        href={`/products/${item.slug || item.id}`}
                                                         onClick={() => setWishlistOpen(false)}
                                                         className="relative block aspect-square overflow-hidden bg-[#f8f3ec]"
                                                     >
@@ -269,12 +293,11 @@ export const Header = () => {
 
                                                     <div className="min-w-0">
                                                         <Link
-                                                            href={`/products/${item.id}`}
+                                                            href={`/products/${item.slug || item.id}`}
                                                             onClick={() => setWishlistOpen(false)}
-                                                            className="line-clamp-2 text-[12px] font-bold leading-snug text-[#1f261b] hover:text-[#8d6a3a]"
-                                                        >
-                                                            {item.name}
-                                                        </Link>
+                                                            className="line-clamp-2 text-[12px] font-semibold leading-snug text-[#1f261b] hover:text-[#8d6a3a]"
+                                                            dangerouslySetInnerHTML={{ __html: item.name }}
+                                                        />
                                                         <p className="mt-1 text-[11px] font-semibold text-[#8d6a3a]">
                                                             {"\u20b9"}
                                                             {item.price.toLocaleString("en-IN")}
@@ -284,7 +307,7 @@ export const Header = () => {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => addToCart(item)}
-                                                                className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-sm bg-[#263016] px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#101010]"
+                                                                className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-sm bg-[#263016] px-3 py-2 text-[10px] font-semibold uppercase tracking-wide text-white transition-colors hover:bg-[#101010]"
                                                             >
                                                                 <ShoppingCart size={12} />
                                                                 Add to Cart
@@ -305,7 +328,7 @@ export const Header = () => {
                                     ) : (
                                         <div className="px-5 py-8 text-center">
                                             <Heart size={28} className="mx-auto mb-3 text-[#c8a45d]" />
-                                            <p className="text-sm font-bold text-[#1f261b]">
+                                            <p className="text-sm font-semibold text-[#1f261b]">
                                                 No wishlist items
                                             </p>
                                             <p className="mt-2 text-xs leading-5 text-[#6f675d]">
@@ -325,7 +348,7 @@ export const Header = () => {
                         >
                             <ShoppingCart size={15} />
                             {mounted && (
-                                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c8a45d] text-[9px] font-bold text-white">
+                                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c8a45d] text-[9px] font-semibold text-white">
                                     {cartCount}
                                 </span>
                             )}
@@ -333,27 +356,81 @@ export const Header = () => {
 
                         {/* E-Brochure */}
                         <div className="hidden sm:block">
-                            <BookButton text="E-Brochure" path={headerContent.brochureUrl} />
+                            <BookButton text={brochureText} path={brochureUrl} />
                         </div>
 
                         {/* User / Login */}
                         {mounted && (user ? (
-                            <div className="flex items-center gap-4">
-                                <div className="flex items-center gap-4 rounded-full border border-white/20 bg-white/10 px-3 py-1">
-                                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d9c49d] text-[10px] font-black text-[#263016]">
-                                        {user.name?.charAt(0).toUpperCase() || "U"}
-                                    </div>
-                                    <span className="text-[10px] font-bold tracking-wide text-white">{user.name}</span>
+                            <div className="flex items-center gap-3">
+                                {/* Name pill + dropdown */}
+                                <div id="user-menu-wrapper" className="relative flex items-center">
+                                    <button
+                                        type="button"
+                                        onClick={() => setUserMenuOpen((o) => !o)}
+                                        className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 transition-colors hover:bg-white/20"
+                                    >
+                                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d9c49d] text-[10px] font-semibold text-[#263016]">
+                                            {(() => {
+                                              const displayName = user.name || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email || "U";
+                                              return displayName.charAt(0).toUpperCase();
+                                            })()}
+                                        </div>
+                                        <span className="max-w-[90px] truncate text-[10px] font-semibold tracking-wide text-white sm:max-w-[160px]">
+                                          {user.name || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email}
+                                        </span>
+                                        <ChevronDown
+                                            size={12}
+                                            className={`text-white/70 transition-transform duration-200 ${userMenuOpen ? "rotate-180" : ""}`}
+                                        />
+                                    </button>
+
+                                    {/* Dropdown — only Logout */}
+                                    {userMenuOpen && (
+                                        <div className="absolute right-0 top-full mt-2 z-[100] w-40 overflow-hidden rounded-xl border border-[#e2d8ca] bg-white shadow-[0_12px_36px_rgba(0,0,0,0.14)]">
+                                            <button
+                                                type="button"
+                                                onClick={() => { setUserMenuOpen(false); handleLogout(); }}
+                                                className="flex w-full items-center gap-2.5 px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-red-600 transition-colors hover:bg-red-50"
+                                            >
+                                                <LogOut size={13} />
+                                                Logout
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
-                                <button
-                                    onClick={handleLogout}
-                                    className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-[#d9c49d] hover:text-white transition-colors"
+
+                                {/* Login as Super Admin — standalone right */}
+                                <a
+                                    href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-1.5 whitespace-nowrap rounded-md bg-[#d9c49d] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-[#263016] hover:bg-[#c8a45d] transition-colors sm:px-3"
                                 >
-                                    <LogOut size={12} /> Logout
-                                </button>
+                                    <ShieldCheck size={12} />
+                                    <span className="sm:hidden">Admin</span>
+                                    <span className="hidden sm:inline">Super Admin</span>
+                                </a>
                             </div>
                         ) : (
-                            <GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
+                            <div className="flex items-center gap-2">
+                              {/* Short labels on phones so both buttons stay on one line */}
+                              <GreenButton
+                                path="/login"
+                                fontSize="text-xs sm:text-base"
+                                leftIcon={<LogIn size={14} className="text-[#050A1A]" />}
+                                text={
+                                  <span className="whitespace-nowrap">
+                                    <span className="sm:hidden">Login</span>
+                                    <span className="hidden sm:inline">User Login</span>
+                                  </span>
+                                }
+                              />
+                              <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" rel="noopener noreferrer" className="flex h-8 items-center gap-1.5 whitespace-nowrap rounded-md bg-[#d9c49d] px-2.5 sm:px-3 text-[10px] font-semibold uppercase tracking-wider text-[#263016] hover:bg-[#c8a45d] transition-colors">
+                                <ShieldCheck size={12} />
+                                <span className="sm:hidden">Admin</span>
+                                <span className="hidden sm:inline">Login as Superadmin</span>
+                              </a>
+                            </div>
                         ))}
 
                         {/* Mobile menu trigger */}
@@ -363,31 +440,30 @@ export const Header = () => {
             </div>
 
             <div className={`bg-white`}>
-            <Container className="relative flex items-center justify-between gap-6 py-2!">
+            <Container className="relative flex items-center justify-between gap-3 xl:gap-5 py-0.5!">
         <Link
             href="/"
-            className="relative block h-10 w-[150px] shrink-0 md:h-11.5"
+            className="relative flex items-center shrink-0 py-0"
             aria-label="ENSIS Logo"
         >
-            {/* PREVIOUS: absolute left-0 top-1/2 z-10 -translate-y-[30%] — static now */}
-            <div className="flex h-full items-center">
-                <SparkleLogo
-                    src={logoImg}
-                    alt="ENSIS Logo"
-                    className="h-8 w-auto object-contain md:h-10"
-                />
-            </div>
+            <Image
+                src={logoSrc}
+                alt={logoAlt}
+                className="h-[53px] sm:h-[57px] md:h-[63px] xl:h-[59px] 2xl:h-[67px] -my-[2.5px] w-auto object-contain"
+                {...(typeof logoSrc === "string" ? { width: 600, height: 244 } : {})}
+                priority
+            />
         </Link>
 
                     {/* Spacer so nav doesn't go under the logo */}
-                    <div className="w-[40px] md:w-[120px] shrink-0" />
+                    <div className="w-2 md:w-6 xl:w-3 2xl:w-8 shrink-0" />
       <nav className="hidden xl:flex">
-            <ul className="flex items-center gap-4.5 xl:gap-6.5 2xl:gap-7.5">
+            <ul className="flex items-center gap-4.5 xl:gap-3 2xl:gap-6.5">
                             {navLinks.map((item, index) => (
                                 <li key={index}>
                                     <Link
                                         href={item.href}
-                                        className={`${navLink} uppercase font-semibold`}
+                                        className={`${navLink} uppercase font-semibold ${pathname === item.href ? "border-[#8d6a3a]! text-[#8d6a3a]!" : ""}`}
                                     >
                                         {item.label}
                                     </Link>
@@ -419,19 +495,21 @@ export const Header = () => {
 
             {/* Mobile Menu */}
             <aside
-                className={`fixed right-0 top-0 z-50 h-screen w-[60%] min-w-[190px] max-w-[320px] bg-[#fbf8f2] shadow-2xl transition-transform duration-300 ease-out xl:hidden ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+                className={`fixed right-0 top-0 z-50 flex h-screen w-[60%] min-w-[190px] max-w-[320px] flex-col bg-[#fbf8f2] shadow-2xl transition-transform duration-300 ease-out xl:hidden ${isMenuOpen ? "translate-x-0" : "translate-x-full"
                     }`}
                 aria-hidden={!isMenuOpen}
             >
-                <div className="flex h-20 items-center justify-between border-b border-[#e8e0d3] px-4">
-                    <SparkleLogo
-                        src={logoImg}
-                        alt="ENSIS Logo"
-                        className="h-8 w-auto object-contain"
+                <div className="flex h-[76px] items-center justify-between gap-3 border-b border-[#e8e0d3] px-4">
+                    <Image
+                        src={logoSrc}
+                        alt={logoAlt}
+                        className="h-11 sm:h-13 w-auto max-w-[200px] object-contain"
+                        {...(typeof logoSrc === "string" ? { width: 600, height: 244 } : {})}
+                        priority
                     />
 
                     <button
-                        className="inline-flex size-9 items-center justify-center border border-[#d8cbb9] text-[#263016]"
+                        className="inline-flex size-9 shrink-0 items-center justify-center border border-[#d8cbb9] text-[#263016]"
                         aria-label="Close menu"
                         onClick={() => setIsMenuOpen(false)}
                     >
@@ -439,12 +517,12 @@ export const Header = () => {
                     </button>
                 </div>
 
-                <nav className="flex flex-col px-5 py-3">
+                <nav className="flex flex-1 flex-col overflow-y-auto px-5 py-3">
                     {navLinks.map((item, index) => (
                         <Link
                             key={index}
                             href={item.href}
-                            className={`${mobileLink}`}
+                            className={`${mobileLink} ${pathname === item.href ? "text-[#8d6a3a]!" : ""}`}
                             onClick={() => setIsMenuOpen(false)}
                         >
                             {item.label}
@@ -457,30 +535,35 @@ export const Header = () => {
                     >
                         <span>Cart</span>
                         {mounted && (
-                            <span className="rounded-full bg-[#263016] px-2 py-0.5 text-[10px] font-bold text-white">
+                            <span className="rounded-full bg-[#263016] px-2 py-0.5 text-[10px] font-semibold text-white">
                                 {cartCount}
                             </span>
                         )}
                     </Link>
-                    <div className="mt-4 flex flex-col gap-4">
-                        <GreenButton text={<span className="uppercase text-[#050A1A]">E-Brochure</span>} path={headerContent.brochureUrl} />
+                    <div className="mt-3 flex flex-col gap-3">
+                        <GreenButton text={<span className="uppercase text-[10px] font-semibold tracking-wider text-[#050A1A]">{brochureText}</span>} path={brochureUrl} />
 
                         {mounted && (user ? (
-                            <div className="mt-2 rounded-md border border-[#d8cbb9] bg-white p-4">
+                            <div className="mt-2 rounded-md border border-[#d8cbb9] bg-white p-3">
                                 <div className="flex items-center gap-4">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#263016] text-sm font-bold text-white">
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#263016] text-xs font-semibold text-white">
                                         {user.name?.charAt(0).toUpperCase()}
                                     </div>
                                     <div>
-                                        <p className="text-xs font-bold text-[#1f261b]">{user.name}</p>
-                                        <button onClick={handleLogout} className="mt-1 text-[10px] font-bold uppercase tracking-widest text-[#9b2c2c]">
+                                        <p className="text-xs font-semibold text-[#1f261b]">{user.name}</p>
+                                        <button onClick={handleLogout} className="mt-1 text-[10px] font-semibold uppercase tracking-widest text-[#9b2c2c]">
                                             Sign Out
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         ) : (
-                            <GreenButton path="/login" leftIcon={<LogIn size={14} className="text-[#050A1A]" />} text="User Login" />
+                            <div className="flex flex-col gap-2">
+                              <GreenButton path="/login" leftIcon={<LogIn size={12} className="text-[#050A1A]" />} text={<span className="text-[10px]">User Login</span>} />
+                              <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 rounded-md bg-[#263016] px-3 h-8 text-[10px] font-semibold uppercase tracking-wider text-[#d9c49d] hover:bg-[#1a2010] transition-colors">
+                                <ShieldCheck size={12} /> Login as Superadmin
+                              </a>
+                            </div>
                         ))}
                     </div>
                 </nav>

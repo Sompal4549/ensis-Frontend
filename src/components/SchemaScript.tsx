@@ -1,7 +1,8 @@
 import { generateSchema } from "@/lib/api/seo";
+import { toJsonLd } from "@/lib/seo-text";
 
 export default async function SchemaScript({ page }: { page: string }) {
-  const schema = await generateSchema(page);
+  const schema = toJsonLd(await generateSchema(page));
   if (!schema) return null;
   return (
     <script

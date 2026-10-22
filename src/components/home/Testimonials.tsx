@@ -12,6 +12,52 @@ import userImage from "@/assets/home/testimonial1.webp";
 import SubHeading from './SubHeading';
 import { FaStar } from 'react-icons/fa';
 
+const defaultContent = {
+  title: "WHAT OUR CLIENTS SAY",
+  testimonials: [
+    {
+      text: "Ensis has delivered exceptional quality Panchkarma equipment for our center. Their customization and support are outstanding.",
+      name: "Dr. Anand Sharma",
+      role: "Ayurveda Physician",
+      designation: "",
+      description: "",
+      image: "",
+      userImage: userImage,
+      rating: 5,
+    },
+    {
+      text: "The spa setup by Ensis has elevated our resort's wellness experience to a whole new level.",
+      name: "Neha Malhotra",
+      role: "Wellness Resort Owner",
+      designation: "",
+      description: "",
+      image: "",
+      userImage: userImage,
+      rating: 4,
+    },
+    {
+      text: "Excellent worksmanship, premium finishing and on-time delivery. Highly recommended!",
+      name: "Arjun Menon",
+      role: "Spa Consultant",
+      designation: "",
+      description: "",
+      image: "",
+      userImage: userImage,
+      rating: 5,
+    },
+    {
+      text: "Their steam chambers and massage tables are of outstanding quality. Our clients love them.",
+      name: "Priya Nair",
+      role: "Wellness Center Director",
+      designation: "",
+      description: "",
+      image: "",
+      userImage: userImage,
+      rating: 5,
+    },
+  ],
+} as Testimonial;
+
 export interface Testimonial {
   title: string;
   testimonials: {
@@ -20,9 +66,11 @@ export interface Testimonial {
     name: string;
     role?: string;
     designation?: string;
-    image?: any;
-    userImage?: string;
+    image?: string | any;
+    userImage?: string | any;
     rating?: number;
+    /** Admin visibility: Published / Pending Review / Hidden */
+    status?: string;
   }[];
 }
 
@@ -39,10 +87,17 @@ const breakpointsConfig = {
 };
 
 export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
+  const title = sectionContent?.title || defaultContent.title;
+  // Only reviews marked Published in the admin (older entries have no status and count as published)
+  const published = (sectionContent?.testimonials || []).filter(
+    (t) => !t.status || t.status === "Published"
+  );
+  const testimonials = published.length > 0 ? published : defaultContent.testimonials;
+
   return (
     <section className="bg-[#fbf8f2]">
       <Container>
-        <SubHeading className='text-black' text={sectionContent.title} />
+        <SubHeading className='text-black' text={title} />
         <div className="mt-2">
         <Swiper
   modules={[Autoplay]}
@@ -54,11 +109,11 @@ export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
   watchSlidesProgress={false}
   preventInteractionOnTransition={true}
 >
-            {sectionContent.testimonials.map((item, index) => (
+            {testimonials.map((item, index) => (
               <SwiperSlide key={index}>
                 <div className="h-full border border-[#e1d7c9] bg-white p-3 rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md relative">
                   <Image height={28} width={28} alt="quote" src={quote} />
-                  <p className="mb-2 text-xs font-medium pl-6 line-clamp-3" dangerouslySetInnerHTML={{ __html: item.text || item.description || "" }} />
+                  <p className="mb-2 text-base font-medium pl-6 line-clamp-3" dangerouslySetInnerHTML={{ __html: item.text || item.description || "" }} />
                   <div className='flex text-orange-400 items-center gap-4 my-2 pl-6'>
                     {[...Array(Math.round(item.rating ?? 5))].map((_, i) => <FaStar key={i} />)}
                   </div>
@@ -75,8 +130,8 @@ export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
                       />
                     </div>
                     <div className="py-1">
-                      <p className="text-xs font-bold text-[#1f261b] leading-5">{item.name}</p>
-                      <span className="text-xs font-medium leading-4">{item.role ?? item.designation}</span>
+                      <p className="text-base font-semibold text-[#1f261b] leading-5">{item.name}</p>
+                      <span className="text-base font-medium leading-5">{item.role ?? item.designation}</span>
                     </div>
                   </div>
                 </div>

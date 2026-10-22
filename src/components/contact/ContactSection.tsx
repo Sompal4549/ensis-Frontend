@@ -116,6 +116,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          source: "contact",
           fullName: formData.fullName,
           mobileNumber: formData.mobile,
           email: formData.email,
@@ -142,25 +143,29 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
 
           {/* LEFT — Contact Info */}
           <div className="bg-white rounded-2xl border border-[#ebe7df] p-7 md:p-9 shadow-sm">
-            <h2 className="text-xl font-bold text-[#111]">{sectionContent.title || "Contact Information"}</h2>
+            <h2 className="text-xl font-semibold text-[#111]">{sectionContent?.title || "Contact Information"}</h2>
             <div className="w-8 h-[3px] bg-[#D9B25F] mt-1.5 mb-7 rounded-full" />
 
             <div className="divide-y divide-[#f0ece5]">
-              {sectionContent.contactDetails.map((detail) => (
+              {(sectionContent?.contactDetails || []).map((detail) => (
                 <div key={detail.id} className="flex items-start gap-4 py-4">
                   <div className="w-10 h-10 rounded-xl bg-[#f5f0e8] border border-[#ebe7df] flex items-center justify-center shrink-0">
-                    <Image src={detail.icon} alt={detail.title} width={18} height={18} />
+                    {detail.icon ? (
+                      <Image src={detail.icon} alt={detail.title} width={18} height={18} />
+                    ) : (
+                      <span className="text-[#D9B25F] text-xs font-semibold">●</span>
+                    )}
                   </div>
                   <div>
-                    <p className="text-[13px] font-bold text-[#111]">{detail.title}</p>
-                    <HtmlRenderer className="text-[13px] text-[#6b7280] mt-0.5 leading-6" content={detail.description}></HtmlRenderer>
+                    <p className="text-base font-semibold text-[#111]">{detail.title}</p>
+                    <HtmlRenderer className="text-base text-[#6b7280] mt-0.5 leading-6" content={detail.description || ""}></HtmlRenderer>
                   </div>
                 </div>
               ))}
             </div>
 
             <div className="mt-6 flex items-center gap-4">
-              <span className="text-sm font-bold text-[#111]">Follow Us</span>
+              <span className="text-sm font-semibold text-[#111]">Follow Us</span>
               <SocialSidebar layout="horizontal" />
             </div>
           </div>
@@ -177,17 +182,17 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
   )}
 
   <div className="relative z-10">
-            <h2 className="text-xl font-bold text-white">Send Us a Message</h2>
+            <h2 className="text-xl font-semibold text-white">Send Us a Message</h2>
             <div className="w-8 h-[3px] bg-[#D9B25F] mt-1.5 mb-7 rounded-full" />
 
             <form className="space-y-3" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input name="fullName" aria-label="Your name" value={formData.fullName} onChange={handleChange} placeholder="Your Name" className={inputClass} />
+                <input suppressHydrationWarning name="fullName" aria-label="Your name" value={formData.fullName} onChange={handleChange} placeholder="Your Name" className={inputClass} />
                 <div className="relative">
-                  <input name="mobile" aria-label="Mobile number" value={formData.mobile} onChange={handleChange} disabled={mobileVerified} placeholder="Mobile Number" className={`${inputClass} ${mobileVerified ? "border-green-500" : ""} pr-24`} />
+                  <input suppressHydrationWarning name="mobile" aria-label="Mobile number" value={formData.mobile} onChange={handleChange} disabled={mobileVerified} placeholder="Mobile Number" className={`${inputClass} ${mobileVerified ? "border-green-500" : ""} pr-24`} />
                   {!mobileVerified ? (
-                    <button type="button" onClick={sendMobileOtp} disabled={sendingMobileOtp || mobileTimer > 0 || !formData.mobile}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 h-7 px-2.5 rounded-lg bg-[#D9B25F] text-[#0f2e22] font-bold text-[10px] disabled:opacity-50">
+                    <button suppressHydrationWarning type="button" onClick={sendMobileOtp} disabled={sendingMobileOtp || mobileTimer > 0 || !formData.mobile}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 h-7 px-2.5 rounded-lg bg-[#D9B25F] text-[#0f2e22] font-semibold text-[10px] disabled:opacity-50">
                       {sendingMobileOtp ? "..." : mobileTimer > 0 ? `${mobileTimer}s` : mobileOtpSent ? "Resend" : "Send OTP"}
                     </button>
                   ) : <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 text-green-400" size={16} />}
@@ -196,9 +201,9 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
 
               {mobileOtpSent && !mobileVerified && (
                 <div className="flex gap-4">
-                  <input aria-label="Mobile OTP" value={mobileOtp} onChange={e => setMobileOtp(e.target.value)} placeholder="Enter Mobile OTP" maxLength={6} className={inputClass} />
-                  <button type="button" onClick={verifyMobileOtp} disabled={verifyingMobile || !mobileOtp}
-                    className="px-5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-bold text-sm whitespace-nowrap">
+                  <input suppressHydrationWarning aria-label="Mobile OTP" value={mobileOtp} onChange={e => setMobileOtp(e.target.value)} placeholder="Enter Mobile OTP" maxLength={6} className={inputClass} />
+                  <button suppressHydrationWarning type="button" onClick={verifyMobileOtp} disabled={verifyingMobile || !mobileOtp}
+                    className="px-5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-semibold text-sm whitespace-nowrap">
                     {verifyingMobile ? "..." : "Verify"}
                   </button>
                 </div>
@@ -206,15 +211,15 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="relative">
-                  <input name="email" type="email" aria-label="Email address" value={formData.email} onChange={handleChange} disabled={emailVerified} placeholder="Email Address" className={`${inputClass} ${emailVerified ? "border-green-500" : ""} pr-24`} />
+                  <input suppressHydrationWarning name="email" type="email" aria-label="Email address" value={formData.email} onChange={handleChange} disabled={emailVerified} placeholder="Email Address" className={`${inputClass} ${emailVerified ? "border-green-500" : ""} pr-24`} />
                   {!emailVerified ? (
-                    <button type="button" onClick={sendEmailOtp} disabled={sendingEmailOtp || emailTimer > 0 || !formData.email}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 h-7 px-2.5 rounded-lg bg-[#D9B25F] text-[#0f2e22] font-bold text-[10px] disabled:opacity-50">
+                    <button suppressHydrationWarning type="button" onClick={sendEmailOtp} disabled={sendingEmailOtp || emailTimer > 0 || !formData.email}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 h-7 px-2.5 rounded-lg bg-[#D9B25F] text-[#0f2e22] font-semibold text-[10px] disabled:opacity-50">
                       {sendingEmailOtp ? "..." : emailTimer > 0 ? `${emailTimer}s` : emailOtpSent ? "Resend" : "Send OTP"}
                     </button>
                   ) : <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 text-green-400" size={16} />}
                 </div>
-                <select name="productType" aria-label="Product type" value={formData.productType} onChange={handleChange} className={inputClass}>
+                <select suppressHydrationWarning name="productType" aria-label="Product type" value={formData.productType} onChange={handleChange} className={inputClass}>
                   <option value="">Select Product Type</option>
                   <option>Panchkarma Equipment</option>
                   <option>Wellness Interiors</option>
@@ -224,18 +229,18 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
 
               {emailOtpSent && !emailVerified && (
                 <div className="flex gap-4">
-                  <input aria-label="Email OTP" value={emailOtp} onChange={e => setEmailOtp(e.target.value)} placeholder="Enter Email OTP" maxLength={6} className={inputClass} />
-                  <button type="button" onClick={verifyEmailOtp} disabled={verifyingEmail || !emailOtp}
-                    className="px-5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-bold text-sm whitespace-nowrap">
+                  <input suppressHydrationWarning aria-label="Email OTP" value={emailOtp} onChange={e => setEmailOtp(e.target.value)} placeholder="Enter Email OTP" maxLength={6} className={inputClass} />
+                  <button suppressHydrationWarning type="button" onClick={verifyEmailOtp} disabled={verifyingEmail || !emailOtp}
+                    className="px-5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-semibold text-sm whitespace-nowrap">
                     {verifyingEmail ? "..." : "Verify"}
                   </button>
                 </div>
               )}
 
-              <textarea name="message" rows={5} aria-label="Your message" value={formData.message} onChange={handleChange} placeholder="Your Message" className={`${inputClass} resize-none`} />
+              <textarea suppressHydrationWarning name="message" rows={5} aria-label="Your message" value={formData.message} onChange={handleChange} placeholder="Your Message" className={`${inputClass} resize-none`} />
 
-              <button type="submit" disabled={!isFormValid || isSubmitting}
-                className="w-full py-3.5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-bold text-sm flex items-center justify-center gap-4 hover:bg-[#e8c16d] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+              <button suppressHydrationWarning type="submit" disabled={!isFormValid || isSubmitting}
+                className="w-full py-3.5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-semibold text-sm flex items-center justify-center gap-4 hover:bg-[#e8c16d] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                 <Send size={16} />
                 {isSubmitting ? "Sending..." : "Send Message"}
               </button>

@@ -6,6 +6,7 @@ import {
   X,
 } from "lucide-react";
 import React, { ReactNode, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import ProductDetailActions from "./ProductDetailActions";
 import { useShop } from "@/context/ShopContext";
 import premium_teak from "@/assets/products/premium_teak_wood.webp";
@@ -68,14 +69,17 @@ const ProductPriceSection = ({
         }
         const res = await fetch(`${API_URL}/reviews/${product._id}`, { headers });
         const data = await res.json();
-        if (data.success) {
+        // Handle both old format ({success/status}) and new/enveloped format ({data: {...}})
+        const isSuccess = Boolean(data.success || data.status === "success" || data?.data !== undefined);
+        const body = data?.data ?? data;
+        if (isSuccess) {
           setReviewData({
-            averageRating: data.averageRating,
-            totalReviews: data.reviews.length,
-            reviews: data.reviews
+            averageRating: body.averageRating,
+            totalReviews: body.reviews?.length || 0,
+            reviews: body.reviews || []
           });
 
-          const myReview = data.reviews.find((r: any) => r.isMine);
+          const myReview = (body.reviews || []).find((r: any) => r.isMine);
           if (myReview) {
             setUserReviewId(myReview._id);
             if (!isWritingReview) {
@@ -152,8 +156,11 @@ const ProductPriceSection = ({
         // Force refresh reviews
         const refreshRes = await fetch(`${API_URL}/reviews/${product._id}`);
         const refreshData = await refreshRes.json();
-        if (refreshData.success) {
-          setReviewData({ averageRating: refreshData.averageRating, totalReviews: refreshData.reviews.length, reviews: refreshData.reviews });
+        // Handle both old format and new/enveloped format
+        const isRefreshSuccess = Boolean(refreshData.success || refreshData.status === "success" || refreshData?.data !== undefined);
+        const refreshed = isRefreshSuccess ? (refreshData?.data ?? refreshData) : refreshData;
+        if (isRefreshSuccess) {
+          setReviewData({ averageRating: refreshed.averageRating, totalReviews: refreshed.reviews?.length || 0, reviews: refreshed.reviews || [] });
         }
       } else {
         alert("Failed to submit review. Please try again.");
@@ -184,12 +191,13 @@ const ProductPriceSection = ({
           {mounted && wished ? "In wishlist" : "Add to wishlist"}
         </button>
       </div>
-      <h2 className="mt-2 text-xl font-semibold leading-tight text-[#001b10] md:text-2xl max-w-60 line-clamp-2">
-        {product.title}
-      </h2>
+      <h2
+        className="mt-2 text-xl font-semibold leading-tight text-[#001b10] md:text-2xl line-clamp-2"
+        dangerouslySetInnerHTML={{ __html: product.title }}
+      />
 
       <div className="mt-2 flex flex-wrap items-center gap-4 text-[10px]">
-        <button
+        <button suppressHydrationWarning
           onClick={() => setIsReviewOpen(true)}
           className="flex items-center gap-4 hover:opacity-70 transition-opacity"
         >
@@ -233,12 +241,12 @@ const ProductPriceSection = ({
           </p>
 
           <div className="mt-1 flex items-end gap-2">
-            <h2 className="text-2xl font-bold text-[#17231A] leading-none">
+            <h2 className="text-2xl font-semibold text-[#17231A] leading-none">
               {formatPrice(product.price)}
             </h2>
             {product.price > 0 && (
               <span className="pb-0.5 text-[10px] font-medium text-[#6f756c]">
-                (Incl. of {product.gstRate ?? 5}% GST)
+                (Excl. of {product.gstRate ?? 5}% GST)
               </span>
             )}
           </div>
@@ -271,23 +279,23 @@ const ProductPriceSection = ({
 
       <ProductDetailActions product={shopProduct} finish={finish} size={size} />
 
-      {/* Reviews Popup Modal */}
-      {isReviewOpen && (
-        <div className="fixed inset-0 z-999 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+      {/* Reviews Popup Modal — portal to body taaki kisi bhi stacking context me atka na rahe */}
+      {mounted && isReviewOpen && createPortal(
+        <div className="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
           <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden flex flex-col">
             <div className="px-5 py-4 border-b border-gray-100 flex justify-between items-center bg-[#fbfaf7]">
               <div>
-                <h3 className="font-bold text-[#313b30]">Customer Reviews</h3>
+                <h3 className="font-semibold text-[#313b30]">Customer Reviews</h3>
                 <div className="flex items-center gap-4 mt-0.5">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
                       <Star key={i} size={10} className="fill-[#d5a642] text-[#d5a642]" />
                     ))}
                   </div>
-                  <span className="text-[10px] font-bold text-gray-500">{reviewData.averageRating}/5.0 average rating</span>
+                  <span className="text-[10px] font-semibold text-gray-500">{reviewData.averageRating}/5.0 average rating</span>
                 </div>
               </div>
-              <button
+              <button suppressHydrationWarning
                 onClick={() => setIsReviewOpen(false)}
                 className="p-1.5 hover:bg-gray-200 rounded-full transition-colors text-gray-500"
               >
@@ -298,12 +306,12 @@ const ProductPriceSection = ({
             <div className="p-5 overflow-y-auto max-h-[60vh]">
               {isWritingReview ? (
                 <form onSubmit={handleReviewSubmit} className="space-y-4">
-                  <h4 className="text-sm font-bold text-[#313b30]">{userReviewId ? "Edit Your Review" : "Write a Review"}</h4>
+                  <h4 className="text-sm font-semibold text-[#313b30]">{userReviewId ? "Edit Your Review" : "Write a Review"}</h4>
                   <div className="flex gap-1">
                     {[...Array(5)].map((_, i) => {
                       const starValue = i + 1;
                       return (
-                        <button
+                        <button suppressHydrationWarning
                           type="button"
                           key={starValue}
                           onClick={() => setRating(starValue)}
@@ -320,8 +328,8 @@ const ProductPriceSection = ({
                     })}
                   </div>
                   <div>
-                    <label className="text-[11px] font-bold uppercase mb-2 block">Your Experience</label>
-                    <textarea
+                    <label className="text-[11px] font-semibold uppercase mb-2 block">Your Experience</label>
+                    <textarea suppressHydrationWarning
                       rows={4}
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
@@ -331,17 +339,17 @@ const ProductPriceSection = ({
                     />
                   </div>
                   <div className="flex gap-4">
-                    <button
+                    <button suppressHydrationWarning
                       type="button"
                       onClick={() => setIsWritingReview(false)}
-                      className="flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all"
+                      className="flex-1 py-2.5 text-[10px] font-semibold uppercase tracking-widest text-gray-500 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all"
                     >
                       Cancel
                     </button>
-                    <button
+                    <button suppressHydrationWarning
                       type="submit"
                       disabled={isSubmitting}
-                      className="flex-1 py-2.5 text-[10px] font-bold uppercase tracking-widest text-white bg-[#313b30] rounded-lg hover:bg-black transition-all disabled:opacity-50"
+                      className="flex-1 py-2.5 text-[10px] font-semibold uppercase tracking-widest text-white bg-[#313b30] rounded-lg hover:bg-black transition-all disabled:opacity-50"
                     >
                       {isSubmitting ? "Submitting..." : (userReviewId ? "Update Review" : "Submit Review")}
                     </button>
@@ -353,7 +361,7 @@ const ProductPriceSection = ({
                     reviewData.reviews.map((rev) => (
                       <div key={rev._id} className="border-b border-gray-50 pb-5 last:border-0 last:pb-0">
                         <div className="flex items-center justify-between mb-2">
-                          <span className="text-[11px] font-bold text-[#1a1a1a]">{rev.user}</span>
+                          <span className="text-[11px] font-semibold text-[#1a1a1a]">{rev.user}</span>
                           <span className="text-[9px] text-gray-400">{new Date(rev.createdAt).toLocaleDateString()}</span>
                         </div>
                         <div className="flex mb-2">
@@ -375,9 +383,9 @@ const ProductPriceSection = ({
 
             {hasPurchased && !isWritingReview && (
               <div className="p-4 bg-gray-50 border-t border-gray-100">
-                <button
+                <button suppressHydrationWarning
                   onClick={() => setIsWritingReview(true)}
-                  className="w-full py-2.5 text-[10px] font-bold uppercase tracking-widest text-[#8d6a3a] border border-[#8d6a3a] rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-all"
+                  className="w-full py-2.5 text-[10px] font-semibold uppercase tracking-widest text-[#8d6a3a] border border-[#8d6a3a] rounded-lg hover:bg-[#8d6a3a] hover:text-white transition-all"
                 >
                   {userReviewId ? "Edit Your Review" : "Write a Review"}
                 </button>
@@ -385,7 +393,7 @@ const ProductPriceSection = ({
             )}
           </div>
         </div>
-      )}
+      , document.body)}
     </div>
   )
 }

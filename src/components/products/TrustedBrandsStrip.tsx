@@ -41,11 +41,24 @@ const brands = [
   },
 ];
 
+const fallbackImages = [
+  six_senses.src,
+  kama.src,
+  jw_marriott.src,
+  six_senses.src,
+  kama.src,
+  jw_marriott.src,
+];
+
 export interface TrustedBrandsStripContent {
-  images: string[]; // Assuming images are URLs or paths
+  images: string[];
 }
 
-export default function TrustedBrandsStrip({sectionContent}: { sectionContent: TrustedBrandsStripContent }) {
+export default function TrustedBrandsStrip({sectionContent}: { sectionContent?: TrustedBrandsStripContent }) {
+  const resolved = { ...sectionContent };
+  if (!resolved.images || resolved.images.length === 0) {
+    resolved.images = fallbackImages;
+  }
   return (
     <section className="w-full bg-[#f8f3ec]">
       <Container>
@@ -53,13 +66,13 @@ export default function TrustedBrandsStrip({sectionContent}: { sectionContent: T
 
           {/* Heading */}
           <div className="flex items-center justify-center mb-3.5">
-        
+         
              <SubHeading text="Trusted By Leading Wellness Centers Worldwide" className=' text-[#a9742a] text-center' />
           </div>
 
           {/* Brands — flex with vertical dividers */}
           <div className="flex flex-wrap xl:flex-nowrap items-center justify-center divide-x divide-[#e2d0b8]">
-            {sectionContent.images.map((brand, index) => (
+            {resolved.images.map((brand, index) => (
               <div
                 key={index}
                 className="flex flex-col items-center justify-center text-center px-4 sm:px-6 py-2 xl:py-0 w-1/2 md:w-1/3 xl:w-auto xl:flex-1"

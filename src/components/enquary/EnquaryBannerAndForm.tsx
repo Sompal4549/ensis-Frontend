@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "react-toastify";
@@ -14,12 +14,17 @@ import { API_URL } from "@/lib/api/api";
 import HtmlRenderer from "../layout/HtmlRender";
 import EnquaryStatsStrip from "./EnquaryStatsStrip";
 import BookButton from "../ui/BookButton";
+import { ALL_INDIAN_STATES, fetchLocationByPincode, matchStateOption } from "@/lib/pincode";
 
 interface EnquiryPageProps {
   content?: EnquiryPageContent;
   onSubmit?: (data: EnquiryFormData) => void | Promise<void>;
   statsStrip?: React.ReactNode;
 }
+
+/** The label shown for a stored option value (the admin should read "Under ₹10 Lakhs", not "under-10l") */
+const labelOf = (options: { value?: string; id?: string; label: string }[] | undefined, value: string) =>
+  options?.find((o) => (o.value ?? o.id) === value)?.label || value;
 
 const initialFormData: EnquiryFormData = {
   fullName: "",
@@ -30,6 +35,7 @@ const initialFormData: EnquiryFormData = {
   projectType: "",
   state: "",
   city: "",
+  zipcode: "",
   projectSize: "",
   budgetRange: "",
   servicesRequired: [],
@@ -47,6 +53,54 @@ export default function EnquiryPage({
   const [formData, setFormData] = useState<EnquiryFormData>(initialFormData);
   const [errors, setErrors] = useState<EnquiryFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fetchingPincode, setFetchingPincode] = useState(false);
+
+  // States from the admin first, then every other state/UT
+  const stateOptions: SelectOption[] = useMemo(() => {
+    const adminOpts = content.stateOptions || [];
+    const remaining = ALL_INDIAN_STATES.filter(
+      (name) =>
+        !adminOpts.some(
+          (o: SelectOption) =>
+            (o.label || "").toLowerCase() === name.toLowerCase() ||
+            (o.value || "").toLowerCase() === name.toLowerCase()
+        )
+    ).map((name) => ({ value: name, label: name }));
+
+    return [...adminOpts, ...remaining];
+  }, [content.stateOptions]);
+
+  const handleZipcodeChange = async (zip: string) => {
+    setField("zipcode", zip);
+    const cleanZip = zip.replace(/\D/g, "");
+    if (cleanZip.length === 6) {
+      try {
+        setFetchingPincode(true);
+        const loc = await fetchLocationByPincode(cleanZip);
+        if (loc) {
+          const matched = matchStateOption(stateOptions, loc.state);
+          const stateValueToSet = matched ? matched.value : loc.state;
+          const displayStateLabel = matched ? matched.label : loc.state;
+
+          setFormData((prev) => ({
+            ...prev,
+            zipcode: zip,
+            city: loc.city || prev.city,
+            state: stateValueToSet || prev.state,
+            cityAndState:
+              loc.city && displayStateLabel
+                ? `${loc.city}, ${displayStateLabel}`
+                : prev.cityAndState,
+          }));
+          setErrors((prev) => ({ ...prev, city: undefined, state: undefined }));
+        }
+      } catch (err) {
+        console.error("Failed to fetch location from zipcode:", err);
+      } finally {
+        setFetchingPincode(false);
+      }
+    }
+  };
 
   const handleFormSubmit = async (data: EnquiryFormData) => {
     try {
@@ -57,16 +111,22 @@ export default function EnquiryPage({
       payload.append("email", data.email ?? "");
       payload.append("companyOrganization", data.companyOrganization ?? "");
       payload.append("cityAndState", data.cityAndState ?? "");
-      payload.append("projectType", data.projectType ?? "");
-      payload.append("state", data.state ?? "");
-      payload.append("city", data.city ?? "");
-      payload.append("projectSize", data.projectSize ?? "");
-      payload.append("budgetRange", data.budgetRange ?? "");
-      payload.append("servicesRequired", JSON.stringify(data.servicesRequired ?? []));
-      payload.append("timeline", data.timeline ?? "");
+      payload.append("projectType", labelOf(content.projectTypeOptions, data.projectType ?? ""));
+      payload.append("state", labelOf(stateOptions, data.state ?? ""));
+      payload.append("city", (data.city ?? "").trim());
+      payload.append("zipcode", data.zipcode ?? "");
+      payload.append("pincode", data.zipcode ?? "");
+      payload.append("projectSize", labelOf(content.projectSizeOptions, data.projectSize ?? ""));
+      payload.append("budgetRange", labelOf(content.budgetRangeOptions, data.budgetRange ?? ""));
+      payload.append(
+        "servicesRequired",
+        JSON.stringify((data.servicesRequired ?? []).map((id) => labelOf(content.servicesOptions, id)))
+      );
+      payload.append("timeline", labelOf(content.timelineOptions, data.timeline ?? ""));
       payload.append("message", data.message ?? "");
-      payload.append("preferredContact", data.preferredContact ?? "whatsapp");
+      payload.append("preferredContact", labelOf(content.preferredContactOptions, data.preferredContact ?? "whatsapp"));
       payload.append("agreeToContact", String(Boolean(data.agreeToContact)));
+      payload.append("source", "enquiry");
 
       if (data.file) {
         payload.append("file", data.file);
@@ -183,28 +243,28 @@ export default function EnquiryPage({
   };
 
   const sectionHeadingClass =
-    "mb-2 font-serif text-xs font-semibold text-[#1f2c25]";
+    "mb-2  text-base font-semibold text-[#1f2c25]";
 
   const labelBaseClass =
-    "mb-1 block text-xs font-medium text-[#5a5248]";
+    "mb-1 block text-base font-medium text-[#5a5248]";
 
   const inputBaseClass =
     "w-full rounded-md border border-[#d8cdb8] bg-white px-3 py-1 text-sm text-[#3a3a3a] placeholder:text-black outline-none transition focus:border-[#b1793d] focus:ring-1 focus:ring-[#b1793d]/20";
 
   const errorClass =
-    "mt-1 text-[11px] text-red-600";
+    "mt-1 text-base text-red-600";
   return (
     <div className="w-full bg-[#f7f1e3]">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-[#F8F5EF]">
-        <div className="relative h-[600px] md:h-[calc(100vh-146px)]">
+        <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none">
           {/* Background Image — right-side spa image unchanged */}
           <div className="absolute inset-0 overflow-hidden">
             <Image
               src={content.hero.imageSrc}
               alt={content.hero.imageAlt}
               fill
-              className="object-cover"
+              className="object-left xl:object-center object-cover"
               sizes="100vw"
               priority
             />
@@ -244,7 +304,7 @@ export default function EnquiryPage({
               {/* Small gold lotus icon above section label */}
               <div className="flex items-center gap-4.5">
                 <Image src={lotus} alt="" width={20} height={20} className="h-5 w-5 object-contain" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.15em] text-[#B88A44]">
+                <span className="text-base font-semibold uppercase tracking-[0.15em] text-[#B88A44]">
                   {content.hero.heading}
                 </span>
               </div>
@@ -279,7 +339,7 @@ export default function EnquiryPage({
                 </Link> */}
                 <Link
                   href={content.hero.ctaSecondary?.href || "/consultancy"}
-                  className="text-xs font-semibold text-[#173A2B] underline-offset-4 hover:underline"
+                  className="text-base font-semibold text-[#173A2B] underline-offset-4 hover:underline"
                 >
                   {content.hero.ctaSecondary?.label || "Book Free Consultation"}
                 </Link>
@@ -327,7 +387,7 @@ export default function EnquiryPage({
           <div className="rounded-xl  bg-[#fdfaf3] p-5 sm:p-8">
             <div className="mb-4 flex items-center justify-center gap-4">
               <span aria-hidden="true" className="h-px w-12 bg-[#b1793d]/50" />
-              <h3 className="text-center font-serif text-xl text-[#1f2c25] sm:text-2xl font-semibold">
+              <h3 className="text-center  text-xl text-[#1f2c25] sm:text-2xl font-semibold">
                 {content.formTitle}
               </h3>
               <span aria-hidden="true" className="h-px w-12 bg-[#b1793d]/50" />
@@ -342,7 +402,7 @@ export default function EnquiryPage({
                   <label className={labelBaseClass} htmlFor="fullName">
                     Full Name *
                   </label>
-                  <input
+                  <input suppressHydrationWarning
                     id="fullName"
                     type="text"
                     placeholder="Enter your full name"
@@ -357,7 +417,7 @@ export default function EnquiryPage({
                   <label className={labelBaseClass} htmlFor="mobileNumber">
                     Mobile Number *
                   </label>
-                  <input
+                  <input suppressHydrationWarning
                     id="mobileNumber"
                     type="tel"
                     placeholder="Enter your mobile number"
@@ -374,7 +434,7 @@ export default function EnquiryPage({
                   <label className={labelBaseClass} htmlFor="email">
                     Email Address *
                   </label>
-                  <input
+                  <input suppressHydrationWarning
                     id="email"
                     type="email"
                     placeholder="Enter your email address"
@@ -389,7 +449,7 @@ export default function EnquiryPage({
                   <label className={labelBaseClass} htmlFor="companyOrganization">
                     Company / Organization
                   </label>
-                  <input
+                  <input suppressHydrationWarning
                     id="companyOrganization"
                     type="text"
                     placeholder="Enter company / organization name"
@@ -405,7 +465,7 @@ export default function EnquiryPage({
                   <label className={labelBaseClass} htmlFor="cityAndState">
                     City & State
                   </label>
-                  <input
+                  <input suppressHydrationWarning
                     id="cityAndState"
                     type="text"
                     placeholder="Enter your city & state"
@@ -424,7 +484,7 @@ export default function EnquiryPage({
                   <label className={labelBaseClass} htmlFor="projectType">
                     Project Type *
                   </label>
-                  <select
+                  <select suppressHydrationWarning
                     id="projectType"
                     className={inputBaseClass}
                     value={formData.projectType}
@@ -444,19 +504,38 @@ export default function EnquiryPage({
 
                 <div className="mb-2">
                   <span className={labelBaseClass}>Project Location</span>
+                  <div className="mb-2">
+                    <label className="mb-1 block text-base" htmlFor="zipcode">
+                      Zipcode / Pincode {fetchingPincode && <span className="text-xs text-[#b1793d] font-normal">(Fetching location...)</span>}
+                    </label>
+                    <input
+                      id="zipcode"
+                      type="text"
+                      placeholder="Enter 6-digit zipcode"
+                      className={inputBaseClass}
+                      value={formData.zipcode || ""}
+                      onChange={(e) => handleZipcodeChange(e.target.value)}
+                      maxLength={6}
+                    />
+                  </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="mb-1 block text-xs" htmlFor="state">
+                      <label className="mb-1 block text-base" htmlFor="state">
                         State
                       </label>
-                      <select
+                      <select suppressHydrationWarning
                         id="state"
                         className={inputBaseClass}
                         value={formData.state}
                         onChange={(e) => setField("state", e.target.value)}
                       >
                         <option value="">Select state</option>
-                        {content.stateOptions.map((opt: SelectOption) => (
+                        {formData.state && !stateOptions.some((opt) => opt.value === formData.state) && (
+                          <option value={formData.state}>
+                            {formData.state}
+                          </option>
+                        )}
+                        {stateOptions.map((opt: SelectOption) => (
                           <option key={opt.value} value={opt.value}>
                             {opt.label}
                           </option>
@@ -464,22 +543,26 @@ export default function EnquiryPage({
                       </select>
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs" htmlFor="city">
+                      <label className="mb-1 block text-base" htmlFor="city">
                         City
                       </label>
-                      <select
+                      {/* Free text: no fixed list can hold every city; admin cities are suggestions */}
+                      <input
                         id="city"
+                        type="text"
+                        list="enquiry-city-options"
+                        autoComplete="address-level2"
+                        placeholder="Enter your city"
                         className={inputBaseClass}
                         value={formData.city}
                         onChange={(e) => setField("city", e.target.value)}
-                      >
-                        <option value="">Select city</option>
-                        {content.cityOptions.map((opt: SelectOption) => (
-                          <option key={opt.value} value={opt.value}>
-                            {opt.label}
-                          </option>
+                        maxLength={80}
+                      />
+                      <datalist id="enquiry-city-options">
+                        {(content.cityOptions || []).map((opt: SelectOption) => (
+                          <option key={opt.value} value={opt.label} />
                         ))}
-                      </select>
+                      </datalist>
                     </div>
                   </div>
                 </div>
@@ -488,7 +571,7 @@ export default function EnquiryPage({
                   <label className={labelBaseClass} htmlFor="projectSize">
                     Project Size
                   </label>
-                  <select
+                  <select suppressHydrationWarning
                     id="projectSize"
                     className={inputBaseClass}
                     value={formData.projectSize}
@@ -507,7 +590,7 @@ export default function EnquiryPage({
                   <label className={labelBaseClass} htmlFor="budgetRange">
                     Budget Range
                   </label>
-                  <select
+                  <select suppressHydrationWarning
                     id="budgetRange"
                     className={inputBaseClass}
                     value={formData.budgetRange}
@@ -533,7 +616,7 @@ export default function EnquiryPage({
                       htmlFor={`service-${service.id}`}
                       className={`${labelBaseClass} gap-4 flex`}
                     >
-                      <input
+                      <input suppressHydrationWarning
                         id={`service-${service.id}`}
                         type="checkbox"
                         className="h-4 w-4 rounded border-[#d8cdb8] text-[#b1793d] focus:ring-[#b1793d]/40"
@@ -552,7 +635,7 @@ export default function EnquiryPage({
                 <label className={labelBaseClass} htmlFor="timeline">
                   Timeline
                 </label>
-                <select
+                <select suppressHydrationWarning
                   id="timeline"
                   className={inputBaseClass}
                   value={formData.timeline}
@@ -570,7 +653,7 @@ export default function EnquiryPage({
               {/* Message */}
               <div className="md:col-span-2">
                 <h4 className={sectionHeadingClass}>Message</h4>
-                <textarea
+                <textarea suppressHydrationWarning
                   id="message"
                   rows={4}
                   placeholder="Tell us about your vision, requirements, and expectations..."
@@ -584,7 +667,7 @@ export default function EnquiryPage({
               <div>
                 <h4 className={sectionHeadingClass}>Upload</h4>
                 <p className="mb-1 text-sm ">{content.upload.label}</p>
-                <p className="mb-1 text-xs">
+                <p className="mb-1 text-base">
                   {content.upload.helperText}
                 </p>
                 <div className="flex items-center gap-4">
@@ -594,7 +677,7 @@ export default function EnquiryPage({
                   >
                     Choose File
                   </label>
-                  <input
+                  <input suppressHydrationWarning
                     id="fileUpload"
                     type="file"
                     accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
@@ -603,7 +686,7 @@ export default function EnquiryPage({
                       setField("file", e.target.files?.[0] ?? null)
                     }
                   />
-                  <span className="truncate text-xs">
+                  <span className="truncate text-base">
                     {formData.file ? formData.file.name : "No file chosen"}
                   </span>
                 </div>
@@ -619,7 +702,7 @@ export default function EnquiryPage({
                       htmlFor={`contact-${opt.id}`}
                       className={`${labelBaseClass} gap-4 flex`}
                     >
-                      <input
+                      <input suppressHydrationWarning
                         id={`contact-${opt.id}`}
                         type="radio"
                         name="preferredContact"
@@ -640,17 +723,17 @@ export default function EnquiryPage({
                 htmlFor="agreeToContact"
                 className="flex items-start gap-4 text-sm text-[#3a3a3a]"
               >
-                <input
+                <input suppressHydrationWarning
                   id="agreeToContact"
                   type="checkbox"
-                  className="mt-0.5 h-4 w-4 rounded border-[#d8cdb8] text-[#b1793d] focus:ring-[#b1793d]/40 font-bold"
+                  className="mt-0.5 h-4 w-4 rounded border-[#d8cdb8] text-[#b1793d] focus:ring-[#b1793d]/40 font-semibold"
                   checked={formData.agreeToContact}
                   onChange={(e) => setField("agreeToContact", e.target.checked)}
                 />
                 {content.consentText}
               </label>
 
-              <button
+              <button suppressHydrationWarning
                 type="submit"
                 disabled={isSubmitting}
                 className="inline-flex items-center gap-4 whitespace-nowrap rounded-md bg-[#0f2e22] px-6 py-2 text-sm font-semibold uppercase tracking-wide text-[#e8c766] transition hover:bg-[#143b2c] disabled:opacity-70 disabled:cursor-not-allowed"

@@ -14,7 +14,7 @@ import img6 from '@/assets/home/img-6.webp';
 import img13 from '@/assets/home/img-13.webp';
 
 import SubHeading from './SubHeading';
-import { getImageUrl, getProducts } from '@/lib/api/api';
+import { getComponentContent, getImageUrl, getProducts } from '@/lib/api/api';
 import { Product } from '@/constants';
 import HtmlRenderer from '../layout/HtmlRender';
 
@@ -63,7 +63,8 @@ type ProductsGridProps = { // Renamed to ProductsGridProps for the component
 };
 
 export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
-  const content = sectionContent || defaultContent;
+  const fallbackContent = sectionContent || defaultContent;
+  const content = await getComponentContent("home.productsGrid", fallbackContent);
   const products = await getProducts()
   // console.log(products, "products")
   // Use the CMS products list (which doubles as fallback category cards)
@@ -73,18 +74,18 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
         <div className="mb-2 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
             <SubHeading text={content.subtitle} className='text-[#8d6a3a]' />
-            <h2 className="font-serif text-2xl leading-tight text-[#0f2518] md:text-3xl font-semibold">{content.heading}</h2>
-            <HtmlRenderer className="max-w-[380px] text-xs leading-4.5 text-[#0f2518]" content={content.description}>
+            <h2 className=" text-2xl leading-tight text-[#0f2518] md:text-3xl font-semibold">{content.heading}</h2>
+            <HtmlRenderer className="max-w-[380px] text-base leading-relaxed text-[#0f2518] line-clamp-1" content={content.description}>
               
             </HtmlRenderer>
           </div>
-          <Link href={content.buttonPath} className="inline-flex w-fit items-center gap-4 border border-[#d7cbbd] bg-white px-3 py-2 text-[11px] font-bold tracking-wide text-[#0f2518] transition-colors hover:bg-[#f3eee6] rounded-md">
+          <Link href={content.buttonPath} className="inline-flex w-fit items-center gap-4 border border-[#d7cbbd] bg-white px-3 py-2 text-base font-semibold tracking-wide text-[#0f2518] transition-colors hover:bg-[#f3eee6] rounded-md">
             {content.buttonText} <ArrowRight size={16} />
           </Link>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {products.slice(0, 8).map((product: Product) => {
+          {products.filter((p: Product) => p.isActive !== false).slice(0, 8).map((product: Product) => {
             const imageUrl = product.images?.[0]
               ? getImageUrl(product.images[0], 900)
               : fallbackImageMap[product.slug] || img12;
@@ -103,8 +104,8 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
                   />
                 </div>
                 <div className="p-4">
-                  <p className="text-base font-semibold text-[#0f2518]">{product.title}</p>
-                  <span className="inline-flex items-center gap-4 text-xs font-semibold text-[#0f2518]">Explore Now <ArrowRight size={14} /></span>
+                  <p className="text-base font-semibold text-[#0f2518] line-clamp-1" dangerouslySetInnerHTML={{ __html: product.title }} />
+                  <span className="inline-flex items-center gap-4 text-base font-semibold text-[#0f2518]">Explore Now <ArrowRight size={14} /></span>
                 </div>
               </Link>
             )

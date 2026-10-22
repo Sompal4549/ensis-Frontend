@@ -3,26 +3,36 @@ import nextDynamic from "next/dynamic";
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
-import { Montserrat, Playfair_Display, Jost, Cormorant_Garamond } from 'next/font/google';
+import { DM_Sans, Playfair_Display, DM_Serif_Display } from "next/font/google";
 import { ShopProvider } from "@/context/ShopContext";
-// import footerTop1 from "@/assets/footer-top.webp"
-// import footerTop2 from "@/assets/footer-top2.webp"
-// import footerTop3 from "@/assets/footer-top-3.webp"
-// import footerTop4 from "@/assets/footer-bottom5.png"
-// import footerTop5 from "@/assets/footer-top-6.png"
-// import footerTop6 from "@/assets/footer-top-4.png"
 
-
-const montserrat = Montserrat({ subsets: ['latin'], weight: ['300', '400', '500', '600', '700'], variable: '--font-montserrat', display: "swap" });
-const cormorant = Playfair_Display({ subsets: ['latin'], weight: ['400', '600', '700'], variable: '--font-cormorant', display: "swap" });
-const jost = Jost({ subsets: ['latin'], weight: ['300', '400', '500', '600'], variable: '--font-jost', display: "swap" });
-const cormorantGaramond = Cormorant_Garamond({ subsets: ['latin'], weight: ['400', '500', '600', '700'], variable: '--font-cormorant-garamond', display: "swap" });
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  // Site typography uses only 400/500 (body) and 600 (bold); heavier weights are not loaded
+  weight: ['400', '500', '600'],
+  variable: '--font-montserrat',
+  display: 'swap',
+});
+const dmSerif = DM_Serif_Display({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-cormorant',
+  display: 'swap',
+});
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '600', '700'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
 
 import { Header } from "@/components/layout/Header";
 import { getAdvancedSeo } from "@/lib/api/seo";
+import { getComponentContent } from "@/lib/api/api";
 const Footer = nextDynamic(() => import("@/components/layout/Footer").then((mod) => mod.Footer));
 const SocialSidebar = nextDynamic(() => import("@/components/layout/SocialSidebar").then((mod) => mod.default));
 const WhatsAppFloat = nextDynamic(() => import("@/components/ui/WhatsAppFloat").then((mod) => mod.default));
+const EnsisChatbot = nextDynamic(() => import("@/components/ui/EnsisChatbot").then((mod) => mod.default));
 const ToastProvider = nextDynamic(() => import("@/components/ui/ToastProvider").then((mod) => mod.default));
 
 
@@ -36,19 +46,18 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const advSeo = await getAdvancedSeo();
+  const [advSeo, headerLayout] = await Promise.all([
+    getAdvancedSeo(),
+    // Header logo is rendered on the server so the admin logo shows on first paint
+    getComponentContent<{ logo?: { imageUrl?: string; alt?: string } }>("layout.header", {}),
+  ]);
 
   const analytics = advSeo?.analytics || {};
   const searchConsole = advSeo?.searchConsole || {};
 
   return (
-    <html lang="en" className={`${montserrat.variable} ${cormorant.variable} ${jost.variable} ${cormorantGaramond.variable}`}>
+    <html lang="en" className={`${dmSans.variable} ${dmSerif.variable} ${playfair.variable}`}>
       <head>
-        {/* Preload top-header icons so they paint with the first frame */}
-        <link rel="preload" as="image" href="/icons/factory.svg" />
-        <link rel="preload" as="image" href="/icons/phone.svg" />
-        <link rel="preload" as="image" href="/icons/mail.svg" />
-
         {/* Search Console Verification */}
         {searchConsole.googleVerification && (
           <meta name="google-site-verification" content={searchConsole.googleVerification} />
@@ -125,7 +134,7 @@ export default async function RootLayout({
           </noscript>
         )}
         <ShopProvider>
-          <Header />
+          <Header initialLogo={headerLayout.logo} />
           <main className="pt-22">{children}</main>
           <Footer />          {/* <Footer image={footerTop1} />
           <Footer image={footerTop2} />
@@ -135,6 +144,7 @@ export default async function RootLayout({
           <Footer image={footerTop6} /> */}
           <SocialSidebar />
           <WhatsAppFloat />
+          <EnsisChatbot />
           <ToastProvider />
         </ShopProvider>
       </body>

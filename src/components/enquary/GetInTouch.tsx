@@ -1,5 +1,6 @@
 import { Building2, Clock3, Globe, Mail, Phone, Sparkles } from "lucide-react";
 import { Container } from "../ui/Container";
+import { SITE_HOST } from "@/lib/site";
 
 interface ContactItem {
   id: string;
@@ -37,7 +38,7 @@ const fallbackGetInTouchBanner: GetInTouchBannerData = {
     {
       id: "website",
       label: "Website",
-      lines: ["www.ensis.in"],
+      lines: [SITE_HOST],
     },
     {
       id: "working-hours",
@@ -99,7 +100,7 @@ export default function GetInTouchBanner({
                 {item.lines.map((line, idx) => (
                   <p
                     key={idx}
-                    className="text-xs leading-snug text-[#5a5248] sm:text-sm"
+                    className="text-base leading-snug text-[#5a5248] sm:text-sm"
                   >
                     {line}
                   </p>

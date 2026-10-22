@@ -94,7 +94,7 @@ export default function ProductDetailActions({
             <Link
               type="button"
               className="flex h-full py-2.5 items-center justify-center gap-4 rounded-md border border-[#d8cbb9] bg-white px-2 text-[9px] font-semibold uppercase tracking-wide text-[#263016] transition-colors hover:bg-[#fbf8f2]"
-              href="wa.me/+919654900525"
+              href="https://wa.me/+919654900525"
             >
               <FaWhatsapp size={15} />
               Whatsapp Expert
@@ -166,7 +166,7 @@ export default function ProductDetailActions({
               <Link
                 type="button"
                 className="flex flex-1 py-2.5 items-center justify-center gap-4 rounded-md border border-[#d8cbb9] bg-white px-2 text-[9px] font-semibold uppercase tracking-wide text-[#263016] transition-colors hover:bg-[#fbf8f2]"
-                href="wa.me/+919654900525"
+                href="https://wa.me/+919654900525"
                 >
                 <FaWhatsapp size={15} />
                 Whatsapp Expert

@@ -11,6 +11,8 @@ import {
   Package,
   RefreshCw,
   ArrowRight,
+  Search,
+  X,
 } from "lucide-react";
 import Link from "next/link";
 import { PAGE_SIZE } from "@/constants";
@@ -34,6 +36,7 @@ export default function Products(props: any = {}) {
   const [activeCategory, setActiveCategory] = useState(categoryParam || "all");
   const [sortBy, setSortBy] = useState("Featured");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [enquiry, setEnquiry] = useState({ name: "", email: "", phone: "", category: "", message: "", });
@@ -56,7 +59,8 @@ const minPrice = useMemo(() => {
   return Math.min(adminMin, ...products.map((p) => p.price));
 }, [products, adminPriceRange]);
 
-const [priceRange, setPriceRange] = useState(0);
+// Starts at the highest price, so nothing is filtered out before the visitor moves the slider
+const [priceRange, setPriceRange] = useState(() => maxPrice);
 const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
 const [selectedIdealFor, setSelectedIdealFor] = useState<string[]>([]);
 
@@ -101,7 +105,8 @@ useEffect(() => {
           id: item._id,
           name: item.title,
           image: item.images?.[0] ? getImageUrl(item.images[0]) : "",
-          categoryKey: typeof item.category === 'object' ? item.category?.slug : item.category
+          categoryKey: typeof item.category === 'object' ? item.category?.slug : item.category,
+          orderBy: typeof item.orderBy === "number" ? item.orderBy : (Number(item.orderBy) || 0),
         }));
         setProducts(normalized);
         setApiCategories(categoryList);
@@ -116,23 +121,41 @@ useEffect(() => {
   const handleEnquirySubmit = async () => {
     setEnquiryStatus(null);
 
+    if (!enquiry.name.trim()) {
+      setEnquiryStatus({ type: "error", message: "Please enter your name." });
+      return;
+    }
+
     if (!enquiry.email.trim()) {
       setEnquiryStatus({ type: "error", message: "Please enter your email address." });
+      return;
+    }
+
+    if (!enquiry.phone.trim()) {
+      setEnquiryStatus({ type: "error", message: "Please enter your phone number." });
       return;
     }
 
     setEnquiryLoading(true);
 
     try {
-      const res = await fetch(`${API_URL}/newsletter/subscribe`, {
+      const res = await fetch(`${API_URL}/enquiry/submit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: enquiry.email.trim(), type: "product" }),
+        body: JSON.stringify({
+          source: "products",
+          fullName: enquiry.name.trim(),
+          email: enquiry.email.trim(),
+          mobileNumber: enquiry.phone.trim(),
+          projectType: enquiry.category.trim() || "Product Enquiry",
+          message: enquiry.message.trim() || "Enquiry submitted from products catalog page.",
+          agreeToContact: true,
+        }),
       });
 
       const payload = await res.json().catch(() => ({}));
 
-      if (res.ok && payload.status !== "error") {
+      if (res.ok && payload.status !== "error" && payload.success !== false) {
         setEnquiryStatus({ type: "success", message: "Thank you! Our wellness experts will contact you soon." });
         setEnquiry({ name: "", email: "", phone: "", category: "", message: "" });
       } else {
@@ -202,10 +225,27 @@ const toggleIdealFor = (value: string) => {
 };
 
   const filtered = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
     let data = products.filter((product) => {
+      // Exclude inactive products
+      if (product.isActive === false) return false;
+
+      const matchesSearch = !q || (
+        (product.title && product.title.toLowerCase().includes(q)) ||
+        (product.name && product.name.toLowerCase().includes(q)) ||
+        (product.code && product.code.toLowerCase().includes(q)) ||
+        (product.material && product.material.toLowerCase().includes(q)) ||
+        (product.description && product.description.toLowerCase().includes(q)) ||
+        (product.shortDescription && product.shortDescription.toLowerCase().includes(q)) ||
+        (Array.isArray(product.tags) && product.tags.some((t: string) => typeof t === 'string' && t.toLowerCase().includes(q))) ||
+        (typeof product.category === 'object' && product.category?.name?.toLowerCase().includes(q)) ||
+        (product.categoryKey && product.categoryKey.toLowerCase().includes(q))
+      );
+
       const matchesCategory =
         activeCategory === "all" ||
-        product.category?.slug === activeCategory;
+        product.category?.slug === activeCategory ||
+        product.categoryKey === activeCategory;
 
       const matchesPrice = product.price <= priceRange;
 
@@ -217,28 +257,34 @@ const toggleIdealFor = (value: string) => {
         selectedIdealFor.length === 0 ||
         selectedIdealFor.includes(product.overview?.idealFor);
 
-      return matchesCategory && matchesPrice && matchesMaterial && matchesIdealFor;
+      return matchesSearch && matchesCategory && matchesPrice && matchesMaterial && matchesIdealFor;
     });
 
     if (sortBy === "Price: Low to High") {
       data = [...data].sort((a, b) => a.price - b.price);
-    }
-
-    if (sortBy === "Price: High to Low") {
+    } else if (sortBy === "Price: High to Low") {
       data = [...data].sort((a, b) => b.price - a.price);
-    }
-
-    if (sortBy === "Newest") {
-      data = [...data].reverse();
+    } else if (sortBy === "Newest") {
+      data = [...data].sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+    } else {
+      // Default (Featured / catalog order): Sort by orderBy ascending (1, 2, 3...)
+      data = [...data].sort((a, b) => {
+        const orderA = typeof a.orderBy === "number" ? a.orderBy : (Number(a.orderBy) || 0);
+        const orderB = typeof b.orderBy === "number" ? b.orderBy : (Number(b.orderBy) || 0);
+        if (orderA !== orderB) {
+          return orderA - orderB;
+        }
+        return new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime();
+      });
     }
 
     return data;
-  }, [products, activeCategory, priceRange, sortBy, selectedMaterials, selectedIdealFor]);
+  }, [products, activeCategory, priceRange, sortBy, selectedMaterials, selectedIdealFor, searchQuery]);
 
-  // Reset visible products on filter/category change
+  // Reset visible products on filter/category/search change
   useEffect(() => {
     setVisibleCount(PAGE_SIZE);
-  }, [activeCategory, priceRange, sortBy, selectedMaterials, selectedIdealFor]);
+  }, [activeCategory, priceRange, sortBy, selectedMaterials, selectedIdealFor, searchQuery]);
 
   // Infinite Scroll Observer
   useEffect(() => {
@@ -285,7 +331,7 @@ const toggleIdealFor = (value: string) => {
           {/* Mobile Filter Toggle */}
           <button
             suppressHydrationWarning
-            className="lg:hidden mb-4 flex items-center gap-4 px-4 py-2 bg-[#183b17] text-white rounded-full text-xs font-[600] tracking-wider"
+            className="lg:hidden mb-4 flex items-center gap-4 px-4 py-2 bg-[#183b17] text-white rounded-full text-base font-[600] tracking-wider"
             onClick={() => setSidebarOpen((o) => !o)}
           >
             <Package size={14} />
@@ -301,13 +347,13 @@ const toggleIdealFor = (value: string) => {
             >
               {/* Filters */}
               <div className="bg-white rounded-2xl border border-[#ede8e0] p-4">
-                <p className="text-xs font-medium tracking-[0.18em] uppercase mb-3">
+                <p className="text-base font-medium tracking-[0.18em] uppercase mb-3">
                   Filter By
                 </p>
 
                 {/* Price */}
                 <div className="mb-5">
-                  <p className="text-[11px] font-[600] text-[#1a1a1a] mb-3">
+                  <p className="text-base font-[600] text-[#1a1a1a] mb-3">
                     Price Range
                   </p>
 
@@ -324,11 +370,11 @@ const toggleIdealFor = (value: string) => {
                   />
 
                   <div className="flex justify-between mt-1.5">
-                    <span className="text-[10px] font-medium">
+                    <span className="text-base font-medium">
                       {fmt(minPrice)}
                     </span>
 
-                    <span className="text-[10px] font-medium">
+                    <span className="text-base font-medium">
                       {fmt(priceRange)}+
                     </span>
                   </div>
@@ -336,7 +382,7 @@ const toggleIdealFor = (value: string) => {
 
                 {/* Material */}
                 <div className="mb-5">
-                  <p className="text-xs font-[600] text-[#1a1a1a] mb-3">
+                  <p className="text-base font-[600] text-[#1a1a1a] mb-3">
                     Material
                   </p>
 
@@ -354,7 +400,7 @@ const toggleIdealFor = (value: string) => {
 
                 {/* Ideal */}
                 <div className="mb-5">
-                  <p className="text-xs font-[600] text-[#1a1a1a] mb-3">
+                  <p className="text-base font-[600] text-[#1a1a1a] mb-3">
                     Ideal For
                   </p>
 
@@ -377,7 +423,7 @@ const toggleIdealFor = (value: string) => {
                     setSelectedMaterials([]);
                     setSelectedIdealFor([]);
                   }}
-                  className="flex items-center gap-1.5 text-[11px] font-[600] text-[#183b17] border border-[#183b17] rounded-full px-3 py-1.5 hover:bg-[#183b17] hover:text-white transition-colors"
+                  className="flex items-center gap-1.5 text-base font-[600] text-[#183b17] border border-[#183b17] rounded-full px-3 py-1.5 hover:bg-[#183b17] hover:text-white transition-colors"
                 >
                   <RefreshCw size={11} />
                   Reset Filters
@@ -398,26 +444,28 @@ const toggleIdealFor = (value: string) => {
               {/* Horizontal Categories Bar */}
               <div className="mb-5">
                 <div className="flex items-center gap-2 overflow-x-auto pb-2 -mb-2 no-scrollbar">
-                  {displayCategories.map((cat) => (
+                  {displayCategories.map((cat, catIndex) => (
                     <button
-                      key={cat.key}
+                      key={`${cat.key}-${catIndex}`}
                       suppressHydrationWarning
                       onClick={() => setActiveCategory(cat.key)}
-                      className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border text-[12px] transition-all whitespace-nowrap ${
+                      className={`shrink-0 flex items-center gap-2 px-4 py-2 rounded-full border text-base transition-all whitespace-nowrap ${
                         activeCategory === cat.key
                           ? "bg-[#183b17] text-white border-[#183b17] font-[600]"
                           : "bg-white text-[#1a1a1a] border-[#ede8e0] font-medium hover:bg-[#f5ede0]"
                       }`}
                     >
-                      {cat.icon ? (
+                      {cat.key === "all" ? (
+                        <LayoutGrid size={18} className="shrink-0 text-[#B37E39]" strokeWidth={2} />
+                      ) : cat.icon ? (
                         <span className="h-[15px] w-[20px] overflow-hidden rounded-[3px]">
                           <Image src={cat.icon} alt={cat.label} width={20} height={15} className="object-fill object-center" />
                         </span>
                       ) : (
-                        <span className="inline-block h-[15px] w-[20px]" />
+                        <LayoutGrid size={16} className="shrink-0 text-[#183b17]" />
                       )}
                       <span>{cat.label}</span>
-                      <span className={`text-[10px] font-[600] ${activeCategory === cat.key ? "text-white/70" : "text-[#c8a45d]"}`}>
+                      <span className={`text-base font-[600] ${activeCategory === cat.key ? "text-white/70" : "text-[#c8a45d]"}`}>
                         {cat.count}
                       </span>
                     </button>
@@ -426,23 +474,40 @@ const toggleIdealFor = (value: string) => {
               </div>
 
               {/* Toolbar */}
-              <div className="flex flex-wrap items-center justify-between gap-4 mb-5">
-                {/* <p className="text-[12px] sm:text-[13px] text-[#7a6a55]">
-                  Showing 1–
-                  {visibleProducts.length} of{" "}
-                  <span className="font-[600] text-[#1a1a1a]">
-                    {filtered.length}
-                  </span>{" "}
-                  products
-                </p> */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 mb-5">
+                {/* Search Bar */}
+                <div className="relative flex-1 max-w-md">
+                  <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#9a8870]" />
+                  <input
+                    suppressHydrationWarning
+                    autoComplete="off"
+                    type="text"
+                    placeholder="Search products by name, code, material..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-9 pr-8 py-2 bg-white border border-[#ede8e0] rounded-xl text-sm text-[#1a1a1a] placeholder:text-[#9a8870] outline-none focus:border-[#183b17] focus:ring-1 focus:ring-[#183b17] transition-all shadow-sm"
+                  />
+                  {searchQuery && (
+                    <button
+                      suppressHydrationWarning
+                      type="button"
+                      aria-label="Clear search"
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded-full"
+                    >
+                      <X size={14} />
+                    </button>
+                  )}
+                </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0">
+                  <span className="text-xs text-[#7a6a55] font-semibold hidden md:inline">
+                    {filtered.length} {filtered.length === 1 ? "Product" : "Products"}
+                  </span>
 
                   {/* Sort */}
-                  <div className="flex items-center gap-4 text-[12px] text-[#7a6a55]">
-                    <span className="hidden sm:inline">
-                      Sort by:
-                    </span>
+                  <div className="flex items-center gap-2 text-sm text-[#7a6a55]">
+                    <span className="hidden sm:inline">Sort:</span>
 
                     <div className="relative">
                       <select
@@ -452,7 +517,7 @@ const toggleIdealFor = (value: string) => {
                         onChange={(e) =>
                           setSortBy(e.target.value)
                         }
-                        className="appearance-none bg-white border border-[#ede8e0] rounded-lg px-3 py-1.5 pr-7 text-[12px] text-[#1a1a1a] outline-none cursor-pointer"
+                        className="appearance-none bg-white border border-[#ede8e0] rounded-lg px-3 py-1.5 pr-7 text-sm text-[#1a1a1a] outline-none cursor-pointer shadow-sm"
                       >
                         {[
                           "Featured",
@@ -472,7 +537,7 @@ const toggleIdealFor = (value: string) => {
                   </div>
 
                   {/* View */}
-                  <div className="flex items-center gap-1 bg-white border border-[#ede8e0] rounded-lg p-1">
+                  <div className="flex items-center gap-1 bg-white border border-[#ede8e0] rounded-lg p-1 shadow-sm">
                     <button
                       suppressHydrationWarning
                       aria-label="Grid view"
@@ -502,20 +567,45 @@ const toggleIdealFor = (value: string) => {
                 </div>
               </div>
 
-              {/* Product Grid */}
-              <div
-                className={`grid gap-4 sm:gap-4 ${viewMode === "grid"
-                    ? "grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
-                    : "grid-cols-1"
-                  }`}
-              >
-                {visibleProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                  />
-                ))}
-              </div>
+              {/* Product Grid or Empty State */}
+              {filtered.length === 0 ? (
+                <div className="text-center py-16 px-4 bg-white rounded-2xl border border-[#ede8e0] shadow-sm">
+                  <Package size={42} className="mx-auto text-[#c8a45d] mb-3 opacity-80" />
+                  <h3 className="text-lg font-semibold text-[#1a1a1a]">No Products Found</h3>
+                  <p className="text-sm text-[#7a6a55] mt-1 max-w-sm mx-auto">
+                    {searchQuery
+                      ? `No products match "${searchQuery}". Try a different keyword or reset filters.`
+                      : "No products match the selected filters."}
+                  </p>
+                  {(searchQuery || selectedMaterials.length > 0 || selectedIdealFor.length > 0 || activeCategory !== "all") && (
+                    <button
+                      onClick={() => {
+                        setSearchQuery("");
+                        setActiveCategory("all");
+                        setSelectedMaterials([]);
+                        setSelectedIdealFor([]);
+                      }}
+                      className="mt-4 px-4 py-2 bg-[#183b17] text-white text-xs font-semibold rounded-lg hover:bg-[#133012] transition-colors"
+                    >
+                      Reset All Filters
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div
+                  className={`grid gap-4 sm:gap-4 ${viewMode === "grid"
+                      ? "grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
+                      : "grid-cols-1"
+                    }`}
+                >
+                  {visibleProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                    />
+                  ))}
+                </div>
+              )}
 
               {/* Infinite Scroll Loader */}
               <div
@@ -523,12 +613,12 @@ const toggleIdealFor = (value: string) => {
                 className="h-20 flex items-center justify-center"
               >
                 {visibleCount < filtered.length ? (
-                  <div className="flex items-center gap-4 text-[#8a7560] text-sm">
+                  <div className="flex items-center gap-4 text-[#8a7560] text-base">
                     <div className="w-5 h-5 border-2 border-[#c8a45d] border-t-transparent rounded-full animate-spin" />
                     Loading more products...
                   </div>
                 ) : (
-                  <p className="text-sm text-[#9a8870]">
+                  <p className="text-base text-[#9a8870]">
                     You’ve reached the end
                   </p>
                 )}
@@ -536,7 +626,7 @@ const toggleIdealFor = (value: string) => {
             </div>
 
             {/* ── RIGHT SIDEBAR ── */}
-            <aside className="hidden xl:flex shrink-0 w-[210px] flex-col gap-4 sticky top-5">
+            <aside className="hidden xl:flex shrink-0 w-[280px] flex-col gap-4 sticky top-5">
 
               {/* Enquire */}
               <div className="bg-white rounded-2xl border border-[#ede8e0] p-5">
@@ -554,7 +644,7 @@ const toggleIdealFor = (value: string) => {
                   Enquire Now
                 </h3>
 
-                <p className="text-xs font-medium text-center leading-relaxed mb-2">
+                <p className="text-base font-medium text-center leading-relaxed mb-2">
                   Tell us about your requirements and our wellness experts
                   will contact you.
                 </p>
@@ -573,7 +663,7 @@ const toggleIdealFor = (value: string) => {
                         name: e.target.value,
                       }))
                     }
-                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
+                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-base text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
                   />
 
                   {/* Email */}
@@ -589,7 +679,7 @@ const toggleIdealFor = (value: string) => {
                         email: e.target.value,
                       }))
                     }
-                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
+                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-base text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
                   />
 
                   {/* Phone */}
@@ -605,7 +695,7 @@ const toggleIdealFor = (value: string) => {
                         phone: e.target.value,
                       }))
                     }
-                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
+                    className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 text-base text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors"
                   />
 
                   {/* Category Select */}
@@ -620,12 +710,12 @@ const toggleIdealFor = (value: string) => {
                           category: e.target.value,
                         }))
                       }
-                      className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 pr-7 text-[12px] text-black outline-none focus:border-[#c8a45d] transition-colors appearance-none"
+                      className="w-full h-9 rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 pr-7 text-base text-black outline-none focus:border-[#c8a45d] transition-colors appearance-none"
                     >
                       <option value="">Select Product Category</option>
 
                       {displayCategories.slice(1).map((c, i) => (
-                        <option key={c.key || `cat-${i}`} value={c.key}>
+                        <option key={`${c.key}-${i}`} value={c.key}>
                           {c.label}
                         </option>
                       ))}
@@ -649,7 +739,7 @@ const toggleIdealFor = (value: string) => {
                         message: e.target.value,
                       }))
                     }
-                    className="w-full rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 py-2 text-[12px] text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors resize-none"
+                    className="w-full rounded-xl border border-[#ede8e0] bg-[#faf6f1] px-3 py-2 text-base text-black placeholder:text-black outline-none focus:border-[#c8a45d] transition-colors resize-none"
                   />
 
                   {/* Button */}
@@ -658,7 +748,7 @@ const toggleIdealFor = (value: string) => {
                     type="button"
                     disabled={enquiryLoading}
                     onClick={handleEnquirySubmit}
-                    className="w-full flex items-center justify-center gap-1.5 px-4 h-8 rounded-lg bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)] text-white font-bold text-[10px] tracking-widest hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full flex items-center justify-center gap-1.5 px-4 h-8 rounded-lg bg-[#0f2518] hover:bg-[#1a3d28] shadow-[0_2px_12px_rgba(15,37,24,0.35)] text-white font-semibold text-base tracking-widest hover:scale-[1.02] transition-transform disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {enquiryLoading ? (
                       <span className="inline-block w-3.5 h-3.5 border-2 border-[#c8a45d] border-t-transparent rounded-full animate-spin" />
@@ -669,7 +759,7 @@ const toggleIdealFor = (value: string) => {
                   </button>
 
                   {enquiryStatus && (
-                    <p className={`text-[11px] font-medium leading-snug ${enquiryStatus.type === "success" ? "text-green-700" : "text-red-600"}`}>
+                    <p className={`text-base font-medium leading-snug ${enquiryStatus.type === "success" ? "text-green-700" : "text-red-600"}`}>
                       {enquiryStatus.message}
                     </p>
                   )}
@@ -716,21 +806,21 @@ const toggleIdealFor = (value: string) => {
                     <div>
                       {url ? (
                         <Link href={url}>
-                          <p className="text-[11px] font-[600] text-[#1a1a1a] leading-none mb-0.5">
+                          <p className="text-base font-[600] text-[#1a1a1a] leading-none mb-0.5">
                             {title}
                           </p>
 
-                          <p className="text-[10px] font-medium leading-snug">
+                          <p className="text-base font-medium leading-snug">
                             {value}
                           </p>
                         </Link>
                       ) : (
                         <>
-                          <p className="text-[11px] font-[600] text-[#1a1a1a] leading-none mb-0.5">
+                          <p className="text-base font-[600] text-[#1a1a1a] leading-none mb-0.5">
                             {title}
                           </p>
 
-                          <p className="text-[10px] font-medium leading-snug">
+                          <p className="text-base font-medium leading-snug">
                             {value}
                           </p>
                         </>
