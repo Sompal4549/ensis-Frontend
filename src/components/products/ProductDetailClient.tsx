@@ -11,11 +11,13 @@ export default function ProductDetailClient({
   product,
   originalPrice,
   shopProduct,
+  contactPhone,
   headingHtml,
 }: {
   product: Product;
   originalPrice: number;
   shopProduct: Product;
+  contactPhone?: string;
   /** City pages: heading shown above the specifications instead of the product title */
   headingHtml?: string;
 }) {
@@ -47,4 +49,4 @@ export default function ProductDetailClient({
       </Container>
     </>
   );
-}
+}
