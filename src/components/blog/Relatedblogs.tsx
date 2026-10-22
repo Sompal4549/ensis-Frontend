@@ -40,7 +40,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({ allBlogs, currentSlug }) =>
           </h2>
           <Link
             href="/blog"
-            className="flex items-center gap-4 text-base font-bold uppercase tracking-wider text-[#8d6a3a] transition-colors hover:text-[#C9972A]"
+            className="flex items-center gap-4 text-base font-semibold uppercase tracking-wider text-[#8d6a3a] transition-colors hover:text-[#C9972A]"
           >
             View All Articles
             <ArrowRight size={14} />
@@ -69,7 +69,7 @@ const RelatedBlogs: React.FC<RelatedBlogsProps> = ({ allBlogs, currentSlug }) =>
                   </div>
 
                   <div className="p-3">
-                    <p className="text-base font-bold uppercase tracking-wider text-[#C9972A]">
+                    <p className="text-base font-semibold uppercase tracking-wider text-[#C9972A]">
                       {blog.category}
                       {blog.banner.readingTime && (
                         <>

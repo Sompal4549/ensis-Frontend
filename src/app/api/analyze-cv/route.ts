@@ -79,6 +79,13 @@ export async function POST(req: NextRequest) {
       file?.name ? file.name.replace(/\.[^/.]+$/, "") : "Candidate Profile"
     );
 
+    const jobEducation = (formData.get("jobEducation") as string) || "Degree in relevant field";
+    const jobResponsibilities = (formData.get("responsibilities") as string) || "";
+    const jobRequirements = (formData.get("requirements") as string) || "";
+    const jobAiCheckPoints = (formData.get("aiCheckPoints") as string) || "";
+    const eligibilityThreshold = Number(formData.get("eligibilityThreshold")) || 70;
+    const partialMatchMin = Number(formData.get("partialMatchMin")) || 50;
+
     let base64Data = "";
     let mimeType = "application/pdf";
     let textSnippet = "";
@@ -86,25 +93,13 @@ export async function POST(req: NextRequest) {
     let extractedPhoneFromBuffer: string | null = null;
     const extractedPhonesFromBuffer: string[] = [];
     let extractedLinkedinFromBuffer: string | null = null;
-    let savedCvUrl: string | null = null;
+    // NOTE: For candidate privacy, CVs are never saved to public/uploads
+    const savedCvUrl: string | null = null;
 
     if (file) {
       const bytes = await file.arrayBuffer();
       const buffer = Buffer.from(bytes);
       base64Data = buffer.toString("base64");
-
-      try {
-        const feUploadDir = path.join(process.cwd(), "public", "uploads", "cvs");
-        if (!fs.existsSync(feUploadDir)) {
-          fs.mkdirSync(feUploadDir, { recursive: true });
-        }
-        const cleanPublicId = `cv_${Date.now()}_${fileName.replace(/[^a-zA-Z0-9]/g, "_")}`;
-        const safeFileName = `${cleanPublicId}_${fileName.replace(/[^a-zA-Z0-9.]/g, "_")}`;
-        fs.writeFileSync(path.join(feUploadDir, safeFileName), buffer);
-        savedCvUrl = `/uploads/cvs/${safeFileName}`;
-      } catch (saveErr) {
-        console.warn("Local CV save warning:", saveErr);
-      }
 
       let extractedDocText = "";
       const lowerName = fileName.toLowerCase();
@@ -177,55 +172,99 @@ export async function POST(req: NextRequest) {
 
     const userParts: Array<any> = [
       {
-        text: `You are an AI Candidate Evaluator for "ENSIS - Premium Panchkarma & Wellness Spaces".
-Analyze the attached CV/Resume file named "${fileName}" for the job role: "${jobTitle}" requiring "${jobExperience}" of experience.
+        text: `You are an expert AI Talent Evaluator for "ENSIS - Premium Wellness & Healthcare Spaces".
+Analyze the attached CV/Resume file named "${fileName}" for the position: "${jobTitle}".
+Experience requirement: "${jobExperience}".
+Education requirement: "${jobEducation}".
+${jobResponsibilities ? `Key Responsibilities: ${jobResponsibilities}` : ""}
+${jobRequirements ? `Job Requirements: ${jobRequirements}` : ""}
+${jobAiCheckPoints ? `AI Check Points: ${jobAiCheckPoints}` : ""}
 
 RAW DOCUMENT TEXT EXTRACTED FROM CV:
 """
 ${textSnippet || "No raw text snippet available. Evaluate attached document."}
 """
 
-CRITICAL EXTRACTION & SCORING RULES:
-1. "candidateName": Extract the candidate's actual full name. If not found, use "${fallbackName}".
-2. "firstName": Candidate's first name.
-3. "email": Extract the candidate's email address.
-4. "phone": Extract the candidate's phone number.
-5. "linkedin": Extract LinkedIn profile URL.
-6. "score": Calculate a realistic match percentage score (0 to 100) based on candidate experience vs job requirements.
-7. "summary": A brief 2-sentence feedback explaining why this score was awarded.
-8. "requirementsMet": Array of EXACTLY 5 key requirements met by candidate.
-9. "breakdown": Percentage scores (0-100) for:
-   - "relevantExperience": number (0-100)
-   - "educationalQualification": number (0-100)
-   - "keySkills": number (0-100)
-   - "roleFit": number (0-100)
-   - "industryExperience": number (0-100)
-   - "locationPreference": number (0-100)
+CRITICAL EVALUATION RULES:
+1. Extract candidate's full name, email, phone, and LinkedIn.
+2. Evaluate against the job role and assign an objective match score (0 to 100).
+3. 7 breakdown dimensions (each score 0 to 100):
+   - education: Educational Qualification
+   - experience: Relevant Work Experience
+   - technical_skills: Design & Technical Skills
+   - creative_thinking: Creative & Design Thinking
+   - communication: Communication Skills
+   - portfolio: Portfolio & Practical Execution
+   - location: Location Alignment
+4. Strengths (3-5 bullet points).
+5. Gaps (2-4 bullet points if any).
+6. Suggestions (2-4 actionable suggestions).
+7. Candidate Profile:
+   - education: array of { qualification, institute, year, score, specialization }
+   - experience: array of { organization, designation, from, to, responsibilities }
+   - skills: array of { name, level (0-100) }
+   - certifications: array of string names
 
 Return ONLY valid JSON matching this exact structure:
 {
-  "candidateName": "Candidate Full Name",
+  "candidateName": "Full Name",
   "firstName": "First Name",
   "email": "email_or_null",
   "phone": "phone_or_null",
   "linkedin": "linkedin_or_null",
-  "score": 78,
-  "summary": "Candidate exhibits strong background relevant to this role.",
+  "dateOfBirth": "",
+  "gender": "Male",
+  "currentLocation": "Delhi NCR",
+  "permanentAddress": "",
+  "score": 82,
+  "summary": "Strong profile with relevant industry experience.",
   "requirementsMet": [
-    "Relevant experience matching the job domain",
-    "Solid technical and communication background",
-    "Track record in client coordination & delivery",
-    "Education and qualifications aligned with role",
-    "Willingness to adapt and grow with ENSIS"
+    "Relevant degree in the required field",
+    "Strong technical skills and tool proficiency",
+    "Experience in project execution and delivery",
+    "Good team collaboration and communication",
+    "Location and availability fit"
   ],
   "breakdown": {
-    "relevantExperience": 78,
-    "educationalQualification": 100,
-    "keySkills": 75,
-    "roleFit": 70,
-    "industryExperience": 72,
-    "locationPreference": 100
-  }
+    "education": 85,
+    "experience": 80,
+    "technical_skills": 88,
+    "creative_thinking": 82,
+    "communication": 78,
+    "portfolio": 80,
+    "location": 90,
+    "relevantExperience": 80,
+    "educationalQualification": 85,
+    "keySkills": 88,
+    "roleFit": 82,
+    "industryExperience": 80,
+    "locationPreference": 90
+  },
+  "strengths": [
+    "Relevant educational background matching the job requirements",
+    "Strong experience with required tools and methodologies",
+    "Clear track record of successful projects",
+    "Good alignment with ENSIS wellness design philosophy"
+  ],
+  "gaps": [
+    "Limited prior exposure to commercial wellness interiors"
+  ],
+  "suggestions": [
+    "Highlight specific wellness or healthcare projects in your portfolio",
+    "Detail your experience with luxury materials and sustainable finishes"
+  ],
+  "education": [
+    { "qualification": "B.Des", "institute": "National Institute of Design", "year": "2020", "score": "8.2 CGPA", "specialization": "Product Design" }
+  ],
+  "experience": [
+    { "organization": "Design Studio", "designation": "Product Designer", "from": "2021", "to": "Present", "responsibilities": "Lead concept development and 3D prototyping" }
+  ],
+  "skills": [
+    { "name": "3D Modeling", "level": 90 },
+    { "name": "Product Design", "level": 88 },
+    { "name": "Material Selection", "level": 75 }
+  ],
+  "certifications": ["Certified SolidWorks Professional"]
 }`,
       },
     ];
@@ -251,9 +290,9 @@ Return ONLY valid JSON matching this exact structure:
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               contents: [{ role: "user", parts: userParts }],
-              generationConfig: { temperature: 0.1, maxOutputTokens: 2048 },
+              generationConfig: { temperature: 0.1, maxOutputTokens: 3000 },
             }),
-            signal: AbortSignal.timeout(30000),
+            signal: AbortSignal.timeout(35000),
           });
 
           if (res.ok) {
@@ -292,6 +331,91 @@ Return ONLY valid JSON matching this exact structure:
             : fallbackName;
         const formatted = formatNameWithSpaces(rawCandidateName);
 
+        const scoreRaw = typeof parsed.score === "number" ? parsed.score : 76;
+        const score = Math.max(0, Math.min(100, Math.round(scoreRaw)));
+
+        const level: "eligible" | "partial" | "not_eligible" =
+          score >= eligibilityThreshold ? "eligible" : score >= partialMatchMin ? "partial" : "not_eligible";
+
+        const rawBd = parsed.breakdown || {};
+        const clamp = (v: unknown, fallback: number) => {
+          const n = typeof v === "number" ? v : fallback;
+          return Math.max(0, Math.min(100, Math.round(n)));
+        };
+
+        const breakdownItems = [
+          {
+            key: "education" as const,
+            label: "Educational Qualification",
+            sublabel: "Degrees, certifications, and academic specialization alignment",
+            score: clamp(rawBd.education ?? rawBd.educationalQualification, 80),
+          },
+          {
+            key: "experience" as const,
+            label: "Relevant Experience",
+            sublabel: "Years in role, industry track record, and project scale",
+            score: clamp(rawBd.experience ?? rawBd.relevantExperience, 75),
+          },
+          {
+            key: "technical_skills" as const,
+            label: "Design & Technical Skills",
+            sublabel: "Domain software, core methods, and practical craftsmanship",
+            score: clamp(rawBd.technical_skills ?? rawBd.keySkills, 80),
+          },
+          {
+            key: "creative_thinking" as const,
+            label: "Creative & Design Thinking",
+            sublabel: "Problem solving, concept innovation, and wellness aesthetic fit",
+            score: clamp(rawBd.creative_thinking ?? rawBd.roleFit, 75),
+          },
+          {
+            key: "communication" as const,
+            label: "Communication Skills",
+            sublabel: "Documentation, client presentation, and cross-team coordination",
+            score: clamp(rawBd.communication, 80),
+          },
+          {
+            key: "portfolio" as const,
+            label: "Portfolio Quality",
+            sublabel: "Visual evidence of work, execution polish, and ergonomics",
+            score: clamp(rawBd.portfolio, 78),
+          },
+          {
+            key: "location" as const,
+            label: "Location Fit",
+            sublabel: "Current location and willingness to work at the target workplace",
+            score: clamp(rawBd.location ?? rawBd.locationPreference, 90),
+          },
+        ];
+
+        const profileData = {
+          fullName: formatted.fullName,
+          email: finalEmail || "",
+          phone: finalPhone || "",
+          dateOfBirth: parsed.dateOfBirth || "",
+          gender: parsed.gender || "Male",
+          currentLocation: parsed.currentLocation || "Delhi NCR",
+          permanentAddress: parsed.permanentAddress || "",
+          linkedin: finalLinkedin || "",
+          education: Array.isArray(parsed.education) ? parsed.education : [],
+          experience: Array.isArray(parsed.experience) ? parsed.experience : [],
+          skills: Array.isArray(parsed.skills) ? parsed.skills : [],
+          certifications: Array.isArray(parsed.certifications) ? parsed.certifications : [],
+        };
+
+        const screeningObject = {
+          score,
+          level,
+          thresholds: { eligible: eligibilityThreshold, partial: partialMatchMin },
+          breakdown: breakdownItems,
+          strengths: Array.isArray(parsed.strengths) && parsed.strengths.length > 0
+            ? parsed.strengths
+            : ["Strong background aligned with role requirements"],
+          gaps: Array.isArray(parsed.gaps) ? parsed.gaps : [],
+          suggestions: Array.isArray(parsed.suggestions) ? parsed.suggestions : [],
+          profile: profileData,
+        };
+
         return NextResponse.json({
           success: true,
           candidateName: formatted.fullName,
@@ -301,17 +425,18 @@ Return ONLY valid JSON matching this exact structure:
           phones: extractedPhonesFromBuffer.length > 0 ? extractedPhonesFromBuffer : finalPhone ? [finalPhone] : [],
           linkedin: finalLinkedin || null,
           cvUrl: savedCvUrl,
-          score: typeof parsed.score === "number" ? parsed.score : 76,
+          score,
           summary: parsed.summary || "Evaluation completed successfully.",
           requirementsMet: normalizeRequirements(parsed.requirementsMet),
-          breakdown: parsed.breakdown || {
-            relevantExperience: 78,
-            educationalQualification: 100,
-            keySkills: 75,
-            roleFit: 70,
-            industryExperience: 70,
-            locationPreference: 100,
+          breakdown: {
+            relevantExperience: breakdownItems[1].score,
+            educationalQualification: breakdownItems[0].score,
+            keySkills: breakdownItems[2].score,
+            roleFit: breakdownItems[3].score,
+            industryExperience: breakdownItems[1].score,
+            locationPreference: breakdownItems[6].score,
           },
+          screening: screeningObject,
         });
       }
     }

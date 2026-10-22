@@ -31,8 +31,8 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
       isCenter: false,
       listdesc: [],
       buttons: [
-        <BookButton text="Explore Collections" />,
-        <GreenButton text="Book Consultation" path={'/contact'} />
+        <BookButton key="explore" text="Explore Collections" />,
+        <GreenButton key="consult" text="Book Consultation" path={'/contact'} />
       ],
     },
 
@@ -54,8 +54,8 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
       primaryBtn: 'VIEW PRODUCTS',
       secondaryBtn: 'START PROJECT',
       buttons: [
-        <BookButton text="Explore Collections" />,
-        <GreenButton text="Book Consultation" path={'/contact'} />
+        <BookButton key="explore" text="Explore Collections" />,
+        <GreenButton key="consult" text="Book Consultation" path={'/contact'} />
       ],
 
     },
@@ -78,8 +78,8 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
       secondaryBtn: 'SCHEDULE DEMO',
       listdesc: [],
       buttons: [
-        <BookButton text="Explore Collections" />,
-        <GreenButton text="Book Consultation" path={'/contact'} />
+        <BookButton key="explore" text="Explore Collections" />,
+        <GreenButton key="consult" text="Book Consultation" path={'/contact'} />
       ],
       showLutus: false,
 
@@ -104,8 +104,8 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
       showLutus: false,
 
       buttons: [
-        <BookButton text="Explore Collections" />,
-        <GreenButton text="Book Consultation" path={'/contact'} />
+        <BookButton key="explore" text="Explore Collections" />,
+        <GreenButton key="consult" text="Book Consultation" path={'/contact'} />
       ],
     }
   ];

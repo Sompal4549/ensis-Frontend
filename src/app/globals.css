@@ -39,6 +39,14 @@ h1 {
   letter-spacing: -0.01em;
 }
 
+/* Bold text is 600 site-wide (browsers default <b>/<strong> to 700, e.g. inside CMS and blog HTML) */
+@layer base {
+  b,
+  strong {
+    font-weight: 600;
+  }
+}
+
 /* ── Phase 2: Mobile body floor & typographic guardrails ──
    Inside @layer base so explicit utilities (text-xs, leading-*, etc.)
    keep precedence; these only raise unstyled elements. */
@@ -61,6 +69,27 @@ h1 {
   h2, h3 { line-height: 1.2; }
   p, li { line-height: 1.6; }
 }
+
+/* ── Career Pages: Titles Serif (Playfair Display), Normal Text Sans-serif, Root 16px / 500 ── */
+.career-root {
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.career-root :is(h1, h2, h3, h4, .font-serif, [data-font="serif"]) {
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif !important;
+}
+
+.career-root :is(h1, h2, h3, h4, .font-serif, [data-font="serif"]) span:not(.font-sans) {
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif !important;
+}
+
+.career-root :is(p, span, a, label, input, select, textarea, button, li, th, td, div):not(h1, h2, h3, h4, .font-serif, [data-font="serif"], :is(h1, h2, h3, h4, .font-serif, [data-font="serif"]) *) {
+  font-family: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+
+
 
 
 * {

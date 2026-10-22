@@ -115,7 +115,7 @@ export default function MobileScrollSpy({
       <button
         type="button"
         onClick={onToggle}
-        className="flex h-10 w-full items-center justify-between rounded-lg bg-[#0f2518] px-4 text-sm font-bold uppercase tracking-widest text-white shadow-[0_2px_12px_rgba(15,37,24,0.35)]"
+        className="flex h-10 w-full items-center justify-between rounded-lg bg-[#0f2518] px-4 text-sm font-semibold uppercase tracking-widest text-white shadow-[0_2px_12px_rgba(15,37,24,0.35)]"
       >
         <span>On This Page</span>
         <svg

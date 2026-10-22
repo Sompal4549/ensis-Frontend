@@ -207,7 +207,7 @@ export const Footer = async () => {
                   src={footerLogoSrc}
                   alt={footerLogo?.alt || "ENSIS"}
                   variant="card"
-                  className="h-16 w-auto object-contain md:h-[72px]"
+                  className="h-[76px] w-auto object-contain md:h-[88px]"
                 />
 
               {/* lotus divider */}
@@ -279,7 +279,7 @@ export const Footer = async () => {
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#d0a965] text-white">
                   <Phone size={14} />
                 </div>
-                <h3 className="text-sm font-bold uppercase tracking-wider text-white md:text-[#122544]">
+                <h3 className="text-sm font-semibold uppercase tracking-wider text-white md:text-[#122544]">
                   Contact Us
                 </h3>
               </div>
@@ -327,7 +327,7 @@ export const Footer = async () => {
                   <div className="flex items-center gap-4 text-white">
                     <FaWhatsapp size={18} color="white" />
                     <div>
-                      <p className="text-sm font-bold leading-[1.4] tracking-wider text-white">WHATSAPP CHAT</p>
+                      <p className="text-sm font-semibold leading-[1.4] tracking-wider text-white">WHATSAPP CHAT</p>
                       <p className="text-sm text-white/80 font-semibold">Chat with our experts</p>
                     </div>
                   </div>

@@ -124,7 +124,7 @@ export default function ProductHeroSlideContent({
             {typeof slide.price === "number" && slide.price > 0 && (
               <motion.div variants={itemVariants} className="mb-8">
                 <span
-                  className={`tabular-nums text-2xl font-bold sm:text-3xl md:text-4xl ${
+                  className={`tabular-nums text-2xl font-semibold sm:text-3xl md:text-4xl ${
                     productLayout ? "text-white" : "text-[#c07d19]"
                   }`}
                 >

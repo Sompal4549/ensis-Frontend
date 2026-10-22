@@ -41,7 +41,7 @@ export default function GreenButton({ path = '/contact', variant = 'golden', tex
           }`}
       >
         <span className={`w-[14px] h-[14px] shrink-0 ${'text-white'}`}>{leftIcon}</span>
-        <span className={`font-bold ${fontSize} text-center leading-tight tracking-wide sm:tracking-widest ${isGolden ? 'text-[#050A1A]' : 'text-white'}`}>
+        <span className={`font-semibold ${fontSize} text-center leading-tight tracking-wide sm:tracking-widest ${isGolden ? 'text-[#050A1A]' : 'text-white'}`}>
           {text || 'BOOK A STALL'}
         </span>
         {rightIcon || <ArrowRight className={`w-3 h-3 shrink-0 group-hover/btn:translate-x-1 transition-transform ${isGolden ? 'text-[#050A1A]' : 'text-white'}`} />}

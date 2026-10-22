@@ -241,7 +241,7 @@ export default function HeroSlideContent({
                             return lines.map((line, wi) => (
                               <span
                                 key={wi}
-                                className="text-[11px] sm:text-sm md:text-base font-bold tracking-tight uppercase text-center leading-tight"
+                                className="text-[11px] sm:text-sm md:text-base font-semibold tracking-tight uppercase text-center leading-tight"
                                 style={{
                                   color: "#4a3a28",
                                   fontFamily: "var(--font-montserrat), sans-serif",

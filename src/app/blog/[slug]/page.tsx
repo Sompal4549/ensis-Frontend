@@ -243,7 +243,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
 
                 {blog.tags && blog.tags.length > 0 && (
                   <div className="mt-12 pt-8 border-t border-[#dcc9b5]">
-                    <h4 className="text-sm font-bold text-[#2b241f] uppercase tracking-widest mb-4">Tags</h4>
+                    <h4 className="text-sm font-semibold text-[#2b241f] uppercase tracking-widest mb-4">Tags</h4>
                     <div className="flex flex-wrap gap-4">
                       {blog.tags.map((tag: string) => (
                         <span key={tag} className="px-4 py-1.5 bg-[#efe4d7] text-[#6e5b4d] rounded-full text-xs font-medium border border-[#dcc9b5]">

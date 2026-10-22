@@ -3,26 +3,26 @@ import nextDynamic from "next/dynamic";
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
-import { DM_Sans, Playfair_Display } from "next/font/google";
+import { DM_Sans, Playfair_Display, DM_Serif_Display } from "next/font/google";
 import { ShopProvider } from "@/context/ShopContext";
-// import footerTop1 from "@/assets/footer-top.webp"
-// import footerTop2 from "@/assets/footer-top2.webp"
-// import footerTop3 from "@/assets/footer-top-3.webp"
-// import footerTop4 from "@/assets/footer-bottom5.png"
-// import footerTop5 from "@/assets/footer-top-6.png"
-// import footerTop6 from "@/assets/footer-top-4.png"
-
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
+  // Site typography uses only 400/500 (body) and 600 (bold); heavier weights are not loaded
+  weight: ['400', '500', '600'],
   variable: '--font-montserrat',
+  display: 'swap',
+});
+const dmSerif = DM_Serif_Display({
+  subsets: ['latin'],
+  weight: ['400'],
+  variable: '--font-cormorant',
   display: 'swap',
 });
 const playfair = Playfair_Display({
   subsets: ['latin'],
-  weight: ['400', '600'],
-  variable: '--font-cormorant', // Maintained for Tailwind variable binding
+  weight: ['400', '600', '700'],
+  variable: '--font-playfair',
   display: 'swap',
 });
 
@@ -56,7 +56,7 @@ export default async function RootLayout({
   const searchConsole = advSeo?.searchConsole || {};
 
   return (
-    <html lang="en" className={`${dmSans.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${dmSans.variable} ${dmSerif.variable} ${playfair.variable}`}>
       <head>
         {/* Search Console Verification */}
         {searchConsole.googleVerification && (

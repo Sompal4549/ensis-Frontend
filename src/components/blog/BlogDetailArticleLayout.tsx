@@ -266,7 +266,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                       <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[#e8d9bb] bg-[#f8f2e8]">
                         <Icon size={20} className="text-[#C9972A]" strokeWidth={1.5} />
                       </span>
-                      <span className="text-base font-bold text-[#1f2c25] sm:text-base">
+                      <span className="text-base font-semibold text-[#1f2c25] sm:text-base">
                         {therapy.title}
                       </span>
                       <span className="text-base leading-tight  sm:text-base"
@@ -313,7 +313,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
             </section>
 
             <div className="mt-10 flex flex-wrap items-center gap-4 border-t border-slate-200 pt-6">
-              <span className="text-base font-bold text-[#1f2c25]">Tags :</span>
+              <span className="text-base font-semibold text-[#1f2c25]">Tags :</span>
               {tags.map((tag) => (
                 <span
                   key={tag}
@@ -325,7 +325,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
             </div>
 
             <div className="mt-4 flex flex-wrap items-center gap-4">
-              <span className="text-base font-bold text-[#1f2c25]">Share :</span>
+              <span className="text-base font-semibold text-[#1f2c25]">Share :</span>
               {[FaFacebookF, FaXTwitter, FaLinkedinIn, FaWhatsapp].map((Icon, idx) => (
                 <a
                   key={idx}
@@ -349,7 +349,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                     <Image src={author.avatar} alt={author.name} fill className="object-cover" />
                   </div>
                   <div>
-                    <p className="text-base font-bold text-[#1f2c25]">{author.name}</p>
+                    <p className="text-base font-semibold text-[#1f2c25]">{author.name}</p>
                     <p className="text-base">{author.role}</p>
                   </div>
                 </div>
@@ -397,7 +397,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                 <p className="mt-2 text-base leading-relaxed text-white/70" dangerouslySetInnerHTML={{__html:guide.description||""}}></p>
                 <a
                   href={guide.href}
-                  className="mt-4 inline-flex items-center gap-4 rounded-lg bg-[#e8c766] px-4 py-2.5 text-base font-bold tracking-wide text-[#0f2e22] transition-colors hover:bg-[#dcb851]"
+                  className="mt-4 inline-flex items-center gap-4 rounded-lg bg-[#e8c766] px-4 py-2.5 text-base font-semibold tracking-wide text-[#0f2e22] transition-colors hover:bg-[#dcb851]"
                 >
                   {guide.buttonLabel}
                   <Download size={14} />
@@ -419,7 +419,7 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                         />
                       </div>
                       <div>
-                        <p className="text-base font-bold leading-snug text-[#1f2c25] group-hover:text-[#C9972A]">
+                        <p className="text-base font-semibold leading-snug text-[#1f2c25] group-hover:text-[#C9972A]">
                           {item.title}
                         </p>
                         <p className="mt-1.5 text-base">

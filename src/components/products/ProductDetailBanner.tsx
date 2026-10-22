@@ -114,7 +114,7 @@ export default function ProductHeroBanner({
           {/* LEFT TEXT — desktop only */}
           <div className="hidden md:flex absolute inset-y-0 left-0 flex-col justify-center md:justify-start md:pt-20 w-full md:max-w-[55%] box-border pl-6 md:pl-10">
             {(product.subcategory || product.category?.name) && (
-              <span className="mb-3 text-[10px] font-bold uppercase tracking-[0.22em] text-[#e0b472]">
+              <span className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#e0b472]">
                 {product.subcategory || product.category?.name}
               </span>
             )}

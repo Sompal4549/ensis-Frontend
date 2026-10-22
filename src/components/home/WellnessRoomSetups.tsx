@@ -111,7 +111,7 @@ const WellnessRoomSetups: React.FC<WellnessRoomSetupsProps> = ({ sectionContent 
 
               {/* Tag badge */}
               {/* {card.tag && (
-                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#0f2518] text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-md">
+                <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-[#0f2518] text-[10px] font-semibold uppercase tracking-wider px-2 py-1 rounded-md">
                   {card.tag}
                 </div>
               )} */}

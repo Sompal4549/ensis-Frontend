@@ -49,7 +49,7 @@ export default function ConsultancyCTA({ sectionContent }: { sectionContent?: Co
               {heading}
             </p>
 
-            <h2 className="mt-3 text-[24px] font-bold leading-[1.2] text-white">
+            <h2 className="mt-3 text-[24px] font-semibold leading-[1.2] text-white">
               {title}
             </h2>
 

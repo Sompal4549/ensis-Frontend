@@ -401,9 +401,9 @@ export default function OrderPage() {
                 key={card.label}
                 className={`relative flex flex-col items-start px-4 py-3.5 ${idx < infoCards.length - 1 ? "border-r border-[#F0E8DC]" : ""} ${idx < infoCards.length - 2 ? "max-md:border-b max-md:border-r-0 max-md:border-[#F0E8DC] md:border-b-0" : ""} ${idx === infoCards.length - 2 ? "max-md:border-b-0" : ""}`}
               >
-                <p className="text-base font-bold uppercase tracking-[0.14em] text-[#a89a82]">{card.label}</p>
+                <p className="text-base font-semibold uppercase tracking-[0.14em] text-[#a89a82]">{card.label}</p>
                 <div className="mt-1 flex items-center gap-1.5">
-                  <p className={`text-base font-semibold text-[#1F3A2A] ${card.mono ? "font-mono" : ""} ${card.accent ?? ""} ${card.highlight ? "font-bold text-[#C7A55B]" : ""} ${card.label === "Order Date" ? "whitespace-pre-line" : ""}`}>
+                  <p className={`text-base font-semibold text-[#1F3A2A] ${card.mono ? "font-mono" : ""} ${card.accent ?? ""} ${card.highlight ? "font-semibold text-[#C7A55B]" : ""} ${card.label === "Order Date" ? "whitespace-pre-line" : ""}`}>
                     {card.value}
                   </p>
                   {card.badge && (
@@ -437,7 +437,7 @@ export default function OrderPage() {
           {/* ORDER SUMMARY */}
           <section className="self-start rounded-2xl border border-[#EDE4D3] bg-white shadow-[0_14px_36px_rgba(31,58,42,0.06)]">
             <div className="border-b border-[#F0E8DC] px-4 py-3 md:px-5">
-              <h3 className="text-base font-bold uppercase tracking-[0.16em] text-[#1F3A2A]">
+              <h3 className="text-base font-semibold uppercase tracking-[0.16em] text-[#1F3A2A]">
                 Order Summary
               </h3>
             </div>
@@ -536,10 +536,10 @@ export default function OrderPage() {
                 <div className="border-t border-[#F3EBDE] pt-3">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="text-base font-bold uppercase tracking-[0.12em] text-[#1F3A2A]">Grand Total</span>
+                      <span className="text-base font-semibold uppercase tracking-[0.12em] text-[#1F3A2A]">Grand Total</span>
                       <p className="mt-0.5 text-base text-[#8d6a3a]">Inclusive of all taxes</p>
                     </div>
-                    <span className="text-lg font-bold text-[#C7A55B]">{formatCurrency(order.totalAmount)}</span>
+                    <span className="text-lg font-semibold text-[#C7A55B]">{formatCurrency(order.totalAmount)}</span>
                   </div>
                 </div>
               </div>
@@ -550,14 +550,14 @@ export default function OrderPage() {
           <div className="space-y-0">
             <section className="rounded-2xl border border-[#EDE4D3] bg-white shadow-[0_14px_36px_rgba(31,58,42,0.06)]">
               <div className="border-b border-[#F0E8DC] px-4 py-3 md:px-5">
-                <h3 className="text-base font-bold uppercase tracking-[0.16em] text-[#1F3A2A]">
+                <h3 className="text-base font-semibold uppercase tracking-[0.16em] text-[#1F3A2A]">
                   Delivery & Payment
                 </h3>
               </div>
 
               {/* Shipping Details */}
               <div className="px-4 py-3 md:px-5">
-                <h4 className="mb-3 flex items-center gap-2 text-base font-bold uppercase tracking-[0.14em] text-[#8d6a3a]">
+                <h4 className="mb-3 flex items-center gap-2 text-base font-semibold uppercase tracking-[0.14em] text-[#8d6a3a]">
                   <MapPin size={13} className="text-[#C7A55B]" />
                   Shipping Details
                 </h4>
@@ -603,7 +603,7 @@ export default function OrderPage() {
 
               {/* Payment Details */}
               <div className="px-4 py-3 md:px-5">
-                <h4 className="mb-3 flex items-center gap-2 text-base font-bold uppercase tracking-[0.14em] text-[#8d6a3a]">
+                <h4 className="mb-3 flex items-center gap-2 text-base font-semibold uppercase tracking-[0.14em] text-[#8d6a3a]">
                   <CreditCard size={13} className="text-[#C7A55B]" />
                   Payment Details
                 </h4>
@@ -638,7 +638,7 @@ export default function OrderPage() {
         {/* === WHAT HAPPENS NEXT — Timeline === */}
         <section id="whats-next" className="mt-4 rounded-2xl border border-[#EDE4D3] bg-white px-4 py-5 shadow-[0_14px_36px_rgba(31,58,42,0.06)] md:px-6">
           <div className="flex items-center justify-between">
-            <h3 className="text-base font-bold uppercase tracking-[0.16em] text-[#1F3A2A]">
+            <h3 className="text-base font-semibold uppercase tracking-[0.16em] text-[#1F3A2A]">
               What Happens Next?
             </h3>
           </div>
@@ -651,10 +651,10 @@ export default function OrderPage() {
                   <step.icon size={16} strokeWidth={1.8} />
                 </div>
                 <div className="md:mt-3">
-                  <p className="text-base font-bold uppercase tracking-[0.12em] text-[#C7A55B]">
+                  <p className="text-base font-semibold uppercase tracking-[0.12em] text-[#C7A55B]">
                     {String(index + 1).padStart(2, "0")}
                   </p>
-                  <p className="mt-0.5 text-base font-bold uppercase tracking-[0.10em] text-[#1F3A2A]">
+                  <p className="mt-0.5 text-base font-semibold uppercase tracking-[0.10em] text-[#1F3A2A]">
                     {step.title}
                   </p>
                   <p className="mt-0.5 max-w-[180px] text-base leading-4 text-[#8d6a3a]">{step.text}</p>
@@ -683,7 +683,7 @@ export default function OrderPage() {
         <section className="mt-5 flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
           <Link
             href="/products"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#1F3A2A] px-6 text-base font-bold uppercase tracking-[0.14em] text-white shadow-[0_12px_30px_rgba(31,58,42,0.28)] transition-all duration-300 hover:bg-[#2F4A3A] hover:shadow-[0_16px_38px_rgba(31,58,42,0.36)] active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-full bg-[#1F3A2A] px-6 text-base font-semibold uppercase tracking-[0.14em] text-white shadow-[0_12px_30px_rgba(31,58,42,0.28)] transition-all duration-300 hover:bg-[#2F4A3A] hover:shadow-[0_16px_38px_rgba(31,58,42,0.36)] active:scale-[0.98]"
           >
             <ShoppingBag size={13} /> Continue Shopping
           </Link>
@@ -691,7 +691,7 @@ export default function OrderPage() {
             type="button"
             onClick={handleDownloadInvoice}
             disabled={invoiceLoading}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-[#1F3A2A]/20 bg-white px-6 text-base font-bold uppercase tracking-[0.14em] text-[#1F3A2A] shadow-[0_10px_26px_rgba(31,58,42,0.08)] transition-all duration-300 hover:border-[#C7A55B] hover:text-[#8d6a3a] hover:shadow-[0_14px_32px_rgba(31,58,42,0.14)] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-[#1F3A2A]/20 bg-white px-6 text-base font-semibold uppercase tracking-[0.14em] text-[#1F3A2A] shadow-[0_10px_26px_rgba(31,58,42,0.08)] transition-all duration-300 hover:border-[#C7A55B] hover:text-[#8d6a3a] hover:shadow-[0_14px_32px_rgba(31,58,42,0.14)] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {invoiceLoading ? (
               <>
@@ -706,13 +706,13 @@ export default function OrderPage() {
           <button
             type="button"
             onClick={handleTrackOrder}
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-[#1F3A2A]/20 bg-white px-6 text-base font-bold uppercase tracking-[0.14em] text-[#1F3A2A] shadow-[0_10px_26px_rgba(31,58,42,0.08)] transition-all duration-300 hover:border-[#C7A55B] hover:text-[#8d6a3a] hover:shadow-[0_14px_32px_rgba(31,58,42,0.14)] active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-[#1F3A2A]/20 bg-white px-6 text-base font-semibold uppercase tracking-[0.14em] text-[#1F3A2A] shadow-[0_10px_26px_rgba(31,58,42,0.08)] transition-all duration-300 hover:border-[#C7A55B] hover:text-[#8d6a3a] hover:shadow-[0_14px_32px_rgba(31,58,42,0.14)] active:scale-[0.98]"
           >
             <MapPin size={13} /> Track Order
           </button>
           <Link
             href="/"
-            className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-[#EDE4D3] bg-transparent px-6 text-base font-bold uppercase tracking-[0.14em] text-[#8d6a3a] transition-all duration-300 hover:border-[#D8C9A8] hover:bg-white hover:text-[#1F3A2A] hover:shadow-[0_10px_26px_rgba(31,58,42,0.08)] active:scale-[0.98]"
+            className="inline-flex h-10 items-center justify-center gap-2 rounded-full border border-[#EDE4D3] bg-transparent px-6 text-base font-semibold uppercase tracking-[0.14em] text-[#8d6a3a] transition-all duration-300 hover:border-[#D8C9A8] hover:bg-white hover:text-[#1F3A2A] hover:shadow-[0_10px_26px_rgba(31,58,42,0.08)] active:scale-[0.98]"
           >
             <Home size={13} /> Return Home
           </Link>
@@ -747,7 +747,7 @@ export default function OrderPage() {
                       <channel.icon size={18} strokeWidth={1.8} />
                     </div>
                     <div className="text-center">
-                      <p className="text-base font-bold text-white">{channel.label}</p>
+                      <p className="text-base font-semibold text-white">{channel.label}</p>
                       <p className="mt-0.5 whitespace-nowrap text-base text-white/60">{channel.value}</p>
                     </div>
                   </a>

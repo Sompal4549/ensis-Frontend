@@ -452,7 +452,7 @@ export default function SolutionClient({
                     className="
                       mt-4
                       text-base
-                      font-bold
+                      font-semibold
                 capitalize
                       tracking-wide
                       text-[#0f2518]
@@ -560,7 +560,7 @@ export default function SolutionClient({
                     className="
                       mt-4
                       text-base
-                      font-bold
+                      font-semibold
                       leading-6
                       tracking-wide
                       text-white
@@ -659,7 +659,7 @@ export default function SolutionClient({
                       rounded-full
                       bg-[#c39a5c]
                       text-base
-                      font-bold
+                      font-semibold
                       text-white
                     "
                   >
@@ -670,7 +670,7 @@ export default function SolutionClient({
                     className="
                       mt-3
                       text-base
-                      font-bold
+                      font-semibold
                       tracking-wide
                       text-[#0f2518]
                     "

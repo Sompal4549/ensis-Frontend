@@ -135,7 +135,7 @@ export default function ProductInfoSection({
                 <p className="text-base mt-1 leading-snug">
                   We create custom Panchkarma tables as per your therapy requirements.
                 </p>
-                <button className="w-full flex items-center justify-center gap-1.5 border rounded-md py-1.5 text-base font-bold uppercase tracking-wider transition-colors mt-2 cursor-pointer">
+                <button className="w-full flex items-center justify-center gap-1.5 border rounded-md py-1.5 text-base font-semibold uppercase tracking-wider transition-colors mt-2 cursor-pointer">
                   Contact Our Experts <ArrowRight size={12} />
                 </button>
               </div>
@@ -154,7 +154,7 @@ export default function ProductInfoSection({
       <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr_0.75fr] gap-0">
         {/* Wood Finish */}
         <div className="border-r border-[#e2d8c8] px-5">
-          <h3 className="text-base font-bold uppercase tracking-[0.15em] mb-4">Wood Finish</h3>
+          <h3 className="text-base font-semibold uppercase tracking-[0.15em] mb-4">Wood Finish</h3>
           <div className="flex flex-wrap gap-4">
             {(overview?.smartDesignAppearance?.woodFinish?.length
               ? overview.smartDesignAppearance.woodFinish.map((f: any) => ({ id: f.id || f.title, label: f.title, image: f.image }))
@@ -182,7 +182,7 @@ export default function ProductInfoSection({
 
         {/* Size Options */}
         <div className="px-5">
-          <h3 className="text-base font-bold uppercase tracking-[0.15em] mb-4 text-[#8d6a3a]">Size Options</h3>
+          <h3 className="text-base font-semibold uppercase tracking-[0.15em] mb-4 text-[#8d6a3a]">Size Options</h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             {overview?.smartDesignAppearance?.sizeOptions?.map((s) => (
               <div
@@ -201,7 +201,7 @@ export default function ProductInfoSection({
 
           {/* Ideal For row */}
           {/* <div className="mt-5">
-            <h3 className="text-base font-bold uppercase tracking-[0.15em] mb-3">Ideal For</h3>
+            <h3 className="text-base font-semibold uppercase tracking-[0.15em] mb-3">Ideal For</h3>
             <div className="flex flex-wrap gap-5">
               {[
                 { label: "Panchkarma\nRoom", icon: panchkarma_rooms },
@@ -227,7 +227,7 @@ export default function ProductInfoSection({
             <p className="text-base leading-snug mb-4">
               We offer special pricing for bulk orders and turnkey wellness projects.
             </p>
-            <button className="w-full flex items-center justify-center gap-1.5 border border-[#8d6a3a] rounded-md py-1.5 text-base font-bold uppercase tracking-wider text-[#8d6a3a] hover:bg-[#8d6a3a] hover:text-white transition-colors">
+            <button className="w-full flex items-center justify-center gap-1.5 border border-[#8d6a3a] rounded-md py-1.5 text-base font-semibold uppercase tracking-wider text-[#8d6a3a] hover:bg-[#8d6a3a] hover:text-white transition-colors">
               Get Bulk Quote <ArrowRight size={12} />
             </button>
           </div>
@@ -244,13 +244,13 @@ export default function ProductInfoSection({
                 <path d="M6 10l3 3 5-5" stroke="#6a7c4a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <span className="text-base font-bold uppercase tracking-widest">Made in India</span>
+            <span className="text-base font-semibold uppercase tracking-widest">Made in India</span>
           </div>
           <p className="text-base italic">Custom sizes and finishes available on request.</p>
           <div className="flex items-center gap-1">
-            <span className="text-2xl font-black leading-none">F</span>
-            <sup className="text-base font-bold -ml-0.5 mt-0.5">i</sup>
-            <span className="text-base font-bold uppercase tracking-widest ml-0.5">Ensis Solutions</span>
+            <span className="text-2xl font-semibold leading-none">F</span>
+            <sup className="text-base font-semibold -ml-0.5 mt-0.5">i</sup>
+            <span className="text-base font-semibold uppercase tracking-widest ml-0.5">Ensis Solutions</span>
           </div>
         </div>
       </div> */}

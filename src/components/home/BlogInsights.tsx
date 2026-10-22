@@ -41,7 +41,7 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
             <div>
               <SubHeading className=' text-black' text={subtitle} />
               <h2 className="mt-2  text-xl leading-tight text-[#1f261b] md:text-2xl font-semibold">{heading}</h2>
-            <Link href={buttonPath} className="mt-2 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-base font-bold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6] rounded-md">
+            <Link href={buttonPath} className="mt-2 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-base font-semibold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6] rounded-md">
                 {buttonText} <ArrowRight size={16} />
               </Link>
             </div>
@@ -61,7 +61,7 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
                   <Image src={blogImage} alt={blog.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw" crossOrigin="anonymous" />
                 </div>
                 <div className="p-4 flex flex-col justify-between h-32">
-                  <h3 className="text-lg font-bold text-[#1f261b] leading-[120%] line-clamp-2 ">{blog.title}</h3>
+                  <h3 className="text-lg font-semibold text-[#1f261b] leading-[120%] line-clamp-2 ">{blog.title}</h3>
                   <div className="mt-3 flex items-center gap-4 text-base font-semibold text-[#7c6a53]">
                     Read More <ArrowRight size={14} />
                   </div>

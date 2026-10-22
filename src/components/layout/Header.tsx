@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import SparkleLogo from "./SparkleLogo";
 import {
     Phone,
     Mail,
@@ -125,10 +124,10 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
     }, []);
 
     const navLink =
-        "inline-flex items-center whitespace-nowrap border-b-2 border-transparent pt-0.5 text-sm xl:text-[13px] 2xl:text-sm font-bold tracking-wide xl:tracking-normal 2xl:tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
+        "inline-flex items-center whitespace-nowrap border-b-2 border-transparent pt-0.5 text-sm xl:text-[13px] 2xl:text-sm font-semibold tracking-wide xl:tracking-normal 2xl:tracking-wide text-[#1f261b] transition-colors hover:border-[#8d6a3a] hover:text-[#8d6a3a]";
 
     const mobileLink =
-        "border-b border-[#e8e0d3] py-3 text-sm font-bold tracking-wide text-[#1f261b]";
+        "border-b border-[#e8e0d3] py-3 text-sm font-semibold tracking-wide text-[#1f261b]";
 
     // Default content shape matches the actual DB schema for "layout.header"
     // (contactInfo + navigation), NOT the old badges/navLinks shape.
@@ -181,7 +180,7 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
     }, []);
 
     // Map DB's `navigation` (title/slug) to the {label, href} shape this component renders
-    const logoSrc = headerContent.logo?.imageUrl ? getImageUrl(headerContent.logo.imageUrl, 400) : logoImg;
+    const logoSrc = headerContent.logo?.imageUrl ? getImageUrl(headerContent.logo.imageUrl, 600) : logoImg;
     const logoAlt = headerContent.logo?.alt || "ENSIS Logo";
 
     const navLinks = (headerContent.navigation ?? []).map((n: any) => ({
@@ -254,7 +253,7 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                             >
                                 <Heart size={15} />
                                 {mounted && (
-                                    <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c8a45d] text-[9px] font-bold text-white">
+                                    <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c8a45d] text-[9px] font-semibold text-white">
                                         {likedCount}
                                     </span>
                                 )}
@@ -263,10 +262,10 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                             {wishlistOpen && (
                                 <div className="absolute right-0 top-10 z-50 w-[340px] overflow-hidden rounded-md border border-[#e2d8ca] bg-white text-left shadow-[0_18px_45px_rgba(0,0,0,0.14)]">
                                     <div className="flex items-center justify-between border-b border-[#eee6dc] px-4 py-3">
-                                        <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#263016]">
+                                        <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#263016]">
                                             Wishlist
                                         </p>
-                                        <span className="rounded-full bg-[#fbf8f2] px-2 py-1 text-[10px] font-bold text-[#8d6a3a]">
+                                        <span className="rounded-full bg-[#fbf8f2] px-2 py-1 text-[10px] font-semibold text-[#8d6a3a]">
                                             {likedCount}
                                         </span>
                                     </div>
@@ -296,7 +295,7 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                                                         <Link
                                                             href={`/products/${item.slug || item.id}`}
                                                             onClick={() => setWishlistOpen(false)}
-                                                            className="line-clamp-2 text-[12px] font-bold leading-snug text-[#1f261b] hover:text-[#8d6a3a]"
+                                                            className="line-clamp-2 text-[12px] font-semibold leading-snug text-[#1f261b] hover:text-[#8d6a3a]"
                                                             dangerouslySetInnerHTML={{ __html: item.name }}
                                                         />
                                                         <p className="mt-1 text-[11px] font-semibold text-[#8d6a3a]">
@@ -308,7 +307,7 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                                                             <button
                                                                 type="button"
                                                                 onClick={() => addToCart(item)}
-                                                                className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-sm bg-[#263016] px-3 py-2 text-[10px] font-bold uppercase tracking-wide text-white transition-colors hover:bg-[#101010]"
+                                                                className="inline-flex flex-1 items-center justify-center gap-1.5 rounded-sm bg-[#263016] px-3 py-2 text-[10px] font-semibold uppercase tracking-wide text-white transition-colors hover:bg-[#101010]"
                                                             >
                                                                 <ShoppingCart size={12} />
                                                                 Add to Cart
@@ -329,7 +328,7 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                                     ) : (
                                         <div className="px-5 py-8 text-center">
                                             <Heart size={28} className="mx-auto mb-3 text-[#c8a45d]" />
-                                            <p className="text-sm font-bold text-[#1f261b]">
+                                            <p className="text-sm font-semibold text-[#1f261b]">
                                                 No wishlist items
                                             </p>
                                             <p className="mt-2 text-xs leading-5 text-[#6f675d]">
@@ -349,7 +348,7 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                         >
                             <ShoppingCart size={15} />
                             {mounted && (
-                                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c8a45d] text-[9px] font-bold text-white">
+                                <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#c8a45d] text-[9px] font-semibold text-white">
                                     {cartCount}
                                 </span>
                             )}
@@ -370,13 +369,13 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                                         onClick={() => setUserMenuOpen((o) => !o)}
                                         className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 transition-colors hover:bg-white/20"
                                     >
-                                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d9c49d] text-[10px] font-black text-[#263016]">
+                                        <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#d9c49d] text-[10px] font-semibold text-[#263016]">
                                             {(() => {
                                               const displayName = user.name || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email || "U";
                                               return displayName.charAt(0).toUpperCase();
                                             })()}
                                         </div>
-                                        <span className="max-w-[90px] truncate text-[10px] font-bold tracking-wide text-white sm:max-w-[160px]">
+                                        <span className="max-w-[90px] truncate text-[10px] font-semibold tracking-wide text-white sm:max-w-[160px]">
                                           {user.name || [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email}
                                         </span>
                                         <ChevronDown
@@ -391,7 +390,7 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                                             <button
                                                 type="button"
                                                 onClick={() => { setUserMenuOpen(false); handleLogout(); }}
-                                                className="flex w-full items-center gap-2.5 px-4 py-3 text-[11px] font-bold uppercase tracking-wide text-red-600 transition-colors hover:bg-red-50"
+                                                className="flex w-full items-center gap-2.5 px-4 py-3 text-[11px] font-semibold uppercase tracking-wide text-red-600 transition-colors hover:bg-red-50"
                                             >
                                                 <LogOut size={13} />
                                                 Logout
@@ -405,7 +404,7 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                                     href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 whitespace-nowrap rounded-md bg-[#d9c49d] px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-[#263016] hover:bg-[#c8a45d] transition-colors sm:px-3"
+                                    className="flex items-center gap-1.5 whitespace-nowrap rounded-md bg-[#d9c49d] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-[#263016] hover:bg-[#c8a45d] transition-colors sm:px-3"
                                 >
                                     <ShieldCheck size={12} />
                                     <span className="sm:hidden">Admin</span>
@@ -426,7 +425,7 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                                   </span>
                                 }
                               />
-                              <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" rel="noopener noreferrer" className="flex h-8 items-center gap-1.5 whitespace-nowrap rounded-md bg-[#d9c49d] px-2.5 sm:px-3 text-[10px] font-bold uppercase tracking-wider text-[#263016] hover:bg-[#c8a45d] transition-colors">
+                              <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" rel="noopener noreferrer" className="flex h-8 items-center gap-1.5 whitespace-nowrap rounded-md bg-[#d9c49d] px-2.5 sm:px-3 text-[10px] font-semibold uppercase tracking-wider text-[#263016] hover:bg-[#c8a45d] transition-colors">
                                 <ShieldCheck size={12} />
                                 <span className="sm:hidden">Admin</span>
                                 <span className="hidden sm:inline">Login as Superadmin</span>
@@ -441,24 +440,23 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
             </div>
 
             <div className={`bg-white`}>
-            <Container className="relative flex items-center justify-between gap-6 py-1!">
+            <Container className="relative flex items-center justify-between gap-3 xl:gap-5 py-0.5!">
         <Link
             href="/"
-            className="relative block shrink-0"
+            className="relative flex items-center shrink-0 py-0"
             aria-label="ENSIS Logo"
         >
-            {/* Slightly smaller on 1280–1535px screens so the full menu fits */}
-            <div className="flex h-full items-center">
-                <SparkleLogo
-                    src={logoSrc}
-                    alt={logoAlt}
-                    className="h-12 w-auto object-contain md:h-14 xl:h-12 2xl:h-14"
-                />
-            </div>
+            <Image
+                src={logoSrc}
+                alt={logoAlt}
+                className="h-[53px] sm:h-[57px] md:h-[63px] xl:h-[59px] 2xl:h-[67px] -my-[2.5px] w-auto object-contain"
+                {...(typeof logoSrc === "string" ? { width: 600, height: 244 } : {})}
+                priority
+            />
         </Link>
 
                     {/* Spacer so nav doesn't go under the logo */}
-                    <div className="w-[40px] md:w-[120px] xl:w-4 2xl:w-[120px] shrink-0" />
+                    <div className="w-2 md:w-6 xl:w-3 2xl:w-8 shrink-0" />
       <nav className="hidden xl:flex">
             <ul className="flex items-center gap-4.5 xl:gap-3 2xl:gap-6.5">
                             {navLinks.map((item, index) => (
@@ -502,10 +500,12 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                 aria-hidden={!isMenuOpen}
             >
                 <div className="flex h-[76px] items-center justify-between gap-3 border-b border-[#e8e0d3] px-4">
-                    <SparkleLogo
+                    <Image
                         src={logoSrc}
                         alt={logoAlt}
-                        className="h-12 w-auto max-w-full object-contain sm:h-14"
+                        className="h-11 sm:h-13 w-auto max-w-[200px] object-contain"
+                        {...(typeof logoSrc === "string" ? { width: 600, height: 244 } : {})}
+                        priority
                     />
 
                     <button
@@ -535,23 +535,23 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                     >
                         <span>Cart</span>
                         {mounted && (
-                            <span className="rounded-full bg-[#263016] px-2 py-0.5 text-[10px] font-bold text-white">
+                            <span className="rounded-full bg-[#263016] px-2 py-0.5 text-[10px] font-semibold text-white">
                                 {cartCount}
                             </span>
                         )}
                     </Link>
                     <div className="mt-3 flex flex-col gap-3">
-                        <GreenButton text={<span className="uppercase text-[10px] font-bold tracking-wider text-[#050A1A]">{brochureText}</span>} path={brochureUrl} />
+                        <GreenButton text={<span className="uppercase text-[10px] font-semibold tracking-wider text-[#050A1A]">{brochureText}</span>} path={brochureUrl} />
 
                         {mounted && (user ? (
                             <div className="mt-2 rounded-md border border-[#d8cbb9] bg-white p-3">
                                 <div className="flex items-center gap-4">
-                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#263016] text-xs font-bold text-white">
+                                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#263016] text-xs font-semibold text-white">
                                         {user.name?.charAt(0).toUpperCase()}
                                     </div>
                                     <div>
-                                        <p className="text-xs font-bold text-[#1f261b]">{user.name}</p>
-                                        <button onClick={handleLogout} className="mt-1 text-[10px] font-bold uppercase tracking-widest text-[#9b2c2c]">
+                                        <p className="text-xs font-semibold text-[#1f261b]">{user.name}</p>
+                                        <button onClick={handleLogout} className="mt-1 text-[10px] font-semibold uppercase tracking-widest text-[#9b2c2c]">
                                             Sign Out
                                         </button>
                                     </div>
@@ -560,7 +560,7 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                         ) : (
                             <div className="flex flex-col gap-2">
                               <GreenButton path="/login" leftIcon={<LogIn size={12} className="text-[#050A1A]" />} text={<span className="text-[10px]">User Login</span>} />
-                              <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 rounded-md bg-[#263016] px-3 h-8 text-[10px] font-bold uppercase tracking-wider text-[#d9c49d] hover:bg-[#1a2010] transition-colors">
+                              <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1.5 rounded-md bg-[#263016] px-3 h-8 text-[10px] font-semibold uppercase tracking-wider text-[#d9c49d] hover:bg-[#1a2010] transition-colors">
                                 <ShieldCheck size={12} /> Login as Superadmin
                               </a>
                             </div>

@@ -176,7 +176,7 @@ export default function PrivacyPolicyPage() {
         {/* CONTENT */}
         <div className="relative mx-auto flex min-h-[350px] max-w-[1400px] items-center px-4 py-10 lg:min-h-[450px] lg:px-10">
           <div className="max-w-[570px]">
-            <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.18em] text-[#a9742a]">
+            <p className="mb-4 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#a9742a]">
               ENSIS LEGAL & PRIVACY
             </p>
 

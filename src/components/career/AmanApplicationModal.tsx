@@ -223,7 +223,7 @@ export function AmanApplicationModal({
                 <li key={step} className="flex items-center gap-3">
                   <span
                     className={[
-                      "grid h-6 w-6 place-items-center rounded-full text-[10.5px] font-bold",
+                      "grid h-6 w-6 place-items-center rounded-full text-[10.5px] font-semibold",
                       done
                         ? "bg-emerald-500 text-white"
                         : active
@@ -267,7 +267,7 @@ export function AmanApplicationModal({
             <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
               <PreviewCard icon={User} title="Candidate Profile">
                 <div className="flex items-start gap-3.5">
-                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-emerald-600 text-[15px] font-bold text-white">
+                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-full bg-emerald-600 text-[15px] font-semibold text-white">
                     AS
                   </span>
                   <div className="min-w-0 space-y-1.5">
@@ -286,7 +286,7 @@ export function AmanApplicationModal({
                       {preview.candidate.email}
                     </p>
                     <p className="flex items-center gap-2 break-all text-[12.5px] text-slate-600">
-                      <span className="grid h-3.5 w-3.5 shrink-0 place-items-center rounded-[3px] bg-blue-600 text-[8px] font-bold text-white">
+                      <span className="grid h-3.5 w-3.5 shrink-0 place-items-center rounded-[3px] bg-blue-600 text-[8px] font-semibold text-white">
                         in
                       </span>
                       {preview.candidate.linkedin}
@@ -314,7 +314,7 @@ export function AmanApplicationModal({
                       <div className="flex flex-wrap items-center gap-2">
                         <h4 className="text-[13.5px] font-semibold text-slate-900">{exp.company}</h4>
                         {exp.current ? (
-                          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.06em] text-emerald-700">
+                          <span className="rounded-full border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-emerald-700">
                             Current Company
                           </span>
                         ) : null}
@@ -410,7 +410,7 @@ export function AmanApplicationModal({
           <aside className="border-t border-slate-200 bg-slate-50/80 px-5 py-5 md:border-l md:border-t-0 md:px-6">
             <div className="space-y-4 lg:sticky lg:top-4">
               <div className="rounded-2xl border border-emerald-200 bg-emerald-50/70 p-4">
-                <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Your AI Match Score
                 </p>
                 <ScoreRing score={preview.score} size={120} caption="Matches key role requirements" />
@@ -420,7 +420,7 @@ export function AmanApplicationModal({
               </div>
 
               <div className="rounded-2xl border border-slate-200 bg-white p-4">
-                <p className="mb-2.5 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Job Summary
                 </p>
                 <p className="mb-3 text-[14px] font-semibold text-slate-900">{preview.job.title}</p>
@@ -441,7 +441,7 @@ export function AmanApplicationModal({
               </div>
 
               <div className="rounded-2xl border border-blue-200 bg-blue-50/70 p-4">
-                <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Looks good!
                 </p>
                 <ul className="space-y-2">

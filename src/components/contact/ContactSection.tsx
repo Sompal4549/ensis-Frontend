@@ -143,7 +143,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
 
           {/* LEFT — Contact Info */}
           <div className="bg-white rounded-2xl border border-[#ebe7df] p-7 md:p-9 shadow-sm">
-            <h2 className="text-xl font-bold text-[#111]">{sectionContent?.title || "Contact Information"}</h2>
+            <h2 className="text-xl font-semibold text-[#111]">{sectionContent?.title || "Contact Information"}</h2>
             <div className="w-8 h-[3px] bg-[#D9B25F] mt-1.5 mb-7 rounded-full" />
 
             <div className="divide-y divide-[#f0ece5]">
@@ -153,11 +153,11 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
                     {detail.icon ? (
                       <Image src={detail.icon} alt={detail.title} width={18} height={18} />
                     ) : (
-                      <span className="text-[#D9B25F] text-xs font-bold">●</span>
+                      <span className="text-[#D9B25F] text-xs font-semibold">●</span>
                     )}
                   </div>
                   <div>
-                    <p className="text-base font-bold text-[#111]">{detail.title}</p>
+                    <p className="text-base font-semibold text-[#111]">{detail.title}</p>
                     <HtmlRenderer className="text-base text-[#6b7280] mt-0.5 leading-6" content={detail.description || ""}></HtmlRenderer>
                   </div>
                 </div>
@@ -165,7 +165,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
             </div>
 
             <div className="mt-6 flex items-center gap-4">
-              <span className="text-sm font-bold text-[#111]">Follow Us</span>
+              <span className="text-sm font-semibold text-[#111]">Follow Us</span>
               <SocialSidebar layout="horizontal" />
             </div>
           </div>
@@ -182,7 +182,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
   )}
 
   <div className="relative z-10">
-            <h2 className="text-xl font-bold text-white">Send Us a Message</h2>
+            <h2 className="text-xl font-semibold text-white">Send Us a Message</h2>
             <div className="w-8 h-[3px] bg-[#D9B25F] mt-1.5 mb-7 rounded-full" />
 
             <form className="space-y-3" onSubmit={handleSubmit}>
@@ -192,7 +192,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
                   <input suppressHydrationWarning name="mobile" aria-label="Mobile number" value={formData.mobile} onChange={handleChange} disabled={mobileVerified} placeholder="Mobile Number" className={`${inputClass} ${mobileVerified ? "border-green-500" : ""} pr-24`} />
                   {!mobileVerified ? (
                     <button suppressHydrationWarning type="button" onClick={sendMobileOtp} disabled={sendingMobileOtp || mobileTimer > 0 || !formData.mobile}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 h-7 px-2.5 rounded-lg bg-[#D9B25F] text-[#0f2e22] font-bold text-[10px] disabled:opacity-50">
+                      className="absolute right-2 top-1/2 -translate-y-1/2 h-7 px-2.5 rounded-lg bg-[#D9B25F] text-[#0f2e22] font-semibold text-[10px] disabled:opacity-50">
                       {sendingMobileOtp ? "..." : mobileTimer > 0 ? `${mobileTimer}s` : mobileOtpSent ? "Resend" : "Send OTP"}
                     </button>
                   ) : <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 text-green-400" size={16} />}
@@ -203,7 +203,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
                 <div className="flex gap-4">
                   <input suppressHydrationWarning aria-label="Mobile OTP" value={mobileOtp} onChange={e => setMobileOtp(e.target.value)} placeholder="Enter Mobile OTP" maxLength={6} className={inputClass} />
                   <button suppressHydrationWarning type="button" onClick={verifyMobileOtp} disabled={verifyingMobile || !mobileOtp}
-                    className="px-5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-bold text-sm whitespace-nowrap">
+                    className="px-5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-semibold text-sm whitespace-nowrap">
                     {verifyingMobile ? "..." : "Verify"}
                   </button>
                 </div>
@@ -214,7 +214,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
                   <input suppressHydrationWarning name="email" type="email" aria-label="Email address" value={formData.email} onChange={handleChange} disabled={emailVerified} placeholder="Email Address" className={`${inputClass} ${emailVerified ? "border-green-500" : ""} pr-24`} />
                   {!emailVerified ? (
                     <button suppressHydrationWarning type="button" onClick={sendEmailOtp} disabled={sendingEmailOtp || emailTimer > 0 || !formData.email}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 h-7 px-2.5 rounded-lg bg-[#D9B25F] text-[#0f2e22] font-bold text-[10px] disabled:opacity-50">
+                      className="absolute right-2 top-1/2 -translate-y-1/2 h-7 px-2.5 rounded-lg bg-[#D9B25F] text-[#0f2e22] font-semibold text-[10px] disabled:opacity-50">
                       {sendingEmailOtp ? "..." : emailTimer > 0 ? `${emailTimer}s` : emailOtpSent ? "Resend" : "Send OTP"}
                     </button>
                   ) : <CheckCircle2 className="absolute right-3 top-1/2 -translate-y-1/2 text-green-400" size={16} />}
@@ -231,7 +231,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
                 <div className="flex gap-4">
                   <input suppressHydrationWarning aria-label="Email OTP" value={emailOtp} onChange={e => setEmailOtp(e.target.value)} placeholder="Enter Email OTP" maxLength={6} className={inputClass} />
                   <button suppressHydrationWarning type="button" onClick={verifyEmailOtp} disabled={verifyingEmail || !emailOtp}
-                    className="px-5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-bold text-sm whitespace-nowrap">
+                    className="px-5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-semibold text-sm whitespace-nowrap">
                     {verifyingEmail ? "..." : "Verify"}
                   </button>
                 </div>
@@ -240,7 +240,7 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
               <textarea suppressHydrationWarning name="message" rows={5} aria-label="Your message" value={formData.message} onChange={handleChange} placeholder="Your Message" className={`${inputClass} resize-none`} />
 
               <button suppressHydrationWarning type="submit" disabled={!isFormValid || isSubmitting}
-                className="w-full py-3.5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-bold text-sm flex items-center justify-center gap-4 hover:bg-[#e8c16d] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                className="w-full py-3.5 rounded-xl bg-[#D9B25F] text-[#0f2e22] font-semibold text-sm flex items-center justify-center gap-4 hover:bg-[#e8c16d] transition-all disabled:opacity-50 disabled:cursor-not-allowed">
                 <Send size={16} />
                 {isSubmitting ? "Sending..." : "Send Message"}
               </button>

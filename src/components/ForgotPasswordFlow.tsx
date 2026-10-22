@@ -93,11 +93,11 @@ const handleRequestOTP = async (e: React.FormEvent) => {
         <div className="flex justify-center mb-4">
           <CheckCircle2 className="text-green-500 w-16 h-16" />
         </div>
-        <h2 className="text-2xl  font-bold text-[#20351f] mb-3">Successful!</h2>
+        <h2 className="text-2xl  font-semibold text-[#20351f] mb-3">Successful!</h2>
         <p className="text-gray-600 mb-8">Password reset successfully. Now login with your new credentials.</p>
         <button suppressHydrationWarning
           onClick={onBackToLogin}
-          className="w-full py-3 bg-[#183b17] text-white rounded-xl font-bold hover:shadow-lg transition-all"
+          className="w-full py-3 bg-[#183b17] text-white rounded-xl font-semibold hover:shadow-lg transition-all"
         >
           Go to Login
         </button>
@@ -114,7 +114,7 @@ const handleRequestOTP = async (e: React.FormEvent) => {
         <ArrowLeft size={16} className="mr-2" /> Back to Login
       </button>
 
-      <h2 className="text-2xl md:text-3xl  font-bold text-[#20351f] mb-2">
+      <h2 className="text-2xl md:text-3xl  font-semibold text-[#20351f] mb-2">
         {step === "email" && "Find Account"}
         {step === "otp" && "Check Email"}
         {step === "reset" && "New Password"}
@@ -153,7 +153,7 @@ const handleRequestOTP = async (e: React.FormEvent) => {
               maxLength={6}
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
-              className="w-full h-12 pl-12 pr-4 rounded-xl border border-[#183b17] focus:ring-1 focus:ring-[#c8a45d] outline-none tracking-widest font-bold"
+              className="w-full h-12 pl-12 pr-4 rounded-xl border border-[#183b17] focus:ring-1 focus:ring-[#c8a45d] outline-none tracking-widest font-semibold"
               required
             />
           </div>
@@ -195,7 +195,7 @@ const handleRequestOTP = async (e: React.FormEvent) => {
         <button suppressHydrationWarning
           type="submit"
           disabled={loading}
-          className="w-full py-3.5 bg-[#183b17] text-white rounded-xl font-bold shadow-md hover:bg-opacity-90 active:scale-95 transition-all disabled:opacity-50"
+          className="w-full py-3.5 bg-[#183b17] text-white rounded-xl font-semibold shadow-md hover:bg-opacity-90 active:scale-95 transition-all disabled:opacity-50"
         >
           {loading ? "Please wait..." : step === "email" ? "Get Reset Code" : step === "otp" ? "Verify Code" : "Update Password"}
         </button>

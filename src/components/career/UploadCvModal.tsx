@@ -145,7 +145,7 @@ function MetaItem({
             <Icon size={size} className="shrink-0 text-[#006b48]" strokeWidth={2} />
             <span
                 className={[
-                    "font-bold leading-tight text-[#173047]",
+                    "font-semibold leading-tight text-[#173047]",
                     // Education copy is long enough to need a smaller size to stay at
                     // two lines, so the whole meta row keeps to a single line.
                     wrap ? "max-w-[240px] whitespace-normal text-[14px]" : "whitespace-nowrap text-[16px]",
@@ -610,7 +610,7 @@ export default function UploadCvModal({
                                     <span className="h-[3px] w-[55px] bg-[#0b734d]/70" />
                                 </div>
 
-                                <h1 className="mt-[10px] max-w-[600px] !text-[22px] lg:!text-[37px] font-bold !leading-[1.18] tracking-[-0.03em] text-[#083A34]">
+                                <h1 className="mt-[10px] max-w-[600px] !text-[22px] lg:!text-[37px] font-semibold !leading-[1.18] tracking-[-0.03em] text-[#083A34]">
                                     {job.title || title}
                                 </h1>
 

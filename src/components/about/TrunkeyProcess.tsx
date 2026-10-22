@@ -118,7 +118,7 @@ const TurnkeyProcess: React.FC<TurnkeyProcessProps> = ({ sectionContent = {} as 
         <div className="relative flex flex-col lg:flex-row items-stretch min-h-[200px]">
           {/* LEFT SIDE */}
           <div className="w-full lg:w-[58%] px-6 md:px-0 py-4 flex flex-col justify-center relative z-10">
-            <h2 className="text-[#2d2a28] text-[18px] md:text-[24px] font-bold  uppercase tracking-[0.4px] mb-6">
+            <h2 className="text-[#2d2a28] text-[18px] md:text-[24px] font-semibold  uppercase tracking-[0.4px] mb-6">
               {resolved.title}
             </h2>
             
@@ -138,7 +138,7 @@ const TurnkeyProcess: React.FC<TurnkeyProcessProps> = ({ sectionContent = {} as 
                   {index !== resolved.steps.length - 1 && (
                     <div className="flex-1 pt-[17px] hidden md:flex items-start justify-center">
                       <div className="w-full relative">
-                        <span className="absolute right-[-2px] top-[-6px] text-[#c9b39b] text-sm font-bold">
+                        <span className="absolute right-[-2px] top-[-6px] text-[#c9b39b] text-sm font-semibold">
                           →
                         </span>
                       </div>

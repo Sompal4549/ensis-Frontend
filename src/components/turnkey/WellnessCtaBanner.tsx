@@ -49,7 +49,7 @@ const WellnessCtaBanner: React.FC<{ sectionContent?: WellnessCtaBannerContent }>
         <div className="flex flex-col lg:flex-row lg:items-center gap-4 lg:pl-[150px] py-2">
           {/* Content */}
           <div className="px-4 pt-4 lg:pt-5 lg:flex-1 flex flex-col gap-4">
-            <h2 className="text-[#E7C17A] text-lg md:text-xl leading-none font-bold">
+            <h2 className="text-[#E7C17A] text-lg md:text-xl leading-none font-semibold">
               {title}
             </h2>
 

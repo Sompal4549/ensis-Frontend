@@ -130,7 +130,7 @@ export const Testimonials = ({ sectionContent }: TestimonialsProps) => {
                       />
                     </div>
                     <div className="py-1">
-                      <p className="text-base font-bold text-[#1f261b] leading-5">{item.name}</p>
+                      <p className="text-base font-semibold text-[#1f261b] leading-5">{item.name}</p>
                       <span className="text-base font-medium leading-5">{item.role ?? item.designation}</span>
                     </div>
                   </div>

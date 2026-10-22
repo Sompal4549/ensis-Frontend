@@ -242,7 +242,7 @@ export default function PremiumProductInfo({
                 >
                   <div className="flex items-center justify-between border-b border-[#C9A45C]/30 bg-[#0F2E22] px-5 py-2.5">
                     <h3
-                      className="text-sm font-bold uppercase tracking-[0.16em] text-[#E8C776]"
+                      className="text-sm font-semibold uppercase tracking-[0.16em] text-[#E8C776]"
                       dangerouslySetInnerHTML={{ __html: diagramTitle || "Technical Diagram Highlight" }}
                     />
                     <Sparkles className="h-4 w-4 text-[#E8C776]" />
@@ -392,7 +392,7 @@ export default function PremiumProductInfo({
                       >
                         <Icon className="h-5 w-5" strokeWidth={1.4} />
                       </div>
-                      <p className="mt-2.5 text-sm font-bold uppercase tracking-[0.12em] text-[#0F2E22]">
+                      <p className="mt-2.5 text-sm font-semibold uppercase tracking-[0.12em] text-[#0F2E22]">
                         {option.title}
                       </p>
                       <p className="mt-0.5 text-xs text-[#6b6b5e]">

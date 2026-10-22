@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useHrContact } from "@/lib/useHrContact";
 import {
   ArrowLeft,
   ArrowRight,
@@ -681,7 +682,7 @@ function ProgressSteps() {
                 )}
               </div>
 
-              <span className="mt-[5px] whitespace-nowrap text-[12px] font-extrabold text-[#0d315e]">
+              <span className="mt-[5px] whitespace-nowrap text-[12px] font-semibold text-[#0d315e]">
                 {label}
               </span>
             </div>
@@ -861,7 +862,7 @@ function ScoreRing() {
           {matchScore}%
         </div>
 
-        <div className="mt-1 text-[clamp(10px,.78vw,12px)] font-extrabold text-[#13355d]">
+        <div className="mt-1 text-[clamp(10px,.78vw,12px)] font-semibold text-[#13355d]">
           Match Score
         </div>
       </div>
@@ -884,7 +885,7 @@ function Legend({
         className="h-[11px] w-[11px] rounded-full"
         style={{ background: color }}
       />
-      <span className="font-bold">{range}</span>
+      <span className="font-semibold">{range}</span>
       <span className="font-semibold">{label}</span>
     </div>
   );
@@ -903,7 +904,7 @@ function ScoreSummary() {
         <ScoreRing />
 
         <div className="flex min-w-0 flex-col justify-center pl-[2px]">
-          <h3 className="text-[17px] font-bold tracking-tight text-[#113a72] leading-tight">
+          <h3 className="text-[17px] font-semibold tracking-tight text-[#113a72] leading-tight">
             {current.summaryTitle}
           </h3>
 
@@ -948,14 +949,14 @@ function ScoreSummary() {
             {matchLevel === "moderate" ? (
               <Lightbulb className="h-[15px] w-[15px]" />
             ) : matchLevel === "low" ? (
-              <span className="text-[16px] font-bold leading-none">!</span>
+              <span className="text-[16px] font-semibold leading-none">!</span>
             ) : (
               <Target className="h-[15px] w-[15px]" />
             )}
           </div>
 
           <h3
-            className="text-[17.5px] font-bold leading-tight"
+            className="text-[17.5px] font-semibold leading-tight"
             style={{ color: theme.dark }}
           >
             {current.suggestionTitle}
@@ -974,7 +975,7 @@ function ScoreSummary() {
                 className="flex items-center gap-[8px]"
               >
                 <span
-                  className="grid h-[17px] w-[17px] shrink-0 place-items-center rounded-full text-[10px] font-bold text-white"
+                  className="grid h-[17px] w-[17px] shrink-0 place-items-center rounded-full text-[10px] font-semibold text-white"
                   style={{ background: theme.primary }}
                 >
                   {matchLevel === "high" ? (
@@ -1069,7 +1070,7 @@ function Breakdown() {
               />
 
               <div className="min-w-0">
-                <h4 className="truncate text-[12.5px] font-bold leading-tight text-[#102e50]">
+                <h4 className="truncate text-[12.5px] font-semibold leading-tight text-[#102e50]">
                   {item.title}
                 </h4>
 
@@ -1089,7 +1090,7 @@ function Breakdown() {
               </div>
 
               <span
-                className="text-right text-[13px] font-bold"
+                className="text-right text-[13px] font-semibold"
                 style={{ color: scoreColor }}
               >
                 {item.score}%
@@ -1103,7 +1104,7 @@ function Breakdown() {
         <BookOpen className="h-[16px] w-[16px] shrink-0 text-[#087447]" />
 
         <span className="truncate">
-          <span className="font-bold">Tip:</span> Update your CV with more relevant experience and skills to increase your match score and improve your chances.
+          <span className="font-semibold">Tip:</span> Update your CV with more relevant experience and skills to increase your match score and improve your chances.
         </span>
       </div>
     </div>
@@ -1181,7 +1182,7 @@ function LowNextSteps() {
         <button
           type="button"
           disabled
-          className="mt-[12px] flex h-[42px] cursor-not-allowed items-center gap-[8px] rounded-[8px] bg-[#b6c4bc] px-[24px] text-[14px] font-bold text-white"
+          className="mt-[12px] flex h-[42px] cursor-not-allowed items-center gap-[8px] rounded-[8px] bg-[#b6c4bc] px-[24px] text-[14px] font-semibold text-white"
         >
           View Other Job Opportunities
           <ArrowRight className="h-[16px] w-[16px]" strokeWidth={2.5} />
@@ -1491,14 +1492,14 @@ function ProfileCard() {
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-[8px] border border-[#eaefeb] bg-white p-[12px] shadow-[0_2px_8px_rgba(0,0,0,0.03)]">
       <div className="flex shrink-0 items-center justify-between">
-        <h3 className="text-[17px] font-bold text-[#0c3363]">Your Profile</h3>
+        <h3 className="text-[17px] font-semibold text-[#0c3363]">Your Profile</h3>
 
         {canEdit && (isEditing ? (
           <div className="flex items-center gap-[10px]">
             <button
               type="button"
               onClick={() => setIsEditing(false)}
-              className="text-[14px] font-bold text-[#6b7a87] transition-opacity hover:opacity-80"
+              className="text-[14px] font-semibold text-[#6b7a87] transition-opacity hover:opacity-80"
             >
               Cancel
             </button>
@@ -1507,7 +1508,7 @@ function ProfileCard() {
               onClick={save}
               disabled={draftIssues.length > 0}
               title={draftIssues.length > 0 ? `Still needed: ${draftIssues.join(", ")}` : undefined}
-              className="rounded-[5px] bg-[#07623a] px-[10px] py-[3px] text-[14px] font-bold text-white transition-colors hover:bg-[#05502f] disabled:cursor-not-allowed disabled:bg-[#b6c4bc]"
+              className="rounded-[5px] bg-[#07623a] px-[10px] py-[3px] text-[14px] font-semibold text-white transition-colors hover:bg-[#05502f] disabled:cursor-not-allowed disabled:bg-[#b6c4bc]"
             >
               Save
             </button>
@@ -1516,7 +1517,7 @@ function ProfileCard() {
           <button
             type="button"
             onClick={openEditor}
-            className="flex items-center gap-[4px] text-[15px] font-bold text-[#0977df] transition-opacity hover:opacity-80"
+            className="flex items-center gap-[4px] text-[15px] font-semibold text-[#0977df] transition-opacity hover:opacity-80"
           >
             <Pencil className="h-[15px] w-[15px] stroke-[2.5]" />
             Edit
@@ -1548,9 +1549,9 @@ function ProfileCard() {
                 // Object-URL previews are not routable through next/image.
                 <Image width={0} height={0} sizes="100vw" src={draft.image} alt="" className="h-full w-full object-cover object-center" />
               ) : (
-                <span className="text-[30px] font-bold text-[#07623a]">{initials || "CV"}</span>
+                <span className="text-[30px] font-semibold text-[#07623a]">{initials || "CV"}</span>
               )}
-              <span className="absolute inset-x-0 bottom-0 bg-[#07623a]/85 py-[3px] text-[11px] font-bold text-white">
+              <span className="absolute inset-x-0 bottom-0 bg-[#07623a]/85 py-[3px] text-[11px] font-semibold text-white">
                 {isCheckingPhoto ? "Checking…" : draft.image ? "Change photo" : "Add photo"}
               </span>
             </button>
@@ -1611,7 +1612,7 @@ function ProfileCard() {
               {/* The OTP proved one specific number; say so, and flag any change. */}
               {verifiedKey && (
                 phoneKey(draft.phone) === verifiedKey ? (
-                  <p className="mt-[3px] flex items-center gap-[4px] text-[11px] font-bold text-[#07623a]">
+                  <p className="mt-[3px] flex items-center gap-[4px] text-[11px] font-semibold text-[#07623a]">
                     <ShieldCheck className="h-[12px] w-[12px] stroke-[2.6]" />
                     Verified on WhatsApp
                   </p>
@@ -1644,7 +1645,7 @@ function ProfileCard() {
                           .filter(Boolean),
                       }))
                     }
-                    className="shrink-0 text-[11px] font-bold text-[#0977df] transition-opacity hover:opacity-80"
+                    className="shrink-0 text-[11px] font-semibold text-[#0977df] transition-opacity hover:opacity-80"
                   >
                     Use this
                   </button>
@@ -1675,19 +1676,19 @@ function ProfileCard() {
               onClick={openEditor}
               className="flex h-[116px] w-[116px] shrink-0 flex-col items-center justify-center gap-[2px] rounded-[8px] border border-dashed border-[#a9c9b6] bg-[#e4efe8] text-[#075333] transition-colors hover:bg-[#d8e9df]"
             >
-              <span className="text-[32px] font-bold leading-none">{initials || "CV"}</span>
-              <span className="text-[9.5px] font-bold uppercase tracking-[0.04em] text-[#07623a]">
+              <span className="text-[32px] font-semibold leading-none">{initials || "CV"}</span>
+              <span className="text-[9.5px] font-semibold uppercase tracking-[0.04em] text-[#07623a]">
                 Add photo
               </span>
             </button>
           ) : (
             <div className="flex h-[116px] w-[116px] shrink-0 flex-col items-center justify-center gap-[2px] rounded-[8px] border border-dashed border-[#a9c9b6] bg-[#e4efe8] text-[#075333]">
-              <span className="text-[32px] font-bold leading-none">{initials || "CV"}</span>
+              <span className="text-[32px] font-semibold leading-none">{initials || "CV"}</span>
             </div>
           )}
 
           <div className="min-w-0 flex-1">
-            <h4 className="truncate text-[17px] font-bold text-[#0c3363]">
+            <h4 className="truncate text-[17px] font-semibold text-[#0c3363]">
               {candidate.candidateName}
             </h4>
 
@@ -1718,7 +1719,7 @@ function ProfileCard() {
                         aria-label="Verified on WhatsApp"
                       />
                     ) : verifiedKey && index === 0 ? (
-                      <span className="shrink-0 rounded-[4px] bg-[#fdf3e8] px-[5px] py-[1px] text-[10px] font-bold text-[#b26a2e]">
+                      <span className="shrink-0 rounded-[4px] bg-[#fdf3e8] px-[5px] py-[1px] text-[10px] font-semibold text-[#b26a2e]">
                         UNVERIFIED
                       </span>
                     ) : null}
@@ -1785,7 +1786,7 @@ function CVCard({ onBack, onClose }: { onBack?: () => void; onClose?: () => void
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-[8px] border border-[#eaefeb] bg-white p-[12px] shadow-[0_2px_8px_rgba(0,0,0,0.03)]">
-      <h3 className="shrink-0 text-[17px] font-bold text-[#0c3363]">
+      <h3 className="shrink-0 text-[17px] font-semibold text-[#0c3363]">
         Your CV
       </h3>
 
@@ -1799,7 +1800,7 @@ function CVCard({ onBack, onClose }: { onBack?: () => void; onClose?: () => void
         </div>
 
         <div className="min-w-0 flex-1 pl-[4px]">
-          <h4 className="truncate text-[16px] font-bold text-[#0c3363]">
+          <h4 className="truncate text-[16px] font-semibold text-[#0c3363]">
             {candidate.cvName}
           </h4>
 
@@ -1807,7 +1808,7 @@ function CVCard({ onBack, onClose }: { onBack?: () => void; onClose?: () => void
             {candidate.cvSize}
           </p>
 
-          <div className="mt-[6px] flex flex-wrap gap-x-[12px] gap-y-[3px] text-[14px] font-bold text-[#0977df]">
+          <div className="mt-[6px] flex flex-wrap gap-x-[12px] gap-y-[3px] text-[14px] font-semibold text-[#0977df]">
             {/* Reopens this job's upload step rather than dropping out of the flow. */}
             <button
               type="button"
@@ -1841,7 +1842,7 @@ function JobSummary() {
 
   return (
     <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-[8px] border border-[#eaefeb] bg-white p-[12px] shadow-[0_2px_8px_rgba(0,0,0,0.03)]">
-      <h3 className="shrink-0 text-[17px] font-bold text-[#0c3363]">
+      <h3 className="shrink-0 text-[17px] font-semibold text-[#0c3363]">
         Job Summary
       </h3>
 
@@ -1875,6 +1876,7 @@ function JobSummary() {
 
 function SupportCard() {
   const { matchLevel, theme } = useMatchData();
+  const hr = useHrContact();
 
   if (matchLevel === "low") {
     return (
@@ -1882,7 +1884,7 @@ function SupportCard() {
         <span className="h-[28px] w-[18px] shrink-0 rotate-[25deg] rounded-[100%_0_100%_0] bg-[#23943d]" />
 
         <div>
-          <h4 className="text-[14px] font-bold text-[#125c37]">
+          <h4 className="text-[14px] font-semibold text-[#125c37]">
             Looking for a Better Fit?
           </h4>
 
@@ -1912,14 +1914,14 @@ function SupportCard() {
       <Info className="h-[24px] w-[24px] shrink-0 fill-[#1565c0] text-white" />
 
       <div className="min-w-0">
-        <h4 className="text-[14px] font-bold text-[#102d58] leading-tight">
+        <h4 className="text-[14px] font-semibold text-[#102d58] leading-tight">
           Still have questions?
         </h4>
 
         <p className="mt-[2px] text-[13px] font-medium leading-tight text-[#214368]">
           Feel free to reach out to our HR team at
           <br />
-          <strong className="font-semibold text-[#102d58]">info@ensis.in</strong>
+          <a href={"mailto:" + hr.email} className="font-semibold text-[#102d58] hover:underline">{hr.email}</a>
         </p>
       </div>
     </div>
@@ -1987,7 +1989,7 @@ function Sidebar({
         <button
           type="button"
           onClick={() => goToCareers(false)}
-          className="flex items-center gap-[6px] text-[17px] font-bold text-[#075333] transition-colors hover:text-red-600 pr-1"
+          className="flex items-center gap-[6px] text-[17px] font-semibold text-[#075333] transition-colors hover:text-red-600 pr-1"
         >
           <ArrowLeft className="h-[18px] w-[18px] stroke-[2.5]" />
           Back to Careers
@@ -2009,7 +2011,7 @@ function Sidebar({
               onClick={onApply}
               disabled={missing.length > 0}
               title={missing.length > 0 ? `Add ${missing.join(", ")} in Your Profile first.` : undefined}
-              className="flex h-full w-full items-center justify-center gap-[8px] rounded-[8px] bg-[#07623a] text-[16px] font-bold text-white transition-colors shadow-sm hover:bg-[#05502f] disabled:cursor-not-allowed disabled:bg-[#b6c4bc] disabled:shadow-none"
+              className="flex h-full w-full items-center justify-center gap-[8px] rounded-[8px] bg-[#07623a] text-[16px] font-semibold text-white transition-colors shadow-sm hover:bg-[#05502f] disabled:cursor-not-allowed disabled:bg-[#b6c4bc] disabled:shadow-none"
             >
               {current.cta}
               <ArrowRight className="h-[18px] w-[18px] stroke-[2.2]" />
@@ -2018,7 +2020,7 @@ function Sidebar({
 
           {/* SECOND */}
           {/* <div className="min-h-0">
-            <button className="flex h-full w-full items-center justify-center gap-[8px] rounded-[8px] border border-[#07623a] bg-white text-[16px] font-bold text-[#07623a] hover:bg-[#f2faf4] transition-colors shadow-sm">
+            <button className="flex h-full w-full items-center justify-center gap-[8px] rounded-[8px] border border-[#07623a] bg-white text-[16px] font-semibold text-[#07623a] hover:bg-[#f2faf4] transition-colors shadow-sm">
               <Bookmark className="h-[20px] w-[20px] stroke-[2.2] text-[#07623a]" />
               Save for Later
             </button>

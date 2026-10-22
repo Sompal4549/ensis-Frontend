@@ -21,7 +21,7 @@ const AboutTitle: React.FC<SectionHeadingProps> = ({
               text-[#4a4036]
 text-base
               md:text-[24px]
-              font-extrabold
+              font-semibold
               tracking-[2px]
               uppercase
               

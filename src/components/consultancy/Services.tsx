@@ -116,7 +116,7 @@ export default function ConsultancyServices({ sectionContent }: { sectionContent
             {subheading}
           </p>
 
-          <h2 className="mt-2 text-[28px] font-bold leading-tight">
+          <h2 className="mt-2 text-[28px] font-semibold leading-tight">
             {title}
           </h2>
 
@@ -139,7 +139,7 @@ export default function ConsultancyServices({ sectionContent }: { sectionContent
     <Image src={service.image} alt={service.title} width={26} height={26} />
   </div>
 
-  <h3 className="mt-3 text-base font-bold leading-[1.45]">
+  <h3 className="mt-3 text-base font-semibold leading-[1.45]">
     {service.title}
   </h3>
 
