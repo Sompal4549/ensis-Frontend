@@ -165,6 +165,20 @@ export const Footer = async () => {
     ...defaultFooter.copyright.developer,
     ...(content.copyright as { developer?: FooterDeveloper } | undefined)?.developer,
   };
+  // Year always comes from the clock so it rolls over without an admin edit
+  const copyrightYear = new Date().getFullYear();
+  const copyrightRest = (content.copyright.text || "")
+    .replace(/^\s*©\s*/i, "")
+    .replace(/^\s*(?:19|20)\d{2}\s*/, "")
+    .trim();
+  const copyrightText = `© ${copyrightYear}${copyrightRest ? ` ${copyrightRest}` : " Ensis. All rights reserved."}`;
+  // Admin may still carry old Privacy/Terms entries in layout.footer; show Sitemap until those pages exist
+  const copyrightLinks = (content.copyright.links ?? []).filter(
+    (item) => !/privacy|terms|conditions/i.test(item.label || "")
+  );
+  if (!copyrightLinks.some((item) => /sitemap/i.test(item.label || ""))) {
+    copyrightLinks.unshift({ label: "Sitemap", href: "/sitemap.xml" });
+  }
   // Admin footer logo (Pages > Footer > Ensis Logo); bundled logo when none is set
   const footerLogo = (content.company as { ensisLogo?: { imageUrl?: string; alt?: string } })?.ensisLogo;
   const footerLogoSrc = footerLogo?.imageUrl ? getImageUrl(footerLogo.imageUrl, 400) : logoImg;
@@ -393,12 +407,12 @@ export const Footer = async () => {
 
       {/* ── COPYRIGHT BAR ── */}
       <div className="bg-[#061629]">
-        <Container>
-          <div className="flex flex-col items-center justify-between gap-3 py-3 text-center md:flex-row md:text-left">
-            <p className="text-sm font-medium text-white">{content.copyright.text}</p>
+        <Container className="px-6! md:px-16! py-1!">
+          <div className="flex flex-col items-center justify-between gap-3 py-1.5 text-center md:flex-row md:text-left">
+            <p className="text-sm font-medium text-white">{copyrightText}</p>
 
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
-              {(content.copyright.links ?? []).map((item, index) => (
+              {copyrightLinks.map((item, index) => (
                 <React.Fragment key={item.label}>
                   {index > 0 && <span aria-hidden className="h-4 w-px bg-white/25" />}
                   <Link href={item.href} className="text-sm font-medium text-white transition hover:text-white/70">
@@ -407,9 +421,21 @@ export const Footer = async () => {
                 </React.Fragment>
               ))}
 
+              {/* Privacy/Terms — pages banne par neeche se uncomment karein; admin "Links" (Sitemap) waisa hi rehta hai */}
+              {/*
+              <span aria-hidden className="h-4 w-px bg-white/25" />
+              <Link href="/privacy-policy" className="text-sm font-medium text-white transition hover:text-white/70">
+                Privacy Policy
+              </Link>
+              <span aria-hidden className="h-4 w-px bg-white/25" />
+              <Link href="/terms-and-conditions" className="text-sm font-medium text-white transition hover:text-white/70">
+                Terms &amp; Conditions
+              </Link>
+              */}
+
               {developer.name && (
                 <>
-                  {(content.copyright.links ?? []).length > 0 && <span aria-hidden className="hidden h-4 w-px bg-white/25 sm:block" />}
+                  {copyrightLinks.length > 0 && <span aria-hidden className="hidden h-4 w-px bg-white/25 sm:block" />}
                   <span className="flex items-center gap-3 text-sm font-medium text-white">
                     {developer.label}
                     <a
