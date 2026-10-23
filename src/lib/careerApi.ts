@@ -71,6 +71,8 @@ export type CandidateProfile = {
   fullName: string;
   email: string;
   phone: string;
+  /** Every distinct number found in the CV. */
+  phones?: string[];
   dateOfBirth?: string;
   gender?: "Male" | "Female" | "Other" | string;
   currentLocation?: string;
@@ -88,6 +90,8 @@ export type ScreeningResult = {
   level: "eligible" | "partial" | "not_eligible";
   thresholds: { eligible: number; partial: number };
   breakdown: BreakdownItem[];
+  summary?: string;
+  requirementsMet?: string[];
   strengths: string[];
   gaps: string[];
   suggestions: string[];
@@ -493,19 +497,14 @@ export async function getJob(slug: string): Promise<PublicJob | null> {
 // 2. Start & Poll AI Screening
 // -----------------------------------------------------------------------------
 
-const DEFAULT_STEPS: ScreeningStep[] = [
-  { key: "read_cv", label: "Reading CV", state: "pending" },
-  { key: "match_skills", label: "Matching Skills", state: "pending" },
-  { key: "check_experience", label: "Checking Experience", state: "pending" },
-  { key: "verify_education", label: "Verifying Education", state: "pending" },
-  { key: "analyze_competencies", label: "Analyzing Competencies", state: "pending" },
-  { key: "calculate_score", label: "Calculating Match Score", state: "pending" },
-];
-
+/**
+ * Uploads the CV to the backend, which screens it with AI in the background, then polls
+ * until the screening is done or failed. Never invents a result: any problem comes back
+ * as a failed screening carrying the backend's message.
+ */
 export async function startScreening(
   jobId: string,
   file: File,
-  job?: PublicJob,
   onProgress?: (screening: Screening) => void
 ): Promise<Screening> {
   const cvInfo: CvFile = {
@@ -514,151 +513,60 @@ export async function startScreening(
     uploadedAt: new Date().toISOString(),
   };
 
-  // Step 1: Attempt real backend POST /careers/:jobId/screenings
-  let backendScreeningId: string | null = null;
+  const failed = (error: string, screeningId = ""): Screening => {
+    const screening: Screening = { screeningId, jobId, status: "failed", progress: 0, steps: [], cv: cvInfo, error };
+    onProgress?.(screening);
+    return screening;
+  };
+
+  let screeningId: string;
   try {
     const formData = new FormData();
     formData.append("cv", file);
 
-    const startRes = await fetch(`${API_URL}/careers/${jobId}/screenings`, {
+    const startRes = await fetch(`${API_URL}/careers/${encodeURIComponent(jobId)}/screenings`, {
       method: "POST",
       body: formData,
-      signal: AbortSignal.timeout(15000),
+      signal: AbortSignal.timeout(30000),
     });
+    const startPayload = await startRes.json().catch(() => null);
 
-    if (startRes.ok) {
-      const startPayload = await startRes.json();
-      if (startPayload?.data?.screeningId) {
-        backendScreeningId = startPayload.data.screeningId;
-      }
+    if (!startRes.ok || !startPayload?.data?.screeningId) {
+      return failed(startPayload?.message || "We couldn't analyse your CV right now. Please try again in a moment.");
     }
-  } catch (backendErr) {
-    console.warn("[career] Backend start screening failed, will use fallback analyzer:", backendErr);
+    screeningId = startPayload.data.screeningId;
+  } catch (err) {
+    console.warn("[career] Start screening failed:", err);
+    return failed("We couldn't reach the server. Please check your connection and try again.");
   }
 
-  // If real backend accepted the screening, poll it
-  if (backendScreeningId) {
-    const startTime = Date.now();
-    const maxPollTimeMs = 90000;
+  const startTime = Date.now();
+  const maxPollTimeMs = 120000;
 
-    while (Date.now() - startTime < maxPollTimeMs) {
-      await new Promise((r) => setTimeout(r, 2000));
+  while (Date.now() - startTime < maxPollTimeMs) {
+    await new Promise((r) => setTimeout(r, 2000));
 
-      try {
-        const pollRes = await fetch(`${API_URL}/careers/screenings/${backendScreeningId}`, {
-          signal: AbortSignal.timeout(8000),
-        });
+    try {
+      const pollRes = await fetch(`${API_URL}/careers/screenings/${encodeURIComponent(screeningId)}`, {
+        signal: AbortSignal.timeout(8000),
+      });
 
-        if (pollRes.ok) {
-          const pollPayload = await pollRes.json();
-          const screening: Screening = pollPayload.data;
-          if (screening) {
-            onProgress?.(screening);
-            if (screening.status === "done" || screening.status === "failed") {
-              return screening;
-            }
+      if (pollRes.ok) {
+        const pollPayload = await pollRes.json();
+        const screening: Screening = pollPayload.data;
+        if (screening) {
+          onProgress?.(screening);
+          if (screening.status === "done" || screening.status === "failed") {
+            return screening;
           }
         }
-      } catch (pollErr) {
-        console.warn("[career] Polling backend screening error:", pollErr);
       }
+    } catch (pollErr) {
+      console.warn("[career] Polling backend screening error:", pollErr);
     }
   }
 
-  // ---------------------------------------------------------------------------
-  // Fallback: Call local /api/analyze-cv with animated step-by-step progress
-  // ---------------------------------------------------------------------------
-  console.info("[career] using fallback: local /api/analyze-cv with animated step progression");
-
-  const fallbackScreeningId = `scr_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-
-  // Emit initial state
-  const fallbackSteps = DEFAULT_STEPS.map((s, idx) => ({
-    ...s,
-    state: idx === 0 ? ("active" as StepState) : ("pending" as StepState),
-  }));
-
-  let currentProgress = 15;
-  const initialScreening: Screening = {
-    screeningId: fallbackScreeningId,
-    jobId,
-    status: "processing",
-    progress: currentProgress,
-    steps: fallbackSteps,
-    cv: cvInfo,
-  };
-  onProgress?.(initialScreening);
-
-  // Send request to /api/analyze-cv in parallel with progress updates
-  const analyzeFormData = new FormData();
-  analyzeFormData.append("file", file);
-  analyzeFormData.append("jobTitle", job?.title || "Wellness Solutions Professional");
-  analyzeFormData.append("jobExperience", `${job?.experienceMin ?? 2} - ${job?.experienceMax ?? 5} Years`);
-  analyzeFormData.append("jobEducation", job?.educationRequirements || "Degree in relevant field");
-  if (job?.responsibilities) analyzeFormData.append("responsibilities", job.responsibilities.join("; "));
-  if (job?.requirements) analyzeFormData.append("requirements", job.requirements.join("; "));
-  if (job?.aiCheckPoints) analyzeFormData.append("aiCheckPoints", job.aiCheckPoints.join("; "));
-  analyzeFormData.append("eligibilityThreshold", String(job?.eligibilityThreshold || 70));
-  analyzeFormData.append("partialMatchMin", String(job?.partialMatchMin || 50));
-
-  const analyzePromise = fetch("/api/analyze-cv", {
-    method: "POST",
-    body: analyzeFormData,
-  });
-
-  // Animate progress smoothly through the steps
-  for (let stepIndex = 0; stepIndex < 5; stepIndex++) {
-    await new Promise((r) => setTimeout(r, 700));
-    currentProgress = Math.min(92, currentProgress + 16);
-
-    const updatedSteps = fallbackSteps.map((step, idx) => {
-      if (idx < stepIndex + 1) return { ...step, state: "done" as StepState };
-      if (idx === stepIndex + 1) return { ...step, state: "active" as StepState };
-      return { ...step, state: "pending" as StepState };
-    });
-
-    onProgress?.({
-      screeningId: fallbackScreeningId,
-      jobId,
-      status: "processing",
-      progress: currentProgress,
-      steps: updatedSteps,
-      cv: cvInfo,
-    });
-  }
-
-  const response = await analyzePromise;
-  if (!response.ok) {
-    const errorPayload = await response.json().catch(() => ({}));
-    const failedScreening: Screening = {
-      screeningId: fallbackScreeningId,
-      jobId,
-      status: "failed",
-      progress: currentProgress,
-      steps: fallbackSteps.map((s) => ({ ...s, state: s.state === "active" ? "pending" : s.state })),
-      cv: cvInfo,
-      error: errorPayload?.message || "AI Analysis was unable to complete for this CV. Please try again.",
-    };
-    onProgress?.(failedScreening);
-    return failedScreening;
-  }
-
-  const analyzeResult = await response.json();
-  const screeningResult: ScreeningResult = analyzeResult.screening;
-
-  const finalSteps = DEFAULT_STEPS.map((s) => ({ ...s, state: "done" as StepState }));
-  const completedScreening: Screening = {
-    screeningId: fallbackScreeningId,
-    jobId,
-    status: "done",
-    progress: 100,
-    steps: finalSteps,
-    cv: cvInfo,
-    result: screeningResult,
-  };
-
-  onProgress?.(completedScreening);
-  return completedScreening;
+  return failed("CV analysis is taking longer than expected. Please try again in a moment.", screeningId);
 }
 
 // -----------------------------------------------------------------------------
