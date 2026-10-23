@@ -16,6 +16,7 @@ import lotusImg from "@/assets/about/lotus.webp";
 import logoImg from "@/assets/logo.webp";
 import LottieChatbotAvatar from "./LottieChatbotAvatar";
 import Link from "next/link";
+import { getComponentContent, getImageUrl } from "@/lib/api/api";
 
 /** Bot text with [label](url) links, bare URLs and **bold**; product links open in the same tab */
 function BotText({ text }: { text: string }) {
@@ -167,6 +168,8 @@ export default function EnsisChatbot() {
     }
   };
 
+  const [botLogo, setBotLogo] = useState<any>(logoImg);
+
   useEffect(() => {
     try {
       const savedLang = localStorage.getItem("ensis_chat_lang") as "en" | "hi" | null;
@@ -177,6 +180,19 @@ export default function EnsisChatbot() {
       }
     } catch {}
     initChat();
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    getComponentContent<{ logo?: { imageUrl?: string; alt?: string } }>("layout.header", {})
+      .then((data) => {
+        if (!active || !data?.logo?.imageUrl) return;
+        setBotLogo(getImageUrl(data.logo.imageUrl, 200));
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
   }, []);
 
   useEffect(() => {
@@ -582,7 +598,7 @@ export default function EnsisChatbot() {
 
             <div className="relative flex items-center gap-2.5 pl-3.5 pr-2.5 py-3">
               <div className="relative h-[30px] w-[66px] shrink-0 rounded-md bg-white ring-1 ring-white/30 flex items-center justify-center shadow-md px-1">
-                <Image src={logoImg} alt="ENSIS" width={60} height={24} className="h-auto w-full object-contain" />
+                <Image src={botLogo} alt="ENSIS" width={60} height={24} onError={() => setBotLogo(logoImg)} className="h-auto w-full object-contain" />
                 <span className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-[#4ade80] ring-2 ring-[#263016]" aria-hidden="true" />
               </div>
 
