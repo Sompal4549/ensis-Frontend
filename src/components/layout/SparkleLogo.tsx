@@ -1,6 +1,8 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Image, { type StaticImageData } from "next/image";
+import logoFallback from "@/assets/logo.webp";
 
 type SparkleLogoProps = {
   src: StaticImageData | string;
@@ -28,6 +30,11 @@ export default function SparkleLogo({
   variant = "plain",
 }: SparkleLogoProps) {
   const isCard = variant === "card";
+  const [imgSrc, setImgSrc] = useState<StaticImageData | string>(src || logoFallback);
+
+  useEffect(() => {
+    setImgSrc(src || logoFallback);
+  }, [src]);
 
   return (
     <div className={`logo-wrap relative inline-block ${isCard ? "is-card" : "is-plain"}`}>
@@ -35,10 +42,11 @@ export default function SparkleLogo({
         <div className={`logo-card relative ${isCard ? "overflow-hidden" : ""}`}>
           {/* Admin-uploaded logos arrive as URLs, which next/image can only size with explicit dimensions */}
           <Image
-            src={src}
+            src={imgSrc}
             alt={alt}
+            onError={() => setImgSrc(logoFallback)}
             className={`relative z-10 ${className ?? ""}`}
-            {...(typeof src === "string" ? { width: 600, height: 240 } : {})}
+            {...(typeof imgSrc === "string" ? { width: 600, height: 240 } : {})}
             priority
           />
           {/* Light sweep that glides across the logo every few seconds */}

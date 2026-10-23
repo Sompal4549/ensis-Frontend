@@ -1,23 +1,43 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState } from "react";
+import Image, { type StaticImageData } from "next/image";
 import bannerImage from "@/assets/home/home_banner2.webp";
 import lotus from "@/assets/about/lotus.png";
 import { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
-import { ArrowRight, Link } from "lucide-react";
-import logo from "@/assets/logo.webp"
+import { ArrowRight } from "lucide-react";
+import logoFallback from "@/assets/logo.webp";
+import { getComponentContent, getImageUrl } from "@/lib/api/api";
+
 interface AuthLayoutProps {
   title: string;
   subtitle: string;
   children: ReactNode;
-  page?: string
+  page?: string;
 }
 
 export default function AuthLayout({
-  title,
   subtitle,
   children,
-  page
+  page,
 }: AuthLayoutProps) {
+  const [logoSrc, setLogoSrc] = useState<StaticImageData | string>(logoFallback);
+  const [logoAlt, setLogoAlt] = useState("ENSIS Logo");
+
+  useEffect(() => {
+    let active = true;
+    getComponentContent<{ logo?: { imageUrl?: string; alt?: string } }>("layout.header", {})
+      .then((data) => {
+        if (!active || !data?.logo?.imageUrl) return;
+        setLogoSrc(getImageUrl(data.logo.imageUrl, 600));
+        if (data.logo.alt) setLogoAlt(data.logo.alt);
+      })
+      .catch(() => {});
+    return () => {
+      active = false;
+    };
+  }, []);
   return (
     <section className="relative min-n-[70vh] overflow-hidden">
       {/* Background */}
@@ -108,7 +128,7 @@ export default function AuthLayout({
               {page === "login" && (
                 <div className="mt-3 flex flex-col">
                   <a href="/register" className="inline-flex items-center gap-4 text-sm font-semibold text-white hover:text-[#d9c49d] transition-colors mb-2">
-                    Don't have an account? Register <ArrowRight size={16} />
+                    Don&apos;t have an account? Register <ArrowRight size={16} />
                   </a>
                   <a href={process.env.NEXT_PUBLIC_ADMIN_URL || "http://localhost:3001"} target="_blank" className="inline-flex items-center gap-4 text-sm font-semibold text-[#d9c49d] mt-1">
                     Admin Login <ArrowRight size={16} />
@@ -129,7 +149,15 @@ export default function AuthLayout({
             <div className="w-full md:w-1/2 p-6 md:p-8">
               <div className="text-center flex items-center justify-center flex-col">
                 <div className="flex items-center justify-center w-full">
-                  <Image src={logo} alt="ENSIS Logo" className="h-[54px] w-auto object-contain brightness-125" style={{ width: "auto" }} />
+                  <Image
+                    src={logoSrc}
+                    alt={logoAlt}
+                    onError={() => setLogoSrc(logoFallback)}
+                    className="h-[54px] w-auto object-contain"
+                    style={{ width: "auto" }}
+                    {...(typeof logoSrc === "string" ? { width: 600, height: 240 } : {})}
+                    priority
+                  />
                 </div>
 
                 <p className="mt-2 text-xs font-semibold max-w-55">

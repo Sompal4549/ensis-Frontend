@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { FaFacebook, FaInstagram, FaYoutube, FaLinkedin, FaWhatsapp, FaTwitter } from 'react-icons/fa';
 import { Container } from '../ui/Container';
+import BackToTop from './BackToTop';
 import logoImg from '@/assets/logo.webp';
 import GlowLogo from './GlowLogo';
 import SparkleLogo from './SparkleLogo';
@@ -56,7 +57,16 @@ interface FooterContent {
   copyright: {
     text: string;
     links: FooterNavLink[];
+    developer?: FooterDeveloper;
   };
+}
+
+/** "Designed & Developed by" credit in the copyright bar; logoUrl replaces the text badge */
+interface FooterDeveloper {
+  label?: string;
+  name?: string;
+  href?: string;
+  logoUrl?: string;
 }
 const iconMap: Record<string, IconType> = {
   facebook: FaFacebook,
@@ -119,11 +129,16 @@ const defaultFooter = {
     "whatsappPhone": "+919654900525"
   },
   "copyright": {
-    "text": "© 2026 Ensis Panchkarma & Spa Solutions. All Rights Reserved.",
+    "text": "© 2026 Design House India Pvt. Ltd. All rights reserved.",
     "links": [
-      { "label": "Privacy Policy", "href": "/privacy-policy" },
-      { "label": "Terms & Conditions", "href": "/terms-and-conditions" }
-    ]
+      { "label": "Sitemap", "href": "/sitemap.xml" }
+    ],
+    "developer": {
+      "label": "Designed & Developed by",
+      "name": "enCodency",
+      "href": "https://encodency.com",
+      "logoUrl": ""
+    }
   }
 };
 
@@ -145,6 +160,25 @@ const features = [
 // export const Footer = async ({image:StaticImageData|string}) => {
 export const Footer = async () => {
   const content = await getComponentContent("layout.footer", defaultFooter);
+  // Saved footers predate the developer credit, so fill it from the defaults field by field
+  const developer: FooterDeveloper = {
+    ...defaultFooter.copyright.developer,
+    ...(content.copyright as { developer?: FooterDeveloper } | undefined)?.developer,
+  };
+  // Year always comes from the clock so it rolls over without an admin edit
+  const copyrightYear = new Date().getFullYear();
+  const copyrightRest = (content.copyright.text || "")
+    .replace(/^\s*©\s*/i, "")
+    .replace(/^\s*(?:19|20)\d{2}\s*/, "")
+    .trim();
+  const copyrightText = `© ${copyrightYear}${copyrightRest ? ` ${copyrightRest}` : " Ensis. All rights reserved."}`;
+  // Admin may still carry old Privacy/Terms entries in layout.footer; show Sitemap until those pages exist
+  const copyrightLinks = (content.copyright.links ?? []).filter(
+    (item) => !/privacy|terms|conditions/i.test(item.label || "")
+  );
+  if (!copyrightLinks.some((item) => /sitemap/i.test(item.label || ""))) {
+    copyrightLinks.unshift({ label: "Sitemap", href: "/sitemap.xml" });
+  }
   // Admin footer logo (Pages > Footer > Ensis Logo); bundled logo when none is set
   const footerLogo = (content.company as { ensisLogo?: { imageUrl?: string; alt?: string } })?.ensisLogo;
   const footerLogoSrc = footerLogo?.imageUrl ? getImageUrl(footerLogo.imageUrl, 400) : logoImg;
@@ -372,29 +406,60 @@ export const Footer = async () => {
         </Container>
 
       {/* ── COPYRIGHT BAR ── */}
-      <div className="px-0 md:px-8">
-        <Container>
-          <div className="flex flex-col items-center justify-between gap-4 py-2 md:flex-row">
-            <p className="text-sm text-white/70">{content.copyright.text}</p>
+      <div className="bg-[#061629]">
+        <Container className="px-6! md:px-16! py-1!">
+          <div className="flex flex-col items-center justify-between gap-3 py-1.5 text-center md:flex-row md:text-left">
+            <p className="text-sm font-medium text-white">{copyrightText}</p>
 
-            {/* lotus center */}
-            <div className="hidden items-center gap-4 md:flex">
-                <Image src={arrow} alt='arrow' width={150} height={8} />
-            </div>
-
-            <div className="flex gap-4">
-              {content.copyright.links.map((item) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="text-sm text-white/70 transition hover:text-white"
-                >
-                  <span className='text-white'>
-
-                  {item.label}
-                  </span>
-                </Link>
+            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+              {copyrightLinks.map((item, index) => (
+                <React.Fragment key={item.label}>
+                  {index > 0 && <span aria-hidden className="h-4 w-px bg-white/25" />}
+                  <Link href={item.href} className="text-sm font-medium text-white transition hover:text-white/70">
+                    {item.label}
+                  </Link>
+                </React.Fragment>
               ))}
+
+              {/* Privacy/Terms — pages banne par neeche se uncomment karein; admin "Links" (Sitemap) waisa hi rehta hai */}
+              {/*
+              <span aria-hidden className="h-4 w-px bg-white/25" />
+              <Link href="/privacy-policy" className="text-sm font-medium text-white transition hover:text-white/70">
+                Privacy Policy
+              </Link>
+              <span aria-hidden className="h-4 w-px bg-white/25" />
+              <Link href="/terms-and-conditions" className="text-sm font-medium text-white transition hover:text-white/70">
+                Terms &amp; Conditions
+              </Link>
+              */}
+
+              {developer.name && (
+                <>
+                  {copyrightLinks.length > 0 && <span aria-hidden className="hidden h-4 w-px bg-white/25 sm:block" />}
+                  <span className="flex items-center gap-3 text-sm font-medium text-white">
+                    {developer.label}
+                    <a
+                      href={developer.href || "#"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={developer.name}
+                      className={`inline-flex h-9 items-center overflow-hidden rounded-md transition-opacity hover:opacity-90 ${developer.logoUrl ? "" : "bg-[#e4141e] px-2.5"}`}
+                    >
+                      {developer.logoUrl ? (
+                        // The logo carries its own red background, so it fills the badge edge to edge
+                        <Image src={getImageUrl(developer.logoUrl, 400)} alt={developer.name} width={190} height={50} className="h-9 w-auto object-contain" />
+                      ) : (
+                        <span className="flex items-baseline gap-1 text-white">
+                          <span className="text-[17px] font-semibold tracking-tight">{developer.name}</span>
+                          <span className="text-[8px] font-medium opacity-90">Pvt. Ltd.</span>
+                        </span>
+                      )}
+                    </a>
+                  </span>
+                </>
+              )}
+
+              <BackToTop />
             </div>
           </div>
         </Container>

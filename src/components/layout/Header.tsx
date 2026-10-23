@@ -181,6 +181,10 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
 
     // Map DB's `navigation` (title/slug) to the {label, href} shape this component renders
     const logoSrc = headerContent.logo?.imageUrl ? getImageUrl(headerContent.logo.imageUrl, 600) : logoImg;
+    const [headerLogoSrc, setHeaderLogoSrc] = useState(logoSrc);
+    useEffect(() => {
+        setHeaderLogoSrc(logoSrc);
+    }, [logoSrc]);
     const logoAlt = headerContent.logo?.alt || "ENSIS Logo";
 
     const navLinks = (headerContent.navigation ?? []).map((n: any) => ({
@@ -447,10 +451,11 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
             aria-label="ENSIS Logo"
         >
             <Image
-                src={logoSrc}
+                src={headerLogoSrc}
                 alt={logoAlt}
+                onError={() => setHeaderLogoSrc(logoImg)}
                 className="h-[53px] sm:h-[57px] md:h-[63px] xl:h-[59px] 2xl:h-[67px] -my-[2.5px] w-auto object-contain"
-                {...(typeof logoSrc === "string" ? { width: 600, height: 244 } : {})}
+                {...(typeof headerLogoSrc === "string" ? { width: 600, height: 244 } : {})}
                 priority
             />
         </Link>
@@ -458,7 +463,8 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
                     {/* Spacer so nav doesn't go under the logo */}
                     <div className="w-2 md:w-6 xl:w-3 2xl:w-8 shrink-0" />
       <nav className="hidden xl:flex">
-            <ul className="flex items-center gap-4.5 xl:gap-3 2xl:gap-6.5">
+            {/* Gap grows with the viewport: ~24px at 1280px, 28px from ~1480px up */}
+            <ul className="flex items-center gap-4.5 xl:gap-[clamp(1.5rem,1.9vw,1.75rem)] 2xl:gap-7">
                             {navLinks.map((item, index) => (
                                 <li key={index}>
                                     <Link

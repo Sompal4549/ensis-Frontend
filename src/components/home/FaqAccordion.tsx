@@ -43,7 +43,7 @@ export default function FaqAccordion({ faqs }: { faqs: HomeFaq[] }) {
                 className="flex w-full items-center gap-2.5 px-2.5 py-1.5 text-left md:gap-3.5 md:px-3.5 md:py-2"
               >
                 <span className="grid size-8 shrink-0 place-items-center rounded-full border-2 border-[#c9a86a] bg-[radial-gradient(circle_at_30%_30%,#1a3d28,#0f2518)] text-[#e4c88f] md:size-9">
-                  <Icon size={16} strokeWidth={1.8} />
+                  <Icon size={19} strokeWidth={1.8} />
                 </span>
                 <span className="h-5 w-px shrink-0 bg-[#e1d7c9]" aria-hidden />
                 <span className="flex-1 text-[14px] font-semibold leading-snug text-[#1f261b] md:text-[15px]">
