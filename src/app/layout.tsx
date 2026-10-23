@@ -3,25 +3,27 @@ import nextDynamic from "next/dynamic";
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
-import { DM_Sans, Playfair_Display, DM_Serif_Display } from "next/font/google";
+import localFont from "next/font/local";
 import { ShopProvider } from "@/context/ShopContext";
 
-const dmSans = DM_Sans({
-  subsets: ['latin'],
-  // Site typography uses only 400/500 (body) and 600 (bold); heavier weights are not loaded
-  weight: ['400', '500', '600'],
+// Fonts are self-hosted (latin subset from Google Fonts, in ./fonts) so the build never
+// downloads from Google: its CSS sometimes returns extension-less URLs that crash next/font.
+const dmSans = localFont({
+  src: './fonts/dm-sans-latin-var.woff2',
+  // Site typography uses only 400/500 (body) and 600 (bold)
+  weight: '400 600',
   variable: '--font-montserrat',
   display: 'swap',
 });
-const dmSerif = DM_Serif_Display({
-  subsets: ['latin'],
-  weight: ['400'],
+const dmSerif = localFont({
+  src: './fonts/dm-serif-display-latin-400.woff2',
+  weight: '400',
   variable: '--font-cormorant',
   display: 'swap',
 });
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['400', '600', '700'],
+const playfair = localFont({
+  src: './fonts/playfair-display-latin-var.woff2',
+  weight: '400 900',
   variable: '--font-playfair',
   display: 'swap',
 });

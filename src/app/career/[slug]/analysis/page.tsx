@@ -197,7 +197,7 @@ function AnalysisContent() {
     startedRef.current = true;
     setError(null);
 
-    startScreening(job._id, cvFile, job, (updated) => {
+    startScreening(job._id, cvFile, (updated) => {
       setScreening(updated);
     })
       .then((finalScreening) => {

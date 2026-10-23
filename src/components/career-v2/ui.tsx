@@ -8,20 +8,6 @@ import type { CareerIconName } from "@/lib/careers";
 
 /** Shared visual pieces of the career redesign (Ensis green / gold on cream) */
 
-import { DM_Serif_Display, Playfair_Display } from "next/font/google";
-
-export const dmSerif = DM_Serif_Display({
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
-
-export const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  display: "swap",
-});
-
 /** Site sans-serif font matching the rest of the Ensis website */
 export const serif: React.CSSProperties = {
   fontFamily: "var(--font-montserrat), Arial, Helvetica, sans-serif",

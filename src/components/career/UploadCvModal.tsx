@@ -13,6 +13,7 @@ import {
     MapPin,
     X,
 } from "lucide-react";
+import { startScreening } from "@/lib/careerApi";
 import businessPersonClean from "@/app/assets/carrer/business-person-clean.png";
 import leafDecoration from "@/app/assets/carrer/leaf-decoration.jpg";
 
@@ -480,46 +481,47 @@ export default function UploadCvModal({
             ? `${(file.size / (1024 * 1024)).toFixed(1)} MB`
             : `${Math.round(file.size / 1024)} KB`;
 
+        const jobId = job._id || job.id;
+        if (!jobId) {
+            setAnalyzeError("This job is not available for applications right now.");
+            setIsAnalyzing(false);
+            return;
+        }
+
         const objectUrl = URL.createObjectURL(file);
         setAnalyzeError("");
         try {
-            // AI screening runs in the website's /api/analyze-cv (Gemini reads the CV against this job)
-            const nextFormData = new FormData();
-            nextFormData.append("file", file);
-            nextFormData.append("jobTitle", job?.title || jobCopy.title);
-            nextFormData.append("jobExperience", job?.experience || "3 - 6 Years");
+            // The backend screens the CV with AI against this job; we poll until it finishes
+            const screening = await startScreening(jobId, file);
+            const result = screening.result;
 
-            const nextRes = await fetch("/api/analyze-cv", {
-                method: "POST",
-                body: nextFormData,
-            });
-            const nextJson = await nextRes.json().catch(() => null);
-
-            if (!nextRes.ok || !nextJson?.success) {
+            if (screening.status !== "done" || !result) {
                 // Never invent a score: the candidate sees the problem and can try again
-                setAnalyzeError(nextJson?.message || "We couldn't analyse your CV right now. Please try again in a moment.");
+                setAnalyzeError(screening.error || "We couldn't analyse your CV right now. Please try again in a moment.");
                 return;
             }
 
+            const profile = result.profile;
+            const candidateName = prettifyName(profile?.fullName) || prettifyName(file.name.replace(/\.[^/.]+$/, ""));
+            const scoreOf = (key: string) => result.breakdown?.find((item) => item.key === key)?.score ?? result.score;
+
             const candidateData: CandidateAnalysisData = {
-                candidateName: prettifyName(nextJson.candidateName) || prettifyName(file.name.replace(/\.[^/.]+$/, "")),
-                firstName: nextJson.firstName || "Candidate",
-                email: nextJson.email || null,
-                phone: nextJson.phone || null,
-                phones: Array.isArray(nextJson.phones) && nextJson.phones.length > 0
-                    ? nextJson.phones
-                    : nextJson.phone
-                        ? [nextJson.phone]
-                        : [],
+                candidateName,
+                firstName: candidateName.split(" ")[0] || "Candidate",
+                email: profile?.email || null,
+                phone: profile?.phone || null,
+                phones: profile?.phones?.length ? profile.phones : profile?.phone ? [profile.phone] : [],
                 verifiedPhone: null,
-                linkedin: nextJson.linkedin || null,
+                linkedin: profile?.linkedin || null,
                 cvFile: file,
                 cvName: file.name,
                 cvSize: fileSizeStr,
                 cvUrl: objectUrl,
-                score: nextJson.score,
-                summary: nextJson.summary,
-                requirementsMet: nextJson.requirementsMet,
+                score: result.score,
+                summary: result.summary,
+                requirementsMet: result.requirementsMet,
+                jobId,
+                analysisId: screening.screeningId,
                 jobDetails: {
                     title: job?.title || jobCopy.title,
                     brand: job?.brand || jobCopy.brand,
@@ -529,12 +531,12 @@ export default function UploadCvModal({
                     education: `${educationLabel}${educationNote ? ` ${educationNote}` : ""}`,
                 },
                 breakdown: {
-                    relevantExperience: nextJson.breakdown?.relevantExperience ?? nextJson.score,
-                    educationalQualification: nextJson.breakdown?.educationalQualification ?? nextJson.score,
-                    keySkills: nextJson.breakdown?.keySkills ?? nextJson.score,
-                    roleFit: nextJson.breakdown?.roleFit ?? nextJson.score,
-                    industryExperience: nextJson.breakdown?.industryExperience ?? nextJson.score,
-                    locationPreference: nextJson.breakdown?.locationPreference ?? 100,
+                    relevantExperience: scoreOf("experience"),
+                    educationalQualification: scoreOf("education"),
+                    keySkills: scoreOf("technical_skills"),
+                    roleFit: scoreOf("creative_thinking"),
+                    industryExperience: scoreOf("experience"),
+                    locationPreference: result.breakdown?.find((item) => item.key === "location")?.score ?? 100,
                 },
             };
 
