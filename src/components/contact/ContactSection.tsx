@@ -7,6 +7,7 @@ import { verifyApi, API_URL } from "@/lib/api/api";
 import Image from "next/image";
 import SocialSidebar from "../layout/SocialSidebar";
 import HtmlRenderer from "../layout/HtmlRender";
+import { splitPhoneNumbers } from "@/lib/phone";
 
 interface ContactDetailItem {
   id: string;
@@ -158,7 +159,19 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
                   </div>
                   <div>
                     <p className="text-base font-semibold text-[#111]">{detail.title}</p>
-                    <HtmlRenderer className="text-base text-[#6b7280] mt-0.5 leading-6" content={detail.description || ""}></HtmlRenderer>
+                    {/phone|mobile|call/i.test(detail.title || "") && splitPhoneNumbers(detail.description).length > 0 ? (
+                      // Each number gets its own tel: link; auto-detection on mobile would otherwise link only one of them
+                      <p className="text-base text-[#6b7280] mt-0.5 leading-6">
+                        {splitPhoneNumbers(detail.description).map((num, i) => (
+                          <React.Fragment key={num.href}>
+                            {i > 0 && ", "}
+                            <a href={num.href} className="hover:text-[#D9B25F]">{num.label}</a>
+                          </React.Fragment>
+                        ))}
+                      </p>
+                    ) : (
+                      <HtmlRenderer className="text-base text-[#6b7280] mt-0.5 leading-6" content={detail.description || ""}></HtmlRenderer>
+                    )}
                   </div>
                 </div>
               ))}

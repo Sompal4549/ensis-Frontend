@@ -10,8 +10,8 @@ import { ShopProvider } from "@/context/ShopContext";
 // downloads from Google: its CSS sometimes returns extension-less URLs that crash next/font.
 const dmSans = localFont({
   src: './fonts/dm-sans-latin-var.woff2',
-  // Site typography uses only 400/500 (body) and 600 (bold)
-  weight: '400 600',
+  // Site typography uses 400/500 (body) and 600 (bold); 300 is used by the footer bar
+  weight: '300 600',
   variable: '--font-montserrat',
   display: 'swap',
 });
