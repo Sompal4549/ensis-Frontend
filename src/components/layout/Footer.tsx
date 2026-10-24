@@ -20,6 +20,7 @@ import type { IconType } from "react-icons";
 import SocialIconLink from './SocialLink';
 import footerLeft from "@/assets/footer/left.png"
 import footerRight from "@/assets/footer/right.png"
+import footerStrapRight from "@/assets/footer/strap_right.png"
 import footerLogoImg from "@/assets/footer/Ensys Wellness Furniture Logo.png"
 import arrow from "@/assets/icons/arrow.png"
 import HtmlRenderer from './HtmlRender';
@@ -230,8 +231,50 @@ export const Footer = async () => {
   const socialLinks = (await socialApi.getLinks())
     .filter((item) => item.isActive)
     .sort((a, b) => socialRank(a.platform) - socialRank(b.platform) || a.order - b.order);
+  // ── 8 OFFICIAL PRODUCT CATEGORIES (STATIC FOR PRODUCTION) ──
+  // Static list ensures categories always render reliably on live deployment
+  const staticProductCategories: FooterNavLink[] = [
+    { label: "Panchkarma Tables & Equipment", href: "/products" },
+    { label: "Ayurveda Therapy Equipment", href: "/products" },
+    { label: "Spa & Wellness Furniture", href: "/products" },
+    { label: "Hydrotherapy Equipment", href: "/products" },
+    { label: "Massage & Treatment Tables", href: "/products" },
+    { label: "Consultation & Examination Furniture", href: "/products" },
+    { label: "Hospitality & Resort Spa Setup", href: "/products" },
+    { label: "Accessories & Consumables", href: "/products" },
+  ];
+
+  /*
+  // ── DYNAMIC CATEGORIES LOADER (Uncomment later to load categories dynamically from backend API) ──
+  // let dynamicCategories: FooterNavLink[] = [];
+  // try {
+  //   const res = await fetch(`${API_URL}/categories`, { next: { revalidate: 3600 } });
+  //   if (res.ok) {
+  //     const data = await res.json();
+  //     const list = data?.data || data || [];
+  //     if (Array.isArray(list) && list.length > 0) {
+  //       dynamicCategories = list
+  //         .filter((c: any) => c.isActive !== false)
+  //         .map((c: any) => ({
+  //           label: c.name,
+  //           href: "/products",
+  //         }));
+  //     }
+  //   }
+  // } catch (err) {
+  //   console.warn("Failed to load dynamic footer categories:", err);
+  // }
+  */
+
   // Columns follow the approved footer design exactly (Quick Links, Product Categories, Our Solutions)
-  const navigation: FooterNavSection[] = defaultFooter.navigation;
+  const navigation: FooterNavSection[] = [
+    defaultFooter.navigation[0], // Quick Links
+    {
+      title: "Product Categories",
+      links: staticProductCategories,
+    },
+    defaultFooter.navigation[2], // Our Solutions
+  ];
 
   return (
     <footer className="overflow-hidden bg-white">
@@ -239,7 +282,17 @@ export const Footer = async () => {
       {/* ── STRAP + MAIN ── */}
       <div className="relative">
         {/* ── FEATURES STRIP ── */}
-        <div className="relative bg-gradient-to-r from-[#f7e4c8] via-[#fef2e4] to-[#fbe9d3]">
+        <div className="relative overflow-hidden bg-gradient-to-r from-[#f7e4c8] via-[#fef2e4] to-[#fbe9d3]">
+          {/* Right decoration image */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-y-0 right-0 z-[1] hidden w-[140px] bg-no-repeat lg:block"
+            style={{
+              backgroundImage: `url(${footerStrapRight.src})`,
+              backgroundSize: "contain",
+              backgroundPosition: "right center",
+            }}
+          />
           <div className="relative z-[2] grid grid-cols-2 gap-x-2 gap-y-3 px-6 py-2 lg:min-h-[69px] lg:grid-cols-5 lg:items-center lg:gap-0 lg:px-[5%]">
             {features.map((item) => {
               const Icon = item.icon;
@@ -268,15 +321,20 @@ export const Footer = async () => {
             className="absolute inset-0 bg-no-repeat lg:hidden"
             style={{ backgroundImage: `url(${footerRight.src})`, backgroundSize: "35% auto", backgroundPosition: "right bottom" }}
           />
-          {/* Desktop — gold curved panel on the left */}
+          {/* Desktop — gold curved panel on the left with 3D wavy depth shadow */}
           <div
-            className="absolute inset-x-0 top-0 -bottom-0.5 hidden bg-no-repeat lg:block"
-            style={{ backgroundImage: `url(${footerLeft.src})`, backgroundSize: "29vw 100%", backgroundPosition: "left top" }}
+            className="absolute inset-x-0 top-0 -bottom-0.5 hidden bg-no-repeat transition-all duration-700 lg:block"
+            style={{
+              backgroundImage: `url(${footerLeft.src})`,
+              backgroundSize: "26.5vw 100%",
+              backgroundPosition: "left top",
+              filter: "drop-shadow(6px 0 16px rgba(60, 35, 5, 0.38)) drop-shadow(14px 0 28px rgba(0, 0, 0, 0.12))",
+            }}
           />
           {/* Desktop — spa stones & leaves under features strip, left-positioned with cover size */}
           <div
             aria-hidden
-            className="pointer-events-none absolute bottom-0 right-0 top-0 z-[1] hidden w-[150px] bg-no-repeat lg:block"
+            className="pointer-events-none absolute bottom-0 right-0 top-0 z-[1] hidden w-[80px] xl:w-[130px] 2xl:w-[170px] bg-no-repeat lg:block"
             style={{
               backgroundImage: `url(${footerRight.src})`,
               backgroundSize: "cover",
@@ -284,10 +342,10 @@ export const Footer = async () => {
             }}
           />
 
-          <div className="relative z-[2] grid grid-cols-1 gap-6 px-6 py-6 lg:min-h-[300px] lg:grid-cols-[27.5%_11.25%_19%_15%_1fr] lg:gap-0 lg:px-0 lg:py-0">
+          <div className="relative z-[2] grid grid-cols-1 gap-6 px-6 py-6 lg:min-h-[300px] lg:grid-cols-[24%_13%_20%_15.5%_1fr] lg:gap-0 lg:px-0 lg:py-0">
 
             {/* ── BRAND COL ── */}
-            <div className="relative -mx-6 -mt-6 px-6 py-6 lg:m-0 lg:px-0 lg:flex lg:flex-col lg:items-start lg:justify-center lg:py-5 lg:pl-[5.3vw] lg:pr-[3vw]">
+            <div className="relative -mx-6 -mt-6 px-6 py-6 lg:m-0 lg:px-0 lg:flex lg:flex-col lg:items-start lg:justify-center lg:py-5 lg:pl-6 xl:pl-[3.5vw] 2xl:pl-[5.3vw] lg:pr-2 xl:pr-[2vw] 2xl:pr-[3vw]">
               {/* Mobile / tablet — gold panel image behind the brand block only */}
               <div
                 aria-hidden
@@ -303,11 +361,11 @@ export const Footer = async () => {
                 />
               </div>
 
-              <HtmlRenderer content={brandDescription} className="mt-3 max-w-[17rem] text-[14px] text-[#fff6d6] [&_*]:leading-[1.3]">
+              <HtmlRenderer content={brandDescription} className="mt-3 max-w-[17rem] text-[13px] xl:text-[14px] text-[#fff6d6]/75 [&_*]:leading-[1.3]">
               </HtmlRenderer>
 
               {/* social icons */}
-              <div className="mt-4 flex flex-wrap gap-2.5 xl:gap-3">
+              <div className="mt-4 flex flex-wrap gap-1.5 xl:gap-2.5 2xl:gap-3">
                 {socialLinks.map((social) => {
                   const Icon = iconMap[social.platform.toLowerCase()];
                   if (!Icon) return null;
@@ -316,9 +374,9 @@ export const Footer = async () => {
                       key={social._id}
                       href={social.url}
                       platform={social.platform}
-                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white text-white transition hover:bg-[#0f2e22] xl:h-9 xl:w-9 hover:text-white"
+                      className="flex h-7 w-7 xl:h-8 xl:w-8 2xl:h-9 2xl:w-9 items-center justify-center rounded-full border border-white text-white transition hover:bg-[#0f2e22] hover:text-white"
                     >
-                      <Icon size={15} />
+                      <Icon size={14} />
                     </SocialIconLink>
                   );
                 })}
@@ -332,28 +390,39 @@ export const Footer = async () => {
               return (
                 <div
                   key={i}
-                  className={`relative lg:pb-5 lg:pr-3 lg:pt-10 lg:after:absolute lg:after:bottom-5 lg:after:right-0 lg:after:top-10 lg:after:w-px lg:after:bg-[#e4dac7] ${i === 0 ? "lg:pl-1" : "lg:pl-6"}`}
+                  className={`relative lg:pb-5 lg:pr-3 xl:pr-5 lg:pt-10 lg:after:absolute lg:after:bottom-5 lg:after:right-0 lg:after:top-10 lg:after:w-px lg:after:bg-[#e4dac7] ${
+                    i === 0 ? "lg:pl-2 xl:pl-3 2xl:pl-4" : "lg:pl-3 xl:pl-5 2xl:pl-6"
+                  }`}
                 >
                   {/* heading with icon */}
-                  <div className="mb-2 flex items-center gap-3">
-                    <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${color.bg} ${color.text}`}>
-                      <Icon size={15} />
+                  <div className="mb-2 flex items-center gap-2 xl:gap-3">
+                    <div className={`flex h-7 w-7 xl:h-8 xl:w-8 shrink-0 items-center justify-center rounded-full ${color.bg} ${color.text}`}>
+                      <Icon size={14} className="xl:hidden" />
+                      <Icon size={15} className="hidden xl:block" />
                     </div>
-                    <h3 className="text-[15px] font-bold uppercase leading-tight text-[#06143e]">
+                    <h3 className="whitespace-nowrap text-[13.5px] xl:text-[15px] font-bold uppercase leading-tight text-[#06143e]">
                       {nav.title}
                     </h3>
                   </div>
                   <div className="mb-4 h-px w-8 bg-[#c8922a]" />
 
-                  <ul className="space-y-[1px]">
+                  <ul className="space-y-[3px]">
                     {nav.links.map((link) => (
                       <li key={`${link.href}-${link.label}`}>
                         <Link
                           href={link.href}
-                          className="flex items-start gap-2 text-[14px] leading-[22px] text-[#0b1733] transition hover:text-[#d0a965]"
+                          className="flex items-start gap-1.5 xl:gap-2 text-[13px] xl:text-[14px] leading-[21px] xl:leading-[22px] text-[#0b1733] transition hover:text-[#d0a965]"
                         >
-                          <ChevronRight size={14} strokeWidth={3} className="mt-[5px] shrink-0 text-[#c09540]" />
-                          {link.label}
+                          <ChevronRight size={13} strokeWidth={3} className="mt-[4px] shrink-0 text-[#c09540] xl:hidden" />
+                          <ChevronRight size={14} strokeWidth={3} className="mt-[4px] shrink-0 text-[#c09540] hidden xl:block" />
+                          {link.label === "Interior & Equipment Integration" ? (
+                            <span className="leading-[17px] xl:leading-[18px]">
+                              Interior &amp; Equipment <br className="hidden lg:inline" />
+                              Integration
+                            </span>
+                          ) : (
+                            <span className="whitespace-nowrap">{link.label}</span>
+                          )}
                         </Link>
                       </li>
                     ))}
@@ -363,27 +432,28 @@ export const Footer = async () => {
             })}
 
             {/* ── CONTACT COL ── */}
-            <div className="lg:pb-5 lg:pl-6 lg:pr-[50px] lg:pt-10">
-              <div className="mb-2 flex items-center gap-3">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#c8922a] text-white">
-                  <FaPhoneAlt size={15} />
+            <div className="lg:pb-5 lg:pl-3 xl:pl-5 lg:pr-3 xl:pr-[35px] 2xl:pr-[50px] lg:pt-10">
+              <div className="mb-2 flex items-center gap-2 xl:gap-3">
+                <div className="flex h-7 w-7 xl:h-8 xl:w-8 shrink-0 items-center justify-center rounded-full bg-[#c8922a] text-white">
+                  <FaPhoneAlt size={12} className="xl:hidden" />
+                  <FaPhoneAlt size={13} className="hidden xl:block" />
                 </div>
-                <h3 className="text-[15px] font-bold uppercase text-[#06143e]">
+                <h3 className="whitespace-nowrap text-[13.5px] xl:text-[15px] font-bold uppercase text-[#06143e]">
                   Contact Us
                 </h3>
               </div>
-              <div className="mb-2 h-px w-9 bg-[#c8922a]" />
+              <div className="mb-2.5 h-px w-9 bg-[#c8922a]" />
 
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 {/* address(es) — same as contact page; falls back to footer content when none */}
                 {offices.map((addr, idx) => (
-                  <div key={addr.key} className="flex gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-[1.5px] border-[#c8922a]">
-                      <FaMapMarkerAlt size={16} className="text-[#c8922a]" />
+                  <div key={addr.key} className="flex gap-2 xl:gap-2.5">
+                    <div className="flex h-7 w-7 xl:h-8 xl:w-8 shrink-0 items-center justify-center rounded-full border-[1.5px] border-[#c8922a]">
+                      <FaMapMarkerAlt size={13} className="text-[#c8922a]" />
                     </div>
-                    <div className={`min-w-0 flex-1 text-[14px] text-[#0b1733] [&_*]:leading-[1.3] ${idx < offices.length - 1 ? "border-b border-[#e4dac7] pb-2" : ""}`}>
-                      {addr.title && <p className="font-bold">{addr.title}</p>}
-                      <p className="whitespace-pre-line">{addr.text}</p>
+                    <div className={`min-w-0 flex-1 text-[13px] xl:text-[14px] text-[#0b1733] [&_*]:leading-[1.3] ${idx < offices.length - 1 ? "border-b border-[#e4dac7] pb-1.5" : ""}`}>
+                      {addr.title && <p className="font-bold text-[13px] xl:text-[14px] text-[#06143e]">{addr.title}</p>}
+                      <p className="whitespace-pre-line text-[13px] xl:text-[14px] leading-[1.3] text-[#0b1733]">{addr.text}</p>
                     </div>
                   </div>
                 ))}
@@ -393,12 +463,12 @@ export const Footer = async () => {
                   ? phoneItems.map((d) => ({ key: d.id, text: d.description.trim() }))
                   : [{ key: "phone", text: content.contact.phone }]
                 ).map((ph) => (
-                  <div key={ph.key} className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-[1.5px] border-[#c8922a]">
-                      <FaPhoneAlt size={14} className="text-[#c8922a]" />
+                  <div key={ph.key} className="flex items-center gap-2 xl:gap-2.5">
+                    <div className="flex h-7 w-7 xl:h-8 xl:w-8 shrink-0 items-center justify-center rounded-full border-[1.5px] border-[#c8922a]">
+                      <FaPhoneAlt size={12} className="text-[#c8922a]" />
                     </div>
                     {/* every number is its own tel: link, so tapping either one dials it on mobile */}
-                    <span className="text-[14px] font-bold leading-tight text-[#06143e]">
+                    <span className="text-[13px] xl:text-[14px] font-bold leading-tight text-[#06143e]">
                       {splitPhoneNumbers(ph.text).map((num, i) => (
                         <React.Fragment key={num.href}>
                           {i > 0 && ", "}
@@ -413,11 +483,11 @@ export const Footer = async () => {
                 {(emailItems.length > 0 ? emailItems[0].description.trim() : content.contact.email) && (() => {
                   const email = emailItems.length > 0 ? emailItems[0].description.trim() : content.contact.email;
                   return (
-                    <Link href={`mailto:${email}`} className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-[1.5px] border-[#c8922a]">
-                        <Mail size={16} strokeWidth={1.6} className="text-[#c8922a]" />
+                    <Link href={`mailto:${email}`} className="flex items-center gap-2 xl:gap-2.5">
+                      <div className="flex h-7 w-7 xl:h-8 xl:w-8 shrink-0 items-center justify-center rounded-full border-[1.5px] border-[#c8922a]">
+                        <Mail size={13} strokeWidth={1.6} className="text-[#c8922a]" />
                       </div>
-                      <span className="text-[14px] text-[#0b1733] hover:text-[#d0a965]">
+                      <span className="text-[13px] xl:text-[14px] font-semibold text-[#06143e] hover:text-[#d0a965]">
                         {email}
                       </span>
                     </Link>
