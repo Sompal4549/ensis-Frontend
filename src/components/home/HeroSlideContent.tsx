@@ -30,6 +30,8 @@ export type HeroSlide = {
   secondaryButtonText?: string;
   secondaryButtonHref?: string;
   features?: { imgUrl?: string; title?: string }[];
+  /** Optional display window (India time). Scheduled slides replace the normal ones while live: see lib/heroSchedule.ts */
+  schedule?: { mode?: "day" | "range"; start?: string; end?: string } | null;
 };
 
 const easeOutExpo = [0.22, 1, 0.36, 1] as const;

@@ -9,9 +9,9 @@ export default function BackToTop() {
       type="button"
       aria-label="Back to top"
       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-      className="flex size-10 shrink-0 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:border-white hover:bg-white/10"
+      className="flex size-9 shrink-0 items-center justify-center rounded-full border border-white/40 text-white transition-colors hover:border-white hover:bg-white/10"
     >
-      <ArrowUp className="size-4" strokeWidth={2.25} />
+      <ArrowUp className="size-[15px]" strokeWidth={2.25} />
     </button>
   );
 }
