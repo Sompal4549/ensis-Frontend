@@ -172,7 +172,7 @@ export const Footer = async () => {
     .replace(/^\s*(?:19|20)\d{2}\s*/, "")
     .trim();
   const copyrightText = `© ${copyrightYear}${copyrightRest ? ` ${copyrightRest}` : " Ensis. All rights reserved."}`;
-  // Admin may still carry old Privacy/Terms entries in layout.footer; show Sitemap until those pages exist
+  // Privacy/Terms are rendered as fixed links in the bar, so drop any copies saved in layout.footer
   const copyrightLinks = (content.copyright.links ?? []).filter(
     (item) => !/privacy|terms|conditions/i.test(item.label || "")
   );
@@ -407,23 +407,12 @@ export const Footer = async () => {
 
       {/* ── COPYRIGHT BAR ── */}
       <div className="bg-[#061629]">
-        <Container className="px-6! md:px-16! py-1!">
-          <div className="flex flex-col items-center justify-between gap-3 py-1.5 text-center md:flex-row md:text-left">
+        <Container className="px-6! md:px-16! py-0!">
+          <div className="flex flex-col items-center justify-between gap-3 py-[7px] text-center md:flex-row md:text-left">
             <p className="text-sm font-medium text-white">{copyrightText}</p>
 
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
-              {copyrightLinks.map((item, index) => (
-                <React.Fragment key={item.label}>
-                  {index > 0 && <span aria-hidden className="h-4 w-px bg-white/25" />}
-                  <Link href={item.href} className="text-sm font-medium text-white transition hover:text-white/70">
-                    {item.label}
-                  </Link>
-                </React.Fragment>
-              ))}
-
-              {/* Privacy/Terms — pages banne par neeche se uncomment karein; admin "Links" (Sitemap) waisa hi rehta hai */}
-              {/*
-              <span aria-hidden className="h-4 w-px bg-white/25" />
+              {/* Privacy/Terms come first and are fixed; matching admin links are filtered out above so they never show twice */}
               <Link href="/privacy-policy" className="text-sm font-medium text-white transition hover:text-white/70">
                 Privacy Policy
               </Link>
@@ -431,11 +420,20 @@ export const Footer = async () => {
               <Link href="/terms-and-conditions" className="text-sm font-medium text-white transition hover:text-white/70">
                 Terms &amp; Conditions
               </Link>
-              */}
+
+              {/* Sitemap and any other links added in admin follow */}
+              {copyrightLinks.map((item) => (
+                <React.Fragment key={item.label}>
+                  <span aria-hidden className="h-4 w-px bg-white/25" />
+                  <Link href={item.href} className="text-sm font-medium text-white transition hover:text-white/70">
+                    {item.label}
+                  </Link>
+                </React.Fragment>
+              ))}
 
               {developer.name && (
                 <>
-                  {copyrightLinks.length > 0 && <span aria-hidden className="hidden h-4 w-px bg-white/25 sm:block" />}
+                  <span aria-hidden className="hidden h-4 w-px bg-white/25 sm:block" />
                   <span className="flex items-center gap-3 text-sm font-medium text-white">
                     {developer.label}
                     <a

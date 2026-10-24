@@ -8,6 +8,7 @@ import GreenButton from '../ui/GreenButton';
 import BookButton from '../ui/BookButton';
 import HeroCarousel from './HeroCarousel';
 import type { HeroSlide } from './HeroSlideContent';
+import { currentTimeMs } from '@/lib/heroSchedule';
 
 export const Hero = async (data: { slides: HeroSlide[] }) => {
   const fallbackSlides: HeroSlide[] = [
@@ -110,11 +111,10 @@ export const Hero = async (data: { slides: HeroSlide[] }) => {
     }
   ];
   const content = data || fallbackSlides;
-  const heroSlides = content.slides?.length ? content.slides : fallbackSlides;
-
   return (
     <section className="bg-[#f7f2ea] relative z-20 mb-12 md:mb-22 xl:mb-12">
-      <HeroCarousel slides={heroSlides} />
+      {/* CMS slides (normal + scheduled) go in as they are; HeroCarousel picks what to show now and flips at the exact start/end time */}
+      <HeroCarousel slides={content.slides ?? []} fallbackSlides={fallbackSlides} serverNow={currentTimeMs()} />
       <Features />
     </section>
   );

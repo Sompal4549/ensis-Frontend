@@ -36,7 +36,17 @@ import { authStore } from "@/lib/auth";
 
 type HeaderLogo = { imageUrl?: string; alt?: string };
 
-export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
+export type HeaderContent = {
+    logo?: HeaderLogo;
+    phone?: string;
+    email?: string;
+    brochureUrl?: string;
+    contactInfo?: { image?: { imageUrl?: string; alt?: string }; text?: string; href?: string }[];
+    navigation?: { title?: string; slug?: string }[];
+    actions?: { brochureButton?: { text?: string; href?: string } };
+};
+
+export const Header = ({ initialHeader }: { initialHeader?: HeaderContent } = {}) => {
     const pathname = usePathname();
     const [mounted, setMounted] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -131,9 +141,9 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
 
     // Default content shape matches the actual DB schema for "layout.header"
     // (contactInfo + navigation), NOT the old badges/navLinks shape.
-    const [headerContent, setHeaderContent] = useState({
+    const defaultHeaderContent: HeaderContent = {
         // Admin "Header" logo; empty until loaded, so the bundled logo shows meanwhile
-        logo: { imageUrl: initialLogo?.imageUrl || "", alt: initialLogo?.alt || "ENSIS Logo" },
+        logo: { imageUrl: "", alt: "ENSIS Logo" },
         phone: "+91 9654900525",
         email: "info@ensis.in",
         brochureUrl: "/pdf/e-brochure.pdf",
@@ -164,7 +174,15 @@ export const Header = ({ initialLogo }: { initialLogo?: HeaderLogo } = {}) => {
             { title: "Enquiry", slug: "/enquiry" },
             { title: "Contact Us", slug: "/contact" },
         ],
-    });
+    };
+    const [headerContent, setHeaderContent] = useState<HeaderContent>(() => ({
+        ...defaultHeaderContent,
+        ...(initialHeader || {}),
+        logo: {
+            imageUrl: initialHeader?.logo?.imageUrl || "",
+            alt: initialHeader?.logo?.alt || "ENSIS Logo",
+        },
+    }));
 
     useEffect(() => {
         const fetchHeader = async () => {

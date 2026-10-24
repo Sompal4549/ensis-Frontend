@@ -28,7 +28,7 @@ const playfair = localFont({
   display: 'swap',
 });
 
-import { Header } from "@/components/layout/Header";
+import { Header, type HeaderContent } from "@/components/layout/Header";
 import { getAdvancedSeo } from "@/lib/api/seo";
 import { getComponentContent } from "@/lib/api/api";
 const Footer = nextDynamic(() => import("@/components/layout/Footer").then((mod) => mod.Footer));
@@ -50,8 +50,9 @@ export default async function RootLayout({
 }>) {
   const [advSeo, headerLayout] = await Promise.all([
     getAdvancedSeo(),
-    // Header logo is rendered on the server so the admin logo shows on first paint
-    getComponentContent<{ logo?: { imageUrl?: string; alt?: string } }>("layout.header", {}),
+    // Header logo + navigation are rendered on the server so the admin logo and menu
+    // order show on first paint
+    getComponentContent<HeaderContent>("layout.header", {}),
   ]);
 
   const analytics = advSeo?.analytics || {};
@@ -136,7 +137,7 @@ export default async function RootLayout({
           </noscript>
         )}
         <ShopProvider>
-          <Header initialLogo={headerLayout.logo} />
+          <Header initialHeader={headerLayout} />
           <main className="pt-22">{children}</main>
           <Footer />          {/* <Footer image={footerTop1} />
           <Footer image={footerTop2} />
