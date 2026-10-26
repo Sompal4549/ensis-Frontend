@@ -15,6 +15,13 @@ const dmSans = localFont({
   variable: '--font-montserrat',
   display: 'swap',
 });
+// Footer typography (matches the approved footer design)
+const inter = localFont({
+  src: './fonts/inter-latin-var.woff2',
+  weight: '400 800',
+  variable: '--font-inter',
+  display: 'swap',
+});
 const dmSerif = localFont({
   src: './fonts/dm-serif-display-latin-400.woff2',
   weight: '400',
@@ -59,7 +66,7 @@ export default async function RootLayout({
   const searchConsole = advSeo?.searchConsole || {};
 
   return (
-    <html lang="en" className={`${dmSans.variable} ${dmSerif.variable} ${playfair.variable}`}>
+    <html lang="en" className={`${dmSans.variable} ${dmSerif.variable} ${playfair.variable} ${inter.variable}`}>
       <head>
         {/* Search Console Verification */}
         {searchConsole.googleVerification && (
