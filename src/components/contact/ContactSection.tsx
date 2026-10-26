@@ -8,6 +8,7 @@ import Image from "next/image";
 import SocialSidebar from "../layout/SocialSidebar";
 import HtmlRenderer from "../layout/HtmlRender";
 import { splitPhoneNumbers } from "@/lib/phone";
+import { withDefaultContactEntries } from "@/lib/contactDefaults";
 
 interface ContactDetailItem {
   id: string;
@@ -137,31 +138,41 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
 
   const inputClass = "w-full rounded-xl px-4 py-3 text-sm text-white/90 bg-[#1e4434] border border-[#2d5a43] placeholder:text-white/40 outline-none focus:border-[#D9B25F] transition-all";
 
+  const formatAddressText = (desc: string) => {
+    if (!desc) return "";
+    let clean = desc.replace(/<br\s*\/?>/gi, " ").replace(/\s{2,}/g, " ").trim();
+    clean = clean.replace(/(Mohan\s+Nagar,?\s*)/i, "$1<br>");
+    clean = clean.replace(/(Opp\s+Dynamic\s+Flow\s+Company,?\s*|Company,?\s*)/i, "$1<br>");
+    return clean;
+  };
+
   return (
     <section className="bg-[#faf6ef]">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
 
           {/* LEFT — Contact Info */}
-          <div className="bg-white rounded-2xl border border-[#ebe7df] p-7 md:p-9 shadow-sm">
+          <div className="bg-white rounded-2xl border border-[#ebe7df] p-6 md:p-7 shadow-sm">
             <h2 className="text-xl font-semibold text-[#111]">{sectionContent?.title || "Contact Information"}</h2>
-            <div className="w-8 h-[3px] bg-[#D9B25F] mt-1.5 mb-7 rounded-full" />
+            <div className="w-8 h-[3px] bg-[#D9B25F] mt-1.5 mb-4 rounded-full" />
 
             <div className="divide-y divide-[#f0ece5]">
-              {(sectionContent?.contactDetails || []).map((detail) => (
-                <div key={detail.id} className="flex items-start gap-4 py-4">
-                  <div className="w-10 h-10 rounded-xl bg-[#f5f0e8] border border-[#ebe7df] flex items-center justify-center shrink-0">
+              {withDefaultContactEntries(sectionContent?.contactDetails || [])
+                .filter((detail) => !/e-?mail/i.test(detail.title || "") && !/e-?mail/i.test(detail.description || ""))
+                .map((detail) => (
+                <div key={detail.id} className="flex items-start gap-3.5 py-2">
+                  <div className="w-8 h-8 rounded-lg bg-[#f5f0e8] border border-[#ebe7df] flex items-center justify-center shrink-0 mt-0.5">
                     {detail.icon ? (
                       <Image src={detail.icon} alt={detail.title} width={18} height={18} />
                     ) : (
                       <span className="text-[#D9B25F] text-xs font-semibold">●</span>
                     )}
                   </div>
-                  <div>
-                    <p className="text-base font-semibold text-[#111]">{detail.title}</p>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14px] font-semibold text-[#111]">{detail.title}</p>
                     {/phone|mobile|call/i.test(detail.title || "") && splitPhoneNumbers(detail.description).length > 0 ? (
                       // Each number gets its own tel: link; auto-detection on mobile would otherwise link only one of them
-                      <p className="text-base text-[#6b7280] mt-0.5 leading-6">
+                      <p className="text-[14px] text-[#6b7280] mt-0.5 leading-5">
                         {splitPhoneNumbers(detail.description).map((num, i) => (
                           <React.Fragment key={num.href}>
                             {i > 0 && ", "}
@@ -170,14 +181,14 @@ const ContactSection = ({ sectionContent }: { sectionContent: ContactSectionCont
                         ))}
                       </p>
                     ) : (
-                      <HtmlRenderer className="text-base text-[#6b7280] mt-0.5 leading-6" content={detail.description || ""}></HtmlRenderer>
+                      <HtmlRenderer className="text-[14px] text-[#6b7280] mt-0.5 leading-5 w-full max-w-none" content={formatAddressText(detail.description)}></HtmlRenderer>
                     )}
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-6 flex items-center gap-4">
+            <div className="mt-4 pt-3 border-t border-[#f0ece5] flex items-center gap-4">
               <span className="text-sm font-semibold text-[#111]">Follow Us</span>
               <SocialSidebar layout="horizontal" />
             </div>

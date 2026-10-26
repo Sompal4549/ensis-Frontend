@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import logoFallback from "@/assets/logo.webp";
 
@@ -16,6 +16,10 @@ type SparkleLogoProps = {
    *         sweeps across the letters themselves (footer, on the gold panel).
    */
   variant?: "plain" | "card" | "3d";
+  fallback?: StaticImageData | string;
+  width?: number;
+  height?: number;
+  priority?: boolean;
 };
 
 const sparkles = [
@@ -30,14 +34,23 @@ export default function SparkleLogo({
   alt,
   className,
   variant = "plain",
+  fallback,
+  width,
+  height,
+  priority = false,
 }: SparkleLogoProps) {
   const isCard = variant === "card";
   const is3d = variant === "3d";
-  const [imgSrc, setImgSrc] = useState<StaticImageData | string>(src || logoFallback);
+  const fallbackImg = fallback || logoFallback;
+  const [hasError, setHasError] = useState(false);
+  const [prevSrc, setPrevSrc] = useState(src);
 
-  useEffect(() => {
-    setImgSrc(src || logoFallback);
-  }, [src]);
+  if (prevSrc !== src) {
+    setPrevSrc(src);
+    setHasError(false);
+  }
+
+  const currentSrc = hasError ? fallbackImg : (src || fallbackImg);
 
   return (
     <div className={`logo-wrap relative inline-block ${isCard ? "is-card" : is3d ? "is-3d" : "is-plain"}`}>
@@ -45,22 +58,22 @@ export default function SparkleLogo({
         <div className={`logo-card relative ${isCard ? "overflow-hidden" : ""}`}>
           {/* Admin-uploaded logos arrive as URLs, which next/image can only size with explicit dimensions */}
           <Image
-            src={imgSrc}
+            src={currentSrc}
             alt={alt}
-            onError={() => setImgSrc(logoFallback)}
+            onError={() => setHasError(true)}
             className={`relative z-10 ${className ?? ""}`}
-            {...(typeof imgSrc === "string" ? { width: 600, height: 240 } : {})}
-            priority
+            {...(typeof currentSrc === "string" ? { width: width ?? 600, height: height ?? 240 } : {})}
+            priority={priority}
           />
           {is3d && <span className="logo-halo" aria-hidden />}
           {is3d ? (
             // Bright copy of the logo revealed only under a moving gradient mask, so the glint follows the letter shapes
             <Image
-              src={imgSrc}
+              src={currentSrc}
               alt=""
               aria-hidden
               className="logo-glint pointer-events-none absolute inset-0 z-20 h-full w-full object-contain"
-              {...(typeof imgSrc === "string" ? { width: 600, height: 240 } : {})}
+              {...(typeof currentSrc === "string" ? { width: width ?? 600, height: height ?? 240 } : {})}
             />
           ) : (
             /* Light sweep that glides across the logo every few seconds */
@@ -108,14 +121,17 @@ export default function SparkleLogo({
           box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), inset 0 -10px 24px -18px rgba(141, 106, 58, 0.45);
         }
 
-        /* 3D: stacked hard shadows read as thickness, the soft ones as lift, the pale halo separates it from the gold */
+        /* 3D: pure bright white glow and radiance — preserves 100% logo brightness and colors with zero darkness */
         .is-3d .logo-card {
-          filter: drop-shadow(0 5px 5px rgba(60, 30, 0, 0.45)) drop-shadow(0 0 12px rgba(255, 238, 180, 0.6));
+          filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.95))
+                  drop-shadow(0 0 8px rgba(255, 255, 255, 0.85))
+                  drop-shadow(0 0 16px rgba(255, 255, 255, 0.5));
         }
         .is-3d :global(.logo-glint) {
-          filter: brightness(2.8) saturate(0.55) contrast(1.1);
-          -webkit-mask-image: linear-gradient(105deg, transparent 36%, #000 50%, transparent 64%);
-          mask-image: linear-gradient(105deg, transparent 36%, #000 50%, transparent 64%);
+          filter: brightness(2.2) contrast(1.15);
+          mix-blend-mode: screen;
+          -webkit-mask-image: linear-gradient(105deg, transparent 35%, #000 50%, transparent 65%);
+          mask-image: linear-gradient(105deg, transparent 35%, #000 50%, transparent 65%);
           -webkit-mask-size: 260% 100%;
           mask-size: 260% 100%;
           -webkit-mask-repeat: no-repeat;
@@ -133,12 +149,12 @@ export default function SparkleLogo({
             mask-position: -20% 0;
           }
         }
-        /* Soft halo behind the logo: only opacity animates, which is cheap */
+        /* Soft bright halo behind the logo */
         .is-3d .logo-halo {
           position: absolute;
           inset: -12% -6%;
-          background: radial-gradient(closest-side, rgba(255, 244, 205, 0.75), rgba(255, 244, 205, 0) 100%);
-          opacity: 0.35;
+          background: radial-gradient(closest-side, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 100%);
+          opacity: 0.4;
           animation: logo-halo 3.6s ease-in-out infinite;
         }
         @keyframes logo-halo {
