@@ -2,30 +2,30 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
-  Mail,
   ArrowRight,
-  Link2,
+  Link as LinkIcon,
   LayoutGrid,
-  Lightbulb,
   ChevronRight,
 } from "lucide-react";
-import { FaFacebookF, FaInstagram, FaYoutube, FaLinkedinIn, FaWhatsapp, FaTwitter, FaMapMarkerAlt, FaPhoneAlt } from 'react-icons/fa';
+import { FaMapMarkerAlt } from 'react-icons/fa';
+import { MdPhoneInTalk } from 'react-icons/md';
 import { Container } from '../ui/Container';
 import BackToTop from './BackToTop';
 import logoImg from '@/assets/logo.webp';
 import GlowLogo from './GlowLogo';
 import SparkleLogo from './SparkleLogo';
-import { getComponentContent, getImageUrl, socialApi } from '@/lib/api/api';
-import type { IconType } from "react-icons";
-import SocialIconLink from './SocialLink';
+import { getComponentContent, getImageUrl } from '@/lib/api/api';
+import designHouseLogo from "@/assets/icons/design_house.webp"
 import footerLeft from "@/assets/footer/left.png"
 import footerRight from "@/assets/footer/right.png"
 import footerStrapRight from "@/assets/footer/strap_right.png"
 import footerLogoImg from "@/assets/footer/Ensys Wellness Furniture Logo.png"
 import arrow from "@/assets/icons/arrow.png"
-import HtmlRenderer from './HtmlRender';
-import { splitPhoneNumbers } from '@/lib/phone';
-import { LeafIcon, SproutIcon, GearIcon, DiamondIcon, TruckIcon } from './StrapIcons';
+import strapLeaf from "@/assets/footer/strap-leaf.png"
+import strapSprout from "@/assets/footer/strap-sprout.png"
+import strapGear from "@/assets/footer/strap-gear.png"
+import strapDiamond from "@/assets/footer/strap-diamond.png"
+import strapTruck from "@/assets/footer/strap-truck.png"
 
 interface FooterNavLink {
   label: string;
@@ -65,22 +65,6 @@ interface FooterDeveloper {
   href?: string;
   logoUrl?: string;
 }
-const iconMap: Record<string, IconType> = {
-  facebook: FaFacebookF,
-  instagram: FaInstagram,
-  youtube: FaYoutube,
-  linkedin: FaLinkedinIn,
-  whatsapp: FaWhatsapp,
-  twitter: FaTwitter,
-  x: FaTwitter,
-};
-
-// Footer icon order as designed: Facebook, LinkedIn, Instagram, YouTube, Twitter/X
-const SOCIAL_ORDER = ["facebook", "linkedin", "instagram", "youtube", "twitter", "x", "whatsapp"];
-const socialRank = (platform: string) => {
-  const i = SOCIAL_ORDER.indexOf((platform || "").toLowerCase());
-  return i === -1 ? SOCIAL_ORDER.length : i;
-};
 
 const defaultFooter = {
   "company": {
@@ -95,11 +79,13 @@ const defaultFooter = {
       "links": [
         { "label": "Home", "href": "/" },
         { "label": "About Us", "href": "/about-us" },
-        { "label": "Products", "href": "/products" },
-        { "label": "Turnkey Solutions", "href": "/turnkey" },
-        { "label": "Projects", "href": "/projects-and-clients" },
-        { "label": "Blog", "href": "/blog" },
-        { "label": "Enquiry", "href": "/enquiry" },
+        { "label": "Our Solutions", "href": "/solutions" },
+        { "label": "Our Products", "href": "/products" },
+        { "label": "Our Projects", "href": "/projects-and-clients" },
+        { "label": "Our Clients", "href": "/projects-and-clients" },
+        { "label": "Why Choose Us", "href": "/about-us" },
+        { "label": "Blogs", "href": "/blog" },
+        { "label": "Careers", "href": "/career" },
         { "label": "Contact Us", "href": "/contact" }
       ]
     },
@@ -125,7 +111,9 @@ const defaultFooter = {
         { "label": "Ayurveda Hospital Setup", "href": "/solutions/ayurveda-hospital-setup" },
         { "label": "Interior & Equipment Integration", "href": "/solutions/interior-equipment-integration" },
         { "label": "Customised Solutions", "href": "/turnkey" },
-        { "label": "Consultancy & Support", "href": "/consultancy" }
+        { "label": "Turnkey Project Execution", "href": "/turnkey" },
+        { "label": "Consultancy & Support", "href": "/consultancy" },
+        { "label": "AMC & Service Support", "href": "/contact" }
       ]
     }
   ],
@@ -149,27 +137,51 @@ const defaultFooter = {
   }
 };
 
-/** The head office address is laid out as in the approved footer design (company line + 3 address lines) */
-function formatOfficeAddress(text: string): string {
-  if (/loni/i.test(text) && /mohan\s*nagar/i.test(text) && /201007/.test(text)) {
-    return "Design House India Pvt. Ltd.\n12/29, Site–II, Loni Road,\nIndustrial Area, Mohan Nagar – 201007,\nGhaziabad, Uttar Pradesh, India";
-  }
-  return text;
-}
+/** Offices and phone numbers exactly as in the approved footer design */
+const offices = [
+  {
+    key: "corporate-office",
+    title: "Corporate Office | Delhi-NCR, India",
+    text: "Plot No. 12/29, Site-II Industrial Area,\nLoni Road, Mohan Nagar, Ghaziabad,\nUttar Pradesh – 201007, India",
+  },
+  {
+    key: "regional-office",
+    title: "Regional Office | Delhi, India",
+    text: "Ground Floor, E-1, Main Market,\nOpp. KFC, Kalkaji,\nNew Delhi – 110019, India",
+  },
+  {
+    key: "mumbai-branch-office",
+    title: "Mumbai Branch Office",
+    text: "UNIT-IISR Compound, Plot No 49/459.\nOpp Dynamic Flow Company,\nWakanpada Road, Vasai Phata\nVasai East – 401208, India",
+  },
+];
 
-const navIcons = [Link2, LayoutGrid, Lightbulb];
+const callNumbers = [
+  { label: "+91 9810242841", href: "tel:+919810242841" },
+  { label: "+91 9654900525", href: "tel:+919654900525" },
+];
+
+/** Lightbulb with rays, as in the approved footer design (lucide's bulb has no rays) */
+const BulbIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 -3 24 27" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" aria-hidden {...props}>
+    <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.3 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+    <path d="M9 18h6M10 22h4" />
+    <path d="M12 -2.2v1.6M4.4 1.2l1.1 1.1M19.6 1.2l-1.1 1.1M1.6 7.6h1.6M20.8 7.6h1.6" />
+  </svg>
+);
+const navIcons = [LinkIcon, LayoutGrid, BulbIcon];
 const navIconColors = [
-  { bg: "bg-[#0f7b6e]", text: "text-white" },
-  { bg: "bg-[#2e7d32]", text: "text-white" },
-  { bg: "bg-[#5c3d8f]", text: "text-white" },
+  { bg: "bg-[#0e8a8f]", text: "text-white" },
+  { bg: "bg-[#3b7d2a]", text: "text-white" },
+  { bg: "bg-[#7a1fa2]", text: "text-white" },
 ];
 
 const features = [
-  { title: "Premium Quality", desc: "Durable & Reliable Products", icon: LeafIcon, color: "text-[#bd7a1c]" },
-  { title: "Ayurvedic Expertise", desc: "Rooted in Ancient Wisdom", icon: SproutIcon, color: "text-[#c9971c]" },
-  { title: "End to End Support", desc: "From Planning to Installation", icon: GearIcon, color: "text-[#c28625]" },
-  { title: "Customized Solutions", desc: "Tailored For Your Unique Needs", icon: DiamondIcon, color: "text-[#c28625]" },
-  { title: "Pan India Service", desc: "Delivering Wellness Across India", icon: TruckIcon, color: "text-[#c28625]" },
+  { title: "Premium Quality", desc: "Durable & Reliable Products", icon: strapLeaf, height: 42 },
+  { title: "Ayurvedic Expertise", desc: "Rooted in Ancient Wisdom", icon: strapSprout, height: 44 },
+  { title: "End to End Support", desc: "From Planning to Installation", icon: strapGear, height: 43 },
+  { title: "Customized Solutions", desc: "Tailored For Your Unique Needs", icon: strapDiamond, height: 33 },
+  { title: "Pan India Service", desc: "Delivering Wellness Across India", icon: strapTruck, height: 35 },
 ];
 
 // export const Footer = async ({image:StaticImageData|string}) => {
@@ -183,40 +195,10 @@ export const Footer = async () => {
   // Year always comes from the clock so it rolls over without an admin edit
   const copyrightYear = new Date().getFullYear();
   const copyrightSegments = [
-    `© ${copyrightYear} ENSIS - Panchkarma & Spa Solutions`,
+    `© ${copyrightYear} ENSIS – Panchkarma & Spa Solutions`,
     "A Brand of Design House India Pvt. Ltd.",
     "All Rights Reserved.",
   ];
-  // Contact page "Get In Touch" details (Our Address / Phone Number) are the single source for the footer contact column
-  const getInTouch = await getComponentContent<{ contactDetails?: { id: string; title: string; description: string }[] }>(
-    "contact.getInTouch",
-    { contactDetails: [] }
-  );
-  const contactDetails = (getInTouch?.contactDetails ?? []).filter((d) => d?.description?.trim());
-  const addressItems = contactDetails.filter((d) => /address|office/i.test(d.title || ""));
-  // Line breaks match the design: "…Ayurvedic, / Spa & Wellness equipments. / Crafting premium solutions for a / healthier & better tomorrow."
-  const brandDescription = (content.company.description || "")
-    .replace(/(Ayurvedic,)\s+/i, "$1<br/>")
-    .replace(/(equipments\.)\s+/i, "$1<br/>")
-    .replace(/(solutions for a)\s+/i, "$1<br/>");
-  // A generic "Our Address" is the head office; a branch office is appended until one is added to the contact page
-  const offices: { key: string; title: string; text: string }[] =
-    addressItems.length > 0
-      ? addressItems.map((d) => ({
-          key: d.id,
-          title: /^\s*our\s+address\s*$/i.test(d.title) ? "Head Office" : d.title.trim(),
-          text: formatOfficeAddress(d.description),
-        }))
-      : [{ key: "head-office", title: "Head Office", text: formatOfficeAddress(content.contact.address) }];
-  if (!offices.some((o) => /branch/i.test(o.title))) {
-    offices.push({
-      key: "branch-office",
-      title: "Branch Office",
-      text: "5076, Wakanpada, Nalasopara East,\nVasai-Virar, Maharashtra 401208, India",
-    });
-  }
-  const phoneItems = contactDetails.filter((d) => /phone|mobile|call/i.test(d.title || ""));
-  const emailItems = contactDetails.filter((d) => /e-?mail/i.test(d.title || ""));
   // Privacy/Terms are rendered as fixed links in the bar, so drop any copies saved in layout.footer
   const copyrightLinks = (content.copyright.links ?? []).filter(
     (item) => !/privacy|terms|conditions/i.test(item.label || "")
@@ -226,11 +208,10 @@ export const Footer = async () => {
   }
   // Admin footer logo (Pages > Footer > Ensis Logo); bundled logo when none is set
   const footerLogo = (content.company as { ensisLogo?: { imageUrl?: string; alt?: string } })?.ensisLogo;
-  // The footer sits on the gold panel, so it uses the bundled glossy logo (transparent PNG with white tagline)
-  const footerLogoSrc = footerLogoImg;
-  const socialLinks = (await socialApi.getLinks())
-    .filter((item) => item.isActive)
-    .sort((a, b) => socialRank(a.platform) - socialRank(b.platform) || a.order - b.order);
+  // Same logo as the header (admin "layout.header" logo); footer's own admin logo wins, bundled glossy logo is the fallback
+  const headerContent = await getComponentContent<{ logo?: { imageUrl?: string; alt?: string } }>("layout.header", {});
+  const backendLogoUrl = footerLogo?.imageUrl || headerContent?.logo?.imageUrl;
+  const footerLogoSrc = backendLogoUrl ? getImageUrl(backendLogoUrl, 600) : footerLogoImg;
   // ── 8 OFFICIAL PRODUCT CATEGORIES (STATIC FOR PRODUCTION) ──
   // Static list ensures categories always render reliably on live deployment
   const staticProductCategories: FooterNavLink[] = [
@@ -242,6 +223,7 @@ export const Footer = async () => {
     { label: "Consultation & Examination Furniture", href: "/products" },
     { label: "Hospitality & Resort Spa Setup", href: "/products" },
     { label: "Accessories & Consumables", href: "/products" },
+    { label: "Herbal & Oil Preparation Equipment", href: "/products" },
   ];
 
   /*
@@ -277,7 +259,7 @@ export const Footer = async () => {
   ];
 
   return (
-    <footer className="overflow-hidden bg-white">
+    <footer className="overflow-hidden bg-white font-medium footer-font">
 
       {/* ── STRAP + MAIN ── */}
       <div className="relative">
@@ -295,18 +277,17 @@ export const Footer = async () => {
           />
           <div className="relative z-[2] grid grid-cols-2 gap-x-2 gap-y-3 px-6 py-2 lg:min-h-[69px] lg:grid-cols-5 lg:items-center lg:gap-0 lg:px-[5%]">
             {features.map((item) => {
-              const Icon = item.icon;
               return (
                 <div
                   key={item.title}
-                  className="relative flex items-center gap-3 lg:px-5 lg:first:pl-0 lg:after:absolute lg:after:right-0 lg:after:top-1/2 lg:after:h-9 lg:after:w-px lg:after:-translate-y-1/2 lg:after:bg-[#dfcfad] lg:last:after:hidden"
+                  className="relative flex items-center gap-3 lg:px-5 lg:first:pl-0 lg:after:absolute lg:after:right-0 lg:after:top-1/2 lg:after:h-[62%] lg:after:w-[1.5px] lg:after:-translate-y-1/2 lg:after:bg-[#f59a5c] lg:last:after:hidden"
                 >
-                  <div className={`flex h-10 w-10 shrink-0 items-center justify-center ${item.color}`}>
-                    <Icon className="h-10 w-10" />
+                  <div className="flex h-[48px] w-[56px] shrink-0 items-center justify-center">
+                    <Image src={item.icon} alt="" aria-hidden style={{ height: item.height, width: "auto" }} />
                   </div>
                   <div>
-                    <h4 className="text-[14px] font-semibold leading-[1.4] text-[#11151f]">{item.title}</h4>
-                    <p className="text-[13px] leading-[1.4] text-[#1c1f26]">{item.desc}</p>
+                    <h4 className="text-[clamp(13px,0.845vw,17px)] font-semibold leading-[1.4] text-[#11151f]">{item.title}</h4>
+                    <p className="text-[clamp(12px,0.79vw,16px)] leading-[1.4] text-[#1c1f26]">{item.desc}</p>
                   </div>
                 </div>
               );
@@ -326,7 +307,7 @@ export const Footer = async () => {
             className="absolute inset-x-0 top-0 -bottom-0.5 hidden bg-no-repeat transition-all duration-700 lg:block"
             style={{
               backgroundImage: `url(${footerLeft.src})`,
-              backgroundSize: "26.5vw 100%",
+              backgroundSize: "31.5vw 100%",
               backgroundPosition: "left top",
               filter: "drop-shadow(6px 0 16px rgba(60, 35, 5, 0.38)) drop-shadow(14px 0 28px rgba(0, 0, 0, 0.12))",
             }}
@@ -338,14 +319,14 @@ export const Footer = async () => {
             style={{
               backgroundImage: `url(${footerRight.src})`,
               backgroundSize: "cover",
-              backgroundPosition: "left bottom",
+              backgroundPosition: "right bottom",
             }}
           />
 
-          <div className="relative z-[2] grid grid-cols-1 gap-6 px-6 py-6 lg:min-h-[300px] lg:grid-cols-[24%_13%_20%_15.5%_1fr] lg:gap-0 lg:px-0 lg:py-0">
+          <div className="relative z-[2] grid grid-cols-1 sm:grid-cols-2 gap-6 px-6 py-6 lg:min-h-[300px] lg:grid-cols-[29%_11.5%_18%_16%_1fr] lg:gap-0 lg:px-0 lg:py-0">
 
             {/* ── BRAND COL ── */}
-            <div className="relative -mx-6 -mt-6 px-6 py-6 lg:m-0 lg:px-0 lg:flex lg:flex-col lg:items-start lg:justify-center lg:py-5 lg:pl-6 xl:pl-[3.5vw] 2xl:pl-[5.3vw] lg:pr-2 xl:pr-[2vw] 2xl:pr-[3vw]">
+            <div className="relative -mx-6 -mt-6 px-6 py-6 sm:col-span-2 lg:col-span-1 lg:m-0 lg:px-0 lg:flex lg:flex-col lg:items-start lg:justify-center lg:py-5 lg:pl-6 xl:pl-[3.5vw] 2xl:pl-[5.3vw] lg:pr-2 xl:pr-[0.8vw] 2xl:pr-[1vw]">
               {/* Mobile / tablet — gold panel image behind the brand block only */}
               <div
                 aria-hidden
@@ -361,68 +342,59 @@ export const Footer = async () => {
                 />
               </div>
 
-              <HtmlRenderer content={brandDescription} className="mt-3 max-w-[17rem] text-[13px] xl:text-[14px] text-[#fff6d6]/75 [&_*]:leading-[1.3]">
-              </HtmlRenderer>
+              <p className="mt-3 max-w-[min(100%,26rem)] lg:max-w-none lg:whitespace-nowrap text-[13px] xl:text-[14px] text-[#1a1208] [&_*]:leading-[1.3] leading-[1.3] [text-shadow:0_0_6px_rgba(255,255,255,0.7),0_0_2px_rgba(255,255,255,0.5)]">
+                Premium Ayurveda, Panchakarma<br className="hidden lg:inline" />{" "}and spa equipment designed for clinics,<br className="hidden lg:inline" />{" "}resorts and healthcare spaces.<br />
+                We create durable, functional and<br className="hidden lg:inline" />{" "}aesthetically crafted wellness solutions<br className="hidden lg:inline" />{" "}across India.
+              </p>
 
-              {/* social icons */}
-              <div className="mt-4 flex flex-wrap gap-1.5 xl:gap-2.5 2xl:gap-3">
-                {socialLinks.map((social) => {
-                  const Icon = iconMap[social.platform.toLowerCase()];
-                  if (!Icon) return null;
-                  return (
-                    <SocialIconLink
-                      key={social._id}
-                      href={social.url}
-                      platform={social.platform}
-                      className="flex h-7 w-7 xl:h-8 xl:w-8 2xl:h-9 2xl:w-9 items-center justify-center rounded-full border border-white text-white transition hover:bg-[#0f2e22] hover:text-white"
-                    >
-                      <Icon size={14} />
-                    </SocialIconLink>
-                  );
-                })}
+              {/* call us today */}
+              <div className="mt-5 flex w-full max-w-[16rem] lg:-ml-[25px] items-center gap-[10px] rounded-[clamp(20px,1.6vw,32px)] border-2 border-white bg-[#06214f] py-[6px] pl-[8px] pr-[10px] text-white shadow-[0_6px_18px_rgba(0,0,0,0.35)]">
+                <div className="relative h-[56px] w-[56px] shrink-0 rounded-full bg-[#fbc512] text-[#06214f]">
+                  <MdPhoneInTalk className="absolute inset-[11px] h-[calc(100%-22px)] w-[calc(100%-22px)]" aria-hidden />
+                </div>
+                <div className="min-w-0 flex-1 self-center py-[clamp(5px,0.35vw,8px)]">
+                  <p className="text-[14px] font-semibold leading-[1.4] text-[#fbc512]">Call Us Today</p>
+                  {callNumbers.map((num) => (
+                    <a key={num.href} href={num.href} className="block whitespace-nowrap text-[17px] font-medium leading-[1.3] hover:text-[#fbc512]">
+                      {num.label}
+                    </a>
+                  ))}
+                </div>
+                <ArrowRight strokeWidth={2} className="h-[18px] w-[18px] shrink-0 self-center" />
               </div>
             </div>
 
             {/* ── NAV COLS ── */}
             {navigation.map((nav: FooterNavSection, i: number) => {
-              const Icon = navIcons[i] ?? Link2;
+              const Icon = navIcons[i] ?? LinkIcon;
               const color = navIconColors[i] ?? navIconColors[0];
               return (
                 <div
                   key={i}
-                  className={`relative lg:pb-5 lg:pr-3 xl:pr-5 lg:pt-10 lg:after:absolute lg:after:bottom-5 lg:after:right-0 lg:after:top-10 lg:after:w-px lg:after:bg-[#e4dac7] ${
-                    i === 0 ? "lg:pl-2 xl:pl-3 2xl:pl-4" : "lg:pl-3 xl:pl-5 2xl:pl-6"
-                  }`}
+                  className={`relative lg:pb-5 lg:pr-3 xl:pr-5 lg:pt-10 lg:after:absolute lg:after:bottom-[3%] lg:after:right-0 lg:after:top-[6%] lg:after:w-px lg:after:bg-[linear-gradient(to_bottom,rgba(198,204,198,0.2)_0%,#c6ccc6_14%,#c6ccc6_100%)] ${i === 0 ? "lg:pl-2 xl:pl-3 2xl:pl-4" : "lg:pl-3 xl:pl-4 2xl:pl-4"
+                    }`}
                 >
                   {/* heading with icon */}
-                  <div className="mb-2 flex items-center gap-2 xl:gap-3">
-                    <div className={`flex h-7 w-7 xl:h-8 xl:w-8 shrink-0 items-center justify-center rounded-full ${color.bg} ${color.text}`}>
-                      <Icon size={14} className="xl:hidden" />
-                      <Icon size={15} className="hidden xl:block" />
+                  <div className="mb-[clamp(6px,0.6vw,12px)] flex items-center gap-2 xl:gap-[clamp(10px,0.9vw,16px)]">
+                    <div className={`flex h-[clamp(32px,2.9vw,56px)] w-[clamp(32px,2.9vw,56px)] shrink-0 items-center justify-center rounded-full ${color.bg} ${color.text}`}>
+                      <Icon className="h-[54%] w-[54%]" strokeWidth={1.9} />
                     </div>
-                    <h3 className="whitespace-nowrap text-[13.5px] xl:text-[15px] font-bold uppercase leading-tight text-[#06143e]">
+                    <h3 className="whitespace-nowrap text-[13.5px] xl:text-[clamp(14px,0.95vw,20px)] font-extrabold uppercase leading-tight text-[#0b2ec4]">
                       {nav.title}
                     </h3>
                   </div>
-                  <div className="mb-4 h-px w-8 bg-[#c8922a]" />
+                  <div className="mb-[clamp(12px,1.1vw,22px)] h-[2.5px] w-[clamp(32px,2.9vw,56px)] bg-[linear-gradient(90deg,#e4401e_0%,#f5a623_28%,#8cc43c_55%,#12a39a_78%,#1f4fc0_100%)]" />
 
                   <ul className="space-y-[3px]">
                     {nav.links.map((link) => (
                       <li key={`${link.href}-${link.label}`}>
                         <Link
                           href={link.href}
-                          className="flex items-start gap-1.5 xl:gap-2 text-[13px] xl:text-[14px] leading-[21px] xl:leading-[22px] text-[#0b1733] transition hover:text-[#d0a965]"
+                          className="flex items-center gap-1.5 xl:gap-2 text-[13px] xl:text-[clamp(12px,0.85vw,19px)] leading-[21px] xl:leading-[clamp(22px,calc(1.5vw+2px),32px)] text-[#1237a0] transition hover:text-[#d0a965]"
                         >
-                          <ChevronRight size={13} strokeWidth={3} className="mt-[4px] shrink-0 text-[#c09540] xl:hidden" />
-                          <ChevronRight size={14} strokeWidth={3} className="mt-[4px] shrink-0 text-[#c09540] hidden xl:block" />
-                          {link.label === "Interior & Equipment Integration" ? (
-                            <span className="leading-[17px] xl:leading-[18px]">
-                              Interior &amp; Equipment <br className="hidden lg:inline" />
-                              Integration
-                            </span>
-                          ) : (
-                            <span className="whitespace-nowrap">{link.label}</span>
-                          )}
+                          <ChevronRight size={14} strokeWidth={3.5} className="shrink-0 text-[#f47a1f] xl:hidden" />
+                          <ChevronRight size={16} strokeWidth={3.5} className="shrink-0 text-[#f47a1f] hidden xl:block" />
+                          <span className="2xl:whitespace-nowrap">{link.label}</span>
                         </Link>
                       </li>
                     ))}
@@ -432,67 +404,43 @@ export const Footer = async () => {
             })}
 
             {/* ── CONTACT COL ── */}
-            <div className="lg:pb-5 lg:pl-3 xl:pl-5 lg:pr-3 xl:pr-[35px] 2xl:pr-[50px] lg:pt-10">
-              <div className="mb-2 flex items-center gap-2 xl:gap-3">
-                <div className="flex h-7 w-7 xl:h-8 xl:w-8 shrink-0 items-center justify-center rounded-full bg-[#c8922a] text-white">
-                  <FaPhoneAlt size={12} className="xl:hidden" />
-                  <FaPhoneAlt size={13} className="hidden xl:block" />
-                </div>
-                <h3 className="whitespace-nowrap text-[13.5px] xl:text-[15px] font-bold uppercase text-[#06143e]">
-                  Contact Us
-                </h3>
+            <div className="sm:col-span-2 lg:col-span-1 lg:pb-5 lg:pl-3 xl:pl-5 lg:pr-3 xl:pr-[35px] 2xl:pr-[50px] lg:pt-4">
+              <div className="-mt-[10px] mb-[clamp(6px,0.7vw,14px)] ml-[calc(clamp(38px,3.1vw,60px)+10px)] flex justify-start">
+                <Image
+                  src={designHouseLogo}
+                  alt="Design House India Pvt. Ltd."
+                  className="h-auto aspect-[16/8.3] w-[clamp(150px,12.4vw,240px)] object-fill"
+                />
               </div>
-              <div className="mb-2.5 h-px w-9 bg-[#c8922a]" />
 
-              <div className="space-y-1.5">
-                {/* address(es) — same as contact page; falls back to footer content when none */}
-                {offices.map((addr, idx) => (
-                  <div key={addr.key} className="flex gap-2 xl:gap-2.5">
-                    <div className="flex h-7 w-7 xl:h-8 xl:w-8 shrink-0 items-center justify-center rounded-full border-[1.5px] border-[#c8922a]">
-                      <FaMapMarkerAlt size={13} className="text-[#c8922a]" />
-                    </div>
-                    <div className={`min-w-0 flex-1 text-[13px] xl:text-[14px] text-[#0b1733] [&_*]:leading-[1.3] ${idx < offices.length - 1 ? "border-b border-[#e4dac7] pb-1.5" : ""}`}>
-                      {addr.title && <p className="font-bold text-[13px] xl:text-[14px] text-[#06143e]">{addr.title}</p>}
-                      <p className="whitespace-pre-line text-[13px] xl:text-[14px] leading-[1.3] text-[#0b1733]">{addr.text}</p>
-                    </div>
-                  </div>
-                ))}
-
-                {/* phone */}
-                {(phoneItems.length > 0
-                  ? phoneItems.map((d) => ({ key: d.id, text: d.description.trim() }))
-                  : [{ key: "phone", text: content.contact.phone }]
-                ).map((ph) => (
-                  <div key={ph.key} className="flex items-center gap-2 xl:gap-2.5">
-                    <div className="flex h-7 w-7 xl:h-8 xl:w-8 shrink-0 items-center justify-center rounded-full border-[1.5px] border-[#c8922a]">
-                      <FaPhoneAlt size={12} className="text-[#c8922a]" />
-                    </div>
-                    {/* every number is its own tel: link, so tapping either one dials it on mobile */}
-                    <span className="text-[13px] xl:text-[14px] font-bold leading-tight text-[#06143e]">
-                      {splitPhoneNumbers(ph.text).map((num, i) => (
-                        <React.Fragment key={num.href}>
-                          {i > 0 && ", "}
-                          <a href={num.href} className="hover:text-[#d0a965]">{num.label}</a>
-                        </React.Fragment>
-                      ))}
-                    </span>
-                  </div>
-                ))}
-
+              <div className="space-y-2">
                 {/* email */}
-                {(emailItems.length > 0 ? emailItems[0].description.trim() : content.contact.email) && (() => {
-                  const email = emailItems.length > 0 ? emailItems[0].description.trim() : content.contact.email;
-                  return (
-                    <Link href={`mailto:${email}`} className="flex items-center gap-2 xl:gap-2.5">
-                      <div className="flex h-7 w-7 xl:h-8 xl:w-8 shrink-0 items-center justify-center rounded-full border-[1.5px] border-[#c8922a]">
-                        <Mail size={13} strokeWidth={1.6} className="text-[#c8922a]" />
-                      </div>
-                      <span className="text-[13px] xl:text-[14px] font-semibold text-[#06143e] hover:text-[#d0a965]">
-                        {email}
-                      </span>
-                    </Link>
-                  );
-                })()}
+                <Link href={`mailto:${content.contact.email}`} className="flex items-start gap-2 xl:gap-2.5">
+                  <div className="flex h-[clamp(34px,2.6vw,50px)] w-[clamp(34px,2.6vw,50px)] shrink-0 items-center justify-center rounded-full border-2 border-[#e8590c]">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden className="h-[clamp(20px,1.67vw,32px)] w-[clamp(20px,1.67vw,32px)] text-[#e8590c]">
+                      <rect x="2.5" y="5" width="19" height="14" rx="2" />
+                      <path d="M2.8 6.5L12 13.5L21.2 6.5" />
+                      <path d="M3 18.3L9.3 12M21 18.3L14.7 12" />
+                    </svg>
+                  </div>
+                  <div className="min-w-0 text-[13px] xl:text-[clamp(12px,0.84vw,18px)] [&_*]:leading-[1.3] text-[#1237a0] hover:text-[#e8590c]">
+                    <p className="font-bold text-[#0a2a8c]">Email Us</p>
+                    <p>{content.contact.email} (ENSIS)</p>
+                  </div>
+                </Link>
+
+                {/* offices */}
+                {offices.map((addr) => (
+                  <div key={addr.key} className="flex items-start gap-2 xl:gap-2.5">
+                    <div className="flex h-[clamp(34px,2.6vw,50px)] w-[clamp(34px,2.6vw,50px)] shrink-0 items-center justify-center rounded-full border-2 border-[#e8590c]">
+                      <FaMapMarkerAlt className="h-[clamp(20px,1.67vw,32px)] w-[clamp(20px,1.67vw,32px)] text-[#e8590c]" />
+                    </div>
+                    <div className="min-w-0 flex-1 text-[13px] xl:text-[clamp(12px,0.84vw,18px)] text-[#1237a0] [&_*]:leading-[1.3]">
+                      <p className="font-bold text-[#0a2a8c]">{addr.title}</p>
+                      <p className="whitespace-pre-line">{addr.text}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -501,24 +449,24 @@ export const Footer = async () => {
       </div>
 
       {/* ── COPYRIGHT BAR ── */}
-      <div className="bg-[#001931]">
-        <div className="relative px-6 lg:px-[38px]">
-          <div className="flex flex-col items-center justify-between gap-3 py-3 text-center min-[1500px]:flex-row min-[1500px]:text-left">
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 whitespace-nowrap text-sm font-light text-white/80 min-[1500px]:flex-nowrap lg:justify-start">
+      <div className="bg-[#0b2250]">
+        <div className="relative px-2 md:px-0 2xl:px-[38px]">
+          <div className="flex flex-col items-start justify-between gap-3 pt-[4px] lg:pt-[6px] pb-[8px] px-4 lg:pr-[52px] min-[1380px]:pl-[8px] text-left min-[1380px]:items-center min-[1380px]:px-0 min-[1380px]:flex-row min-[1380px]:text-left min-[1380px]:gap-x-[clamp(10px,1.2vw,60px)]">
+            <div className="flex flex-wrap items-center justify-start gap-x-3 gap-y-1 whitespace-nowrap text-[clamp(11.5px,0.78vw,16px)] font-medium text-white min-[1380px]:flex-nowrap lg:justify-start">
               {copyrightSegments.map((seg, i) => (
                 <React.Fragment key={seg}>
-                  {i > 0 && <span aria-hidden className="h-4 w-px bg-white/25" />}
+                  {i > 0 && <span aria-hidden className="hidden h-4 w-px bg-white/25 min-[1380px]:block" />}
                   <span>{seg}</span>
                 </React.Fragment>
               ))}
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-3 whitespace-nowrap min-[1500px]:flex-nowrap">
+            <div className="flex flex-wrap items-center justify-start gap-x-3 gap-y-3 whitespace-nowrap min-[1380px]:flex-nowrap">
               {/* Sitemap (and any other admin links) first, then the fixed Privacy/Terms links */}
-              {[...copyrightLinks, { label: "Privacy Policy", href: "/privacy-policy" }, { label: "Terms & Conditions", href: "/terms-and-conditions" }].map((item, i) => (
+              {[...copyrightLinks, { label: "Privacy Policy", href: "/privacy-policy" }, { label: "Terms & Conditions", href: "/terms-and-conditions" }, { label: "Disclaimer", href: "/terms-and-conditions" }].map((item, i) => (
                 <React.Fragment key={item.label}>
-                  {i > 0 && <span aria-hidden className="h-4 w-px bg-white/25" />}
-                  <Link href={item.href} className="text-sm font-light text-white/80 transition hover:text-white">
+                  {i > 0 && <span aria-hidden className="hidden h-4 w-px bg-white/25 min-[1380px]:block" />}
+                  <Link href={item.href} className="text-[clamp(11.5px,0.78vw,16px)] font-medium text-white transition hover:text-white">
                     {item.label}
                   </Link>
                 </React.Fragment>
@@ -526,31 +474,28 @@ export const Footer = async () => {
 
               {developer.name && (
                 <>
-                  <span aria-hidden className="hidden h-4 w-px bg-white/25 sm:block" />
-                  <span className="flex items-center gap-3 text-sm font-light text-white/80">
-                    {developer.label}
+                  <span aria-hidden className="hidden h-4 w-px bg-white/25 min-[1380px]:block" />
+                  <span className="flex items-center gap-3 text-[clamp(11.5px,0.78vw,16px)] font-medium text-white">
+                    {developer.label}:
                     <a
                       href={developer.href || "#"}
                       target="_blank"
                       rel="noopener noreferrer"
                       aria-label={developer.name}
-                      className={`inline-flex h-[38px] items-center overflow-hidden rounded-md transition-opacity hover:opacity-90 ${developer.logoUrl ? "" : "bg-[#e4141e] px-2.5"}`}
+                      className={`inline-flex h-[30px] min-[1380px]:h-[clamp(40px,2.9vw,56px)] shrink-0 items-center overflow-hidden rounded-md transition-opacity hover:opacity-90 ${developer.logoUrl ? "" : "bg-[#e4141e] px-[clamp(10px,0.9vw,18px)]"}`}
                     >
                       {developer.logoUrl ? (
                         // The logo carries its own red background, so it fills the badge edge to edge
-                        <Image src={getImageUrl(developer.logoUrl, 400)} alt={developer.name} width={190} height={50} className="h-[38px] w-auto object-contain" />
+                        <Image src={getImageUrl(developer.logoUrl, 400)} alt={developer.name} width={190} height={50} className="h-[30px] min-[1380px]:h-[clamp(40px,2.9vw,56px)] w-auto object-contain" />
                       ) : (
-                        <span className="flex items-baseline gap-1 text-white">
-                          <span className="text-[19px] font-semibold tracking-tight">{developer.name}</span>
-                          <span className="text-[8px] font-medium opacity-90">Pvt. Ltd.</span>
-                        </span>
+                        <span className="text-[clamp(14px,0.85vw,17px)] font-medium text-white">{developer.name} Pvt. Ltd.</span>
                       )}
                     </a>
                   </span>
                 </>
               )}
 
-              <div className="min-[1500px]:absolute min-[1500px]:right-1 min-[1500px]:top-1/2 min-[1500px]:-translate-y-1/2 min-[1500px]:[&>button]:size-7"><BackToTop /></div>
+              <BackToTop />
             </div>
           </div>
         </div>

@@ -384,3 +384,9 @@ h1 {
   -webkit-line-clamp: 3 !important;
   overflow: hidden !important;
 }
+
+/* Footer uses Inter (approved design); unlayered so it also beats the global h2-h6 font-family rule */
+.footer-font,
+.footer-font * {
+  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+}
