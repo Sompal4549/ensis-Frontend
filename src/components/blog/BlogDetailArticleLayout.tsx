@@ -23,6 +23,7 @@ import {
 import { Container } from "../ui/Container";
 import bgImage from "@/assets/career/blog_detail_image.webp"
 import userimage from "@/assets/home/testimonial1.webp";
+import onThisPageBottom from "@/assets/on_this_page_bottom.png";
 import img1 from "@/assets/home/img-1.webp"
 import img2 from "@/assets/home/img-2.webp"
 import img3 from "@/assets/home/img-3.webp"
@@ -371,9 +372,9 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
               </div>
 
               {/* On this page */}
-              <div className="rounded-2xl border border-slate-100 bg-white p-5">
+              <div className="rounded-2xl border border-slate-100 bg-white p-5 overflow-hidden relative">
                 <h3 className=" text-base text-[#1f2c25]">On This Page</h3>
-                <ul className="mt-3 space-y-2.5">
+                <ul className="mt-3 space-y-2.5 relative z-10">
                   {toc.map((item) => (
                     <li key={item.id}>
                       <Link
@@ -386,6 +387,15 @@ const BlogArticleLayout: React.FC<BlogArticleLayoutProps> = ({
                     </li>
                   ))}
                 </ul>
+                <div className="pointer-events-none flex justify-end -mb-3 -mr-3 mt-1">
+                  <Image
+                    src={onThisPageBottom}
+                    alt=""
+                    width={180}
+                    height={130}
+                    className="w-[140px] h-auto object-contain select-none"
+                  />
+                </div>
               </div>
 
               {/* Download guide */}

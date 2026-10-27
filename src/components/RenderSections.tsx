@@ -29,8 +29,9 @@ import TurnkeySolutionsSection, { TurnkeySolutionsContent } from "@/components/t
 import WellnessCtaBanner from "@/components/turnkey/WellnessCtaBanner";
 import BlogSection from "@/components/blog/BlogSection";
 import BlogHeroSection from "@/components/blog/HeroSection";
-import SupportSection from "@/components/blog/SupportSection";
-import WellnessResources from "@/components/blog/WellnessResource";
+import BlogFeatureStrip from "@/components/blog/BlogFeatureStrip";
+// import SupportSection from "@/components/blog/SupportSection";
+// import WellnessResources from "@/components/blog/WellnessResource";
 import TrustedBrandsStrip, { TrustedBrandsStripContent } from "@/components/products/TrustedBrandsStrip";
 import WellnessFeatureStrip, { WellnessFeatureStripContent } from "@/components/products/WellnessFeatureStrip";
 import ProductWhyChoose, { WhyChooseContent } from "@/components/products/WhyChoose";
@@ -58,7 +59,7 @@ import { Suspense } from "react";
 // that actually render them (reduces unused JS on every other page).
 const Testimonials = nextDynamic(() => import("@/components/home/Testimonials").then((m) => m.Testimonials));
 const Products = nextDynamic(() => import("@/components/products/Products").then((m) => m.default));
-const NewsletterCard = nextDynamic(() => import("@/components/blog/NewsletterCard").then((m) => m.default));
+// const NewsletterCard = nextDynamic(() => import("@/components/blog/NewsletterCard").then((m) => m.default));
 const ContactSection = nextDynamic(() => import("@/components/contact/ContactSection").then((m) => m.default));
 const CareersSection = nextDynamic(() => import("@/components/career/CareerSection").then((m) => m.default));
 const TalentCommunityBanner = nextDynamic(() => import("@/components/career/TalentCommunityBanner").then((m) => m.default));
@@ -169,21 +170,23 @@ return <ContactSection sectionContent={data as any} />;
     case "contact.hero":
       return <ContactHero sectionContent={data as ContactHeroContent} />;
       case "contact.ctaBanner":
-        return <ContactCtaBanner sectionContent={data as ContactBannerProps}/>;
-case "contact.premiumMap":
-  return <PremiumMap sectionContent={data as PremiumMapProps}/>;
+        return null;
+      case "contact.premiumMap":
+        return <PremiumMap sectionContent={data as PremiumMapProps}/>;
 
   
     case "blog.allBlogs":
       return <BlogSection sectionContent={data} />;
-    case "blog.mediaResources":
-      return <WellnessResources sectionContent={data as any} />;
+    // case "blog.featureStrip":
+    //   return <BlogFeatureStrip />;
+    // case "blog.mediaResources":
+    //   return <WellnessResources sectionContent={data as any} />;
     case 'blog.hero':
       return <BlogHeroSection sectionContent={data} />;
-    case "blog.stayInspired":
-      return <NewsletterCard sectionContent={data as any} />;
-    case "blog.supportWellness":
-      return <SupportSection sectionContent={data as any} />;
+    // case "blog.stayInspired":
+    //   return <NewsletterCard sectionContent={data as any} />;
+    // case "blog.supportWellness":
+    //   return <SupportSection sectionContent={data as any} />;
 
     case "product.hero":
       return <HeroSlider sectionContent={data as any} />

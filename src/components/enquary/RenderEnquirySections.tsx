@@ -22,24 +22,10 @@ const RenderEnquirySections: React.FC<RenderEnquirySectionsProps> = ({ section }
       return <EnquiryBannerAndForm key={_id} content={data} />;
 
     case "enquiry.ctaBanner":
-      return (
-        <CtaBanner
-          key={_id}
-          data={{
-            heading: data.heading,
-            description: data.description,
-            ctaLabel: data.ctaLabel,
-            ctaHref: data.ctaHref,
-            leftImage: { src: data.leftImage.imageUrl, alt: data.leftImage.alt },
-            rightImage: { src: data.rightImage.imageUrl, alt: data.rightImage.alt },
-          }}
-        />
-      );
+      return null;
 
     case "enquiry.getInTouch":
-      return (
-        <GetInTouchBanner key={_id} data={{ heading: data.heading, items: data.items }} />
-      );
+      return null;
 
     default:
       return null;

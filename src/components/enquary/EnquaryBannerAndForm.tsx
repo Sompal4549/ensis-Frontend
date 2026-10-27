@@ -2,19 +2,37 @@
 
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { toast } from "react-toastify";
-import { ArrowRight, BadgeCheck, Compass, ShieldCheck } from "lucide-react";
-import { CheckboxOption, EnquiryFormData, EnquiryFormErrors, EnquiryPageContent, RadioOption, SelectOption, WhyChooseItem } from "@/types/enquary/enquaryBannerAndForm";
+import {
+  Briefcase,
+  MapPin,
+  MessageCircle,
+  Paperclip,
+  Send,
+  Settings,
+  Upload,
+  User,
+} from "lucide-react";
+import {
+  CheckboxOption,
+  EnquiryFormData,
+  EnquiryFormErrors,
+  EnquiryPageContent,
+  SelectOption,
+} from "@/types/enquary/enquaryBannerAndForm";
 import { fallbackEnquiryContent } from "@/data/enquaryBannerAndForm";
 import { Container } from "../ui/Container";
-import enquaryBg from "@/assets/enquiry/formimage.webp"
-import lotus from "@/assets/about/lotus.webp"
+import why1Img from "@/assets/enquiry/why_1.png";
+import why2Img from "@/assets/enquiry/why_2.png";
+import why3Img from "@/assets/enquiry/why_3.png";
+import why4Img from "@/assets/enquiry/why_4.png";
+import mapPinBadge from "@/assets/enquiry/map_pin_badge.png";
+import enquiryNewImg from "@/assets/enquiry_new.png";
+import heroBg from "@/assets/privacy_and_enquiry.png";
+import designHouseLogo from "@/assets/icons/design_house.webp";
+import footerMap from "@/assets/footer/map.webp";
 import { API_URL } from "@/lib/api/api";
-import HtmlRenderer from "../layout/HtmlRender";
-import EnquaryStatsStrip from "./EnquaryStatsStrip";
-import BookButton from "../ui/BookButton";
-import { ALL_INDIAN_STATES, fetchLocationByPincode, matchStateOption } from "@/lib/pincode";
+import { ALL_INDIAN_STATES } from "@/lib/pincode";
 
 interface EnquiryPageProps {
   content?: EnquiryPageContent;
@@ -22,7 +40,6 @@ interface EnquiryPageProps {
   statsStrip?: React.ReactNode;
 }
 
-/** The label shown for a stored option value (the admin should read "Under ₹10 Lakhs", not "under-10l") */
 const labelOf = (options: { value?: string; id?: string; label: string }[] | undefined, value: string) =>
   options?.find((o) => (o.value ?? o.id) === value)?.label || value;
 
@@ -33,29 +50,101 @@ const initialFormData: EnquiryFormData = {
   companyOrganization: "",
   cityAndState: "",
   projectType: "",
+  projectLocation: "",
   state: "",
   city: "",
   zipcode: "",
   projectSize: "",
   budgetRange: "",
   servicesRequired: [],
-  timeline: "",
+  timeline: "Immediate",
   message: "",
   file: null,
   preferredContact: "whatsapp",
   agreeToContact: false,
 };
 
+const DEFAULT_PROJECT_TYPES: SelectOption[] = [
+  { value: "ayurveda-resort", label: "Ayurveda Resort" },
+  { value: "spa-wellness-center", label: "Spa & Wellness Center" },
+  { value: "panchakarma-clinic", label: "Panchakarma Clinic" },
+  { value: "wellness-hospital", label: "Wellness Hospital" },
+  { value: "custom-solutions", label: "Custom Solutions / Other" },
+];
+
+const DEFAULT_PROJECT_SIZES: SelectOption[] = [
+  { value: "small", label: "Small (under 2,000 sq.ft.)" },
+  { value: "medium", label: "Medium (2,000 - 10,000 sq.ft.)" },
+  { value: "large", label: "Large (10,000+ sq.ft.)" },
+];
+
+const DEFAULT_BUDGET_RANGES: SelectOption[] = [
+  { value: "under-10l", label: "Under ₹10 Lakhs" },
+  { value: "10l-50l", label: "₹10 Lakhs - ₹50 Lakhs" },
+  { value: "50l-1cr", label: "₹50 Lakhs - ₹1 Crore" },
+  { value: "above-1cr", label: "Above ₹1 Crore" },
+];
+
+const DEFAULT_SERVICES: CheckboxOption[] = [
+  { id: "consultation", label: "Consultation" },
+  { id: "turnkey-execution", label: "Turnkey Execution" },
+  { id: "planning", label: "Planning" },
+  { id: "project-management", label: "Project Management" },
+  { id: "product-supply", label: "Product Supply" },
+  { id: "amc-service-support", label: "AMC & Service Support" },
+];
+
+const POPULAR_CITIES = [
+  "New Delhi",
+  "Mumbai",
+  "Ghaziabad",
+  "Bengaluru",
+  "Kolkata",
+  "Chennai",
+  "Hyderabad",
+  "Pune",
+  "Ahmedabad",
+  "Jaipur",
+  "Kochi",
+  "Lucknow",
+  "Chandigarh",
+  "Dehradun",
+  "Bhopal",
+  "Indore",
+  "Goa",
+  "Other",
+];
+
+const whyChooseItems = [
+  {
+    icon: why1Img,
+    title: "20+ Years of Trust",
+    description: "Two decades of excellence in wellness industry",
+  },
+  {
+    icon: why2Img,
+    title: "1000+ Projects Delivered",
+    description: "Successfully executed wellness projects",
+  },
+  {
+    icon: why3Img,
+    title: "Customised Solutions",
+    description: "Tailored to your unique needs",
+  },
+  {
+    icon: why4Img,
+    title: "Pan India Service",
+    description: "Serving clients across India",
+  },
+];
+
 export default function EnquiryPage({
   content = fallbackEnquiryContent,
-  statsStrip,
 }: EnquiryPageProps) {
   const [formData, setFormData] = useState<EnquiryFormData>(initialFormData);
   const [errors, setErrors] = useState<EnquiryFormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [fetchingPincode, setFetchingPincode] = useState(false);
 
-  // States from the admin first, then every other state/UT
   const stateOptions: SelectOption[] = useMemo(() => {
     const adminOpts = content.stateOptions || [];
     const remaining = ALL_INDIAN_STATES.filter(
@@ -70,36 +159,48 @@ export default function EnquiryPage({
     return [...adminOpts, ...remaining];
   }, [content.stateOptions]);
 
-  const handleZipcodeChange = async (zip: string) => {
-    setField("zipcode", zip);
-    const cleanZip = zip.replace(/\D/g, "");
-    if (cleanZip.length === 6) {
-      try {
-        setFetchingPincode(true);
-        const loc = await fetchLocationByPincode(cleanZip);
-        if (loc) {
-          const matched = matchStateOption(stateOptions, loc.state);
-          const stateValueToSet = matched ? matched.value : loc.state;
-          const displayStateLabel = matched ? matched.label : loc.state;
-
-          setFormData((prev) => ({
-            ...prev,
-            zipcode: zip,
-            city: loc.city || prev.city,
-            state: stateValueToSet || prev.state,
-            cityAndState:
-              loc.city && displayStateLabel
-                ? `${loc.city}, ${displayStateLabel}`
-                : prev.cityAndState,
-          }));
-          setErrors((prev) => ({ ...prev, city: undefined, state: undefined }));
-        }
-      } catch (err) {
-        console.error("Failed to fetch location from zipcode:", err);
-      } finally {
-        setFetchingPincode(false);
-      }
+  const setField = <K extends keyof EnquiryFormData>(
+    field: K,
+    value: EnquiryFormData[K]
+  ) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
+  };
+
+  const toggleService = (serviceId: string) => {
+    setFormData((prev) => {
+      const exists = prev.servicesRequired.includes(serviceId);
+      const updated = exists
+        ? prev.servicesRequired.filter((s) => s !== serviceId)
+        : [...prev.servicesRequired, serviceId];
+      return { ...prev, servicesRequired: updated };
+    });
+  };
+
+  const validate = (): EnquiryFormErrors => {
+    const newErrors: EnquiryFormErrors = {};
+
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "Full name is required.";
+    }
+    if (!formData.mobileNumber.trim()) {
+      newErrors.mobileNumber = "Mobile number is required.";
+    } else if (!/^\+?[0-9\s-]{7,15}$/.test(formData.mobileNumber.trim())) {
+      newErrors.mobileNumber = "Enter a valid mobile number.";
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = "Email address is required.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      newErrors.email = "Enter a valid email address.";
+    }
+
+    if (!formData.agreeToContact) {
+      newErrors.agreeToContact = "Please agree to be contacted to proceed.";
+    }
+
+    return newErrors;
   };
 
   const handleFormSubmit = async (data: EnquiryFormData) => {
@@ -112,6 +213,7 @@ export default function EnquiryPage({
       payload.append("companyOrganization", data.companyOrganization ?? "");
       payload.append("cityAndState", data.cityAndState ?? "");
       payload.append("projectType", labelOf(content.projectTypeOptions, data.projectType ?? ""));
+      payload.append("projectLocation", data.projectLocation ?? "");
       payload.append("state", labelOf(stateOptions, data.state ?? ""));
       payload.append("city", (data.city ?? "").trim());
       payload.append("zipcode", data.zipcode ?? "");
@@ -122,9 +224,9 @@ export default function EnquiryPage({
         "servicesRequired",
         JSON.stringify((data.servicesRequired ?? []).map((id) => labelOf(content.servicesOptions, id)))
       );
-      payload.append("timeline", labelOf(content.timelineOptions, data.timeline ?? ""));
+      payload.append("timeline", labelOf(content.timelineOptions, data.timeline || "Immediate"));
       payload.append("message", data.message ?? "");
-      payload.append("preferredContact", labelOf(content.preferredContactOptions, data.preferredContact ?? "whatsapp"));
+      payload.append("preferredContact", labelOf(content.preferredContactOptions, data.preferredContact || "whatsapp"));
       payload.append("agreeToContact", String(Boolean(data.agreeToContact)));
       payload.append("source", "enquiry");
 
@@ -146,79 +248,6 @@ export default function EnquiryPage({
       throw error;
     }
   };
-  const setField = <K extends keyof EnquiryFormData>(
-    field: K,
-    value: EnquiryFormData[K]
-  ) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => ({ ...prev, [field]: undefined }));
-  };
-
-  const toggleService = (serviceId: string) => {
-    setFormData((prev) => {
-      const exists = prev.servicesRequired.includes(serviceId);
-      return {
-        ...prev,
-        servicesRequired: exists
-          ? prev.servicesRequired.filter((id) => id !== serviceId)
-          : [...prev.servicesRequired, serviceId],
-      };
-    });
-  };
-
-  const validate = (): EnquiryFormErrors => {
-    const newErrors: EnquiryFormErrors = {};
-
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = "Full name is required.";
-    }
-    if (!formData.mobileNumber.trim()) {
-      newErrors.mobileNumber = "Mobile number is required.";
-    } else if (!/^\+?[0-9\s-]{7,15}$/.test(formData.mobileNumber.trim())) {
-      newErrors.mobileNumber = "Enter a valid mobile number.";
-    }
-    if (!formData.email.trim()) {
-      newErrors.email = "Email address is required.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
-      newErrors.email = "Enter a valid email address.";
-    }
-    if (!formData.companyOrganization.trim()) {
-      newErrors.companyOrganization = "Company is required.";
-    }
-    if (!formData.cityAndState.trim()) {
-      newErrors.cityAndState = "City & State is required.";
-    }
-    if (!formData.projectType) {
-      newErrors.projectType = "Please select a project type.";
-    }
-    if (!formData.state) {
-      newErrors.state = "State is required.";
-    }
-    if (!formData.city) {
-      newErrors.city = "City is required.";
-    }
-    if (!formData.projectSize) {
-      newErrors.projectSize = "Project size is required.";
-    }
-    if (!formData.budgetRange) {
-      newErrors.budgetRange = "Budget range is required.";
-    }
-    if (formData.servicesRequired.length === 0) {
-      (newErrors as any).servicesRequired = "Select at least one service.";
-    }
-    if (!formData.timeline) {
-      newErrors.timeline = "Timeline is required.";
-    }
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required.";
-    }
-
-    if (!formData.agreeToContact) {
-      newErrors.agreeToContact = "Please agree to be contacted to proceed.";
-    }
-
-    return newErrors;
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -226,316 +255,223 @@ export default function EnquiryPage({
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) {
-      toast.error("All fields are important");
+      toast.error("Please fill in the required fields.");
       return;
     }
 
     setIsSubmitting(true);
     try {
-      await handleFormSubmit?.(formData);
+      await handleFormSubmit(formData);
       setFormData(initialFormData);
-      toast.success("Your enquiry has been submitted.");
-    } catch (error) {
+      toast.success("Your enquiry has been submitted successfully.");
+    } catch {
       toast.error("Failed to submit enquiry. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const sectionHeadingClass =
-    "mb-2  text-base font-semibold text-[#1f2c25]";
-
-  const labelBaseClass =
-    "mb-1 block text-base font-medium text-[#5a5248]";
-
+  const labelBaseClass = "mb-0.5 block text-[10.5px] sm:text-[11px] font-semibold text-[#475569] leading-tight";
   const inputBaseClass =
-    "w-full rounded-md border border-[#d8cdb8] bg-white px-3 py-1 text-sm text-[#3a3a3a] placeholder:text-black outline-none transition focus:border-[#b1793d] focus:ring-1 focus:ring-[#b1793d]/20";
+    "w-full h-[28px] sm:h-[30px] rounded border border-[#cbd5e1] bg-white px-2 py-0 text-[11px] sm:text-[11.5px] text-[#1e293b] placeholder:text-[#94a3b8] outline-none transition focus:border-[#d4a046] focus:ring-1 focus:ring-[#d4a046]/20";
+  const errorClass = "mt-0.5 text-[10px] sm:text-[10.5px] text-red-600";
+  const servicesToDisplay = DEFAULT_SERVICES;
 
-  const errorClass =
-    "mt-1 text-base text-red-600";
   return (
-    <div className="w-full bg-[#f7f1e3]">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[#F8F5EF]">
-        <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none">
-          {/* Background Image — right-side spa image unchanged */}
-          <div className="absolute inset-0 overflow-hidden">
-            <Image
-              src={content.hero.imageSrc}
-              alt={content.hero.imageAlt}
-              fill
-              className="object-left xl:object-center object-cover"
-              sizes="100vw"
-              priority
-            />
-          </div>
-
-          {/* Ivory → transparent gradient (fade into the image) */}
-          {/* <div className="absolute inset-0 bg-linear-to-r from-[#F8F5EF] via-[#F8F5EF]/85 to-transparent md:via-[#F8F5EF]/45" /> */}
-
-          {/* Soft radial glow behind heading */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute left-0 top-1/2 h-[420px] w-[540px] -translate-y-1/2 bg-[radial-gradient(circle_at_center,rgba(184,138,68,0.10),transparent_70%)]"
+    <div className="w-full bg-[#faf7f2]">
+      {/* ── 1. Hero Section ── */}
+      <section className="relative z-10 min-h-[260px] sm:min-h-[290px] md:min-h-[320px] overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <Image
+            src={heroBg.src}
+            alt="ENSIS Enquiry"
+            fill
+            className="object-cover object-center"
+            sizes="100vw"
+            priority
           />
-
-          {/* Content */}
-          <Container className="relative z-10 flex h-full items-center">
-            <div className="relative w-full max-w-[550px] py-16 md:py-0">
-              {/* Thin vertical gold accent line beside content */}
-              {/* <div className="absolute left-0 top-8 hidden h-[calc(100%-4rem)] w-px bg-linear-to-b from-transparent via-[#B88A44]/60 to-transparent md:block" /> */}
-
-              {/* Large lotus behind heading (no blur) */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -top-16 -right-8 opacity-[0.05] select-none"
-              >
-                <Image src={lotus} alt="" width={300} height={300} className="object-contain" />
-              </div>
-
-              {/* Subtle botanical pattern — corner only */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute -bottom-10 -left-6 opacity-[0.04] select-none"
-              >
-                <Image src={lotus} alt="" width={140} height={140} className="object-contain" />
-              </div>
-
-              {/* Small gold lotus icon above section label */}
-              <div className="flex items-center gap-4.5">
-                <Image src={lotus} alt="" width={20} height={20} className="h-5 w-5 object-contain" />
-                <span className="text-base font-semibold uppercase tracking-[0.15em] text-[#B88A44]">
-                  {content.hero.heading}
-                </span>
-              </div>
-
-              {/* Main heading */}
-              <h1 className="mt-2 text-[#173A2B] max-w-100">
-                {content.hero.subheading}
-              </h1>
-
-              {/* Thin gold divider — expands on load */}
-              <div className="mt-3 h-px w-24 bg-[#B88A44]" />
-
-              {/* Description */}
-              <HtmlRenderer
-                className="mt-3 max-w-100 text-sm leading-6 text-[#4D4D4D] md:text-base"
-                content={content.hero.description}
-              />
-
-              {/* CTA */}
-              <div className="mt-4 flex flex-wrap items-center gap-5">
-                <BookButton text={content.hero.ctaPrimary?.label || "Start Your Project"} path={content.hero.ctaPrimary?.href || "/consultancy"}>
-
-                </BookButton>
-                {/* <Link
-                  href={content.hero.ctaPrimary?.href || "#enquiry-form"}
-                  className="group inline-flex items-center gap-4 rounded-full bg-[#0f2e22] px-7 py-2 text-sm font-semibold uppercase tracking-wide text-[#e8c766] shadow-lg shadow-[#0f2e22]/15 transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#143b2c] hover:shadow-[0_8px_30px_rgba(184,138,68,0.35)]"
-                >
-                  <div className="flex items-center gap-4 text-white">
-                    {content.hero.ctaPrimary?.label || "Start Your Project"}
-                    <ArrowRight size={16} className="transition-transform duration-300 group-hover:translate-x-1" />
-                  </div>
-                </Link> */}
-                <Link
-                  href={content.hero.ctaSecondary?.href || "/consultancy"}
-                  className="text-base font-semibold text-[#173A2B] underline-offset-4 hover:underline"
-                >
-                  {content.hero.ctaSecondary?.label || "Book Free Consultation"}
-                </Link>
-              </div>
-
-{/* Trust indicators */}
-              <div className="mt-6 flex flex-wrap gap-x-7 gap-y-3">
-                {(content.hero.trustIndicators?.length
-                  ? content.hero.trustIndicators
-                  : [
-                      { id: "confidential", label: "100% Confidential" },
-                      { id: "guidance", label: "Expert Guidance" },
-                      { id: "obligation", label: "No Obligation" },
-                    ]
-                ).map((item, index) => {
-                  const Icon = [ShieldCheck, Compass, BadgeCheck][index % 3];
-                  return (
-                    <div
-                      key={item.id || item.label}
-                      className="flex items-center gap-2 text-[#8a6a3a]"
-                    >
-                      <Icon size={16} strokeWidth={1.5} className="text-[#B88A44]" />
-                      <span className="text-sm font-medium">{item.label}</span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </Container>
         </div>
 
-        <div className="relative z-10 mt-6 md:mt-0 md:-mt-28 xl:-mt-10">
-          <EnquaryStatsStrip />
+        <div className="relative mx-auto flex min-h-[260px] sm:min-h-[290px] md:min-h-[320px] max-w-[1400px] items-center px-4 py-6 sm:py-8 lg:px-10">
+          <div className="max-w-[540px]">
+            <div className="mb-2 flex items-center gap-2">
+              <span className="h-[2px] w-5 bg-[#a9742a]" />
+              <p className="text-xs sm:text-[12.5px] font-bold uppercase tracking-[0.2em] text-[#a9742a]">
+                ENQUIRY
+              </p>
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl md:text-[42px] font-bold leading-[1.12] text-[#111827]">
+              Let&apos;s Build Your
+              <br />
+              <span className="text-[#a9742a]">Wellness Vision</span>
+            </h1>
+
+            <p className="mt-3 max-w-[400px] text-sm font-medium text-[#4b5563]">
+              Share your requirements with us and our experts will connect with
+              you to create a customised solution for your Ayurvedic,
+              Panchakarma or wellness space.
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Form + Sidebar Section */}
-      <Container className="relative z-20 mt-8 sm:mt-10 rounded-xl">
+      {/* ── 2. Form + Sidebar Section ── */}
+      <Container className="relative z-20 py-4 sm:py-5">
         <form
           id="enquiry-form"
           onSubmit={handleSubmit}
-          className="grid grid-cols-1 lg:grid-cols-[1fr_380px] border-[#e3d2b0] bg-white rounded-xl border shadow-md overflow-hidden"
+          className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-[1fr_425px] xl:grid-cols-[1fr_450px] items-stretch"
         >
-          {/* Form Card */}
-          <div className="rounded-xl  bg-[#fdfaf3] p-5 sm:p-8">
-            <div className="mb-4 flex items-center justify-center gap-4">
-              <span aria-hidden="true" className="h-px w-12 bg-[#b1793d]/50" />
-              <h3 className="text-center  text-xl text-[#1f2c25] sm:text-2xl font-semibold">
-                {content.formTitle}
-              </h3>
-              <span aria-hidden="true" className="h-px w-12 bg-[#b1793d]/50" />
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-x-8">
-              {/* Personal Details */}
-              <div>
-                <h4 className={sectionHeadingClass}>Personal Details</h4>
-
-                <div className="mb-2">
-                  <label className={labelBaseClass} htmlFor="fullName">
-                    Full Name *
-                  </label>
-                  <input suppressHydrationWarning
-                    id="fullName"
-                    type="text"
-                    placeholder="Enter your full name"
-                    className={inputBaseClass}
-                    value={formData.fullName}
-                    onChange={(e) => setField("fullName", e.target.value)}
-                  />
-                  {errors.fullName && <p className={errorClass}>{errors.fullName}</p>}
-                </div>
-
-                <div className="mb-2">
-                  <label className={labelBaseClass} htmlFor="mobileNumber">
-                    Mobile Number *
-                  </label>
-                  <input suppressHydrationWarning
-                    id="mobileNumber"
-                    type="tel"
-                    placeholder="Enter your mobile number"
-                    className={inputBaseClass}
-                    value={formData.mobileNumber}
-                    onChange={(e) => setField("mobileNumber", e.target.value)}
-                  />
-                  {errors.mobileNumber && (
-                    <p className={errorClass}>{errors.mobileNumber}</p>
-                  )}
-                </div>
-
-                <div className="mb-2">
-                  <label className={labelBaseClass} htmlFor="email">
-                    Email Address *
-                  </label>
-                  <input suppressHydrationWarning
-                    id="email"
-                    type="email"
-                    placeholder="Enter your email address"
-                    className={inputBaseClass}
-                    value={formData.email}
-                    onChange={(e) => setField("email", e.target.value)}
-                  />
-                  {errors.email && <p className={errorClass}>{errors.email}</p>}
-                </div>
-
-                <div className="mb-2">
-                  <label className={labelBaseClass} htmlFor="companyOrganization">
-                    Company / Organization
-                  </label>
-                  <input suppressHydrationWarning
-                    id="companyOrganization"
-                    type="text"
-                    placeholder="Enter company / organization name"
-                    className={inputBaseClass}
-                    value={formData.companyOrganization}
-                    onChange={(e) =>
-                      setField("companyOrganization", e.target.value)
-                    }
-                  />
-                </div>
-
-                <div>
-                  <label className={labelBaseClass} htmlFor="cityAndState">
-                    City & State
-                  </label>
-                  <input suppressHydrationWarning
-                    id="cityAndState"
-                    type="text"
-                    placeholder="Enter your city & state"
-                    className={inputBaseClass}
-                    value={formData.cityAndState}
-                    onChange={(e) => setField("cityAndState", e.target.value)}
-                  />
-                </div>
+          {/* Left: Enquiry Form Card */}
+          <div className="rounded-2xl border border-[#e6d6b9]/70 bg-white p-3.5 sm:p-4 shadow-[0_4px_24px_rgba(0,0,0,0.03)] flex flex-col justify-between">
+            <div>
+              <h2 className="text-lg sm:text-[20px] font-bold text-[#111827] tracking-tight">
+                Enquiry Form
+              </h2>
+              <div className="mt-0.5 mb-2.5 flex items-center gap-2">
+                <span aria-hidden="true" className="h-[2px] w-4 bg-[#d4a046]" />
+                <p className="text-[11px] sm:text-[11.5px] font-medium text-[#2563eb]">
+                  Please fill in your details and our team will get back to you shortly.
+                </p>
               </div>
 
-              {/* Project Details */}
-              <div>
-                <h4 className={sectionHeadingClass}>Project Details</h4>
+              {/* 2-Column: Personal & Project Details */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 sm:gap-x-6 gap-y-2">
+                {/* Column 1: Personal Details */}
+                <div>
+                  <div className="mb-1.5 flex items-center gap-1.5">
+                    <User size={13} className="text-[#d97706]" strokeWidth={2.2} />
+                    <h3 className="text-[11.5px] sm:text-xs font-bold text-[#111827]">Personal Details</h3>
+                  </div>
 
-                <div className="mb-2">
-                  <label className={labelBaseClass} htmlFor="projectType">
-                    Project Type *
-                  </label>
-                  <select suppressHydrationWarning
-                    id="projectType"
-                    className={inputBaseClass}
-                    value={formData.projectType}
-                    onChange={(e) => setField("projectType", e.target.value)}
-                  >
-                    <option value="">Select project type</option>
-                    {content.projectTypeOptions.map((opt: SelectOption) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.projectType && (
-                    <p className={errorClass}>{errors.projectType}</p>
-                  )}
-                </div>
-
-                <div className="mb-2">
-                  <span className={labelBaseClass}>Project Location</span>
-                  <div className="mb-2">
-                    <label className="mb-1 block text-base" htmlFor="zipcode">
-                      Zipcode / Pincode {fetchingPincode && <span className="text-xs text-[#b1793d] font-normal">(Fetching location...)</span>}
+                  <div className="mb-1.5">
+                    <label className={labelBaseClass} htmlFor="fullName">
+                      Full Name *
                     </label>
                     <input
-                      id="zipcode"
+                      id="fullName"
                       type="text"
-                      placeholder="Enter 6-digit zipcode"
+                      placeholder="Enter your full name"
                       className={inputBaseClass}
-                      value={formData.zipcode || ""}
-                      onChange={(e) => handleZipcodeChange(e.target.value)}
-                      maxLength={6}
+                      value={formData.fullName}
+                      onChange={(e) => setField("fullName", e.target.value)}
+                    />
+                    {errors.fullName && <p className={errorClass}>{errors.fullName}</p>}
+                  </div>
+
+                  <div className="mb-1.5">
+                    <label className={labelBaseClass} htmlFor="mobileNumber">
+                      Mobile Number *
+                    </label>
+                    <input
+                      id="mobileNumber"
+                      type="tel"
+                      placeholder="Enter your mobile number"
+                      className={inputBaseClass}
+                      value={formData.mobileNumber}
+                      onChange={(e) => setField("mobileNumber", e.target.value)}
+                    />
+                    {errors.mobileNumber && <p className={errorClass}>{errors.mobileNumber}</p>}
+                  </div>
+
+                  <div className="mb-1.5">
+                    <label className={labelBaseClass} htmlFor="email">
+                      Email Address *
+                    </label>
+                    <input
+                      id="email"
+                      type="email"
+                      placeholder="Enter your email address"
+                      className={inputBaseClass}
+                      value={formData.email}
+                      onChange={(e) => setField("email", e.target.value)}
+                    />
+                    {errors.email && <p className={errorClass}>{errors.email}</p>}
+                  </div>
+
+                  <div className="mb-1.5">
+                    <label className={labelBaseClass} htmlFor="companyOrganization">
+                      Company / Organization
+                    </label>
+                    <input
+                      id="companyOrganization"
+                      type="text"
+                      placeholder="Enter company / organization name"
+                      className={inputBaseClass}
+                      value={formData.companyOrganization}
+                      onChange={(e) => setField("companyOrganization", e.target.value)}
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
+
+                  <div>
+                    <label className={labelBaseClass} htmlFor="cityAndState">
+                      City & State
+                    </label>
+                    <input
+                      id="cityAndState"
+                      type="text"
+                      placeholder="Enter your city & state"
+                      className={inputBaseClass}
+                      value={formData.cityAndState}
+                      onChange={(e) => setField("cityAndState", e.target.value)}
+                    />
+                  </div>
+                </div>
+
+                {/* Column 2: Project Details */}
+                <div>
+                  <div className="mb-1.5 flex items-center gap-1.5">
+                    <Briefcase size={13} className="text-[#d97706]" strokeWidth={2.2} />
+                    <h3 className="text-[11.5px] sm:text-xs font-bold text-[#111827]">Project Details</h3>
+                  </div>
+
+                  <div className="mb-1.5">
+                    <label className={labelBaseClass} htmlFor="projectType">
+                      Project Type *
+                    </label>
+                    <select
+                      id="projectType"
+                      className={inputBaseClass}
+                      value={formData.projectType}
+                      onChange={(e) => setField("projectType", e.target.value)}
+                    >
+                      <option value="">Select project type</option>
+                      {(content.projectTypeOptions?.length ? content.projectTypeOptions : DEFAULT_PROJECT_TYPES).map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="mb-1.5">
+                    <label className={labelBaseClass} htmlFor="projectLocation">
+                      Project Location
+                    </label>
+                    <input
+                      id="projectLocation"
+                      type="text"
+                      placeholder="Enter project location"
+                      className={inputBaseClass}
+                      value={formData.projectLocation || ""}
+                      onChange={(e) => setField("projectLocation", e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-1.5 grid grid-cols-2 gap-2">
                     <div>
-                      <label className="mb-1 block text-base" htmlFor="state">
+                      <label className={labelBaseClass} htmlFor="state">
                         State
                       </label>
-                      <select suppressHydrationWarning
+                      <select
                         id="state"
                         className={inputBaseClass}
                         value={formData.state}
                         onChange={(e) => setField("state", e.target.value)}
                       >
                         <option value="">Select state</option>
-                        {formData.state && !stateOptions.some((opt) => opt.value === formData.state) && (
-                          <option value={formData.state}>
-                            {formData.state}
-                          </option>
-                        )}
-                        {stateOptions.map((opt: SelectOption) => (
+                        {stateOptions.map((opt) => (
                           <option key={opt.value} value={opt.value}>
                             {opt.label}
                           </option>
@@ -543,203 +479,169 @@ export default function EnquiryPage({
                       </select>
                     </div>
                     <div>
-                      <label className="mb-1 block text-base" htmlFor="city">
+                      <label className={labelBaseClass} htmlFor="city">
                         City
                       </label>
-                      {/* Free text: no fixed list can hold every city; admin cities are suggestions */}
-                      <input
+                      <select
                         id="city"
-                        type="text"
-                        list="enquiry-city-options"
-                        autoComplete="address-level2"
-                        placeholder="Enter your city"
                         className={inputBaseClass}
                         value={formData.city}
                         onChange={(e) => setField("city", e.target.value)}
-                        maxLength={80}
-                      />
-                      <datalist id="enquiry-city-options">
-                        {(content.cityOptions || []).map((opt: SelectOption) => (
-                          <option key={opt.value} value={opt.label} />
+                      >
+                        <option value="">Select city</option>
+                        {POPULAR_CITIES.map((c) => (
+                          <option key={c} value={c}>
+                            {c}
+                          </option>
                         ))}
-                      </datalist>
+                      </select>
                     </div>
+                  </div>
+
+                  <div className="mb-1.5">
+                    <label className={labelBaseClass} htmlFor="projectSize">
+                      Project Size
+                    </label>
+                    <select
+                      id="projectSize"
+                      className={inputBaseClass}
+                      value={formData.projectSize}
+                      onChange={(e) => setField("projectSize", e.target.value)}
+                    >
+                      <option value="">Select project size</option>
+                      {(content.projectSizeOptions?.length ? content.projectSizeOptions : DEFAULT_PROJECT_SIZES).map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className={labelBaseClass} htmlFor="budgetRange">
+                      Budget Range
+                    </label>
+                    <select
+                      id="budgetRange"
+                      className={inputBaseClass}
+                      value={formData.budgetRange}
+                      onChange={(e) => setField("budgetRange", e.target.value)}
+                    >
+                      <option value="">Select budget range</option>
+                      {(content.budgetRangeOptions?.length ? content.budgetRangeOptions : DEFAULT_BUDGET_RANGES).map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 2: Services Required & Upload (Optional) */}
+              <div className="mt-2.5 grid grid-cols-1 md:grid-cols-2 gap-x-5 sm:gap-x-6 gap-y-2">
+                {/* Services Required */}
+                <div>
+                  <div className="mb-1 flex items-center gap-1.5">
+                    <Settings size={13} className="text-[#d97706]" strokeWidth={2.2} />
+                    <h3 className="text-[11.5px] sm:text-xs font-bold text-[#111827]">Services Required</h3>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-1">
+                    {servicesToDisplay.map((service) => (
+                      <label
+                        key={service.id}
+                        htmlFor={`service-${service.id}`}
+                        className="flex items-center gap-1.5 text-[10.5px] sm:text-[11px] font-medium text-[#334155] cursor-pointer select-none"
+                      >
+                        <input
+                          id={`service-${service.id}`}
+                          type="checkbox"
+                          className="h-3 w-3 rounded border-[#cbd5e1] text-[#063120] focus:ring-[#063120]"
+                          checked={formData.servicesRequired.includes(service.id)}
+                          onChange={() => toggleService(service.id)}
+                        />
+                        <span className="truncate">{service.label}</span>
+                      </label>
+                    ))}
                   </div>
                 </div>
 
-                <div className="mb-2">
-                  <label className={labelBaseClass} htmlFor="projectSize">
-                    Project Size
-                  </label>
-                  <select suppressHydrationWarning
-                    id="projectSize"
-                    className={inputBaseClass}
-                    value={formData.projectSize}
-                    onChange={(e) => setField("projectSize", e.target.value)}
-                  >
-                    <option value="">Select project size</option>
-                    {content.projectSizeOptions.map((opt: SelectOption) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
+                {/* Upload */}
                 <div>
-                  <label className={labelBaseClass} htmlFor="budgetRange">
-                    Budget Range
-                  </label>
-                  <select suppressHydrationWarning
-                    id="budgetRange"
-                    className={inputBaseClass}
-                    value={formData.budgetRange}
-                    onChange={(e) => setField("budgetRange", e.target.value)}
-                  >
-                    <option value="">Select budget range</option>
-                    {content.budgetRangeOptions.map((opt: SelectOption) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
+                  <div className="mb-0.5 flex items-center gap-1.5">
+                    <Paperclip size={13} className="text-[#d97706]" strokeWidth={2.2} />
+                    <h3 className="text-[11.5px] sm:text-xs font-bold text-[#111827]">
+                      Upload <span className="text-[10px] sm:text-[10.5px] font-normal text-[#94a3b8]">(Optional)</span>
+                    </h3>
+                  </div>
+                  <p className="mb-1 text-[10px] sm:text-[10.5px] text-[#64748b]">
+                    Share layout, drawings or reference images (PDF, JPG, PNG)
+                  </p>
 
-              {/* Services Required */}
-              <div>
-                <h4 className={sectionHeadingClass}>Services Required</h4>
-                <div className="grid grid-cols-2 gap-y-2">
-                  {content.servicesOptions.map((service: CheckboxOption) => (
+                  <div className="flex items-center gap-2 rounded border border-[#cbd5e1] bg-white px-2 h-[28px] sm:h-[30px]">
                     <label
-                      key={service.id}
-                      htmlFor={`service-${service.id}`}
-                      className={`${labelBaseClass} gap-4 flex`}
+                      htmlFor="fileUpload"
+                      className="cursor-pointer rounded border border-[#cbd5e1] bg-[#f8fafc] hover:bg-gray-100 px-1.5 py-0.5 text-[10px] sm:text-[10.5px] font-semibold text-[#1e293b] flex items-center gap-1 shadow-2xs transition shrink-0"
                     >
-                      <input suppressHydrationWarning
-                        id={`service-${service.id}`}
-                        type="checkbox"
-                        className="h-4 w-4 rounded border-[#d8cdb8] text-[#b1793d] focus:ring-[#b1793d]/40"
-                        checked={formData.servicesRequired.includes(service.id)}
-                        onChange={() => toggleService(service.id)}
-                      />
-                      {service.label}
+                      <Upload size={11} className="text-[#475569]" />
+                      <span>Choose File</span>
                     </label>
-                  ))}
+                    <input
+                      id="fileUpload"
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                      className="hidden"
+                      onChange={(e) => setField("file", e.target.files?.[0] ?? null)}
+                    />
+                    <span className="truncate text-[10.5px] sm:text-[11px] text-[#64748b]">
+                      {formData.file ? formData.file.name : "No file chosen"}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              {/* Timeline */}
-              <div>
-                <h4 className={sectionHeadingClass}>Timeline</h4>
-                <label className={labelBaseClass} htmlFor="timeline">
-                  Timeline
-                </label>
-                <select suppressHydrationWarning
-                  id="timeline"
-                  className={inputBaseClass}
-                  value={formData.timeline}
-                  onChange={(e) => setField("timeline", e.target.value)}
-                >
-                  <option value="">Select timeline</option>
-                  {content.timelineOptions.map((opt: SelectOption) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Message */}
-              <div className="md:col-span-2">
-                <h4 className={sectionHeadingClass}>Message</h4>
-                <textarea suppressHydrationWarning
+              {/* Row 3: Message */}
+              <div className="mt-2.5">
+                <div className="mb-1 flex items-center gap-1.5">
+                  <MessageCircle size={13} className="text-[#d97706]" strokeWidth={2.2} />
+                  <h3 className="text-[11.5px] sm:text-xs font-bold text-[#111827]">Message</h3>
+                </div>
+                <textarea
                   id="message"
-                  rows={4}
+                  rows={2}
                   placeholder="Tell us about your vision, requirements, and expectations..."
-                  className={`${inputBaseClass} resize-none`}
+                  className="w-full h-[50px] sm:h-[54px] rounded border border-[#cbd5e1] bg-white px-2 py-1.5 text-[11px] sm:text-[11.5px] text-[#1e293b] placeholder:text-[#94a3b8] outline-none transition focus:border-[#d4a046] focus:ring-1 focus:ring-[#d4a046]/20 resize-none leading-snug"
                   value={formData.message}
                   onChange={(e) => setField("message", e.target.value)}
                 />
               </div>
-
-              {/* Upload */}
-              <div>
-                <h4 className={sectionHeadingClass}>Upload</h4>
-                <p className="mb-1 text-sm ">{content.upload.label}</p>
-                <p className="mb-1 text-base">
-                  {content.upload.helperText}
-                </p>
-                <div className="flex items-center gap-4">
-                  <label
-                    htmlFor="fileUpload"
-                    className="cursor-pointer rounded-md border border-[#d8cdb8] bg-[#fdfaf3] px-4 py-2 text-sm text-[#3a3a3a] hover:bg-[#f3ead4]"
-                  >
-                    Choose File
-                  </label>
-                  <input suppressHydrationWarning
-                    id="fileUpload"
-                    type="file"
-                    accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-                    className="hidden"
-                    onChange={(e) =>
-                      setField("file", e.target.files?.[0] ?? null)
-                    }
-                  />
-                  <span className="truncate text-base">
-                    {formData.file ? formData.file.name : "No file chosen"}
-                  </span>
-                </div>
-              </div>
-
-              {/* Preferred Contact */}
-              <div>
-                <h4 className={sectionHeadingClass}>Preferred Contact</h4>
-                <div className="grid grid-cols-2 gap-y-2">
-                  {content.preferredContactOptions.map((opt: RadioOption) => (
-                    <label
-                      key={opt.id}
-                      htmlFor={`contact-${opt.id}`}
-                      className={`${labelBaseClass} gap-4 flex`}
-                    >
-                      <input suppressHydrationWarning
-                        id={`contact-${opt.id}`}
-                        type="radio"
-                        name="preferredContact"
-                        className="h-4 w-4 border-[#d8cdb8] text-[#b1793d] focus:ring-[#b1793d]/40"
-                        checked={formData.preferredContact === opt.id}
-                        onChange={() => setField("preferredContact", opt.id)}
-                      />
-                      {opt.label}
-                    </label>
-                  ))}
-                </div>
-              </div>
             </div>
 
-            {/* Consent + Submit */}
-            <div className="mt-2 flex flex-col items-start gap-4 border-t border-[#e3d2b0] pt-2 sm:flex-row sm:items-center sm:justify-between">
+            {/* Row 4: Agreement & Submit Button */}
+            <div className="mt-3 pt-2.5 border-t border-[#f1f5f9] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <label
                 htmlFor="agreeToContact"
-                className="flex items-start gap-4 text-sm text-[#3a3a3a]"
+                className="flex items-center gap-2 text-xs font-medium text-[#475569] cursor-pointer select-none"
               >
-                <input suppressHydrationWarning
+                <input
                   id="agreeToContact"
                   type="checkbox"
-                  className="mt-0.5 h-4 w-4 rounded border-[#d8cdb8] text-[#b1793d] focus:ring-[#b1793d]/40 font-semibold"
+                  className="h-3.5 w-3.5 rounded border-[#cbd5e1] text-[#063120] focus:ring-[#063120]"
                   checked={formData.agreeToContact}
                   onChange={(e) => setField("agreeToContact", e.target.checked)}
                 />
-                {content.consentText}
+                <span>I agree to be contacted by ENSIS regarding my enquiry.</span>
               </label>
 
-              <button suppressHydrationWarning
+              <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex items-center gap-4 whitespace-nowrap rounded-md bg-[#0f2e22] px-6 py-2 text-sm font-semibold uppercase tracking-wide text-[#e8c766] transition hover:bg-[#143b2c] disabled:opacity-70 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-2 rounded-lg bg-[#063120] hover:bg-[#0c442e] px-5 py-2 text-xs font-bold uppercase tracking-wider text-white transition shadow-xs cursor-pointer disabled:opacity-50 shrink-0"
               >
-                {isSubmitting ? "Submitting..." : content.submitButtonText}
-                {!isSubmitting && <span aria-hidden="true">→</span>}
+                <Send size={12} className="rotate-45" />
+                <span>{isSubmitting ? "SUBMITTING..." : "SUBMIT ENQUIRY"}</span>
+                <span>→</span>
               </button>
             </div>
             {errors.agreeToContact && (
@@ -747,15 +649,108 @@ export default function EnquiryPage({
             )}
           </div>
 
-          {/* Sidebar */}
-          <aside className="relative hidden lg:block h-full min-h-full overflow-hidden rounded-xl">
-            <Image
-              src={content?.hero?.formImageSrc}
-              alt="Enquiry"
-              fill
-              className="object-cover"
-              sizes="380px"
-            />
+          {/* Right: Sidebar Cards */}
+          <aside className="flex flex-col gap-3.5 sm:gap-4 h-full">
+            {/* Card 1: WHY CHOOSE ENSIS? with enquiry_new.png */}
+            <div className="relative overflow-hidden rounded-2xl p-4 sm:p-5 border border-[#143b2c] shadow-sm min-h-[310px] lg:min-h-0 flex-1 flex flex-col justify-between">
+              {/* Full Background from enquiry_new.png */}
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src={enquiryNewImg}
+                  alt="Why Choose ENSIS"
+                  fill
+                  className="object-cover object-right"
+                  sizes="(max-width: 1024px) 100vw, 450px"
+                  priority
+                />
+              </div>
+
+              {/* Subtle gradient to ensure 100% text contrast on the left */}
+              <div className="absolute inset-0 z-[1] bg-gradient-to-r from-[#042418]/95 via-[#042418]/70 to-transparent max-w-[65%] pointer-events-none" />
+
+              <div className="relative z-10 max-w-[62%] sm:max-w-[64%] flex flex-col justify-between h-full">
+                <div>
+                  <h3 className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wide text-white">
+                    WHY CHOOSE ENSIS?
+                  </h3>
+                  <div className="mt-1.5 mb-3 h-px w-full bg-white/20" />
+                </div>
+
+                <div className="space-y-3 sm:space-y-3.5 my-auto">
+                  {whyChooseItems.map((item) => (
+                    <div key={item.title} className="flex items-center gap-2.5 sm:gap-3">
+                      <Image
+                        src={item.icon}
+                        alt={item.title}
+                        width={46}
+                        height={46}
+                        className="h-10 w-10 sm:h-11 sm:w-11 shrink-0 object-contain rounded-full shadow-xs"
+                      />
+                      <div>
+                        <p className="text-[12px] sm:text-[13px] font-bold text-[#f5b838] leading-tight">
+                          {item.title}
+                        </p>
+                        <p className="mt-0.5 text-[10.5px] sm:text-[11px] leading-[1.25] text-white/90">
+                          {item.description}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: OUR PRESENCE ON MAP */}
+            <div className="rounded-2xl border border-[#e2e8f0] bg-white p-4 sm:p-5 shadow-xs shrink-0">
+              <div className="flex items-start gap-2.5">
+                <Image
+                  src={mapPinBadge}
+                  alt="Presence"
+                  width={28}
+                  height={28}
+                  className="h-7 w-7 shrink-0 object-contain"
+                />
+                <div>
+                  <h3 className="text-xs sm:text-[13px] font-extrabold uppercase tracking-wide text-[#0f2438]">
+                    OUR PRESENCE ON MAP
+                  </h3>
+                  <p className="mt-0.5 text-[10px] sm:text-[10.5px] leading-tight text-[#64748b]">
+                    Strategically located across India to serve our clients better.
+                  </p>
+                </div>
+              </div>
+
+              {/* Map & Right Column Row (Logo + View All Locations button below it) */}
+              <div className="mt-3 flex items-center justify-between gap-2">
+                <div className="relative w-[185px] sm:w-[205px] h-[155px] sm:h-[168px] shrink-0">
+                  <Image
+                    src={footerMap}
+                    alt="Presence in Delhi, Ghaziabad, Mumbai"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <div className="flex-1 flex flex-col justify-between items-center h-[155px] sm:h-[168px] pl-2 py-1">
+                  <div className="w-full flex items-center justify-center pt-1">
+                    <Image
+                      src={designHouseLogo}
+                      alt="Design House India Pvt. Ltd."
+                      width={145}
+                      height={65}
+                      className="object-contain max-h-[75px]"
+                    />
+                  </div>
+                  <a
+                    href="/contact#map-section"
+                    className="flex w-full items-center justify-center gap-1.5 rounded-lg bg-[#063120] hover:bg-[#0c442e] py-2 px-2.5 text-[11px] sm:text-[12px] font-bold text-white transition shadow-xs text-center"
+                  >
+                    <MapPin size={12} className="text-white fill-white shrink-0" />
+                    <span>View All Locations</span>
+                    <span className="text-[#f5b838]">→</span>
+                  </a>
+                </div>
+              </div>
+            </div>
           </aside>
         </form>
       </Container>

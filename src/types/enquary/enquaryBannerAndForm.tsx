@@ -76,6 +76,7 @@ export interface EnquiryFormData {
   companyOrganization: string;
   cityAndState: string;
   projectType: string;
+  projectLocation?: string;
   state: string;
   city: string;
   zipcode?: string;

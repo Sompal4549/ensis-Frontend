@@ -177,6 +177,10 @@ export interface AdvancedSeoData {
     fbPixelId?: string;
     clarityId?: string;
   };
+  headerScripts?: string;
+  footerScripts?: string;
+  allowIndex?: boolean;
+  allowFollow?: boolean;
 }
 
 export const getAdvancedSeo = cache(

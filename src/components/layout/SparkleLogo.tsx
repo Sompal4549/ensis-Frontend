@@ -8,6 +8,7 @@ type SparkleLogoProps = {
   src: StaticImageData | string;
   alt: string;
   className?: string;
+  wrapperClassName?: string;
   /**
    * plain — logo on its own (white header).
    * card  — logo on an ivory card with a gold frame, so it stays crisp on busy or
@@ -33,6 +34,7 @@ export default function SparkleLogo({
   src,
   alt,
   className,
+  wrapperClassName,
   variant = "plain",
   fallback,
   width,
@@ -53,7 +55,7 @@ export default function SparkleLogo({
   const currentSrc = hasError ? fallbackImg : (src || fallbackImg);
 
   return (
-    <div className={`logo-wrap relative inline-block ${isCard ? "is-card" : is3d ? "is-3d" : "is-plain"}`}>
+    <div className={`logo-wrap relative inline-block ${isCard ? "is-card" : is3d ? "is-3d" : "is-plain"} ${wrapperClassName ?? ""}`}>
       <div className="logo-frame">
         <div className={`logo-card relative ${isCard ? "overflow-hidden" : ""}`}>
           {/* Admin-uploaded logos arrive as URLs, which next/image can only size with explicit dimensions */}

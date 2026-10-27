@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef } from "react";
+import Image from "next/image";
+import onThisPageBottom from "@/assets/on_this_page_bottom.png";
 
 type NavItem = {
   id: string;
@@ -37,12 +39,11 @@ export default function StickyScrollSpy({
   activeSection,
   onSectionChange,
   headerOffset = 108,
-  sidebarTitle = "ON THIS PAGE",
+  sidebarTitle = "On This Page",
   className = "",
 }: StickyScrollSpyProps) {
   const navRef = useRef<HTMLElement>(null);
   const itemRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
-  const [indicatorStyle, setIndicatorStyle] = useState({ top: 0, height: 0 });
   const isProgrammaticScroll = useRef(false);
   const programmaticTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -71,20 +72,6 @@ export default function StickyScrollSpy({
     };
   }, [items, headerOffset, onSectionChange]);
 
-  const updateIndicator = useCallback(() => {
-    const el = itemRefs.current.get(activeSection);
-    if (!el || !navRef.current) return;
-    const navRect = navRef.current.getBoundingClientRect();
-    const itemRect = el.getBoundingClientRect();
-    setIndicatorStyle({ top: itemRect.top - navRect.top, height: itemRect.height });
-  }, [activeSection]);
-
-  useEffect(() => {
-    updateIndicator();
-    window.addEventListener("resize", updateIndicator);
-    return () => window.removeEventListener("resize", updateIndicator);
-  }, [updateIndicator]);
-
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -96,53 +83,67 @@ export default function StickyScrollSpy({
   };
 
   return (
-    <aside className={`hidden lg:block ${className}`}>
+    <aside className={`hidden lg:block h-full ${className}`}>
       <div
         className="sticky rounded-xl border border-[#e6d6b9] bg-[#fdfaf3]"
         style={{ top: `${headerOffset}px` }}
       >
-        <div className="px-4 py-3">
-          <h3 className="font-['Playfair_Display',serif] text-[15px] font-semibold uppercase tracking-wide text-[#1f261b]">
+        <div className="px-4.5 pt-4 pb-2">
+          <h3 className=" text-[18px] font-bold text-[#063120]">
             {sidebarTitle}
           </h3>
         </div>
         <nav
           ref={navRef}
-          className="relative border-l-[3px] border-transparent"
+          className="relative px-2.5 pb-2 space-y-0.5"
         >
-          <span
-            className="pointer-events-none absolute left-0 top-0 rounded-full bg-[#c39a5c] shadow-[0_0_8px_2px_rgba(195,154,92,0.4)]"
-            style={{
-              top: `${indicatorStyle.top}px`,
-              height: `${indicatorStyle.height}px`,
-              width: "3px",
-              transition: "top 400ms cubic-bezier(0.22,1,0.36,1), height 400ms cubic-bezier(0.22,1,0.36,1)",
-            }}
-          />
-          {items.map((item) => {
+          {items.map((item, idx) => {
             const isActive = activeSection === item.id;
+            const formattedNum = String(item.number).padStart(2, "0");
+            const isLast = idx === items.length - 1;
             return (
-              <button
+              <div
                 key={item.id}
-                ref={(el) => { if (el) itemRefs.current.set(item.id, el); }}
-                type="button"
-                onClick={() => scrollToSection(item.id)}
-                aria-current={isActive ? "true" : undefined}
-                style={isActive ? { boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px" } : undefined}
-                className={`group flex w-full items-center gap-3 px-4 py-3 text-left transition-all duration-300 ${
-                  isActive
-                    ? "bg-[#0f2518] text-white"
-                    : "text-[#333333] hover:bg-[#f8f1e5]"
-                }`}
+                className={!isActive && !isLast ? "border-b border-[#ece8de]/70" : ""}
               >
-                <span className={`text-sm font-semibold ${isActive ? "text-[#d4af37]" : "text-[#333333]"}`}>
-                  {item.number}
-                </span>
-                <span className="text-sm font-medium">{item.title}</span>
-              </button>
+                <button
+                  ref={(el) => { if (el) itemRefs.current.set(item.id, el); }}
+                  type="button"
+                  onClick={() => scrollToSection(item.id)}
+                  aria-current={isActive ? "true" : undefined}
+                  className={`group flex w-full items-center gap-3.5 px-3 py-1 text-left transition-all duration-200 rounded-lg ${isActive
+                    ? "bg-[#ecefde] text-[#063120]"
+                    : "text-[#525f6f] hover:bg-[#f3f5e9]/70 hover:text-[#063120]"
+                    }`}
+                >
+                  <span
+                    className={`w-6 shrink-0 text-sm tabular-nums ${isActive ? "text-[#063120] " : "text-[#788492] font-medium"
+                      }`}
+                  >
+                    {formattedNum}
+                  </span>
+                  <span
+                    className={`text-sm ${isActive ? "text-[#063120] " : "text-[#4d5b6b] font-medium"
+                      }`}
+                  >
+                    {item.title}
+                  </span>
+                </button>
+              </div>
             );
           })}
         </nav>
+
+        {/* Bottom Right Zen Stones & Flower Visual */}
+        <div className="pointer-events-none relative flex justify-end overflow-hidden rounded-b-xl pt-2">
+          <Image
+            src={onThisPageBottom}
+            alt=""
+            width={260}
+            height={187}
+            className="w-[185px] sm:w-[210px] h-auto object-contain select-none -mb-1 -mr-1"
+          />
+        </div>
       </div>
     </aside>
   );
