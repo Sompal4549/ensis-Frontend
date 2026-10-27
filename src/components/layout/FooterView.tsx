@@ -556,7 +556,7 @@ export default function FooterView({
               {developer.name && (
                 <>
                   <span aria-hidden className="text-white/40">|</span>
-                  <span className="flex items-center gap-1.5 text-white">
+                  <span className="flex items-center gap-1.5 sm:gap-2 text-white pr-3 sm:pr-5">
                     <span className="hidden sm:inline">{developer.label || "Designed & Developed by:"}</span>
                     <a
                       href={developer.href || "https://encodency.com"}
@@ -568,9 +568,9 @@ export default function FooterView({
                       <Image
                         src={encodencyLogoImg}
                         alt="enCodency Pvt. Ltd."
-                        width={125}
-                        height={28}
-                        className="h-5 sm:h-[22px] w-auto object-contain rounded-[3px] shadow-xs"
+                        width={220}
+                        height={52}
+                        className="h-8 sm:h-[38px] xl:h-[42px] w-auto object-contain rounded-[4px] shadow-xs"
                       />
                     </a>
                   </span>
