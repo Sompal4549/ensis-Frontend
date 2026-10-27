@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useCallback, useEffect, useRef } from "react";
+import Image from "next/image";
 import { getActiveSectionId } from "./StickyScrollSpy";
+import onThisPageBottom from "@/assets/on_this_page_bottom.png";
 
 /* =========================================================
    TYPES
@@ -115,13 +117,12 @@ export default function MobileScrollSpy({
       <button
         type="button"
         onClick={onToggle}
-        className="flex h-10 w-full items-center justify-between rounded-lg bg-[#0f2518] px-4 text-sm font-semibold uppercase tracking-widest text-white shadow-[0_2px_12px_rgba(15,37,24,0.35)]"
+        className="flex h-11 w-full items-center justify-between rounded-lg bg-[#063120] px-4 text-sm font-semibold text-white shadow-[0_2px_12px_rgba(6,49,32,0.35)]"
       >
-        <span>On This Page</span>
+        <span className=" text-base font-bold">On This Page</span>
         <svg
-          className={`h-4 w-4 transition-transform duration-300 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`h-4 w-4 transition-transform duration-300 ${isOpen ? "rotate-180" : ""
+            }`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -136,38 +137,53 @@ export default function MobileScrollSpy({
       </button>
 
       {isOpen && (
-        <div className="absolute left-4 right-4 top-[68px] overflow-hidden rounded-xl border border-[#e6d6b9] bg-[#fdfaf3] shadow-[0_18px_44px_rgba(139,107,55,0.16)]">
-          {items.map((item) => {
-            const isActive = activeSection === item.id;
+        <div className="absolute left-4 right-4 top-[68px] overflow-hidden rounded-xl border border-[#e6d6b9] bg-[#fdfaf3] p-2.5 shadow-[0_18px_44px_rgba(139,107,55,0.16)]">
+          <div className="space-y-0.5">
+            {items.map((item, idx) => {
+              const isActive = activeSection === item.id;
+              const formattedNum = String(item.number).padStart(2, "0");
+              const isLast = idx === items.length - 1;
 
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => scrollToSection(item.id)}
-                className={`flex w-full items-center gap-3 border-b border-[#e6d6b9] px-4 py-4 text-left transition-all duration-300 last:border-0 ${
-                  isActive
-                    ? "bg-[#0f2518] text-white"
-                    : "bg-[#fdfaf3] text-[#333333] hover:bg-[#f8f1e5]"
-                }`}
-              >
-                <span
-                  className={`font-semibold ${
-                    isActive ? "text-[#d4af37]" : "text-[#c39a5c]"
-                  }`}
+              return (
+                <div
+                  key={item.id}
+                  className={!isActive && !isLast ? "border-b border-[#ece8de]/70" : ""}
                 >
-                  {item.number}
-                </span>
-                <span
-                  className={`text-base font-medium ${
-                    isActive ? "text-white" : "text-[#333333]"
-                  }`}
-                >
-                  {item.title}
-                </span>
-              </button>
-            );
-          })}
+                  <button
+                    type="button"
+                    onClick={() => scrollToSection(item.id)}
+                    className={`flex w-full items-center gap-3.5 px-3 py-2.5 text-left transition-all duration-200 rounded-lg ${isActive
+                        ? "bg-[#ecefde] text-[#063120]"
+                        : "text-[#525f6f] hover:bg-[#f3f5e9]/70 hover:text-[#063120]"
+                      }`}
+                  >
+                    <span
+                      className={`w-6 shrink-0 text-sm tabular-nums ${isActive ? "text-[#063120] font-semibold" : "text-[#788492] font-medium"
+                        }`}
+                    >
+                      {formattedNum}
+                    </span>
+                    <span
+                      className={`text-sm ${isActive ? "text-[#063120] font-semibold" : "text-[#4d5b6b] font-medium"
+                        }`}
+                    >
+                      {item.title}
+                    </span>
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+          {/* Bottom Right Zen Stones & Flower Visual */}
+          <div className="pointer-events-none relative flex justify-end overflow-hidden rounded-b-xl pt-1">
+            <Image
+              src={onThisPageBottom}
+              alt=""
+              width={200}
+              height={144}
+              className="w-[140px] h-auto object-contain select-none -mb-1 -mr-1"
+            />
+          </div>
         </div>
       )}
     </div>

@@ -38,6 +38,7 @@ const playfair = localFont({
 import { Header, type HeaderContent } from "@/components/layout/Header";
 import { getAdvancedSeo } from "@/lib/api/seo";
 import { getComponentContent } from "@/lib/api/api";
+import { HeadScripts, FooterScripts } from "@/components/CustomScripts";
 const Footer = nextDynamic(() => import("@/components/layout/Footer").then((mod) => mod.Footer));
 const SocialSidebar = nextDynamic(() => import("@/components/layout/SocialSidebar").then((mod) => mod.default));
 const WhatsAppFloat = nextDynamic(() => import("@/components/ui/WhatsAppFloat").then((mod) => mod.default));
@@ -64,10 +65,17 @@ export default async function RootLayout({
 
   const analytics = advSeo?.analytics || {};
   const searchConsole = advSeo?.searchConsole || {};
+  const headerScripts = advSeo?.headerScripts || "";
+  const footerScripts = advSeo?.footerScripts || "";
+  const allowIndex = advSeo?.allowIndex !== false;
+  const allowFollow = advSeo?.allowFollow !== false;
 
   return (
     <html lang="en" className={`${dmSans.variable} ${dmSerif.variable} ${playfair.variable} ${inter.variable}`}>
       <head>
+        {(!allowIndex || !allowFollow) && (
+          <meta name="robots" content={`${allowIndex ? "index" : "noindex"}, ${allowFollow ? "follow" : "nofollow"}`} />
+        )}
         {/* Search Console Verification */}
         {searchConsole.googleVerification && (
           <meta name="google-site-verification" content={searchConsole.googleVerification} />
@@ -75,6 +83,7 @@ export default async function RootLayout({
         {searchConsole.bingVerification && (
           <meta name="msvalidate.01" content={searchConsole.bingVerification} />
         )}
+        <HeadScripts html={headerScripts} />
 
         {/* Google Tag Manager */}
         {analytics.gtmId && (
@@ -157,6 +166,7 @@ export default async function RootLayout({
           <EnsisChatbot />
           <ToastProvider />
         </ShopProvider>
+        <FooterScripts html={footerScripts} />
       </body>
     </html>
   );

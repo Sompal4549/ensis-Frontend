@@ -2,7 +2,7 @@ import { EnquiryPageContent } from "@/types/enquary/enquaryBannerAndForm";
 import bannerImage from "@/assets/home/home_banner2.webp"
 export const fallbackEnquiryContent: EnquiryPageContent = {
   hero: {
-    formImageSrc:"",
+    formImageSrc: "",
     heading: "Enquiry",
     subheading: "Let's Build Your Wellness Vision.",
     description:
@@ -67,7 +67,6 @@ export const fallbackEnquiryContent: EnquiryPageContent = {
     { id: "project-management", label: "Project Management" },
     { id: "design", label: "Design" },
     { id: "after-sales-support", label: "After Sales Support" },
-    { id: "equipment-supply", label: "Equipment Supply" },
   ],
   preferredContactOptions: [
     { id: "phone", label: "Phone" },

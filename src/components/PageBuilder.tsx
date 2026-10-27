@@ -67,9 +67,6 @@ const fallbackPageSections: Record<string, PageSection[]> = {
   blog: [
     { key: "blog.hero", data: {} },
     { key: "blog.allBlogs", data: {} },
-    { key: "blog.mediaResources", data: {} },
-    { key: "blog.stayInspired", data: {} },
-    { key: "blog.supportWellness", data: {} },
   ],
   product: [
     { key: "product.hero", data: {} },
@@ -142,7 +139,14 @@ export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps
       sortedSections.splice(blogIndex === -1 ? sortedSections.length : blogIndex, 0, { key: "home.faqs", data: {} });
     }
 
-    if (sortedSections.length === 0) {
+    // For blog page, display only hero and allBlogs
+    let activeSections = sortedSections;
+    if (normalized === "blog") {
+      const allowedBlogSections = new Set(["blog.hero", "blog.allBlogs"]);
+      activeSections = sortedSections.filter((s: PageSection) => allowedBlogSections.has((s.key || s.componentKey) || ""));
+    }
+
+    if (activeSections.length === 0) {
       return (
         <div className="p-20 text-center">
           <p>No sections configured for the {slug} page.</p>
@@ -173,7 +177,7 @@ export default async function PageBuilder({ slug, schemaSlug }: PageBuilderProps
             dangerouslySetInnerHTML={{ __html: jsonLd }}
           />
         )}
-        {sortedSections.map((section: PageSection, index: number) => {
+        {activeSections.map((section: PageSection, index: number) => {
           const componentKey = section.key || section.componentKey;
           // Sections switched off in the admin stay hidden
           if (!componentKey || section.isActive === false || section.enabled === false) return null;

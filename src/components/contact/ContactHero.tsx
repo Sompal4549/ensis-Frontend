@@ -1,125 +1,70 @@
-import React from "react";
+"use client";
 
+import React from "react";
 import Image from "next/image";
-import { Container } from "../ui/Container";
-import banner from "@/assets/contact_banner.webp"
-import arrow from "@/assets/icons/arrow.png"
-import getInTouch from "@/assets/get_in_touch.webp"
-import HtmlRenderer from "../layout/HtmlRender";
-import SupportHighlights from "./SupportHightlights";
-interface ContactHeroFeature {
+import bannerImg from "@/assets/contact/banner.webp";
+
+export interface ContactHeroFeature {
   id: string;
-  iconImage: string; // Assuming this is an image URL or path
+  iconImage: string;
   title: string;
 }
 
 export interface ContactHeroContent {
-  bgImage: string; // Assuming this is an image URL or path
-  title: string;
-  heading: string;
-  highlightedText: string;
-  description: string;
-  features: ContactHeroFeature[];
-  // Add other properties if they are used from sectionContent
-  // e.g., buttons, etc.
+  bgImage?: string;
+  title?: string;
+  heading?: string;
+  highlightedText?: string;
+  description?: string;
+  features?: ContactHeroFeature[];
 }
 
-const ContactHero: React.FC<{ sectionContent: ContactHeroContent }> = ({sectionContent}) => {
-  const bgImage = sectionContent?.bgImage || banner;
-  const heading = sectionContent?.heading || "Get In Touch";
-  const title = sectionContent?.title || "Let's Connect & Build";
-  const highlightedText = sectionContent?.highlightedText || "Wellness Spaces Together";
-  const description = sectionContent?.description || "Have questions about our products or turnkey solutions? Reach out today.";
-  const features = (sectionContent?.features && sectionContent.features.length > 0) ? sectionContent.features : [];
-
+const ContactHero: React.FC<{ sectionContent?: ContactHeroContent }> = () => {
   return (
-    <section className="w-full bg-[#e9dfd3] overflow-visible relative mb-0 md:mb-16">
-      {/* Background image + gradients clipped in their own layer so the
-          outer section can stay overflow-visible for SupportHighlights overlap */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none  z-30 w-[100%] block lg:hidden"
-          style={{
-            background: `
-      linear-gradient(
-        180deg,
-        rgba(250,247,242,0.0) 0%,
-        rgba(250,247,242,0.12) 24%,
-        rgba(250,247,242,0.80) 52%,
-        rgba(250,247,242,0.80) 62%,
-        rgba(250,247,242,1) 100%
-      )
-    `,
-          }} />
- <div className="absolute inset-0 pointer-events-none backdrop-blur-[1px] z-30 w-[50%] lg:block hidden"
-          style={{
-            background: `
-      linear-gradient(
-        90deg,
-        rgba(250,247,242,0.97) 0%,
-        rgba(250,247,242,0.92) 24%,
-        rgba(250,247,242,0.60) 52%,
-        rgba(250,247,242,0.20) 62%,
-        rgba(250,247,242,0.00) 100%
-      )
-    `,
-          }} />
-      <Image src={bgImage} alt={title} className="w-full h-full object-cover absolute top-0 bottom-0 right-0 left-0 z-20" priority fill />
-      </div>
+    <section className="w-full relative overflow-hidden bg-[#f7efe5] h-[145px] sm:h-[165px] md:h-[185px] lg:h-[195px] flex items-center mt-5 sm:mt-6 md:mt-7">
+      {/* Background Banner Image - scaled to show full height without cropping */}
+      <Image
+        src={bannerImg}
+        alt="Contact Us - Let's Create Your Wellness Space"
+        fill
+        priority
+        fetchPriority="high"
+        loading="eager"
+        sizes="100vw"
+        className="object-cover object-right md:object-center select-none pointer-events-none"
+      />
 
-      <Container className="grid min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none grid-cols-1 lg:grid-cols-2 relative z-40 items-center">
-      
+      {/* Subtle fade overlay on mobile/tablet to guarantee text contrast */}
+      <div
+        className="absolute inset-0 pointer-events-none z-10 block sm:hidden"
+        style={{
+          background:
+            "linear-gradient(90deg, rgba(247,239,229,0.95) 0%, rgba(247,239,229,0.85) 60%, rgba(247,239,229,0.2) 100%)",
+        }}
+      />
 
-        {/* LEFT CONTENT */}
-        <div className="relative flex items-end md:items-center py-10 z-40 lg:top-0 bottom-0">
-          {/* Content */}
-          <div className="relative max-w-[600px] ">
-
-            {/* Small Heading */}
-            <p className="uppercase tracking-[2px] text-[11px] font-semibold text-[#7b6d5d] mb-3 flex gap-4">
-              <Image src={getInTouch} width={30} height={15} alt="arrow image" />
-              {heading}
-            </p>
-
-            {/* Main Heading */}
-            <h1 className="text-[#173128]">
-             {title}
-              <br />
-              <span className="text-[#b58a48] capitalize">{highlightedText}</span>
-            </h1>
-
-                  <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-base font-semibold  text-[#313628]">
-                    <HtmlRenderer content={description} className='font-semibold max-w-[300px] mt-4'></HtmlRenderer>
-                  </div>
-            {/* Description */}
-                 <div className="flex w-full py-4">
-                    <Image src={arrow} alt='arrow' width={300} height={10} />
-                  </div>
-
-                  {/* Categories */}
-
-            {/* Features */}
-            {features.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-8">
-              {features.map((feature, index) => (
-                <div key={feature.id || index} className="flex flex-col items-center text-center relative">
-                  {feature.iconImage && <Image src={feature.iconImage} alt={feature.title} width={26} height={26} className="text-[#b58a48] mb-3" />}
-                  <p className="text-base leading-[17px] text-[#4e463d] font-semibold">
-                    {feature.title}
-                  </p>
-
-                  {/* Ruler */}
-                  {index !== features.length - 1 && (
-                    <div className="hidden sm:block absolute right-[-12px] top-2 h-[60px] w-[1px] bg-[#d8c5ab]" />
-                  )}
-                </div>
-              ))}
-            </div>
-            )}
-
+      <div className="relative z-20 w-full max-w-[1400px] mx-auto px-4 md:px-10 py-4 flex items-center">
+        <div className="max-w-[520px] pt-1.5 sm:pt-2.5">
+          {/* Tag: Orange line + CONTACT US */}
+          <div className="flex items-center gap-2">
+            <span className="w-7 h-[3px] bg-[#f59e0b] rounded-full inline-block" />
+            <span className="text-sm font-black tracking-[0.16em] text-[#0e271a] uppercase">
+              CONTACT US
+            </span>
           </div>
+
+          {/* Main Title: Let's Create (Forest Pine Green) + Your Wellness Space (Deep Navy Blue) */}
+          <h1 className="text-xl sm:text-xl  font-black tracking-tight">
+            <span className="text-[#0c2f1f] block font-black leading-tighter">Let&apos;s Create</span>
+            <span className="text-[#092243] block font-black leading-tighter">Your Wellness Space</span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-sm text-[#1e293b] font-semibold  mt-1 max-w-[420px]">
+            Have questions or need help? Our team is here to assist you with expert guidance and support.
+          </p>
         </div>
-      </Container>
-      <SupportHighlights/>
+      </div>
     </section>
   );
 };

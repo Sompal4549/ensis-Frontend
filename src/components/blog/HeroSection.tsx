@@ -1,60 +1,65 @@
 import Image from "next/image";
-import blogHero from "@/assets/blog/blog.webp"; // replace with your image
+import blogHero from "@/assets/blog.png";
 import { Container } from "../ui/Container";
-import blog_decoration from "@/assets/icons/blog_decoration_1.webp"
-import StatsStrip from "./BlogStatsStrip";
 
+const DEFAULT_DESCRIPTION =
+  "Explore expert articles, wellness tips, Ayurvedic knowledge and industry insights to create better healing spaces.";
+
+function stripHtml(value?: string): string {
+  if (!value) return "";
+  return value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
 
 export default function BlogHeroSection({ sectionContent }: { sectionContent: any }) {
+  const data = sectionContent || {};
+
+  const eyebrow = "OUR BLOG";
+  const heading =
+    data.heading && !data.heading.includes("Wisdom")
+      ? data.heading.replace(/[\s,]+$/, "")
+      : "Insights for a";
+  const highlight = data.highlight || "Healthier Tomorrow";
+  const rawDesc = stripHtml(data.description);
+  const description =
+    rawDesc && !rawDesc.includes("timeless")
+      ? rawDesc
+      : DEFAULT_DESCRIPTION;
+  const backgroundImage = blogHero;
+
   return (
-    <section className="w-full bg-[#f8f1e7] overflow-visible relative mb-0 md:mb-20">
-      <div className="relative">
-      {/* Background Image — clipped in its own layer so the outer
-          section can stay overflow-visible for StatsStrip overlap */}
-      <div className="absolute inset-0 z-10 overflow-hidden">
+    <section className="relative overflow-hidden bg-[#fbf7f1]">
+      {/* BACKGROUND */}
+      <div className="absolute inset-0">
         <Image
-          src={blogHero}
-          alt="Spa wellness"
+          src={backgroundImage}
+          alt=""
           fill
           priority
           className="object-cover object-center"
         />
+        {/* <div className="absolute inset-0 bg-gradient-to-r from-[#fbf7f1] via-[#fbf7f1]/90 to-transparent lg:via-[#fbf7f1]/75" /> */}
       </div>
 
-      <Container className="grid pt-24 md:pt-0 md:min-h-[calc(100vh-146px)] min-h-[550px] grid-cols-1 lg:grid-cols-2 relative z-20 items-center">
-        {/* Left Content */}
-        <div className="sm:py-8 lg:py-14">
-          <div className="max-w-[480px] flex flex-col items-center justify-center">
-
-            {/* Heading */}
-            <h1 className="text-[#1f3b1f] text-center">
-              {sectionContent.heading}
-            </h1>
-
-            {/* Small Ornament */}
-            <div className="mt-5 flex items-center gap-4">
-              <div className="flex gap-[3px]">
-                <Image alt="blog decoration" src={blog_decoration} height={25} width={320} />
-              </div>
-            </div>
-
-            {/* Subtitle */}
-            <h2 className="mt-4  text-[24px] italic leading-relaxed text-[#a7652a] sm:text-[30px]">
-              {sectionContent.title}
-            </h2>
-
-            {/* Description */}
-            <p className="mt-4 max-w-[420px] text-base leading-6 text-[#2d2d2d]">
-              Curated perspectives on spa, wellness,
-              <br className="hidden sm:block" />
-              and timeless healing traditions.
+      {/* CONTENT */}
+      <Container className="relative z-10 py-9 sm:py-12 md:py-14">
+        <div className="max-w-[560px]">
+          <div className="flex items-center gap-3">
+            <span className="h-px w-8 bg-[#c9972a]" />
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#c9972a]">
+              {eyebrow}
             </p>
           </div>
+
+          <h1 className="mt-2  text-[clamp(2.1rem,3.2vw+0.75rem,2.85rem)] font-bold text-[#063120]">
+            {heading}
+            <span className="block text-[#c9972a]">{highlight}</span>
+          </h1>
+
+          <p className="mt-0 max-w-[400px] text-sm font-medium text-[#5f564c]">
+            {description}
+          </p>
         </div>
       </Container>
-      </div>
-
-      <StatsStrip />
     </section>
   );
 }

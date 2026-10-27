@@ -34,7 +34,7 @@ const EnquiryClient = () => {
   if (loading) return <div className="min-h-screen flex items-center justify-center">Loading enquiry page...</div>;
 
   return (
-    <div className="bg-[#f7f1e3]">
+    <div className="bg-[#faf7f2]">
       {sections.map((section) => (
         <RenderEnquirySections key={section._id} section={section} />
       ))}

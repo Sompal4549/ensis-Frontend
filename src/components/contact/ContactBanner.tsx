@@ -16,7 +16,9 @@ export interface ContactBannerProps {
   description?: string;
 }
 
-const ContactCtaBanner = ({ sectionContent }: { sectionContent: ContactBannerProps }) => {
+const ContactCtaBanner = ({ sectionContent }: { sectionContent?: ContactBannerProps }) => {
+  if (!sectionContent?.image) return null;
+
   return (
     <section className="py-2 relative">
       <Container>
