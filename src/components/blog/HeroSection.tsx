@@ -48,7 +48,7 @@ export default function BlogHeroSection({ sectionContent }: { sectionContent: an
       </div>
 
       {/* CONTENT */}
-      <Container className="relative z-10 py-9 sm:py-12 md:py-14">
+      <Container className="relative z-10 flex min-h-[326px] flex-col justify-center py-9 sm:py-12 md:py-14">
         <div className="max-w-[560px]">
           <div className="flex items-center gap-3">
             <span className="h-px w-8 bg-[#c9972a]" />

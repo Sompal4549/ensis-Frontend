@@ -178,7 +178,7 @@ export default function WhyPartner({ sectionContent }: {sectionContent: OurClien
   return (
     <section className="relative w-full bg-[#FBF3E7]">
       <Container>
-        <div className="rounded-2xl border border-[#E3D2B0] bg-[#FBF3E7]  relative p-4">
+        <div className="rounded-2xl border border-[#E3D2B0] bg-[#FBF3E7] relative p-4 overflow-hidden">
 
         {/* Heading */}
         <div className="mb-2 text-center">
@@ -213,21 +213,21 @@ export default function WhyPartner({ sectionContent }: {sectionContent: OurClien
         </div>
 
         {/* Divider */}
-        <div aria-hidden="true" className="mb-8 h-px w-full bg-[#E3D2B0]" />
+        <div aria-hidden="true" className="mb-4 h-px w-full bg-[#E3D2B0]" />
 
         {/* Stats + decorative image */}
-        <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-6 relative pr-20">
-    <div className="grid w-full grid-cols-2 gap-6 sm:grid-cols-3 lg:flex-1 lg:grid-cols-6 lg:gap-4">
-  {banner.stats.map((stat, index) => (
-    <div
-      key={stat.id}
-      className={`flex items-center gap-4 ${
-        index !== banner.stats.length - 1
-          ? "border-r border-[#d8d2c6]"
-          : ""
-      }`}
-    >
-                <div className="relative h-8 w-8 sm:h-9 sm:w-9  ">
+        <div className="relative flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-6 lg:pr-36 xl:pr-40">
+          <div className="grid w-full grid-cols-2 gap-6 sm:grid-cols-3 lg:flex-1 lg:grid-cols-6 lg:gap-4">
+            {banner.stats.map((stat, index) => (
+              <div
+                key={stat.id}
+                className={`flex items-center gap-3 xl:gap-4 ${
+                  index !== banner.stats.length - 1
+                    ? "lg:border-r lg:border-[#d8d2c6]"
+                    : ""
+                }`}
+              >
+                <div className="relative h-8 w-8 shrink-0 sm:h-9 sm:w-9">
                   <Image
                     src={stat.iconSrc}
                     alt={stat.iconAlt}
@@ -237,24 +237,25 @@ export default function WhyPartner({ sectionContent }: {sectionContent: OurClien
                   />
                 </div>
                 <div>
-                  <div>
-                <p className=" text-lg font-semibold text-[#E8C766] sm:text-xl">
-                  {stat.value}
-                </p>
-                <p className="text-base">{stat.label}</p>
-                </div>
+                  <p className="text-lg font-semibold text-[#E8C766] sm:text-xl leading-tight">
+                    {stat.value}
+                  </p>
+                  <p className="text-sm sm:text-base text-[#1F3325] leading-snug">
+                    {stat.label}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="absolute -right-4 -top-10 bottom-0 w-40 shrink-0 sm:h-28 sm:w-48 lg:h-24 lg:w-44">
+          {/* Right Bottom Decorative Image */}
+          <div className="pointer-events-none absolute right-0 bottom-0 h-16 w-32 sm:h-20 sm:w-36 lg:h-22 lg:w-40 xl:h-24 xl:w-44">
             <Image
               src={ourClients}
-              alt={"Image"}
+              alt="Ayurvedic Wellness Items"
               fill
-              className="object-contain object-right"
-              sizes="(max-width: 1024px) 200px, 180px"
+              className="object-contain object-right-bottom"
+              sizes="(max-width: 1024px) 150px, 180px"
             />
           </div>
         </div>

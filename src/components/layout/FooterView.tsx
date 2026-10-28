@@ -196,7 +196,7 @@ export default function FooterView({
                   <h4 className="text-[13px] sm:text-[13.5px] 2xl:text-[14px] font-bold leading-tight text-[#11151f]">
                     {item.title}
                   </h4>
-                  <p className="text-[11.5px] sm:text-[12px] 2xl:text-[12.5px] text-[#555d6b] leading-tight mt-0.5 whitespace-nowrap">
+                  <p className="text-[11.5px] sm:text-[12px] 2xl:text-xs text-[#555d6b] leading-tight mt-0.5 whitespace-nowrap">
                     {item.desc}
                   </p>
                 </div>
@@ -283,7 +283,7 @@ export default function FooterView({
               </div>
 
               {/* Brand Description - formatted line-by-line matching reference image */}
-              <p className="mt-3.5 text-[12px] sm:text-[12.5px] 2xl:text-[13px] text-[#1a1208] leading-[1.38] font-medium [text-shadow:0_0_2px_#fff,0_0_4px_#fff,0_0_8px_rgba(255,255,255,0.95)]">
+              <p className="mt-3.5 text-[12px] sm:text-xs 2xl:text-[13px] text-[#1a1208] leading-[1.38] font-medium [text-shadow:0_0_2px_#fff,0_0_4px_#fff,0_0_8px_rgba(255,255,255,0.95)]">
                 Premium Ayurveda, Panchakarma
                 <br />
                 and spa equipment designed for clinics,
@@ -360,7 +360,7 @@ export default function FooterView({
                       <li key={`${link.href}-${link.label}`}>
                         <Link
                           href={link.href}
-                          className="group flex items-center gap-1.5 text-[12.5px] sm:text-[13px] 2xl:text-[13.5px] font-medium leading-[24px] 2xl:leading-[26px] text-[#102d7b] transition hover:text-[#f37023]"
+                          className="group flex items-center gap-1.5 text-xs sm:text-[13px] 2xl:text-[13.5px] font-medium leading-[24px] 2xl:leading-[26px] text-[#102d7b] transition hover:text-[#f37023]"
                         >
                           <ChevronRight
                             size={12}
@@ -451,12 +451,12 @@ export default function FooterView({
                         <FaRegEnvelope className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] text-[#e4401e]" />
                       </div>
                       <div className="min-w-0">
-                        <h4 className="text-[12.5px] sm:text-[13px] 2xl:text-[13.5px] font-extrabold text-[#0b2e8c] leading-tight">
+                        <h4 className="text-xs sm:text-[13px] 2xl:text-[13.5px] font-extrabold text-[#0b2e8c] leading-tight">
                           Email Us
                         </h4>
                         <a
                           href="mailto:info@ensis.in"
-                          className="mt-0.5 block text-[11.5px] sm:text-[12px] 2xl:text-[12.5px] font-medium leading-[1.3] text-[#102d7b] hover:text-[#e4401e] transition-colors"
+                          className="mt-0.5 block text-[11.5px] sm:text-[12px] 2xl:text-xs font-medium leading-[1.3] text-[#102d7b] hover:text-[#e4401e] transition-colors"
                         >
                           info@ensis.in (ENSIS)
                         </a>
@@ -469,10 +469,10 @@ export default function FooterView({
                         <FaMapMarkerAlt className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] text-[#e4401e]" />
                       </div>
                       <div className="min-w-0">
-                        <h4 className="text-[12.5px] sm:text-[13px] 2xl:text-[13.5px] font-extrabold text-[#0b2e8c] leading-tight">
+                        <h4 className="text-xs sm:text-[13px] 2xl:text-[13.5px] font-extrabold text-[#0b2e8c] leading-tight">
                           Corporate Office | Delhi-NCR, India
                         </h4>
-                        <p className="mt-0.5 text-[11.5px] sm:text-[12px] 2xl:text-[12.5px] font-medium leading-[1.3] text-[#102d7b]">
+                        <p className="mt-0.5 text-[11.5px] sm:text-[12px] 2xl:text-xs font-medium leading-[1.3] text-[#102d7b]">
                           Plot No. 12/29, Site-II Industrial Area,
                           <br />
                           Loni Road, Mohan Nagar, Ghaziabad,
@@ -488,10 +488,10 @@ export default function FooterView({
                         <FaMapMarkerAlt className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] text-[#e4401e]" />
                       </div>
                       <div className="min-w-0">
-                        <h4 className="text-[12.5px] sm:text-[13px] 2xl:text-[13.5px] font-extrabold text-[#0b2e8c] leading-tight">
+                        <h4 className="text-xs sm:text-[13px] 2xl:text-[13.5px] font-extrabold text-[#0b2e8c] leading-tight">
                           Regional Office | Delhi, India
                         </h4>
-                        <p className="mt-0.5 text-[11.5px] sm:text-[12px] 2xl:text-[12.5px] font-medium leading-[1.3] text-[#102d7b]">
+                        <p className="mt-0.5 text-[11.5px] sm:text-[12px] 2xl:text-xs font-medium leading-[1.3] text-[#102d7b]">
                           Ground Floor, E-1, Main Market,
                           <br />
                           Opp. KFC, Kalkaji,
@@ -507,10 +507,10 @@ export default function FooterView({
                         <FaMapMarkerAlt className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] text-[#e4401e]" />
                       </div>
                       <div className="min-w-0">
-                        <h4 className="text-[12.5px] sm:text-[13px] 2xl:text-[13.5px] font-extrabold text-[#0b2e8c] leading-tight">
+                        <h4 className="text-xs sm:text-[13px] 2xl:text-[13.5px] font-extrabold text-[#0b2e8c] leading-tight">
                           Mumbai Branch Office
                         </h4>
-                        <p className="mt-0.5 text-[11.5px] sm:text-[12px] 2xl:text-[12.5px] font-medium leading-[1.3] text-[#102d7b]">
+                        <p className="mt-0.5 text-[11.5px] sm:text-[12px] 2xl:text-xs font-medium leading-[1.3] text-[#102d7b]">
                           UNIT-IISR Compound, Plot No 49/459,
                           <br />
                           Opp Dynamic Flow Company,
@@ -532,41 +532,41 @@ export default function FooterView({
       {/* ── 3. COPYRIGHT BAR (ALWAYS SINGLE HORIZONTAL ROW) ── */}
       <div className="bg-[#041d40] text-white">
         <div className="mx-auto max-w-[1720px] px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5">
-          <div className="flex flex-row flex-nowrap items-center justify-between gap-x-2 sm:gap-x-3 lg:gap-x-4 overflow-x-auto no-scrollbar text-[12px] sm:text-[12px] md:text-[12px] xl:text-[12.5px] font-normal leading-normal select-none">
+          <div className="flex flex-row flex-nowrap items-center justify-between gap-x-2 sm:gap-x-3 lg:gap-x-4 overflow-x-auto no-scrollbar text-[12px] sm:text-[12px] md:text-[12px] xl:text-xs font-normal leading-normal select-none">
             {/* Left: Copyright */}
             <div className="flex items-center gap-x-1.5 sm:gap-x-2 text-white/95 whitespace-nowrap shrink-0">
               <span>© {copyrightYear} ENSIS</span>
-              <span aria-hidden className="text-white/40">|</span>
+              <span aria-hidden className="text-white">|</span>
               <span>A Brand of Design House India Pvt. Ltd.</span>
-              <span aria-hidden className="text-white/40">|</span>
+              <span aria-hidden className="text-white">|</span>
               <span>All Rights Reserved.</span>
             </div>
 
             {/* Right: Links & Developer Credit with Official enCodency Image Logo */}
-            <div className="flex items-center gap-x-1.5 sm:gap-x-1.5 xl:gap-x-2 text-white/90 whitespace-nowrap shrink-0">
-              <Link href="/sitemap.xml" className="text-white/90 hover:text-white transition-colors">
+            <div className="flex items-center gap-x-1.5 sm:gap-x-1.5 xl:gap-x-2 text-white whitespace-nowrap shrink-0">
+              <Link href="/sitemap.xml" className="text-white hover:text-white transition-colors">
                 Sitemap
               </Link>
-              <span aria-hidden className="text-white/40">|</span>
-              <Link href="/privacy-policy" className="text-white/90 hover:text-white transition-colors">
+              <span aria-hidden className="text-white">|</span>
+              <Link href="/privacy-policy" className="text-white hover:text-white transition-colors">
                 Privacy Policy
               </Link>
-              <span aria-hidden className="text-white/40">|</span>
-              <Link href="/terms-and-conditions" className="text-white/90 hover:text-white transition-colors">
+              <span aria-hidden className="text-white">|</span>
+              <Link href="/terms-and-conditions" className="text-white hover:text-white transition-colors">
                 Terms & Conditions
               </Link>
-              <span aria-hidden className="text-white/40">|</span>
-              <Link href="/refund-policy" className="text-white/90 hover:text-white transition-colors">
+              <span aria-hidden className="text-white">|</span>
+              <Link href="/refund-policy" className="text-white hover:text-white transition-colors">
                 Refund Policy
               </Link>
-              <span aria-hidden className="text-white/40">|</span>
-              <Link href="/disclaimer" className="text-white/90 hover:text-white transition-colors">
+              <span aria-hidden className="text-white">|</span>
+              <Link href="/disclaimer" className="text-white hover:text-white transition-colors">
                 Disclaimer
               </Link>
 
               {developer.name && (
                 <>
-                  <span aria-hidden className="text-white/40">|</span>
+                  <span aria-hidden className="text-white">|</span>
                   <span className="flex items-center gap-1.5 sm:gap-2 text-white">
                     <span className="hidden sm:inline">{developer.label || "Designed & Developed by:"}</span>
                     <a

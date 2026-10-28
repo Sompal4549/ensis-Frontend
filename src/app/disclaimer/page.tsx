@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState, useMemo } from "react";
+import React, { useCallback, useEffect, useState, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -49,12 +49,36 @@ export default function DisclaimerPage() {
   const [sections, setSections] = useState<DisclaimerSection[]>(staticDisclaimerSections);
   const [activeSection, setActiveSection] = useState<string>(staticDisclaimerSections[0]?.id || "");
   const [bannerImg, setBannerImg] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string>("25 October 2026");
   const [heroContent, setHeroContent] = useState<{
     eyebrow?: string;
     title?: string;
     subtitle?: string;
   }>({});
   const [mobileMenu, setMobileMenu] = useState(false);
+  const contentContainerRef = useRef<HTMLDivElement>(null);
+  const sidebarCardRef = useRef<HTMLDivElement>(null);
+  const [sidebarHeight, setSidebarHeight] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (sidebarCardRef.current && window.innerWidth >= 1024) {
+        setSidebarHeight(sidebarCardRef.current.offsetHeight);
+      } else {
+        setSidebarHeight(undefined);
+      }
+    };
+    updateHeight();
+    const ro = typeof ResizeObserver !== "undefined" && sidebarCardRef.current
+      ? new ResizeObserver(updateHeight)
+      : null;
+    if (sidebarCardRef.current && ro) ro.observe(sidebarCardRef.current);
+    window.addEventListener("resize", updateHeight);
+    return () => {
+      ro?.disconnect();
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchDisclaimerData = async () => {
@@ -66,6 +90,15 @@ export default function DisclaimerPage() {
           const data = await response.json();
           const disclaimerData = data.data;
           const hero = disclaimerData?.data?.hero || disclaimerData?.hero;
+          const updatedDate = hero?.lastUpdated || disclaimerData?.data?.lastUpdated;
+          if (updatedDate) {
+            setLastUpdated(updatedDate);
+          } else if (disclaimerData?.updatedAt) {
+            const d = new Date(disclaimerData.updatedAt);
+            if (!isNaN(d.getTime())) {
+              setLastUpdated(d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }));
+            }
+          }
           const img =
             hero?.bannerImage ||
             hero?.backgroundImage ||
@@ -131,7 +164,7 @@ export default function DisclaimerPage() {
         {/* HERO IMAGE */}
         <div className="absolute inset-0 overflow-hidden">
           <Image
-            src={bannerImg ? getImageUrl(bannerImg) : disclaimerBg}
+            src={bannerImg && !bannerImg.includes("disclaimer_hero") ? getImageUrl(bannerImg) : disclaimerBg}
             alt="ENSIS Disclaimer"
             fill
             priority
@@ -139,6 +172,7 @@ export default function DisclaimerPage() {
             loading="eager"
             sizes="100vw"
             className="object-cover"
+            onError={() => setBannerImg(null)}
           />
         </div>
 
@@ -229,21 +263,34 @@ export default function DisclaimerPage() {
             items={navItems}
             activeSection={activeSection}
             onSectionChange={handleSectionChange}
+            scrollContainerRef={contentContainerRef}
+            sidebarCardRef={sidebarCardRef}
           />
 
           {/* =================================================
               DISCLAIMER SECTIONS (2-COLUMN ICON GRID)
           ================================================= */}
 
-          <div className="grid gap-x-2 gap-y-3 lg:grid-cols-2 lg:gap-y-1">
-            {sections.map((section, index) => (
-              <DisclaimerSectionCard
-                key={section.id}
-                section={section}
-                isActive={activeSection === section.id}
-                isFirst={index === 0}
-              />
-            ))}
+          <div
+            ref={contentContainerRef}
+            style={sidebarHeight ? { height: `${sidebarHeight}px` } : undefined}
+            className="relative min-w-0 rounded-xl border border-[#e5e7eb] bg-white p-4 pt-4 sm:p-5 sm:pt-4 shadow-xs lg:overflow-y-auto"
+          >
+            {/* LAST UPDATED */}
+            <p className="absolute top-3 right-4 sm:top-3.5 sm:right-5 text-[12px] font-medium text-[#8a8a8a] select-none pointer-events-none z-10">
+              Last Updated: {lastUpdated}
+            </p>
+
+            <div className="grid gap-x-2 gap-y-3 lg:grid-cols-2 lg:gap-y-1">
+              {sections.map((section, index) => (
+                <DisclaimerSectionCard
+                  key={section.id}
+                  section={section}
+                  isActive={activeSection === section.id}
+                  isFirst={index === 0}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -267,7 +314,6 @@ function DisclaimerSectionCard({
   return (
     <article
       id={section.id}
-      style={isActive ? { boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px" } : undefined}
       className={`scroll-mt-28 rounded-xl px-3 py-2 transition-all duration-300 sm:px-3 ${isFirst
         ? ""
         : "border-t border-[#e6d6b9] lg:[&:nth-child(2)]:border-t-0"

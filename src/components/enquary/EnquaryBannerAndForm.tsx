@@ -293,7 +293,7 @@ export default function EnquiryPage({
   return (
     <div className="w-full bg-[#faf7f2]">
       {/* ── 1. Hero Section ── */}
-      <section className="relative z-10 min-h-[260px] sm:min-h-[290px] md:min-h-[320px] overflow-hidden">
+      <section className="relative z-10 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <Image
             src={resolvedHeroBg}
@@ -307,30 +307,27 @@ export default function EnquiryPage({
           />
         </div>
 
-        <div className="relative mx-auto flex min-h-[260px] sm:min-h-[290px] md:min-h-[320px] max-w-[1400px] items-center px-4 py-6 sm:py-8 lg:px-10">
-          <div className="max-w-[540px]">
-            <div className="mb-2 flex items-center gap-2">
-              <span className="h-[2px] w-5 bg-[#a9742a]" />
-              <p className="text-xs sm:text-[12.5px] font-bold uppercase tracking-[0.2em] text-[#a9742a]">
+        <Container className="relative z-10 flex min-h-[326px] flex-col justify-center py-9 sm:py-12 md:py-14">
+          <div className="max-w-[560px]">
+            <div className="flex items-center gap-3">
+              <span className="h-px w-8 bg-[#a9742a]" />
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#a9742a]">
                 {eyebrow}
               </p>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-[42px] font-bold leading-[1.12] text-[#111827]">
+            <h1 className="mt-2 text-[clamp(2.1rem,3.2vw+0.75rem,2.85rem)] font-bold leading-[1.12] text-[#111827]">
               {title}
               {subtitle && (
-                <>
-                  <br />
-                  <span className="text-[#a9742a]">{subtitle}</span>
-                </>
+                <span className="block text-[#a9742a]">{subtitle}</span>
               )}
             </h1>
 
-            <p className="mt-3 max-w-[400px] text-sm font-medium text-[#4b5563]">
+            <p className="mt-1 max-w-[420px] text-sm font-medium text-[#5f564c]">
               {description}
             </p>
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* ── 2. Form + Sidebar Section ── */}

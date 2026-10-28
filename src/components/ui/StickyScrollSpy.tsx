@@ -17,6 +17,8 @@ type StickyScrollSpyProps = {
   headerOffset?: number;
   sidebarTitle?: string;
   className?: string;
+  scrollContainerRef?: React.RefObject<HTMLElement | null>;
+  sidebarCardRef?: React.RefObject<HTMLDivElement | null>;
 };
 
 /**
@@ -41,6 +43,8 @@ export default function StickyScrollSpy({
   headerOffset = 108,
   sidebarTitle = "On This Page",
   className = "",
+  scrollContainerRef,
+  sidebarCardRef,
 }: StickyScrollSpyProps) {
   const navRef = useRef<HTMLElement>(null);
   const itemRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
@@ -58,19 +62,60 @@ export default function StickyScrollSpy({
       if (isProgrammaticScroll.current || ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        onSectionChange(getActiveSectionId(sectionElements, headerOffset));
+        const container = scrollContainerRef?.current;
+        const isContainerScrollable =
+          Boolean(container &&
+          typeof window !== "undefined" &&
+          window.innerWidth >= 1024 &&
+          container.scrollHeight > container.clientHeight);
+
+        if (isContainerScrollable && container) {
+          const atBottom =
+            container.scrollTop + container.clientHeight >= container.scrollHeight - 16;
+          if (atBottom) {
+            onSectionChange(sectionElements[sectionElements.length - 1].id);
+            ticking = false;
+            return;
+          }
+          let current = sectionElements[0].id;
+          const containerTop = container.getBoundingClientRect().top;
+          for (const el of sectionElements) {
+            const relTop = el.getBoundingClientRect().top - containerTop;
+            if (relTop <= 75) {
+              current = el.id;
+            }
+          }
+          onSectionChange(current);
+        } else {
+          onSectionChange(getActiveSectionId(sectionElements, headerOffset));
+        }
         ticking = false;
       });
     };
+
+    let cleanupContainerListener: (() => void) | null = null;
+    const attachContainer = () => {
+      const c = scrollContainerRef?.current;
+      if (c) {
+        c.addEventListener("scroll", onScroll, { passive: true });
+        cleanupContainerListener = () => c.removeEventListener("scroll", onScroll);
+      }
+    };
+    attachContainer();
+    const retryTimer = setTimeout(attachContainer, 150);
+
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
     onScroll();
+
     return () => {
+      if (cleanupContainerListener) cleanupContainerListener();
+      clearTimeout(retryTimer);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       if (programmaticTimeout.current) clearTimeout(programmaticTimeout.current);
     };
-  }, [items, headerOffset, onSectionChange]);
+  }, [items, headerOffset, onSectionChange, scrollContainerRef]);
 
   const scrollToSection = (id: string) => {
     const el = document.getElementById(id);
@@ -78,14 +123,44 @@ export default function StickyScrollSpy({
     onSectionChange(id);
     isProgrammaticScroll.current = true;
     if (programmaticTimeout.current) clearTimeout(programmaticTimeout.current);
-    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - headerOffset, behavior: "smooth" });
-    programmaticTimeout.current = setTimeout(() => { isProgrammaticScroll.current = false; onSectionChange(id); }, 900);
+
+    const container = scrollContainerRef?.current;
+    const isContainerScrollable =
+      Boolean(container &&
+      typeof window !== "undefined" &&
+      window.innerWidth >= 1024 &&
+      container.scrollHeight > container.clientHeight);
+
+    if (isContainerScrollable && container) {
+      const containerTop = container.getBoundingClientRect().top;
+      const elTop = el.getBoundingClientRect().top;
+      const targetScroll = container.scrollTop + (elTop - containerTop) - 8;
+      container.scrollTo({ top: Math.max(0, targetScroll), behavior: "smooth" });
+
+      if (containerTop < headerOffset - 40 || containerTop > window.innerHeight - 100) {
+        window.scrollTo({
+          top: container.getBoundingClientRect().top + window.scrollY - headerOffset,
+          behavior: "smooth",
+        });
+      }
+    } else {
+      window.scrollTo({
+        top: el.getBoundingClientRect().top + window.scrollY - headerOffset,
+        behavior: "smooth",
+      });
+    }
+
+    programmaticTimeout.current = setTimeout(() => {
+      isProgrammaticScroll.current = false;
+      onSectionChange(id);
+    }, 700);
   };
 
   return (
     <aside className={`hidden lg:block h-full ${className}`}>
       <div
-        className="sticky rounded-xl border border-[#e6d6b9] bg-[#fdfaf3]"
+        ref={sidebarCardRef}
+        className="sticky rounded-xl border border-[#e5e7eb] bg-white shadow-xs"
         style={{ top: `${headerOffset}px` }}
       >
         <div className="px-4.5 pt-4 pb-2">
@@ -104,7 +179,7 @@ export default function StickyScrollSpy({
             return (
               <div
                 key={item.id}
-                className={!isActive && !isLast ? "border-b border-[#ece8de]/70" : ""}
+                className={!isActive && !isLast ? "border-b border-[#f1f3f5]" : ""}
               >
                 <button
                   ref={(el) => { if (el) itemRefs.current.set(item.id, el); }}

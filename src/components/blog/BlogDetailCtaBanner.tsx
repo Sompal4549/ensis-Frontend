@@ -6,6 +6,8 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "../ui/Container";
 
+import supportBg from "@/assets/blog/support.webp";
+
 interface CtaBannerData {
   title: string;
   lotusImage: string;
@@ -22,20 +24,23 @@ interface CtaBannerProps {
 const BlogDetailCtaBanner: React.FC<CtaBannerProps> = ({ sectionContent }) => {
   if (!sectionContent) return null;
 
+  const bannerImg =
+    !sectionContent.bannerImage || sectionContent.bannerImage.includes("dw0szds3ymbfxxznoy0k")
+      ? supportBg
+      : sectionContent.bannerImage;
+
   return (
-    <section className="relative w-full overflow-hidden bg-[#0f2e22]">
+    <section className="relative w-full overflow-hidden bg-[#f6eddc]">
       {/* Full-width background image */}
-      {sectionContent.bannerImage && (
-        <div className="absolute inset-0 z-0 w-full h-full">
-          <Image
-            src={sectionContent.bannerImage}
-            alt=""
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
-        </div>
-      )}
+      <div className="absolute inset-0 z-0 w-full h-full">
+        <Image
+          src={bannerImg}
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-right md:object-center"
+        />
+      </div>
 
       {/* Green fade — readable on the left, photo visible on the right */}
 
