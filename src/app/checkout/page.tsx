@@ -220,7 +220,7 @@ export default function CheckoutPage() {
   // Cart calculations (mirror the server-side rules so the displayed total matches the charged amount)
   const hasItems = cartItems.length > 0;
   const freeShippingAt = 50000;
-  const discount = hasItems ? Math.round(subtotal * 0.08) : 0;
+  const discount = 0;
   const shipping = subtotal >= freeShippingAt || !hasItems ? 0 : 999;
   const gstTotal = hasItems
     ? Math.round(cartItems.reduce((sum, item) => sum + (item.price * item.quantity * (item.gstRate ?? 5)) / 100, 0))
@@ -356,7 +356,7 @@ export default function CheckoutPage() {
   if (!isMounted) return null;
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#FCFAF6] pt-10" style={jost}>
+    <div className="relative min-h-screen overflow-hidden bg-[#FCFAF6] pt-4" style={jost}>
       {/* Decorative premium background — very low opacity */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute -left-40 top-32 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(199,165,91,0.14),transparent_65%)]" />
@@ -733,7 +733,7 @@ export default function CheckoutPage() {
                     </span>
                   </div>
 
-                  <div className="max-h-52 space-y-4 overflow-y-auto pr-1">
+                  <div className="max-h-[380px] space-y-4 overflow-y-auto pr-1 [scrollbar-width:thin] [scrollbar-color:#c7a55b_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-[#c7a55b]/30">
                     {summary.items.map((item) => (
                       <div key={item.id} className="flex items-center gap-4">
                         <div className="relative aspect-square h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-[#eee6d9] bg-[#f8f4ec]">
@@ -747,7 +747,12 @@ export default function CheckoutPage() {
                           />
                         </div>
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-[#2b2a26]" dangerouslySetInnerHTML={{ __html: sanitizeInlineHtml(item.name) }} />
+                          <p
+                            className="line-clamp-2 text-sm font-semibold text-[#2b2a26]"
+                            dangerouslySetInnerHTML={{
+                              __html: sanitizeInlineHtml(item.name.replace(/<br\s*\/?>/gi, " ")),
+                            }}
+                          />
                           {item.finish || item.size ? (
                             <p className="mt-0.5 text-xs font-semibold text-[#c7a55b]">
                               {[item.finish && `Finish: ${item.finish}`, item.size && `Size: ${item.size}`]
@@ -772,10 +777,12 @@ export default function CheckoutPage() {
                       <span className="text-[#6f6658]">Subtotal</span>
                       <span className="tabular-nums font-semibold text-[#1F3A2A]">{formatCurrency(summary.subtotal)}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-[#6f6658]">Promo Discount (8%)</span>
-                      <span className="font-semibold text-[#4a7c3a]">- {formatCurrency(summary.discount)}</span>
-                    </div>
+                    {summary.discount > 0 && (
+                      <div className="flex justify-between">
+                        <span className="text-[#6f6658]">Discount</span>
+                        <span className="font-semibold text-[#4a7c3a]">- {formatCurrency(summary.discount)}</span>
+                      </div>
+                    )}
                     <div className="flex justify-between">
                       <span className="text-[#6f6658]">Shipping</span>
                       <span className="font-semibold text-[#4a7c3a]">
@@ -860,7 +867,7 @@ export default function CheckoutPage() {
           )}
 
           {/* ─────────── Why Buy From ENSIS ─────────── */}
-          <div className="mt-10">
+          <div className="mt-4">
             <div className="mb-6 text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.28em] text-[#c7a55b]">Why Buy From ENSIS</p>
               <h2 className="mt-2 text-3xl font-semibold text-[#1F3A2A]" >
@@ -885,7 +892,7 @@ export default function CheckoutPage() {
           </div>
 
           {/* ─────────── Need Help ─────────── */}
-          <div className="mt-10">
+          <div className="mt-4">
             <div className="relative overflow-hidden rounded-3xl border border-[#1F3A2A]/20 p-6 text-white shadow-[0_30px_60px_-24px_rgba(31,58,42,0.6)] sm:p-8">
               <Image
                 src={needHelpBg}

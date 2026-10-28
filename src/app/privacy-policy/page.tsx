@@ -19,6 +19,7 @@ import heroBg from "@/assets/privacy_and_enquiry.png";
 import lotusIcon from "@/assets/lotus.png";
 import onThisPageDecoration from "@/assets/privacy-terms/on_this_page_decoration.png";
 import { staticPrivacySections, type PrivacySection } from "@/data/policy";
+import { API_URL, getImageUrl } from "@/lib/api/api";
 
 const cardIcons: Record<string, React.ReactNode> = {
   user: <User size={24} strokeWidth={1.5} />,
@@ -34,17 +35,37 @@ const cardIcons: Record<string, React.ReactNode> = {
 export default function PrivacyPolicyPage() {
   const [sections, setSections] = useState<PrivacySection[]>(staticPrivacySections);
   const [activeSection, setActiveSection] = useState<string>(staticPrivacySections[0]?.id || "");
+  const [bannerImg, setBannerImg] = useState<string | null>(null);
+  const [heroContent, setHeroContent] = useState<{
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+  }>({});
   const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
     const fetchPolicyData = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/component-content/policy.privacy`
+          `${API_URL}/component-content/policy.privacy`
         );
         if (response.ok) {
           const data = await response.json();
           const policyData = data.data;
+          const hero = policyData?.data?.hero || policyData?.hero;
+          const img =
+            hero?.bannerImage ||
+            hero?.backgroundImage ||
+            policyData?.data?.bannerImage ||
+            policyData?.bannerImage;
+          if (img) setBannerImg(img);
+          if (hero) {
+            setHeroContent({
+              eyebrow: hero.eyebrow,
+              title: hero.title,
+              subtitle: hero.subtitle,
+            });
+          }
           const cmsSections = policyData?.data?.sections;
           if (Array.isArray(cmsSections) && cmsSections[0]?.id === "introduction") {
             setSections(cmsSections);
@@ -96,7 +117,7 @@ export default function PrivacyPolicyPage() {
         {/* HERO IMAGE */}
         <div className="absolute inset-0 overflow-hidden">
           <Image
-            src={heroBg}
+            src={bannerImg ? getImageUrl(bannerImg) : heroBg}
             alt="ENSIS Privacy Policy"
             fill
             priority
@@ -114,17 +135,23 @@ export default function PrivacyPolicyPage() {
               <div className="mb-2 flex items-center gap-3">
                 <span className="h-px w-8 bg-[#a9742a]" />
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#a9742a]">
-                  LEGAL
+                  {heroContent.eyebrow || "LEGAL"}
                 </p>
               </div>
 
               <h1 className=" text-[clamp(2rem,3vw+0.75rem,2.875rem)] leading-normal text-[#1f261b]">
-                Privacy <span className="text-[#a9742a]">Policy</span>
+                {heroContent.title ? (
+                  heroContent.title
+                ) : (
+                  <>
+                    Privacy <span className="text-[#a9742a]">Policy</span>
+                  </>
+                )}
               </h1>
 
               <p className="max-w-[480px] text-base font-medium leading-normal text-[#666666]">
-                Your privacy is important to us. This policy explains how we
-                collect, use, protect and respect your information.
+                {heroContent.subtitle ||
+                  "Your privacy is important to us. This policy explains how we collect, use, protect and respect your information."}
               </p>
             </div>
 

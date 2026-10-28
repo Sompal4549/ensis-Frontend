@@ -130,7 +130,7 @@ export default function CartPage() {
   const hasItems = cartItems.length > 0;
   const freeShippingAt = 50000;
   const amountToFreeShipping = Math.max(0, freeShippingAt - subtotal);
-  const discount = hasItems ? Math.round(subtotal * 0.08) : 0;
+  const discount = 0;
   const shipping = subtotal >= freeShippingAt || !hasItems ? 0 : 999;
   const gstTotal = hasItems
     ? Math.round(cartItems.reduce((sum, item) => sum + (item.price * item.quantity * (item.gstRate ?? 5)) / 100, 0))
@@ -218,7 +218,9 @@ export default function CartPage() {
                   <h2 className="text-lg font-semibold text-[#1F3A2A]">Order Summary</h2>
                   <div className="mt-3 space-y-2.5 text-xs">
                     <div className="flex justify-between gap-4"><span className="text-[#5f665b]">Subtotal ({cartCount} items)</span><span className="tabular-nums font-semibold text-[#1F3A2A]">{formatCurrency(subtotal)}</span></div>
-                    <div className="flex justify-between gap-4"><span className="text-[#5f665b]">Discount</span><span className="tabular-nums font-semibold text-[#2F7D5A]">- {formatCurrency(discount)}</span></div>
+                    {discount > 0 && (
+                      <div className="flex justify-between gap-4"><span className="text-[#5f665b]">Discount</span><span className="tabular-nums font-semibold text-[#2F7D5A]">- {formatCurrency(discount)}</span></div>
+                    )}
                     <div className="flex justify-between gap-4"><span className="text-[#5f665b]">Shipping</span><span className="tabular-nums font-semibold text-[#2F7D5A]">{shipping === 0 ? "FREE" : formatCurrency(shipping)}</span></div>
                     <div className="flex justify-between gap-4"><span className="text-[#5f665b]">GST</span><span className="tabular-nums font-semibold text-[#1F3A2A]">{formatCurrency(gstTotal)}</span></div>
                   </div>

@@ -1,11 +1,4 @@
-const BASE_API_URL = (
-  process.env.NEXT_PUBLIC_API_URL ||
-  process.env.NEXT_PUBLIC_API_BASE_URL ||
-  "http://localhost:4000/api/v1"
-).replace(/\/$/, "");
-
-// Ensure base URL ends with /api/v1 if not present
-const API_URL = BASE_API_URL.endsWith("/api/v1") ? BASE_API_URL : `${BASE_API_URL}/api/v1`;
+import { API_URL } from "@/lib/api/api";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -95,7 +88,7 @@ async function handleResponse<T>(response: Response): Promise<T> {
 export async function createPaymentOrder(
   orderId: string,
   token: string
-): Promise<CreateOrderResponse> {
+): Promise<RazorpayOrderData> {
   const response = await fetch(`${API_URL}/payments/create-order`, {
     method: "POST",
     headers: {
@@ -104,7 +97,7 @@ export async function createPaymentOrder(
     },
     body: JSON.stringify({ orderId }),
   });
-  return handleResponse<CreateOrderResponse>(response);
+  return handleResponse<RazorpayOrderData>(response);
 }
 
 /**

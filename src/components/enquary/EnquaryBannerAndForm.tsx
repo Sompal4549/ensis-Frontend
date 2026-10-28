@@ -31,7 +31,7 @@ import enquiryNewImg from "@/assets/enquiry_new.png";
 import heroBg from "@/assets/privacy_and_enquiry.png";
 import designHouseLogo from "@/assets/icons/design_house.webp";
 import footerMap from "@/assets/footer/map.webp";
-import { API_URL } from "@/lib/api/api";
+import { API_URL, getImageUrl } from "@/lib/api/api";
 import { ALL_INDIAN_STATES } from "@/lib/pincode";
 
 interface EnquiryPageProps {
@@ -277,13 +277,26 @@ export default function EnquiryPage({
   const errorClass = "mt-0.5 text-[10px] sm:text-[10.5px] text-red-600";
   const servicesToDisplay = DEFAULT_SERVICES;
 
+  const rawHeroBg = (content as any)?.heroImage || (content as any)?.heroBg || (content as any)?.backgroundImage || (content as any)?.image;
+  const resolvedHeroBg = rawHeroBg
+    ? (typeof rawHeroBg === "string" ? getImageUrl(rawHeroBg) : (typeof rawHeroBg === "object" && rawHeroBg.imageUrl ? getImageUrl(rawHeroBg.imageUrl) : rawHeroBg))
+    : heroBg;
+
+  const eyebrow = (content as any)?.eyebrow || "ENQUIRY";
+  const title = (content as any)?.title || "Let's Build Your";
+  const subtitle = (content as any)?.subtitle || (content as any)?.highlight || (content as any)?.highlightedText || "Wellness Vision";
+  const description =
+    (content as any)?.description ||
+    (content as any)?.heroDescription ||
+    "Share your requirements with us and our experts will connect with you to create a customised solution for your Ayurvedic, Panchakarma or wellness space.";
+
   return (
     <div className="w-full bg-[#faf7f2]">
       {/* ── 1. Hero Section ── */}
       <section className="relative z-10 min-h-[260px] sm:min-h-[290px] md:min-h-[320px] overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <Image
-            src={heroBg}
+            src={resolvedHeroBg}
             alt="ENSIS Enquiry"
             fill
             className="object-cover object-center"
@@ -299,20 +312,22 @@ export default function EnquiryPage({
             <div className="mb-2 flex items-center gap-2">
               <span className="h-[2px] w-5 bg-[#a9742a]" />
               <p className="text-xs sm:text-[12.5px] font-bold uppercase tracking-[0.2em] text-[#a9742a]">
-                ENQUIRY
+                {eyebrow}
               </p>
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-[42px] font-bold leading-[1.12] text-[#111827]">
-              Let&apos;s Build Your
-              <br />
-              <span className="text-[#a9742a]">Wellness Vision</span>
+              {title}
+              {subtitle && (
+                <>
+                  <br />
+                  <span className="text-[#a9742a]">{subtitle}</span>
+                </>
+              )}
             </h1>
 
             <p className="mt-3 max-w-[400px] text-sm font-medium text-[#4b5563]">
-              Share your requirements with us and our experts will connect with
-              you to create a customised solution for your Ayurvedic,
-              Panchakarma or wellness space.
+              {description}
             </p>
           </div>
         </div>

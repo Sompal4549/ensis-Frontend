@@ -23,6 +23,7 @@ import MobileScrollSpy from "@/components/ui/MobileScrollSpy";
 import disclaimerBg from "@/assets/disclaimer_hero.webp";
 import lotusIcon from "@/assets/lotus.png";
 import { staticRefundSections, type RefundSection } from "@/data/policy";
+import { API_URL, getImageUrl } from "@/lib/api/api";
 
 const cardIcons: Record<string, React.ReactNode> = {
   "file-x": <FileX2 size={26} strokeWidth={1.5} />,
@@ -38,17 +39,37 @@ const cardIcons: Record<string, React.ReactNode> = {
 export default function RefundPolicyPage() {
   const [sections, setSections] = useState<RefundSection[]>(staticRefundSections);
   const [activeSection, setActiveSection] = useState<string>(staticRefundSections[0]?.id || "");
+  const [bannerImg, setBannerImg] = useState<string | null>(null);
+  const [heroContent, setHeroContent] = useState<{
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+  }>({});
   const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
     const fetchRefundData = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/component-content/policy.refund`
+          `${API_URL}/component-content/policy.refund`
         );
         if (response.ok) {
           const data = await response.json();
           const refundData = data.data;
+          const hero = refundData?.data?.hero || refundData?.hero;
+          const img =
+            hero?.bannerImage ||
+            hero?.backgroundImage ||
+            refundData?.data?.bannerImage ||
+            refundData?.bannerImage;
+          if (img) setBannerImg(img);
+          if (hero) {
+            setHeroContent({
+              eyebrow: hero.eyebrow,
+              title: hero.title,
+              subtitle: hero.subtitle,
+            });
+          }
           if (refundData && refundData.data && refundData.data.sections) {
             setSections(refundData.data.sections);
             if (refundData.data.sections.length > 0) {
@@ -101,7 +122,7 @@ export default function RefundPolicyPage() {
         {/* HERO IMAGE */}
         <div className="absolute inset-0 overflow-hidden">
           <Image
-            src={disclaimerBg}
+            src={bannerImg ? getImageUrl(bannerImg) : disclaimerBg}
             alt="ENSIS Refund Policy"
             fill
             priority
@@ -119,18 +140,23 @@ export default function RefundPolicyPage() {
               <div className="mb-2 flex items-center gap-3">
                 <span className="h-px w-8 bg-[#a9742a]" />
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#a9742a]">
-                  LEGAL
+                  {heroContent.eyebrow || "LEGAL"}
                 </p>
               </div>
 
               <h1 className=" text-[clamp(2rem,3vw+0.75rem,2.875rem)] leading-normal text-[#1f261b]">
-                Refund <span className="text-[#a9742a]">Policy</span>
+                {heroContent.title ? (
+                  heroContent.title
+                ) : (
+                  <>
+                    Refund <span className="text-[#a9742a]">Policy</span>
+                  </>
+                )}
               </h1>
 
               <p className="max-w-[480px] text-base font-medium leading-normal text-[#666666]">
-                Our refund policy explains the conditions under which
-                cancellations, refunds or adjustments are applicable for
-                our products and services.
+                {heroContent.subtitle ||
+                  "Our refund policy explains the conditions under which cancellations, refunds or adjustments are applicable for our products and services."}
               </p>
             </div>
 

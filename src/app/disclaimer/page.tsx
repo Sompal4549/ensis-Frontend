@@ -25,6 +25,7 @@ import { Container } from "@/components/ui/Container";
 import MobileScrollSpy from "@/components/ui/MobileScrollSpy";
 import disclaimerBg from "@/assets/disclaimer_hero.webp";
 import { staticDisclaimerSections, type DisclaimerSection } from "@/data/policy";
+import { API_URL, getImageUrl } from "@/lib/api/api";
 
 const sectionIcons: Record<string, React.ReactNode> = {
   "file-text": <FileText size={26} strokeWidth={1.5} />,
@@ -47,17 +48,37 @@ const sectionIcons: Record<string, React.ReactNode> = {
 export default function DisclaimerPage() {
   const [sections, setSections] = useState<DisclaimerSection[]>(staticDisclaimerSections);
   const [activeSection, setActiveSection] = useState<string>(staticDisclaimerSections[0]?.id || "");
+  const [bannerImg, setBannerImg] = useState<string | null>(null);
+  const [heroContent, setHeroContent] = useState<{
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+  }>({});
   const [mobileMenu, setMobileMenu] = useState(false);
 
   useEffect(() => {
     const fetchDisclaimerData = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/component-content/policy.disclaimer`
+          `${API_URL}/component-content/policy.disclaimer`
         );
         if (response.ok) {
           const data = await response.json();
           const disclaimerData = data.data;
+          const hero = disclaimerData?.data?.hero || disclaimerData?.hero;
+          const img =
+            hero?.bannerImage ||
+            hero?.backgroundImage ||
+            disclaimerData?.data?.bannerImage ||
+            disclaimerData?.bannerImage;
+          if (img) setBannerImg(img);
+          if (hero) {
+            setHeroContent({
+              eyebrow: hero.eyebrow,
+              title: hero.title,
+              subtitle: hero.subtitle,
+            });
+          }
           if (disclaimerData && disclaimerData.data && disclaimerData.data.sections) {
             setSections(disclaimerData.data.sections);
             if (disclaimerData.data.sections.length > 0) {
@@ -110,7 +131,7 @@ export default function DisclaimerPage() {
         {/* HERO IMAGE */}
         <div className="absolute inset-0 overflow-hidden">
           <Image
-            src={disclaimerBg}
+            src={bannerImg ? getImageUrl(bannerImg) : disclaimerBg}
             alt="ENSIS Disclaimer"
             fill
             priority
@@ -128,17 +149,23 @@ export default function DisclaimerPage() {
               <div className="mb-2 flex items-center gap-3">
                 <span className="h-px w-8 bg-[#a9742a]" />
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#a9742a]">
-                  LEGAL
+                  {heroContent.eyebrow || "LEGAL"}
                 </p>
               </div>
 
               <h1 className=" text-[clamp(2rem,3vw+0.75rem,2.875rem)] leading-normal text-[#1f261b]">
-                Dis<span className="text-[#a9742a]">claimer</span>
+                {heroContent.title ? (
+                  heroContent.title
+                ) : (
+                  <>
+                    Dis<span className="text-[#a9742a]">claimer</span>
+                  </>
+                )}
               </h1>
 
               <p className="max-w-[400px] text-base font-medium leading-normal text-[#666666]">
-                Important information about the use of our website,
-                products, services and content.
+                {heroContent.subtitle ||
+                  "Important information about the use of our website, products, services and content."}
               </p>
             </div>
 
