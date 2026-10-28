@@ -204,7 +204,7 @@ export default function DisclaimerPage() {
             </div>
 
             {/* BREADCRUMB */}
-            <nav
+            {/* <nav
               aria-label="Breadcrumb"
               className="hidden shrink-0 items-center gap-2 text-sm font-medium text-white lg:flex"
             >
@@ -213,7 +213,7 @@ export default function DisclaimerPage() {
               </Link>
               <ChevronRight size={14} className="text-[#a9742a]" />
               <span className="font-semibold text-[#a9742a]">Disclaimer</span>
-            </nav>
+            </nav> */}
           </div>
         </div>
 
