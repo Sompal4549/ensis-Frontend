@@ -60,6 +60,8 @@ const ProjectsBanner: React.FC<ProjectsBannerProps> = ({
           alt={content.title.line1}
           fill
           priority
+          fetchPriority="high"
+          loading="eager"
           sizes="100vw"
           className="md:object-center object-left object-cover"
         />

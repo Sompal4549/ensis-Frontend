@@ -9,6 +9,7 @@ import { FaMapMarkerAlt, FaRegEnvelope } from "react-icons/fa";
 import { MdPhoneInTalk } from "react-icons/md";
 import BackToTop from "./BackToTop";
 import SparkleLogo from "./SparkleLogo";
+import { getImageUrl } from "@/lib/api/api";
 
 // Imported webp assets
 import designHouseLogo from "@/assets/icons/design_house.webp";
@@ -38,6 +39,7 @@ export interface FooterNavSection {
 export interface FooterViewProps {
   footerLogoSrc: string | StaticImageData;
   designHouseSrc: string | StaticImageData;
+  developerLogoSrc?: string | StaticImageData;
   developer: {
     label?: string;
     name?: string;
@@ -49,7 +51,7 @@ export interface FooterViewProps {
     desc: string;
     iconUrl?: string;
   }[];
-  copyrightYear: number;
+  copyrightYear?: number;
 }
 
 /** Lightbulb with rays matching the approved footer design */
@@ -134,13 +136,22 @@ const universalNavSections: FooterNavSection[] = [
 export default function FooterView({
   footerLogoSrc,
   designHouseSrc,
+  developerLogoSrc,
   developer,
   strapItems,
-  copyrightYear,
+  copyrightYear = new Date().getFullYear(),
 }: FooterViewProps) {
   const pathname = usePathname();
   // Map only on contact page (/contact), address offices on all other pages
   const isContactPage = pathname === "/contact" || pathname?.startsWith("/contact/");
+
+  const devLogo =
+    developerLogoSrc ||
+    (developer.logoUrl?.trim()
+      ? getImageUrl(developer.logoUrl, 400)
+      : /encodency/i.test(developer.name || "")
+        ? encodencyLogoImg
+        : null);
 
   const features = fallbackFeatures.map((item, i) => ({
     ...item,
@@ -287,7 +298,7 @@ export default function FooterView({
               </p>
 
               {/* Call Us Today Capsule Button (Enlarged phone icon and numbers) */}
-              <div className="mt-4 sm:mt-5 flex w-fit min-w-[240px] sm:min-w-[260px] max-w-[17.5rem] items-center gap-3 rounded-xl border-[1.5px] border-white bg-[#051c42] py-2 pl-2 pr-3.5 text-white shadow-[0_6px_20px_rgba(0,0,0,0.35)]">
+              <div className="mt-4 sm:mt-5 flex w-fit min-w-[240px] sm:min-w-[260px] max-w-[17.5rem] items-center gap-3 rounded-2xl border-[1.5px] border-white bg-[#051c42] py-2 pl-2 pr-3.5 text-white shadow-[0_6px_20px_rgba(0,0,0,0.35)]">
                 <a
                   href="tel:+919654900525"
                   aria-label="Call +91 9654900525"
@@ -437,7 +448,7 @@ export default function FooterView({
                     {/* Email */}
                     <div className="flex items-start gap-3 sm:gap-3.5">
                       <div className="flex h-9 w-9 sm:h-10 sm:w-10 xl:h-[42px] xl:w-[42px] shrink-0 items-center justify-center rounded-full border-[1.5px] sm:border-2 border-[#e4401e] bg-white text-[#e4401e] mt-0.5 shadow-2xs">
-                        <FaRegEnvelope className="h-4 w-4 sm:h-[18px] sm:w-[18px] text-[#e4401e]" />
+                        <FaRegEnvelope className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] text-[#e4401e]" />
                       </div>
                       <div className="min-w-0">
                         <h4 className="text-[12.5px] sm:text-[13px] 2xl:text-[13.5px] font-extrabold text-[#0b2e8c] leading-tight">
@@ -455,7 +466,7 @@ export default function FooterView({
                     {/* Corporate Office */}
                     <div className="flex items-start gap-3 sm:gap-3.5">
                       <div className="flex h-9 w-9 sm:h-10 sm:w-10 xl:h-[42px] xl:w-[42px] shrink-0 items-center justify-center rounded-full border-[1.5px] sm:border-2 border-[#e4401e] bg-white text-[#e4401e] mt-0.5 shadow-2xs">
-                        <FaMapMarkerAlt className="h-4 w-4 sm:h-[18px] sm:w-[18px] text-[#e4401e]" />
+                        <FaMapMarkerAlt className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] text-[#e4401e]" />
                       </div>
                       <div className="min-w-0">
                         <h4 className="text-[12.5px] sm:text-[13px] 2xl:text-[13.5px] font-extrabold text-[#0b2e8c] leading-tight">
@@ -474,7 +485,7 @@ export default function FooterView({
                     {/* Regional Office */}
                     <div className="flex items-start gap-3 sm:gap-3.5">
                       <div className="flex h-9 w-9 sm:h-10 sm:w-10 xl:h-[42px] xl:w-[42px] shrink-0 items-center justify-center rounded-full border-[1.5px] sm:border-2 border-[#e4401e] bg-white text-[#e4401e] mt-0.5 shadow-2xs">
-                        <FaMapMarkerAlt className="h-4 w-4 sm:h-[18px] sm:w-[18px] text-[#e4401e]" />
+                        <FaMapMarkerAlt className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] text-[#e4401e]" />
                       </div>
                       <div className="min-w-0">
                         <h4 className="text-[12.5px] sm:text-[13px] 2xl:text-[13.5px] font-extrabold text-[#0b2e8c] leading-tight">
@@ -493,7 +504,7 @@ export default function FooterView({
                     {/* Mumbai Branch */}
                     <div className="flex items-start gap-3 sm:gap-3.5">
                       <div className="flex h-9 w-9 sm:h-10 sm:w-10 xl:h-[42px] xl:w-[42px] shrink-0 items-center justify-center rounded-full border-[1.5px] sm:border-2 border-[#e4401e] bg-white text-[#e4401e] mt-0.5 shadow-2xs">
-                        <FaMapMarkerAlt className="h-4 w-4 sm:h-[18px] sm:w-[18px] text-[#e4401e]" />
+                        <FaMapMarkerAlt className="h-[18px] w-[18px] sm:h-[20px] sm:w-[20px] text-[#e4401e]" />
                       </div>
                       <div className="min-w-0">
                         <h4 className="text-[12.5px] sm:text-[13px] 2xl:text-[13.5px] font-extrabold text-[#0b2e8c] leading-tight">
@@ -521,10 +532,10 @@ export default function FooterView({
       {/* ── 3. COPYRIGHT BAR (ALWAYS SINGLE HORIZONTAL ROW) ── */}
       <div className="bg-[#041d40] text-white">
         <div className="mx-auto max-w-[1720px] px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5">
-          <div className="flex flex-row flex-nowrap items-center justify-between gap-x-3 sm:gap-x-4 overflow-x-auto text-[10px] sm:text-[10.5px] md:text-[11px] xl:text-[11.5px] font-normal leading-normal select-none">
+          <div className="flex flex-row flex-nowrap items-center justify-between gap-x-2 sm:gap-x-3 lg:gap-x-4 overflow-x-auto no-scrollbar text-[12px] sm:text-[12px] md:text-[12px] xl:text-[12.5px] font-normal leading-normal select-none">
             {/* Left: Copyright */}
             <div className="flex items-center gap-x-1.5 sm:gap-x-2 text-white/95 whitespace-nowrap shrink-0">
-              <span>© {copyrightYear} ENSIS – Panchkarma & Spa Solutions</span>
+              <span>© {copyrightYear} ENSIS</span>
               <span aria-hidden className="text-white/40">|</span>
               <span>A Brand of Design House India Pvt. Ltd.</span>
               <span aria-hidden className="text-white/40">|</span>
@@ -532,7 +543,7 @@ export default function FooterView({
             </div>
 
             {/* Right: Links & Developer Credit with Official enCodency Image Logo */}
-            <div className="flex items-center gap-x-1.5 sm:gap-x-2 xl:gap-x-2.5 text-white/90 whitespace-nowrap shrink-0">
+            <div className="flex items-center gap-x-1.5 sm:gap-x-1.5 xl:gap-x-2 text-white/90 whitespace-nowrap shrink-0">
               <Link href="/sitemap.xml" className="text-white/90 hover:text-white transition-colors">
                 Sitemap
               </Link>
@@ -556,28 +567,32 @@ export default function FooterView({
               {developer.name && (
                 <>
                   <span aria-hidden className="text-white/40">|</span>
-                  <span className="flex items-center gap-1.5 sm:gap-2 text-white pr-3 sm:pr-5">
+                  <span className="flex items-center gap-1.5 sm:gap-2 text-white">
                     <span className="hidden sm:inline">{developer.label || "Designed & Developed by:"}</span>
                     <a
                       href={developer.href || "https://encodency.com"}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center overflow-hidden transition hover:opacity-95 shrink-0"
-                      title="enCodency Pvt. Ltd."
+                      className="inline-flex items-center overflow-hidden transition hover:opacity-95 shrink-0 max-w-[150px]"
+                      title={developer.name || "enCodency Pvt. Ltd."}
                     >
-                      <Image
-                        src={encodencyLogoImg}
-                        alt="enCodency Pvt. Ltd."
-                        width={220}
-                        height={52}
-                        className="h-8 sm:h-[38px] xl:h-[42px] w-auto object-contain rounded-[4px] shadow-xs"
-                      />
+                      {devLogo ? (
+                        <Image
+                          src={devLogo}
+                          alt={developer.name || "enCodency Pvt. Ltd."}
+                          width={150}
+                          height={46}
+                          className="h-7 sm:h-[34px] xl:h-[36px] max-w-[150px] w-auto object-contain rounded-[4px] shadow-xs"
+                        />
+                      ) : (
+                        <span className="font-semibold text-white hover:underline">{developer.name}</span>
+                      )}
                     </a>
                   </span>
                 </>
               )}
 
-              <BackToTop />
+              <BackToTop className="mr-1" />
             </div>
           </div>
         </div>

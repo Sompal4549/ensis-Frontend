@@ -70,13 +70,18 @@ export default function ProductHeroBanner({
             />
 
             {/* Background Image — fixed width, centered, responsive */}
-            <div
-              className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[70vw] md:w-[450px] bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: `url(${typeof src === "string" ? src : src.src
-                  })`,
-              }}
-            />
+            <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[70vw] md:w-[450px] overflow-hidden">
+              <Image
+                src={src}
+                alt={product.title || "Product"}
+                fill
+                priority={i === 0}
+                fetchPriority={i === 0 ? "high" : "auto"}
+                loading={i === 0 ? "eager" : "lazy"}
+                sizes="(max-width: 768px) 70vw, 450px"
+                className="object-cover object-center"
+              />
+            </div>
 
             {/* Right-side blur effect (10%) */}
             <div

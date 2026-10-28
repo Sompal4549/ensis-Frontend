@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState, useMemo } from "react";
+import Image from "next/image";
 import {
   ArrowRight,
   Shield,
@@ -100,10 +101,15 @@ export default function TermsConditionsPage() {
       <section className="relative z-10 pt-4 overflow-visible">
         {/* HERO IMAGE */}
         <div className="absolute inset-0 overflow-hidden">
-          <img
-            src={termsBg.src}
+          <Image
+            src={termsBg}
             alt="ENSIS Terms and Conditions"
-            className="h-full w-full object-cover"
+            fill
+            priority
+            fetchPriority="high"
+            loading="eager"
+            sizes="100vw"
+            className="object-cover"
           />
         </div>
 

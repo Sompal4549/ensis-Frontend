@@ -77,12 +77,16 @@ export default async function ConsultancyHero({ sectionContent }: { sectionConte
   return (
   <section className="relative bg-[#f7f5f2] md:pb-16">
     {/* Hero */}
-    <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none">
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url(${bgImage})`,
-        }}
+    <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none overflow-hidden">
+      <Image
+        src={bgImage}
+        alt={title || "Consultancy Banner"}
+        fill
+        priority
+        fetchPriority="high"
+        loading="eager"
+        sizes="100vw"
+        className="object-cover object-center -z-0"
       />
 
       <Container className="relative z-10 h-full">

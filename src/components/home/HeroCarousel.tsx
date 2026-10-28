@@ -139,11 +139,11 @@ export default function HeroCarousel({
 
   return (
     <div className="relative overflow-hidden min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none">
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         <motion.div
           key={`${index}-${String(shown[index].id ?? "")}`}
           className="absolute inset-0"
-          initial={{ opacity: 0 }}
+          initial={index === 0 ? false : { opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.9, ease: "easeInOut" }}

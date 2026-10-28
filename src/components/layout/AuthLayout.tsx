@@ -46,6 +46,9 @@ export default function AuthLayout({
           src={bannerImage}
           fill
           priority
+          fetchPriority="high"
+          loading="eager"
+          sizes="100vw"
           alt="ENSIS"
           className="object-cover"
         />

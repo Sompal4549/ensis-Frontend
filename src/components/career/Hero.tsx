@@ -30,6 +30,9 @@ const CareersBanner = ({sectionContent }: {sectionContent?: CareersBannerProps})
         alt={bgAlt}
         fill
         priority
+        fetchPriority="high"
+        loading="eager"
+        sizes="100vw"
         className="object-left xl:object-center object-cover"
       />
       <div className="relative z-10 flex min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none items-center px-6 py-12 sm:px-10 lg:px-14">

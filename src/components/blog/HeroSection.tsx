@@ -35,6 +35,9 @@ export default function BlogHeroSection({ sectionContent }: { sectionContent: an
           alt=""
           fill
           priority
+          fetchPriority="high"
+          loading="eager"
+          sizes="100vw"
           className="object-cover object-center"
         />
         {/* <div className="absolute inset-0 bg-gradient-to-r from-[#fbf7f1] via-[#fbf7f1]/90 to-transparent lg:via-[#fbf7f1]/75" /> */}

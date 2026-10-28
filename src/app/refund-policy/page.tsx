@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   CalendarCheck2,
@@ -99,10 +100,15 @@ export default function RefundPolicyPage() {
       <section className="relative z-10 pt-4 overflow-visible">
         {/* HERO IMAGE */}
         <div className="absolute inset-0 overflow-hidden">
-          <img
-            src={disclaimerBg.src}
+          <Image
+            src={disclaimerBg}
             alt="ENSIS Refund Policy"
-            className="h-full w-full object-cover"
+            fill
+            priority
+            fetchPriority="high"
+            loading="eager"
+            sizes="100vw"
+            className="object-cover"
           />
         </div>
 
