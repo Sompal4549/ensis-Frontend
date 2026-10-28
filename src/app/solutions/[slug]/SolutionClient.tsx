@@ -114,6 +114,8 @@ export default function SolutionClient({
           alt={solution.hero.imageAlt}
           fill
           priority
+          fetchPriority="high"
+          loading="eager"
           sizes="100vw"
           className="object-cover object-left"
           crossOrigin="anonymous"

@@ -51,6 +51,8 @@ sectionContent = {}
       <div className="absolute inset-0 overflow-hidden">
         <Image
           priority
+          fetchPriority="high"
+          loading="eager"
           alt={resolvedImage?.alt ?? "about banner"}
           src={imageUrl ? getImageUrl(imageUrl) : banner_image}
           fill

@@ -87,7 +87,7 @@ const defaultFooter = {
       { label: "Disclaimer", href: "/disclaimer" },
     ],
     developer: {
-      label: "Designed & Developed by",
+      label: "Designed & Developed by :",
       name: "enCodency",
       href: "https://encodency.com",
       logoUrl: "",
@@ -96,6 +96,8 @@ const defaultFooter = {
 };
 
 
+
+import encodencyLogoImg from "@/assets/footer/encodency-logo.jpg";
 
 const defaultFeatures = [
   { title: "Premium Quality", desc: "Durable & Reliable Products" },
@@ -107,9 +109,18 @@ const defaultFeatures = [
 
 export const Footer = async () => {
   const content = await getComponentContent("layout.footer", defaultFooter);
+  const rawDeveloper = (content.copyright as { developer?: FooterDeveloper } | undefined)?.developer
+    || (content as unknown as { developer?: FooterDeveloper })?.developer;
+
+  const rawLogoUrl = rawDeveloper?.logoUrl;
+  const devLogoString = typeof rawLogoUrl === "string"
+    ? rawLogoUrl.trim()
+    : (rawLogoUrl as unknown as { imageUrl?: string })?.imageUrl?.trim() || "";
+
   const developer: FooterDeveloper = {
     ...defaultFooter.copyright.developer,
-    ...(content.copyright as { developer?: FooterDeveloper } | undefined)?.developer,
+    ...rawDeveloper,
+    logoUrl: devLogoString || defaultFooter.copyright.developer.logoUrl,
   };
   const extras = content as unknown as FooterExtras;
   const copyrightYear = new Date().getFullYear();
@@ -124,6 +135,9 @@ export const Footer = async () => {
   const designHouseUrl = extras.company?.designHouselogo?.imageUrl || "";
   const designHouseSrc = /^https?:\/\//i.test(designHouseUrl) ? getImageUrl(designHouseUrl, 600) : designHouseLogo;
 
+  // Developer logo: uploaded logo or fallback to bundled encodency logo
+  const developerLogoSrc = devLogoString ? getImageUrl(devLogoString, 400) : encodencyLogoImg;
+
   const strapItems = defaultFeatures.map((item, i) => ({
     ...item,
     title: extras.strap?.[i]?.title?.trim() || item.title,
@@ -135,6 +149,7 @@ export const Footer = async () => {
     <FooterView
       footerLogoSrc={footerLogoSrc}
       designHouseSrc={designHouseSrc}
+      developerLogoSrc={developerLogoSrc}
       developer={developer}
       strapItems={strapItems}
       copyrightYear={copyrightYear}

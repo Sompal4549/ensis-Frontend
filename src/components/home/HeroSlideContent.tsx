@@ -95,7 +95,7 @@ export default function HeroSlideContent({
       {/* Background Image - pehle load hota hai */}
       <motion.div
         className="absolute inset-0"
-        initial={{ opacity: 0, scale: 1.12 }}
+        initial={slideIndex === 0 ? false : { opacity: 0, scale: 1.12 }}
         animate={{ opacity: 1, scale: isActive ? 1 : 1.08 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
       >
@@ -104,6 +104,8 @@ export default function HeroSlideContent({
           alt=""
           fill
           priority={slideIndex === 0}
+          fetchPriority={slideIndex === 0 ? "high" : "auto"}
+          loading={slideIndex === 0 ? "eager" : "lazy"}
           className="object-cover object-center xl:object-center xl:object-fill"
           crossOrigin="anonymous"
           sizes="100vw"

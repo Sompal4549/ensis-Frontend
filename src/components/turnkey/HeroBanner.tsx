@@ -50,7 +50,16 @@ export default function TurnkeyHero({ sectionContent }: { sectionContent?: Turnk
   return (
     <div className="relative overflow-visible mb-0 md:mb-20 pt-6">
       <div className="relative">
-        <Image src={bgImage} alt={sectionContent?.backgroundImage?.alt || title} fill className="object-cover xl:object-fill z-0! absolute object-left xl:object-right" priority />
+        <Image
+          src={bgImage}
+          alt={sectionContent?.backgroundImage?.alt || title}
+          fill
+          priority
+          fetchPriority="high"
+          loading="eager"
+          sizes="100vw"
+          className="object-cover xl:object-fill z-0! absolute object-left xl:object-right"
+        />
         {/* ── HERO ── */}
         <Container className="relative z-20 !py-0 !max-w-none xl:!max-w-[1400px]">
           <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none w-full">

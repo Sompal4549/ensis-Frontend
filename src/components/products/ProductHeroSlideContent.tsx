@@ -77,7 +77,7 @@ export default function ProductHeroSlideContent({
       {slide.image && (
         <motion.div
           className={imageClass}
-          initial={{ opacity: 0, scale: 1.12 }}
+          initial={slideIndex === 0 ? false : { opacity: 0, scale: 1.12 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
         >
@@ -86,6 +86,9 @@ export default function ProductHeroSlideContent({
             alt={slide.title}
             fill
             priority={slideIndex === 0}
+            fetchPriority={slideIndex === 0 ? "high" : "auto"}
+            loading={slideIndex === 0 ? "eager" : "lazy"}
+            sizes="100vw"
             className={
               productLayout
                 ? "object-cover object-center md:object-right scale-105"

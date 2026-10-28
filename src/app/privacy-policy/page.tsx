@@ -2,6 +2,7 @@
 
 import React, { useCallback, useEffect, useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight,
   ChevronRight,
@@ -94,10 +95,15 @@ export default function PrivacyPolicyPage() {
       <section className="relative z-10 pt-4 overflow-visible">
         {/* HERO IMAGE */}
         <div className="absolute inset-0 overflow-hidden">
-          <img
-            src={heroBg.src}
+          <Image
+            src={heroBg}
             alt="ENSIS Privacy Policy"
-            className="h-full w-full object-cover object-right sm:object-center"
+            fill
+            priority
+            fetchPriority="high"
+            loading="eager"
+            sizes="100vw"
+            className="object-cover object-right sm:object-center"
           />
         </div>
 

@@ -36,6 +36,8 @@ const BlogDetailBanner: React.FC<BlogDetailBannerProps> = ({ blog }) => {
           alt={blog?.banner?.backgroundImageAlt || ""}
           fill
           priority
+          fetchPriority="high"
+          loading="eager"
           sizes="100vw"
           className="object-cover object-right"
         />

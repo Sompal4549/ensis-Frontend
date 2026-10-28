@@ -283,12 +283,14 @@ export default function EnquiryPage({
       <section className="relative z-10 min-h-[260px] sm:min-h-[290px] md:min-h-[320px] overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
           <Image
-            src={heroBg.src}
+            src={heroBg}
             alt="ENSIS Enquiry"
             fill
             className="object-cover object-center"
             sizes="100vw"
             priority
+            fetchPriority="high"
+            loading="eager"
           />
         </div>
 
