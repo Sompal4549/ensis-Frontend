@@ -139,7 +139,7 @@ export default async function RootLayout({
           </Script>
         )}
       </head>
-      <body>
+      <body className="bg-white">
         {/* GTM noscript fallback */}
         {analytics.gtmId && (
           <noscript>

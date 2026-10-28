@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import bannerImg from "@/assets/contact/banner.webp";
+import { getImageUrl } from "@/lib/api/api";
 
 export interface ContactHeroFeature {
   id: string;
@@ -12,6 +13,8 @@ export interface ContactHeroFeature {
 
 export interface ContactHeroContent {
   bgImage?: string;
+  backgroundImage?: string;
+  image?: any;
   title?: string;
   heading?: string;
   highlightedText?: string;
@@ -19,13 +22,24 @@ export interface ContactHeroContent {
   features?: ContactHeroFeature[];
 }
 
-const ContactHero: React.FC<{ sectionContent?: ContactHeroContent }> = () => {
+const ContactHero: React.FC<{ sectionContent?: ContactHeroContent }> = ({ sectionContent }) => {
+  const content = sectionContent || {};
+  const rawBg = content.bgImage || content.backgroundImage || content.image;
+  const resolvedBg = rawBg
+    ? (typeof rawBg === "string" ? getImageUrl(rawBg) : (typeof rawBg === "object" && rawBg.imageUrl ? getImageUrl(rawBg.imageUrl) : rawBg))
+    : bannerImg;
+
+  const eyebrow = content.heading || "CONTACT US";
+  const title1 = content.title || "Let's Create";
+  const title2 = content.highlightedText || "Your Wellness Space";
+  const desc = content.description || "Have questions or need help? Our team is here to assist you with expert guidance and support.";
+
   return (
     <section className="w-full relative overflow-hidden bg-[#f7efe5] h-[145px] sm:h-[165px] md:h-[185px] lg:h-[195px] flex items-center mt-5 sm:mt-6 md:mt-7">
       {/* Background Banner Image - scaled to show full height without cropping */}
       <Image
-        src={bannerImg}
-        alt="Contact Us - Let's Create Your Wellness Space"
+        src={resolvedBg}
+        alt={title1 || "Contact Us"}
         fill
         priority
         fetchPriority="high"
@@ -45,24 +59,26 @@ const ContactHero: React.FC<{ sectionContent?: ContactHeroContent }> = () => {
 
       <div className="relative z-20 w-full max-w-[1400px] mx-auto px-4 md:px-10 py-4 flex items-center">
         <div className="max-w-[520px] pt-1.5 sm:pt-2.5">
-          {/* Tag: Orange line + CONTACT US */}
+          {/* Tag: Orange line + Eyebrow */}
           <div className="flex items-center gap-2">
             <span className="w-7 h-[3px] bg-[#f59e0b] rounded-full inline-block" />
             <span className="text-sm font-black tracking-[0.16em] text-[#0e271a] uppercase">
-              CONTACT US
+              {eyebrow}
             </span>
           </div>
 
           {/* Main Title: Let's Create (Forest Pine Green) + Your Wellness Space (Deep Navy Blue) */}
-          <h1 className="text-xl sm:text-xl  font-black tracking-tight">
-            <span className="text-[#0c2f1f] block font-black leading-tighter">Let&apos;s Create</span>
-            <span className="text-[#092243] block font-black leading-tighter">Your Wellness Space</span>
+          <h1 className="text-xl sm:text-xl font-black tracking-tight">
+            <span className="text-[#0c2f1f] block font-black leading-tighter">{title1}</span>
+            <span className="text-[#092243] block font-black leading-tighter">{title2}</span>
           </h1>
 
-          {/* Subtitle */}
-          <p className="text-sm text-[#1e293b] font-semibold  mt-1 max-w-[420px]">
-            Have questions or need help? Our team is here to assist you with expert guidance and support.
-          </p>
+          {/* Subtitle / Description */}
+          {desc && (
+            <p className="text-sm text-[#1e293b] font-semibold mt-1 max-w-[420px]">
+              {desc}
+            </p>
+          )}
         </div>
       </div>
     </section>

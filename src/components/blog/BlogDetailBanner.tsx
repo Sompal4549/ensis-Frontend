@@ -47,10 +47,10 @@ const BlogDetailBanner: React.FC<BlogDetailBannerProps> = ({ blog }) => {
       <div className="absolute inset-0 z-10 w-[68%] bg-gradient-to-r from-[#0f2e22] from-40% via-[#0f2e22]/90 via-70% to-transparent" />
 
       {/* Content */}
-      <Container className="relative z-20 mx-auto flex min-h-[550px] items-center px-6 py-8 md:min-h-[calc(100vh-146px)] md:py-10">
-        <div className="max-w-2xl">
+      <Container className="relative z-20 flex min-h-[326px] flex-col justify-center py-9 sm:py-12 md:py-14">
+        <div className="max-w-3xl">
         {/* Title */}
-        <h1 className="text-white">
+        <h1 className="text-white text-[clamp(2.1rem,3.2vw+0.75rem,2.85rem)] font-bold leading-tight">
           <span className="block">
             {blog?.banner?.title}
           </span>
@@ -60,7 +60,7 @@ const BlogDetailBanner: React.FC<BlogDetailBannerProps> = ({ blog }) => {
         </h1>
 
         {/* Meta row */}
-        <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/15 pt-5 text-sm text-white/85">
+        <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-white/15 pt-3.5 text-sm text-white/85">
         {blog?.banner?.date && (
   <span className="flex items-center gap-2">
     <Calendar size={15} className="text-[#C9972A]" />

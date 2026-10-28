@@ -143,7 +143,7 @@ export default function HowWeWork({ sectionContent }: { sectionContent?: HowWeWo
         <div className="grid gap-6 lg:grid-cols-[1fr_1.08fr]">
           {/* LEFT CARD */}
           <div className="overflow-hidden rounded-2xl border border-[#ECECEC] bg-[#F8FBFE]">
-            <div className="grid h-full md:grid-cols-[1.2fr_0.95fr] relative">
+            <div className="grid h-full md:grid-cols-[1.45fr_0.75fr] relative">
               <Image
                 src={whyChoose.bgImage || ourMission}
                 alt="Why Choose Us"
@@ -160,8 +160,14 @@ export default function HowWeWork({ sectionContent }: { sectionContent?: HowWeWo
                   {whyChoose.title}
                 </h2>
 
-                <p className="mt-4 text-base leading-6" dangerouslySetInnerHTML={{ __html: whyChoose.description || "" }}>
-                </p>
+                <p
+                  className="mt-4 text-base leading-6 text-[#3a4556]"
+                  dangerouslySetInnerHTML={{
+                    __html: (whyChoose.description || "We combine industry expertise, innovative strategies, and hands-on support to turn your wellness vision into reality.")
+                      .replace(/innovative\s+strategies/gi, "innovative<br class='hidden sm:inline' />strategies")
+                      .replace(/to\s+turn\s+your/gi, "to turn<br class='hidden sm:inline' />your")
+                  }}
+                />
 
                 <div className="mt-5 space-y-3">
                   {(whyChoose.chooseList || []).map((item, index) => (

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState, useMemo } from "react";
+import React, { useCallback, useEffect, useState, useMemo, useRef } from "react";
 import Image from "next/image";
 import {
   ArrowRight,
@@ -14,6 +14,7 @@ import { Container } from "@/components/ui/Container";
 import MobileScrollSpy from "@/components/ui/MobileScrollSpy";
 import termsBg from "@/assets/disclaimer_hero.webp";
 import lotusIcon from "@/assets/lotus.png";
+import { API_URL, getImageUrl } from "@/lib/api/api";
 
 import { staticTermsSections } from "@/data/policy";
 
@@ -36,18 +37,71 @@ export default function TermsConditionsPage() {
   const [sections, setSections] = useState<PolicySection[]>(staticTermsSections);
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState<string>(staticTermsSections[0]?.id || "");
+  const [bannerImg, setBannerImg] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string>("25 October 2026");
+  const [heroContent, setHeroContent] = useState<{
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+  }>({});
   const [mobileMenu, setMobileMenu] = useState(false);
+  const contentContainerRef = useRef<HTMLDivElement>(null);
+  const sidebarCardRef = useRef<HTMLDivElement>(null);
+  const [sidebarHeight, setSidebarHeight] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (sidebarCardRef.current && window.innerWidth >= 1024) {
+        setSidebarHeight(sidebarCardRef.current.offsetHeight);
+      } else {
+        setSidebarHeight(undefined);
+      }
+    };
+    updateHeight();
+    const ro = typeof ResizeObserver !== "undefined" && sidebarCardRef.current
+      ? new ResizeObserver(updateHeight)
+      : null;
+    if (sidebarCardRef.current && ro) ro.observe(sidebarCardRef.current);
+    window.addEventListener("resize", updateHeight);
+    return () => {
+      ro?.disconnect();
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchTermsData = async () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/component-content/policy.terms`
+          `${API_URL}/component-content/policy.terms`
         );
         if (response.ok) {
           const data = await response.json();
           const termsData = data.data;
+          const hero = termsData?.data?.hero || termsData?.hero;
+          const updatedDate = hero?.lastUpdated || termsData?.data?.lastUpdated;
+          if (updatedDate) {
+            setLastUpdated(updatedDate);
+          } else if (termsData?.updatedAt) {
+            const d = new Date(termsData.updatedAt);
+            if (!isNaN(d.getTime())) {
+              setLastUpdated(d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }));
+            }
+          }
+          const img =
+            hero?.bannerImage ||
+            hero?.backgroundImage ||
+            termsData?.data?.bannerImage ||
+            termsData?.bannerImage;
+          if (img) setBannerImg(img);
+          if (hero) {
+            setHeroContent({
+              eyebrow: hero.eyebrow,
+              title: hero.title,
+              subtitle: hero.subtitle,
+            });
+          }
           if (termsData && termsData.data && termsData.data.sections) {
             setSections(termsData.data.sections);
             if (termsData.data.sections.length > 0) {
@@ -102,7 +156,7 @@ export default function TermsConditionsPage() {
         {/* HERO IMAGE */}
         <div className="absolute inset-0 overflow-hidden">
           <Image
-            src={termsBg}
+            src={bannerImg && !bannerImg.includes("disclaimer_hero") ? getImageUrl(bannerImg) : termsBg}
             alt="ENSIS Terms and Conditions"
             fill
             priority
@@ -110,6 +164,7 @@ export default function TermsConditionsPage() {
             loading="eager"
             sizes="100vw"
             className="object-cover"
+            onError={() => setBannerImg(null)}
           />
         </div>
 
@@ -119,17 +174,23 @@ export default function TermsConditionsPage() {
             <div className="mb-2 flex items-center gap-3">
               <span className="h-px w-8 bg-[#a9742a]" />
               <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#a9742a]">
-                LEGAL
+                {heroContent.eyebrow || "LEGAL"}
               </p>
             </div>
 
             <h1 className="text-[clamp(2rem,3vw+0.75rem,2.875rem)] leading-normal text-[#1f261b]">
-              Terms & <span className="text-[#a9742a]">Conditions</span>
+              {heroContent.title ? (
+                heroContent.title
+              ) : (
+                <>
+                  Terms & <span className="text-[#a9742a]">Conditions</span>
+                </>
+              )}
             </h1>
 
             <p className="max-w-[480px] text-base font-medium leading-normal text-[#666666]">
-              Please review the terms that govern your use of the ENSIS
-              website, products, services and business interactions.
+              {heroContent.subtitle ||
+                "Please review the terms that govern your use of the ENSIS website, products, services and business interactions."}
             </p>
             {/* 
             <div className="mt-5 flex items-center gap-2 text-sm font-medium text-[#666666]">
@@ -189,13 +250,24 @@ export default function TermsConditionsPage() {
             items={navItems}
             activeSection={activeSection}
             onSectionChange={handleSectionChange}
+            scrollContainerRef={contentContainerRef}
+            sidebarCardRef={sidebarCardRef}
           />
 
           {/* =================================================
               POLICY CONTENT
           ================================================= */}
 
-          <div className="min-w-0">
+          <div
+            ref={contentContainerRef}
+            style={sidebarHeight ? { height: `${sidebarHeight}px` } : undefined}
+            className="relative min-w-0 rounded-xl border border-[#e5e7eb] bg-white p-4 pt-4 shadow-xs lg:overflow-y-auto"
+          >
+            {/* LAST UPDATED */}
+            <p className="absolute top-3 right-4 sm:top-3.5 sm:right-5 text-[12px] font-medium text-[#8a8a8a] select-none pointer-events-none z-10">
+              Last Updated: {lastUpdated}
+            </p>
+
             {sections.map((section, index) => (
               <React.Fragment key={section.id}>
                 <PolicySection
@@ -218,14 +290,14 @@ export default function TermsConditionsPage() {
 
 function SectionDivider() {
   return (
-    <div className="my-1 flex items-center gap-4" aria-hidden>
-      <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[#d9b877] to-[#d9b877]" />
+    <div className="my-1 flex items-center gap-3" aria-hidden>
+      <span className="h-px flex-1 bg-[#d9b877]" />
       <img
         src={lotusIcon.src}
         alt=""
-        className="h-6 w-auto shrink-0 object-contain"
+        className="h-5 w-auto shrink-0 object-contain"
       />
-      <span className="h-px flex-1 bg-gradient-to-l from-transparent via-[#d9b877] to-[#d9b877]" />
+      <span className="h-px flex-1 bg-[#d9b877]" />
     </div>
   );
 }
@@ -244,35 +316,34 @@ function PolicySection({
   return (
     <article
       id={section.id}
-      style={isActive ? { boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px" } : undefined}
-      className="scroll-mt-28 rounded-xl px-4 py-1.5 transition-all duration-300 sm:px-4"
+      className="scroll-mt-6 rounded-xl px-1.5 py-1 sm:px-2 sm:py-1 transition-all duration-300"
     >
-      <h2 className="text-[23px] font-bold leading-tight text-[#063120] sm:text-[25px]">
+      <h2 className="text-[20px] font-bold leading-tight text-[#063120] sm:text-[22px]">
         {(parseInt(section.number, 10) || section.number)}. {section.title}
       </h2>
 
-      <p className="mt-2 max-w-[850px] text-base font-medium leading-normal text-[#666666]">
+      <p className="mt-1.5 max-w-[850px] text-[14px] sm:text-[15px] font-medium leading-normal text-[#555555]">
         {section.text}
       </p>
 
       {section.extra && (
-        <p className="mt-2 max-w-[850px] text-base font-medium leading-normal text-[#666666]">
+        <p className="mt-1.5 max-w-[850px] text-[14px] sm:text-[15px] font-medium leading-normal text-[#555555]">
           {section.extra}
         </p>
       )}
 
       {section.extra2 && (
-        <p className="mt-2 max-w-[850px] text-base font-medium leading-normal text-[#666666]">
+        <p className="mt-1.5 max-w-[850px] text-[14px] sm:text-[15px] font-medium leading-normal text-[#555555]">
           {section.extra2}
         </p>
       )}
 
       {section.bullets && (
-        <ul className="mt-2 space-y-1 pl-4">
+        <ul className="mt-1.5 space-y-1 pl-4">
           {section.bullets.map((bullet) => (
             <li
               key={bullet}
-              className="relative pl-1 text-base font-medium leading-normal text-[#666666]"
+              className="relative pl-1 text-[14px] sm:text-[15px] font-medium leading-normal text-[#555555]"
             >
               <span className="absolute -left-3 top-[9px] h-1 w-1 rounded-full bg-[#333333]" />
               {bullet}
@@ -284,10 +355,10 @@ function PolicySection({
       {section.link && (
         <a
           href={section.link.href}
-          className="mt-3 inline-flex items-center gap-2 text-base font-semibold text-[#0f2518] underline underline-offset-4 transition-colors hover:text-[#a9742a]"
+          className="mt-2.5 inline-flex items-center gap-2 text-[14px] sm:text-[15px] font-semibold text-[#0f2518] underline underline-offset-4 transition-colors hover:text-[#a9742a]"
         >
           {section.link.label}
-          <ArrowRight size={16} />
+          <ArrowRight size={15} />
         </a>
       )}
     </article>

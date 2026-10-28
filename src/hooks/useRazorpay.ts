@@ -57,8 +57,12 @@ export function useRazorpay({ onSuccess, onFailure }: UseRazorpayOptions = {}) {
         }
 
         // 2. Create Razorpay order on backend
-        const orderResponse = await createPaymentOrder(orderId, token);
-        const orderData: RazorpayOrderData = orderResponse.data;
+        const orderResponse: any = await createPaymentOrder(orderId, token);
+        const orderData: RazorpayOrderData = orderResponse?.data ?? orderResponse;
+
+        if (!orderData || !orderData.keyId) {
+          throw new Error("Unable to initialize payment: Razorpay Key ID not received from server.");
+        }
 
         // 3. Extract user metadata for prefilling Razorpay Checkout form
         let prefill = {

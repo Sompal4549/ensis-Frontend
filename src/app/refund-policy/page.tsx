@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState, useMemo } from "react";
+import React, { useCallback, useEffect, useState, useMemo, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -23,6 +23,7 @@ import MobileScrollSpy from "@/components/ui/MobileScrollSpy";
 import disclaimerBg from "@/assets/disclaimer_hero.webp";
 import lotusIcon from "@/assets/lotus.png";
 import { staticRefundSections, type RefundSection } from "@/data/policy";
+import { API_URL, getImageUrl } from "@/lib/api/api";
 
 const cardIcons: Record<string, React.ReactNode> = {
   "file-x": <FileX2 size={26} strokeWidth={1.5} />,
@@ -38,17 +39,70 @@ const cardIcons: Record<string, React.ReactNode> = {
 export default function RefundPolicyPage() {
   const [sections, setSections] = useState<RefundSection[]>(staticRefundSections);
   const [activeSection, setActiveSection] = useState<string>(staticRefundSections[0]?.id || "");
+  const [bannerImg, setBannerImg] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<string>("25 October 2026");
+  const [heroContent, setHeroContent] = useState<{
+    eyebrow?: string;
+    title?: string;
+    subtitle?: string;
+  }>({});
   const [mobileMenu, setMobileMenu] = useState(false);
+  const contentContainerRef = useRef<HTMLDivElement>(null);
+  const sidebarCardRef = useRef<HTMLDivElement>(null);
+  const [sidebarHeight, setSidebarHeight] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (sidebarCardRef.current && window.innerWidth >= 1024) {
+        setSidebarHeight(sidebarCardRef.current.offsetHeight);
+      } else {
+        setSidebarHeight(undefined);
+      }
+    };
+    updateHeight();
+    const ro = typeof ResizeObserver !== "undefined" && sidebarCardRef.current
+      ? new ResizeObserver(updateHeight)
+      : null;
+    if (sidebarCardRef.current && ro) ro.observe(sidebarCardRef.current);
+    window.addEventListener("resize", updateHeight);
+    return () => {
+      ro?.disconnect();
+      window.removeEventListener("resize", updateHeight);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchRefundData = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/component-content/policy.refund`
+          `${API_URL}/component-content/policy.refund`
         );
         if (response.ok) {
           const data = await response.json();
           const refundData = data.data;
+          const hero = refundData?.data?.hero || refundData?.hero;
+          const updatedDate = hero?.lastUpdated || refundData?.data?.lastUpdated;
+          if (updatedDate) {
+            setLastUpdated(updatedDate);
+          } else if (refundData?.updatedAt) {
+            const d = new Date(refundData.updatedAt);
+            if (!isNaN(d.getTime())) {
+              setLastUpdated(d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }));
+            }
+          }
+          const img =
+            hero?.bannerImage ||
+            hero?.backgroundImage ||
+            refundData?.data?.bannerImage ||
+            refundData?.bannerImage;
+          if (img) setBannerImg(img);
+          if (hero) {
+            setHeroContent({
+              eyebrow: hero.eyebrow,
+              title: hero.title,
+              subtitle: hero.subtitle,
+            });
+          }
           if (refundData && refundData.data && refundData.data.sections) {
             setSections(refundData.data.sections);
             if (refundData.data.sections.length > 0) {
@@ -101,7 +155,7 @@ export default function RefundPolicyPage() {
         {/* HERO IMAGE */}
         <div className="absolute inset-0 overflow-hidden">
           <Image
-            src={disclaimerBg}
+            src={bannerImg && !bannerImg.includes("disclaimer_hero") ? getImageUrl(bannerImg) : disclaimerBg}
             alt="ENSIS Refund Policy"
             fill
             priority
@@ -109,6 +163,7 @@ export default function RefundPolicyPage() {
             loading="eager"
             sizes="100vw"
             className="object-cover"
+            onError={() => setBannerImg(null)}
           />
         </div>
 
@@ -119,18 +174,23 @@ export default function RefundPolicyPage() {
               <div className="mb-2 flex items-center gap-3">
                 <span className="h-px w-8 bg-[#a9742a]" />
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#a9742a]">
-                  LEGAL
+                  {heroContent.eyebrow || "LEGAL"}
                 </p>
               </div>
 
               <h1 className=" text-[clamp(2rem,3vw+0.75rem,2.875rem)] leading-normal text-[#1f261b]">
-                Refund <span className="text-[#a9742a]">Policy</span>
+                {heroContent.title ? (
+                  heroContent.title
+                ) : (
+                  <>
+                    Refund <span className="text-[#a9742a]">Policy</span>
+                  </>
+                )}
               </h1>
 
               <p className="max-w-[480px] text-base font-medium leading-normal text-[#666666]">
-                Our refund policy explains the conditions under which
-                cancellations, refunds or adjustments are applicable for
-                our products and services.
+                {heroContent.subtitle ||
+                  "Our refund policy explains the conditions under which cancellations, refunds or adjustments are applicable for our products and services."}
               </p>
             </div>
 
@@ -194,13 +254,24 @@ export default function RefundPolicyPage() {
             items={navItems}
             activeSection={activeSection}
             onSectionChange={handleSectionChange}
+            scrollContainerRef={contentContainerRef}
+            sidebarCardRef={sidebarCardRef}
           />
 
           {/* =================================================
               POLICY CONTENT
           ================================================= */}
 
-          <div className="min-w-0">
+          <div
+            ref={contentContainerRef}
+            style={sidebarHeight ? { height: `${sidebarHeight}px` } : undefined}
+            className="relative min-w-0 rounded-xl border border-[#e5e7eb] bg-white p-4 pt-4 shadow-xs lg:overflow-y-auto"
+          >
+            {/* LAST UPDATED */}
+            <p className="absolute top-3 right-4 sm:top-3.5 sm:right-5 text-[12px] font-medium text-[#8a8a8a] select-none pointer-events-none z-10">
+              Last Updated: {lastUpdated}
+            </p>
+
             {sections.map((section, index) => (
               <React.Fragment key={section.id}>
                 <PolicySection
@@ -223,14 +294,14 @@ export default function RefundPolicyPage() {
 
 function SectionDivider() {
   return (
-    <div className="my-1 flex items-center gap-4" aria-hidden>
-      <span className="h-px flex-1 bg-gradient-to-r from-transparent via-[#d9b877] to-[#d9b877]" />
+    <div className="my-1 flex items-center gap-3" aria-hidden>
+      <span className="h-px flex-1 bg-[#d9b877]" />
       <img
         src={lotusIcon.src}
         alt=""
-        className="h-6 w-auto shrink-0 object-contain"
+        className="h-5 w-auto shrink-0 object-contain"
       />
-      <span className="h-px flex-1 bg-gradient-to-l from-transparent via-[#d9b877] to-[#d9b877]" />
+      <span className="h-px flex-1 bg-[#d9b877]" />
     </div>
   );
 }
@@ -251,35 +322,34 @@ function PolicySection({
   return (
     <article
       id={section.id}
-      style={isActive ? { boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px" } : undefined}
-      className="scroll-mt-28 rounded-xl px-4 py-2 transition-all duration-300 sm:px-4"
+      className="scroll-mt-6 rounded-xl px-1.5 py-1 sm:px-2 sm:py-1 transition-all duration-300"
     >
-      <h2 className="text-[23px] font-bold leading-tight text-[#063120] sm:text-[25px]">
+      <h2 className="text-[20px] font-bold leading-tight text-[#063120] sm:text-[22px]">
         {displayNum}. {section.title}
       </h2>
 
-      <p className="mt-2 max-w-[850px] text-base font-medium leading-normal text-[#666666]">
+      <p className="mt-1.5 max-w-[850px] text-[14px] sm:text-[15px] font-medium leading-normal text-[#555555]">
         {section.text}
       </p>
 
       {section.extra && (
-        <p className="mt-2 max-w-[850px] text-base font-medium leading-normal text-[#666666]">
+        <p className="mt-1.5 max-w-[850px] text-[14px] sm:text-[15px] font-medium leading-normal text-[#555555]">
           {section.extra}
         </p>
       )}
 
       {section.extra2 && (
-        <p className="mt-2 max-w-[850px] text-base font-medium leading-normal text-[#666666]">
+        <p className="mt-1.5 max-w-[850px] text-[14px] sm:text-[15px] font-medium leading-normal text-[#555555]">
           {section.extra2}
         </p>
       )}
 
       {section.bullets && (
-        <ul className="mt-2 space-y-1 pl-4">
+        <ul className="mt-1.5 space-y-1 pl-4">
           {section.bullets.map((bullet) => (
             <li
               key={bullet}
-              className="relative pl-1 text-base font-medium leading-normal text-[#666666]"
+              className="relative pl-1 text-[14px] sm:text-[15px] font-medium leading-normal text-[#555555]"
             >
               <span className="absolute -left-3 top-[9px] h-1 w-1 rounded-full bg-[#333333]" />
               {bullet}
@@ -290,21 +360,21 @@ function PolicySection({
 
       {/* CANCELLATION CARDS */}
       {section.cards && section.cards.length > 0 && (
-        <div className="mt-4 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-2.5 grid gap-2.5 sm:grid-cols-2 xl:grid-cols-4">
           {section.cards.map((card) => (
             <div
               key={card.title}
-              className="flex flex-col items-center gap-2 rounded-xl border border-[#e6d6b9] bg-[#fdfaf3] px-4 py-4 text-center"
+              className="flex flex-col items-center gap-1.5 rounded-xl border border-[#e6d6b9] bg-[#fdfaf3] px-3.5 py-3 text-center"
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#93a66d] bg-white text-[#1f4d2f]">
-                {cardIcons[card.icon] ?? <Check size={26} strokeWidth={1.5} />}
+              <div className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#93a66d] bg-white text-[#1f4d2f]">
+                {cardIcons[card.icon] ?? <Check size={22} strokeWidth={1.5} />}
               </div>
 
-              <p className="text-sm font-bold leading-5 text-[#063120]">
+              <p className="text-[13.5px] font-semibold leading-snug text-[#063120]">
                 {card.title}
               </p>
 
-              <p className="text-[13px] font-medium leading-5 text-[#666666]">
+              <p className="text-[12px] font-medium leading-relaxed text-[#666666]">
                 {card.text}
               </p>
             </div>

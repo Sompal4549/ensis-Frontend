@@ -194,8 +194,8 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
         <BlogDetailBanner blog={blog} />
       ) : (
         // fallback — simple header agar banner data nahi hai
-        <div className="py-12 md:py-20 bg-[#fdfaf5]">
-          <Container>
+        <div className="bg-[#fdfaf5]">
+          <Container className="flex min-h-[326px] flex-col justify-center py-9 sm:py-12 md:py-14">
             <div className="flex flex-wrap items-center gap-4 text-sm font-semibold uppercase tracking-wider text-[#9d7f62] mb-3">
               <span>{new Date(blog.banner?.date || blog.date || blog.createdAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
               <span className="h-1.5 w-1.5 rounded-full bg-[#dcc9b5]" />
@@ -238,7 +238,7 @@ export default async function BlogDetailPage({ params }: BlogDetailProps) {
 
                 <div
                   className="blog-content max-w-none"
-                  dangerouslySetInnerHTML={{ __html: decodeHtml(blog.article.content || blog.description || "") }}
+                  dangerouslySetInnerHTML={{ __html: decodeHtml(blog.article?.content || blog.description || "") }}
                 />
 
                 {blog.tags && blog.tags.length > 0 && (

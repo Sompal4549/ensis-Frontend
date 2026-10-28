@@ -1,6 +1,7 @@
 import Image from "next/image";
 import blogHero from "@/assets/blog.png";
 import { Container } from "../ui/Container";
+import { getImageUrl } from "@/lib/api/api";
 
 const DEFAULT_DESCRIPTION =
   "Explore expert articles, wellness tips, Ayurvedic knowledge and industry insights to create better healing spaces.";
@@ -13,18 +14,21 @@ function stripHtml(value?: string): string {
 export default function BlogHeroSection({ sectionContent }: { sectionContent: any }) {
   const data = sectionContent || {};
 
-  const eyebrow = "OUR BLOG";
+  const eyebrow = data.eyebrow || "OUR BLOG";
   const heading =
     data.heading && !data.heading.includes("Wisdom")
       ? data.heading.replace(/[\s,]+$/, "")
-      : "Insights for a";
+      : (data.title || "Insights for a");
   const highlight = data.highlight || "Healthier Tomorrow";
   const rawDesc = stripHtml(data.description);
   const description =
     rawDesc && !rawDesc.includes("timeless")
       ? rawDesc
       : DEFAULT_DESCRIPTION;
-  const backgroundImage = blogHero;
+  const rawBg = data.backgroundImage?.imageUrl || data.backgroundImage || data.image?.imageUrl || data.image;
+  const backgroundImage = rawBg
+    ? (typeof rawBg === "string" ? getImageUrl(rawBg) : rawBg)
+    : blogHero;
 
   return (
     <section className="relative overflow-hidden bg-[#fbf7f1]">
@@ -44,7 +48,7 @@ export default function BlogHeroSection({ sectionContent }: { sectionContent: an
       </div>
 
       {/* CONTENT */}
-      <Container className="relative z-10 py-9 sm:py-12 md:py-14">
+      <Container className="relative z-10 flex min-h-[326px] flex-col justify-center py-9 sm:py-12 md:py-14">
         <div className="max-w-[560px]">
           <div className="flex items-center gap-3">
             <span className="h-px w-8 bg-[#c9972a]" />

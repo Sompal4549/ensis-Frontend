@@ -10,11 +10,12 @@ import { getComponentContent } from "@/lib/api/api";
 type Feature = {
   title: string; // Used for item.title
   description: string; // Used for item.description
-items:{title:string;
-  image:string;
-  heading:string;
-  description:string
-}[]// Used for item.image
+  items: {
+    title: string;
+    image: string;
+    heading: string;
+    description: string
+  }[]// Used for item.image
 };
 
 type Stat = {
@@ -31,7 +32,7 @@ interface ConsultancyHeroContent {
   heading: string;
   title: string;
   titlepart1: string;
-  description:string;
+  description: string;
   titleHighlight: string;
   titlepart2: string;
   features: Array<{
@@ -75,182 +76,170 @@ export default async function ConsultancyHero({ sectionContent }: { sectionConte
   const secondaryButton = sectionContent?.secondaryButton || { label: "Download Guide", href: "/contact" };
 
   return (
-  <section className="relative bg-[#f7f5f2] md:pb-16">
-    {/* Hero */}
-    <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none overflow-hidden">
-      <Image
-        src={bgImage}
-        alt={title || "Consultancy Banner"}
-        fill
-        priority
-        fetchPriority="high"
-        loading="eager"
-        sizes="100vw"
-        className="object-cover object-center -z-0"
-      />
-
-      <Container className="relative z-10 h-full">
-        <div className="grid h-full grid-cols-1 lg:grid-cols-2 items-start pt-10 md:pt-14 lg:pt-20 xl:pt-24 pb-10 lg:pb-24">
-          {/* LEFT */}
-          <div className="max-w-[700px] flex flex-col justify-center">
-            <p className="mb-2 text-base font-semibold tracking-[1.8px] uppercase text-[#d66a38]">
-              {heading}
-            </p>
-
-            <h1 className="w-full">
-              <span>
-                {title}{" "}
-                {titlepart1}{" "}
-                <span className="text-[#2563eb]">
-                  {titleHighlight}
-                </span>{" "}
-                {titlepart2}
-              </span>
-            </h1>
-
-            <p
-              className="mt-2 w-full text-base leading-6"
-              dangerouslySetInnerHTML={{
-                __html: description,
-              }}
-            />
-
-            {featuresList.length > 0 && (
-              <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-                {featuresList.map((item) => (
-                  <div key={item.title} className="flex gap-4">
-                    {item.image && (
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        width={40}
-                        height={40}
-                        className="object-contain shrink-0"
-                      />
-                    )}
-
-                    <div>
-                      <h3 className="text-base font-semibold line-clamp-3">{item.title}</h3>
-
-                      <p
-                        className="mt-1 text-base line-clamp-3"
-                        dangerouslySetInnerHTML={{
-                          __html: item.description,
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="mt-4 flex flex-col gap-4 sm:flex-row">
-              <BookButton
-                text={primaryButton.label}
-                path={primaryButton.href}
-              />
-
-              <GreenButton
-                text={secondaryButton.label}
-                path={secondaryButton.href}
-                rightIcon={<Download size={16} />}
-              />
-            </div>
-          </div>
-        </div>
-      </Container>
-
-      {/* DESKTOP CARD — moved inside the hero's own relative wrapper so
-          bottom-0 anchors to the hero's actual bottom edge. Previously this
-          was a direct child of <section>, which has lg:pb-32; bottom-0 is
-          measured from the padding box, so the card was anchoring 128px
-          below the hero (plus the translate-y-1/2 on top of that), making
-          it land fully below the banner instead of half-overlapping it. */}
-      <div className="hidden lg:block absolute left-0 right-0 bottom-0 translate-y-1/2 z-30">
-        <Container>
-        <div className="rounded-[20px] border-2 border-[#C7A55B] bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
-  <div className="grid grid-cols-4">
-    {featuresItems.map((item, index) => (
-      <div
-        key={item.title}
-        className="relative flex items-start gap-5 px-4 py-4"
-      >
-        {index !== 0 && (
-          <div className="absolute left-0 top-1/2 h-[58px] -translate-y-1/2 border-l border-[#E8DCC1]" />
-        )}
-
+    <section className="relative bg-[#f7f5f2] z-20 mb-14">
+      {/* Hero Banner wrapper with overflow-hidden for image */}
+      <div className="relative min-h-[550px] md:h-[calc(100vh-146px)] max-h-[650px] xl:max-h-none overflow-hidden">
         <Image
-          src={item.image}
-          alt={item.title}
-          width={44}
-          height={44}
-          className="object-contain shrink-0 mt-1"
+          src={bgImage}
+          alt={title || "Consultancy Banner"}
+          fill
+          priority
+          fetchPriority="high"
+          loading="eager"
+          sizes="100vw"
+          className="object-cover object-center -z-0"
         />
 
-        <div className="flex flex-col">
-          <div className="font-semibold text-[#1F3A2A]">
-            {item.heading}
-          </div>
+        <Container className="relative z-10 h-full">
+          <div className="grid h-full grid-cols-1 lg:grid-cols-2 items-start pt-10 md:pt-14 lg:pt-20 xl:pt-24 pb-10 lg:pb-24">
+            {/* LEFT */}
+            <div className="max-w-[700px] flex flex-col justify-center">
+              <p className="mb-2 text-base font-semibold tracking-[1.8px] uppercase text-[#d66a38]">
+                {heading}
+              </p>
 
-          <div className="mt-1 text-base font-semibold text-[#3B3B3B]">
-            {item.title}
-          </div>
+              <h1 className="w-full">
+                <span>
+                  {title}{" "}
+                  {titlepart1}{" "}
+                  <span className="text-[#2563eb]">
+                    {titleHighlight}
+                  </span>{" "}
+                  {titlepart2}
+                </span>
+              </h1>
 
-          {/* <div
-            className="mt-1 text-base text-[#6B6B6B]"
-            dangerouslySetInnerHTML={{
-              __html: item.description,
-            }}
-          /> */}
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
-        </Container>
-      </div>
-    </div>
+              <p
+                className="mt-2 w-full text-base leading-6"
+                dangerouslySetInnerHTML={{
+                  __html: description,
+                }}
+              />
 
-    {/* MOBILE CARD */}
-    <div className="block lg:hidden mt-6">
-      <Container>
-        <div className="rounded-[20px] bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6">
-            {featuresItems.map((item) => (
-              <div
-                key={item.title}
-                className="flex items-center gap-4"
-              >
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  width={44}
-              height={44}
-                  className="object-contain"
+              {featuresList.length > 0 && (
+                <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+                  {featuresList.map((item) => (
+                    <div key={item.title} className="flex gap-4">
+                      {item.image && (
+                        <Image
+                          src={item.image}
+                          alt={item.title}
+                          width={40}
+                          height={40}
+                          className="object-contain shrink-0"
+                        />
+                      )}
+
+                      <div>
+                        <h3 className="text-base font-semibold line-clamp-3">{item.title}</h3>
+
+                        <p
+                          className="mt-1 text-base line-clamp-3"
+                          dangerouslySetInnerHTML={{
+                            __html: item.description,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="mt-4 flex flex-col gap-4 sm:flex-row">
+                <BookButton
+                  text={primaryButton.label}
+                  path={primaryButton.href}
                 />
 
-                <div>
-                  <div className="font-semibold">
-                    {item.heading}
-                  </div>
+                <GreenButton
+                  text={secondaryButton.label}
+                  path={secondaryButton.href}
+                  rightIcon={<Download size={16} />}
+                />
+              </div>
+            </div>
+          </div>
+        </Container>
+      </div>
 
-                  <div className="font-semibold text-base">
-                    {item.title}
-                  </div>
+      {/* DESKTOP CARD — OUTSIDE overflow-hidden container so the bottom half is never clipped */}
+      <div className="hidden lg:block absolute left-0 right-0 bottom-0 translate-y-1/2 z-30">
+        <Container>
+          <div className="rounded-[20px] border-2 border-[#C7A55B] bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
+            <div className="grid grid-cols-4">
+              {featuresItems.map((item, index) => (
+                <div
+                  key={item.title}
+                  className="relative flex items-center gap-4 px-5 py-4"
+                >
+                  {index !== 0 && (
+                    <div className="absolute left-0 top-1/2 h-[58px] -translate-y-1/2 border-l border-[#E8DCC1]" />
+                  )}
 
-                  {/* <div
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    width={44}
+                    height={44}
+                    className="object-contain shrink-0"
+                  />
+
+                  <div className="flex flex-col">
+                    <div className="text-xl font-bold text-[#1F3A2A] leading-tight">
+                      {item.heading}
+                    </div>
+
+                    <div className="mt-0.5 text-sm font-semibold text-[#3B3B3B] leading-snug">
+                      {item.title}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </div>
+
+      {/* MOBILE CARD */}
+      <div className="block lg:hidden mt-6">
+        <Container>
+          <div className="rounded-[20px] bg-white shadow-[0_10px_40px_rgba(0,0,0,0.06)]">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-6">
+              {featuresItems.map((item) => (
+                <div
+                  key={item.title}
+                  className="flex items-center gap-4"
+                >
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    width={44}
+                    height={44}
+                    className="object-contain"
+                  />
+
+                  <div>
+                    <div className="font-semibold">
+                      {item.heading}
+                    </div>
+
+                    <div className="font-semibold text-base">
+                      {item.title}
+                    </div>
+
+                    {/* <div
                     className="text-base"
                     dangerouslySetInnerHTML={{
                       __html: item.description,
                     }}
                   /> */}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      </Container>
-    </div>
-  </section>
-);
+        </Container>
+      </div>
+    </section>
+  );
 }
