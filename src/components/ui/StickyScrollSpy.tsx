@@ -134,7 +134,7 @@ export default function StickyScrollSpy({
     if (isContainerScrollable && container) {
       const containerTop = container.getBoundingClientRect().top;
       const elTop = el.getBoundingClientRect().top;
-      const targetScroll = container.scrollTop + (elTop - containerTop) - 8;
+      const targetScroll = container.scrollTop + (elTop - containerTop) - 14;
       container.scrollTo({ top: Math.max(0, targetScroll), behavior: "smooth" });
 
       if (containerTop < headerOffset - 40 || containerTop > window.innerHeight - 100) {

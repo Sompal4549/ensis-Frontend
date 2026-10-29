@@ -222,7 +222,7 @@ export default function PrivacyPolicyPage() {
           MAIN CONTENT
       ===================================================== */}
 
-      <section className="relative mx-auto max-w-[1400px] px-5 py-3 sm:px-10 lg:py-4">
+      <section className="relative mx-auto max-w-[1400px] px-5 py-2 sm:px-10">
         <div className="grid gap-3 lg:grid-cols-[280px_1fr]">
           {/* =================================================
               DESKTOP SIDEBAR
@@ -241,24 +241,32 @@ export default function PrivacyPolicyPage() {
           ================================================= */}
 
           <div
-            ref={contentContainerRef}
             style={sidebarHeight ? { height: `${sidebarHeight}px` } : undefined}
-            className="relative min-w-0 rounded-xl border border-[#e5e7eb] bg-white p-4 sm:p-5 pt-4 shadow-xs lg:overflow-y-auto"
+            className="relative min-w-0 rounded-xl border border-[#e5e7eb] bg-white shadow-xs pl-3 sm:pl-4 pr-0 pt-3 pb-3.5 sm:pt-3.5 sm:pb-4 flex flex-col overflow-hidden"
           >
-            {/* LAST UPDATED */}
-            <p className="absolute top-3 right-4 sm:top-3.5 sm:right-5 text-[12px] font-medium text-[#8a8a8a] select-none pointer-events-none z-10">
-              Last Updated: {lastUpdated}
-            </p>
+            <div
+              ref={contentContainerRef}
+              className="flex-1 min-h-0 lg:overflow-y-auto pr-2 sm:pr-3 scroll-smooth"
+            >
+              {/* LAST UPDATED (scrolls with content) */}
+              <div className="flex justify-end pb-1 select-none">
+                <p className="text-[12px] font-medium text-[#8a8a8a]">
+                  Last Updated: {lastUpdated}
+                </p>
+              </div>
 
-            {sections.map((section, index) => (
-              <React.Fragment key={section.id}>
-                <PolicySection
-                  section={section}
-                  isActive={activeSection === section.id}
-                />
-                {index < sections.length - 1 && <SectionDivider />}
-              </React.Fragment>
-            ))}
+              <div className="space-y-1.5">
+                {sections.map((section, index) => (
+                  <React.Fragment key={section.id}>
+                    <PolicySection
+                      section={section}
+                      isActive={activeSection === section.id}
+                    />
+                    {index < sections.length - 1 && <SectionDivider />}
+                  </React.Fragment>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -272,7 +280,7 @@ export default function PrivacyPolicyPage() {
 
 function SectionDivider() {
   return (
-    <div className="my-1 flex items-center gap-3" aria-hidden>
+    <div className="my-2.5 flex items-center gap-3" aria-hidden>
       <span className="h-px flex-1 bg-[#d9b877]" />
       <img
         src={lotusIcon.src}
@@ -304,12 +312,12 @@ function PolicySection({
         {(parseInt(section.number, 10) || section.number)}. {section.title}
       </h2>
 
-      <p className="mt-1.5 max-w-[850px] text-[14px] sm:text-[15px] font-medium leading-normal text-[#555555]">
+      <p className="mt-1.5 max-w-[850px] text-[14px] font-medium leading-snug text-[#555555]">
         {section.text}
       </p>
 
       {section.extra && (
-        <p className="mt-1.5 max-w-[850px] text-[14px] sm:text-[15px] font-medium leading-normal text-[#555555]">
+        <p className="mt-1.5 max-w-[850px] text-[14px] font-medium leading-snug text-[#555555]">
           {section.extra}
         </p>
       )}
@@ -319,7 +327,7 @@ function PolicySection({
           {section.bullets.map((bullet) => (
             <li
               key={bullet}
-              className="relative pl-1 text-[14px] sm:text-[15px] font-medium leading-normal text-[#555555]"
+              className="relative pl-1 text-[14px] font-medium leading-snug text-[#555555]"
             >
               <span className="absolute -left-3 top-[9px] h-1 w-1 rounded-full bg-[#333333]" />
               {bullet}
@@ -334,7 +342,7 @@ function PolicySection({
           {section.cards.map((card) => (
             <div
               key={card.title}
-              className="flex flex-col items-center gap-1.5 rounded-xl border border-[#e6d6b9] bg-[#fdfaf3] px-3.5 py-3 text-center"
+              className="flex flex-col items-center gap-1.5 rounded-none border border-[#e6d6b9] bg-[#fdfaf3] px-3.5 py-3 text-center"
             >
               <div className="flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#93a66d] bg-white text-[#1f4d2f]">
                 {cardIcons[card.icon] ?? <FileText size={22} strokeWidth={1.5} />}

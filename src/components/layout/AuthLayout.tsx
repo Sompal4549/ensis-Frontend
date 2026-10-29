@@ -8,6 +8,7 @@ import { ReactNode } from "react";
 import { Container } from "@/components/ui/Container";
 import { ArrowRight } from "lucide-react";
 import logoFallback from "@/assets/logo.webp";
+import SparkleLogo from "./SparkleLogo";
 import { getComponentContent, getImageUrl } from "@/lib/api/api";
 
 interface AuthLayoutProps {
@@ -152,13 +153,14 @@ export default function AuthLayout({
             <div className="w-full md:w-1/2 p-6 md:p-8">
               <div className="text-center flex items-center justify-center flex-col">
                 <div className="flex items-center justify-center w-full">
-                  <Image
+                  <SparkleLogo
                     src={logoSrc}
                     alt={logoAlt}
-                    onError={() => setLogoSrc(logoFallback)}
+                    fallback={logoFallback}
+                    variant="3d"
                     className="h-[54px] w-auto object-contain"
-                    style={{ width: "auto" }}
-                    {...(typeof logoSrc === "string" ? { width: 600, height: 240 } : {})}
+                    width={600}
+                    height={240}
                     priority
                   />
                 </div>

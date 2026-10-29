@@ -248,7 +248,7 @@ export default function DisclaimerPage() {
           MAIN CONTENT
       ===================================================== */}
 
-      <section className="relative mx-auto max-w-[1400px] px-5 py-3 sm:px-10 lg:py-4 overflow-visible">
+      <section className="relative mx-auto max-w-[1400px] px-5 py-2 sm:px-10 overflow-visible">
 
         {/* ===================================================
             CONTENT GRID
@@ -272,24 +272,30 @@ export default function DisclaimerPage() {
           ================================================= */}
 
           <div
-            ref={contentContainerRef}
             style={sidebarHeight ? { height: `${sidebarHeight}px` } : undefined}
-            className="relative min-w-0 rounded-xl border border-[#e5e7eb] bg-white p-4 pt-4 sm:p-5 sm:pt-4 shadow-xs lg:overflow-y-auto"
+            className="relative min-w-0 rounded-xl border border-[#e5e7eb] bg-white shadow-xs pl-3 sm:pl-4 pr-0 pt-3 pb-3.5 sm:pt-3.5 sm:pb-4 flex flex-col overflow-hidden"
           >
-            {/* LAST UPDATED */}
-            <p className="absolute top-3 right-4 sm:top-3.5 sm:right-5 text-[12px] font-medium text-[#8a8a8a] select-none pointer-events-none z-10">
-              Last Updated: {lastUpdated}
-            </p>
+            <div
+              ref={contentContainerRef}
+              className="flex-1 min-h-0 lg:overflow-y-auto pr-2 sm:pr-3 scroll-smooth"
+            >
+              {/* LAST UPDATED (scrolls with content) */}
+              <div className="flex justify-end pb-1 select-none">
+                <p className="text-[12px] font-medium text-[#8a8a8a]">
+                  Last Updated: {lastUpdated}
+                </p>
+              </div>
 
-            <div className="grid gap-x-2 gap-y-3 lg:grid-cols-2 lg:gap-y-1">
-              {sections.map((section, index) => (
-                <DisclaimerSectionCard
-                  key={section.id}
-                  section={section}
-                  isActive={activeSection === section.id}
-                  isFirst={index === 0}
-                />
-              ))}
+              <div className="grid gap-x-2 gap-y-3 lg:grid-cols-2 lg:gap-y-1">
+                {sections.map((section, index) => (
+                  <DisclaimerSectionCard
+                    key={section.id}
+                    section={section}
+                    isActive={activeSection === section.id}
+                    isFirst={index === 0}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -331,7 +337,7 @@ function DisclaimerSectionCard({
             {(parseInt(section.number, 10) || section.number)}. {section.title}
           </h2>
 
-          <p className="mt-2 text-sm font-medium leading-normal text-[#666666] sm:text-[15px]">
+          <p className="mt-1.5 text-[14px] font-medium leading-snug text-[#666666]">
             {section.text}
           </p>
         </div>

@@ -87,7 +87,7 @@ const defaultFooter = {
       { label: "Disclaimer", href: "/disclaimer" },
     ],
     developer: {
-      label: "Designed & Developed by :",
+      label: "Designed & Developed by",
       name: "enCodency",
       href: "https://encodency.com",
       logoUrl: "",

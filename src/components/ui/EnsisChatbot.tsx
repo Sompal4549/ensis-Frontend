@@ -548,7 +548,7 @@ export default function EnsisChatbot() {
           FLOATING TRIGGER BUTTON (Exact Bharat Organic Lottie Character Launcher)
       ========================================================= */}
       <div
-        className={`fixed right-4 sm:right-6 bottom-[84px] sm:bottom-20 lg:bottom-8 z-[100] flex items-end gap-3 ${isOpen ? "max-[480px]:hidden" : ""}`}
+        className={`fixed ${isOpen ? "right-2 sm:right-3 lg:right-4" : "right-1 sm:right-2 lg:right-2"} bottom-[84px] sm:bottom-20 lg:bottom-8 z-[100] flex items-end gap-3 ${isOpen ? "max-[480px]:hidden" : ""}`}
         style={{ fontFamily: "var(--font-montserrat), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}
       >
         <button
@@ -560,10 +560,10 @@ export default function EnsisChatbot() {
         >
           {/* "May I help you?" speech bubble above the robot while closed (matches organic_frontend) */}
           {!isOpen && (
-            <span className="pointer-events-none absolute bottom-full right-0 -mb-1 px-3 py-1.5 rounded-xl bg-white border border-[#c39a5c]/60 text-[#263016] text-[12px] lg:text-[13px] font-semibold whitespace-nowrap shadow-lg transition-transform duration-200 group-hover:-translate-y-1 animate-[mitra-pop_0.35s_ease-out]">
+            <span className="pointer-events-none absolute bottom-full right-0 -mb-1 px-2.5 py-1 rounded-xl bg-white border border-[#c39a5c]/60 text-[#263016] text-[12px] font-semibold whitespace-nowrap shadow-lg transition-transform duration-200 group-hover:-translate-y-1 animate-[mitra-pop_0.35s_ease-out]">
               {language === "hi" ? "क्या मैं आपकी सहायता करूँ?" : "May I help you?"}
               {/* Arrow pointing at the middle of the robot character */}
-              <span className="absolute -bottom-[5px] right-[27px] sm:right-11 lg:right-[52px] w-2.5 h-2.5 rotate-45 bg-white border-r border-b border-[#c39a5c]/60" aria-hidden="true" />
+              <span className="absolute -bottom-[5px] right-[24px] sm:right-9 lg:right-11 w-2.5 h-2.5 rotate-45 bg-white border-r border-b border-[#c39a5c]/60" aria-hidden="true" />
             </span>
           )}
 
@@ -586,7 +586,7 @@ export default function EnsisChatbot() {
         <div
           role="dialog"
           aria-label="Ensis Advisor chat"
-          className="fixed z-[110] right-4 sm:right-6 inset-y-0 my-auto w-[380px] h-[580px] max-h-[calc(100svh-32px)] max-[480px]:inset-x-0 max-[480px]:top-auto max-[480px]:bottom-0 max-[480px]:my-0 max-[480px]:w-full max-[480px]:h-[88svh] max-[480px]:max-h-none flex flex-col bg-gradient-to-b from-[#fbf8f2] to-[#f3ede2] rounded-[20px] max-[480px]:rounded-b-none shadow-[0_30px_80px_-20px_rgba(27,35,16,0.55),0_0_0_1px_rgba(38,48,22,0.08)] overflow-clip text-[13.5px] leading-[1.55] animate-in fade-in slide-in-from-bottom-5 duration-200"
+          className="fixed z-[110] right-2 sm:right-3 lg:right-4 inset-y-0 my-auto w-[380px] h-[580px] max-h-[calc(100svh-32px)] max-[480px]:inset-x-0 max-[480px]:top-auto max-[480px]:bottom-0 max-[480px]:my-0 max-[480px]:w-full max-[480px]:h-[88svh] max-[480px]:max-h-none flex flex-col bg-gradient-to-b from-[#fbf8f2] to-[#f3ede2] rounded-[20px] max-[480px]:rounded-b-none shadow-[0_30px_80px_-20px_rgba(27,35,16,0.55),0_0_0_1px_rgba(38,48,22,0.08)] overflow-clip text-[13.5px] leading-[1.55] animate-in fade-in slide-in-from-bottom-5 duration-200"
           style={{ fontFamily: "var(--font-montserrat), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" }}
         >
           {/* ── Header ── */}
