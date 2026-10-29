@@ -102,11 +102,10 @@ export default function TermsConditionsPage() {
               subtitle: hero.subtitle,
             });
           }
-          if (termsData && termsData.data && termsData.data.sections) {
-            setSections(termsData.data.sections);
-            if (termsData.data.sections.length > 0) {
-              setActiveSection(termsData.data.sections[0].id);
-            }
+          const sectionsList = termsData?.sections || termsData?.data?.sections;
+          if (Array.isArray(sectionsList) && sectionsList.length > 0) {
+            setSections(sectionsList);
+            setActiveSection(sectionsList[0].id);
           }
         }
       } catch (error) {
@@ -128,7 +127,7 @@ export default function TermsConditionsPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#faf7f2] font-['DM_Sans',sans-serif] text-[#333333]">
+    <main className="bg-[#faf7f2] font-['DM_Sans',sans-serif] text-[#333333]">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -266,13 +265,6 @@ export default function TermsConditionsPage() {
               ref={contentContainerRef}
               className="flex-1 min-h-0 lg:overflow-y-auto pr-2 sm:pr-3 scroll-smooth"
             >
-              {/* LAST UPDATED (scrolls with content) */}
-              <div className="flex justify-end pb-1 select-none">
-                <p className="text-[12px] font-medium text-[#8a8a8a]">
-                  Last Updated: {lastUpdated}
-                </p>
-              </div>
-
               <div className="space-y-1.5">
                 {sections.map((section, index) => (
                   <React.Fragment key={section.id}>
@@ -283,6 +275,13 @@ export default function TermsConditionsPage() {
                     {index < sections.length - 1 && <SectionDivider />}
                   </React.Fragment>
                 ))}
+              </div>
+
+              {/* LAST UPDATED (at the end of content) */}
+              <div className="flex justify-end pt-3 pb-1 select-none">
+                <p className="text-[12px] font-medium text-[#8a8a8a]">
+                  Last Updated: {lastUpdated}
+                </p>
               </div>
             </div>
           </div>
@@ -330,18 +329,18 @@ function PolicySection({
         {(parseInt(section.number, 10) || section.number)}. {section.title}
       </h2>
 
-      <p className="mt-1.5 max-w-[850px] text-[14px] font-medium leading-snug text-[#555555]">
+      <p className="mt-1.5 max-w-[850px] text-[14px] font-medium leading-snug text-[#666666]">
         {section.text}
       </p>
 
       {section.extra && (
-        <p className="mt-1.5 max-w-[850px] text-[14px] font-medium leading-snug text-[#555555]">
+        <p className="mt-1.5 max-w-[850px] text-[14px] font-medium leading-snug text-[#666666]">
           {section.extra}
         </p>
       )}
 
       {section.extra2 && (
-        <p className="mt-1.5 max-w-[850px] text-[14px] font-medium leading-snug text-[#555555]">
+        <p className="mt-1.5 max-w-[850px] text-[14px] font-medium leading-snug text-[#666666]">
           {section.extra2}
         </p>
       )}
@@ -351,9 +350,9 @@ function PolicySection({
           {section.bullets.map((bullet) => (
             <li
               key={bullet}
-              className="relative pl-1 text-[14px] font-medium leading-snug text-[#555555]"
+              className="relative pl-1 text-[14px] font-medium leading-snug text-[#666666]"
             >
-              <span className="absolute -left-3 top-[9px] h-1 w-1 rounded-full bg-[#333333]" />
+              <span className="absolute -left-3 top-[9px] h-1 w-1 rounded-full bg-[#888888]" />
               {bullet}
             </li>
           ))}

@@ -248,13 +248,6 @@ export default function PrivacyPolicyPage() {
               ref={contentContainerRef}
               className="flex-1 min-h-0 lg:overflow-y-auto pr-2 sm:pr-3 scroll-smooth"
             >
-              {/* LAST UPDATED (scrolls with content) */}
-              <div className="flex justify-end pb-1 select-none">
-                <p className="text-[12px] font-medium text-[#8a8a8a]">
-                  Last Updated: {lastUpdated}
-                </p>
-              </div>
-
               <div className="space-y-1.5">
                 {sections.map((section, index) => (
                   <React.Fragment key={section.id}>
@@ -265,6 +258,13 @@ export default function PrivacyPolicyPage() {
                     {index < sections.length - 1 && <SectionDivider />}
                   </React.Fragment>
                 ))}
+              </div>
+
+              {/* LAST UPDATED (at the end of content) */}
+              <div className="flex justify-end pt-3 pb-1 select-none">
+                <p className="text-[12px] font-medium text-[#8a8a8a]">
+                  Last Updated: {lastUpdated}
+                </p>
               </div>
             </div>
           </div>
@@ -312,12 +312,12 @@ function PolicySection({
         {(parseInt(section.number, 10) || section.number)}. {section.title}
       </h2>
 
-      <p className="mt-1.5 max-w-[850px] text-[14px] font-medium leading-snug text-[#555555]">
+      <p className="mt-1.5 max-w-[850px] text-[14px] font-medium leading-snug text-[#666666]">
         {section.text}
       </p>
 
       {section.extra && (
-        <p className="mt-1.5 max-w-[850px] text-[14px] font-medium leading-snug text-[#555555]">
+        <p className="mt-1.5 max-w-[850px] text-[14px] font-medium leading-snug text-[#666666]">
           {section.extra}
         </p>
       )}
@@ -327,9 +327,9 @@ function PolicySection({
           {section.bullets.map((bullet) => (
             <li
               key={bullet}
-              className="relative pl-1 text-[14px] font-medium leading-snug text-[#555555]"
+              className="relative pl-1 text-[14px] font-medium leading-snug text-[#666666]"
             >
-              <span className="absolute -left-3 top-[9px] h-1 w-1 rounded-full bg-[#333333]" />
+              <span className="absolute -left-3 top-[9px] h-1 w-1 rounded-full bg-[#888888]" />
               {bullet}
             </li>
           ))}
@@ -368,7 +368,7 @@ function PolicySection({
               <span className="mt-0.5 flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded-full bg-[#a9742a] text-white">
                 <Check size={12} strokeWidth={2.5} />
               </span>
-              <span className="text-[13.5px] font-medium text-[#555555]">
+              <span className="text-[13.5px] font-medium text-[#666666]">
                 {item}
               </span>
             </li>

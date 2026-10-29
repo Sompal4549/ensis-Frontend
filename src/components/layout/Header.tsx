@@ -170,7 +170,7 @@ export const Header = ({ initialHeader }: { initialHeader?: HeaderContent } = {}
             { title: "Products", slug: "/products" },
             { title: "Turnkey Solutions", slug: "/turnkey" },
             { title: "Consultancy", slug: "/consultancy" },
-            { title: "Projects And Clients", slug: "/projects-and-clients" },
+            { title: "Projects", slug: "/projects-and-clients" },
             { title: "Blog", slug: "/blog" },
             { title: "Enquiry", slug: "/enquiry" },
             { title: "Career", slug: "/career" },
@@ -217,10 +217,18 @@ export const Header = ({ initialHeader }: { initialHeader?: HeaderContent } = {}
     const logoSrc = headerContent.logo?.imageUrl ? getImageUrl(headerContent.logo.imageUrl, 600) : logoImg;
     const logoAlt = headerContent.logo?.alt || "ENSIS Logo";
 
-    const navLinks = reorderedNav.map((n: any) => ({
-        label: n.title,
-        href: n.slug,
-    }));
+    const navLinks = reorderedNav.map((n: any) => {
+        let label = n.title;
+        let href = n.slug;
+        if (href === "/projects-and-clients" || href === "/projects" || label?.toLowerCase()?.includes("project")) {
+            label = "Projects";
+            href = "/projects-and-clients";
+        }
+        return {
+            label,
+            href,
+        };
+    });
 
     const brochureUrl =
         (headerContent as any)?.actions?.brochureButton?.href ||
