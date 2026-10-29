@@ -279,13 +279,6 @@ export default function DisclaimerPage() {
               ref={contentContainerRef}
               className="flex-1 min-h-0 lg:overflow-y-auto pr-2 sm:pr-3 scroll-smooth"
             >
-              {/* LAST UPDATED (scrolls with content) */}
-              <div className="flex justify-end pb-1 select-none">
-                <p className="text-[12px] font-medium text-[#8a8a8a]">
-                  Last Updated: {lastUpdated}
-                </p>
-              </div>
-
               <div className="grid gap-x-2 gap-y-3 lg:grid-cols-2 lg:gap-y-1">
                 {sections.map((section, index) => (
                   <DisclaimerSectionCard
@@ -295,6 +288,13 @@ export default function DisclaimerPage() {
                     isFirst={index === 0}
                   />
                 ))}
+              </div>
+
+              {/* LAST UPDATED (at the end of content) */}
+              <div className="flex justify-end pt-3 pb-1 select-none">
+                <p className="text-[12px] font-medium text-[#8a8a8a]">
+                  Last Updated: {lastUpdated}
+                </p>
               </div>
             </div>
           </div>
