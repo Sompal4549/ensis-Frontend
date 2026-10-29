@@ -264,11 +264,11 @@ export default function RefundPolicyPage() {
 
           <div
             style={sidebarHeight ? { height: `${sidebarHeight}px` } : undefined}
-            className="relative min-w-0 rounded-xl border border-[#e5e7eb] bg-white shadow-xs px-2 sm:px-2.5 pt-3 pb-3.5 sm:pt-3.5 sm:pb-4 flex flex-col overflow-hidden"
+            className="relative min-w-0 rounded-xl border border-[#e5e7eb] bg-white shadow-xs pl-3 sm:pl-4 pr-0 pt-3 pb-3.5 sm:pt-3.5 sm:pb-4 flex flex-col overflow-hidden"
           >
             <div
               ref={contentContainerRef}
-              className="flex-1 min-h-0 lg:overflow-y-auto pr-1 sm:pr-2 scroll-smooth"
+              className="flex-1 min-h-0 lg:overflow-y-auto pr-2 sm:pr-3 scroll-smooth"
             >
               {/* LAST UPDATED (scrolls with content) */}
               <div className="flex justify-end pb-1 select-none">
