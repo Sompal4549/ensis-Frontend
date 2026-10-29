@@ -28,6 +28,7 @@ import {
 } from "react-icons/fa";
 const Container = dynamic(() => import("../ui/Container").then((mod) => mod.Container));
 import logoImg from "@/assets/logo.webp";
+import SparkleLogo from "./SparkleLogo";
 import GreenButton from "../ui/GreenButton";
 import BookButton from "../ui/BookButton";
 import { useShop } from "@/context/ShopContext";
@@ -172,6 +173,7 @@ export const Header = ({ initialHeader }: { initialHeader?: HeaderContent } = {}
             { title: "Projects And Clients", slug: "/projects-and-clients" },
             { title: "Blog", slug: "/blog" },
             { title: "Enquiry", slug: "/enquiry" },
+            { title: "Career", slug: "/career" },
             { title: "Contact Us", slug: "/contact" },
         ],
     };
@@ -197,15 +199,25 @@ export const Header = ({ initialHeader }: { initialHeader?: HeaderContent } = {}
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Map DB's `navigation` (title/slug) to the {label, href} shape this component renders
+    // Map DB's `navigation` (title/slug) to the {label, href} shape this component renders.
+    // Ensure "Contact Us" always appears after "Career".
+    const rawNav = (headerContent.navigation ?? []) as { title?: string; slug?: string }[];
+    const reorderedNav = [...rawNav];
+    const contactIdx = reorderedNav.findIndex(
+        (n) => n.slug === "/contact" || n.title?.toLowerCase().includes("contact")
+    );
+    const careerIdx = reorderedNav.findIndex(
+        (n) => n.slug === "/career" || n.title?.toLowerCase().includes("career")
+    );
+    if (contactIdx !== -1 && careerIdx !== -1 && contactIdx < careerIdx) {
+        const [contactItem] = reorderedNav.splice(contactIdx, 1);
+        reorderedNav.splice(careerIdx, 0, contactItem);
+    }
+
     const logoSrc = headerContent.logo?.imageUrl ? getImageUrl(headerContent.logo.imageUrl, 600) : logoImg;
-    const [headerLogoSrc, setHeaderLogoSrc] = useState(logoSrc);
-    useEffect(() => {
-        setHeaderLogoSrc(logoSrc);
-    }, [logoSrc]);
     const logoAlt = headerContent.logo?.alt || "ENSIS Logo";
 
-    const navLinks = (headerContent.navigation ?? []).map((n: any) => ({
+    const navLinks = reorderedNav.map((n: any) => ({
         label: n.title,
         href: n.slug,
     }));
@@ -462,18 +474,20 @@ export const Header = ({ initialHeader }: { initialHeader?: HeaderContent } = {}
             </div>
 
             <div className={`bg-white`}>
-            <Container className="relative flex items-center justify-between gap-3 xl:gap-5 py-0.5!">
+            <Container className="relative flex items-center justify-between gap-3 xl:gap-5 h-[70px] max-h-[70px]">
         <Link
             href="/"
             className="relative flex items-center shrink-0 py-0"
             aria-label="ENSIS Logo"
         >
-            <Image
-                src={headerLogoSrc}
+            <SparkleLogo
+                src={logoSrc}
                 alt={logoAlt}
-                onError={() => setHeaderLogoSrc(logoImg)}
-                className="h-[53px] sm:h-[57px] md:h-[63px] xl:h-[59px] 2xl:h-[67px] -my-[2.5px] w-auto object-contain"
-                {...(typeof headerLogoSrc === "string" ? { width: 600, height: 244 } : {})}
+                fallback={logoImg}
+                variant="3d"
+                className="h-[46px] sm:h-[50px] md:h-[54px] xl:h-[58px] 2xl:h-[58px] w-auto object-contain"
+                width={600}
+                height={244}
                 priority
             />
         </Link>
@@ -524,13 +538,18 @@ export const Header = ({ initialHeader }: { initialHeader?: HeaderContent } = {}
                 aria-hidden={!isMenuOpen}
             >
                 <div className="flex h-[76px] items-center justify-between gap-3 border-b border-[#e8e0d3] px-4">
-                    <Image
-                        src={logoSrc}
-                        alt={logoAlt}
-                        className="h-11 sm:h-13 w-auto max-w-[200px] object-contain"
-                        {...(typeof logoSrc === "string" ? { width: 600, height: 244 } : {})}
-                        priority
-                    />
+                    <Link href="/" onClick={() => setIsMenuOpen(false)} aria-label="ENSIS Logo">
+                        <SparkleLogo
+                            src={logoSrc}
+                            alt={logoAlt}
+                            fallback={logoImg}
+                            variant="3d"
+                            className="h-9 sm:h-10 w-auto max-w-[170px] object-contain"
+                            width={600}
+                            height={244}
+                            priority
+                        />
+                    </Link>
 
                     <button
                         className="inline-flex size-9 shrink-0 items-center justify-center border border-[#d8cbb9] text-[#263016]"

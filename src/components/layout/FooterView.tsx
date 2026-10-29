@@ -163,7 +163,7 @@ export default function FooterView({
   return (
     <footer className="overflow-hidden bg-white font-medium footer-font">
       {/* ── 1. TOP FEATURES STRIP ── */}
-      <div className="relative border-b border-[#ebd7be] bg-[#fbf8f2] overflow-hidden">
+      <div className="relative border-b border-[#fbf2e8] bg-[#fbf2e8] overflow-hidden">
         <div className="mx-auto max-w-[1720px] px-4 py-2.5 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-y-3 sm:grid-cols-3 lg:grid-cols-5 lg:gap-0 lg:divide-x lg:divide-[#ebd8c1]">
             {features.map((item, idx) => (
@@ -306,12 +306,12 @@ export default function FooterView({
                 >
                   <MdPhoneInTalk className="h-6 w-6 sm:h-[26px] sm:w-[26px] text-[#051c42]" aria-hidden />
                 </a>
-                <div className="min-w-0 flex-1 self-center">
-                  <p className="text-[11.5px] sm:text-[12px] font-bold leading-none text-[#fbc512] tracking-wide mb-1 sm:mb-1.5">Call Us Today</p>
+                <div className="min-w-0 flex-1 self-center flex flex-col gap-1">
+                  <p className="text-[11.5px] sm:text-[12px] font-bold leading-none text-[#fbc512] tracking-wide">Call Us Today</p>
                   <a href="tel:+919810242841" className="block text-[15px] sm:text-[15.5px] xl:text-[16px] font-semibold leading-tight hover:text-[#fbc512] text-white tracking-wide whitespace-nowrap">
                     +91 9810242841
                   </a>
-                  <a href="tel:+919654900525" className="block text-[15px] sm:text-[15.5px] xl:text-[16px] font-semibold leading-tight hover:text-[#fbc512] text-white tracking-wide whitespace-nowrap mt-1.5 sm:mt-2">
+                  <a href="tel:+919654900525" className="block text-[15px] sm:text-[15.5px] xl:text-[16px] font-semibold leading-tight hover:text-[#fbc512] text-white tracking-wide whitespace-nowrap">
                     +91 9654900525
                   </a>
                 </div>
@@ -430,8 +430,8 @@ export default function FooterView({
               ) : (
                 /* ── ADDRESS/OFFICES VARIANT (ON ALL OTHER PAGES - IMAGE 2) ── */
                 <div className="w-full max-w-[400px] xl:max-w-[440px]">
-                  {/* Top: Design House Logo - aligned with text (not icons), slightly larger */}
-                  <div className="-mt-7 sm:-mt-8 lg:-mt-9 xl:-mt-10 -mb-1 sm:-mb-1.5 ml-10 sm:ml-11 xl:ml-12">
+                  {/* Top: Design House Logo - aligned with text (not icons), balanced margin */}
+                  <div className="pt-[3px] -mt-5 sm:-mt-6 lg:-mt-7 xl:-mt-8 -mb-1 sm:-mb-1.5 ml-10 sm:ml-11 xl:ml-12">
                     <SparkleLogo
                       src={designHouseSrc}
                       alt="Design House India Pvt. Ltd."
@@ -568,7 +568,7 @@ export default function FooterView({
                 <>
                   <span aria-hidden className="text-white">|</span>
                   <span className="flex items-center gap-1.5 sm:gap-2 text-white">
-                    <span className="hidden sm:inline">{developer.label || "Designed & Developed by:"}</span>
+                    <span className="hidden sm:inline">{developer.label || "Designed & Developed by"}</span>
                     <a
                       href={developer.href || "https://encodency.com"}
                       target="_blank"
