@@ -151,11 +151,11 @@ export default function CartPage() {
         }))
         .slice(0, 10);
       setSuggestions(filtered);
-    }).catch(() => {});
+    }).catch(() => { });
   }, [cartItems]);
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#FCFAF6] pt-3 pb-8 sm:pt-4 sm:pb-10">
+    <div className="relative min-h-screen overflow-hidden bg-[#FCFAF6] pt-10 pb-4">
       {/* Decorative premium background */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute -left-40 top-32 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(199,165,91,0.12),transparent_65%)]" />

@@ -188,7 +188,7 @@ export default function CheckoutPage() {
           };
         });
       }
-    } catch {}
+    } catch { }
   }, [router]);
 
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -238,10 +238,10 @@ export default function CheckoutPage() {
   };
   const gstSlabs = hasItems
     ? cartItems.reduce<Record<number, number>>((acc, item) => {
-        const rate = item.gstRate ?? 5;
-        acc[rate] = (acc[rate] ?? 0) + (item.price * item.quantity * rate) / 100;
-        return acc;
-      }, {})
+      const rate = item.gstRate ?? 5;
+      acc[rate] = (acc[rate] ?? 0) + (item.price * item.quantity * rate) / 100;
+      return acc;
+    }, {})
     : {};
 
   // Place internal MongoDB Order
@@ -356,7 +356,7 @@ export default function CheckoutPage() {
   if (!isMounted) return null;
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#FCFAF6] pt-4" style={jost}>
+    <div className="relative min-h-screen overflow-hidden bg-[#FCFAF6] pt-10 pb-4" style={jost}>
       {/* Decorative premium background — very low opacity */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute -left-40 top-32 h-[420px] w-[420px] rounded-full bg-[radial-gradient(circle,rgba(199,165,91,0.14),transparent_65%)]" />
@@ -372,7 +372,7 @@ export default function CheckoutPage() {
       </div>
 
       <Container className="relative">
-        <div className="pb-6">
+        <div className="">
           <nav className="mb-4 flex items-center gap-2 text-base text-[#8a7c63]">
             <Link href="/" className="transition-colors hover:text-[#1F3A2A]">Home</Link>
             <ChevronRight size={14} className="text-[#c7a55b]" />
@@ -400,7 +400,7 @@ export default function CheckoutPage() {
               </Link>
             </div>
           ) : (
-                <div className="grid items-start gap-4 lg:grid-cols-[1fr_380px] xl:grid-cols-[1fr_410px]">
+            <div className="grid items-start gap-4 lg:grid-cols-[1fr_380px] xl:grid-cols-[1fr_410px]">
               {/* ───────── Left Column : Shipping Form ───────── */}
               <div className="space-y-3">
                 <div className="flex items-center gap-4">
@@ -451,11 +451,11 @@ export default function CheckoutPage() {
                             </div>
                           </div>
 
-                      {error && (
-                        <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-600">
-                          {error}
-                        </div>
-                      )}
+                          {error && (
+                            <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-600">
+                              {error}
+                            </div>
+                          )}
 
                           <button suppressHydrationWarning
                             type="button"
@@ -486,187 +486,187 @@ export default function CheckoutPage() {
                         /* Editable address form */
                         <>
                           <div className="flex items-center justify-between mb-1">
-                              <span className="text-sm font-semibold uppercase tracking-[0.16em] text-[#8a7c63]">Editing Address</span>
-                              <button type="button" onClick={() => setEditingAddress(false)} className="text-sm font-semibold uppercase tracking-[0.1em] text-[#c7a55b] hover:underline">
+                            <span className="text-sm font-semibold uppercase tracking-[0.16em] text-[#8a7c63]">Editing Address</span>
+                            <button type="button" onClick={() => setEditingAddress(false)} className="text-sm font-semibold uppercase tracking-[0.1em] text-[#c7a55b] hover:underline">
                               Cancel
                             </button>
                           </div>
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        <div>
-                          <label className={labelClass}>Address Label</label>
-                          <input suppressHydrationWarning
-                            className={inputClass}
-                            type="text"
-                            name="label"
-                            placeholder="e.g. Home"
-                            value={shippingAddress.label}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className={labelClass}>Full Name *</label>
-                          <input suppressHydrationWarning
-                            className={inputClass}
-                            type="text"
-                            name="fullName"
-                            placeholder="Your full name"
-                            value={shippingAddress.fullName}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </div>
-                      </div>
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                              <label className={labelClass}>Address Label</label>
+                              <input suppressHydrationWarning
+                                className={inputClass}
+                                type="text"
+                                name="label"
+                                placeholder="e.g. Home"
+                                value={shippingAddress.label}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </div>
+                            <div>
+                              <label className={labelClass}>Full Name *</label>
+                              <input suppressHydrationWarning
+                                className={inputClass}
+                                type="text"
+                                name="fullName"
+                                placeholder="Your full name"
+                                value={shippingAddress.fullName}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </div>
+                          </div>
 
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        <div>
-                          <label className={labelClass}>Phone Number *</label>
-                          <input suppressHydrationWarning
-                            className={inputClass}
-                            type="tel"
-                            name="phone"
-                            placeholder="+91 98765 43210"
-                            value={shippingAddress.phone}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className={labelClass}>Email Address *</label>
-                          <input suppressHydrationWarning
-                            className={inputClass}
-                            type="email"
-                            name="email"
-                            placeholder="you@example.com"
-                            value={shippingAddress.email}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </div>
-                      </div>
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                              <label className={labelClass}>Phone Number *</label>
+                              <input suppressHydrationWarning
+                                className={inputClass}
+                                type="tel"
+                                name="phone"
+                                placeholder="+91 98765 43210"
+                                value={shippingAddress.phone}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </div>
+                            <div>
+                              <label className={labelClass}>Email Address *</label>
+                              <input suppressHydrationWarning
+                                className={inputClass}
+                                type="email"
+                                name="email"
+                                placeholder="you@example.com"
+                                value={shippingAddress.email}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </div>
+                          </div>
 
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                        <div>
-                          <label className={labelClass}>Street Address *</label>
-                          <input suppressHydrationWarning
-                            className={inputClass}
-                            type="text"
-                            name="street"
-                            placeholder="House no., Apartment, Street name"
-                            value={shippingAddress.street}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </div>
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            <div>
+                              <label className={labelClass}>Street Address *</label>
+                              <input suppressHydrationWarning
+                                className={inputClass}
+                                type="text"
+                                name="street"
+                                placeholder="House no., Apartment, Street name"
+                                value={shippingAddress.street}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </div>
 
-                        <div>
-                          <label className={labelClass}>Landmark</label>
-                          <input suppressHydrationWarning
-                            className={inputClass}
-                            type="text"
-                            name="landmark"
-                            placeholder="Near ... (optional)"
-                            value={shippingAddress.landmark}
-                            onChange={handleInputChange}
-                          />
-                        </div>
-                      </div>
+                            <div>
+                              <label className={labelClass}>Landmark</label>
+                              <input suppressHydrationWarning
+                                className={inputClass}
+                                type="text"
+                                name="landmark"
+                                placeholder="Near ... (optional)"
+                                value={shippingAddress.landmark}
+                                onChange={handleInputChange}
+                              />
+                            </div>
+                          </div>
 
-                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-                        <div>
-                          <label className={labelClass}>
-                            Postal Code * {fetchingPincode && <span className="text-xs text-[#b88b3d] font-normal lowercase">(fetching location...)</span>}
-                          </label>
-                          <input suppressHydrationWarning
-                            className={inputClass}
-                            type="text"
-                            name="postalCode"
-                            placeholder="110001"
-                            value={shippingAddress.postalCode}
-                            onChange={handleInputChange}
-                            maxLength={6}
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className={labelClass}>City *</label>
-                          <input suppressHydrationWarning
-                            className={inputClass}
-                            type="text"
-                            name="city"
-                            placeholder="City"
-                            value={shippingAddress.city}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </div>
-                        <div>
-                          <label className={labelClass}>State *</label>
-                          <input suppressHydrationWarning
-                            className={inputClass}
-                            type="text"
-                            name="state"
-                            placeholder="State"
-                            value={shippingAddress.state}
-                            onChange={handleInputChange}
-                            required
-                          />
-                        </div>
-                      </div>
+                          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+                            <div>
+                              <label className={labelClass}>
+                                Postal Code * {fetchingPincode && <span className="text-xs text-[#b88b3d] font-normal lowercase">(fetching location...)</span>}
+                              </label>
+                              <input suppressHydrationWarning
+                                className={inputClass}
+                                type="text"
+                                name="postalCode"
+                                placeholder="110001"
+                                value={shippingAddress.postalCode}
+                                onChange={handleInputChange}
+                                maxLength={6}
+                                required
+                              />
+                            </div>
+                            <div>
+                              <label className={labelClass}>City *</label>
+                              <input suppressHydrationWarning
+                                className={inputClass}
+                                type="text"
+                                name="city"
+                                placeholder="City"
+                                value={shippingAddress.city}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </div>
+                            <div>
+                              <label className={labelClass}>State *</label>
+                              <input suppressHydrationWarning
+                                className={inputClass}
+                                type="text"
+                                name="state"
+                                placeholder="State"
+                                value={shippingAddress.state}
+                                onChange={handleInputChange}
+                                required
+                              />
+                            </div>
+                          </div>
 
-                      <div>
-                        <label className={labelClass}>Country *</label>
-                        <select suppressHydrationWarning
-                          className={inputClass}
-                          name="country"
-                          value={shippingAddress.country}
-                          onChange={handleInputChange}
-                          required
-                        >
-                          <option value="India">India</option>
-                          <option value="United States">United States</option>
-                          <option value="United Kingdom">United Kingdom</option>
-                          <option value="Australia">Australia</option>
-                          <option value="Canada">Canada</option>
-                          <option value="Germany">Germany</option>
-                          <option value="UAE">UAE</option>
-                          <option value="Singapore">Singapore</option>
-                          <option value="Other">Other</option>
-                        </select>
-                      </div>
+                          <div>
+                            <label className={labelClass}>Country *</label>
+                            <select suppressHydrationWarning
+                              className={inputClass}
+                              name="country"
+                              value={shippingAddress.country}
+                              onChange={handleInputChange}
+                              required
+                            >
+                              <option value="India">India</option>
+                              <option value="United States">United States</option>
+                              <option value="United Kingdom">United Kingdom</option>
+                              <option value="Australia">Australia</option>
+                              <option value="Canada">Canada</option>
+                              <option value="Germany">Germany</option>
+                              <option value="UAE">UAE</option>
+                              <option value="Singapore">Singapore</option>
+                              <option value="Other">Other</option>
+                            </select>
+                          </div>
 
-                      {error && (
-                        <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs font-semibold text-rose-600">
-                          {error}
-                        </div>
+                          {error && (
+                            <div className="rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs font-semibold text-rose-600">
+                              {error}
+                            </div>
+                          )}
+
+                          <button suppressHydrationWarning
+                            type="submit"
+                            disabled={isPlacingOrder}
+                            className="group relative mt-1 flex w-full items-center justify-center gap-4 overflow-hidden rounded-xl bg-[#1F3A2A] px-5 py-3 text-base font-semibold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:bg-[#18301f] disabled:cursor-not-allowed disabled:opacity-60"
+                            style={{ boxShadow: "rgba(50,50,93,0.25) 0px 6px 12px -2px, rgba(0,0,0,0.3) 0px 3px 7px -3px" }}
+                          >
+                            {isPlacingOrder ? (
+                              <>
+                                <Loader2 size={15} className="animate-spin" />
+                                Placing Order...
+                              </>
+                            ) : (
+                              <>
+                                <LockKeyhole size={15} className="text-[#e9d7a8] transition-transform group-hover:scale-110" />
+                                Proceed to Secure Payment
+                                <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
+                              </>
+                            )}
+                          </button>
+                          <p className="mt-3 flex items-center justify-center gap-2 text-xs text-[#8a7c63]">
+                            <ShieldCheck size={12} className="text-[#c7a55b]" />
+                            Secure checkout • SSL encrypted payment
+                          </p>
+                        </>
                       )}
-
-                      <button suppressHydrationWarning
-                        type="submit"
-                        disabled={isPlacingOrder}
-                        className="group relative mt-1 flex w-full items-center justify-center gap-4 overflow-hidden rounded-xl bg-[#1F3A2A] px-5 py-3 text-base font-semibold uppercase tracking-[0.16em] text-white transition-all duration-300 hover:bg-[#18301f] disabled:cursor-not-allowed disabled:opacity-60"
-                        style={{ boxShadow: "rgba(50,50,93,0.25) 0px 6px 12px -2px, rgba(0,0,0,0.3) 0px 3px 7px -3px" }}
-                      >
-                        {isPlacingOrder ? (
-                          <>
-                            <Loader2 size={15} className="animate-spin" />
-                            Placing Order...
-                          </>
-                        ) : (
-                          <>
-                            <LockKeyhole size={15} className="text-[#e9d7a8] transition-transform group-hover:scale-110" />
-                            Proceed to Secure Payment
-                            <ArrowRight size={15} className="transition-transform group-hover:translate-x-1" />
-                          </>
-                        )}
-                      </button>
-                      <p className="mt-3 flex items-center justify-center gap-2 text-xs text-[#8a7c63]">
-                        <ShieldCheck size={12} className="text-[#c7a55b]" />
-                        Secure checkout • SSL encrypted payment
-                      </p>
-                    </>
-                    )}
-                  </div>
+                    </div>
                   ) : (
                     <div className="space-y-3">
                       <div className="rounded-2xl border border-[#d8e3cf] bg-[#f2f7ee] p-4">
