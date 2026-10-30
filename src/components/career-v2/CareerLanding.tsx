@@ -168,7 +168,23 @@ const MOCKUP_JOBS_ORDER = [
   },
 ];
 
-const imageSrc = (value: string | undefined, fallback: StaticImageData) => (value ? getImageUrl(value) : fallback);
+const resolveImageUrl = (value: unknown): string => {
+  if (!value) return "";
+  if (typeof value === "string") return value.trim();
+  if (typeof value === "object" && !Array.isArray(value)) {
+    const record = value as Record<string, unknown>;
+    if (typeof record.imageUrl === "string") return record.imageUrl.trim();
+    if (typeof record.image === "string") return record.image.trim();
+    if (typeof record.url === "string") return record.url.trim();
+    if (typeof record.src === "string") return record.src.trim();
+  }
+  return "";
+};
+
+const imageSrc = (value: unknown, fallback: StaticImageData) => {
+  const url = resolveImageUrl(value);
+  return url ? getImageUrl(url) : fallback;
+};
 
 function formatJobTitle(title: string) {
   const t = title.toLowerCase();
@@ -247,13 +263,30 @@ export function JobCard({ job, index }: { job: PublicJob; index: number }) {
 }
 
 function Hero({ banner }: { banner: CareerContent["banner"] }) {
-  const background = imageSrc(banner.backgroundImage, heroBanner);
+  const rawBg = banner.backgroundImage || (banner as any).image || (banner as any).bgImage || (banner as any).bannerImage;
+  const background = imageSrc(rawBg, heroBanner);
 
-  // Exact fallback description matching mockup
+  const eyebrow = banner.eyebrow || "CAREERS AT ENSIS";
+  const highlight = banner.highlight || "Tomorrow";
+
+  let lines: string[] = [];
+  if (Array.isArray(banner.headingLines) && banner.headingLines.length > 0) {
+    lines = banner.headingLines;
+  } else if ((banner as any).heading || (banner as any).title) {
+    const rawHeading = String((banner as any).heading || (banner as any).title).trim();
+    if (highlight && rawHeading.toLowerCase().endsWith(highlight.toLowerCase())) {
+      const trimmed = rawHeading.slice(0, -highlight.length).trim();
+      lines = trimmed.includes("\n") ? trimmed.split("\n") : [trimmed];
+    } else {
+      lines = rawHeading.includes("\n") ? rawHeading.split("\n") : [rawHeading];
+    }
+  } else {
+    lines = ["Design Spaces", "for a Healthier"];
+  }
+
   const description =
-    banner.description && !banner.description.includes("ancient wisdom")
-      ? banner.description
-      : "Be a part of a passionate team that designs and delivers wellness furniture and solutions for spas, wellness centers and healthcare spaces across the world.";
+    banner.description ||
+    "Be a part of a passionate team that designs and delivers wellness furniture and solutions for spas, wellness centers and healthcare spaces across the world.";
 
   return (
     <section className="relative z-20 overflow-hidden mb-0">
@@ -284,7 +317,7 @@ function Hero({ banner }: { banner: CareerContent["banner"] }) {
               {/* 1. Eyebrow: CAREERS AT ENSIS — */}
               <div className="mb-1 sm:mb-1.5 flex items-center gap-2">
                 <span className="text-[14px] md:text-[16px] font-bold uppercase tracking-[0.16em] text-[#a9742a]">
-                  CAREERS AT ENSIS
+                  {eyebrow}
                 </span>
                 <span className="text-[#a9742a] font-bold text-sm sm:text-base select-none">—</span>
               </div>
@@ -294,27 +327,27 @@ function Hero({ banner }: { banner: CareerContent["banner"] }) {
                 style={{ ...serif, fontWeight: 800 }}
                 className={`${serifFontClass} text-[30px] sm:text-[40px] md:text-[48px] lg:text-[56px] xl:text-[60px] font-extrabold tracking-[-0.03em] text-[#163a2b] mt-0 leading-[1.12] sm:leading-[1.15]`}
               >
-                Design Spaces<br className="hidden xs:inline" />{" "}
-                for a Healthier<br className="hidden xs:inline" />{" "}
-                <span className="text-[#dc881a]">Tomorrow</span>
+                {lines.map((line, idx) => (
+                  <React.Fragment key={idx}>
+                    {line}
+                    <br className="hidden xs:inline" />{" "}
+                  </React.Fragment>
+                ))}
+                {highlight ? <span className="text-[#dc881a]">{highlight}</span> : null}
               </h1>
 
               {/* 3. Subtitle / Description */}
-              <p className="mt-2.5 sm:mt-3 text-[14px] sm:text-[15px] md:text-[16px] text-[#332f28] leading-[1.5] max-w-[560px] font-medium">
-                Be a part of a passionate team that designs and delivers{" "}
-                <br className="hidden sm:inline" />
-                wellness furniture and solutions for spas, wellness centers{" "}
-                <br className="hidden sm:inline" />
-                and healthcare spaces across the world.
+              <p className="mt-2.5 sm:mt-3 text-[14px] sm:text-[15px] md:text-[16px] text-[#332f28] leading-[1.5] max-w-[560px] font-medium whitespace-pre-line">
+                {description}
               </p>
 
               {/* 4. Button: Explore Opportunities → */}
               <div className="mt-3.5 sm:mt-4">
                 <Link
-                  href={banner.ctaHref || "#openings"}
+                  href={banner.ctaHref || (banner as any).buttonHref || (banner as any).buttonPath || "#openings"}
                   className="inline-flex items-center gap-2 rounded-xl bg-[#0e3022] hover:bg-[#071b13] px-5 sm:px-7 py-2.5 sm:py-3 text-[14px] sm:text-[15px] font-semibold text-white shadow-[0_6px_18px_rgba(14,48,34,0.3)] transition-all transform hover:-translate-y-0.5"
                 >
-                  <span>{banner.ctaText || "Explore Opportunities"}</span>
+                  <span>{banner.ctaText || (banner as any).buttonLabel || (banner as any).buttonText || "Explore Opportunities"}</span>
                   <ArrowRight size={15} />
                 </Link>
               </div>
@@ -342,7 +375,6 @@ function Hero({ banner }: { banner: CareerContent["banner"] }) {
           </div>
         </Container>
       </div>
-
       {/* Stats strip commented out for now as requested */}
       {/* <CareerStatsStrip /> */}
     </section>
