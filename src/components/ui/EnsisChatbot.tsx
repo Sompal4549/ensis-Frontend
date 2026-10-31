@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   User,
   ArrowRight,
+  ChevronDown,
 } from "lucide-react";
 import { API_URL } from "@/lib/api/api";
 import lotusImg from "@/assets/about/lotus.webp";
@@ -58,10 +59,62 @@ interface Message {
   isLeadForm?: boolean;
 }
 
+export const COUNTRY_LIST = [
+  { code: "IN", name: "India", dial: "+91", digits: 10, flag: "🇮🇳" },
+  { code: "US", name: "USA / Canada", dial: "+1", digits: 10, flag: "🇺🇸" },
+  { code: "AE", name: "United Arab Emirates", dial: "+971", digits: 9, flag: "🇦🇪" },
+  { code: "GB", name: "United Kingdom", dial: "+44", digits: 10, flag: "🇬🇧" },
+  { code: "AU", name: "Australia", dial: "+61", digits: 9, flag: "🇦🇺" },
+  { code: "SG", name: "Singapore", dial: "+65", digits: 8, flag: "🇸🇬" },
+  { code: "NP", name: "Nepal", dial: "+977", digits: 10, flag: "🇳🇵" },
+  { code: "DE", name: "Germany", dial: "+49", digits: 11, flag: "🇩🇪" },
+  { code: "OTHER", name: "Other Country", dial: "+", digits: 15, flag: "🌐" },
+];
+
+const GREETING_WORDS = new Set([
+  "hi", "hello", "hey", "heyy", "hii", "hiii", "hlo", "hola",
+  "namaste", "namaskar", "pranam", "kese ho", "kaise ho", "kaisa hai", "kya haal hai",
+  "good morning", "good evening", "good afternoon", "good night", "gm", "gn", "ge",
+  "ok", "okay", "yes", "no", "haan", "nahi", "nah", "yep", "nope",
+  "bye", "test", "demo", "admin", "user", "guest", "none",
+  "kuch nahi", "kuch nhi", "nothing", "na", "n/a", "what", "who", "kya", "kyu",
+  "help", "start", "stop", "please", "bro", "bhai", "sir", "madam", "ji",
+  "namaste ji", "hello ji", "hi ji"
+]);
+
+function extractAndValidateName(rawText: string): { isValid: boolean; isGreeting: boolean; isProductQuestion: boolean; name: string } {
+  const clean = rawText
+    .replace(/^(my name is|mera naam|i am|this is|myself|call me|naam|मेरा नाम|मैं हूँ|मैं)\s*/i, "")
+    .replace(/\s*(hai|he|tha|here)$/i, "")
+    .trim();
+
+  const lower = clean.toLowerCase();
+
+  const isProductQuestion =
+    /droni|table|shirodhara|steam|equipment|price|cost|rate|catalog|catalogue|setup|clinic|hospital|doctor|quote|spa|service|services|दाम|मूल्य|खर्च|कैटलॉग|सामान|उपकरण/i.test(
+      rawText
+    );
+
+  const isGreeting = GREETING_WORDS.has(lower) || /^(hi+|hello+|hey+|namaste+|hlo+)[!.\s]*$/i.test(lower);
+
+  const hasLetters = /[A-Za-z\u0900-\u097F]{2,}/.test(clean);
+  const hasInvalidOnly = /^[^A-Za-z\u0900-\u097F]+$/.test(clean);
+
+  if (isGreeting || !hasLetters || hasInvalidOnly || lower.length < 2 || lower.length > 40 || GREETING_WORDS.has(lower)) {
+    return { isValid: false, isGreeting, isProductQuestion, name: "" };
+  }
+
+  const formattedName = clean
+    .split(/\s+/)
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
+
+  return { isValid: true, isGreeting: false, isProductQuestion: false, name: formattedName };
+}
+
 const PILLS_EN = [
   "✦ Turnkey Clinic Setup",
   "✦ Panchkarma Tables & Droni",
-  "✦ Doctor & Setup Consultancy",
   "✦ 2026 Catalog & Pricing",
   "✦ Request Expert Callback",
 ];
@@ -69,7 +122,6 @@ const PILLS_EN = [
 const PILLS_HI = [
   "✦ टर्नकी क्लिनिक सेटअप",
   "✦ पंचकर्म टेबल व द्रोणी",
-  "✦ डॉक्टर एवं सेटअप कंसल्टेंसी",
   "✦ 2026 कैटलॉग व मूल्य",
   "✦ कॉल बैक का अनुरोध",
 ];
@@ -110,6 +162,7 @@ export default function EnsisChatbot() {
 
   // Lead form state inside chat
   const [leadName, setLeadName] = useState("");
+  const [leadCountry, setLeadCountry] = useState("IN");
   const [leadPhone, setLeadPhone] = useState("");
   const [leadSubmitted, setLeadSubmitted] = useState(false);
   // Callback form step 2: the WhatsApp OTP
@@ -117,6 +170,8 @@ export default function EnsisChatbot() {
   const [leadOtp, setLeadOtp] = useState("");
   const [leadError, setLeadError] = useState("");
   const [leadSubmitting, setLeadSubmitting] = useState(false);
+
+  const selectedCountry = COUNTRY_LIST.find((c) => c.code === leadCountry) || COUNTRY_LIST[0];
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -245,8 +300,8 @@ export default function EnsisChatbot() {
           ? "Ensis 100% एंड-टू-एंड टर्नकी पंचकर्म क्लिनिक एवं वेलनेस सेंटर सेटअप प्रदान करता है:\n\n• आर्किटेक्चरल स्पेस प्लानिंग व NABH कंप्लायंस\n• हस्तनिर्मित बर्मा टीक द्रोणी व ट्रीटमेंट टेबल्स\n• स्वचालित शिरोधारा व स्वेदन स्टीम चैंबर्स\n• संपूर्ण इंटीरियर एवं वेंटिलेशन सेटअप (30-45 दिन)\n\nक्या आप अपने स्पेस के लिए 2D लेआउट व प्रस्ताव चाहते हैं?"
           : "Ensis provides 100% End-to-End Turnkey Panchkarma Setups:\n\n• Architectural Space Planning & NABH Compliance\n• Heritage Burma Teak Treatment Tables & Dronis\n• Automated Shirodhara & Swedana Chambers\n• Complete Interior Ambience & HVAC Ventilation\n• Typical Project Timeline: 30-45 Days\n\nWould you like a customized layout proposal for your space?",
         options: isHi
-          ? ["📞 कॉल बैक का अनुरोध", "📦 मूल्य एवं PDF कैटलॉग", "📋 डॉक्टर एवं सेटअप कंसल्टेंसी"]
-          : ["📞 Request Expert Callback", "📦 Pricing & PDF Catalog", "📋 Doctor & Setup Consultancy"],
+          ? ["📞 कॉल बैक का अनुरोध", "📦 मूल्य एवं PDF कैटलॉग"]
+          : ["📞 Request Expert Callback", "📦 Pricing & PDF Catalog"],
       };
     }
 
@@ -328,6 +383,29 @@ export default function EnsisChatbot() {
       };
     }
 
+    // Equipment & Services inquiry
+    if (
+      q.includes("spa") ||
+      q.includes("service") ||
+      q.includes("services") ||
+      q.includes("massage") ||
+      q.includes("therapy") ||
+      q.includes("therapies") ||
+      q.includes("स्पा") ||
+      q.includes("सर्विस") ||
+      q.includes("मसाज") ||
+      q.includes("थेरेपी")
+    ) {
+      return {
+        reply: isHi
+          ? "Ensis आयुर्वेदिक एवं पंचकर्म के प्रीमियम उपकरण (हस्तनिर्मित बर्मा टीक द्रोणी, स्वचालित शिरोधारा स्टैंड, देवदार स्वेदन स्टीम बॉक्स) का निर्माण करता है एवं क्लिनिक, हॉस्पिटल व वेलनेस सेंटर का संपूर्ण टर्नकी सेटअप प्रदान करता है।\n\nक्या आप हमारे उत्पादों का 2026 कैटलॉग व मूल्य सूची देखना चाहते हैं?"
+          : "Ensis manufactures and supplies premium handcrafted Ayurvedic & Panchkarma equipment (solid Burma teak Dronis, automated Shirodhara units, cedar steam chambers) and complete turnkey clinic setups.\n\nWould you like to explore our 2026 product catalog and pricing?",
+        options: isHi
+          ? ["📦 मूल्य एवं PDF कैटलॉग", "🏥 टर्नकी क्लिनिक सेटअप", "📞 कॉल बैक का अनुरोध"]
+          : ["📦 Pricing & PDF Catalog", "🏥 Turnkey Clinic Setup", "📞 Request Expert Callback"],
+      };
+    }
+
     // Default intelligent fallback
     return {
       reply: isHi
@@ -354,37 +432,63 @@ export default function EnsisChatbot() {
 
     // If we are waiting for user's name
     if (isAskingName) {
-      let cleanName = text.replace(/^(my name is|mera naam|i am|this is|naam|मेरा नाम)\s*/i, "").trim();
-      if (!cleanName) cleanName = language === "hi" ? "मित्र" : "Friend";
-      const formattedName = cleanName
-        .split(" ")
-        .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-        .join(" ");
+      const evaluation = extractAndValidateName(text);
 
-      setUserName(formattedName);
-      setLeadName(formattedName);
-      setIsAskingName(false);
-      try {
-        localStorage.setItem("ensis_chat_username", formattedName);
-      } catch {}
+      if (evaluation.isProductQuestion) {
+        // User asked a question directly without giving a name; don't trap them or treat the question as their name
+        const defaultName = language === "hi" ? "अतिथि" : "Guest";
+        setUserName(defaultName);
+        setIsAskingName(false);
+        // Fall through to regular message sending logic!
+      } else if (!evaluation.isValid) {
+        // Did not enter a valid name (greeting, numbers, gibberish, etc.)
+        setTimeout(() => {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `bot-retry-name-${Date.now()}`,
+              sender: "bot",
+              text: evaluation.isGreeting
+                ? (language === "hi"
+                    ? "नमस्ते! 🙏 बातचीत शुरू करने से पहले, कृपया अपना शुभ नाम बताएं?"
+                    : "Hello! 🙏 Before we begin, may I please know your name?")
+                : (language === "hi"
+                    ? "कृपया अपना मान्य नाम (कम से कम 2 अक्षर) बताएं:"
+                    : "Please share a valid name (at least 2 letters):"),
+              time: getCurrentTime(),
+            },
+          ]);
+          setIsTyping(false);
+        }, 400);
+        return;
+      } else {
+        // Valid name entered
+        const formattedName = evaluation.name;
+        setUserName(formattedName);
+        setLeadName(formattedName);
+        setIsAskingName(false);
+        try {
+          localStorage.setItem("ensis_chat_username", formattedName);
+        } catch {}
 
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          {
-            id: `bot-name-${Date.now()}`,
-            sender: "bot",
-            text:
-              language === "hi"
-                ? `नमस्ते ${formattedName} जी! Ensis में आपका हार्दिक स्वागत है। 🙏\n\nआज हम आपके आयुर्वेदिक क्लिनिक, वेलनेस रिसॉर्ट या पंचकर्म सेटअप में क्या सहायता कर सकते हैं?`
-                : `Namaste ${formattedName} ji! A warm welcome to Ensis. 🙏\n\nHow can we assist your Ayurvedic clinic, wellness center, or equipment setup today?`,
-            time: getCurrentTime(),
-            options: getPills(language),
-          },
-        ]);
-        setIsTyping(false);
-      }, 500);
-      return;
+        setTimeout(() => {
+          setMessages((prev) => [
+            ...prev,
+            {
+              id: `bot-name-${Date.now()}`,
+              sender: "bot",
+              text:
+                language === "hi"
+                  ? `नमस्ते ${formattedName} जी! Ensis में आपका हार्दिक स्वागत है। 🙏\n\nआज हम आपके आयुर्वेदिक क्लिनिक, वेलनेस रिसॉर्ट या पंचकर्म सेटअप में क्या सहायता कर सकते हैं?`
+                  : `Namaste ${formattedName} ji! A warm welcome to Ensis. 🙏\n\nHow can we assist your Ayurvedic clinic, wellness center, or equipment setup today?`,
+              time: getCurrentTime(),
+              options: getPills(language),
+            },
+          ]);
+          setIsTyping(false);
+        }, 500);
+        return;
+      }
     }
 
     try {
@@ -454,12 +558,26 @@ export default function EnsisChatbot() {
     handleSendMessage(option);
   };
 
+  /** Formatted international or national phone number for WhatsApp OTP and leads */
+  const getFullPhoneNumber = () => {
+    const cleaned = leadPhone.replace(/\D/g, "");
+    if (selectedCountry.code === "IN") {
+      return cleaned;
+    }
+    return `${selectedCountry.dial}${cleaned}`;
+  };
+
   /** Sends (or resends) the WhatsApp OTP for the callback form */
   const sendLeadOtp = async () => {
+    const fullPhone = getFullPhoneNumber();
     const res = await fetch(`${API_URL}/chatbot/lead/otp`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: leadName.trim(), phone: leadPhone.trim() }),
+      body: JSON.stringify({
+        name: leadName.trim(),
+        phone: fullPhone,
+        country: selectedCountry.name,
+      }),
     });
     const body = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(body?.message || (language === "hi" ? "OTP नहीं भेजा जा सका।" : "Could not send the OTP."));
@@ -467,10 +585,36 @@ export default function EnsisChatbot() {
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!leadName || !leadPhone) return;
+    setLeadError("");
+
+    if (!leadName.trim() || leadName.trim().length < 2) {
+      setLeadError(language === "hi" ? "कृपया अपना पूरा नाम दर्ज करें।" : "Please enter your full name.");
+      return;
+    }
+
+    const cleanedDigits = leadPhone.replace(/\D/g, "");
+    if (selectedCountry.code === "IN") {
+      if (cleanedDigits.length !== 10) {
+        setLeadError(language === "hi" ? "कृपया 10 अंकों का मान्य मोबाइल नंबर दर्ज करें।" : "Please enter a valid 10-digit mobile number.");
+        return;
+      }
+      if (!/^[6-9]\d{9}$/.test(cleanedDigits)) {
+        setLeadError(language === "hi" ? "कृपया 6-9 से शुरू होने वाला 10 अंकों का मोबाइल नंबर दर्ज करें।" : "Indian mobile numbers must start with 6, 7, 8, or 9.");
+        return;
+      }
+    } else {
+      if (cleanedDigits.length < 7 || cleanedDigits.length > selectedCountry.digits) {
+        setLeadError(
+          language === "hi"
+            ? `कृपया मान्य मोबाइल नंबर (${selectedCountry.digits} अंक तक) दर्ज करें।`
+            : `Please enter a valid mobile number (up to ${selectedCountry.digits} digits).`
+        );
+        return;
+      }
+    }
 
     setLeadSubmitting(true);
-    setLeadError("");
+    const fullPhone = getFullPhoneNumber();
 
     // Step 1: send the OTP on WhatsApp
     if (!leadOtpSent) {
@@ -493,7 +637,8 @@ export default function EnsisChatbot() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: leadName.trim(),
-          phone: leadPhone.trim(),
+          phone: fullPhone,
+          country: selectedCountry.name,
           otp: leadOtp.trim(),
           language,
           sessionId: getChatSessionId(),
@@ -508,6 +653,7 @@ export default function EnsisChatbot() {
       }
 
       setLeadSubmitted(true);
+      const displayPhone = selectedCountry.code === "IN" ? `+91 ${cleanedDigits}` : fullPhone;
       setMessages((prev) => [
         ...prev,
         {
@@ -515,8 +661,8 @@ export default function EnsisChatbot() {
           sender: "bot",
           text:
             language === "hi"
-              ? `धन्यवाद, ${leadName} जी! 🙌\n\nआपका अनुरोध हमारे वरिष्ठ वेलनेस सलाहकार को भेज दिया गया है। हम शीघ्र ही ${leadPhone} पर 2026 आर्किटेक्चर कैटलॉग के साथ आपसे संपर्क करेंगे।`
-              : `Thank you, ${leadName}! 🙌\n\nYour request has been forwarded to our Senior Wellness Consultant. We will call you on ${leadPhone} shortly with the architecture catalog and setup details.`,
+              ? `धन्यवाद, ${leadName} जी! 🙌\n\nआपका अनुरोध हमारे वरिष्ठ वेलनेस सलाहकार को भेज दिया गया है। हम शीघ्र ही ${displayPhone} पर 2026 आर्किटेक्चर कैटलॉग के साथ आपसे संपर्क करेंगे।`
+              : `Thank you, ${leadName}! 🙌\n\nYour request has been forwarded to our Senior Wellness Consultant. We will call you on ${displayPhone} shortly with the architecture catalog and setup details.`,
           time: getCurrentTime(),
           options: getPills(language).slice(0, 2),
         },
@@ -688,15 +834,65 @@ export default function EnsisChatbot() {
                       required
                       className="w-full px-3 py-2.5 rounded-xl bg-[#faf7f2] border border-[#e6dcc8] text-[14px] text-slate-800 placeholder:text-slate-400 outline-none transition focus:bg-white focus:border-[#c39a5c] focus:ring-4 focus:ring-[#c39a5c]/15"
                     />
-                    <input
-                      type="tel"
-                      placeholder={language === "hi" ? "व्हाट्सएप नंबर (10 अंक)" : "WhatsApp number (10 digits)"}
-                      value={leadPhone}
-                      onChange={(e) => setLeadPhone(e.target.value)}
-                      required
-                      disabled={leadOtpSent}
-                      className="w-full px-3 py-2.5 rounded-xl bg-[#faf7f2] border border-[#e6dcc8] text-[14px] text-slate-800 placeholder:text-slate-400 outline-none transition focus:bg-white focus:border-[#c39a5c] focus:ring-4 focus:ring-[#c39a5c]/15 disabled:opacity-70"
-                    />
+                    {/* Country Selector */}
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[11.5px] font-semibold text-slate-700 flex items-center justify-between">
+                        <span>{language === "hi" ? "देश (Country)" : "Country"}</span>
+                      </label>
+                      <div className="relative">
+                        <select
+                          value={leadCountry}
+                          onChange={(e) => {
+                            setLeadCountry(e.target.value);
+                            setLeadPhone("");
+                            if (leadError) setLeadError("");
+                          }}
+                          disabled={leadOtpSent}
+                          className="w-full appearance-none px-3 py-2 rounded-xl bg-[#faf7f2] border border-[#e6dcc8] text-[13.5px] text-slate-800 outline-none transition focus:bg-white focus:border-[#c39a5c] focus:ring-4 focus:ring-[#c39a5c]/15 disabled:opacity-70 cursor-pointer"
+                        >
+                          {COUNTRY_LIST.map((c) => (
+                            <option key={c.code} value={c.code}>
+                              {c.flag} {c.name} ({c.dial})
+                            </option>
+                          ))}
+                        </select>
+                        <ChevronDown className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+                      </div>
+                    </div>
+
+                    {/* WhatsApp Phone with Country Code Badge & MaxLength */}
+                    <div className="flex flex-col gap-1">
+                      <div className="flex items-center justify-between text-[11.5px] font-semibold text-slate-700">
+                        <span>{language === "hi" ? "व्हाट्सएप नंबर" : "WhatsApp Number"}</span>
+                        <span className="text-[10.5px] font-normal text-slate-500">
+                          {leadPhone.length}/{selectedCountry.digits} {language === "hi" ? "अंक" : "digits"}
+                        </span>
+                      </div>
+                      <div className="flex items-center rounded-xl bg-[#faf7f2] border border-[#e6dcc8] focus-within:bg-white focus-within:border-[#c39a5c] focus-within:ring-4 focus-within:ring-[#c39a5c]/15 transition overflow-hidden">
+                        <span className="px-2.5 py-2 text-[13px] font-bold text-slate-700 bg-black/[0.04] border-r border-[#e6dcc8] select-none shrink-0">
+                          {selectedCountry.dial}
+                        </span>
+                        <input
+                          type="tel"
+                          inputMode="numeric"
+                          placeholder={
+                            selectedCountry.code === "IN"
+                              ? "98765 43210 (10 digits)"
+                              : `${selectedCountry.digits} digits`
+                          }
+                          value={leadPhone}
+                          maxLength={selectedCountry.digits}
+                          onChange={(e) => {
+                            const digits = e.target.value.replace(/\D/g, "");
+                            setLeadPhone(digits.slice(0, selectedCountry.digits));
+                            if (leadError) setLeadError("");
+                          }}
+                          required
+                          disabled={leadOtpSent}
+                          className="w-full px-2.5 py-2 bg-transparent text-[14px] text-slate-800 placeholder:text-slate-400 outline-none disabled:opacity-70"
+                        />
+                      </div>
+                    </div>
                     {leadOtpSent && (
                       <>
                         <input
