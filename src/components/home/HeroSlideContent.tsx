@@ -159,22 +159,24 @@ export default function HeroSlideContent({
               )}
             </motion.h1>
 
-            {/* Divider */}
-            <motion.div
-              variants={itemVariants}
-              className={`flex w-full py-2 ${
-                slide.isCenter && "flex flex-col items-center justify-center"
-              }`}
-            >
-              <Image
-                src={arrow}
-                alt="arrow"
-                width={350}
-                height={10}
-                className="max-w-[220px] sm:max-w-[300px] md:max-w-[350px]"
-                crossOrigin="anonymous"
-              />
-            </motion.div>
+            {/* Divider (gold line + lotus): hidden when the admin sets "Show Lutus" to off */}
+            {slide.showLutus !== false && (
+              <motion.div
+                variants={itemVariants}
+                className={`flex w-full py-2 ${
+                  slide.isCenter && "flex flex-col items-center justify-center"
+                }`}
+              >
+                <Image
+                  src={arrow}
+                  alt="arrow"
+                  width={350}
+                  height={10}
+                  className="max-w-[220px] sm:max-w-[300px] md:max-w-[350px]"
+                  crossOrigin="anonymous"
+                />
+              </motion.div>
+            )}
 
             {/* Description */}
             {slide.description && (

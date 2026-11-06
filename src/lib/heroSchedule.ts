@@ -2,8 +2,8 @@
  * Home hero slide scheduling (admin: Pages > Home > Hero Banner > a slide > "Schedule").
  *
  * A slide may carry ONE display window as datetime-local strings in India time ("2026-10-25T09:00").
- * Slides without a window are the normal hero. While at least one scheduled slide is live, ONLY the
- * live scheduled slides show; when every window is over, the normal slides are back automatically.
+ * Slides without a window are the normal hero and always show. A scheduled slide shows together with
+ * them while its window is live, placed before them (first slide); when its window is over it drops out automatically.
  * The window is [start, end): a slide appears AT its start and disappears AT its end, to the millisecond
  * (HeroCarousel flips with a timer, no reload needed).
  */
@@ -50,11 +50,11 @@ export const isSlideLive = (slide: Schedulable, now = Date.now()): boolean => {
   return (start === null || now >= start) && (end === null || now < end);
 };
 
-/** The slides to show at `now`: the live scheduled ones if any, otherwise the normal (unscheduled) ones */
-export const visibleHeroSlides = <T extends Schedulable>(slides: T[], now = Date.now()): T[] => {
-  const live = slides.filter((s) => isSlideLive(s, now));
-  return live.length > 0 ? live : slides.filter((s) => !isScheduled(s));
-};
+/** The slides to show at `now`: live scheduled slides FIRST (index 0), then the normal (unscheduled) ones, each in CMS order */
+export const visibleHeroSlides = <T extends Schedulable>(slides: T[], now = Date.now()): T[] => [
+  ...slides.filter((s) => isSlideLive(s, now)),
+  ...slides.filter((s) => !isScheduled(s)),
+];
 
 /** The next moment (epoch ms) after `now` at which a scheduled slide starts or ends; null when nothing is left to change */
 export const nextScheduleBoundary = (slides: Schedulable[], now = Date.now()): number | null => {
