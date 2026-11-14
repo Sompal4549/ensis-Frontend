@@ -64,6 +64,7 @@ export default async function RootLayout({
   ]);
 
   const analytics = advSeo?.analytics || {};
+  const gaId = analytics.gaId || process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || process.env.NEXT_PUBLIC_GA_ID || "G-RH0WQSM7R4";
   const searchConsole = advSeo?.searchConsole || {};
   const headerScripts = advSeo?.headerScripts || "";
   const footerScripts = advSeo?.footerScripts || "";
@@ -97,17 +98,17 @@ export default async function RootLayout({
         )}
 
         {/* Google Analytics 4 */}
-        {analytics.gaId && (
+        {gaId && (
           <>
             <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${analytics.gaId}`}
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
               strategy="afterInteractive"
             />
             <Script id="ga4-init" strategy="afterInteractive">
               {`window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', '${analytics.gaId}');`}
+              gtag('config', '${gaId}');`}
             </Script>
           </>
         )}
