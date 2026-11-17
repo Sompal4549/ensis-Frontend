@@ -164,7 +164,7 @@ export default async function RootLayout({
           <Footer image={footerTop6} /> */}
           <SocialSidebar />
           <WhatsAppFloat />
-          <EnsisChatbot />
+          <EnsisChatbot initialLogo={headerLayout?.logo?.imageUrl} />
           <ToastProvider />
         </ShopProvider>
         <FooterScripts html={footerScripts} />

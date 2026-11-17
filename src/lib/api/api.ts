@@ -17,7 +17,7 @@ const BASE_API_URL = (
 export const API_URL = BASE_API_URL.endsWith("/api/v1") ? BASE_API_URL : `${BASE_API_URL}/api/v1`;
 export const BACKEND_URL = API_URL.replace(/\/api\/v1$/, "");
 
-const apiClient = axios.create({
+export const apiClient = axios.create({
     baseURL: API_URL,
     timeout: 10000,
     validateStatus: () => true,
@@ -27,6 +27,8 @@ const apiClient = axios.create({
         "Expires": "0",
     },
 });
+
+export const api = apiClient;
 
 // ─── Silent dual-token refresh (access 15m / refresh 7d) ─────────────────────
 const REFRESH_TOKEN_KEY = "ensis_refresh_token";
@@ -268,8 +270,8 @@ export const productApi = {
             return unwrap<{
               data: any; products: Product[]; total: number; page: number; limit: number 
 }>(response);
-        } catch (error) {
-            console.error("Error fetching products, using static data:", error);
+        } catch (error: any) {
+            console.warn("Error fetching products from API, using static data:", error?.message || error);
             return { data: null, products: staticProducts, total: staticProducts.length, page, limit };
         }
     },
@@ -290,8 +292,8 @@ export const categoryApi = {
         try {
             const response = await apiClient.get(`/categories`);
             return unwrap<any[]>(response);
-        } catch (error) {
-            console.error("Error fetching categories, using static data:", error);
+        } catch (error: any) {
+            console.warn("Error fetching categories from API, using static data:", error?.message || error);
             return staticCategories;
         }
     },
@@ -474,10 +476,10 @@ export type Career = {
 export const careerApi = {
   list: async (): Promise<Career[]> => {
     try {
-      const response = await apiClient.get(`/careers`);
+      const response = await apiClient.get(`/careers`, { timeout: 4000 });
       return unwrap<Career[]>(response);
-    } catch (error) {
-      console.error("Error fetching careers, using static data:", error);
+    } catch (error: any) {
+      console.warn("Error fetching careers from API, using static data:", error?.message || error);
       return staticCareers;
     }
   },
@@ -486,7 +488,7 @@ export const careerApi = {
 export const blogApi = {
   list: async (): Promise<any[]> => {
     try {
-      const response = await apiClient.get(`/blogs`);
+      const response = await apiClient.get(`/blogs`, { timeout: 4000 });
       const payload = response.data;
       const isOk = response.status >= 200 && response.status < 300;
       
@@ -500,15 +502,15 @@ export const blogApi = {
       }
 
       return payload.data || staticBlogs;
-    } catch (err) {
-      console.error("Failed to fetch blogs, using static data", err);
+    } catch (err: any) {
+      console.warn("Failed to fetch blogs from API, falling back to static data:", err?.message || err);
       return staticBlogs;
     }
   },
 
   detail: async (slug: string): Promise<any> => {
     try {
-      const response = await apiClient.get(`/blogs/${slug}`);
+      const response = await apiClient.get(`/blogs/${slug}`, { timeout: 4000 });
       const payload = response.data;
       const isOk = response.status >= 200 && response.status < 300;
       
@@ -522,8 +524,8 @@ export const blogApi = {
       }
 
       return payload.data || getStaticBlog(slug) || null;
-    } catch (err) {
-      console.error("Failed to fetch blog detail, using static data", err);
+    } catch (err: any) {
+      console.warn("Failed to fetch blog detail from API, falling back to static data:", err?.message || err);
       return getStaticBlog(slug) || null;
     }
   },
