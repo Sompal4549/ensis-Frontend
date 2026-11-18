@@ -34,7 +34,7 @@ import { prepareVoices, speak, stopSpeaking, unlockVoice } from "@/lib/chatVoice
    chat with its IP. Opening the chat can start a spoken call over WebRTC. Typing works seamlessly
    during a call or standalone, with spoken natural voice replies. */
 
-type Lang = "en" | "hi" | "bn";
+type Lang = "en" | "hi" | "bn" | "pa";
 
 const COPY = {
   en: {
@@ -182,6 +182,55 @@ const COPY = {
     teamPlaceholder: "এনসিস দলকে লিখুন...",
     teamFooter: "আপনি এনসিস প্রতিনিধির সাথে চ্যাট করছেন",
   },
+  pa: {
+    title: "ਐਨਸਿਸ ਅਸਿਸਟ",
+    subtitle: "ਆਯੁਰਵੇਦਿਕ ਅਤੇ ਪੰਚਕਰਮਾ ਮਾਹਿਰ",
+    placeholder: "ਪੰਚਕਰਮਾ ਟੇਬਲ, ਸਟੀਮ ਚੈਂਬਰ ਜਾਂ ਕੋਟੇਸ਼ਨ ਬਾਰੇ ਪੁੱਛੋ...",
+    blockedPlaceholder: "ਇਹ ਚੈਟ ਅਸਥਾਈ ਤੌਰ 'ਤੇ ਬਲਾਕ ਹੈ",
+    blockedNote: "ਗਲਤ ਭਾਸ਼ਾ ਕਾਰਨ ਚੈਟ ਬਲਾਕ ਹੈ",
+    blockedOpensIn: "ਦੁਬਾਰਾ ਖੁੱਲ੍ਹੇਗੀ",
+    blockedByTeam: "ਜ਼ਰੂਰੀ ਜਾਣਕਾਰੀ ਲਈ +91 9810242841 'ਤੇ ਕਾਲ ਕਰੋ ਜੀ।",
+    abuseHint: "ਕਿਰਪਾ ਕਰਕੇ ਸ਼ਿਸ਼ਟਾਚਾਰ ਵਾਲੀ ਭਾਸ਼ਾ ਵਰਤੋ।",
+    offline: "ਮਾਫ਼ ਕਰਨਾ, ਇਸ ਸਮੇਂ ਚੈਟ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। +91 9810242841 'ਤੇ ਸੰਪਰਕ ਕਰੋ ਜੀ।",
+    footer: "ਐਨਸਿਸ ਏਆਈ ਅਸਿਸਟੈਂਟ • ਪੰਚਕਰਮਾ ਅਤੇ ਵੈੱਲਨੈੱਸ ਉਪਕਰਨ",
+    online: "ਆਨਲਾਈਨ",
+    typing: "ਟਾਈਪ ਕਰ ਰਹੀ ਹੈ…",
+    soundOn: "ਆਵਾਜ਼ ਚਾਲੂ",
+    soundOff: "ਆਵਾਜ਼ ਬੰਦ",
+    voiceOn: "ਵੌਇਸ ਉੱਤਰ ਚਾਲੂ",
+    voiceOff: "ਵੌਇਸ ਉੱਤਰ ਬੰਦ",
+    callStart: "ਗੱਲ ਕਰੋ ਜੀ",
+    callEnd: "ਕਾਲ ਸਮਾਪਤ ਕਰੋ",
+    chatEnded: "ਇਹ ਗੱਲਬਾਤ ਸਮਾਪਤ ਹੋ ਚੁੱਕੀ ਹੈ।",
+    resume: "ਦੁਬਾਰਾ ਸ਼ੁਰੂ ਕਰੋ",
+    callMute: "ਮਾਈਕ ਬੰਦ ਕਰੋ",
+    callUnmute: "ਮਾਈਕ ਚਾਲੂ ਕਰੋ",
+    connecting: "ਕਨੈਕਟ ਹੋ ਰਹੀ ਹੈ...",
+    listening: "ਸੁਣ ਰਹੀ ਹਾਂ, ਬੋਲੋ ਜੀ...",
+    interruptHint: "ਕਿਸੇ ਵੀ ਸਮੇਂ ਬੋਲੋ, ਮੈਂ ਸੁਣਾਂਗੀ",
+    muted: "ਤੁਹਾਡਾ ਮਾਈਕ ਬੰਦ ਹੈ",
+    micDenied: "ਮਾਈਕ੍ਰੋਫੋਨ ਦੀ ਇਜਾਜ਼ਤ ਨਹੀਂ ਮਿਲੀ। ਬ੍ਰਾਊਜ਼ਰ ਵਿੱਚ ਇਜਾਜ਼ਤ ਦਿਓ ਜੀ।",
+    micNoSpeech: "ਕੁਝ ਸੁਣਾਈ ਨਹੀਂ ਦਿੱਤਾ ਜੀ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਬੋਲੋ।",
+    micNotFound: "ਕੋਈ ਮਾਈਕ੍ਰੋਫੋਨ ਨਹੀਂ ਮਿਲਿਆ।",
+    micBusy: "ਕੋਈ ਹੋਰ ਐਪ ਮਾਈਕ੍ਰੋਫੋਨ ਵਰਤ ਰਹੀ ਹੈ।",
+    callFailed: "ਕਾਲ ਕਨੈਕਟ ਨਹੀਂ ਹੋ ਸਕੀ।",
+    callUnavailable: "ਵੌਇਸ ਕਾਲ ਇਸ ਸਮੇਂ ਉਪਲਬਧ ਨਹੀਂ ਹੈ। ਤੁਸੀਂ ਇੱਥੇ ਲਿਖ ਸਕਦੇ ਹੋ।",
+    callDropped: "ਕਾਲ ਕੱਟ ਗਈ ਹੈ। ਗੱਲ ਕਰਨ ਲਈ ਮਾਈਕ 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
+    callEnding: "ਕਾਲ ਦਾ ਸਮਾਂ ਪੂਰਾ ਹੋ ਰਿਹਾ ਹੈ।",
+    goodbye: "ਐਨਸਿਸ ਨਾਲ ਸੰਪਰਕ ਕਰਨ ਲਈ ਬਹੁਤ-ਬਹੁਤ ਧੰਨਵਾਦ ਜੀ! ਤੁਹਾਡਾ ਦਿਨ ਸ਼ੁਭ ਰਹੇ।",
+    callIdle: "ਕਾਫੀ ਦੇਰ ਕੋਈ ਆਵਾਜ਼ ਨਾ ਆਉਣ ਕਾਰਨ ਕਾਲ ਸਮਾਪਤ ਕੀਤੀ ਗਈ।",
+    didntCatch: "ਮਾਫ਼ ਕਰਨਾ ਜੀ, ਸਮਝ ਨਹੀਂ ਆਇਆ। ਕੀ ਤੁਸੀਂ ਦੁਬਾਰਾ ਦੱਸ ਸਕਦੇ ਹੋ?",
+    noise: "ਨੌਇਸ ਰਿਡਕਸ਼ਨ",
+    noiseOnHint: "ਚਾਲੂ: ਪਿੱਛੇ ਦੀ ਆਵਾਜ਼ ਫਿਲਟਰ ਕੀਤੀ ਜਾਂਦੀ ਹੈ",
+    noiseOffHint: "ਬੰਦ: ਸਾਧਾਰਨ ਮਾਈਕ",
+    teamTitle: "ਐਨਸਿਸ ਮਾਹਿਰ ਟੀਮ",
+    teamSubtitle: "ਸਿੱਧੀ ਸਹਾਇਤਾ",
+    teamName: "ਐਨਸਿਸ ਟੀਮ",
+    teamJoined: "ਐਨਸਿਸ ਟੀਮ ਤੋਂ ਇੱਕ ਮਾਹਿਰ ਜੁੜ ਚੁੱਕੇ ਹਨ",
+    teamLeft: "ਟੀਮ ਚੈਟ ਤੋਂ ਚਲੀ ਗਈ ਹੈ। ਹੁਣ ਐਨਸਿਸ ਅਸਿਸਟ ਜਵਾਬ ਦੇਵੇਗੀ।",
+    teamPlaceholder: "ਸਾਡੀ ਟੀਮ ਨੂੰ ਸੰਦੇਸ਼ ਭੇਜੋ...",
+    teamFooter: "ਤੁਸੀਂ ਐਨਸਿਸ ਪ੍ਰਤੀਨਿਧੀ ਨਾਲ ਗੱਲ ਕਰ ਰਹੇ ਹੋ",
+  },
 };
 
 /* ─── Messages Interfaces ─── */
@@ -296,7 +345,7 @@ const NAME_STEP = `You are Ensis Assist, a warm young woman answering a call for
 - If they would rather type than talk (like "typing", "type karunga", "likhkar", "I'll type"), call continue_typing and say nothing.
 - If they just chose to talk (like "bolkar", "baat karni hai", "talk"), or only said hello, ok or thanks, say one short warm line asking how you can help with Ensis Panchkarma & wellness equipment, in their language, without asking their name: "जी ज़रूर! बताइए, मैं आपकी क्या मदद कर सकती हूँ?" or "Sure! Tell me, how can I help you with our Ayurvedic & Panchkarma equipment today?"
 - If the talk is over and they want nothing more, call end_conversation and say nothing.
-- Otherwise (they asked something or want something, even "tell me first"): do NOT answer it yet. In the language they are speaking (Hindi in Devanagari), say one short warm line that you'll help right away, and ask their name. For example: "जी, मैं अभी बताती हूँ, बस पहले अपना नाम बता दीजिए?" or "Sure, I'll tell you right away. May I know your name first?"
+- Otherwise (they asked something or want something, even "tell me first"): do NOT answer it yet. In the EXACT language they are speaking (Punjabi in Punjabi Gurmukhi, Bengali in Bengali, Hindi in Hindi Devanagari, English in English - NEVER force Hindi if the visitor spoke Punjabi, Bengali or English), say one short warm line that you'll help right away, and ask their name. For example: Punjabi: "ਜੀ, ਮੈਂ ਹੁਣੇ ਦੱਸਦੀ ਹਾਂ, ਬਸ ਪਹਿਲਾਂ ਆਪਣਾ ਨਾਮ ਦੱਸ ਦਿਓ ਜੀ?", Hindi: "जी, मैं अभी बताती हूँ, बस पहले अपना नाम बता दीजिए?", English: "Sure, I'll tell you right away. May I know your name first?"
 - If they clearly refuse to give a name, call update_visitor with name "Visitor" and say nothing.
 - Insults or harassment: call report_abuse. Talk not meant for you (people around them talking to each other): call not_for_me and say nothing.`;
 
@@ -371,7 +420,7 @@ const getLocalEnsisReply = (query: string, messagesHistory: Message[] = []): Rep
       {
         title: isHi ? "🌿 नमस्कार! एन्सिस में आपका स्वागत है" : "🌿 Namaste! Welcome to Ensis",
         text: isHi
-          ? "नमस्कार! एन्सिस (Ensis) में आपका हार्दिक स्वागत है। हम भारत के प्रमुख आयुर्वेदिक पंचकर्म उपकरण और क्लिनिक सेटअप निर्माता हैं।\n\nआज मैं आपकी क्या सहायता कर सकती हूँ? आप हमारे **पंचकर्म द्रोणी टेबल्स**, **स्टीम बाथ चैंबर्स**, **शिरोधारा स्टैंड्स व पॉट्स** या **संपूर्ण क्लिनिक सेटअप** के बारे में पूछ सकते हैं!"
+          ? "नमस्कार! एन्सिस में आपका हार्दिक स्वागत है। हम भारत के प्रमुख आयुर्वेदिक पंचकर्म उपकरण और क्लिनिक सेटअप निर्माता हैं।\n\nआज मैं आपकी क्या सहायता कर सकती हूँ? आप हमारे **पंचकर्म द्रोणी टेबल्स**, **स्टीम बाथ चैंबर्स**, **शिरोधारा स्टैंड्स व पॉट्स** या **संपूर्ण क्लिनिक सेटअप** के बारे में पूछ सकते हैं!"
           : "Namaste! Welcome to Ensis. We are India's premier manufacturer and supplier of authentic **Ayurvedic Panchkarma equipment** and turnkey wellness clinic setups.\n\nHow may I assist you today? Feel free to ask about our **Panchakarma Droni Tables**, **Steam Bath Chambers**, **Shirodhara Sets**, or **Complete Clinic Consultation**!",
         link: { href: "/products", label: isHi ? "उत्पाद देखें" : "Browse Equipment" },
       },
@@ -477,7 +526,7 @@ const getLocalEnsisReply = (query: string, messagesHistory: Message[] = []): Rep
       {
         title: isHi ? "एन्सिस संपर्क एवं कॉर्पोरेट कार्यालय" : "Ensis Contact & Office Details",
         text: isHi
-          ? "🌿 **एन्सिस (Ensis) संपर्क विवरण**:\n\n📍 **कॉर्पोरेट कार्यालय एवं फैक्ट्री**:\nPlot No. 12/29, Site-II Industrial Area, Mohan Nagar, Ghaziabad, UP – 201007\n\n📞 **फ़ोन / WhatsApp**: **+91 9810242841** / **+91 9654900525**\n✉️ **ईमेल**: **info@ensis.in**\n🌐 **वेबसाइट संपर्क पेज**: [ensis.in/contact](/contact)"
+          ? "🌿 **एन्सिस संपर्क विवरण**:\n\n📍 **कॉर्पोरेट कार्यालय एवं फैक्ट्री**:\nPlot No. 12/29, Site-II Industrial Area, Mohan Nagar, Ghaziabad, UP – 201007\n\n📞 **फ़ोन / WhatsApp**: **+91 9810242841** / **+91 9654900525**\n✉️ **ईमेल**: **info@ensis.in**\n🌐 **वेबसाइट संपर्क पेज**: [ensis.in/contact](/contact)"
           : "🌿 **Ensis Contact Details**:\n\n📍 **Corporate Office & Factory**:\nPlot No. 12/29, Site-II Industrial Area, Mohan Nagar, Ghaziabad, UP – 201007\n\n📞 **Phone / WhatsApp**: **+91 9810242841** / **+91 9654900525**\n✉️ **Email**: **info@ensis.in**\n🌐 **Website Contact Page**: [ensis.in/contact](/contact)",
         link: { href: "/contact", label: isHi ? "संपर्क पेज खोलें" : "Open Contact Page" },
       },
@@ -819,6 +868,10 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
   const speechSafetyTimerRef = useRef<NodeJS.Timeout | null>(null);
   const micIdleTimerRef = useRef<NodeJS.Timeout | null>(null);
   const currentBotSpokenTextRef = useRef("");
+  const lastSentTextRef = useRef<string>("");
+  const lastSentTimeRef = useRef<number>(0);
+  const isSendingRef = useRef<boolean>(false);
+  const interruptedRef = useRef<boolean>(false);
 
   // Lead & WhatsApp OTP Verification State
   const [otpCardOpen, setOtpCardOpen] = useState(false);
@@ -1047,7 +1100,14 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     osc.stop(now + 0.15);
   };
 
-  /* ─── Typed Replies Queue & Speech (Full-Duplex Conversational Audio) ─── */
+  const getBackendBaseUrl = (): string => {
+    if (typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")) {
+      return "http://localhost:5000";
+    }
+    return BACKEND_URL || "https://api.ensis.in";
+  };
+
+  /* ─── Typed replies: queued so they appear one after another, each after a short "typing..." (Design House) ─── */
   const readOut = async (line: Reply) => {
     if (!voiceOnRef.current || !activeRef.current || callRef.current) return;
     await sleep(150);
@@ -1057,14 +1117,19 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     const audioUrl =
       line.speakId === undefined
         ? undefined
-        : `${BACKEND_URL}/api/chatbot/speak?session=${sessionIdRef.current}&message=${line.speakId}`;
+        : `${getBackendBaseUrl()}/api/chatbot/speak?session=${sessionIdRef.current}&message=${line.speakId}`;
 
-    // Full-Duplex Listening: NEVER kill the microphone when the bot speaks!
-    // The user must be able to interrupt (barge-in) and speak naturally at any time.
-    if (continuousVoiceActiveRef.current && !recognitionRef.current && !callRef.current && !isPausedRef.current) {
+    // PAUSE/STOP SPEECH RECOGNITION WHILE ASSISTANT SPEAKS!
+    // This completely eliminates acoustic echo feedback and prevents the assistant from muting itself!
+    if (recognitionRef.current) {
       try {
-        startSpeechDictation();
+        recognitionRef.current.onresult = null;
+        recognitionRef.current.onend = null;
+        recognitionRef.current.onerror = null;
+        recognitionRef.current.abort();
       } catch {}
+      recognitionRef.current = null;
+      setIsRecording(false);
     }
 
     speakingRef.current = true;
@@ -1072,8 +1137,6 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     try {
       await speak(spoken, audioUrl);
     } finally {
-      currentBotSpokenTextRef.current = "";
-      await sleep(100);
       speakingRef.current = false;
       setSpeaking(false);
     }
@@ -1100,10 +1163,10 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
           } catch (speechErr) {
             console.warn("readOut failed:", speechErr);
           }
-          await sleep(150);
+          await sleep(200);
         }
 
-        // All replies in this turn have finished speaking! If continuous listening isn't running, start it
+        // All replies in this turn have finished speaking! If continuous listening is active, resume listening
         if (continuousVoiceActiveRef.current && !isPausedRef.current && !callRef.current && !closingModeRef.current) {
           if (!recognitionRef.current && !speakingRef.current) {
             startSpeechDictation();
@@ -1348,7 +1411,7 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
 
   const speakVoice = (text: string) => {
     const turn = voiceTurnRef.current;
-    const clip = fetch(`${BACKEND_URL}/api/chatbot/call/say`, {
+    const clip = fetch(`${getBackendBaseUrl()}/api/chatbot/call/say`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ sessionId: sessionIdRef.current, text }),
@@ -1879,20 +1942,34 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     const text = (latestSpeechTextRef.current || inputRef.current?.value || "").trim();
     latestSpeechTextRef.current = "";
 
-    // Silence any active speech immediately
+    // Silence any active speech immediately when user begins sending
     stopSpeaking();
     if (voiceAudioRef.current) stopVoice();
     speakingRef.current = false;
     setSpeaking(false);
 
-    if (text) {
+    // CRITICAL DEDUPLICATION:
+    // Drop empty text, or duplicate text sent within 4 seconds, or in-flight sends!
+    if (!text || isSendingRef.current || (text === lastSentTextRef.current && Date.now() - lastSentTimeRef.current < 4000)) {
+      return;
+    }
+
+    // Abort active recognition so Web Speech API doesn't re-emit final event for this utterance
+    if (recognitionRef.current) {
+      try {
+        recognitionRef.current.abort();
+      } catch {}
+    }
+
+    lastSentTextRef.current = text;
+    lastSentTimeRef.current = Date.now();
+    isSendingRef.current = true;
+
+    try {
       setInput("");
       await sendToAssistant(text);
-    } else {
-      // Nothing said: resume listening if continuous voice is still active
-      if (continuousVoiceActiveRef.current && !speakingRef.current && !isPausedRef.current && !callRef.current) {
-        startSpeechDictation();
-      }
+    } finally {
+      isSendingRef.current = false;
     }
   };
 
@@ -1941,8 +2018,9 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
 
       latestSpeechTextRef.current = "";
       const recognition = new SpeechRec();
-      // Dynamically select native transcription acoustic model for Bengali (bn-IN), Hindi (hi-IN) or Indian English (en-IN)
+      // Dynamically select native transcription acoustic model for Punjabi (pa-IN), Bengali (bn-IN), Hindi (hi-IN) or Indian English (en-IN)
       const getSpeechCode = (l: Lang): string => {
+        if (l === "pa") return "pa-IN";
         if (l === "bn") return "bn-IN";
         if (l === "hi") return "hi-IN";
         return "en-IN";
@@ -1953,13 +2031,19 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
       recognition.maxAlternatives = 1;
 
       setIsRecording(true);
+      continuousVoiceActiveRef.current = true;
       setVoiceNote(
         isPausedRef.current
-          ? (langRef.current === "bn" ? "⏸️ কথোপকথন বিরতিতে আছে (শুরু করতে বলুন)" : langRef.current === "hi" ? "⏸️ बातचीत पॉज़ है (शुरू करने के लिए बोलें)" : "⏸️ Paused (speak to resume)")
-          : (langRef.current === "bn" ? "🎙️ শুনছি, বলুন... ('পজ' বললে থেমে যাব)" : langRef.current === "hi" ? "🎙️ सुन रही हूँ, बोलिए... ('पॉज़' बोलने पर रुक जाऊँगी)" : "🎙️ Listening continuously... (say 'pause' to pause)")
+          ? (langRef.current === "pa" ? "⏸️ ਗੱਲਬਾਤ ਰੋਕੀ ਹੋਈ ਹੈ (ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਬੋਲੋ)" : langRef.current === "bn" ? "⏸️ কথোপকথন বিরতিতে আছে (শুরু করতে বলুন)" : langRef.current === "hi" ? "⏸️ बातचीत पॉज़ है (शुरू करने के लिए बोलें)" : "⏸️ Paused (speak to resume)")
+          : (langRef.current === "pa" ? "🎙️ ਸੁਣ ਰਹੀ ਹਾਂ, ਬੋਲੋ ਜੀ... ('ਰੁਕੋ' ਕਹਿਣ 'ਤੇ ਰੁਕ ਜਾਵਾਂਗੀ)" : langRef.current === "bn" ? "🎙️ শুনছি, বলুন... ('পজ' বললে থেমে যাব)" : langRef.current === "hi" ? "🎙️ सुन रही हूँ, बोलिए... ('पॉज़' बोलने पर रुक जाऊँगी)" : "🎙️ Listening continuously... (say 'pause' to pause)")
       );
 
       recognition.onresult = (event: any) => {
+        // While the assistant is speaking out loud or typing, ignore mic audio to avoid echo or self-interruption
+        if (speakingRef.current || isTyping) {
+          return;
+        }
+
         let finalTranscript = "";
         let interim = "";
         for (let i = event.resultIndex; i < event.results.length; ++i) {
@@ -1972,60 +2056,47 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
         const heard = (finalTranscript || interim).trim();
         if (!heard) return;
 
-        // USER BARGE-IN / INTERRUPTION:
-        // When the user speaks while the bot is speaking or typing, immediately silence the bot
-        // and stop queued speech so the conversation feels completely real and natural!
-        if (speakingRef.current || isTypingRef.current) {
-          const cleanHeard = heard.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "").trim();
-          const cleanBot = (currentBotSpokenTextRef.current || "").toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "").trim();
-
-          // Reject accidental echo only if heard text is a long exact match of the bot's own sentence
-          const isAcousticEcho = cleanBot && cleanHeard.length > 5 && cleanBot.includes(cleanHeard);
-
-          if (!isAcousticEcho) {
-            stopSpeaking();
-            if (voiceAudioRef.current) stopVoice();
-            speakingRef.current = false;
-            setSpeaking(false);
-            setIsTyping(false);
-            queueRef.current = Promise.resolve();
-          } else {
-            return;
-          }
+        // Auto-detect language from script in real-time
+        if (/[\u0A00-\u0A7F]/.test(heard)) {
+          langRef.current = "pa";
+        } else if (/[\u0980-\u09FF]/.test(heard)) {
+          langRef.current = "bn";
+        } else if (/[\u0900-\u097F]/.test(heard)) {
+          langRef.current = "hi";
         }
 
         // Check for PAUSE command immediately!
         if (/^(pause|ruko|ruk\s*jao|ek\s*minute|hold\s*on|wait|stop|ठहरो|रुक|रुको)\b/i.test(heard)) {
-            stopSpeaking();
-            if (voiceAudioRef.current) stopVoice();
-            if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
-            isPausedRef.current = true;
-            latestSpeechTextRef.current = "";
-            setInput("");
-            setVoiceNote(langRef.current === "hi" ? "⏸️ पॉज़ किया गया (बोलना जारी रखने के लिए फिर से बोलें)" : "⏸️ Paused (speak anytime to resume)");
-            return;
-          }
-
-          isPausedRef.current = false;
-          latestSpeechTextRef.current = heard;
-          setInput(heard);
-          lastActivityRef.current = Date.now();
-
-          // Reset 1 minute idle mic timeout
-          if (micIdleTimerRef.current) clearTimeout(micIdleTimerRef.current);
-          micIdleTimerRef.current = setTimeout(() => {
-            if (continuousVoiceActiveRef.current) {
-              stopContinuousDictation();
-              setVoiceNote(langRef.current === "hi" ? "Kaafi der se koi awaaz nahi aayi, isliye mic band kar diya." : "Mic turned off due to 1 minute of inactivity.");
-            }
-          }, 60000);
-
-          // Reset silence debounce timer: 1000ms after user pauses speaking, send!
+          stopSpeaking();
+          if (voiceAudioRef.current) stopVoice();
           if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
-          silenceTimerRef.current = setTimeout(() => {
-            void finishDictation();
-          }, 1000);
-        };
+          isPausedRef.current = true;
+          latestSpeechTextRef.current = "";
+          setInput("");
+          setVoiceNote(langRef.current === "hi" ? "⏸️ पॉज़ किया गया (बोलना जारी रखने के लिए फिर से बोलें)" : "⏸️ Paused (speak anytime to resume)");
+          return;
+        }
+
+        isPausedRef.current = false;
+        latestSpeechTextRef.current = heard;
+        setInput(heard);
+        lastActivityRef.current = Date.now();
+
+        // Reset 1 minute idle mic timeout
+        if (micIdleTimerRef.current) clearTimeout(micIdleTimerRef.current);
+        micIdleTimerRef.current = setTimeout(() => {
+          if (continuousVoiceActiveRef.current) {
+            stopContinuousDictation();
+            setVoiceNote(langRef.current === "hi" ? "Kaafi der se koi awaaz nahi aayi, isliye mic band kar diya." : "Mic turned off due to 1 minute of inactivity.");
+          }
+        }, 60000);
+
+        // Reset silence debounce timer: 1100ms after user pauses speaking, send!
+        if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
+        silenceTimerRef.current = setTimeout(() => {
+          void finishDictation();
+        }, 1100);
+      };
 
       recognition.onerror = (e: any) => {
         const errType = e?.error;
@@ -2065,14 +2136,18 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
       endCallByHand();
       return;
     }
+    // If dictation is currently recording, toggle it off
     if (isRecording || continuousVoiceActiveRef.current) {
       stopContinuousDictation();
       return;
     }
-    continuousVoiceActiveRef.current = true;
-    isPausedRef.current = false;
-    // Instantaneous microphone dictation with 0 connecting delay (<100ms)
-    startSpeechDictation();
+    // Match Design House behavior:
+    // Clicking the mic button starts the WebRTC voice call if available, or dictation!
+    if (canTalk) {
+      void startCall();
+    } else {
+      startSpeechDictation();
+    }
   };
 
   const startCall = async (askTalkOrType = false) => {
@@ -2212,19 +2287,25 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
       clearInterval(goodbyeGuard);
     };
 
-    greetingNextRef.current = true;
-    choosingRef.current = askTalkOrType && Boolean(choiceGreeting);
-    call.send({
-      type: "response.create",
-      response: {
-        instructions: withVoiceStyle(
-          `Greet the visitor now, warmly and professionally, in your natural Indian English accent, by saying exactly this: "${
-            choosingRef.current ? choiceGreeting : greeting
-          }"`
-        ),
-        tool_choice: "none",
-      },
-    });
+    const alreadyGreeted = messages.some((m) => m.from === "bot");
+    if (!alreadyGreeted) {
+      greetingNextRef.current = true;
+      choosingRef.current = askTalkOrType && Boolean(choiceGreeting);
+      call.send({
+        type: "response.create",
+        response: {
+          instructions: withVoiceStyle(
+            `Greet the visitor now, warmly and professionally, in your natural Indian English accent, by saying exactly this: "${
+              choosingRef.current ? choiceGreeting : greeting
+            }"`
+          ),
+          tool_choice: "none",
+        },
+      });
+    } else {
+      greetingNextRef.current = false;
+      choosingRef.current = false;
+    }
   };
 
   const endCallByHand = () => {
@@ -2349,7 +2430,13 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
   };
 
   const sendToAssistant = async (text: string) => {
-    const bubbleId = isAbusive(text) ? null : userSay(text);
+    const cleanText = text.trim();
+    if (!cleanText) return;
+
+    // Reset interrupted flag for the new response turn
+    interruptedRef.current = false;
+
+    const bubbleId = isAbusive(cleanText) ? null : userSay(cleanText);
     await queueRef.current.catch(() => {});
     if (!teamLiveRef.current) setIsTyping(true);
 
@@ -2357,9 +2444,9 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
       const data = await chatApi<any>("/chatbot/message", {
         body: {
           sessionId: sessionIdRef.current || undefined,
-          text,
-          message: text,
-          query: text,
+          text: cleanText,
+          message: cleanText,
+          query: cleanText,
           lang: langRef.current,
           language: langRef.current,
           pageUrl: typeof window !== "undefined" ? window.location.pathname : "/",
@@ -2896,7 +2983,31 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
                 )}
 
                 {/* Input form */}
-                <form onSubmit={onSubmit} className="relative shrink-0 border-t border-[#e8e5dc] bg-white p-2.5">
+                <form onSubmit={onSubmit} className="relative shrink-0 border-t border-[#e8e5dc] bg-white px-3.5 pt-2 pb-1.5">
+                  {/* Noise cancellation for calls: on by default (Design House standard) */}
+                  {canTalk && (
+                    <div className="mb-1.5 flex items-center justify-between gap-2">
+                      <span className="flex min-w-0 items-center gap-1.5 text-[11.5px] font-semibold text-[#263016]" title={noiseOn ? t.noiseOnHint : t.noiseOffHint}>
+                        <AudioLines className={`h-3.5 w-3.5 shrink-0 ${noiseOn ? "text-[#D98E16]" : "text-[#8a97ad]"}`} />
+                        <span className="truncate">{t.noise}</span>
+                      </span>
+                      <button
+                        type="button"
+                        role="switch"
+                        aria-checked={noiseOn}
+                        aria-label={t.noise}
+                        title={noiseOn ? t.noiseOnHint : t.noiseOffHint}
+                        onClick={toggleNoise}
+                        className={`relative flex h-[22px] w-[52px] shrink-0 items-center rounded-full px-1 text-[9px] font-bold transition cursor-pointer ${
+                          noiseOn ? "bg-[#D98E16] text-white" : "bg-slate-200 text-slate-500"
+                        }`}
+                      >
+                        <span className={`absolute top-[3px] h-4 w-4 rounded-full bg-white shadow transition-all ${noiseOn ? "left-[33px]" : "left-[3px]"}`} />
+                        <span className={noiseOn ? "pl-0.5" : "ml-auto pr-0.5"}>{noiseOn ? "ON" : "OFF"}</span>
+                      </button>
+                    </div>
+                  )}
+
                   <div className="flex items-center gap-1.5 rounded-full border border-[#dcd7cb] bg-[#fcfbf9] px-2 py-1 shadow-inner focus-within:border-[#D98E16] focus-within:ring-2 focus-within:ring-[#D98E16]/20 transition">
                     <input
                       ref={inputRef}
@@ -2922,17 +3033,6 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
                         >
                           {!micMuted && <span ref={micRingRef} className="absolute inset-0 rounded-full border-2 border-[#D98E16]/40 transition-transform" />}
                           {micMuted ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={toggleNoise}
-                          title={noiseOn ? t.noiseOnHint : t.noiseOffHint}
-                          aria-label={t.noise}
-                          className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition cursor-pointer ${
-                            noiseOn ? "bg-[#263016] text-white" : "bg-slate-100 text-slate-400 hover:bg-slate-200"
-                          }`}
-                        >
-                          <AudioLines className="h-4 w-4" />
                         </button>
                         <button
                           type="button"
