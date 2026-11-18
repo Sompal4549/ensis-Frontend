@@ -818,6 +818,7 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const speechSafetyTimerRef = useRef<NodeJS.Timeout | null>(null);
   const micIdleTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const currentBotSpokenTextRef = useRef("");
 
   // Lead & WhatsApp OTP Verification State
   const [otpCardOpen, setOtpCardOpen] = useState(false);
@@ -1046,26 +1047,24 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     osc.stop(now + 0.15);
   };
 
-  /* ─── Typed Replies Queue & Speech ─── */
+  /* ─── Typed Replies Queue & Speech (Full-Duplex Conversational Audio) ─── */
   const readOut = async (line: Reply) => {
     if (!voiceOnRef.current || !activeRef.current || callRef.current) return;
     await sleep(150);
     if (!activeRef.current || callRef.current) return;
     const spoken = line.spoken || [line.title, line.text].filter(Boolean).join(". ");
+    currentBotSpokenTextRef.current = spoken;
     const audioUrl =
       line.speakId === undefined
         ? undefined
         : `${BACKEND_URL}/api/chatbot/speak?session=${sessionIdRef.current}&message=${line.speakId}`;
 
-    // STOP active SpeechRecognition so microphone NEVER hears or records the bot's own voice
-    if (recognitionRef.current) {
+    // Full-Duplex Listening: NEVER kill the microphone when the bot speaks!
+    // The user must be able to interrupt (barge-in) and speak naturally at any time.
+    if (continuousVoiceActiveRef.current && !recognitionRef.current && !callRef.current && !isPausedRef.current) {
       try {
-        recognitionRef.current.onresult = null;
-        recognitionRef.current.onend = null;
-        recognitionRef.current.onerror = null;
-        recognitionRef.current.stop();
+        startSpeechDictation();
       } catch {}
-      recognitionRef.current = null;
     }
 
     speakingRef.current = true;
@@ -1073,8 +1072,8 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     try {
       await speak(spoken, audioUrl);
     } finally {
-      // Room reverberation decay margin (450ms) to ensure microphone never picks up speaker echo
-      await sleep(450);
+      currentBotSpokenTextRef.current = "";
+      await sleep(100);
       speakingRef.current = false;
       setSpeaking(false);
     }
@@ -1104,13 +1103,11 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
           await sleep(150);
         }
 
-        // All replies in this turn have finished speaking! Now safely resume continuous listening
+        // All replies in this turn have finished speaking! If continuous listening isn't running, start it
         if (continuousVoiceActiveRef.current && !isPausedRef.current && !callRef.current && !closingModeRef.current) {
-          setTimeout(() => {
-            if (continuousVoiceActiveRef.current && !speakingRef.current && !isPausedRef.current && !callRef.current) {
-              startSpeechDictation();
-            }
-          }, 200);
+          if (!recognitionRef.current && !speakingRef.current) {
+            startSpeechDictation();
+          }
         }
       })
       .catch(() => {});
@@ -1663,6 +1660,12 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
         break;
       case "input_audio_buffer.speech_started":
         if (sarvamVoiceRef.current && voiceAudioRef.current) stopVoice();
+        stopSpeaking();
+        if (speakingRef.current) {
+          callRef.current?.send({ type: "response.cancel" });
+          callRef.current?.send({ type: "output_audio_buffer.clear" });
+          assistantTalking(false);
+        }
         lastActivityRef.current = Date.now();
         visitorSpeakingRef.current = true;
         speechStartedAtRef.current = Date.now();
@@ -1876,17 +1879,11 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     const text = (latestSpeechTextRef.current || inputRef.current?.value || "").trim();
     latestSpeechTextRef.current = "";
 
-    // Temporarily stop recognition so microphone NEVER hears or loops the bot's own voice
-    if (recognitionRef.current) {
-      try {
-        recognitionRef.current.onresult = null;
-        recognitionRef.current.onend = null;
-        recognitionRef.current.onerror = null;
-        recognitionRef.current.stop();
-      } catch {}
-      recognitionRef.current = null;
-    }
-    setIsRecording(false);
+    // Silence any active speech immediately
+    stopSpeaking();
+    if (voiceAudioRef.current) stopVoice();
+    speakingRef.current = false;
+    setSpeaking(false);
 
     if (text) {
       setInput("");
@@ -1963,11 +1960,6 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
       );
 
       recognition.onresult = (event: any) => {
-        // Discard any sound picked up while bot is speaking or typing!
-        if (speakingRef.current || isTypingRef.current) {
-          return;
-        }
-
         let finalTranscript = "";
         let interim = "";
         for (let i = event.resultIndex; i < event.results.length; ++i) {
@@ -1978,9 +1970,32 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
           }
         }
         const heard = (finalTranscript || interim).trim();
-        if (heard) {
-          // Check for PAUSE command immediately!
-          if (/^(pause|ruko|ruk\s*jao|ek\s*minute|hold\s*on|wait|stop|ठहरो|रुक|रुको)\b/i.test(heard)) {
+        if (!heard) return;
+
+        // USER BARGE-IN / INTERRUPTION:
+        // When the user speaks while the bot is speaking or typing, immediately silence the bot
+        // and stop queued speech so the conversation feels completely real and natural!
+        if (speakingRef.current || isTypingRef.current) {
+          const cleanHeard = heard.toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "").trim();
+          const cleanBot = (currentBotSpokenTextRef.current || "").toLowerCase().replace(/[^\p{L}\p{N}\s]/gu, "").trim();
+
+          // Reject accidental echo only if heard text is a long exact match of the bot's own sentence
+          const isAcousticEcho = cleanBot && cleanHeard.length > 5 && cleanBot.includes(cleanHeard);
+
+          if (!isAcousticEcho) {
+            stopSpeaking();
+            if (voiceAudioRef.current) stopVoice();
+            speakingRef.current = false;
+            setSpeaking(false);
+            setIsTyping(false);
+            queueRef.current = Promise.resolve();
+          } else {
+            return;
+          }
+        }
+
+        // Check for PAUSE command immediately!
+        if (/^(pause|ruko|ruk\s*jao|ek\s*minute|hold\s*on|wait|stop|ठहरो|रुक|रुको)\b/i.test(heard)) {
             stopSpeaking();
             if (voiceAudioRef.current) stopVoice();
             if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
@@ -2005,13 +2020,12 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
             }
           }, 60000);
 
-          // Reset silence debounce timer: 1200ms after user pauses speaking, send!
+          // Reset silence debounce timer: 1000ms after user pauses speaking, send!
           if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
           silenceTimerRef.current = setTimeout(() => {
             void finishDictation();
-          }, 1200);
-        }
-      };
+          }, 1000);
+        };
 
       recognition.onerror = (e: any) => {
         const errType = e?.error;
@@ -2029,27 +2043,12 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
           setIsRecording(false);
           return;
         }
-        // If bot is typing or speaking, wait until bot finishes speaking before resuming
-        if (isTypingRef.current || speakingRef.current) {
-          setIsRecording(false);
-          const resumeCheck = setInterval(() => {
-            if (!continuousVoiceActiveRef.current || isPausedRef.current || closingModeRef.current) {
-              clearInterval(resumeCheck);
-              return;
-            }
-            if (!isTypingRef.current && !speakingRef.current) {
-              clearInterval(resumeCheck);
-              startSpeechDictation();
-            }
-          }, 300);
-          return;
-        }
-        // Small delay to allow audio device cleanup, then restart
+        // Continuous Voice Mode: keep listening continuously across turns so user can speak/interrupt at any time!
         setTimeout(() => {
-          if (continuousVoiceActiveRef.current && !isPausedRef.current && !isTypingRef.current && !speakingRef.current) {
+          if (continuousVoiceActiveRef.current && !isPausedRef.current && !closingModeRef.current) {
             startSpeechDictation();
           }
-        }, 200);
+        }, 150);
       };
 
       recognitionRef.current = recognition;
