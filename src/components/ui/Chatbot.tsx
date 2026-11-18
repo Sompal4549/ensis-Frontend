@@ -34,7 +34,7 @@ import { prepareVoices, speak, stopSpeaking, unlockVoice } from "@/lib/chatVoice
    chat with its IP. Opening the chat can start a spoken call over WebRTC. Typing works seamlessly
    during a call or standalone, with spoken natural voice replies. */
 
-type Lang = "en" | "hi";
+type Lang = "en" | "hi" | "bn";
 
 const COPY = {
   en: {
@@ -132,6 +132,55 @@ const COPY = {
     teamLeft: "Team chat se chali gayi. Ab Ensis Assist jawab degi.",
     teamPlaceholder: "Hamari team ko likhiye...",
     teamFooter: "Aap Ensis ki team se baat kar rahe hain",
+  },
+  bn: {
+    title: "এনসিস অ্যাসিস্ট",
+    subtitle: "আয়ুর্বেদিক ও পঞ্চকর্ম বিশেষজ্ঞ",
+    placeholder: "পঞ্চকর্ম টেবিল, স্টিম বাথ বা কোটেশন সম্পর্কে জিজ্ঞাসা করুন...",
+    blockedPlaceholder: "এই চ্যাটটি সাময়িক স্থগিত আছে",
+    blockedNote: "অনুচিত ভাষার জন্য চ্যাট স্থগিত করা হয়েছে",
+    blockedOpensIn: "আবার খোলা হবে",
+    blockedByTeam: "জরুরি সহায়তার জন্য +91 9810242841 নম্বরে যোগাযোগ করুন।",
+    abuseHint: "দয়া করে ভদ্র ভাষা ব্যবহার করুন।",
+    offline: "ক্ষমা করবেন, চ্যাটটি এই মুহূর্তে উপলব্ধ নেই। +91 9810242841 নম্বরে কল করুন।",
+    footer: "এনসিস এআই অ্যাসিস্ট্যান্ট • পঞ্চকর্ম ও ওয়েলনেস সরঞ্জাম",
+    online: "অনলাইন",
+    typing: "টাইপ করছে…",
+    soundOn: "শব্দ চালু",
+    soundOff: "শব্দ বন্ধ",
+    voiceOn: "ভয়েস উত্তর চালু",
+    voiceOff: "ভয়েস উত্তর বন্ধ",
+    callStart: "কথা বলুন",
+    callEnd: "কল শেষ করুন",
+    chatEnded: "চ্যাটটি শেষ হয়েছে।",
+    resume: "আবার শুরু করুন",
+    callMute: "মাইক বন্ধ করুন",
+    callUnmute: "মাইক চালু করুন",
+    connecting: "সংযুক্ত হচ্ছে...",
+    listening: "শুনছি, বলুন...",
+    interruptHint: "যেকোনো সময় বলুন, আমি শুনব",
+    muted: "মাইক বন্ধ আছে",
+    micDenied: "মাইক্রোফোন অনুমতি দেওয়া হয়নি। ব্রাউজারে অনুমতি দিন।",
+    micNoSpeech: "কিছু শুনতে পাইনি। অনুগ্রহ করে আবার বলুন।",
+    micNotFound: "কোনো মাইক্রোফোন পাওয়া যায়নি।",
+    micBusy: "মাইক্রোফোন অন্য কোনো অ্যাপ ব্যবহার করছে।",
+    callFailed: "কল সংযোগ করা যায়নি।",
+    callUnavailable: "ভয়েস পরিষেবা এই মুহূর্তে উপলব্ধ নেই।",
+    callDropped: "কল বিচ্ছিন্ন হয়েছে। কথা বলতে মাইকে চাপ দিন।",
+    callEnding: "কলের সময়সীমা শেষ হচ্ছে।",
+    goodbye: "এনসিস-এর সাথে যোগাযোগ করার জন্য ধন্যবাদ। আপনার দিনটি শুভ হোক!",
+    callIdle: "কিছুক্ষণ কোনো শব্দ না পাওয়ায় কলটি শেষ হয়েছে।",
+    didntCatch: "ক্ষমা করবেন, বুঝতে পারিনি। আরেকবার বলবেন কি?",
+    noise: "নয়েজ রিডাকশন",
+    noiseOnHint: "চালু: চারপাশের অতিরিক্ত শব্দ ফিল্টার হয়",
+    noiseOffHint: "বন্ধ: স্বাভাবিক মাইক",
+    teamTitle: "এনসিস বিশেষজ্ঞ দল",
+    teamSubtitle: "সরাসরি সহায়তা",
+    teamName: "এনসিস টিম",
+    teamJoined: "এনসিস দল থেকে একজন যুক্ত হয়েছেন",
+    teamLeft: "দল চ্যাট থেকে প্রস্থান করেছে। এনসিস অ্যাসিস্ট উত্তর দেবে।",
+    teamPlaceholder: "এনসিস দলকে লিখুন...",
+    teamFooter: "আপনি এনসিস প্রতিনিধির সাথে চ্যাট করছেন",
   },
 };
 
@@ -636,12 +685,31 @@ function BotText({ text }: { text: string }) {
   const pattern = /\[([^\]]+)\]\(([^)\s]+)\)|\*\*([^*]+)\*\*|(https?:\/\/[^\s)]+)/g;
   let last = 0;
   let match: RegExpExecArray | null;
+
+  const toRelativeRoute = (rawUrl: string): string => {
+    if (!rawUrl) return "/";
+    if (rawUrl.startsWith("/")) return rawUrl;
+    try {
+      const u = new URL(rawUrl);
+      if (
+        u.hostname === "ensis.in" ||
+        u.hostname === "www.ensis.in" ||
+        u.hostname === "web.ensis.in" ||
+        (typeof window !== "undefined" && u.hostname === window.location.hostname)
+      ) {
+        return (u.pathname || "/") + (u.search || "") + (u.hash || "");
+      }
+    } catch {}
+    return rawUrl;
+  };
+
   while ((match = pattern.exec(clean))) {
     if (match.index > last) parts.push(clean.slice(last, match.index));
-    const [, label, href, bold, url] = match;
+    const [, label, rawHref, bold, rawUrl] = match;
     const key = match.index;
     const linkClass = "font-semibold text-[#8a6a2f] underline underline-offset-2 hover:text-[#263016]";
-    if (label && href) {
+    if (label && rawHref) {
+      const href = toRelativeRoute(rawHref);
       parts.push(
         href.startsWith("/") ? (
           <Link key={key} href={href} className={linkClass}>
@@ -659,11 +727,18 @@ function BotText({ text }: { text: string }) {
           {bold}
         </strong>
       );
-    } else if (url) {
+    } else if (rawUrl) {
+      const href = toRelativeRoute(rawUrl);
       parts.push(
-        <a key={key} href={url} target="_blank" rel="noopener noreferrer" className={linkClass}>
-          {url}
-        </a>
+        href.startsWith("/") ? (
+          <Link key={key} href={href} className={linkClass}>
+            {rawUrl}
+          </Link>
+        ) : (
+          <a key={key} href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+            {rawUrl}
+          </a>
+        )
       );
     }
     last = match.index + match[0].length;
@@ -1869,8 +1944,13 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
 
       latestSpeechTextRef.current = "";
       const recognition = new SpeechRec();
-      // hi-IN accurately transcribes Indian Hindi and English (Hinglish) without garbling
-      recognition.lang = "hi-IN";
+      // Dynamically select native transcription acoustic model for Bengali (bn-IN), Hindi (hi-IN) or Indian English (en-IN)
+      const getSpeechCode = (l: Lang): string => {
+        if (l === "bn") return "bn-IN";
+        if (l === "hi") return "hi-IN";
+        return "en-IN";
+      };
+      recognition.lang = getSpeechCode(langRef.current);
       recognition.interimResults = true;
       recognition.continuous = true;
       recognition.maxAlternatives = 1;
@@ -1878,8 +1958,8 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
       setIsRecording(true);
       setVoiceNote(
         isPausedRef.current
-          ? (langRef.current === "hi" ? "⏸️ बातचीत पॉज़ है (शुरू करने के लिए बोलें)" : "⏸️ Paused (speak to resume)")
-          : (langRef.current === "hi" ? "🎙️ सुन रही हूँ, बोलिए... ('पॉज़' बोलने पर रुक जाऊँगी)" : "🎙️ Listening continuously... (say 'pause' to pause)")
+          ? (langRef.current === "bn" ? "⏸️ কথোপকথন বিরতিতে আছে (শুরু করতে বলুন)" : langRef.current === "hi" ? "⏸️ बातचीत पॉज़ है (शुरू करने के लिए बोलें)" : "⏸️ Paused (speak to resume)")
+          : (langRef.current === "bn" ? "🎙️ শুনছি, বলুন... ('পজ' বললে থেমে যাব)" : langRef.current === "hi" ? "🎙️ सुन रही हूँ, बोलिए... ('पॉज़' बोलने पर रुक जाऊँगी)" : "🎙️ Listening continuously... (say 'pause' to pause)")
       );
 
       recognition.onresult = (event: any) => {
@@ -1992,8 +2072,8 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     }
     continuousVoiceActiveRef.current = true;
     isPausedRef.current = false;
-    // Try WebRTC call first (Design House style), fallback to continuous browser speech
-    void startCall();
+    // Instantaneous microphone dictation with 0 connecting delay (<100ms)
+    startSpeechDictation();
   };
 
   const startCall = async (askTalkOrType = false) => {
@@ -2450,12 +2530,36 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
                 </p>
               </div>
 
-              <div className="flex shrink-0 items-center gap-1">
+              <div className="flex shrink-0 items-center gap-1.5">
+                {/* Language Switcher: EN | हिं | বাং */}
+                <div className="flex items-center rounded-full bg-white/15 p-0.5 text-[10px] font-bold text-white">
+                  {(["en", "hi", "bn"] as Lang[]).map((l) => (
+                    <button
+                      key={l}
+                      type="button"
+                      onClick={() => {
+                        setLang(l);
+                        langRef.current = l;
+                        if (continuousVoiceActiveRef.current) {
+                          stopContinuousDictation();
+                          setTimeout(() => startSpeechDictation(), 200);
+                        }
+                      }}
+                      className={`rounded-full px-1.5 py-0.5 transition cursor-pointer ${
+                        lang === l ? "bg-white text-[#263016] shadow-xs" : "text-white/80 hover:text-white"
+                      }`}
+                      title={l === "en" ? "English" : l === "hi" ? "हिंदी" : "বাংলা"}
+                    >
+                      {l === "en" ? "EN" : l === "hi" ? "हिं" : "বাং"}
+                    </button>
+                  ))}
+                </div>
+
                 <button
                   type="button"
                   onClick={clearAllChats}
-                  title={lang === "hi" ? "चैट रीसेट करें" : "Reset & clear chats"}
-                  aria-label={lang === "hi" ? "चैट रीसेट करें" : "Reset & clear chats"}
+                  title={lang === "bn" ? "চ্যাট রিসেট করুন" : lang === "hi" ? "चैट रीसेट करें" : "Reset & clear chats"}
+                  aria-label={lang === "bn" ? "চ্যাট রিসেট করুন" : lang === "hi" ? "चैट रीसेट करें" : "Reset & clear chats"}
                   className="flex h-7 w-7 items-center justify-center rounded-full bg-white/15 text-white transition hover:bg-white/25 cursor-pointer"
                 >
                   <RefreshCw className="h-3.5 w-3.5" />

@@ -151,7 +151,7 @@ export const canCall = () =>
   typeof AudioContext !== "undefined" &&
   "audioWorklet" in AudioContext.prototype;
 
-const CONNECT_TIMEOUT_MS = 15000;
+const CONNECT_TIMEOUT_MS = 5000;
 
 /** Asks for the mic and connects. Call it from a click. Rejects if the mic can't be opened or the call can't connect. */
 export async function openCall(events: CallEvents, options: { noiseCancel: boolean } = { noiseCancel: true }): Promise<Call> {

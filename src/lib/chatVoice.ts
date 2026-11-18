@@ -2,7 +2,7 @@
    They are read by a natural voice generated on the backend (OpenAI). If that can't play, the browser's own voice
    (Web Speech API) reads them instead, so a reply is never silently skipped. */
 
-type Lang = "en" | "hi";
+type Lang = "en" | "hi" | "bn";
 
 const VOICE_START_TIMEOUT_MS = 10000; // no sound by then: use the browser's voice
 const VOICE_MAX_MS = 120000; // never hold the chat up longer than this
