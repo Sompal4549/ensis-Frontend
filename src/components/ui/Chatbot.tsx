@@ -265,7 +265,8 @@ const isPhoto = (file: { href: string; type?: string; label?: string }) =>
 
 const FAINT_LEVEL = 0.004;
 const MIC_SILENT_NOTE_MS = 10000;
-const CALL_IDLE_MS = 120000;
+const CALL_IDLE_MS = 60000; // 1 minute idle mic timeout
+const INACTIVITY_TIMEOUT_MS = 300000; // 5 minutes inactivity chat closure
 const CALL_ENDING_WARNING_S = 30;
 const CHAT_END_AFTER_GOODBYE_MS = 10000;
 const END_AFTER_GOODBYE_MS = 15000;
@@ -741,6 +742,7 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
   const latestSpeechTextRef = useRef("");
   const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const speechSafetyTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const micIdleTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Lead & WhatsApp OTP Verification State
   const [otpCardOpen, setOtpCardOpen] = useState(false);
@@ -1149,7 +1151,23 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
         busy = false;
       }
     };
-    const timer = setInterval(() => void check(), TEAM_CHECK_MS);
+    const timer = setInterval(() => {
+      void check();
+      // 5-minute inactivity chat closure
+      if (
+        !speakingRef.current &&
+        !visitorSpeakingRef.current &&
+        !isTypingRef.current &&
+        lastActivityRef.current > 0 &&
+        Date.now() - lastActivityRef.current > INACTIVITY_TIMEOUT_MS
+      ) {
+        if (callRef.current) endCallRef.current();
+        if (continuousVoiceActiveRef.current) stopContinuousDictation();
+        setChatEnded(true);
+        setIsOpen(false);
+        activeRef.current = false;
+      }
+    }, TEAM_CHECK_MS);
     return () => clearInterval(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
@@ -1402,18 +1420,20 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
   const visitorSaid = async (itemId: string, text: string) => {
     choosingRef.current = false;
     heardRef.current.delete(itemId);
-    updateBubble(itemId, "user", () => ({ text, live: false }));
+    const waits = REWRITTEN_SCRIPTS.test(text);
+    if (!waits) updateBubble(itemId, "user", () => ({ text, live: false }));
     try {
       const saved = await callPost<{ flagged?: boolean; say?: string; blocked?: boolean; blockedFor?: number; text?: string; lang?: Lang; finished?: boolean }>(
         "turn",
         { role: "user", text }
       );
-      if (saved?.text && saved.text !== text) updateBubble(itemId, "user", () => ({ text: saved.text, live: false }));
       if (saved?.lang) rememberChat("", saved.lang);
       if (saved?.finished) sayGoodbye();
       if (saved?.flagged) onAbuse(saved, itemId);
+      else if (waits) updateBubble(itemId, "user", () => ({ text: saved.text || text, live: false }));
+      else if (saved?.text && saved.text !== text) updateBubble(itemId, "user", () => ({ text: saved.text, live: false }));
     } catch {
-      // Keep original text
+      if (waits) updateBubble(itemId, "user", () => ({ text, live: false }));
     }
   };
 
@@ -1581,7 +1601,10 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
         if (!event.item_id) break;
         const heard = (heardRef.current.get(event.item_id) || "") + (event.delta || "");
         heardRef.current.set(event.item_id, heard);
-        updateBubble(event.item_id, "user", () => ({ text: heard }));
+        // Suppress live delta if it contains Arabic/Urdu, Devanagari or Gurmukhi scripts so raw non-Latin scripts don't flash in chat
+        if (!REWRITTEN_SCRIPTS.test(heard) && !FOREIGN_LETTERS.test(heard)) {
+          updateBubble(event.item_id, "user", () => ({ text: heard }));
+        }
         break;
       }
       case "conversation.item.input_audio_transcription.completed": {
@@ -1741,6 +1764,10 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
   const stopContinuousDictation = () => {
     continuousVoiceActiveRef.current = false;
     isPausedRef.current = false;
+    if (micIdleTimerRef.current) {
+      clearTimeout(micIdleTimerRef.current);
+      micIdleTimerRef.current = null;
+    }
     if (silenceTimerRef.current) {
       clearTimeout(silenceTimerRef.current);
       silenceTimerRef.current = null;
@@ -1818,6 +1845,10 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
         clearTimeout(speechSafetyTimerRef.current);
         speechSafetyTimerRef.current = null;
       }
+      if (micIdleTimerRef.current) {
+        clearTimeout(micIdleTimerRef.current);
+        micIdleTimerRef.current = null;
+      }
       if (recognitionRef.current) {
         try {
           recognitionRef.current.onresult = null;
@@ -1827,6 +1858,14 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
         } catch {}
         recognitionRef.current = null;
       }
+
+      // 1 minute idle mic timeout matching Design House
+      micIdleTimerRef.current = setTimeout(() => {
+        if (continuousVoiceActiveRef.current) {
+          stopContinuousDictation();
+          setVoiceNote(langRef.current === "hi" ? "Kaafi der se koi awaaz nahi aayi, isliye mic band kar diya." : "Mic turned off due to 1 minute of inactivity.");
+        }
+      }, 60000);
 
       latestSpeechTextRef.current = "";
       const recognition = new SpeechRec();
@@ -1875,6 +1914,16 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
           isPausedRef.current = false;
           latestSpeechTextRef.current = heard;
           setInput(heard);
+          lastActivityRef.current = Date.now();
+
+          // Reset 1 minute idle mic timeout
+          if (micIdleTimerRef.current) clearTimeout(micIdleTimerRef.current);
+          micIdleTimerRef.current = setTimeout(() => {
+            if (continuousVoiceActiveRef.current) {
+              stopContinuousDictation();
+              setVoiceNote(langRef.current === "hi" ? "Kaafi der se koi awaaz nahi aayi, isliye mic band kar diya." : "Mic turned off due to 1 minute of inactivity.");
+            }
+          }, 60000);
 
           // Reset silence debounce timer: 1200ms after user pauses speaking, send!
           if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
