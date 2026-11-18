@@ -79,8 +79,8 @@ export const ProductsGrid = async ({ sectionContent }: ProductsGridProps) => {
               
             </HtmlRenderer>
           </div>
-          <Link href={content.buttonPath} className="inline-flex w-fit items-center gap-4 border border-[#d7cbbd] bg-white px-3 py-2 text-base font-semibold tracking-wide text-[#0f2518] transition-colors hover:bg-[#f3eee6] rounded-md">
-            {content.buttonText} <ArrowRight size={16} />
+          <Link href={content.buttonPath || '/products'} className="inline-flex w-fit items-center gap-4 border border-[#d7cbbd] bg-white px-3 py-2 text-base font-semibold tracking-wide text-[#0f2518] transition-colors hover:bg-[#f3eee6] rounded-md">
+            {content.buttonText || 'VIEW ALL PRODUCTS'} <ArrowRight size={16} />
           </Link>
         </div>
 

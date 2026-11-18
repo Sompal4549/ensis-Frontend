@@ -82,7 +82,14 @@ export default function RenderSection({ componentKey, data }: RenderSectionProps
     case "home.globalPresence":
       return <GlobalPresence sectionData={data} />;
     case "home.blogInsights":
-      return <BlogInsights subtitle={data.subtitle} heading={data.heading} buttonText={data.buttonText} buttonPath={data.buttonPath} />;
+      return (
+        <BlogInsights
+          subtitle={data?.subtitle}
+          heading={data?.heading}
+          buttonText={data?.buttonText}
+          buttonPath={data?.buttonPath || data?.buttonLink || data?.link || "/blog"}
+        />
+      );
     case "home.faqs":
       return <HomeFaqs subtitle={data.subtitle} heading={data.heading} description={data.description} />;
     case "home.manufacturingAndProjects":

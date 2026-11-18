@@ -27,11 +27,31 @@ const defaultContent = {
   ctaBgImage: "",
 };
 
-export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }: { subtitle: string; heading: string; buttonText: string; buttonPath: string }) => {
+export const BlogInsights = async ({
+  subtitle = defaultContent.subtitle,
+  heading = defaultContent.heading,
+  buttonText = defaultContent.buttonText,
+  buttonPath = defaultContent.buttonPath,
+}: {
+  subtitle?: string;
+  heading?: string;
+  buttonText?: string;
+  buttonPath?: string;
+}) => {
   const allBlogs = await blogApi.list();
-  const contactData = await getComponentContent("home.readyToBuild", { ctaHeading: defaultContent.ctaHeading, ctaDescription: defaultContent.ctaDescription, ctaButtonText: defaultContent.ctaButtonText, ctaButtonPath: defaultContent.ctaButtonPath, ctaBgImage: defaultContent.ctaBgImage });
+  const contactData = await getComponentContent("home.readyToBuild", {
+    ctaHeading: defaultContent.ctaHeading,
+    ctaDescription: defaultContent.ctaDescription,
+    ctaButtonText: defaultContent.ctaButtonText,
+    ctaButtonPath: defaultContent.ctaButtonPath,
+    ctaBgImage: defaultContent.ctaBgImage,
+  });
 
   const displayBlogs = Array.isArray(allBlogs) ? allBlogs : [];
+  const safeButtonPath = buttonPath || defaultContent.buttonPath || '/blog';
+  const safeButtonText = buttonText || defaultContent.buttonText || 'VIEW ALL BLOGS';
+  const safeSubtitle = subtitle || defaultContent.subtitle || 'FROM THE BLOG';
+  const safeHeading = heading || defaultContent.heading || 'Insights & Wellness Knowledge';
 
   return (
     <section className="bg-[#fbf8f2]">
@@ -39,10 +59,10 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
           <div className="grid gap-6 md:items-start">
             <div>
-              <SubHeading className=' text-black' text={subtitle} />
-              <h2 className="mt-2  text-xl leading-tight text-[#1f261b] md:text-2xl font-semibold">{heading}</h2>
-            <Link href={buttonPath} className="mt-2 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-base font-semibold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6] rounded-md">
-                {buttonText} <ArrowRight size={16} />
+              <SubHeading className=' text-black' text={safeSubtitle} />
+              <h2 className="mt-2  text-xl leading-tight text-[#1f261b] md:text-2xl font-semibold">{safeHeading}</h2>
+            <Link href={safeButtonPath} className="mt-2 inline-flex items-center gap-4 border-2 border-[#d7cbbd] bg-white px-3 py-2 text-base font-semibold tracking-wide text-[#1f261b] transition-colors hover:bg-[#f3eee6] rounded-md">
+                {safeButtonText} <ArrowRight size={16} />
               </Link>
             </div>
           </div>
@@ -81,7 +101,7 @@ export const BlogInsights = async ({ subtitle, heading, buttonText, buttonPath }
           </div>
           <div className='w-[300px]'>
 
-          <GreenButton path={contactData.ctaButtonPath} text={contactData.ctaButtonText} />
+          <GreenButton path={contactData?.ctaButtonPath || defaultContent.ctaButtonPath || '/contact'} text={contactData?.ctaButtonText || defaultContent.ctaButtonText || 'CONTACT US TODAY'} />
           </div>
         </Container>
       </div>
