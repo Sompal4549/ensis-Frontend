@@ -726,6 +726,70 @@ async function chatApi<T = any>(
   throw lastError || new Error("Failed to reach chatbot backend");
 }
 
+/* Progressive Server-Sent Events (SSE) streaming helper */
+async function chatApiStream(
+  path: string,
+  body: any,
+  onDelta: (delta: string) => void,
+  onDone: (data: any) => void
+): Promise<boolean> {
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  const isLocal = typeof window !== "undefined" && (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
+  const fullPath = cleanPath.startsWith("/api") ? cleanPath : `/api${cleanPath}`;
+
+  const tryUrls: string[] = [];
+  if (isLocal) tryUrls.push(`http://localhost:5000${fullPath}`);
+  if (BACKEND_URL && !BACKEND_URL.includes("localhost:5000")) {
+    tryUrls.push(`${BACKEND_URL.replace(/\/$/, "")}${fullPath}`);
+  }
+  if (tryUrls.length === 0) tryUrls.push(`http://localhost:5000${fullPath}`);
+
+  for (const url of tryUrls) {
+    try {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        signal: AbortSignal.timeout(30000),
+      });
+
+      if (!res.ok || !res.body) continue;
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      let isReading = true;
+
+      while (isReading) {
+        const { done, value } = await reader.read();
+        if (done) {
+          isReading = false;
+          break;
+        }
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() || "";
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed || !trimmed.startsWith("data: ")) continue;
+          try {
+            const parsed = JSON.parse(trimmed.slice(6));
+            if (parsed.type === "delta" && parsed.delta) {
+              onDelta(parsed.delta);
+            } else if (parsed.type === "done") {
+              onDone(parsed);
+            }
+          } catch {}
+        }
+      }
+      return true;
+    } catch {
+      // try next url or return false
+    }
+  }
+  return false;
+}
+
 /** Markdown & link formatter for bot bubbles */
 function BotText({ text }: { text: string }) {
   if (!text) return null;
@@ -841,6 +905,7 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
 
   const [muted, setMuted] = useState(() => (typeof window !== "undefined" ? localStorage.getItem(MUTED_KEY) === "1" : false));
   const [messages, setMessages] = useState<Message[]>([]);
+  const [feedbackMap, setFeedbackMap] = useState<Record<number, "positive" | "negative">>({});
   const [isTyping, setIsTyping] = useState(false);
   const [input, setInput] = useState("");
   const [messageSentBadge, setMessageSentBadge] = useState(false);
@@ -2429,6 +2494,21 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     }
   };
 
+  const onFeedback = async (msgId: number, rating: "positive" | "negative", botText?: string) => {
+    if (feedbackMap[msgId]) return;
+    setFeedbackMap((prev) => ({ ...prev, [msgId]: rating }));
+    const userQ = [...messages].reverse().find((m) => m.from === "user" && m.id < msgId)?.text || "";
+    await chatApi("/chatbot/feedback", {
+      body: {
+        sessionId: sessionIdRef.current || undefined,
+        rating,
+        question: userQ,
+        botReply: botText,
+        language: langRef.current,
+      },
+    }).catch(() => undefined);
+  };
+
   const sendToAssistant = async (text: string) => {
     const cleanText = text.trim();
     if (!cleanText) return;
@@ -2440,6 +2520,56 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     await queueRef.current.catch(() => {});
     if (!teamLiveRef.current) setIsTyping(true);
 
+    // 1. Progressive SSE Streaming (word-by-word typing, first token in <500ms)
+    let streamedText = "";
+    let streamBubbleId: number | null = null;
+    let streamDoneData: any = null;
+
+    try {
+      const streamed = await chatApiStream(
+        "/chatbot/message/stream",
+        {
+          sessionId: sessionIdRef.current || undefined,
+          text: cleanText,
+          message: cleanText,
+          query: cleanText,
+          lang: langRef.current,
+          language: langRef.current,
+          pageUrl: typeof window !== "undefined" ? window.location.pathname : "/",
+        },
+        (delta) => {
+          setIsTyping(false);
+          streamedText += delta;
+          if (streamBubbleId === null) {
+            streamBubbleId = ++idRef.current;
+            setMessages((prev) => [
+              ...prev,
+              { id: streamBubbleId!, from: "bot", at: Date.now(), text: streamedText },
+            ]);
+          } else {
+            setMessages((prev) =>
+              prev.map((m) => (m.id === streamBubbleId ? { ...m, text: streamedText } : m))
+            );
+          }
+        },
+        (doneData) => {
+          streamDoneData = doneData;
+          applyResponse(doneData);
+        }
+      );
+
+      if (streamed && streamedText.trim()) {
+        setIsTyping(false);
+        if (activeRef.current) playIncoming();
+        if (streamDoneData?.end || botSaysGoodbye(streamedText)) closingModeRef.current = true;
+        if (closingModeRef.current) startClosing();
+        return;
+      }
+    } catch {
+      // streaming failed, seamlessly fall back to non-streaming endpoint
+    }
+
+    // 2. Non-streaming fallback
     try {
       const data = await chatApi<any>("/chatbot/message", {
         body: {
@@ -2727,7 +2857,33 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
                               )}
                               {m.text && <BotText text={m.text} />}
                             </div>
-                            {m.at && <p className="mt-1 pl-1 text-[10px] text-[#8e9882]">{timeOf(m.at)}</p>}
+                            <div className="mt-1 flex items-center justify-between pl-1">
+                              {m.at && <p className="text-[10px] text-[#8e9882]">{timeOf(m.at)}</p>}
+                              {!m.greeting && m.text && m.text.length > 15 && (
+                                <div className="flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity pr-1">
+                                  <button
+                                    type="button"
+                                    title="Helpful"
+                                    onClick={() => onFeedback(m.id, "positive", m.text)}
+                                    className={`px-1 py-0.5 rounded text-[11px] transition ${
+                                      feedbackMap[m.id] === "positive" ? "text-[#15803d] font-bold scale-110" : "text-[#8e9882] hover:text-[#15803d]"
+                                    }`}
+                                  >
+                                    👍
+                                  </button>
+                                  <button
+                                    type="button"
+                                    title="Not helpful"
+                                    onClick={() => onFeedback(m.id, "negative", m.text)}
+                                    className={`px-1 py-0.5 rounded text-[11px] transition ${
+                                      feedbackMap[m.id] === "negative" ? "text-[#b91c1c] font-bold scale-110" : "text-[#8e9882] hover:text-[#b91c1c]"
+                                    }`}
+                                  >
+                                    👎
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       ) : m.from === "bot" ? (
@@ -2788,7 +2944,33 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
                                 )
                               )}
                             </div>
-                            {m.at && <p className="mt-1 pl-1 text-[10px] text-[#8e9882]">{timeOf(m.at)}</p>}
+                            <div className="mt-1 flex items-center justify-between pl-1">
+                              {m.at && <p className="text-[10px] text-[#8e9882]">{timeOf(m.at)}</p>}
+                              {!m.greeting && m.text && m.text.length > 15 && (
+                                <div className="flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity pr-1">
+                                  <button
+                                    type="button"
+                                    title="Helpful"
+                                    onClick={() => onFeedback(m.id, "positive", m.text)}
+                                    className={`px-1 py-0.5 rounded text-[11px] transition ${
+                                      feedbackMap[m.id] === "positive" ? "text-[#15803d] font-bold scale-110" : "text-[#8e9882] hover:text-[#15803d]"
+                                    }`}
+                                  >
+                                    👍
+                                  </button>
+                                  <button
+                                    type="button"
+                                    title="Not helpful"
+                                    onClick={() => onFeedback(m.id, "negative", m.text)}
+                                    className={`px-1 py-0.5 rounded text-[11px] transition ${
+                                      feedbackMap[m.id] === "negative" ? "text-[#b91c1c] font-bold scale-110" : "text-[#8e9882] hover:text-[#b91c1c]"
+                                    }`}
+                                  >
+                                    👎
+                                  </button>
+                                </div>
+                              )}
+                            </div>
                           </div>
                         </div>
                       ) : (
