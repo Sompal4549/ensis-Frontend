@@ -1213,7 +1213,7 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
         for (const line of lines) {
           if (!aliveRef.current) return;
           setIsTyping(true);
-          await sleep(250 + Math.min((line.text || "").length * 2, 350));
+          await sleep(60 + Math.min((line.text || "").length * 0.5, 120));
           if (!aliveRef.current) return;
           setIsTyping(false);
           const bubble: Message = { id: ++idRef.current, from: "bot", at: Date.now(), ...line };
@@ -1227,7 +1227,7 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
           } catch (speechErr) {
             console.warn("readOut failed:", speechErr);
           }
-          await sleep(200);
+          await sleep(100);
         }
 
         // All replies in this turn have finished speaking! If continuous listening is active, resume listening
@@ -2501,7 +2501,6 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     interruptedRef.current = false;
 
     const bubbleId = isAbusive(cleanText) ? null : userSay(cleanText);
-    await queueRef.current.catch(() => {});
     if (!teamLiveRef.current) setIsTyping(true);
 
     // 1. Progressive SSE Streaming (word-by-word typing, first token in <500ms)

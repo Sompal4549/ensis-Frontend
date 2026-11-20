@@ -1,10 +1,8 @@
 // =========================================================================================
-// 🔒 PERMANENT LOCKED CHATBOT VOICE CONFIGURATION (DESIGN HOUSE STANDARD - DO NOT MODIFY!)
-// DO NOT CHANGE THIS VOICE, PITCH, RATE, VOICENAME OR TIMEOUTS! IT IS PERMANENTLY APPROVED.
-// - Engine: Backend Sarvam/OpenAI TTS audio stream -> Browser Web Speech API fallback (hi-IN)
-// - Pitch: 1.05 | Rate: lang === "hi" ? 0.95 : 1
-// - Voice Selection: pickVoice("hi") ?? pickVoice(lang) (natural Indian female accent)
-// - Start Timeout: 10000ms
+// 🔒 PERMANENT CHATBOT VOICE CONFIGURATION (SARVAM AI - ISHITA FEMALE VOICE STANDARD)
+// - Primary Engine: Backend Sarvam Bulbul (speaker: 'ishita', model: 'bulbul:v3')
+// - Browser Fallback: Natural sweet Indian female voice (Swara hi-IN / Neerja en-IN)
+// - Style: Soft, friendly, natural female customer-care specialist with clear Hindi & Hinglish
 // =========================================================================================
 
 export type Lang = "en" | "hi";
@@ -159,8 +157,8 @@ const speakWithBrowser = (text: string) => {
     const voice = pickVoice(lang) ?? (lang === "en" ? pickVoice("hi") : pickVoice("en"));
     if (voice) utterance.voice = voice;
     utterance.lang = voice?.lang ?? (lang === "hi" ? "hi-IN" : "en-IN");
-    utterance.rate = lang === "hi" ? 0.95 : 1;
-    utterance.pitch = 1.05;
+    utterance.rate = lang === "hi" ? 0.96 : 0.98;
+    utterance.pitch = 1.10;
 
     let settled = false;
     const done = () => {
