@@ -1,6 +1,11 @@
-/* Typed chat replies read aloud (components/ui/Chatbot.tsx; in a spoken call the assistant has its own voice).
-   They are read by a natural voice generated on the backend (OpenAI/Sarvam). If that can't play, the browser's own voice
-   (Web Speech API) reads them instead, so a reply is never silently skipped. Matches Design House standard. */
+// =========================================================================================
+// 🔒 PERMANENT LOCKED CHATBOT VOICE CONFIGURATION (DESIGN HOUSE STANDARD - DO NOT MODIFY!)
+// DO NOT CHANGE THIS VOICE, PITCH, RATE, VOICENAME OR TIMEOUTS! IT IS PERMANENTLY APPROVED.
+// - Engine: Backend Sarvam/OpenAI TTS audio stream -> Browser Web Speech API fallback (hi-IN)
+// - Pitch: 1.05 | Rate: lang === "hi" ? 0.95 : 1
+// - Voice Selection: pickVoice("hi") ?? pickVoice(lang) (natural Indian female accent)
+// - Start Timeout: 10000ms
+// =========================================================================================
 
 export type Lang = "en" | "hi";
 
