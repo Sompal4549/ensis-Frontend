@@ -1179,9 +1179,9 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     const spoken = line.spoken || [line.title, line.text].filter(Boolean).join(". ");
     currentBotSpokenTextRef.current = spoken;
     const audioUrl =
-      line.speakId === undefined
-        ? undefined
-        : `${getBackendBaseUrl()}/api/chatbot/speak?session=${sessionIdRef.current}&message=${line.speakId}`;
+      line.speakId !== undefined && sessionIdRef.current
+        ? `${getBackendBaseUrl()}/api/chatbot/speak?session=${sessionIdRef.current}&message=${line.speakId}`
+        : `${getBackendBaseUrl()}/api/chatbot/speak?text=${encodeURIComponent(spoken.slice(0, 1000))}`;
 
     // PAUSE/STOP SPEECH RECOGNITION WHILE ASSISTANT SPEAKS!
     // This completely eliminates acoustic echo feedback and prevents the assistant from muting itself!

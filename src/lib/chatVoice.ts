@@ -205,8 +205,8 @@ const speakWithBrowser = (text: string) => {
     } else {
       utterance.lang = lang === "hi" ? "hi-IN" : "en-IN";
     }
-    utterance.rate = lang === "hi" || lang === "pa" ? 0.92 : 1;
-    utterance.pitch = 1.10; // Sweet, melodious, gentle feminine pitch (madhur/madhumay)
+    utterance.rate = 0.95;
+    utterance.pitch = 1.0; // Calm, steady, natural feminine voice (Saumya style - never high pitched or sharp)
 
     let settled = false;
     const done = () => {
