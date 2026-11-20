@@ -905,7 +905,6 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
 
   const [muted, setMuted] = useState(() => (typeof window !== "undefined" ? localStorage.getItem(MUTED_KEY) === "1" : false));
   const [messages, setMessages] = useState<Message[]>([]);
-  const [feedbackMap, setFeedbackMap] = useState<Record<number, "positive" | "negative">>({});
   const [isTyping, setIsTyping] = useState(false);
   const [input, setInput] = useState("");
   const [messageSentBadge, setMessageSentBadge] = useState(false);
@@ -2494,21 +2493,6 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
     }
   };
 
-  const onFeedback = async (msgId: number, rating: "positive" | "negative", botText?: string) => {
-    if (feedbackMap[msgId]) return;
-    setFeedbackMap((prev) => ({ ...prev, [msgId]: rating }));
-    const userQ = [...messages].reverse().find((m) => m.from === "user" && m.id < msgId)?.text || "";
-    await chatApi("/chatbot/feedback", {
-      body: {
-        sessionId: sessionIdRef.current || undefined,
-        rating,
-        question: userQ,
-        botReply: botText,
-        language: langRef.current,
-      },
-    }).catch(() => undefined);
-  };
-
   const sendToAssistant = async (text: string) => {
     const cleanText = text.trim();
     if (!cleanText) return;
@@ -2561,6 +2545,22 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
       if (streamed && streamedText.trim()) {
         setIsTyping(false);
         if (activeRef.current) playIncoming();
+        try {
+          queueRef.current = queueRef.current.then(() =>
+            readOut({
+              text: streamedText,
+              speakId: streamDoneData?.speakId,
+            })
+          );
+          await queueRef.current;
+        } catch (speechErr) {
+          console.warn("readOut failed:", speechErr);
+        }
+        if (continuousVoiceActiveRef.current && !isPausedRef.current && !callRef.current && !closingModeRef.current) {
+          if (!recognitionRef.current && !speakingRef.current) {
+            startSpeechDictation();
+          }
+        }
         if (streamDoneData?.end || botSaysGoodbye(streamedText)) closingModeRef.current = true;
         if (closingModeRef.current) startClosing();
         return;
@@ -2622,6 +2622,7 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
   };
 
   const onSelectChip = (chip: string) => {
+    unlockVoice();
     if (blocked || (isTyping && !callRef.current)) return;
     const cleanText = chip.replace(/^[^\w\s]+\s*/, ""); // remove leading emojis
     setInput("");
@@ -2638,6 +2639,7 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
   };
 
   const toggleVoice = () => {
+    unlockVoice();
     const next = !voiceOn;
     setVoiceOn(next);
     voiceOnRef.current = next;
@@ -2857,33 +2859,7 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
                               )}
                               {m.text && <BotText text={m.text} />}
                             </div>
-                            <div className="mt-1 flex items-center justify-between pl-1">
-                              {m.at && <p className="text-[10px] text-[#8e9882]">{timeOf(m.at)}</p>}
-                              {!m.greeting && m.text && m.text.length > 15 && (
-                                <div className="flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity pr-1">
-                                  <button
-                                    type="button"
-                                    title="Helpful"
-                                    onClick={() => onFeedback(m.id, "positive", m.text)}
-                                    className={`px-1 py-0.5 rounded text-[11px] transition ${
-                                      feedbackMap[m.id] === "positive" ? "text-[#15803d] font-bold scale-110" : "text-[#8e9882] hover:text-[#15803d]"
-                                    }`}
-                                  >
-                                    👍
-                                  </button>
-                                  <button
-                                    type="button"
-                                    title="Not helpful"
-                                    onClick={() => onFeedback(m.id, "negative", m.text)}
-                                    className={`px-1 py-0.5 rounded text-[11px] transition ${
-                                      feedbackMap[m.id] === "negative" ? "text-[#b91c1c] font-bold scale-110" : "text-[#8e9882] hover:text-[#b91c1c]"
-                                    }`}
-                                  >
-                                    👎
-                                  </button>
-                                </div>
-                              )}
-                            </div>
+                            {m.at && <p className="mt-1 pl-1 text-[10px] text-[#8e9882]">{timeOf(m.at)}</p>}
                           </div>
                         </div>
                       ) : m.from === "bot" ? (
@@ -2944,33 +2920,7 @@ const Chatbot = ({ isOpen, setIsOpen, openRef, openAtOnce, initialLogo }: Chatbo
                                 )
                               )}
                             </div>
-                            <div className="mt-1 flex items-center justify-between pl-1">
-                              {m.at && <p className="text-[10px] text-[#8e9882]">{timeOf(m.at)}</p>}
-                              {!m.greeting && m.text && m.text.length > 15 && (
-                                <div className="flex items-center gap-1.5 opacity-60 hover:opacity-100 transition-opacity pr-1">
-                                  <button
-                                    type="button"
-                                    title="Helpful"
-                                    onClick={() => onFeedback(m.id, "positive", m.text)}
-                                    className={`px-1 py-0.5 rounded text-[11px] transition ${
-                                      feedbackMap[m.id] === "positive" ? "text-[#15803d] font-bold scale-110" : "text-[#8e9882] hover:text-[#15803d]"
-                                    }`}
-                                  >
-                                    👍
-                                  </button>
-                                  <button
-                                    type="button"
-                                    title="Not helpful"
-                                    onClick={() => onFeedback(m.id, "negative", m.text)}
-                                    className={`px-1 py-0.5 rounded text-[11px] transition ${
-                                      feedbackMap[m.id] === "negative" ? "text-[#b91c1c] font-bold scale-110" : "text-[#8e9882] hover:text-[#b91c1c]"
-                                    }`}
-                                  >
-                                    👎
-                                  </button>
-                                </div>
-                              )}
-                            </div>
+                            {m.at && <p className="mt-1 pl-1 text-[10px] text-[#8e9882]">{timeOf(m.at)}</p>}
                           </div>
                         </div>
                       ) : (

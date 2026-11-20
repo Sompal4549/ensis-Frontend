@@ -11,7 +11,7 @@ export const detectScriptLang = (text: string): Lang => {
   return "en";
 };
 
-const VOICE_START_TIMEOUT_MS = 10000; // no sound by then: use the browser's voice
+const VOICE_START_TIMEOUT_MS = 4500; // no sound by then: use the browser's voice
 const VOICE_MAX_MS = 120000; // never hold the chat up longer than this
 
 /* ─────────────────────────────────── Natural voice (audio from the backend) ─────────────────────────────────── */
@@ -92,12 +92,12 @@ const pickVoice = (lang: Lang): SpeechSynthesisVoice | undefined => {
   }
   const codes =
     lang === "pa"
-      ? ["pa-in", "hi-in"]
+      ? ["pa-in", "hi-in", "en-in", "en-gb", "en-us"]
       : lang === "bn"
-      ? ["bn-in", "hi-in"]
+      ? ["bn-in", "hi-in", "en-in", "en-gb", "en-us"]
       : lang === "hi"
-      ? ["hi-in"]
-      : ["en-in", "en-gb", "en-us"];
+      ? ["hi-in", "en-in", "en-gb", "en-us"]
+      : ["en-in", "en-gb", "en-us", "hi-in"];
 
   for (const code of codes) {
     const matches = voices.filter((v) => v.lang.replace("_", "-").toLowerCase() === code);
@@ -109,7 +109,7 @@ const pickVoice = (lang: Lang): SpeechSynthesisVoice | undefined => {
       );
     }
   }
-  return voices.find((v) => v.lang.toLowerCase().startsWith(lang));
+  return voices.find((v) => v.lang.toLowerCase().startsWith(lang)) || voices[0];
 };
 
 const DIGITS_EN = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
@@ -198,10 +198,13 @@ const speakWithBrowser = (text: string) => {
 
   return new Promise<void>((resolve) => {
     const utterance = new SpeechSynthesisUtterance(spoken);
-    // The Hindi voice for English too: its Indian accent is the one that sounds right (Design House standard)
-    const voice = pickVoice(lang === "pa" ? "pa" : "hi") ?? pickVoice("hi") ?? pickVoice(lang);
-    if (voice) utterance.voice = voice;
-    utterance.lang = voice?.lang ?? "hi-IN";
+    const voice = pickVoice(lang) ?? pickVoice("en") ?? voices[0];
+    if (voice) {
+      utterance.voice = voice;
+      utterance.lang = voice.lang;
+    } else {
+      utterance.lang = lang === "hi" ? "hi-IN" : "en-IN";
+    }
     utterance.rate = lang === "hi" || lang === "pa" ? 0.92 : 1;
     utterance.pitch = 1.10; // Sweet, melodious, gentle feminine pitch (madhur/madhumay)
 
@@ -217,8 +220,13 @@ const speakWithBrowser = (text: string) => {
     // Some browsers never fire "end" (or the voice is missing): don't hold the chat up
     const guard = setTimeout(done, Math.min(4000 + spoken.length * 90, 30000));
 
-    if (window.speechSynthesis.paused) window.speechSynthesis.resume();
-    window.speechSynthesis.speak(utterance);
+    try {
+      window.speechSynthesis.cancel();
+      if (window.speechSynthesis.paused) window.speechSynthesis.resume();
+      window.speechSynthesis.speak(utterance);
+    } catch {
+      done();
+    }
   });
 };
 
