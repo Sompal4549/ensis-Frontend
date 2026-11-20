@@ -83,9 +83,13 @@ export function prepareVoices(): () => void {
   return () => window.speechSynthesis.removeEventListener("voiceschanged", loadVoices);
 }
 
-// Indian English first, then other English; Hindi for हिं. Natural/online voices sound best (Design House standard).
+// Prefer Indian voices (en-IN for English, hi-IN for Hindi) so the natural North Indian Hindi accent is maintained across all languages!
 const pickVoice = (lang: Lang): SpeechSynthesisVoice | undefined => {
-  const codes = lang === "hi" ? ["hi-in"] : ["en-in", "en-gb", "en-us"];
+  const codes =
+    lang === "hi"
+      ? ["hi-in", "en-in"]
+      : ["en-in", "hi-in", "en-gb", "en-us"];
+
   for (const code of codes) {
     const matches = voices.filter((v) => v.lang.replace("_", "-").toLowerCase() === code);
     if (matches.length) {
@@ -150,10 +154,11 @@ const speakWithBrowser = (text: string) => {
 
   return new Promise<void>((resolve) => {
     const utterance = new SpeechSynthesisUtterance(spoken);
-    // The Hindi voice for English too: its Indian accent is the one that sounds right (Design House standard)
-    const voice = pickVoice("hi") ?? pickVoice(lang);
+    // Use the natural Indian voice for each script (Swara for hi-IN, Neerja for en-IN)
+    // Both are authentic North Indian female voices maintaining the exact same Desi/Hindi accent!
+    const voice = pickVoice(lang) ?? (lang === "en" ? pickVoice("hi") : pickVoice("en"));
     if (voice) utterance.voice = voice;
-    utterance.lang = voice?.lang ?? "hi-IN";
+    utterance.lang = voice?.lang ?? (lang === "hi" ? "hi-IN" : "en-IN");
     utterance.rate = lang === "hi" ? 0.95 : 1;
     utterance.pitch = 1.05;
 
